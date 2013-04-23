@@ -12,7 +12,7 @@
         <init-param>
             <description>Vaadin UI to display</description>
             <param-name>UI</param-name>
-            <param-value>ru.extas.MyVaadinUI</param-value>
+            <param-value>ru.extas.DashboardUI</param-value>
         </init-param>
                 <init-param>
             <description>Application widgetset</description>

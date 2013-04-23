@@ -117,6 +117,21 @@
 			<version>${vaadin.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.vaadin.addon</groupId>
+			<artifactId>vaadin-calendar-cval-2.0</artifactId>
+			<version>2.0.0.beta3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin.addon</groupId>
+			<artifactId>vaadin-charts</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>cssinject</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-api-jdo</artifactId>
 			<version>3.2.1</version>
@@ -132,6 +147,11 @@
 			<groupId>javax.jdo</groupId>
 			<artifactId>jdo-api</artifactId>
 			<version>3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.3</version>
 		</dependency>
     </dependencies>
 
