@@ -29,7 +29,11 @@ public class Insurance  implements Serializable {
     @Persistent
     private String regNum;
     
-	// Дата заключения полиса	
+    // Номер полиса	
+    @Persistent
+    private String chekNum;
+
+    // Дата заключения полиса	
     @Persistent
     private Date date;
 
@@ -81,7 +85,62 @@ public class Insurance  implements Serializable {
     @Persistent
     private Date endDate;
 
+    // Сотрудник
+    @Persistent
+    private String createdBy;
+
+    // Салон
+    @Persistent
+    private String resaler;
+    
+    public Insurance(){}
+    
     /**
+	 * @param regNum
+	 * @param chekNum
+	 * @param date
+	 * @param clientName
+	 * @param clientBirthday
+	 * @param clientPhone
+	 * @param clientMale
+	 * @param motorType
+	 * @param motorBrand
+	 * @param motorModel
+	 * @param riskSum
+	 * @param premium
+	 * @param paymentDate
+	 * @param startDate
+	 * @param endDate
+	 * @param createdBy
+	 * @param resaler
+	 */
+	public Insurance(String regNum, String chekNum, Date date,
+			String clientName, Date clientBirthday, String clientPhone,
+			Boolean clientMale, String motorType, String motorBrand,
+			String motorModel, BigDecimal riskSum, BigDecimal premium,
+			Date paymentDate, Date startDate, Date endDate, String createdBy,
+			String resaler) {
+		super();
+		this.regNum = regNum;
+		this.chekNum = chekNum;
+		this.date = date;
+		this.clientName = clientName;
+		this.clientBirthday = clientBirthday;
+		this.clientPhone = clientPhone;
+		this.clientMale = clientMale;
+		this.motorType = motorType;
+		this.motorBrand = motorBrand;
+		this.motorModel = motorModel;
+		this.riskSum = riskSum;
+		this.premium = premium;
+		this.paymentDate = paymentDate;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.createdBy = createdBy;
+		this.resaler = resaler;
+	}
+
+	/**
 	 * @return the id
 	 */
 	public final Long getId() {
@@ -289,6 +348,34 @@ public class Insurance  implements Serializable {
 	 */
 	public final void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	/**
+	 * @return the chekNum
+	 */
+	public String getChekNum() {
+		return chekNum;
+	}
+
+	/**
+	 * @param chekNum the chekNum to set
+	 */
+	public void setChekNum(String chekNum) {
+		this.chekNum = chekNum;
+	}
+
+	/**
+	 * @return the createdBy
+	 */
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * @param createdBy the createdBy to set
+	 */
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 

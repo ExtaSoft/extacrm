@@ -12,6 +12,8 @@ package ru.extas.web;
 
 import java.text.DecimalFormat;
 
+import ru.extas.server.InsuranceRepository;
+
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -67,6 +69,7 @@ public class DashboardView extends VerticalLayout implements View {
         notify.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
+            	new InsuranceRepository().fillRegistry();
                 ((DashboardUI) getUI()).clearDashboardButtonBadge();
                 event.getButton().removeStyleName("unread");
                 event.getButton().setDescription("Notifications");
