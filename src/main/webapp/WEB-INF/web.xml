@@ -8,16 +8,11 @@
     </context-param>
     <servlet>
         <servlet-name>Vaadin Application Servlet</servlet-name>
-        <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+        <servlet-class>com.vaadin.server.GAEVaadinServlet</servlet-class>
         <init-param>
             <description>Vaadin UI to display</description>
             <param-name>UI</param-name>
-            <param-value>ru.extas.DashboardUI</param-value>
-        </init-param>
-                <init-param>
-            <description>Application widgetset</description>
-            <param-name>widgetset</param-name>
-            <param-value>ru.extas.AppWidgetSet</param-value>
+            <param-value>ru.extas.web.DashboardUI</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

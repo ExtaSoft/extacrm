@@ -1,0 +1,295 @@
+package ru.extas.model;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+/**
+ * Полис страхования
+ * 
+ * @author orloval
+ *
+ */
+@PersistenceCapable(identityType = IdentityType.DATASTORE)
+public class Insurance  implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Long id;
+
+    // Номер полиса	
+    @Persistent
+    private String regNum;
+    
+	// Дата заключения полиса	
+    @Persistent
+    private Date date;
+
+    // Клиент - ФИО 
+    @Persistent
+    private String clientName;
+
+    // Клиент - Дата рождения
+    @Persistent
+    private Date clientBirthday;
+
+    // Клиент - Телефон
+    @Persistent
+    private String clientPhone;
+
+    // Клиент - Пол
+    @Persistent
+    private Boolean clientMale;
+
+	// Предмет страхования - тип	
+    @Persistent
+    private String motorType;
+    
+    // Предмет страхования - марка	
+    @Persistent
+    private String motorBrand;
+    
+    // Предмет страхования - модель					
+    @Persistent
+    private String motorModel;
+
+	// Страховая сумма, руб.
+    @Persistent
+    private BigDecimal riskSum;
+
+    // Страховая премия, руб.
+    @Persistent
+    private BigDecimal premium;
+
+    // Дата оплаты страховой премии	
+    @Persistent
+    private Date paymentDate;
+
+    // Дата начала срока действия договора	
+    @Persistent
+    private Date startDate;
+
+    //Дата окончания срока действия договора
+    @Persistent
+    private Date endDate;
+
+    /**
+	 * @return the id
+	 */
+	public final Long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public final void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the regNum
+	 */
+	public final String getRegNum() {
+		return regNum;
+	}
+
+	/**
+	 * @param regNum the regNum to set
+	 */
+	public final void setRegNum(String regNum) {
+		this.regNum = regNum;
+	}
+
+	/**
+	 * @return the date
+	 */
+	public final Date getDate() {
+		return date;
+	}
+
+	/**
+	 * @param date the date to set
+	 */
+	public final void setDate(Date date) {
+		this.date = date;
+	}
+
+	/**
+	 * @return the clientName
+	 */
+	public final String getClientName() {
+		return clientName;
+	}
+
+	/**
+	 * @param clientName the clientName to set
+	 */
+	public final void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
+
+	/**
+	 * @return the clientBirthday
+	 */
+	public final Date getClientBirthday() {
+		return clientBirthday;
+	}
+
+	/**
+	 * @param clientBirthday the clientBirthday to set
+	 */
+	public final void setClientBirthday(Date clientBirthday) {
+		this.clientBirthday = clientBirthday;
+	}
+
+	/**
+	 * @return the clientPhone
+	 */
+	public final String getClientPhone() {
+		return clientPhone;
+	}
+
+	/**
+	 * @param clientPhone the clientPhone to set
+	 */
+	public final void setClientPhone(String clientPhone) {
+		this.clientPhone = clientPhone;
+	}
+
+	/**
+	 * @return the clientMale
+	 */
+	public final Boolean getClientMale() {
+		return clientMale;
+	}
+
+	/**
+	 * @param clientMale the clientMale to set
+	 */
+	public final void setClientMale(Boolean clientMale) {
+		this.clientMale = clientMale;
+	}
+
+	/**
+	 * @return the motorType
+	 */
+	public final String getMotorType() {
+		return motorType;
+	}
+
+	/**
+	 * @param motorType the motorType to set
+	 */
+	public final void setMotorType(String motorType) {
+		this.motorType = motorType;
+	}
+
+	/**
+	 * @return the motorBrand
+	 */
+	public final String getMotorBrand() {
+		return motorBrand;
+	}
+
+	/**
+	 * @param motorBrand the motorBrand to set
+	 */
+	public final void setMotorBrand(String motorBrand) {
+		this.motorBrand = motorBrand;
+	}
+
+	/**
+	 * @return the motorModel
+	 */
+	public final String getMotorModel() {
+		return motorModel;
+	}
+
+	/**
+	 * @param motorModel the motorModel to set
+	 */
+	public final void setMotorModel(String motorModel) {
+		this.motorModel = motorModel;
+	}
+
+	/**
+	 * @return the riskSum
+	 */
+	public final BigDecimal getRiskSum() {
+		return riskSum;
+	}
+
+	/**
+	 * @param riskSum the riskSum to set
+	 */
+	public final void setRiskSum(BigDecimal riskSum) {
+		this.riskSum = riskSum;
+	}
+
+	/**
+	 * @return the premium
+	 */
+	public final BigDecimal getPremium() {
+		return premium;
+	}
+
+	/**
+	 * @param premium the premium to set
+	 */
+	public final void setPremium(BigDecimal premium) {
+		this.premium = premium;
+	}
+
+	/**
+	 * @return the paymentDate
+	 */
+	public final Date getPaymentDate() {
+		return paymentDate;
+	}
+
+	/**
+	 * @param paymentDate the paymentDate to set
+	 */
+	public final void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
+	/**
+	 * @return the startDate
+	 */
+	public final Date getStartDate() {
+		return startDate;
+	}
+
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public final void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	/**
+	 * @return the endDate
+	 */
+	public final Date getEndDate() {
+		return endDate;
+	}
+
+	/**
+	 * @param endDate the endDate to set
+	 */
+	public final void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+
+}

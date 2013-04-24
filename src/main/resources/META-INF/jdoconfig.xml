@@ -13,3 +13,4 @@
         <property name="datanucleus.appengine.autoCreateDatastoreTxns" value="true"/>
     </persistence-manager-factory>
 </jdoconfig>
+

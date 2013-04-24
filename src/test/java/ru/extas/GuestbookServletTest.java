@@ -29,6 +29,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ru.extas.web.GuestbookServlet;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;

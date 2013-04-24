@@ -8,20 +8,15 @@
  * 
  */
 
-package ru.extas;
+package ru.extas.web;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import ru.extas.data.DataProvider;
-import ru.extas.data.Generator;
-import ru.extas.data.MyConverterFactory;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.event.Transferable;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
@@ -56,10 +51,8 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @Theme("dashboard")
-@Title("QuickTickets Dashboard")
+@Title("Extrime Assistance CRM")
 public class DashboardUI extends UI {
-
-    DataProvider dataProvider = new DataProvider();
 
     private static final long serialVersionUID = 1L;
 
@@ -73,10 +66,7 @@ public class DashboardUI extends UI {
     HashMap<String, Class<? extends View>> routes = new HashMap<String, Class<? extends View>>() {
         {
             put("/dashboard", DashboardView.class);
-            put("/sales", SalesView.class);
-            put("/transactions", TransactionsView.class);
-            put("/reports", ReportsView.class);
-            put("/schedule", ScheduleView.class);
+            put("/insurance", DashboardView.class);
         }
     };
 
@@ -84,15 +74,8 @@ public class DashboardUI extends UI {
 
     private Navigator nav;
 
-    private HelpManager helpManager;
-
     @Override
     protected void init(VaadinRequest request) {
-        getSession().setConverterFactory(new MyConverterFactory());
-
-        helpManager = new HelpManager(this);
-
-        setLocale(Locale.US);
 
         setContent(root);
         root.addStyleName("root");
@@ -113,14 +96,6 @@ public class DashboardUI extends UI {
         if (exit) {
             root.removeAllComponents();
         }
-        helpManager.closeAll();
-        HelpOverlay w = helpManager
-                .addOverlay(
-                        "Welcome to the Dashboard Demo Application",
-                        "<p>This application is not real, it only demonstrates an application built with the <a href=\"http://vaadin.com\">Vaadin framework</a>.</p><p>No username or password is required, just click the ‘Sign In’ button to continue. You can try out a random username and password, though.</p>",
-                        "login");
-        w.center();
-        addWindow(w);
 
         addStyleName("login");
 
@@ -221,7 +196,6 @@ public class DashboardUI extends UI {
             nav.addView(route, routes.get(route));
         }
 
-        helpManager.closeAll();
         removeStyleName("login");
         root.removeComponent(loginLayout);
 
@@ -265,10 +239,7 @@ public class DashboardUI extends UI {
                                         new ThemeResource("img/profile-pic.png"));
                                 profilePic.setWidth("34px");
                                 addComponent(profilePic);
-                                Label userName = new Label(Generator
-                                        .randomFirstName()
-                                        + " "
-                                        + Generator.randomLastName());
+                                Label userName = new Label("Test User Name");
                                 userName.setSizeUndefined();
                                 addComponent(userName);
 
@@ -342,7 +313,6 @@ public class DashboardUI extends UI {
                         viewNameToMenuButton.get("/reports").addStyleName(
                                 "selected");
                         autoCreateReport = true;
-                        items = event.getTransferable();
                         nav.navigateTo("/reports");
                     }
 
@@ -375,10 +345,8 @@ public class DashboardUI extends UI {
         if (f == null || f.equals("") || f.equals("/")) {
             nav.navigateTo("/dashboard");
             menu.getComponent(0).addStyleName("selected");
-            helpManager.showHelpFor(DashboardView.class);
         } else {
             nav.navigateTo(f);
-            helpManager.showHelpFor(routes.get(f));
             viewNameToMenuButton.get(f).addStyleName("selected");
         }
 
@@ -386,24 +354,16 @@ public class DashboardUI extends UI {
 
             @Override
             public boolean beforeViewChange(ViewChangeEvent event) {
-                helpManager.closeAll();
                 return true;
             }
 
             @Override
             public void afterViewChange(ViewChangeEvent event) {
-                View newView = event.getNewView();
-                helpManager.showHelpFor(newView);
-                if (autoCreateReport && newView instanceof ReportsView) {
-                    ((ReportsView) newView).autoCreate(2, items, transactions);
-                }
                 autoCreateReport = false;
             }
         });
 
     }
-
-    private Transferable items;
 
     private void clearMenuSelection() {
         for (Iterator<Component> it = menu.getComponentIterator(); it.hasNext();) {
@@ -437,10 +397,6 @@ public class DashboardUI extends UI {
         nav.navigateTo("/reports");
         clearMenuSelection();
         viewNameToMenuButton.get("/reports").addStyleName("selected");
-    }
-
-    HelpManager getHelpManager() {
-        return helpManager;
     }
 
 }

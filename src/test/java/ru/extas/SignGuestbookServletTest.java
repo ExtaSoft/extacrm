@@ -35,6 +35,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ru.extas.web.SignGuestbookServlet;
+
 import java.io.IOException;
 import java.util.Date;
 

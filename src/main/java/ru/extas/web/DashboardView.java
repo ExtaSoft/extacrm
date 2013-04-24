@@ -8,20 +8,17 @@
  * 
  */
 
-package ru.extas;
+package ru.extas.web;
 
 import java.text.DecimalFormat;
 
 import com.vaadin.data.Property;
-import ru.extas.data.DataProvider;
-import ru.extas.data.Generator;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -176,8 +173,6 @@ public class DashboardView extends VerticalLayout implements View {
         addComponent(row);
         setExpandRatio(row, 1.5f);
 
-        row.addComponent(createPanel(new TopGrossingMoviesChart()));
-
         TextArea notes = new TextArea("Notes");
         notes.setValue("Remember to:\n· Zoom in and out in the Sales view\n· Filter the transactions and drag a set of them to the Reports tab\n· Create a new report\n· Change the schedule of the movie theater");
         notes.setSizeFull();
@@ -220,8 +215,6 @@ public class DashboardView extends VerticalLayout implements View {
 
         row.addComponent(createPanel(t));
 
-        row.addComponent(createPanel(new TopSixTheatersChart()));
-
     }
 
     private CssLayout createPanel(Component content) {
@@ -250,8 +243,6 @@ public class DashboardView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
-        DataProvider dataProvider = ((DashboardUI) getUI()).dataProvider;
-        t.setContainerDataSource(dataProvider.getRevenueByTitle());
     }
 
     Window notifications;
@@ -271,20 +262,6 @@ public class DashboardView extends VerticalLayout implements View {
         notifications.setPositionY(event.getClientY() - event.getRelativeY());
         notifications.setCloseShortcut(KeyCode.ESCAPE, null);
 
-        Label label = new Label(
-                "<hr><b>"
-                        + Generator.randomFirstName()
-                        + " "
-                        + Generator.randomLastName()
-                        + " created a new report</b><br><span>25 minutes ago</span><br>"
-                        + Generator.randomText(18), ContentMode.HTML);
-        l.addComponent(label);
-
-        label = new Label("<hr><b>" + Generator.randomFirstName() + " "
-                + Generator.randomLastName()
-                + " changed the schedule</b><br><span>2 days ago</span><br>"
-                + Generator.randomText(10), ContentMode.HTML);
-        l.addComponent(label);
     }
 
 }
