@@ -45,220 +45,122 @@ import com.vaadin.ui.Window;
 
 public class DashboardView extends VerticalLayout implements View {
 
-    Table t;
+	Table table;
 
-    public DashboardView() {
-    }
+	public DashboardView() {
+	}
 
-    private CssLayout createPanel(Component content) {
-        CssLayout panel = new CssLayout();
-        panel.addStyleName("layout-panel");
-        panel.setSizeFull();
+	private CssLayout createPanel(Component content) {
+		CssLayout panel = new CssLayout();
+		panel.addStyleName("layout-panel");
+		panel.setSizeFull();
 
-        Button configure = new Button();
-        configure.addStyleName("configure");
-        configure.addStyleName("icon-cog");
-        configure.addStyleName("icon-only");
-        configure.addStyleName("borderless");
-        configure.setDescription("Configure");
-        configure.addStyleName("small");
-        configure.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                Notification.show("Not implemented in this demo");
-            }
-        });
-        panel.addComponent(configure);
+		Button configure = new Button();
+		configure.addStyleName("configure");
+		configure.addStyleName("icon-cog");
+		configure.addStyleName("icon-only");
+		configure.addStyleName("borderless");
+		configure.setDescription("Конфигурация");
+		configure.addStyleName("small");
+		configure.addClickListener(new ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Notification.show("Не реализовано пока");
+			}
+		});
+		panel.addComponent(configure);
 
-        panel.addComponent(content);
-        return panel;
-    }
+		panel.addComponent(content);
+		return panel;
+	}
 
-    @Override
-    public void enter(ViewChangeEvent event) {
-        setSizeFull();
-        addStyleName("dashboard-view");
+	@Override
+	public void enter(ViewChangeEvent event) {
+		setSizeFull();
+		addStyleName("dashboard-view");
 
-        HorizontalLayout top = new HorizontalLayout();
-        top.setWidth("100%");
-        top.setSpacing(true);
-        top.addStyleName("toolbar");
-        addComponent(top);
-        final Label title = new Label("My Dashboard");
-        title.setSizeUndefined();
-        title.addStyleName("h1");
-        top.addComponent(title);
-        top.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
-        top.setExpandRatio(title, 1);
+		HorizontalLayout top = new HorizontalLayout();
+		top.setWidth("100%");
+		top.setSpacing(true);
+		top.addStyleName("toolbar");
+		addComponent(top);
+		final Label title = new Label("Страхование техники");
+		title.setSizeUndefined();
+		title.addStyleName("h1");
+		top.addComponent(title);
+		top.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
+		top.setExpandRatio(title, 1);
 
-        Button notify = new Button("2");
-        notify.setDescription("Notifications (2 unread)");
-        // notify.addStyleName("borderless");
-        notify.addStyleName("notifications");
-        notify.addStyleName("unread");
-        notify.addStyleName("icon-only");
-        notify.addStyleName("icon-bell");
-        notify.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-            	new InsuranceRepository().fillRegistry();
-                ((DashboardUI) getUI()).clearDashboardButtonBadge();
-                event.getButton().removeStyleName("unread");
-                event.getButton().setDescription("Notifications");
+		Button notify = new Button();
+		notify.setDescription("Создать тестовые данные");
+		// notify.addStyleName("borderless");
+		notify.addStyleName("notifications");
+		notify.addStyleName("icon-only");
+		notify.addStyleName("icon-bell");
+		notify.addClickListener(new ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				new InsuranceRepository().fillRegistry();
+			}
+		});
+		top.addComponent(notify);
+		top.setComponentAlignment(notify, Alignment.MIDDLE_LEFT);
 
-                if (notifications != null && notifications.getUI() != null)
-                    notifications.close();
-                else {
-                    buildNotifications(event);
-                    getUI().addWindow(notifications);
-                    notifications.focus();
-                    ((CssLayout) getUI().getContent())
-                            .addLayoutClickListener(new LayoutClickListener() {
-                                @Override
-                                public void layoutClick(LayoutClickEvent event) {
-                                    notifications.close();
-                                    ((CssLayout) getUI().getContent())
-                                            .removeLayoutClickListener(this);
-                                }
-                            });
-                }
+		HorizontalLayout row = new HorizontalLayout();
+		row.setMargin(true);
+		row.setSizeFull();
+		row.setSpacing(true);
+		addComponent(row);
+		setExpandRatio(row, 2);
 
-            }
-        });
-        top.addComponent(notify);
-        top.setComponentAlignment(notify, Alignment.MIDDLE_LEFT);
+		Collection<Insurance> insurances = new InsuranceRepository().getAll();
+		BeanContainer<Long, Insurance> beans = new BeanContainer<Long, Insurance>(
+				Insurance.class);
+		beans.setBeanIdProperty("id");
+		beans.addAll(insurances);
 
-        Button edit = new Button();
-        edit.addStyleName("icon-edit");
-        edit.addStyleName("icon-only");
-        top.addComponent(edit);
-        edit.setDescription("Edit Dashboard");
-        edit.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                final Window w = new Window("Edit Dashboard");
+		table = new Table("Страховки", beans);
 
-                w.setModal(true);
-                w.setClosable(false);
-                w.setResizable(false);
-                w.addStyleName("edit-dashboard");
+		table.setSizeFull();
+		table.setPageLength(0);
+		// t.addStyleName("plain");
+		// t.addStyleName("borderless");
+		// t.setSortEnabled(false);
+		// t.setColumnAlignment("Revenue", Align.RIGHT);
+		table.setRowHeaderMode(RowHeaderMode.INDEX);
+		table.setSelectable(true);
+		table.setColumnCollapsingAllowed(true);
 
-                getUI().addWindow(w);
+		table.setColumnHeader("regNum", "Номер полиса");
+		table.setColumnHeader("chekNum", "Номер счета");
+		table.setColumnHeader("date", "Дата заключения полиса");
+		table.setColumnHeader("clientName", "Клиент - ФИО");
+		table.setColumnHeader("clientBirthday", "Клиент - Дата рождения");
+		table.setColumnHeader("clientPhone", "Клиент - Телефон");
+		table.setColumnHeader("clientMale", "Клиент - Пол");
+		table.setColumnHeader("motorType", "Тип техники");
+		table.setColumnHeader("motorBrand", "Марка техники");
+		table.setColumnHeader("motorModel", "Модель техники");
+		table.setColumnHeader("riskSum", "Страховая сумма");
+		table.setColumnHeader("premium", "Страховая премия");
+		table.setColumnHeader("paymentDate", "Дата оплаты страховой премии");
+		table.setColumnHeader("startDate",
+				"Дата начала срока действия договора");
+		table.setColumnHeader("endDate",
+				"Дата окончания срока действия договора");
+		table.setColumnHeader("createdBy", "Сотрудник");
+		table.setColumnHeader("resaler", "Салон");
 
-                w.setContent(new VerticalLayout() {
-                    TextField name = new TextField("Dashboard Name");
-                    {
-                        addComponent(new FormLayout() {
-                            {
-                                setSizeUndefined();
-                                setMargin(true);
-                                name.setValue(title.getValue());
-                                addComponent(name);
-                                name.focus();
-                                name.selectAll();
-                            }
-                        });
+		table.setVisibleColumns(new Object[] { "regNum", "date", "clientName",
+				"motorType", "motorBrand", "motorModel", "riskSum", "premium", "createdBy" });
 
-                        addComponent(new HorizontalLayout() {
-                            {
-                                setMargin(true);
-                                setSpacing(true);
-                                addStyleName("footer");
-                                setWidth("100%");
+		// Опции отрбражения датасета: 
+		// 1. порядок
+		// 2. заголовок
+		// 3. доступность
+		// 4. видимость
+		row.addComponent(createPanel(table));
 
-                                Button cancel = new Button("Cancel");
-                                cancel.addClickListener(new ClickListener() {
-                                    @Override
-                                    public void buttonClick(ClickEvent event) {
-                                        w.close();
-                                    }
-                                });
-                                cancel.setClickShortcut(KeyCode.ESCAPE, null);
-                                addComponent(cancel);
-                                setExpandRatio(cancel, 1);
-                                setComponentAlignment(cancel,
-                                        Alignment.TOP_RIGHT);
-
-                                Button ok = new Button("Save");
-                                ok.addStyleName("wide");
-                                ok.addStyleName("default");
-                                ok.addClickListener(new ClickListener() {
-                                    @Override
-                                    public void buttonClick(ClickEvent event) {
-                                        title.setValue(name.getValue());
-                                        w.close();
-                                    }
-                                });
-                                ok.setClickShortcut(KeyCode.ENTER, null);
-                                addComponent(ok);
-                            }
-                        });
-
-                    }
-                });
-
-            }
-        });
-        top.setComponentAlignment(edit, Alignment.MIDDLE_LEFT);
-
-        HorizontalLayout row = new HorizontalLayout();
-        row.setSizeFull();
-        row.setMargin(new MarginInfo(true, true, false, true));
-        row.setSpacing(true);
-        addComponent(row);
-        setExpandRatio(row, 1.5f);
-
-        TextArea notes = new TextArea("Notes");
-        notes.setValue("Remember to:\n· Zoom in and out in the Sales view\n· Filter the transactions and drag a set of them to the Reports tab\n· Create a new report\n· Change the schedule of the movie theater");
-        notes.setSizeFull();
-        CssLayout panel = createPanel(notes);
-        panel.addStyleName("notes");
-        row.addComponent(panel);
-
-        row = new HorizontalLayout();
-        row.setMargin(true);
-        row.setSizeFull();
-        row.setSpacing(true);
-        addComponent(row);
-        setExpandRatio(row, 2);
-
-        Collection<Insurance> insurances = new InsuranceRepository().getAll();
-        BeanContainer<Long, Insurance> beans =
-                new BeanContainer<Long, Insurance>(Insurance.class);
-        beans.setBeanIdProperty("id");
-        beans.addAll(insurances);
-
-        t = new Table("Страховки", beans);
-
-        t.setWidth("100%");
-        t.setPageLength(0);
-        t.addStyleName("plain");
-        t.addStyleName("borderless");
-        t.setSortEnabled(false);
-        //t.setColumnAlignment("Revenue", Align.RIGHT);
-        //t.setRowHeaderMode(RowHeaderMode.INDEX);
-        
-        row.addComponent(createPanel(t));
-
-    }
-
-    Window notifications;
-
-    private void buildNotifications(ClickEvent event) {
-        notifications = new Window("Notifications");
-        VerticalLayout l = new VerticalLayout();
-        l.setMargin(true);
-        l.setSpacing(true);
-        notifications.setContent(l);
-        notifications.setWidth("300px");
-        notifications.addStyleName("notifications");
-        notifications.setClosable(false);
-        notifications.setResizable(false);
-        notifications.setDraggable(false);
-        notifications.setPositionX(event.getClientX() - event.getRelativeX());
-        notifications.setPositionY(event.getClientY() - event.getRelativeY());
-        notifications.setCloseShortcut(KeyCode.ESCAPE, null);
-
-    }
+	}
 
 }

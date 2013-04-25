@@ -29,7 +29,7 @@ public class Insurance  implements Serializable {
     @Persistent
     private String regNum;
     
-    // Номер полиса	
+    // Номер счета	
     @Persistent
     private String chekNum;
 

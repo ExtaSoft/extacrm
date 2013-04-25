@@ -125,18 +125,14 @@
 
 	<build>
 		<plugins>
-			<!--
-				This plug-in "enhances" your domain model objects (i.e. makes them
-				persistent for datanucleus)
-			-->
+			<!-- This plug-in "enhances" your domain model objects (i.e. makes them 
+				persistent for datanucleus) -->
 			<plugin>
 				<groupId>org.datanucleus</groupId>
 				<artifactId>maven-datanucleus-plugin</artifactId>
 				<version>${datanucleus.version}</version>
 				<configuration>
-					<!--
-						Make sure this path contains your persistent classes!
-					-->
+					<!-- Make sure this path contains your persistent classes! -->
 					<mappingIncludes>**/model/*.class</mappingIncludes>
 					<verbose>true</verbose>
 					<api>JDO</api>
@@ -182,6 +178,14 @@
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>${appengine.target.version}</version>
+				<configuration>
+					<jvmFlags>
+<!-- 						<jvmFlag>-Xdebug</jvmFlag>
+						<jvmFlag>-Xrunjdwp:transport=dt_socket,address=1044,server=y</jvmFlag>
+ -->					</jvmFlags>
+					<disableUpdateCheck>true</disableUpdateCheck>
+				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>
