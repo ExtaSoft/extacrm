@@ -11,10 +11,14 @@
 package ru.extas.web;
 
 import java.text.DecimalFormat;
+import java.util.Collection;
 
+import ru.extas.model.Insurance;
 import ru.extas.server.InsuranceRepository;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.util.BeanContainer;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -44,6 +48,34 @@ public class DashboardView extends VerticalLayout implements View {
     Table t;
 
     public DashboardView() {
+    }
+
+    private CssLayout createPanel(Component content) {
+        CssLayout panel = new CssLayout();
+        panel.addStyleName("layout-panel");
+        panel.setSizeFull();
+
+        Button configure = new Button();
+        configure.addStyleName("configure");
+        configure.addStyleName("icon-cog");
+        configure.addStyleName("icon-only");
+        configure.addStyleName("borderless");
+        configure.setDescription("Configure");
+        configure.addStyleName("small");
+        configure.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                Notification.show("Not implemented in this demo");
+            }
+        });
+        panel.addComponent(configure);
+
+        panel.addComponent(content);
+        return panel;
+    }
+
+    @Override
+    public void enter(ViewChangeEvent event) {
         setSizeFull();
         addStyleName("dashboard-view");
 
@@ -190,62 +222,24 @@ public class DashboardView extends VerticalLayout implements View {
         addComponent(row);
         setExpandRatio(row, 2);
 
-        t = new Table() {
-            @Override
-            protected String formatPropertyValue(Object rowId, Object colId,
-                    Property<?> property) {
-                if (colId.equals("Revenue")) {
-                    if (property != null && property.getValue() != null) {
-                        Double r = (Double) property.getValue();
-                        String ret = new DecimalFormat("#.##").format(r);
-                        return "$" + ret;
-                    } else {
-                        return "";
-                    }
-                }
-                return super.formatPropertyValue(rowId, colId, property);
-            }
-        };
-        t.setCaption("Top 10 Titles by Revenue");
+        Collection<Insurance> insurances = new InsuranceRepository().getAll();
+        BeanContainer<Long, Insurance> beans =
+                new BeanContainer<Long, Insurance>(Insurance.class);
+        beans.setBeanIdProperty("id");
+        beans.addAll(insurances);
+
+        t = new Table("Страховки", beans);
 
         t.setWidth("100%");
         t.setPageLength(0);
         t.addStyleName("plain");
         t.addStyleName("borderless");
         t.setSortEnabled(false);
-        t.setColumnAlignment("Revenue", Align.RIGHT);
-        t.setRowHeaderMode(RowHeaderMode.INDEX);
-
+        //t.setColumnAlignment("Revenue", Align.RIGHT);
+        //t.setRowHeaderMode(RowHeaderMode.INDEX);
+        
         row.addComponent(createPanel(t));
 
-    }
-
-    private CssLayout createPanel(Component content) {
-        CssLayout panel = new CssLayout();
-        panel.addStyleName("layout-panel");
-        panel.setSizeFull();
-
-        Button configure = new Button();
-        configure.addStyleName("configure");
-        configure.addStyleName("icon-cog");
-        configure.addStyleName("icon-only");
-        configure.addStyleName("borderless");
-        configure.setDescription("Configure");
-        configure.addStyleName("small");
-        configure.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                Notification.show("Not implemented in this demo");
-            }
-        });
-        panel.addComponent(configure);
-
-        panel.addComponent(content);
-        return panel;
-    }
-
-    @Override
-    public void enter(ViewChangeEvent event) {
     }
 
     Window notifications;

@@ -132,14 +132,13 @@
 			<plugin>
 				<groupId>org.datanucleus</groupId>
 				<artifactId>maven-datanucleus-plugin</artifactId>
-				<version>3.2.0-m1</version>
+				<version>${datanucleus.version}</version>
 				<configuration>
 					<!--
 						Make sure this path contains your persistent classes!
 					-->
 					<mappingIncludes>**/model/*.class</mappingIncludes>
 					<verbose>true</verbose>
-					<enhancerName>ASM</enhancerName>
 					<api>JDO</api>
 				</configuration>
 				<executions>

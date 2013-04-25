@@ -113,13 +113,13 @@ public class DashboardUI extends UI {
         labels.addStyleName("labels");
         loginPanel.addComponent(labels);
 
-        Label welcome = new Label("Welcome");
+        Label welcome = new Label("Добро пожаловать");
         welcome.setSizeUndefined();
         welcome.addStyleName("h4");
         labels.addComponent(welcome);
         labels.setComponentAlignment(welcome, Alignment.MIDDLE_LEFT);
 
-        Label title = new Label("QuickTickets Dashboard");
+        Label title = new Label("Экстрим Ассистанс CRM");
         title.setSizeUndefined();
         title.addStyleName("h2");
         title.addStyleName("light");
@@ -131,19 +131,19 @@ public class DashboardUI extends UI {
         fields.setMargin(true);
         fields.addStyleName("fields");
 
-        final TextField username = new TextField("Username");
+        final TextField username = new TextField("Пользователь");
         username.focus();
         fields.addComponent(username);
 
-        final PasswordField password = new PasswordField("Password");
+        final PasswordField password = new PasswordField("Пароль");
         fields.addComponent(password);
 
-        final Button signin = new Button("Sign In");
+        final Button signin = new Button("Войти");
         signin.addStyleName("default");
         fields.addComponent(signin);
         fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 
-        final ShortcutListener enter = new ShortcutListener("Sign In",
+        final ShortcutListener enter = new ShortcutListener("Войти",
                 KeyCode.ENTER, null) {
             @Override
             public void handleAction(Object sender, Object target) {
@@ -154,29 +154,31 @@ public class DashboardUI extends UI {
         signin.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                if (username.getValue() != null
-                        && username.getValue().equals("")
-                        && password.getValue() != null
-                        && password.getValue().equals("")) {
-                    signin.removeShortcutListener(enter);
-                    buildMainView();
-                } else {
-                    if (loginPanel.getComponentCount() > 2) {
-                        // Remove the previous error message
-                        loginPanel.removeComponent(loginPanel.getComponent(2));
-                    }
-                    // Add new error message
-                    Label error = new Label(
-                            "Wrong username or password. <span>Hint: try empty values</span>",
-                            ContentMode.HTML);
-                    error.addStyleName("error");
-                    error.setSizeUndefined();
-                    error.addStyleName("light");
-                    // Add animation
-                    error.addStyleName("v-animate-reveal");
-                    loginPanel.addComponent(error);
-                    username.focus();
-                }
+                signin.removeShortcutListener(enter);
+                buildMainView();
+//                if (username.getValue() != null
+//                        && username.getValue().equals("")
+//                        && password.getValue() != null
+//                        && password.getValue().equals("")) {
+//                    signin.removeShortcutListener(enter);
+//                    buildMainView();
+//                } else {
+//                    if (loginPanel.getComponentCount() > 2) {
+//                        // Remove the previous error message
+//                        loginPanel.removeComponent(loginPanel.getComponent(2));
+//                    }
+//                    // Add new error message
+//                    Label error = new Label(
+//                            "Wrong username or password. <span>Hint: try empty values</span>",
+//                            ContentMode.HTML);
+//                    error.addStyleName("error");
+//                    error.setSizeUndefined();
+//                    error.addStyleName("light");
+//                    // Add animation
+//                    error.addStyleName("v-animate-reveal");
+//                    loginPanel.addComponent(error);
+//                    username.focus();
+//                }
             }
         });
 
@@ -215,7 +217,7 @@ public class DashboardUI extends UI {
                             {
                                 addStyleName("branding");
                                 Label logo = new Label(
-                                        "<span>QuickTickets</span> Dashboard",
+                                        "<span>Экстрим Ассистанс</span> CRM",
                                         ContentMode.HTML);
                                 logo.setSizeUndefined();
                                 addComponent(logo);
@@ -239,7 +241,7 @@ public class DashboardUI extends UI {
                                         new ThemeResource("img/profile-pic.png"));
                                 profilePic.setWidth("34px");
                                 addComponent(profilePic);
-                                Label userName = new Label("Test User Name");
+                                Label userName = new Label("UserName");
                                 userName.setSizeUndefined();
                                 addComponent(userName);
 
@@ -248,22 +250,21 @@ public class DashboardUI extends UI {
                                     public void menuSelected(
                                             MenuItem selectedItem) {
                                         Notification
-                                                .show("Not implemented in this demo");
+                                                .show("Не реализовано пока");
                                     }
                                 };
                                 MenuBar settings = new MenuBar();
                                 MenuItem settingsMenu = settings.addItem("",
                                         null);
                                 settingsMenu.setStyleName("icon-cog");
-                                settingsMenu.addItem("Settings", cmd);
-                                settingsMenu.addItem("Preferences", cmd);
+                                settingsMenu.addItem("Настройки", cmd);
                                 settingsMenu.addSeparator();
-                                settingsMenu.addItem("My Account", cmd);
+                                settingsMenu.addItem("Профиль", cmd);
                                 addComponent(settings);
 
-                                Button exit = new NativeButton("Exit");
+                                Button exit = new NativeButton("Выход");
                                 exit.addStyleName("icon-cancel");
-                                exit.setDescription("Sign Out");
+                                exit.setDescription("Выход из системы");
                                 addComponent(exit);
                                 exit.addClickListener(new ClickListener() {
                                     @Override
