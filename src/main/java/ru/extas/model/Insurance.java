@@ -91,7 +91,7 @@ public class Insurance  implements Serializable {
 
     // Салон
     @Persistent
-    private String resaler;
+    private String reseller;
     
     public Insurance(){}
     
@@ -119,7 +119,7 @@ public class Insurance  implements Serializable {
 			Boolean clientMale, String motorType, String motorBrand,
 			String motorModel, BigDecimal riskSum, BigDecimal premium,
 			Date paymentDate, Date startDate, Date endDate, String createdBy,
-			String resaler) {
+			String reseller) {
 		super();
 		this.regNum = regNum;
 		this.chekNum = chekNum;
@@ -137,7 +137,7 @@ public class Insurance  implements Serializable {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.createdBy = createdBy;
-		this.resaler = resaler;
+		this.reseller = reseller;
 	}
 
 	/**
@@ -376,6 +376,20 @@ public class Insurance  implements Serializable {
 	 */
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	/**
+	 * @return the reseller
+	 */
+	public final String getReseller() {
+		return reseller;
+	}
+
+	/**
+	 * @param reseller the reseller to set
+	 */
+	public final void setReseller(String reseller) {
+		this.reseller = reseller;
 	}
 
 

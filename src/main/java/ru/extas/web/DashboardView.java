@@ -10,38 +10,25 @@
 
 package ru.extas.web;
 
-import java.text.DecimalFormat;
 import java.util.Collection;
 
 import ru.extas.model.Insurance;
 import ru.extas.server.InsuranceRepository;
 
-import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanContainer;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.event.LayoutEvents.LayoutClickEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickListener;
-import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.Table.Align;
-import com.vaadin.ui.Table.RowHeaderMode;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 
 public class DashboardView extends VerticalLayout implements View {
 
@@ -127,38 +114,16 @@ public class DashboardView extends VerticalLayout implements View {
 		// t.addStyleName("borderless");
 		// t.setSortEnabled(false);
 		// t.setColumnAlignment("Revenue", Align.RIGHT);
-		table.setRowHeaderMode(RowHeaderMode.INDEX);
+		//table.setRowHeaderMode(RowHeaderMode.INDEX);
 		table.setSelectable(true);
 		table.setColumnCollapsingAllowed(true);
+		table.setColumnReorderingAllowed(true);
 
-		table.setColumnHeader("regNum", "Номер полиса");
-		table.setColumnHeader("chekNum", "Номер счета");
-		table.setColumnHeader("date", "Дата заключения полиса");
-		table.setColumnHeader("clientName", "Клиент - ФИО");
-		table.setColumnHeader("clientBirthday", "Клиент - Дата рождения");
-		table.setColumnHeader("clientPhone", "Клиент - Телефон");
-		table.setColumnHeader("clientMale", "Клиент - Пол");
-		table.setColumnHeader("motorType", "Тип техники");
-		table.setColumnHeader("motorBrand", "Марка техники");
-		table.setColumnHeader("motorModel", "Модель техники");
-		table.setColumnHeader("riskSum", "Страховая сумма");
-		table.setColumnHeader("premium", "Страховая премия");
-		table.setColumnHeader("paymentDate", "Дата оплаты страховой премии");
-		table.setColumnHeader("startDate",
-				"Дата начала срока действия договора");
-		table.setColumnHeader("endDate",
-				"Дата окончания срока действия договора");
-		table.setColumnHeader("createdBy", "Сотрудник");
-		table.setColumnHeader("resaler", "Салон");
+		InsuranceDataSource ds = new InsuranceDataSource();
+		ds.setTableColumnHeaders(table);
+		ds.setTableVisibleColumns(table);
+		ds.setTableCollapsedColumns(table);
 
-		table.setVisibleColumns(new Object[] { "regNum", "date", "clientName",
-				"motorType", "motorBrand", "motorModel", "riskSum", "premium", "createdBy" });
-
-		// Опции отрбражения датасета: 
-		// 1. порядок
-		// 2. заголовок
-		// 3. доступность
-		// 4. видимость
 		row.addComponent(createPanel(table));
 
 	}
