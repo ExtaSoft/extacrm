@@ -14,88 +14,89 @@ import javax.jdo.annotations.PrimaryKey;
  * Полис страхования
  * 
  * @author orloval
- *
+ * 
  */
-@PersistenceCapable(identityType = IdentityType.DATASTORE)
-public class Insurance  implements Serializable {
+@PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
+public class Insurance implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Long id;
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Long id;
 
-    // Номер полиса	
-    @Persistent
-    private String regNum;
-    
-    // Номер счета	
-    @Persistent
-    private String chekNum;
+	// Номер полиса
+	@Persistent
+	private String regNum;
 
-    // Дата заключения полиса	
-    @Persistent
-    private Date date;
+	// Номер счета
+	@Persistent
+	private String chekNum;
 
-    // Клиент - ФИО 
-    @Persistent
-    private String clientName;
+	// Дата заключения полиса
+	@Persistent
+	private Date date;
 
-    // Клиент - Дата рождения
-    @Persistent
-    private Date clientBirthday;
+	// Клиент - ФИО
+	@Persistent
+	private String clientName;
 
-    // Клиент - Телефон
-    @Persistent
-    private String clientPhone;
+	// Клиент - Дата рождения
+	@Persistent
+	private Date clientBirthday;
 
-    // Клиент - Пол
-    @Persistent
-    private Boolean clientMale;
+	// Клиент - Телефон
+	@Persistent
+	private String clientPhone;
 
-	// Предмет страхования - тип	
-    @Persistent
-    private String motorType;
-    
-    // Предмет страхования - марка	
-    @Persistent
-    private String motorBrand;
-    
-    // Предмет страхования - модель					
-    @Persistent
-    private String motorModel;
+	// Клиент - Пол
+	@Persistent
+	private Boolean clientMale;
+
+	// Предмет страхования - тип
+	@Persistent
+	private String motorType;
+
+	// Предмет страхования - марка
+	@Persistent
+	private String motorBrand;
+
+	// Предмет страхования - модель
+	@Persistent
+	private String motorModel;
 
 	// Страховая сумма, руб.
-    @Persistent
-    private BigDecimal riskSum;
+	@Persistent
+	private BigDecimal riskSum;
 
-    // Страховая премия, руб.
-    @Persistent
-    private BigDecimal premium;
+	// Страховая премия, руб.
+	@Persistent
+	private BigDecimal premium;
 
-    // Дата оплаты страховой премии	
-    @Persistent
-    private Date paymentDate;
+	// Дата оплаты страховой премии
+	@Persistent
+	private Date paymentDate;
 
-    // Дата начала срока действия договора	
-    @Persistent
-    private Date startDate;
+	// Дата начала срока действия договора
+	@Persistent
+	private Date startDate;
 
-    //Дата окончания срока действия договора
-    @Persistent
-    private Date endDate;
+	// Дата окончания срока действия договора
+	@Persistent
+	private Date endDate;
 
-    // Сотрудник
-    @Persistent
-    private String createdBy;
+	// Сотрудник
+	@Persistent
+	private String createdBy;
 
-    // Салон
-    @Persistent
-    private String reseller;
-    
-    public Insurance(){}
-    
-    /**
+	// Салон
+	@Persistent
+	private String reseller;
+
+	public Insurance() {
+	}
+
+	/**
 	 * @param regNum
 	 * @param chekNum
 	 * @param date
@@ -114,12 +115,9 @@ public class Insurance  implements Serializable {
 	 * @param createdBy
 	 * @param resaler
 	 */
-	public Insurance(String regNum, String chekNum, Date date,
-			String clientName, Date clientBirthday, String clientPhone,
-			Boolean clientMale, String motorType, String motorBrand,
-			String motorModel, BigDecimal riskSum, BigDecimal premium,
-			Date paymentDate, Date startDate, Date endDate, String createdBy,
-			String reseller) {
+	public Insurance(String regNum, String chekNum, Date date, String clientName, Date clientBirthday, String clientPhone, Boolean clientMale,
+			String motorType, String motorBrand, String motorModel, BigDecimal riskSum, BigDecimal premium, Date paymentDate, Date startDate,
+			Date endDate, String createdBy, String reseller) {
 		super();
 		this.regNum = regNum;
 		this.chekNum = chekNum;
@@ -140,6 +138,41 @@ public class Insurance  implements Serializable {
 		this.reseller = reseller;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Insurance other = (Insurance) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
 	/**
 	 * @return the id
 	 */
@@ -148,7 +181,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public final void setId(Long id) {
 		this.id = id;
@@ -162,7 +196,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param regNum the regNum to set
+	 * @param regNum
+	 *            the regNum to set
 	 */
 	public final void setRegNum(String regNum) {
 		this.regNum = regNum;
@@ -176,7 +211,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param date the date to set
+	 * @param date
+	 *            the date to set
 	 */
 	public final void setDate(Date date) {
 		this.date = date;
@@ -190,7 +226,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param clientName the clientName to set
+	 * @param clientName
+	 *            the clientName to set
 	 */
 	public final void setClientName(String clientName) {
 		this.clientName = clientName;
@@ -204,7 +241,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param clientBirthday the clientBirthday to set
+	 * @param clientBirthday
+	 *            the clientBirthday to set
 	 */
 	public final void setClientBirthday(Date clientBirthday) {
 		this.clientBirthday = clientBirthday;
@@ -218,7 +256,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param clientPhone the clientPhone to set
+	 * @param clientPhone
+	 *            the clientPhone to set
 	 */
 	public final void setClientPhone(String clientPhone) {
 		this.clientPhone = clientPhone;
@@ -232,7 +271,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param clientMale the clientMale to set
+	 * @param clientMale
+	 *            the clientMale to set
 	 */
 	public final void setClientMale(Boolean clientMale) {
 		this.clientMale = clientMale;
@@ -246,7 +286,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param motorType the motorType to set
+	 * @param motorType
+	 *            the motorType to set
 	 */
 	public final void setMotorType(String motorType) {
 		this.motorType = motorType;
@@ -260,7 +301,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param motorBrand the motorBrand to set
+	 * @param motorBrand
+	 *            the motorBrand to set
 	 */
 	public final void setMotorBrand(String motorBrand) {
 		this.motorBrand = motorBrand;
@@ -274,7 +316,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param motorModel the motorModel to set
+	 * @param motorModel
+	 *            the motorModel to set
 	 */
 	public final void setMotorModel(String motorModel) {
 		this.motorModel = motorModel;
@@ -288,7 +331,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param riskSum the riskSum to set
+	 * @param riskSum
+	 *            the riskSum to set
 	 */
 	public final void setRiskSum(BigDecimal riskSum) {
 		this.riskSum = riskSum;
@@ -302,7 +346,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param premium the premium to set
+	 * @param premium
+	 *            the premium to set
 	 */
 	public final void setPremium(BigDecimal premium) {
 		this.premium = premium;
@@ -316,7 +361,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param paymentDate the paymentDate to set
+	 * @param paymentDate
+	 *            the paymentDate to set
 	 */
 	public final void setPaymentDate(Date paymentDate) {
 		this.paymentDate = paymentDate;
@@ -330,7 +376,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param startDate the startDate to set
+	 * @param startDate
+	 *            the startDate to set
 	 */
 	public final void setStartDate(Date startDate) {
 		this.startDate = startDate;
@@ -344,7 +391,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param endDate the endDate to set
+	 * @param endDate
+	 *            the endDate to set
 	 */
 	public final void setEndDate(Date endDate) {
 		this.endDate = endDate;
@@ -358,7 +406,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param chekNum the chekNum to set
+	 * @param chekNum
+	 *            the chekNum to set
 	 */
 	public void setChekNum(String chekNum) {
 		this.chekNum = chekNum;
@@ -372,7 +421,8 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param createdBy the createdBy to set
+	 * @param createdBy
+	 *            the createdBy to set
 	 */
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
@@ -386,11 +436,11 @@ public class Insurance  implements Serializable {
 	}
 
 	/**
-	 * @param reseller the reseller to set
+	 * @param reseller
+	 *            the reseller to set
 	 */
 	public final void setReseller(String reseller) {
 		this.reseller = reseller;
 	}
-
 
 }
