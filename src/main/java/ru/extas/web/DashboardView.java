@@ -10,16 +10,8 @@
 
 package ru.extas.web;
 
-import java.net.URL;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import ru.extas.model.Insurance;
 import ru.extas.server.InsuranceRepository;
 
@@ -126,16 +118,9 @@ public class DashboardView extends VerticalLayout implements View {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// Взять текущий полис из грида
+				// See: https://code.google.com/p/xdocreport/
 				final Insurance selObj = (Insurance) table.getValue();
 
-				Map parameters = new HashMap();
-				try {
-					URL jasperResURL = this.getClass().getResource("/InsurancePolyce.jasper");
-					JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperResURL);
-					JasperFillManager.fillReport(jasperReport, new HashMap<String, Object>(), new JRBeanArrayDataSource(new Insurance[] { selObj }));
-				} catch (JRException e) {
-					e.printStackTrace();
-				}
 			}
 		});
 		commandBar.addComponent(printPolyceBtn);
