@@ -13,5 +13,14 @@
 /* Output the actual theme selectors */
 .dashboard {
 	@include dashboard;
+
+    .exceptionStackTraceBox{
+      //font-size: 14px;
+      //line-height: 18px;
+      height: 400px;
+      //width: 600px;
+      //padding: 10px;
+      overflow:scroll;
+    }
 }
 

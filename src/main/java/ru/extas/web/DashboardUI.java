@@ -10,6 +10,8 @@
 
 package ru.extas.web;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -23,9 +25,11 @@ import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbstractSelect.AcceptItem;
 import com.vaadin.ui.Alignment;
@@ -88,6 +92,31 @@ public class DashboardUI extends UI {
 		bg.addStyleName("login-bg");
 		root.addComponent(bg);
 
+	    // Configure the error handler for the UI
+	    setErrorHandler(new DefaultErrorHandler() {
+	      @Override
+	      public void error(final com.vaadin.server.ErrorEvent event) {
+	        event.getThrowable().printStackTrace();
+
+	        final StringWriter strWr = new StringWriter();
+	        strWr.append("<div class='exceptionStackTraceBox'><pre>");
+	        event.getThrowable().printStackTrace(new PrintWriter(strWr, true));
+	        strWr.append("</pre></div>");
+
+	        // Display the error message in a custom fashion
+	        final Notification notif = new Notification(
+	                                                    "Uncaught Exception",
+	                                                    strWr.toString(),
+	                                                    Notification.Type.ERROR_MESSAGE);
+
+	        // Customize it
+	        notif.setPosition(Position.MIDDLE_CENTER);
+	        notif.setHtmlContentAllowed(true);
+
+	        // Show it in the page
+	        notif.show(Page.getCurrent());
+	      }
+	    });
 		buildLoginView(false);
 
 	}
