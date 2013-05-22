@@ -1,6 +1,7 @@
 package ru.extas.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -9,7 +10,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
-public class UserData  implements Serializable {
+public class UserData implements Serializable {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -31,7 +32,8 @@ public class UserData  implements Serializable {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public final void setId(Long id) {
 		this.id = id;
@@ -45,7 +47,8 @@ public class UserData  implements Serializable {
 	}
 
 	/**
-	 * @param login the login to set
+	 * @param login
+	 *            the login to set
 	 */
 	public final void setLogin(String login) {
 		this.login = login;
@@ -59,10 +62,16 @@ public class UserData  implements Serializable {
 	}
 
 	/**
-	 * @param password the password to set
+	 * @param password
+	 *            the password to set
 	 */
 	public final void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Set<String> getRoles() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
