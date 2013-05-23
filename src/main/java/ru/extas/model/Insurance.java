@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -21,10 +22,11 @@ public class Insurance implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
-
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
+    private String key;
+    
 	// Номер полиса
 	@Persistent
 	private String regNum;
@@ -147,7 +149,7 @@ public class Insurance implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		return result;
 	}
 
@@ -165,27 +167,26 @@ public class Insurance implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Insurance other = (Insurance) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (key == null) {
+			if (other.key != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!key.equals(other.key))
 			return false;
 		return true;
 	}
 
 	/**
-	 * @return the id
+	 * @return the key
 	 */
-	public final Long getId() {
-		return id;
+	public final String getKey() {
+		return key;
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param key the key to set
 	 */
-	public final void setId(Long id) {
-		this.id = id;
+	public final void setKey(String key) {
+		this.key = key;
 	}
 
 	/**

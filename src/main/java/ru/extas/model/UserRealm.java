@@ -21,10 +21,10 @@ public class UserRealm extends AuthorizingRealm {
 
 	private static Logger logger = LoggerFactory.getLogger(UserRealm.class);
 
-	private final SecurityManagerService mySecurityManagerService;
+	private final UserManagementService mySecurityManagerService;
 
 	@Inject
-	public UserRealm(SecurityManagerService mySecurityManagerService) {
+	public UserRealm(UserManagementService mySecurityManagerService) {
 		// This is the thing that knows how to find user creds and roles
 		this.mySecurityManagerService = mySecurityManagerService;
 	}
@@ -35,7 +35,7 @@ public class UserRealm extends AuthorizingRealm {
 		String username = (String) principalCollection.getPrimaryPrincipal();
 
 		// Find the thing that stores your user's roles.
-		UserData principal = mySecurityManagerService.findMyPrincipalByUsername(username);
+		UserData principal = mySecurityManagerService.findUserByLogin(username);
 		if (principal == null) {
 			logger.info("Principal not found for authorizing user with username: {}", username);
 			return null;
@@ -57,7 +57,7 @@ public class UserRealm extends AuthorizingRealm {
 		// Find the thing that stores your user's credentials. This may be the
 		// same or different than
 		// the thing that stores the roles.
-		UserData principal = mySecurityManagerService.findMyPrincipalByUsername(usernamePasswordToken.getUsername());
+		UserData principal = mySecurityManagerService.findUserByLogin(usernamePasswordToken.getUsername());
 		if (principal == null) {
 			logger.info("Principal not found for user with username: {}", usernamePasswordToken.getUsername());
 			return null;

@@ -1,7 +1,7 @@
 package ru.extas.web;
 
 import ru.extas.model.Insurance;
-import ru.extas.server.InsuranceRepository;
+import ru.extas.server.InsuranceRepositoryJdo;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -88,7 +88,7 @@ public class InsuranceEditForm extends Window {
 				try {
 					okPressed = true;
 					binder.commit();
-					new InsuranceRepository().create(obj);
+					new InsuranceRepositoryJdo().create(obj);
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

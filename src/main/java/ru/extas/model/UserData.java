@@ -3,6 +3,7 @@ package ru.extas.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -12,10 +13,11 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
 public class UserData implements Serializable {
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
-
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
+    private String key;
+    
 	// Login/email
 	@Persistent
 	private String login;
@@ -24,19 +26,19 @@ public class UserData implements Serializable {
 	@Persistent
 	private String password;
 
+
 	/**
-	 * @return the id
+	 * @return the key
 	 */
-	public final Long getId() {
-		return id;
+	public final String getKey() {
+		return key;
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param key the key to set
 	 */
-	public final void setId(Long id) {
-		this.id = id;
+	public final void setKey(String key) {
+		this.key = key;
 	}
 
 	/**

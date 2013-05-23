@@ -19,9 +19,6 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.event.dd.DragAndDropEvent;
-import com.vaadin.event.dd.DropHandler;
-import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -31,7 +28,6 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.AbstractSelect.AcceptItem;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -39,7 +35,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DragAndDropWrapper;
-import com.vaadin.ui.DragAndDropWrapper.DragStartMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -49,14 +44,13 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @Theme("dashboard")
 @Title("Extrime Assistance CRM")
-public class DashboardUI extends UI {
+public class ExtaCrmUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,7 +63,7 @@ public class DashboardUI extends UI {
 
 	HashMap<String, Class<? extends View>> routes = new HashMap<String, Class<? extends View>>() {
 		{
-			put("/dashboard", DashboardView.class);
+			put("/insurance", InsuranceView.class);
 			// put("/insurance", DashboardView.class);
 		}
 	};
@@ -316,7 +310,7 @@ public class DashboardUI extends UI {
 
 		menu.removeAllComponents();
 
-		for (final String view : new String[] { "dashboard"/*, "sales",
+		for (final String view : new String[] { "insurance"/*, "sales",
 				"transactions", "reports", "schedule"*/ }) {
 			Button b = new NativeButton(view.substring(0, 1).toUpperCase()
 					+ view.substring(1).replace('-', ' '));
@@ -343,7 +337,7 @@ public class DashboardUI extends UI {
 			f = f.substring(1);
 		}
 		if (f == null || f.equals("") || f.equals("/")) {
-			nav.navigateTo("/dashboard");
+			nav.navigateTo("/insurance");
 			menu.getComponent(0).addStyleName("selected");
 		} else {
 			nav.navigateTo(f);
@@ -359,14 +353,13 @@ public class DashboardUI extends UI {
 
 			@Override
 			public void afterViewChange(ViewChangeEvent event) {
-				autoCreateReport = false;
 			}
 		});
 
 	}
 
 	private void clearMenuSelection() {
-		for (Iterator<Component> it = menu.getComponentIterator(); it.hasNext();) {
+		for (Iterator<Component> it = menu.iterator(); it.hasNext();) {
 			Component next = it.next();
 			if (next instanceof NativeButton) {
 				next.removeStyleName("selected");
@@ -376,27 +369,6 @@ public class DashboardUI extends UI {
 						.removeStyleName("selected");
 			}
 		}
-	}
-
-	void updateReportsButtonBadge(String badgeCount) {
-		viewNameToMenuButton.get("/reports").setHtmlContentAllowed(true);
-		viewNameToMenuButton.get("/reports").setCaption(
-				"Reports<span class=\"badge\">" + badgeCount + "</span>");
-	}
-
-	void clearDashboardButtonBadge() {
-		viewNameToMenuButton.get("/dashboard").setCaption("Dashboard");
-	}
-
-	boolean autoCreateReport = false;
-	Table transactions;
-
-	public void openReports(Table t) {
-		transactions = t;
-		autoCreateReport = true;
-		nav.navigateTo("/reports");
-		clearMenuSelection();
-		viewNameToMenuButton.get("/reports").addStyleName("selected");
 	}
 
 }

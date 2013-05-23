@@ -1,6 +1,6 @@
 package ru.extas.guice;
 
-import ru.extas.web.DashboardUI;
+import ru.extas.web.ExtaCrmUI;
 
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
@@ -20,7 +20,7 @@ public class ExtasGuiceModule extends ServletModule {
 
 	@Provides
 	private Class<? extends UI> provideUIClass() {
-		return DashboardUI.class;
+		return ExtaCrmUI.class;
 	}
 
 }

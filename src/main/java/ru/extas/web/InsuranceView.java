@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import ru.extas.model.Insurance;
 import ru.extas.server.InsuranceRepository;
+import ru.extas.server.InsuranceRepositoryJdo;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
@@ -32,11 +33,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 
-public class DashboardView extends VerticalLayout implements View {
+public class InsuranceView extends VerticalLayout implements View {
 
 	private Table table;
 
-	public DashboardView() {
+	public InsuranceView() {
 	}
 
 	private CssLayout createGrigPanel() {
@@ -59,7 +60,7 @@ public class DashboardView extends VerticalLayout implements View {
 		// });
 		// panel.addComponent(configure);
 
-		final InsuranceRepository insuranceRepository = new InsuranceRepository();
+		final InsuranceRepository insuranceRepository = new InsuranceRepositoryJdo();
 		final Collection<Insurance> insurances = insuranceRepository.getAll();
 		final BeanItemContainer<Insurance> beans = new BeanItemContainer<Insurance>(Insurance.class);
 		beans.addAll(insurances);
@@ -175,7 +176,7 @@ public class DashboardView extends VerticalLayout implements View {
 		notify.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				new InsuranceRepository().fillRegistry();
+				new InsuranceRepositoryJdo().fillRegistry();
 			}
 		});
 		top.addComponent(notify);

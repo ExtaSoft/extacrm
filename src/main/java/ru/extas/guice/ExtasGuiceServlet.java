@@ -18,7 +18,8 @@ public class ExtasGuiceServlet extends GAEVaadinServlet implements SessionInitLi
 
 	@Override
 	protected DeploymentConfiguration createDeploymentConfiguration(Properties initParameters) {
-		initParameters.setProperty(SERVLET_PARAMETER_PRODUCTION_MODE, "false");
+		
+		///initParameters.setProperty(SERVLET_PARAMETER_PRODUCTION_MODE, "false");
 		return super.createDeploymentConfiguration(initParameters);
 	}
 
