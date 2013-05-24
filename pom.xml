@@ -11,6 +11,8 @@
 
 	<properties>
 		<appengine.app.version>0-0-1alpha</appengine.app.version>
+		<vaadin.production.mode>false</vaadin.production.mode>
+		
 		<appengine.target.version>1.8.0</appengine.target.version>
 		<datanucleus.version>3.1.3</datanucleus.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -200,26 +202,26 @@
 			</plugin>
 
 			<!-- Compile sass themes -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-						<configuration>
-							<mainClass>com.vaadin.sass.SassCompiler</mainClass>
-							<arguments>
-								<argument>src/main/webapp/VAADIN/themes/dashboard/styles.scss</argument>
-								<argument>src/main/webapp/VAADIN/themes/dashboard/styles.css</argument>
-							</arguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.codehaus.mojo</groupId> -->
+<!-- 				<artifactId>exec-maven-plugin</artifactId> -->
+<!-- 				<version>1.2.1</version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<phase>generate-sources</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>java</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<mainClass>com.vaadin.sass.SassCompiler</mainClass> -->
+<!-- 							<arguments> -->
+<!-- 								<argument>src/main/webapp/VAADIN/themes/extacrm/styles.scss</argument> -->
+<!-- 								<argument>src/main/webapp/VAADIN/themes/extacrm/styles.css</argument> -->
+<!-- 							</arguments> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 
 		</plugins>
 		<pluginManagement>

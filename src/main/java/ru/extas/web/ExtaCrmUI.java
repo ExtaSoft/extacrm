@@ -15,6 +15,14 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -48,7 +56,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-@Theme("dashboard")
+@Theme("extacrm")
 @Title("Extrime Assistance CRM")
 public class ExtaCrmUI extends UI {
 
@@ -64,7 +72,6 @@ public class ExtaCrmUI extends UI {
 	HashMap<String, Class<? extends View>> routes = new HashMap<String, Class<? extends View>>() {
 		{
 			put("/insurance", InsuranceView.class);
-			// put("/insurance", DashboardView.class);
 		}
 	};
 
@@ -78,13 +85,6 @@ public class ExtaCrmUI extends UI {
 		setContent(root);
 		root.addStyleName("root");
 		root.setSizeFull();
-
-		// Unfortunate to use an actual widget here, but since CSS generated
-		// elements can't be transitioned yet, we must
-		Label bg = new Label();
-		bg.setSizeUndefined();
-		bg.addStyleName("login-bg");
-		root.addComponent(bg);
 
 	    // Configure the error handler for the UI
 	    setErrorHandler(new DefaultErrorHandler() {
@@ -111,7 +111,13 @@ public class ExtaCrmUI extends UI {
 	        notif.show(Page.getCurrent());
 	      }
 	    });
-		buildLoginView(false);
+	    
+	    // TODO: Move to injection
+	    Subject currentUser = SecurityUtils.getSubject();
+	    if(currentUser.isAuthenticated())
+	    	buildMainView();
+	    else
+	    	buildLoginView(false);
 
 	}
 
@@ -119,6 +125,13 @@ public class ExtaCrmUI extends UI {
 		if (exit) {
 			root.removeAllComponents();
 		}
+
+		// Unfortunate to use an actual widget here, but since CSS generated
+		// elements can't be transitioned yet, we must
+		Label bg = new Label();
+		bg.setSizeUndefined();
+		bg.addStyleName("login-bg");
+		root.addComponent(bg);
 
 		addStyleName("login");
 
@@ -177,31 +190,52 @@ public class ExtaCrmUI extends UI {
 		signin.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				signin.removeShortcutListener(enter);
-				buildMainView();
-				// if (username.getValue() != null
-				// && username.getValue().equals("")
-				// && password.getValue() != null
-				// && password.getValue().equals("")) {
-				// signin.removeShortcutListener(enter);
-				// buildMainView();
-				// } else {
-				// if (loginPanel.getComponentCount() > 2) {
-				// // Remove the previous error message
-				// loginPanel.removeComponent(loginPanel.getComponent(2));
-				// }
-				// // Add new error message
-				// Label error = new Label(
-				// "Wrong username or password. <span>Hint: try empty values</span>",
-				// ContentMode.HTML);
-				// error.addStyleName("error");
-				// error.setSizeUndefined();
-				// error.addStyleName("light");
-				// // Add animation
-				// error.addStyleName("v-animate-reveal");
-				// loginPanel.addComponent(error);
-				// username.focus();
-				// }
+				String errMessage = ""; 
+			    final String user = username.getValue();
+				final String pass = password.getValue();
+			    // TODO: Move to injection
+			    Subject currentUser = SecurityUtils.getSubject();
+				if (user != null && pass != null) {
+				    if ( !currentUser.isAuthenticated() ) {
+				        UsernamePasswordToken token = new UsernamePasswordToken(user, pass);
+				        //token.setRememberMe(true);
+				        try{
+				        	currentUser.login(token);
+				        }catch ( UnknownAccountException uae ) {
+				            //username wasn't in the system, show them an error message?
+				        	errMessage = "Пользователь не найден";
+				        } catch ( IncorrectCredentialsException ice ) {
+				            //password didn't match, try again?
+				        	errMessage = "Неверный пароль";
+				        } catch ( LockedAccountException lae ) {
+				            //account for that username is locked - can't login.  Show them a message?
+				        	errMessage = "Пользователь заблокирован";
+				        } catch ( AuthenticationException ae ) {
+				            //unexpected condition - error?
+				        	errMessage = "Вход в систему невозможен";
+				        }
+				    }
+					signin.removeShortcutListener(enter);
+					buildMainView();
+				} else {
+					errMessage = "Задайте имя пользователя и пароль";
+				}
+				if(!currentUser.isAuthenticated()){
+					if (loginPanel.getComponentCount() > 2) {
+						// Remove the previous error message
+						loginPanel.removeComponent(loginPanel.getComponent(2));
+					}
+					// Add new error message
+					Label error = new Label(errMessage + " <span>Проверьте правильность пары пользователь/пароль или обратитесь к администратору</span>", ContentMode.HTML);
+					error.addStyleName("error");
+					error.setSizeUndefined();
+					error.addStyleName("light");
+					// Add animation
+					error.addStyleName("v-animate-reveal");
+					loginPanel.addComponent(error);
+					username.focus();
+					
+				}
 			}
 		});
 

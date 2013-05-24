@@ -15,6 +15,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import ru.extas.shiro.ExtasShiroWebModule;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceFilter;
@@ -47,7 +49,11 @@ public class ExtasGuiceFilter extends GuiceFilter {
     if (INJECTOR != null) {
       throw new ServletException("Injector already created?!");
     }
-    INJECTOR = Guice.createInjector(new ExtasGuiceModule());
+    INJECTOR = Guice.createInjector(
+    		new ExtasShiroWebModule(filterConfig.getServletContext()), 
+    		new ExtasGuiceModule()
+    		);
+    
     filterConfig.getServletContext().log("Created injector with " + INJECTOR.getAllBindings().size() + " bindings.");
     super.init(filterConfig);
   }

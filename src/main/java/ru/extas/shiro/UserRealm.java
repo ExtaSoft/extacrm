@@ -1,4 +1,4 @@
-package ru.extas.model;
+package ru.extas.shiro;
 
 import java.util.HashSet;
 
@@ -14,6 +14,9 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ru.extas.model.UserData;
+import ru.extas.model.UserManagementService;
 
 import com.google.inject.Inject;
 

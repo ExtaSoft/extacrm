@@ -1,5 +1,5 @@
 /* Import all the mixins for this theme */
-@import "dashboard.scss";
+@import "extacrm.scss";
 
 
 /* Font embeds and keyframe definitions need to be 
@@ -7,12 +7,12 @@
  * with any selectors, so we output them here */
 @include font-open-sans;
 @include icons-fontello;
-@include dashboard-keyframes;
+@include extacrm-keyframes;
 
 
 /* Output the actual theme selectors */
-.dashboard {
-	@include dashboard;
+.extacrm {
+	@include extacrm;
 
     .exceptionStackTraceBox{
       //font-size: 14px;

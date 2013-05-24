@@ -153,7 +153,7 @@ public class InsuranceView extends VerticalLayout implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		setSizeFull();
-		addStyleName("dashboard-view");
+		addStyleName("insurance-view");
 
 		HorizontalLayout top = new HorizontalLayout();
 		top.setWidth("100%");

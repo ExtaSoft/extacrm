@@ -4,7 +4,7 @@
 	<context-param>
 		<description>Vaadin production mode</description>
 		<param-name>productionMode</param-name>
-		<param-value>false</param-value>
+		<param-value>${vaadin.production.mode}</param-value>
 	</context-param>
 	<filter>
 		<filter-name>extaGuiceFilter</filter-name>
@@ -14,7 +14,21 @@
 		<filter-name>extaGuiceFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
+<!--     <servlet> -->
+<!--         <servlet-name>Vaadin Application Servlet</servlet-name> -->
+<!--         <servlet-class>com.vaadin.server.GAEVaadinServlet</servlet-class> -->
+<!--         <init-param> -->
+<!--             <description>Vaadin UI to display</description> -->
+<!--             <param-name>UI</param-name> -->
+<!--             <param-value>ru.extas.web.ExtaCrmUI</param-value> -->
+<!--         </init-param> -->
+<!--     </servlet> -->
+<!--     <servlet-mapping> -->
+<!--         <servlet-name>Vaadin Application Servlet</servlet-name> -->
+<!--         <url-pattern>/*</url-pattern> -->
+<!--     </servlet-mapping> -->
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>allWebResources</web-resource-name>
