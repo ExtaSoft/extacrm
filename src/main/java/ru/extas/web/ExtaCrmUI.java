@@ -86,38 +86,35 @@ public class ExtaCrmUI extends UI {
 		root.addStyleName("root");
 		root.setSizeFull();
 
-	    // Configure the error handler for the UI
-	    setErrorHandler(new DefaultErrorHandler() {
-	      @Override
-	      public void error(final com.vaadin.server.ErrorEvent event) {
-	        event.getThrowable().printStackTrace();
+		// Configure the error handler for the UI
+		setErrorHandler(new DefaultErrorHandler() {
+			@Override
+			public void error(final com.vaadin.server.ErrorEvent event) {
+				event.getThrowable().printStackTrace();
 
-	        final StringWriter strWr = new StringWriter();
-	        strWr.append("<div class='exceptionStackTraceBox'><pre>");
-	        event.getThrowable().printStackTrace(new PrintWriter(strWr, true));
-	        strWr.append("</pre></div>");
+				final StringWriter strWr = new StringWriter();
+				strWr.append("<div class='exceptionStackTraceBox'><pre>");
+				event.getThrowable().printStackTrace(new PrintWriter(strWr, true));
+				strWr.append("</pre></div>");
 
-	        // Display the error message in a custom fashion
-	        final Notification notif = new Notification(
-	                                                    "Uncaught Exception",
-	                                                    strWr.toString(),
-	                                                    Notification.Type.ERROR_MESSAGE);
+				// Display the error message in a custom fashion
+				final Notification notif = new Notification("Uncaught Exception", strWr.toString(), Notification.Type.ERROR_MESSAGE);
 
-	        // Customize it
-	        notif.setPosition(Position.MIDDLE_CENTER);
-	        notif.setHtmlContentAllowed(true);
+				// Customize it
+				notif.setPosition(Position.MIDDLE_CENTER);
+				notif.setHtmlContentAllowed(true);
 
-	        // Show it in the page
-	        notif.show(Page.getCurrent());
-	      }
-	    });
-	    
-	    // TODO: Move to injection
-	    Subject currentUser = SecurityUtils.getSubject();
-	    if(currentUser.isAuthenticated())
-	    	buildMainView();
-	    else
-	    	buildLoginView(false);
+				// Show it in the page
+				notif.show(Page.getCurrent());
+			}
+		});
+
+		// TODO: Move to injection
+		Subject currentUser = SecurityUtils.getSubject();
+		if (currentUser.isAuthenticated())
+			buildMainView();
+		else
+			buildLoginView(false);
 
 	}
 
@@ -179,8 +176,7 @@ public class ExtaCrmUI extends UI {
 		fields.addComponent(signin);
 		fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 
-		final ShortcutListener enter = new ShortcutListener("Войти",
-				KeyCode.ENTER, null) {
+		final ShortcutListener enter = new ShortcutListener("Войти", KeyCode.ENTER, null) {
 			@Override
 			public void handleAction(Object sender, Object target) {
 				signin.click();
@@ -190,43 +186,46 @@ public class ExtaCrmUI extends UI {
 		signin.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				String errMessage = ""; 
-			    final String user = username.getValue();
+				String errMessage = "";
+				final String user = username.getValue();
 				final String pass = password.getValue();
-			    // TODO: Move to injection
-			    Subject currentUser = SecurityUtils.getSubject();
+				// TODO: Move to injection
+				Subject currentUser = SecurityUtils.getSubject();
 				if (user != null && pass != null) {
-				    if ( !currentUser.isAuthenticated() ) {
-				        UsernamePasswordToken token = new UsernamePasswordToken(user, pass);
-				        //token.setRememberMe(true);
-				        try{
-				        	currentUser.login(token);
-				        }catch ( UnknownAccountException uae ) {
-				            //username wasn't in the system, show them an error message?
-				        	errMessage = "Пользователь не найден";
-				        } catch ( IncorrectCredentialsException ice ) {
-				            //password didn't match, try again?
-				        	errMessage = "Неверный пароль";
-				        } catch ( LockedAccountException lae ) {
-				            //account for that username is locked - can't login.  Show them a message?
-				        	errMessage = "Пользователь заблокирован";
-				        } catch ( AuthenticationException ae ) {
-				            //unexpected condition - error?
-				        	errMessage = "Вход в систему невозможен";
-				        }
-				    }
-					signin.removeShortcutListener(enter);
-					buildMainView();
+					UsernamePasswordToken token = new UsernamePasswordToken(user, pass);
+					// token.setRememberMe(true);
+					try {
+						currentUser.login(token);
+						signin.removeShortcutListener(enter);
+						removeStyleName("login");
+						root.removeComponent(loginLayout);
+						buildMainView();
+					} catch (UnknownAccountException uae) {
+						// username wasn't in the system, show them an error
+						// message?
+						errMessage = "Пользователь не найден";
+					} catch (IncorrectCredentialsException ice) {
+						// password didn't match, try again?
+						errMessage = "Неверный пароль";
+					} catch (LockedAccountException lae) {
+						// account for that username is locked - can't login.
+						// Show them a message?
+						errMessage = "Пользователь заблокирован";
+					} catch (AuthenticationException ae) {
+						// unexpected condition - error?
+						errMessage = "Вход в систему невозможен";
+					}
 				} else {
 					errMessage = "Задайте имя пользователя и пароль";
 				}
-				if(!currentUser.isAuthenticated()){
+				if (!currentUser.isAuthenticated()) {
 					if (loginPanel.getComponentCount() > 2) {
 						// Remove the previous error message
 						loginPanel.removeComponent(loginPanel.getComponent(2));
 					}
 					// Add new error message
-					Label error = new Label(errMessage + " <span>Проверьте правильность пары пользователь/пароль или обратитесь к администратору</span>", ContentMode.HTML);
+					Label error = new Label(errMessage
+							+ " <br/><span>Проверьте правильность пары пользователь/пароль или обратитесь к администратору</span>", ContentMode.HTML);
 					error.addStyleName("error");
 					error.setSizeUndefined();
 					error.addStyleName("light");
@@ -234,7 +233,6 @@ public class ExtaCrmUI extends UI {
 					error.addStyleName("v-animate-reveal");
 					loginPanel.addComponent(error);
 					username.focus();
-					
 				}
 			}
 		});
@@ -255,9 +253,6 @@ public class ExtaCrmUI extends UI {
 			nav.addView(route, routes.get(route));
 		}
 
-		removeStyleName("login");
-		root.removeComponent(loginLayout);
-
 		root.addComponent(new HorizontalLayout() {
 			{
 				setSizeFull();
@@ -273,9 +268,7 @@ public class ExtaCrmUI extends UI {
 						addComponent(new CssLayout() {
 							{
 								addStyleName("branding");
-								Label logo = new Label(
-										"<span>Экстрим Ассистанс</span> CRM",
-										ContentMode.HTML);
+								Label logo = new Label("<span>Экстрим Ассистанс</span> CRM", ContentMode.HTML);
 								logo.setSizeUndefined();
 								addComponent(logo);
 								// addComponent(new Image(null, new
@@ -293,9 +286,7 @@ public class ExtaCrmUI extends UI {
 							{
 								setSizeUndefined();
 								addStyleName("user");
-								Image profilePic = new Image(
-										null,
-										new ThemeResource("img/profile-pic.png"));
+								Image profilePic = new Image(null, new ThemeResource("img/profile-pic.png"));
 								profilePic.setWidth("34px");
 								addComponent(profilePic);
 								Label userName = new Label("UserName");
@@ -304,15 +295,12 @@ public class ExtaCrmUI extends UI {
 
 								Command cmd = new Command() {
 									@Override
-									public void menuSelected(
-											MenuItem selectedItem) {
-										Notification
-												.show("Не реализовано пока");
+									public void menuSelected(MenuItem selectedItem) {
+										Notification.show("Не реализовано пока");
 									}
 								};
 								MenuBar settings = new MenuBar();
-								MenuItem settingsMenu = settings.addItem("",
-										null);
+								MenuItem settingsMenu = settings.addItem("", null);
 								settingsMenu.setStyleName("icon-cog");
 								settingsMenu.addItem("Настройки", cmd);
 								settingsMenu.addSeparator();
@@ -344,10 +332,13 @@ public class ExtaCrmUI extends UI {
 
 		menu.removeAllComponents();
 
-		for (final String view : new String[] { "insurance"/*, "sales",
-				"transactions", "reports", "schedule"*/ }) {
-			Button b = new NativeButton(view.substring(0, 1).toUpperCase()
-					+ view.substring(1).replace('-', ' '));
+		for (final String view : new String[] { "insurance"/*
+															 * , "sales",
+															 * "transactions",
+															 * "reports",
+															 * "schedule"
+															 */}) {
+			Button b = new NativeButton(view.substring(0, 1).toUpperCase() + view.substring(1).replace('-', ' '));
 			b.addStyleName("icon-" + view);
 			b.addClickListener(new ClickListener() {
 				@Override
@@ -399,8 +390,7 @@ public class ExtaCrmUI extends UI {
 				next.removeStyleName("selected");
 			} else if (next instanceof DragAndDropWrapper) {
 				// Wow, this is ugly (even uglier than the rest of the code)
-				((DragAndDropWrapper) next).iterator().next()
-						.removeStyleName("selected");
+				((DragAndDropWrapper) next).iterator().next().removeStyleName("selected");
 			}
 		}
 	}

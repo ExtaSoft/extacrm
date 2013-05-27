@@ -10,5 +10,6 @@
 <booleanAttribute key="M2_SKIP_TESTS" value="true"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="true"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
+<booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/extacrm}"/>
 </launchConfiguration>
