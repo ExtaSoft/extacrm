@@ -9,6 +9,12 @@ import org.apache.shiro.realm.text.IniRealm;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
 
+/**
+ * Модуль инъекциц для системы безопасности
+ * 
+ * @author Valery Orlov
+ * 
+ */
 public class ExtasShiroWebModule extends ShiroWebModule {
 
 	public ExtasShiroWebModule(ServletContext sc) {
@@ -22,6 +28,7 @@ public class ExtasShiroWebModule extends ShiroWebModule {
 		} catch (NoSuchMethodException e) {
 			addError(e);
 		}
+		bindRealm().to(UserRealm.class);
 		// addFilterChain("/**", AUTHC_BASIC);
 		// bind(CredentialsMatcher.class).to(HashedCredentialsMatcher.class);
 		// bind(HashedCredentialsMatcher.class);
@@ -29,6 +36,9 @@ public class ExtasShiroWebModule extends ShiroWebModule {
 		bindConstant().annotatedWith(Names.named("shiro.globalSessionTimeout")).to(30000L);
 	}
 
+	/**
+	 * @return
+	 */
 	@Provides
 	Ini loadShiroIni() {
 		return Ini.fromResourcePath("./WEB-INF/shiro.ini");

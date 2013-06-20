@@ -15,21 +15,28 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.extas.model.UserData;
-import ru.extas.model.UserManagementService;
+import ru.extas.model.UserProfile;
+import ru.extas.server.UserManagementService;
 
+import com.google.appengine.repackaged.com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
+/**
+ * Поставщик пользователей из базы данных
+ * 
+ * @author Valery Orlov
+ * 
+ */
 public class UserRealm extends AuthorizingRealm {
 
 	private static Logger logger = LoggerFactory.getLogger(UserRealm.class);
 
-	private final UserManagementService mySecurityManagerService;
+	private final UserManagementService userManagerService;
 
 	@Inject
 	public UserRealm(UserManagementService mySecurityManagerService) {
 		// This is the thing that knows how to find user creds and roles
-		this.mySecurityManagerService = mySecurityManagerService;
+		this.userManagerService = mySecurityManagerService;
 	}
 
 	@Override
@@ -38,13 +45,13 @@ public class UserRealm extends AuthorizingRealm {
 		String username = (String) principalCollection.getPrimaryPrincipal();
 
 		// Find the thing that stores your user's roles.
-		UserData principal = mySecurityManagerService.findUserByLogin(username);
+		UserProfile principal = userManagerService.findUserByLogin(username);
 		if (principal == null) {
 			logger.info("Principal not found for authorizing user with username: {}", username);
 			return null;
 		} else {
-			logger.info("Authoriziong user {} with roles: {}", username, principal.getRoles());
-			SimpleAuthorizationInfo result = new SimpleAuthorizationInfo(principal.getRoles());
+			logger.info("Authoriziong user {} with role: {}", username, principal.getRole());
+			SimpleAuthorizationInfo result = new SimpleAuthorizationInfo(Sets.newHashSet(principal.getRole()));
 			return result;
 		}
 	}
@@ -60,7 +67,7 @@ public class UserRealm extends AuthorizingRealm {
 		// Find the thing that stores your user's credentials. This may be the
 		// same or different than
 		// the thing that stores the roles.
-		UserData principal = mySecurityManagerService.findUserByLogin(usernamePasswordToken.getUsername());
+		UserProfile principal = userManagerService.findUserByLogin(usernamePasswordToken.getUsername());
 		if (principal == null) {
 			logger.info("Principal not found for user with username: {}", usernamePasswordToken.getUsername());
 			return null;
@@ -68,6 +75,7 @@ public class UserRealm extends AuthorizingRealm {
 
 		logger.info("Principal found for authenticating user with username: {}", usernamePasswordToken.getUsername());
 
-		return new SimpleAccount(principal.getLogin(), principal.getPassword(), getName(), principal.getRoles(), new HashSet<Permission>());
+		return new SimpleAccount(principal.getLogin(), principal.getPassword(), getName(), Sets.newHashSet(principal.getRole()),
+				new HashSet<Permission>());
 	}
 }

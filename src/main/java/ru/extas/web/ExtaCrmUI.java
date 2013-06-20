@@ -56,6 +56,12 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * Основной класс приложения
+ * 
+ * @author Valery Orlov
+ * 
+ */
 @Theme("extacrm")
 @Title("Extrime Assistance CRM")
 public class ExtaCrmUI extends UI {

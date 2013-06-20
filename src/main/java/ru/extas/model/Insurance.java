@@ -14,7 +14,7 @@ import javax.jdo.annotations.PrimaryKey;
 /**
  * Полис страхования
  * 
- * @author orloval
+ * @author Valery Orlov
  * 
  */
 @PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
@@ -22,11 +22,11 @@ public class Insurance implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
-    private String key;
-    
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	private String key;
+
 	// Номер полиса
 	@Persistent
 	private String regNum;
@@ -183,7 +183,8 @@ public class Insurance implements Serializable {
 	}
 
 	/**
-	 * @param key the key to set
+	 * @param key
+	 *            the key to set
 	 */
 	public final void setKey(String key) {
 		this.key = key;

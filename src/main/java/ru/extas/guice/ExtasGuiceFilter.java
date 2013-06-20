@@ -21,41 +21,44 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceFilter;
 
+/**
+ * Фильтр управления инъекциями
+ * 
+ * @author Valery Orlov
+ * 
+ */
 public class ExtasGuiceFilter extends GuiceFilter {
 
-  private static Injector INJECTOR;
+	private static Injector INJECTOR;
 
-  public static final Pattern URI_ADMIN_PATTERN = compile("/_ah/.*");
+	public static final Pattern URI_ADMIN_PATTERN = compile("/_ah/.*");
 
-  public static final Set<String> URI_NOADMIN_SET = new HashSet<String>(asList("/_ah/warmup"));
+	public static final Set<String> URI_NOADMIN_SET = new HashSet<String>(asList("/_ah/warmup"));
 
-  public static Injector getInjector() {
-    return INJECTOR;
-  }
+	public static Injector getInjector() {
+		return INJECTOR;
+	}
 
-  @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-    String uri = ((HttpServletRequest) request).getRequestURI();
-    if (URI_ADMIN_PATTERN.matcher(uri).matches())
-      if (!URI_NOADMIN_SET.contains(uri)) {
-        chain.doFilter(request, response);
-        return;
-      }
-    super.doFilter(request, response, chain);
-  }
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		String uri = ((HttpServletRequest) request).getRequestURI();
+		if (URI_ADMIN_PATTERN.matcher(uri).matches())
+			if (!URI_NOADMIN_SET.contains(uri)) {
+				chain.doFilter(request, response);
+				return;
+			}
+		super.doFilter(request, response, chain);
+	}
 
-  @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
-    if (INJECTOR != null) {
-      throw new ServletException("Injector already created?!");
-    }
-    INJECTOR = Guice.createInjector(
-    		new ExtasShiroWebModule(filterConfig.getServletContext()), 
-    		new ExtasGuiceModule()
-    		);
-    
-    filterConfig.getServletContext().log("Created injector with " + INJECTOR.getAllBindings().size() + " bindings.");
-    super.init(filterConfig);
-  }
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		if (INJECTOR != null) {
+			throw new ServletException("Injector already created?!");
+		}
+		INJECTOR = Guice.createInjector(new ExtasShiroWebModule(filterConfig.getServletContext()), new ExtasGuiceModule());
+
+		filterConfig.getServletContext().log("Created injector with " + INJECTOR.getAllBindings().size() + " bindings.");
+		super.init(filterConfig);
+	}
 
 }

@@ -4,14 +4,35 @@ import java.util.Collection;
 
 import ru.extas.model.Insurance;
 
+/**
+ * Интерфейс управления данными об иммущественном страховании
+ * 
+ * @author Valery Orlov
+ * 
+ */
 public interface InsuranceRepository {
 
-	public abstract Collection<Insurance> getAll();
+	/**
+	 * Возвращает список всех зарегестрированных страховок
+	 * 
+	 * @return список страховок
+	 */
+	public abstract Collection<Insurance> loadAll();
 
-	public abstract void create(Insurance insurance);
+	/**
+	 * Сохраняет страховку
+	 * 
+	 * @param insurance
+	 *            что сохраняем
+	 */
+	public abstract void persist(Insurance insurance);
 
-	public abstract void deleteById(Long id);
-
-	public abstract void update(Insurance insurance);
+	/**
+	 * Удаляет запись о страховке
+	 * 
+	 * @param id
+	 *            идентификатор удаляемой записи
+	 */
+	public abstract void deleteById(String id);
 
 }

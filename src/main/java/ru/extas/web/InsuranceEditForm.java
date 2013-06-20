@@ -19,6 +19,12 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+/**
+ * Форма ввода/редактирования имущественной страховки
+ * 
+ * @author Valery Orlov
+ * 
+ */
 public class InsuranceEditForm extends Window {
 
 	private boolean okPressed = false;
@@ -88,7 +94,7 @@ public class InsuranceEditForm extends Window {
 				try {
 					okPressed = true;
 					binder.commit();
-					new InsuranceRepositoryJdo().create(obj);
+					new InsuranceRepositoryJdo().persist(obj);
 				} catch (CommitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

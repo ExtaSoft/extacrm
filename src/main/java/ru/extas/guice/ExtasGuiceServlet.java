@@ -10,6 +10,12 @@ import com.vaadin.server.ServiceException;
 import com.vaadin.server.SessionInitEvent;
 import com.vaadin.server.SessionInitListener;
 
+/**
+ * Сервлет пользовательского интерфейса
+ * 
+ * @author Valery Orlov
+ * 
+ */
 @Singleton
 public class ExtasGuiceServlet extends GAEVaadinServlet implements SessionInitListener {
 
@@ -18,8 +24,9 @@ public class ExtasGuiceServlet extends GAEVaadinServlet implements SessionInitLi
 
 	@Override
 	protected DeploymentConfiguration createDeploymentConfiguration(Properties initParameters) {
-		
-		///initParameters.setProperty(SERVLET_PARAMETER_PRODUCTION_MODE, "false");
+
+		// /initParameters.setProperty(SERVLET_PARAMETER_PRODUCTION_MODE,
+		// "false");
 		return super.createDeploymentConfiguration(initParameters);
 	}
 

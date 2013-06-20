@@ -9,6 +9,12 @@ import java.util.Locale;
 
 import com.vaadin.data.util.converter.Converter;
 
+/**
+ * Конвертер для отображения BigDecimal элементах UI
+ * 
+ * @author Valery Orlov
+ * 
+ */
 public class EnduserBigdecimalConverter implements Converter<String, BigDecimal> {
 
 	protected DecimalFormat getFormat(Locale locale) {

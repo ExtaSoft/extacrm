@@ -8,6 +8,12 @@ import com.google.inject.Provides;
 import com.google.inject.servlet.ServletModule;
 import com.vaadin.ui.UI;
 
+/**
+ * Основной модуль инъекций
+ * 
+ * @author Valery Orlov
+ * 
+ */
 public class ExtasGuiceModule extends ServletModule {
 
 	@Override

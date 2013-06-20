@@ -9,6 +9,12 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+/**
+ * Стандартное окошко Ok/Отмена
+ * 
+ * @author Valery Orlov
+ * 
+ */
 public class OkCancelWindow extends Window {
 
 	private boolean okPressed = false;

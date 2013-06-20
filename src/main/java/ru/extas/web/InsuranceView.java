@@ -33,6 +33,12 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 
+/**
+ * Раздел страхование
+ * 
+ * @author Valery Orlov
+ * 
+ */
 public class InsuranceView extends VerticalLayout implements View {
 
 	private Table table;
@@ -61,7 +67,7 @@ public class InsuranceView extends VerticalLayout implements View {
 		// panel.addComponent(configure);
 
 		final InsuranceRepository insuranceRepository = new InsuranceRepositoryJdo();
-		final Collection<Insurance> insurances = insuranceRepository.getAll();
+		final Collection<Insurance> insurances = insuranceRepository.loadAll();
 		final BeanItemContainer<Insurance> beans = new BeanItemContainer<Insurance>(Insurance.class);
 		beans.addAll(insurances);
 
