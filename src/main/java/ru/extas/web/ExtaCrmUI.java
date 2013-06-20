@@ -66,6 +66,14 @@ import com.vaadin.ui.VerticalLayout;
 @Title("Extrime Assistance CRM")
 public class ExtaCrmUI extends UI {
 
+	// Описание раздела
+	// - фрагмент адреса
+	// - класс вью
+	// - право доступа
+	// - имя раздела
+	// - описатие раздела
+	// - иконка
+	
 	private static final long serialVersionUID = 1L;
 
 	CssLayout root = new CssLayout();
