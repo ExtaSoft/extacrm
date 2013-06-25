@@ -10,13 +10,14 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 /**
- * Стандартное окошко Ok/Отмена
+ * Стандартное окошко OK/Отмена
  * 
  * @author Valery Orlov
  * 
  */
 public class OkCancelWindow extends Window {
 
+	private static final long serialVersionUID = -1869372339151029572L;
 	private boolean okPressed = false;
 	private final HorizontalLayout buttonsPanel = new HorizontalLayout();
 	private Button cancelBtn;
@@ -34,6 +35,8 @@ public class OkCancelWindow extends Window {
 
 	private void initInputWindow() {
 		cancelBtn = new Button("Отмена", new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(final ClickEvent event) {
 				OkCancelWindow.this.okPressed = false;
@@ -42,6 +45,8 @@ public class OkCancelWindow extends Window {
 		});
 		cancelBtn.setStyleName("icon-cancel");
 		final Button okBtn = new Button("OK", new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(final ClickEvent event) {
 				OkCancelWindow.this.okPressed = true;

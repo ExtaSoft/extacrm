@@ -41,6 +41,8 @@ import com.vaadin.ui.Window.CloseListener;
  */
 public class InsuranceView extends VerticalLayout implements View {
 
+	private static final long serialVersionUID = -2524035728558575428L;
+
 	private Table table;
 
 	public InsuranceView() {
@@ -77,6 +79,8 @@ public class InsuranceView extends VerticalLayout implements View {
 
 		Button newPolyceBtn = new Button("Новый полис", new ClickListener() {
 
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// Взять текущий полис из грида
@@ -84,6 +88,8 @@ public class InsuranceView extends VerticalLayout implements View {
 
 				final InsuranceEditForm editWin = new InsuranceEditForm("Новый полис", newObj);
 				editWin.addCloseListener(new CloseListener() {
+
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void windowClose(CloseEvent e) {
@@ -101,6 +107,8 @@ public class InsuranceView extends VerticalLayout implements View {
 
 		Button editPolyceBtn = new Button("Редактировать полис", new ClickListener() {
 
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// Взять текущий полис из грида
@@ -108,6 +116,8 @@ public class InsuranceView extends VerticalLayout implements View {
 
 				final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", selObj);
 				editWin.addCloseListener(new CloseListener() {
+
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void windowClose(CloseEvent e) {
@@ -121,6 +131,8 @@ public class InsuranceView extends VerticalLayout implements View {
 		commandBar.addComponent(editPolyceBtn);
 
 		Button printPolyceBtn = new Button("Печать полиса", new ClickListener() {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -180,6 +192,8 @@ public class InsuranceView extends VerticalLayout implements View {
 		notify.addStyleName("icon-only");
 		notify.addStyleName("icon-bell");
 		notify.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				new InsuranceRepositoryJdo().fillRegistry();

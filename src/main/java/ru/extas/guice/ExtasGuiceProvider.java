@@ -14,6 +14,8 @@ import com.vaadin.ui.UI;
  */
 public class ExtasGuiceProvider extends UIProvider {
 
+	private static final long serialVersionUID = -673158892184775100L;
+
 	@Inject
 	private Class<? extends UI> uiClass;
 

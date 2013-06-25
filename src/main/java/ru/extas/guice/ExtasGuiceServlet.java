@@ -19,6 +19,8 @@ import com.vaadin.server.SessionInitListener;
 @Singleton
 public class ExtasGuiceServlet extends GAEVaadinServlet implements SessionInitListener {
 
+	private static final long serialVersionUID = -2786123692482071945L;
+
 	@Inject
 	private ExtasGuiceProvider basicProvider;
 

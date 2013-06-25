@@ -1,13 +1,3 @@
-/**
- * DISCLAIMER
- * 
- * The quality of the code is such that you should not copy any of it as best
- * practice how to build Vaadin applications.
- * 
- * @author jouni@vaadin.com
- * 
- */
-
 package ru.extas.web;
 
 import java.io.PrintWriter;
@@ -73,8 +63,11 @@ public class ExtaCrmUI extends UI {
 	// - имя раздела
 	// - описатие раздела
 	// - иконка
-	
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6733655391417975375L;
 
 	CssLayout root = new CssLayout();
 
@@ -84,6 +77,11 @@ public class ExtaCrmUI extends UI {
 	CssLayout content = new CssLayout();
 
 	HashMap<String, Class<? extends View>> routes = new HashMap<String, Class<? extends View>>() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		{
 			put("/insurance", InsuranceView.class);
 		}
@@ -102,6 +100,11 @@ public class ExtaCrmUI extends UI {
 
 		// Configure the error handler for the UI
 		setErrorHandler(new DefaultErrorHandler() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void error(final com.vaadin.server.ErrorEvent event) {
 				event.getThrowable().printStackTrace();
@@ -191,6 +194,11 @@ public class ExtaCrmUI extends UI {
 		fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 
 		final ShortcutListener enter = new ShortcutListener("Войти", KeyCode.ENTER, null) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void handleAction(Object sender, Object target) {
 				signin.click();
@@ -198,6 +206,11 @@ public class ExtaCrmUI extends UI {
 		};
 
 		signin.addClickListener(new ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				String errMessage = "";
@@ -268,10 +281,20 @@ public class ExtaCrmUI extends UI {
 		}
 
 		root.addComponent(new HorizontalLayout() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			{
 				setSizeFull();
 				addStyleName("main-view");
 				addComponent(new VerticalLayout() {
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					// Sidebar
 					{
 						addStyleName("sidebar");
@@ -280,6 +303,11 @@ public class ExtaCrmUI extends UI {
 
 						// Branding element
 						addComponent(new CssLayout() {
+							/**
+							 * 
+							 */
+							private static final long serialVersionUID = 1L;
+
 							{
 								addStyleName("branding");
 								Label logo = new Label("<span>Экстрим Ассистанс</span> CRM", ContentMode.HTML);
@@ -297,6 +325,11 @@ public class ExtaCrmUI extends UI {
 
 						// User menu
 						addComponent(new VerticalLayout() {
+							/**
+							 * 
+							 */
+							private static final long serialVersionUID = 1L;
+
 							{
 								setSizeUndefined();
 								addStyleName("user");
@@ -308,6 +341,11 @@ public class ExtaCrmUI extends UI {
 								addComponent(userName);
 
 								Command cmd = new Command() {
+									/**
+									 * 
+									 */
+									private static final long serialVersionUID = 1L;
+
 									@Override
 									public void menuSelected(MenuItem selectedItem) {
 										Notification.show("Не реализовано пока");
@@ -326,6 +364,11 @@ public class ExtaCrmUI extends UI {
 								exit.setDescription("Выход из системы");
 								addComponent(exit);
 								exit.addClickListener(new ClickListener() {
+									/**
+									 * 
+									 */
+									private static final long serialVersionUID = 1L;
+
 									@Override
 									public void buttonClick(ClickEvent event) {
 										buildLoginView(true);
@@ -355,6 +398,11 @@ public class ExtaCrmUI extends UI {
 			Button b = new NativeButton(view.substring(0, 1).toUpperCase() + view.substring(1).replace('-', ' '));
 			b.addStyleName("icon-" + view);
 			b.addClickListener(new ClickListener() {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void buttonClick(ClickEvent event) {
 					clearMenuSelection();
@@ -384,6 +432,11 @@ public class ExtaCrmUI extends UI {
 		}
 
 		nav.addViewChangeListener(new ViewChangeListener() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean beforeViewChange(ViewChangeEvent event) {

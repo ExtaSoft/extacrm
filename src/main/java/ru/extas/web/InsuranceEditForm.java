@@ -27,6 +27,8 @@ import com.vaadin.ui.Window;
  */
 public class InsuranceEditForm extends Window {
 
+	private static final long serialVersionUID = 9510268415882116L;
+
 	private boolean okPressed = false;
 	private final HorizontalLayout buttonsPanel = new HorizontalLayout();
 	private final Button cancelBtn;
@@ -80,6 +82,8 @@ public class InsuranceEditForm extends Window {
 		binder.bindMemberFields(this);
 
 		cancelBtn = new Button("Отмена", new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(final ClickEvent event) {
 				binder.discard();
@@ -89,6 +93,8 @@ public class InsuranceEditForm extends Window {
 		cancelBtn.setStyleName("icon-cancel");
 
 		final Button okBtn = new Button("OK", new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(final ClickEvent event) {
 				try {

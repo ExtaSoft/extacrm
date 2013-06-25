@@ -3,4 +3,4 @@ jarsExcludedFromWebInfLib=
 lastWarOutDir=C\:/git/extacrm/target
 launchConfigExternalUrlPrefix=
 warSrcDir=src/main/webapp
-warSrcDirIsOutput=true
+warSrcDirIsOutput=false

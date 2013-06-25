@@ -4,10 +4,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
 
 	<groupId>ru.extas</groupId>
 	<artifactId>extacrm</artifactId>
+	<version>1.0-SNAPSHOT</version>
 
 	<properties>
 		<appengine.app.version>0-0-1alpha</appengine.app.version>
@@ -80,6 +80,12 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
 			<version>${vaadin.version}</version>
@@ -151,6 +157,8 @@
 	</dependencies>
 
 	<build>
+		<outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/classes/</outputDirectory>
+		
 		<plugins>
 			<!-- This plug-in "enhances" your domain model objects (i.e. makes them 
 				persistent for datanucleus) -->
@@ -159,6 +167,7 @@
 				<artifactId>maven-datanucleus-plugin</artifactId>
 				<version>${datanucleus.version}</version>
 				<configuration>
+					<fork>false</fork>
 					<!-- Make sure this path contains your persistent classes! -->
 					<mappingIncludes>**/model/*.class</mappingIncludes>
 					<verbose>true</verbose>
@@ -208,10 +217,12 @@
 				<configuration>
 				 	<port>9090</port>
 					<jvmFlags>
+						<jvmFlag>-Dappengine.generated.dir=${project.build.directory}</jvmFlag>
 						<jvmFlag>-Xdebug</jvmFlag>
 						<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag>
 					</jvmFlags>
 					<disableUpdateCheck>true</disableUpdateCheck>
+					<fullScanSeconds>3</fullScanSeconds>
 				</configuration>
 
 			</plugin>

@@ -1,6 +1,5 @@
 package ru.extas.server;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +22,7 @@ import ru.extas.model.PMF;
  * @author Valery Orlov
  * 
  */
-public class InsuranceRepositoryJdo implements Serializable, InsuranceRepository {
+public class InsuranceRepositoryJdo implements InsuranceRepository {
 
 	private static Logger logger = LoggerFactory.getLogger(UserManagementServiceJdo.class);
 

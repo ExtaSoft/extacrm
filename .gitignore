@@ -19,3 +19,5 @@ test-output
 *~
 /datanucleus.log
 /pom.xml.save
+/1.txt
+/target

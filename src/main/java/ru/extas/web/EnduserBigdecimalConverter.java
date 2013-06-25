@@ -17,6 +17,8 @@ import com.vaadin.data.util.converter.Converter;
  */
 public class EnduserBigdecimalConverter implements Converter<String, BigDecimal> {
 
+	private static final long serialVersionUID = -7818477340305539184L;
+
 	protected DecimalFormat getFormat(Locale locale) {
 		if (locale == null) {
 			locale = Locale.getDefault();

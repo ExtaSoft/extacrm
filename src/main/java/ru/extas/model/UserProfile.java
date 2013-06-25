@@ -1,6 +1,5 @@
 package ru.extas.model;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.jdo.annotations.Extension;
@@ -17,7 +16,7 @@ import javax.jdo.annotations.PrimaryKey;
  * 
  */
 @PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
-public class UserProfile implements Serializable {
+public class UserProfile {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
