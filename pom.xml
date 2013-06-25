@@ -219,7 +219,7 @@
 					<jvmFlags>
 						<jvmFlag>-Dappengine.generated.dir=${project.build.directory}</jvmFlag>
 						<jvmFlag>-Xdebug</jvmFlag>
-						<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag>
+						<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8989,server=y,suspend=n</jvmFlag>
 					</jvmFlags>
 					<disableUpdateCheck>true</disableUpdateCheck>
 					<fullScanSeconds>3</fullScanSeconds>

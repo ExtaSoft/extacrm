@@ -1,89 +1,169 @@
-@charset "UTF-8";
 
-
-.icon-plus:before { content: '\2b'; } /* '+' */
-.icon-minus:before { content: '\2d'; } /* '-' */
-.icon-info:before { content: '\2139'; } /* 'ℹ' */
-.icon-left:before { content: '\2190'; } /* '←' */
-.icon-up:before { content: '\2191'; } /* '↑' */
-.icon-right:before { content: '\2192'; } /* '→' */
-.icon-down:before { content: '\2193'; } /* '↓' */
-.icon-exchange:before { content: '\21c4'; } /* '⇄' */
-.icon-home:before { content: '\2302'; } /* '⌂' */
-.icon-home-1:before { content: '\e802'; } /* '' */
-.icon-up-dir:before { content: '\25b4'; } /* '▴' */
-.icon-right-dir:before { content: '\25b8'; } /* '▸' */
-.icon-down-dir:before { content: '\25be'; } /* '▾' */
-.icon-left-dir:before { content: '\25c2'; } /* '◂' */
-.icon-star:before { content: '\2605'; } /* '★' */
-.icon-star-empty:before { content: '\2606'; } /* '☆' */
-.icon-th-list:before { content: '\2630'; } /* '☰' */
-.icon-heart-empty:before { content: '\2661'; } /* '♡' */
-.icon-heart:before { content: '\2665'; } /* '♥' */
-.icon-music:before { content: '\266a'; } /* '♪' */
-.icon-th:before { content: '\268f'; } /* '⚏' */
-.icon-flag:before { content: '\2691'; } /* '⚑' */
-.icon-cog:before { content: '\2699'; } /* '⚙' */
-.icon-attention:before { content: '\26a0'; } /* '⚠' */
-.icon-mail:before { content: '\2709'; } /* '✉' */
-.icon-edit:before { content: '\270d'; } /* '✍' */
-.icon-pencil:before { content: '\270e'; } /* '✎' */
-.icon-ok:before { content: '\2713'; } /* '✓' */
-.icon-cancel-1:before { content: '\e801'; } /* '' */
-.icon-cancel:before { content: '\2715'; } /* '✕' */
-.icon-cancel-circle:before { content: '\2716'; } /* '✖' */
-.icon-help:before { content: '\2753'; } /* '❓' */
-.icon-plus-circle:before { content: '\2795'; } /* '➕' */
-.icon-minus-circle:before { content: '\2796'; } /* '➖' */
-.icon-right-thin:before { content: '\27a1'; } /* '➡' */
-.icon-forward:before { content: '\27a6'; } /* '➦' */
-.icon-cw:before { content: '\27f3'; } /* '⟳' */
-.icon-left-thin:before { content: '\2b05'; } /* '⬅' */
-.icon-up-thin:before { content: '\2b06'; } /* '⬆' */
-.icon-down-thin:before { content: '\2b07'; } /* '⬇' */
-.icon-left-bold:before { content: '\e4ad'; } /* '' */
-.icon-right-bold:before { content: '\e4ae'; } /* '' */
-.icon-up-bold:before { content: '\e4af'; } /* '' */
-.icon-down-bold:before { content: '\e4b0'; } /* '' */
-.icon-user-add:before { content: '\e700'; } /* '' */
-.icon-help-circle:before { content: '\e704'; } /* '' */
-.icon-info-circle:before { content: '\e705'; } /* '' */
-.icon-back:before { content: '\e706'; } /* '' */
-.icon-eye:before { content: '\e70a'; } /* '' */
-.icon-tag:before { content: '\e70c'; } /* '' */
-.icon-upload-cloud:before { content: '\e711'; } /* '' */
-.icon-reply:before { content: '\e712'; } /* '' */
-.icon-export:before { content: '\e715'; } /* '' */
-.icon-print:before { content: '\e716'; } /* '' */
-.icon-retweet:before { content: '\e717'; } /* '' */
-.icon-comment:before { content: '\e718'; } /* '' */
-.icon-vcard:before { content: '\e722'; } /* '' */
-.icon-location:before { content: '\e724'; } /* '' */
-.icon-trash:before { content: '\e729'; } /* '' */
-.icon-resize-full:before { content: '\e744'; } /* '' */
-.icon-resize-small:before { content: '\e746'; } /* '' */
-.icon-down-open:before { content: '\e75c'; } /* '' */
-.icon-left-open:before { content: '\e75d'; } /* '' */
-.icon-right-open:before { content: '\e75e'; } /* '' */
-.icon-up-open:before { content: '\e75f'; } /* '' */
-.icon-arrows-cw:before { content: '\e760'; } /* '' */
-.icon-chart-pie:before { content: '\e7a2'; } /* '' */
-.icon-user:before { content: '👤'; } /* '\1f464' */
-.icon-users:before { content: '👥'; } /* '\1f465' */
-.icon-monitor:before { content: '💻'; } /* '\1f4bb' */
-.icon-folder:before { content: '📁'; } /* '\1f4c1' */
-.icon-doc:before { content: '📄'; } /* '\1f4c4' */
-.icon-calendar:before { content: '📅'; } /* '\1f4c5' */
-.icon-chart:before { content: '📈'; } /* '\1f4c8' */
-.icon-attach:before { content: '📎'; } /* '\1f4ce' */
-.icon-upload:before { content: '📤'; } /* '\1f4e4' */
-.icon-download:before { content: '📥'; } /* '\1f4e5' */
-.icon-mobile:before { content: '📱'; } /* '\1f4f1' */
-.icon-camera:before { content: '📷'; } /* '\1f4f7' */
-.icon-search-1:before { content: '\e800'; } /* '' */
-.icon-lock:before { content: '🔒'; } /* '\1f512' */
-.icon-lock-open:before { content: '🔓'; } /* '\1f513' */
-.icon-bell:before { content: '🔔'; } /* '\1f514' */
-.icon-link:before { content: '🔗'; } /* '\1f517' */
-.icon-clock:before { content: '🕔'; } /* '\1f554' */
-.icon-block:before { content: '🚫'; } /* '\1f6ab' */
+	@include icon(money-1, '\e890'); /* 'оўђ' */
+	@include icon(info-1, '\e836'); /* 'о ¶' */
+	@include icon(home, '\e804'); /* 'о „' */
+	@include icon(umbrella, '\e87b'); /* 'оЎ»' */
+	@include icon(check, '\e822'); /* 'о ў' */
+	@include icon(tools, '\e840'); /* 'оЎЂ' */
+	@include icon(cog-1, '\e83f'); /* 'о ї' */
+	@include icon(cog, '\e818'); /* 'о �' */
+	@include icon(attention-1, '\e83b'); /* 'о »' */
+	@include icon(attention-filled, '\e864'); /* 'оЎ¤' */
+	@include icon(attention, '\e810'); /* 'о ђ' */
+	@include icon(flash-2, '\e87f'); /* 'оЎї' */
+	@include icon(flash, '\e841'); /* 'оЎЃ' */
+	@include icon(flash-1, '\e86e'); /* 'оЎ®' */
+	@include icon(cog-alt, '\e819'); /* 'о ™' */
+	@include icon(mail-1, '\e880'); /* 'оўЂ' */
+	@include icon(edit-2, '\e888'); /* 'оў€' */
+	@include icon(edit, '\e80c'); /* 'о Њ' */
+	@include icon(ok-2, '\e879'); /* 'оЎ№' */
+	@include icon(ok, '\e802'); /* 'о ‚' */
+	@include icon(check-1, '\e832'); /* 'о І' */
+	@include icon(ok-3, '\e886'); /* 'оў†' */
+	@include icon(cancel-4, '\e887'); /* 'оў‡' */
+	@include icon(cancel-1, '\e833'); /* 'о і' */
+	@include icon(cancel-3, '\e87a'); /* 'оЎє' */
+	@include icon(cancel, '\e803'); /* 'о ѓ' */
+	@include icon(help-1, '\e834'); /* 'о ґ' */
+	@include icon(attention-circled, '\e811'); /* 'о ‘' */
+	@include icon(trash, '\e8a0'); /* 'оў ' */
+	@include icon(search-3, '\e89f'); /* 'оўџ' */
+	@include icon(cog-2, '\e8a2'); /* 'оўў' */
+	@include icon(user-6, '\e895'); /* 'оў•' */
+	@include icon(trash-3, '\e8a6'); /* 'оў¦' */
+	@include icon(note, '\e8a1'); /* 'оўЎ' */
+	@include icon(torso, '\e898'); /* 'оў�' */
+	@include icon(money-2, '\e8a3'); /* 'оўЈ' */
+	@include icon(vcard, '\e868'); /* 'оЎЁ' */
+	@include icon(chart-alt-outline, '\e871'); /* 'оЎ±' */
+	@include icon(chart-alt, '\e872'); /* 'оЎІ' */
+	@include icon(chart-bar-outline, '\e873'); /* 'оЎі' */
+	@include icon(chart-outline, '\e86f'); /* 'оЎЇ' */
+	@include icon(chart-pie-outline, '\e875'); /* 'оЎµ' */
+	@include icon(chart-pie-1, '\e876'); /* 'оЎ¶' */
+	@include icon(contacts, '\e867'); /* 'оЎ§' */
+	@include icon(qrcode-1, '\e89c'); /* 'оўњ' */
+	@include icon(doc-add, '\e869'); /* 'оЎ©' */
+	@include icon(doc-remove, '\e86a'); /* 'оЎЄ' */
+	@include icon(doc-1, '\e86b'); /* 'оЎ«' */
+	@include icon(edit-1, '\e86c'); /* 'оЎ¬' */
+	@include icon(flash-outline, '\e86d'); /* 'оЎ­' */
+	@include icon(users-outline, '\e84d'); /* 'оЎЌ' */
+	@include icon(users-2, '\e84e'); /* 'оЎЋ' */
+	@include icon(home-outline, '\e85d'); /* 'оЎќ' */
+	@include icon(home-1, '\e85e'); /* 'оЎћ' */
+	@include icon(info-outline, '\e85b'); /* 'оЎ›' */
+	@include icon(info-2, '\e85c'); /* 'оЎњ' */
+	@include icon(attention-2, '\e863'); /* 'оЎЈ' */
+	@include icon(group-circled, '\e897'); /* 'оў—' */
+	@include icon(group, '\e896'); /* 'оў–' */
+	@include icon(lock-filled, '\e85f'); /* 'оЎџ' */
+	@include icon(lock-open-filled, '\e860'); /* 'оЎ ' */
+	@include icon(mail, '\e848'); /* 'оЎ€' */
+	@include icon(minus-outline, '\e859'); /* 'оЎ™' */
+	@include icon(minus, '\e85a'); /* 'оЎљ' */
+	@include icon(pin-outline, '\e861'); /* 'оЎЎ' */
+	@include icon(pin, '\e862'); /* 'оЎў' */
+	@include icon(doc-new, '\e899'); /* 'оў™' */
+	@include icon(edit-3, '\e89a'); /* 'оўљ' */
+	@include icon(plus-outline, '\e857'); /* 'оЎ—' */
+	@include icon(plus, '\e858'); /* 'оЎ�' */
+	@include icon(barcode-1, '\e89d'); /* 'оўќ' */
+	@include icon(filter-1, '\e89e'); /* 'оўћ' */
+	@include icon(star, '\e849'); /* 'оЎ‰' */
+	@include icon(star-filled, '\e84a'); /* 'оЎЉ' */
+	@include icon(ok-outline, '\e853'); /* 'оЎ“' */
+	@include icon(ok-1, '\e854'); /* 'оЎ”' */
+	@include icon(cancel-outline, '\e855'); /* 'оЎ•' */
+	@include icon(cancel-2, '\e856'); /* 'оЎ–' */
+	@include icon(calendar-1, '\e89b'); /* 'оў›' */
+	@include icon(user-add-outline, '\e84f'); /* 'оЎЏ' */
+	@include icon(user-add-1, '\e850'); /* 'оЎђ' */
+	@include icon(user-delete-outline, '\e851'); /* 'оЎ‘' */
+	@include icon(user-delete, '\e852'); /* 'оЎ’' */
+	@include icon(user-outline, '\e84b'); /* 'оЎ‹' */
+	@include icon(user-2, '\e84c'); /* 'оЎЊ' */
+	@include icon(warning-empty, '\e865'); /* 'оЎҐ' */
+	@include icon(warning, '\e866'); /* 'оЎ¦' */
+	@include icon(search-outline, '\e846'); /* 'оЎ†' */
+	@include icon(search, '\e847'); /* 'оЎ‡' */
+	@include icon(user-add, '\e831'); /* 'о ±' */
+	@include icon(help-circled, '\e806'); /* 'о †' */
+	@include icon(help-circled-1, '\e835'); /* 'о µ' */
+	@include icon(info-circled, '\e807'); /* 'о ‡' */
+	@include icon(info-circled-1, '\e837'); /* 'о ·' */
+	@include icon(print-2, '\e889'); /* 'оў‰' */
+	@include icon(print-1, '\e838'); /* 'о ё' */
+	@include icon(print, '\e80d'); /* 'о Ќ' */
+	@include icon(vcard-1, '\e839'); /* 'о №' */
+	@include icon(trash-4, '\e8a7'); /* 'оў§' */
+	@include icon(trash-1, '\e8a4'); /* 'оў¤' */
+	@include icon(archive, '\e83e'); /* 'о ѕ' */
+	@include icon(chart-pie, '\e842'); /* 'оЎ‚' */
+	@include icon(arrows-cw, '\e81d'); /* 'о ќ' */
+	@include icon(list-alt, '\e821'); /* 'о Ў' */
+	@include icon(qrcode, '\e820'); /* 'о  ' */
+	@include icon(barcode, '\e81f'); /* 'о џ' */
+	@include icon(chart-pie-3, '\e88e'); /* 'оўЋ' */
+	@include icon(chart-pie-2, '\e87d'); /* 'оЎЅ' */
+	@include icon(chart-pie-alt, '\e87e'); /* 'оЎѕ' */
+	@include icon(user-5, '\e891'); /* 'оў‘' */
+	@include icon(user-male, '\e892'); /* 'оў’' */
+	@include icon(user-female, '\e893'); /* 'оў“' */
+	@include icon(users-3, '\e894'); /* 'оў”' */
+	@include icon(trash-2, '\e8a5'); /* 'оўҐ' */
+	@include icon(check-empty, '\e823'); /* 'о Ј' */
+	@include icon(filter, '\e825'); /* 'о Ґ' */
+	@include icon(table, '\e81e'); /* 'о ћ' */
+	@include icon(money, '\e826'); /* 'о ¦' */
+	@include icon(sitemap, '\e82e'); /* 'о ®' */
+	@include icon(doc-text, '\e813'); /* 'о “' */
+	@include icon(folder-empty, '\e816'); /* 'о –' */
+	@include icon(folder-open-empty, '\e817'); /* 'о —' */
+	@include icon(help, '\e805'); /* 'о …' */
+	@include icon(info, '\e808'); /* 'о €' */
+	@include icon(attention-alt, '\e80f'); /* 'о Џ' */
+	@include icon(calendar-empty, '\e81c'); /* 'о њ' */
+	@include icon(doc-inv, '\e814'); /* 'о ”' */
+	@include icon(doc-text-inv, '\e815'); /* 'о •' */
+	@include icon(sort-name-up, '\e82a'); /* 'о Є' */
+	@include icon(sort-name-down, '\e82b'); /* 'о «' */
+	@include icon(sort-alt-up, '\e828'); /* 'о Ё' */
+	@include icon(sort-alt-down, '\e829'); /* 'о ©' */
+	@include icon(sort-number-up, '\e82c'); /* 'о ¬' */
+	@include icon(sort-number-down, '\e82d'); /* 'о ­' */
+	@include icon(picture, '\e878'); /* 'оЎё' */
+	@include icon(award, '\e88b'); /* 'оў‹' */
+	@include icon(user, '\e800'); /* 'о Ђ' */
+	@include icon(user-1, '\e82f'); /* 'о Ї' */
+	@include icon(user-4, '\e883'); /* 'оўѓ' */
+	@include icon(user-3, '\e877'); /* 'оЎ·' */
+	@include icon(users, '\e801'); /* 'о Ѓ' */
+	@include icon(users-1, '\e830'); /* 'о °' */
+	@include icon(user-woman, '\e884'); /* 'оў„' */
+	@include icon(user-pair, '\e885'); /* 'оў…' */
+	@include icon(alert, '\e83c'); /* 'о ј' */
+	@include icon(dollar, '\e88f'); /* 'оўЏ' */
+	@include icon(doc, '\e812'); /* 'о ’' */
+	@include icon(calendar, '\e81b'); /* 'о ›' */
+	@include icon(chart-1, '\e88c'); /* 'оўЊ' */
+	@include icon(chart, '\e870'); /* 'оЎ°' */
+	@include icon(chart-line, '\e843'); /* 'оЎѓ' */
+	@include icon(chart-bar, '\e824'); /* 'о ¤' */
+	@include icon(chart-bar-4, '\e88d'); /* 'оўЌ' */
+	@include icon(chart-bar-1, '\e844'); /* 'оЎ„' */
+	@include icon(chart-bar-2, '\e874'); /* 'оЎґ' */
+	@include icon(chart-bar-3, '\e87c'); /* 'оЎј' */
+	@include icon(attach, '\e809'); /* 'о ‰' */
+	@include icon(newspaper, '\e83d'); /* 'о Ѕ' */
+	@include icon(search-1, '\e881'); /* 'оўЃ' */
+	@include icon(search-2, '\e882'); /* 'оў‚' */
+	@include icon(lock, '\e80b'); /* 'о ‹' */
+	@include icon(lock-open, '\e80a'); /* 'о Љ' */
+	@include icon(bell, '\e80e'); /* 'о Ћ' */
+	@include icon(bell-1, '\e83a'); /* 'о є' */
+	@include icon(wrench, '\e81a'); /* 'о љ' */
+	@include icon(wrench-1, '\e88a'); /* 'оўЉ' */
+	@include icon(chart-area, '\e845'); /* 'оЎ…' */
+	@include icon(truck, '\e827'); /* 'о §' */

@@ -2,8 +2,6 @@ package ru.extas.web;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -17,9 +15,6 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.navigator.Navigator;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
@@ -30,9 +25,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.DragAndDropWrapper;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -73,23 +66,8 @@ public class ExtaCrmUI extends UI {
 
 	VerticalLayout loginLayout;
 
-	CssLayout menu = new CssLayout();
+	ExtaMainMenu mainMenu;
 	CssLayout content = new CssLayout();
-
-	HashMap<String, Class<? extends View>> routes = new HashMap<String, Class<? extends View>>() {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		{
-			put("/insurance", InsuranceView.class);
-		}
-	};
-
-	HashMap<String, Button> viewNameToMenuButton = new HashMap<String, Button>();
-
-	private Navigator nav;
 
 	@Override
 	protected void init(VaadinRequest request) {
@@ -274,25 +252,13 @@ public class ExtaCrmUI extends UI {
 
 	private void buildMainView() {
 
-		nav = new Navigator(this, content);
-
-		for (String route : routes.keySet()) {
-			nav.addView(route, routes.get(route));
-		}
-
 		root.addComponent(new HorizontalLayout() {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			{
 				setSizeFull();
 				addStyleName("main-view");
 				addComponent(new VerticalLayout() {
-					/**
-					 * 
-					 */
 					private static final long serialVersionUID = 1L;
 
 					// Sidebar
@@ -320,14 +286,12 @@ public class ExtaCrmUI extends UI {
 						});
 
 						// Main menu
-						addComponent(menu);
-						setExpandRatio(menu, 1);
+						mainMenu = new ExtaMainMenu(ExtaCrmUI.this, content);
+						addComponent(mainMenu);
+						setExpandRatio(mainMenu, 1);
 
 						// User menu
 						addComponent(new VerticalLayout() {
-							/**
-							 * 
-							 */
 							private static final long serialVersionUID = 1L;
 
 							{
@@ -341,9 +305,6 @@ public class ExtaCrmUI extends UI {
 								addComponent(userName);
 
 								Command cmd = new Command() {
-									/**
-									 * 
-									 */
 									private static final long serialVersionUID = 1L;
 
 									@Override
@@ -387,79 +348,15 @@ public class ExtaCrmUI extends UI {
 
 		});
 
-		menu.removeAllComponents();
+		// -------------------------------------------------------------
+		// Создаем кнопки основного меню
+		mainMenu.addChapter("", "Начало", "Начальный экран приложения", "icon-home", InsuranceView.class, null);
+		mainMenu.addChapter("contacts", "Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts", InsuranceView.class, null);
+		mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella", InsuranceView.class, null);
+		mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3", InsuranceView.class, null);
 
-		for (final String view : new String[] { "insurance"/*
-															 * , "sales",
-															 * "transactions",
-															 * "reports",
-															 * "schedule"
-															 */}) {
-			Button b = new NativeButton(view.substring(0, 1).toUpperCase() + view.substring(1).replace('-', ' '));
-			b.addStyleName("icon-" + view);
-			b.addClickListener(new ClickListener() {
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
+		mainMenu.processURI(Page.getCurrent().getUriFragment());
 
-				@Override
-				public void buttonClick(ClickEvent event) {
-					clearMenuSelection();
-					event.getButton().addStyleName("selected");
-					if (!nav.getState().equals("/" + view))
-						nav.navigateTo("/" + view);
-				}
-			});
-
-			menu.addComponent(b);
-
-			viewNameToMenuButton.put("/" + view, b);
-		}
-		menu.addStyleName("menu");
-		menu.setHeight("100%");
-
-		String f = Page.getCurrent().getUriFragment();
-		if (f != null && f.startsWith("!")) {
-			f = f.substring(1);
-		}
-		if (f == null || f.equals("") || f.equals("/")) {
-			nav.navigateTo("/insurance");
-			menu.getComponent(0).addStyleName("selected");
-		} else {
-			nav.navigateTo(f);
-			viewNameToMenuButton.get(f).addStyleName("selected");
-		}
-
-		nav.addViewChangeListener(new ViewChangeListener() {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean beforeViewChange(ViewChangeEvent event) {
-				return true;
-			}
-
-			@Override
-			public void afterViewChange(ViewChangeEvent event) {
-			}
-		});
-
-	}
-
-	private void clearMenuSelection() {
-		for (Iterator<Component> it = menu.iterator(); it.hasNext();) {
-			Component next = it.next();
-			if (next instanceof NativeButton) {
-				next.removeStyleName("selected");
-			} else if (next instanceof DragAndDropWrapper) {
-				// Wow, this is ugly (even uglier than the rest of the code)
-				((DragAndDropWrapper) next).iterator().next().removeStyleName("selected");
-			}
-		}
 	}
 
 }

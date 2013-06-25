@@ -1,26 +1,26 @@
-@mixin extacrm-insurance-view {
+@mixin extacrm-base-view {
 	
-  .insurance-view .v-horizontallayout {
+  .base-view .v-horizontallayout {
     padding: 0 20px 20px;
   }
   
-  .insurance-view .v-spacing {
+  .base-view .v-spacing {
     width: 20px;
     height: 20px;
   }
   
-  .insurance-view .toolbar .v-spacing {
+  .base-view .toolbar .v-spacing {
     width: 10px;
   }
   
   
-  .insurance-view .v-csslayout {
+  .base-view .v-csslayout {
     padding: 50px 20px 0;
     overflow: auto;
     position: relative;
   }
   
-  .insurance-view .v-caption {
+  .base-view .v-caption {
     font-weight: 600;
     font-size: 13px;
     color: #349aff;
@@ -35,18 +35,18 @@
     right: 0;
   }
   
-  .insurance-view .configure {
+  .base-view .configure {
     position: absolute;
     z-index: 1;
     top: 9px;
     right: 5px;
   }
   
-  .insurance-view .notes {
+  .base-view .notes {
     padding: 40px 0 0;
   }
   
-  .insurance-view .notes .v-caption {
+  .base-view .notes .v-caption {
     color: #fff;
     text-shadow: 0 1px 1px #000;
     background: #5d6167;
@@ -58,7 +58,7 @@
     /* background: linear-gradient(to bottom, #5d6167 0%,#393939 100%); */
   }
   
-  .insurance-view .notes .v-textarea {
+  .base-view .notes .v-textarea {
     border: none;
     padding: 20px 20px 0;
     line-height: 20px;
@@ -66,38 +66,38 @@
     color: #545145;
   }
   
-  .insurance-view .notes .v-textarea:focus {
+  .base-view .notes .v-textarea:focus {
     outline: none;
   }
   
-  .insurance-view .notes .configure {
+  .base-view .notes .configure {
     color: #ddd;
     text-shadow: 0 1px 1px #000;
   }
   
-  .insurance-view .toolbar {
+  .base-view .toolbar {
     padding: 20px;
     text-shadow: 0 1px 1px rgba(255,255,255,.5);
     background: transparent;
   }
   
-  .insurance-view .toolbar .v-button {
+  .base-view .toolbar .v-button {
     position: relative;
     font-size: 16px;
   }
   
-  .insurance-view .toolbar .notifications.unread .v-button-caption {
+  .base-view .toolbar .notifications.unread .v-button-caption {
     display: block;
     position: absolute;
     top: 2px;
     right: 3px;
   }
   
-  .insurance-view .h1 {
+  .base-view .h1 {
     padding-right: 1em;
   }
   
-  .insurance-view {
+  .base-view {
     background: #dfe0e1;
     
     /* TODO mixin */

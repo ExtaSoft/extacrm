@@ -12,17 +12,16 @@
 
 @import "common.scss";
 
-/* TODO move new notification theme to base as the default when they are ready */
-@import "components/notification.scss";
+@import "components/notification/notification.scss";
 @import "components/button.scss";
 @import "components/textfield.scss";
 @import "components/combobox.scss";
 @import "components/tabsheet.scss";
 @import "components/label.scss";
-@import "components/table.scss";
-@import "components/window.scss";
+@import "components/table/table.scss";
+@import "components/window/window.scss";
 
-@import "views/insurance.scss";
+@import "views/base.scss";
 
 
 @mixin extacrm {
@@ -33,7 +32,7 @@
 	@include extacrm-common;
 	
 	@include extacrm-button;
-	@include extacrm-combobox;
+  @include extacrm-combobox;
 	@include extacrm-label;
 	@include extacrm-notification;
 	@include extacrm-table;
@@ -41,7 +40,7 @@
 	@include extacrm-textfield;
 	@include extacrm-window;
 	
-	@include extacrm-insurance-view;
+	@include extacrm-base-view;
 
 	.v-view {
 		overflow: hidden;
