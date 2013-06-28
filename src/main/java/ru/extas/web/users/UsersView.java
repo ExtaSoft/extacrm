@@ -13,15 +13,20 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.UserProfile;
 import ru.extas.server.UserManagementService;
 import ru.extas.web.commons.ExtaAbstractView;
-import ru.extas.web.commons.GridDataSource;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.Window.CloseListener;
 
 /**
  * Реализует экран управления пользователями и правами доступа
@@ -53,15 +58,40 @@ public class UsersView extends ExtaAbstractView {
 		commandBar.addStyleName("configure");
 		// commandBar.setSpacing(false);
 
-		Button newPolyceBtn = new Button("Новый");
-		newPolyceBtn.addStyleName("icon-user-add");
-		newPolyceBtn.setDescription("Ввод нового пользователя в систему");
-		commandBar.addComponent(newPolyceBtn);
+		Button newBtn = new Button("Новый");
+		newBtn.addStyleName("icon-user-add");
+		newBtn.setDescription("Ввод нового пользователя в систему");
+		newBtn.addClickListener(new ClickListener() {
 
-		Button editPolyceBtn = new Button("Изменить");
-		editPolyceBtn.addStyleName("icon-user-1");
-		editPolyceBtn.setDescription("Редактировать данные пользователя");
-		commandBar.addComponent(editPolyceBtn);
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				final UserProfile newObj = new UserProfile();
+
+				final UserEditForm editWin = new UserEditForm("Новый пользователь", newObj);
+				editWin.addCloseListener(new CloseListener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void windowClose(CloseEvent e) {
+						if (editWin.isOkPressed()) {
+							// beans.addBean(newObj);
+							// table.setValue(newObj);
+							Notification.show("Полис сохранен", Type.TRAY_NOTIFICATION);
+						}
+					}
+				});
+				editWin.showModal();
+			}
+		});
+		commandBar.addComponent(newBtn);
+
+		Button editBtn = new Button("Изменить");
+		editBtn.addStyleName("icon-user-1");
+		editBtn.setDescription("Редактировать данные пользователя");
+		commandBar.addComponent(editBtn);
 
 		panel.addComponent(commandBar);
 
@@ -80,7 +110,7 @@ public class UsersView extends ExtaAbstractView {
 		table.setColumnCollapsingAllowed(true);
 		table.setColumnReorderingAllowed(true);
 
-		GridDataSource ds = new GridDataSource();
+		UsersDataDecl ds = new UsersDataDecl();
 		ds.setTableColumnHeaders(table);
 		ds.setTableVisibleColumns(table);
 		ds.setTableCollapsedColumns(table);

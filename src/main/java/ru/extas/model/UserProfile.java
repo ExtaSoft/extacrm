@@ -16,6 +16,8 @@ import javax.jdo.annotations.Persistent;
 @PersistenceCapable(detachable = "true")
 public class UserProfile extends AbstractExtaObject {
 
+	private static final long serialVersionUID = 6937423190833815234L;
+
 	// Login/email
 	@Persistent
 	private String login;

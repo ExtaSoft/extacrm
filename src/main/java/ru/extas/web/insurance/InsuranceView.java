@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.Insurance;
 import ru.extas.server.InsuranceRepository;
 import ru.extas.web.commons.ExtaAbstractView;
-import ru.extas.web.commons.GridDataSource;
+import ru.extas.web.commons.GridDataDecl;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
@@ -90,7 +90,6 @@ public class InsuranceView extends ExtaAbstractView {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				// Взять текущий полис из грида
 				final Insurance newObj = new Insurance();
 
 				final InsuranceEditForm editWin = new InsuranceEditForm("Новый полис", newObj);
@@ -148,7 +147,7 @@ public class InsuranceView extends ExtaAbstractView {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// Взять текущий полис из грида
-				final Insurance selObj = (Insurance) table.getValue();
+				// final Insurance selObj = (Insurance) table.getValue();
 
 				// TODO: TO Implement: https://code.google.com/p/xdocreport/
 				Notification.show("Не реализовано пока");
@@ -174,7 +173,7 @@ public class InsuranceView extends ExtaAbstractView {
 		table.setColumnCollapsingAllowed(true);
 		table.setColumnReorderingAllowed(true);
 
-		GridDataSource ds = new InsuranceDataSource();
+		GridDataDecl ds = new InsuranceDataDecl();
 		ds.setTableColumnHeaders(table);
 		ds.setTableVisibleColumns(table);
 		ds.setTableCollapsedColumns(table);

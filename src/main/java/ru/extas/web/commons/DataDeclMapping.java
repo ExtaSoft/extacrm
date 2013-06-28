@@ -6,14 +6,14 @@ package ru.extas.web.commons;
  * @author Valery Orlov
  * 
  */
-public class DataSourceMapping {
+public class DataDeclMapping {
 	private String propName;
 	private String caption;
 	private boolean visible;
 	private boolean inGrid;
 	private boolean collapsed;
 
-	public DataSourceMapping(String propName, String caption, boolean visible, boolean inGrid, boolean collapsed) {
+	public DataDeclMapping(String propName, String caption, boolean visible, boolean inGrid, boolean collapsed) {
 		super();
 		this.propName = propName;
 		this.caption = caption;

@@ -14,6 +14,8 @@ import javax.jdo.annotations.Persistent;
 @PersistenceCapable(detachable = "true")
 public class UserGroup extends AbstractExtaObject {
 
+	private static final long serialVersionUID = 4149728748291041330L;
+
 	/**
 	 * Имя группы
 	 */

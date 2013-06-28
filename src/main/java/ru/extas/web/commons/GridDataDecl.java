@@ -20,14 +20,14 @@ import com.vaadin.ui.Table;
  * @author Valery Orlov
  * 
  */
-public class GridDataSource {
+public class GridDataDecl {
 
-	private final List<DataSourceMapping> mappings = new ArrayList<DataSourceMapping>();
+	private final List<DataDeclMapping> mappings = new ArrayList<DataDeclMapping>();
 
 	/**
 	 * 
 	 */
-	public GridDataSource() {
+	public GridDataDecl() {
 		super();
 	}
 
@@ -46,7 +46,7 @@ public class GridDataSource {
 	 *            - Свернутый столбец в гриде
 	 */
 	public void addMapping(String propName, String caption, boolean visible, boolean inGrid, boolean collapsed) {
-		mappings.add(new DataSourceMapping(propName, caption, visible, inGrid, collapsed));
+		mappings.add(new DataDeclMapping(propName, caption, visible, inGrid, collapsed));
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class GridDataSource {
 	 */
 	public void setTableColumnHeaders(Table table) {
 
-		for (DataSourceMapping prop : mappings)
+		for (DataDeclMapping prop : mappings)
 			table.setColumnHeader(prop.getPropName(), prop.getCaption());
 
 	}
@@ -71,7 +71,7 @@ public class GridDataSource {
 	public void setTableVisibleColumns(Table table) {
 
 		List<String> clmnIds = new ArrayList<String>(mappings.size());
-		for (DataSourceMapping prop : mappings)
+		for (DataDeclMapping prop : mappings)
 			if (prop.isVisible() || prop.isInGrid())
 				clmnIds.add(prop.getPropName());
 
@@ -86,7 +86,7 @@ public class GridDataSource {
 	 */
 	public void setTableCollapsedColumns(Table table) {
 
-		for (DataSourceMapping prop : mappings)
+		for (DataDeclMapping prop : mappings)
 			table.setColumnCollapsed(prop.getPropName(), prop.isCollapsed());
 
 	}

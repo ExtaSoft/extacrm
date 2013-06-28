@@ -3,6 +3,8 @@
  */
 package ru.extas.model;
 
+import java.io.Serializable;
+
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -23,7 +25,9 @@ import org.joda.time.DateTime;
  */
 @PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
 @Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
-public abstract class AbstractExtaObject implements StoreCallback {
+public abstract class AbstractExtaObject implements StoreCallback, Serializable {
+
+	private static final long serialVersionUID = 9098736299506726746L;
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

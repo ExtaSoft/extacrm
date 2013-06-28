@@ -163,7 +163,7 @@
 	</dependencies>
 
 	<build>
-		<outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/classes/</outputDirectory>
+<!-- 		<outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/classes/</outputDirectory> -->
 		
 		<plugins>
 			<!-- This plug-in "enhances" your domain model objects (i.e. makes them 
@@ -223,12 +223,12 @@
 				<configuration>
 				 	<port>9090</port>
 					<jvmFlags>
-						<jvmFlag>-Dappengine.generated.dir=${project.build.directory}</jvmFlag>
+<!-- 						<jvmFlag>-Dappengine.generated.dir=${project.build.directory}</jvmFlag> -->
 						<jvmFlag>-Xdebug</jvmFlag>
 						<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8989,server=y,suspend=n</jvmFlag>
 					</jvmFlags>
 					<disableUpdateCheck>true</disableUpdateCheck>
-					<fullScanSeconds>3</fullScanSeconds>
+					<fullScanSeconds>-1</fullScanSeconds>
 				</configuration>
 
 			</plugin>

@@ -15,6 +15,8 @@ import javax.jdo.annotations.Persistent;
 @PersistenceCapable(detachable = "true")
 public class Insurance extends AbstractExtaObject {
 
+	private static final long serialVersionUID = -1289533183659860816L;
+
 	// Номер полиса
 	@Persistent
 	private String regNum;

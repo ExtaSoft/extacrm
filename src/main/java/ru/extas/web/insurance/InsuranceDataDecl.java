@@ -1,6 +1,6 @@
 package ru.extas.web.insurance;
 
-import ru.extas.web.commons.GridDataSource;
+import ru.extas.web.commons.GridDataDecl;
 
 /**
  * Опции отрбражения страховок
@@ -8,9 +8,9 @@ import ru.extas.web.commons.GridDataSource;
  * @author Valery Orlov
  * 
  */
-public class InsuranceDataSource extends GridDataSource {
+public class InsuranceDataDecl extends GridDataDecl {
 
-	public InsuranceDataSource() {
+	public InsuranceDataDecl() {
 		super();
 		addMapping("regNum", "Номер полиса", true, true, false);
 		addMapping("chekNum", "Номер счета", true, true, true);
