@@ -10,6 +10,8 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -49,17 +51,8 @@ import com.vaadin.ui.VerticalLayout;
 @Title("Extrime Assistance CRM")
 public class ExtaCrmUI extends UI {
 
-	// Описание раздела
-	// - фрагмент адреса
-	// - класс вью
-	// - право доступа
-	// - имя раздела
-	// - описатие раздела
-	// - иконка
+	private final Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6733655391417975375L;
 
 	CssLayout root = new CssLayout();
@@ -104,7 +97,6 @@ public class ExtaCrmUI extends UI {
 			}
 		});
 
-		// TODO: Move to injection
 		Subject currentUser = SecurityUtils.getSubject();
 		if (currentUser.isAuthenticated())
 			buildMainView();
@@ -194,7 +186,6 @@ public class ExtaCrmUI extends UI {
 				String errMessage = "";
 				final String user = username.getValue();
 				final String pass = password.getValue();
-				// TODO: Move to injection
 				Subject currentUser = SecurityUtils.getSubject();
 				if (user != null && pass != null) {
 					UsernamePasswordToken token = new UsernamePasswordToken(user, pass);
@@ -252,6 +243,7 @@ public class ExtaCrmUI extends UI {
 
 	private void buildMainView() {
 
+		logger.info("Entering main view with user {}", SecurityUtils.getSubject().getPrincipal().getClass());
 		root.addComponent(new HorizontalLayout() {
 			private static final long serialVersionUID = 1L;
 
@@ -300,7 +292,8 @@ public class ExtaCrmUI extends UI {
 								Image profilePic = new Image(null, new ThemeResource("img/profile-pic.png"));
 								profilePic.setWidth("34px");
 								addComponent(profilePic);
-								Label userName = new Label("UserName");
+								// TODO: Add real user name
+								Label userName = new Label((String) SecurityUtils.getSubject().getPrincipal());
 								userName.setSizeUndefined();
 								addComponent(userName);
 
@@ -332,6 +325,7 @@ public class ExtaCrmUI extends UI {
 
 									@Override
 									public void buttonClick(ClickEvent event) {
+										SecurityUtils.getSubject().logout();
 										buildLoginView(true);
 									}
 								});
@@ -350,10 +344,13 @@ public class ExtaCrmUI extends UI {
 
 		// -------------------------------------------------------------
 		// Создаем кнопки основного меню
-		mainMenu.addChapter("", "Начало", "Начальный экран приложения", "icon-home", InsuranceView.class, null);
-		mainMenu.addChapter("contacts", "Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts", InsuranceView.class, null);
-		mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella", InsuranceView.class, null);
-		mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3", InsuranceView.class, null);
+		// TODO: Add permission rules
+		mainMenu.addChapter("", "Начало", "Начальный экран приложения", "icon-home", HomeView.class, null);
+		mainMenu.addChapter("contacts", "Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts", ContactsView.class, null);
+		mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella-1", InsuranceView.class, null);
+		mainMenu.addChapter("loans", "Кредитование", "Раздел посвященный кредитованию", "icon-dollar", LoansView.class, null);
+		mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3", UsersView.class, null);
+		mainMenu.addChapter("config", "Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt", ConfigView.class, null);
 
 		mainMenu.processURI(Page.getCurrent().getUriFragment());
 

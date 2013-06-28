@@ -113,8 +113,8 @@ public class ExtaMainMenu extends CssLayout {
 	 * @param uriFragment
 	 */
 	public void processURI(String uriFragment) {
-		if (uriFragment == null || uriFragment.equals("/"))
-			uriFragment = "";
+		if (uriFragment == null || uriFragment.equals(""))
+			uriFragment = "/";
 
 		if (uriFragment != null && uriFragment.startsWith("!")) {
 			uriFragment = uriFragment.substring(1);

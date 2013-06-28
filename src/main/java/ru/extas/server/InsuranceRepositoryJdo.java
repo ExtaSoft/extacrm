@@ -24,7 +24,7 @@ import ru.extas.model.PMF;
  */
 public class InsuranceRepositoryJdo implements InsuranceRepository {
 
-	private static Logger logger = LoggerFactory.getLogger(UserManagementServiceJdo.class);
+	private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJdo.class);
 
 	/*
 	 * (non-Javadoc)

@@ -1,169 +1,170 @@
 
-	@include icon(money-1, '\e890'); /* 'оўђ' */
-	@include icon(info-1, '\e836'); /* 'о ¶' */
-	@include icon(home, '\e804'); /* 'о „' */
-	@include icon(umbrella, '\e87b'); /* 'оЎ»' */
-	@include icon(check, '\e822'); /* 'о ў' */
-	@include icon(tools, '\e840'); /* 'оЎЂ' */
-	@include icon(cog-1, '\e83f'); /* 'о ї' */
-	@include icon(cog, '\e818'); /* 'о �' */
-	@include icon(attention-1, '\e83b'); /* 'о »' */
-	@include icon(attention-filled, '\e864'); /* 'оЎ¤' */
-	@include icon(attention, '\e810'); /* 'о ђ' */
-	@include icon(flash-2, '\e87f'); /* 'оЎї' */
-	@include icon(flash, '\e841'); /* 'оЎЃ' */
-	@include icon(flash-1, '\e86e'); /* 'оЎ®' */
-	@include icon(cog-alt, '\e819'); /* 'о ™' */
-	@include icon(mail-1, '\e880'); /* 'оўЂ' */
-	@include icon(edit-2, '\e888'); /* 'оў€' */
-	@include icon(edit, '\e80c'); /* 'о Њ' */
-	@include icon(ok-2, '\e879'); /* 'оЎ№' */
-	@include icon(ok, '\e802'); /* 'о ‚' */
-	@include icon(check-1, '\e832'); /* 'о І' */
-	@include icon(ok-3, '\e886'); /* 'оў†' */
-	@include icon(cancel-4, '\e887'); /* 'оў‡' */
-	@include icon(cancel-1, '\e833'); /* 'о і' */
-	@include icon(cancel-3, '\e87a'); /* 'оЎє' */
-	@include icon(cancel, '\e803'); /* 'о ѓ' */
-	@include icon(help-1, '\e834'); /* 'о ґ' */
-	@include icon(attention-circled, '\e811'); /* 'о ‘' */
-	@include icon(trash, '\e8a0'); /* 'оў ' */
-	@include icon(search-3, '\e89f'); /* 'оўџ' */
-	@include icon(cog-2, '\e8a2'); /* 'оўў' */
-	@include icon(user-6, '\e895'); /* 'оў•' */
-	@include icon(trash-3, '\e8a6'); /* 'оў¦' */
-	@include icon(note, '\e8a1'); /* 'оўЎ' */
-	@include icon(torso, '\e898'); /* 'оў�' */
-	@include icon(money-2, '\e8a3'); /* 'оўЈ' */
-	@include icon(vcard, '\e868'); /* 'оЎЁ' */
-	@include icon(chart-alt-outline, '\e871'); /* 'оЎ±' */
-	@include icon(chart-alt, '\e872'); /* 'оЎІ' */
-	@include icon(chart-bar-outline, '\e873'); /* 'оЎі' */
-	@include icon(chart-outline, '\e86f'); /* 'оЎЇ' */
-	@include icon(chart-pie-outline, '\e875'); /* 'оЎµ' */
-	@include icon(chart-pie-1, '\e876'); /* 'оЎ¶' */
-	@include icon(contacts, '\e867'); /* 'оЎ§' */
-	@include icon(qrcode-1, '\e89c'); /* 'оўњ' */
-	@include icon(doc-add, '\e869'); /* 'оЎ©' */
-	@include icon(doc-remove, '\e86a'); /* 'оЎЄ' */
-	@include icon(doc-1, '\e86b'); /* 'оЎ«' */
-	@include icon(edit-1, '\e86c'); /* 'оЎ¬' */
-	@include icon(flash-outline, '\e86d'); /* 'оЎ­' */
-	@include icon(users-outline, '\e84d'); /* 'оЎЌ' */
-	@include icon(users-2, '\e84e'); /* 'оЎЋ' */
-	@include icon(home-outline, '\e85d'); /* 'оЎќ' */
-	@include icon(home-1, '\e85e'); /* 'оЎћ' */
-	@include icon(info-outline, '\e85b'); /* 'оЎ›' */
-	@include icon(info-2, '\e85c'); /* 'оЎњ' */
-	@include icon(attention-2, '\e863'); /* 'оЎЈ' */
-	@include icon(group-circled, '\e897'); /* 'оў—' */
-	@include icon(group, '\e896'); /* 'оў–' */
-	@include icon(lock-filled, '\e85f'); /* 'оЎџ' */
-	@include icon(lock-open-filled, '\e860'); /* 'оЎ ' */
-	@include icon(mail, '\e848'); /* 'оЎ€' */
-	@include icon(minus-outline, '\e859'); /* 'оЎ™' */
-	@include icon(minus, '\e85a'); /* 'оЎљ' */
-	@include icon(pin-outline, '\e861'); /* 'оЎЎ' */
-	@include icon(pin, '\e862'); /* 'оЎў' */
-	@include icon(doc-new, '\e899'); /* 'оў™' */
-	@include icon(edit-3, '\e89a'); /* 'оўљ' */
-	@include icon(plus-outline, '\e857'); /* 'оЎ—' */
-	@include icon(plus, '\e858'); /* 'оЎ�' */
-	@include icon(barcode-1, '\e89d'); /* 'оўќ' */
-	@include icon(filter-1, '\e89e'); /* 'оўћ' */
-	@include icon(star, '\e849'); /* 'оЎ‰' */
-	@include icon(star-filled, '\e84a'); /* 'оЎЉ' */
-	@include icon(ok-outline, '\e853'); /* 'оЎ“' */
-	@include icon(ok-1, '\e854'); /* 'оЎ”' */
-	@include icon(cancel-outline, '\e855'); /* 'оЎ•' */
-	@include icon(cancel-2, '\e856'); /* 'оЎ–' */
-	@include icon(calendar-1, '\e89b'); /* 'оў›' */
-	@include icon(user-add-outline, '\e84f'); /* 'оЎЏ' */
-	@include icon(user-add-1, '\e850'); /* 'оЎђ' */
-	@include icon(user-delete-outline, '\e851'); /* 'оЎ‘' */
-	@include icon(user-delete, '\e852'); /* 'оЎ’' */
-	@include icon(user-outline, '\e84b'); /* 'оЎ‹' */
-	@include icon(user-2, '\e84c'); /* 'оЎЊ' */
-	@include icon(warning-empty, '\e865'); /* 'оЎҐ' */
-	@include icon(warning, '\e866'); /* 'оЎ¦' */
-	@include icon(search-outline, '\e846'); /* 'оЎ†' */
-	@include icon(search, '\e847'); /* 'оЎ‡' */
-	@include icon(user-add, '\e831'); /* 'о ±' */
-	@include icon(help-circled, '\e806'); /* 'о †' */
-	@include icon(help-circled-1, '\e835'); /* 'о µ' */
-	@include icon(info-circled, '\e807'); /* 'о ‡' */
-	@include icon(info-circled-1, '\e837'); /* 'о ·' */
-	@include icon(print-2, '\e889'); /* 'оў‰' */
-	@include icon(print-1, '\e838'); /* 'о ё' */
-	@include icon(print, '\e80d'); /* 'о Ќ' */
-	@include icon(vcard-1, '\e839'); /* 'о №' */
-	@include icon(trash-4, '\e8a7'); /* 'оў§' */
-	@include icon(trash-1, '\e8a4'); /* 'оў¤' */
-	@include icon(archive, '\e83e'); /* 'о ѕ' */
-	@include icon(chart-pie, '\e842'); /* 'оЎ‚' */
-	@include icon(arrows-cw, '\e81d'); /* 'о ќ' */
-	@include icon(list-alt, '\e821'); /* 'о Ў' */
-	@include icon(qrcode, '\e820'); /* 'о  ' */
-	@include icon(barcode, '\e81f'); /* 'о џ' */
-	@include icon(chart-pie-3, '\e88e'); /* 'оўЋ' */
-	@include icon(chart-pie-2, '\e87d'); /* 'оЎЅ' */
-	@include icon(chart-pie-alt, '\e87e'); /* 'оЎѕ' */
-	@include icon(user-5, '\e891'); /* 'оў‘' */
-	@include icon(user-male, '\e892'); /* 'оў’' */
-	@include icon(user-female, '\e893'); /* 'оў“' */
-	@include icon(users-3, '\e894'); /* 'оў”' */
-	@include icon(trash-2, '\e8a5'); /* 'оўҐ' */
-	@include icon(check-empty, '\e823'); /* 'о Ј' */
-	@include icon(filter, '\e825'); /* 'о Ґ' */
-	@include icon(table, '\e81e'); /* 'о ћ' */
-	@include icon(money, '\e826'); /* 'о ¦' */
-	@include icon(sitemap, '\e82e'); /* 'о ®' */
-	@include icon(doc-text, '\e813'); /* 'о “' */
-	@include icon(folder-empty, '\e816'); /* 'о –' */
-	@include icon(folder-open-empty, '\e817'); /* 'о —' */
-	@include icon(help, '\e805'); /* 'о …' */
-	@include icon(info, '\e808'); /* 'о €' */
-	@include icon(attention-alt, '\e80f'); /* 'о Џ' */
-	@include icon(calendar-empty, '\e81c'); /* 'о њ' */
-	@include icon(doc-inv, '\e814'); /* 'о ”' */
-	@include icon(doc-text-inv, '\e815'); /* 'о •' */
-	@include icon(sort-name-up, '\e82a'); /* 'о Є' */
-	@include icon(sort-name-down, '\e82b'); /* 'о «' */
-	@include icon(sort-alt-up, '\e828'); /* 'о Ё' */
-	@include icon(sort-alt-down, '\e829'); /* 'о ©' */
-	@include icon(sort-number-up, '\e82c'); /* 'о ¬' */
-	@include icon(sort-number-down, '\e82d'); /* 'о ­' */
-	@include icon(picture, '\e878'); /* 'оЎё' */
-	@include icon(award, '\e88b'); /* 'оў‹' */
-	@include icon(user, '\e800'); /* 'о Ђ' */
-	@include icon(user-1, '\e82f'); /* 'о Ї' */
-	@include icon(user-4, '\e883'); /* 'оўѓ' */
-	@include icon(user-3, '\e877'); /* 'оЎ·' */
-	@include icon(users, '\e801'); /* 'о Ѓ' */
-	@include icon(users-1, '\e830'); /* 'о °' */
-	@include icon(user-woman, '\e884'); /* 'оў„' */
-	@include icon(user-pair, '\e885'); /* 'оў…' */
-	@include icon(alert, '\e83c'); /* 'о ј' */
-	@include icon(dollar, '\e88f'); /* 'оўЏ' */
-	@include icon(doc, '\e812'); /* 'о ’' */
-	@include icon(calendar, '\e81b'); /* 'о ›' */
-	@include icon(chart-1, '\e88c'); /* 'оўЊ' */
-	@include icon(chart, '\e870'); /* 'оЎ°' */
-	@include icon(chart-line, '\e843'); /* 'оЎѓ' */
-	@include icon(chart-bar, '\e824'); /* 'о ¤' */
-	@include icon(chart-bar-4, '\e88d'); /* 'оўЌ' */
-	@include icon(chart-bar-1, '\e844'); /* 'оЎ„' */
-	@include icon(chart-bar-2, '\e874'); /* 'оЎґ' */
-	@include icon(chart-bar-3, '\e87c'); /* 'оЎј' */
-	@include icon(attach, '\e809'); /* 'о ‰' */
-	@include icon(newspaper, '\e83d'); /* 'о Ѕ' */
-	@include icon(search-1, '\e881'); /* 'оўЃ' */
-	@include icon(search-2, '\e882'); /* 'оў‚' */
-	@include icon(lock, '\e80b'); /* 'о ‹' */
-	@include icon(lock-open, '\e80a'); /* 'о Љ' */
-	@include icon(bell, '\e80e'); /* 'о Ћ' */
-	@include icon(bell-1, '\e83a'); /* 'о є' */
-	@include icon(wrench, '\e81a'); /* 'о љ' */
-	@include icon(wrench-1, '\e88a'); /* 'оўЉ' */
-	@include icon(chart-area, '\e845'); /* 'оЎ…' */
-	@include icon(truck, '\e827'); /* 'о §' */
+.icon-money-1:before { content: '\e890'; } /* '' */
+.icon-info-1:before { content: '\e836'; } /* '' */
+.icon-home:before { content: '\e804'; } /* '' */
+.icon-umbrella:before { content: '\e87b'; } /* '' */
+.icon-umbrella-1:before { content: '\e8a8'; } /* '' */
+.icon-check:before { content: '\e822'; } /* '' */
+.icon-tools:before { content: '\e840'; } /* '' */
+.icon-cog:before { content: '\e818'; } /* '' */
+.icon-cog-1:before { content: '\e83f'; } /* '' */
+.icon-attention:before { content: '\e810'; } /* '' */
+.icon-attention-filled:before { content: '\e864'; } /* '' */
+.icon-attention-1:before { content: '\e83b'; } /* '' */
+.icon-flash-2:before { content: '\e87f'; } /* '' */
+.icon-flash-1:before { content: '\e86e'; } /* '' */
+.icon-flash:before { content: '\e841'; } /* '' */
+.icon-cog-alt:before { content: '\e819'; } /* '' */
+.icon-mail-1:before { content: '\e880'; } /* '' */
+.icon-edit:before { content: '\e80c'; } /* '' */
+.icon-edit-2:before { content: '\e888'; } /* '' */
+.icon-check-1:before { content: '\e832'; } /* '' */
+.icon-ok-2:before { content: '\e879'; } /* '' */
+.icon-ok-3:before { content: '\e886'; } /* '' */
+.icon-ok:before { content: '\e802'; } /* '' */
+.icon-cancel-1:before { content: '\e833'; } /* '' */
+.icon-cancel-4:before { content: '\e887'; } /* '' */
+.icon-cancel:before { content: '\e803'; } /* '' */
+.icon-cancel-3:before { content: '\e87a'; } /* '' */
+.icon-help-1:before { content: '\e834'; } /* '' */
+.icon-attention-circled:before { content: '\e811'; } /* '' */
+.icon-trash:before { content: '\e8a0'; } /* '' */
+.icon-search-3:before { content: '\e89f'; } /* '' */
+.icon-cog-2:before { content: '\e8a2'; } /* '' */
+.icon-user-6:before { content: '\e895'; } /* '' */
+.icon-trash-3:before { content: '\e8a6'; } /* '' */
+.icon-note:before { content: '\e8a1'; } /* '' */
+.icon-torso:before { content: '\e898'; } /* '' */
+.icon-money-2:before { content: '\e8a3'; } /* '' */
+.icon-vcard:before { content: '\e868'; } /* '' */
+.icon-chart-alt-outline:before { content: '\e871'; } /* '' */
+.icon-chart-alt:before { content: '\e872'; } /* '' */
+.icon-chart-bar-outline:before { content: '\e873'; } /* '' */
+.icon-chart-outline:before { content: '\e86f'; } /* '' */
+.icon-chart-pie-outline:before { content: '\e875'; } /* '' */
+.icon-chart-pie-1:before { content: '\e876'; } /* '' */
+.icon-contacts:before { content: '\e867'; } /* '' */
+.icon-qrcode-1:before { content: '\e89c'; } /* '' */
+.icon-doc-add:before { content: '\e869'; } /* '' */
+.icon-doc-remove:before { content: '\e86a'; } /* '' */
+.icon-doc-1:before { content: '\e86b'; } /* '' */
+.icon-edit-1:before { content: '\e86c'; } /* '' */
+.icon-flash-outline:before { content: '\e86d'; } /* '' */
+.icon-users-outline:before { content: '\e84d'; } /* '' */
+.icon-users-2:before { content: '\e84e'; } /* '' */
+.icon-home-outline:before { content: '\e85d'; } /* '' */
+.icon-home-1:before { content: '\e85e'; } /* '' */
+.icon-info-outline:before { content: '\e85b'; } /* '' */
+.icon-info-2:before { content: '\e85c'; } /* '' */
+.icon-attention-2:before { content: '\e863'; } /* '' */
+.icon-group-circled:before { content: '\e897'; } /* '' */
+.icon-group:before { content: '\e896'; } /* '' */
+.icon-lock-filled:before { content: '\e85f'; } /* '' */
+.icon-lock-open-filled:before { content: '\e860'; } /* '' */
+.icon-mail:before { content: '\e848'; } /* '' */
+.icon-minus-outline:before { content: '\e859'; } /* '' */
+.icon-minus:before { content: '\e85a'; } /* '' */
+.icon-pin-outline:before { content: '\e861'; } /* '' */
+.icon-pin:before { content: '\e862'; } /* '' */
+.icon-doc-new:before { content: '\e899'; } /* '' */
+.icon-edit-3:before { content: '\e89a'; } /* '' */
+.icon-plus-outline:before { content: '\e857'; } /* '' */
+.icon-plus:before { content: '\e858'; } /* '' */
+.icon-barcode-1:before { content: '\e89d'; } /* '' */
+.icon-filter-1:before { content: '\e89e'; } /* '' */
+.icon-star:before { content: '\e849'; } /* '' */
+.icon-star-filled:before { content: '\e84a'; } /* '' */
+.icon-ok-outline:before { content: '\e853'; } /* '' */
+.icon-ok-1:before { content: '\e854'; } /* '' */
+.icon-cancel-outline:before { content: '\e855'; } /* '' */
+.icon-cancel-2:before { content: '\e856'; } /* '' */
+.icon-calendar-1:before { content: '\e89b'; } /* '' */
+.icon-user-add-outline:before { content: '\e84f'; } /* '' */
+.icon-user-add-1:before { content: '\e850'; } /* '' */
+.icon-user-delete-outline:before { content: '\e851'; } /* '' */
+.icon-user-delete:before { content: '\e852'; } /* '' */
+.icon-user-outline:before { content: '\e84b'; } /* '' */
+.icon-user-2:before { content: '\e84c'; } /* '' */
+.icon-warning-empty:before { content: '\e865'; } /* '' */
+.icon-warning:before { content: '\e866'; } /* '' */
+.icon-search-outline:before { content: '\e846'; } /* '' */
+.icon-search:before { content: '\e847'; } /* '' */
+.icon-user-add:before { content: '\e831'; } /* '' */
+.icon-help-circled:before { content: '\e806'; } /* '' */
+.icon-help-circled-1:before { content: '\e835'; } /* '' */
+.icon-info-circled:before { content: '\e807'; } /* '' */
+.icon-info-circled-1:before { content: '\e837'; } /* '' */
+.icon-print-2:before { content: '\e889'; } /* '' */
+.icon-print:before { content: '\e80d'; } /* '' */
+.icon-print-1:before { content: '\e838'; } /* '' */
+.icon-vcard-1:before { content: '\e839'; } /* '' */
+.icon-trash-4:before { content: '\e8a7'; } /* '' */
+.icon-trash-1:before { content: '\e8a4'; } /* '' */
+.icon-archive:before { content: '\e83e'; } /* '' */
+.icon-chart-pie:before { content: '\e842'; } /* '' */
+.icon-arrows-cw:before { content: '\e81d'; } /* '' */
+.icon-list-alt:before { content: '\e821'; } /* '' */
+.icon-qrcode:before { content: '\e820'; } /* '' */
+.icon-barcode:before { content: '\e81f'; } /* '' */
+.icon-chart-pie-2:before { content: '\e87d'; } /* '' */
+.icon-chart-pie-3:before { content: '\e88e'; } /* '' */
+.icon-chart-pie-alt:before { content: '\e87e'; } /* '' */
+.icon-user-5:before { content: '\e891'; } /* '' */
+.icon-user-male:before { content: '\e892'; } /* '' */
+.icon-user-female:before { content: '\e893'; } /* '' */
+.icon-users-3:before { content: '\e894'; } /* '' */
+.icon-trash-2:before { content: '\e8a5'; } /* '' */
+.icon-check-empty:before { content: '\e823'; } /* '' */
+.icon-filter:before { content: '\e825'; } /* '' */
+.icon-table:before { content: '\e81e'; } /* '' */
+.icon-money:before { content: '\e826'; } /* '' */
+.icon-sitemap:before { content: '\e82e'; } /* '' */
+.icon-doc-text:before { content: '\e813'; } /* '' */
+.icon-folder-empty:before { content: '\e816'; } /* '' */
+.icon-folder-open-empty:before { content: '\e817'; } /* '' */
+.icon-help:before { content: '\e805'; } /* '' */
+.icon-info:before { content: '\e808'; } /* '' */
+.icon-attention-alt:before { content: '\e80f'; } /* '' */
+.icon-calendar-empty:before { content: '\e81c'; } /* '' */
+.icon-doc-inv:before { content: '\e814'; } /* '' */
+.icon-doc-text-inv:before { content: '\e815'; } /* '' */
+.icon-sort-name-up:before { content: '\e82a'; } /* '' */
+.icon-sort-name-down:before { content: '\e82b'; } /* '' */
+.icon-sort-alt-up:before { content: '\e828'; } /* '' */
+.icon-sort-alt-down:before { content: '\e829'; } /* '' */
+.icon-sort-number-up:before { content: '\e82c'; } /* '' */
+.icon-sort-number-down:before { content: '\e82d'; } /* '' */
+.icon-picture:before { content: '\e878'; } /* '' */
+.icon-award:before { content: '\e88b'; } /* '' */
+.icon-user-4:before { content: '\e883'; } /* '' */
+.icon-user-1:before { content: '\e82f'; } /* '' */
+.icon-user-3:before { content: '\e877'; } /* '' */
+.icon-user:before { content: '\e800'; } /* '' */
+.icon-users:before { content: '\e801'; } /* '' */
+.icon-users-1:before { content: '\e830'; } /* '' */
+.icon-user-woman:before { content: '\e884'; } /* '' */
+.icon-user-pair:before { content: '\e885'; } /* '' */
+.icon-alert:before { content: '\e83c'; } /* '' */
+.icon-dollar:before { content: '\e88f'; } /* '' */
+.icon-doc:before { content: '\e812'; } /* '' */
+.icon-calendar:before { content: '\e81b'; } /* '' */
+.icon-chart-1:before { content: '\e88c'; } /* '' */
+.icon-chart-line:before { content: '\e843'; } /* '' */
+.icon-chart:before { content: '\e870'; } /* '' */
+.icon-chart-bar-2:before { content: '\e874'; } /* '' */
+.icon-chart-bar-1:before { content: '\e844'; } /* '' */
+.icon-chart-bar-4:before { content: '\e88d'; } /* '' */
+.icon-chart-bar-3:before { content: '\e87c'; } /* '' */
+.icon-chart-bar:before { content: '\e824'; } /* '' */
+.icon-attach:before { content: '\e809'; } /* '' */
+.icon-newspaper:before { content: '\e83d'; } /* '' */
+.icon-search-1:before { content: '\e881'; } /* '' */
+.icon-search-2:before { content: '\e882'; } /* '' */
+.icon-lock:before { content: '\e80b'; } /* '' */
+.icon-lock-open:before { content: '\e80a'; } /* '' */
+.icon-bell:before { content: '\e80e'; } /* '' */
+.icon-bell-1:before { content: '\e83a'; } /* '' */
+.icon-wrench:before { content: '\e81a'; } /* '' */
+.icon-wrench-1:before { content: '\e88a'; } /* '' */
+.icon-chart-area:before { content: '\e845'; } /* '' */
+.icon-truck:before { content: '\e827'; } /* '' */

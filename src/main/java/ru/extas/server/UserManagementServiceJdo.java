@@ -21,7 +21,7 @@ import ru.extas.model.UserProfile;
  */
 public class UserManagementServiceJdo implements UserManagementService {
 
-	private static Logger logger = LoggerFactory.getLogger(UserManagementServiceJdo.class);
+	private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJdo.class);
 
 	/*
 	 * (non-Javadoc)

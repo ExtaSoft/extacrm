@@ -29,7 +29,7 @@ import com.google.inject.Inject;
  */
 public class UserRealm extends AuthorizingRealm {
 
-	private static Logger logger = LoggerFactory.getLogger(UserRealm.class);
+	private final Logger logger = LoggerFactory.getLogger(UserRealm.class);
 
 	private final UserManagementService userManagerService;
 
