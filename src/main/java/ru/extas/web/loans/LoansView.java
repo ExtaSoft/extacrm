@@ -1,10 +1,12 @@
 /**
  * 
  */
-package ru.extas.web;
+package ru.extas.web.loans;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ru.extas.web.commons.ExtaAbstractView;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;

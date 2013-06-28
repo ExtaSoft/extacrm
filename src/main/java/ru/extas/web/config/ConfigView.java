@@ -1,10 +1,12 @@
 /**
  * 
  */
-package ru.extas.web;
+package ru.extas.web.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ru.extas.web.commons.ExtaAbstractView;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -12,15 +14,16 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 
 /**
- * Реализует экран контактов
+ * Реализует экран настроек CRM
  * 
  * @author Valery Orlov
  * 
  */
-public class ContactsView extends ExtaAbstractView {
+public class ConfigView extends ExtaAbstractView {
 
 	private static final long serialVersionUID = -1272779672761523416L;
-	private final Logger logger = LoggerFactory.getLogger(ContactsView.class);
+
+	private final Logger logger = LoggerFactory.getLogger(ConfigView.class);
 
 	/*
 	 * (non-Javadoc)
@@ -47,7 +50,7 @@ public class ContactsView extends ExtaAbstractView {
 	 */
 	@Override
 	protected Component getTitle() {
-		final Component title = new Label("Контакты");
+		final Component title = new Label("Настройки");
 		title.setSizeUndefined();
 		title.addStyleName("h1");
 		return title;

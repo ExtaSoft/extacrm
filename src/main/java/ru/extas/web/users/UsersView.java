@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ru.extas.web;
+package ru.extas.web.users;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import ru.extas.model.UserProfile;
 import ru.extas.server.UserManagementService;
+import ru.extas.web.commons.ExtaAbstractView;
+import ru.extas.web.commons.GridDataSource;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
@@ -49,7 +51,7 @@ public class UsersView extends ExtaAbstractView {
 		// Формируем тулбар
 		HorizontalLayout commandBar = new HorizontalLayout();
 		commandBar.addStyleName("configure");
-		commandBar.setSpacing(false);
+		// commandBar.setSpacing(false);
 
 		Button newPolyceBtn = new Button("Новый");
 		newPolyceBtn.addStyleName("icon-user-add");
@@ -78,7 +80,7 @@ public class UsersView extends ExtaAbstractView {
 		table.setColumnCollapsingAllowed(true);
 		table.setColumnReorderingAllowed(true);
 
-		GridDataSource ds = new InsuranceDataSource();
+		GridDataSource ds = new GridDataSource();
 		ds.setTableColumnHeaders(table);
 		ds.setTableVisibleColumns(table);
 		ds.setTableCollapsedColumns(table);

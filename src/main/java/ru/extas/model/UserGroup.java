@@ -2,12 +2,8 @@ package ru.extas.model;
 
 import java.util.List;
 
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
 /**
  * Группа пользователей
@@ -15,13 +11,8 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Valery Orlov
  * 
  */
-@PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
-public class UserGroup {
-
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
-	private String key;
+@PersistenceCapable(detachable = "true")
+public class UserGroup extends AbstractExtaObject {
 
 	/**
 	 * Имя группы
@@ -32,21 +23,6 @@ public class UserGroup {
 	// Список разрешений группы
 	@Persistent
 	private List<String> permissionList;
-
-	/**
-	 * @return the key
-	 */
-	public String getKey() {
-		return key;
-	}
-
-	/**
-	 * @param key
-	 *            the key to set
-	 */
-	public void setKey(String key) {
-		this.key = key;
-	}
 
 	/**
 	 * @return the name

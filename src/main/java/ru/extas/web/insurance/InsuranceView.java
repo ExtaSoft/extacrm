@@ -8,7 +8,7 @@
  * 
  */
 
-package ru.extas.web;
+package ru.extas.web.insurance;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import ru.extas.model.Insurance;
 import ru.extas.server.InsuranceRepository;
+import ru.extas.web.commons.ExtaAbstractView;
+import ru.extas.web.commons.GridDataSource;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;

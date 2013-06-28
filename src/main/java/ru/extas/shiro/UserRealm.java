@@ -51,7 +51,7 @@ public class UserRealm extends AuthorizingRealm {
 			return null;
 		} else {
 			logger.info("Authoriziong user {} with role: {}", username, principal.getRole());
-			SimpleAuthorizationInfo result = new SimpleAuthorizationInfo(Sets.newHashSet(principal.getRole()));
+			SimpleAuthorizationInfo result = new SimpleAuthorizationInfo(Sets.newHashSet(principal.getRole().getName()));
 			return result;
 		}
 	}
@@ -75,7 +75,7 @@ public class UserRealm extends AuthorizingRealm {
 
 		logger.info("Principal found for authenticating user with username: {}", usernamePasswordToken.getUsername());
 
-		return new SimpleAccount(principal.getLogin(), principal.getPassword(), getName(), Sets.newHashSet(principal.getRole()),
+		return new SimpleAccount(principal.getLogin(), principal.getPassword(), getName(), Sets.newHashSet(principal.getRole().getName()),
 				new HashSet<Permission>());
 	}
 }

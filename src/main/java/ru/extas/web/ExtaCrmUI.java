@@ -13,6 +13,13 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.extas.web.config.ConfigView;
+import ru.extas.web.contacts.ContactsView;
+import ru.extas.web.dashboard.HomeView;
+import ru.extas.web.insurance.InsuranceView;
+import ru.extas.web.loans.LoansView;
+import ru.extas.web.users.UsersView;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.event.ShortcutAction.KeyCode;

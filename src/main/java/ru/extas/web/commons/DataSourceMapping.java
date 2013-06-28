@@ -1,4 +1,4 @@
-package ru.extas.web;
+package ru.extas.web.commons;
 
 /**
  * Привязка пользовательского интерфейса с данным

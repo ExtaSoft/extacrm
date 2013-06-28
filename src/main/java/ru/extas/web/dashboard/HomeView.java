@@ -1,10 +1,12 @@
 /**
  * 
  */
-package ru.extas.web;
+package ru.extas.web.dashboard;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ru.extas.web.commons.ExtaAbstractView;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -12,16 +14,15 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 
 /**
- * Реализует экран настроек CRM
+ * Реализует домашний экран CRM
  * 
  * @author Valery Orlov
  * 
  */
-public class ConfigView extends ExtaAbstractView {
+public class HomeView extends ExtaAbstractView {
 
 	private static final long serialVersionUID = -1272779672761523416L;
-
-	private final Logger logger = LoggerFactory.getLogger(ConfigView.class);
+	private final Logger logger = LoggerFactory.getLogger(HomeView.class);
 
 	/*
 	 * (non-Javadoc)
@@ -48,7 +49,7 @@ public class ConfigView extends ExtaAbstractView {
 	 */
 	@Override
 	protected Component getTitle() {
-		final Component title = new Label("Настройки");
+		final Component title = new Label("Домашний экран");
 		title.setSizeUndefined();
 		title.addStyleName("h1");
 		return title;

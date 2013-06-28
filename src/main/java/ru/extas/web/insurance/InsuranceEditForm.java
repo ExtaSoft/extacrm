@@ -1,7 +1,8 @@
-package ru.extas.web;
+package ru.extas.web.insurance;
 
 import ru.extas.model.Insurance;
 import ru.extas.server.InsuranceRepositoryJdo;
+import ru.extas.web.commons.EnduserBigdecimalConverter;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;

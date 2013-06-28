@@ -1,4 +1,4 @@
-package ru.extas.web;
+package ru.extas.web.commons;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

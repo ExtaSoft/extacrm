@@ -1,4 +1,4 @@
-package ru.extas.web;
+package ru.extas.web.commons;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;

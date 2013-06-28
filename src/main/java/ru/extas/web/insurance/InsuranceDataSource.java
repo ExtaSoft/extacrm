@@ -1,4 +1,6 @@
-package ru.extas.web;
+package ru.extas.web.insurance;
+
+import ru.extas.web.commons.GridDataSource;
 
 /**
  * Опции отрбражения страховок

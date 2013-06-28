@@ -3,11 +3,9 @@ package ru.extas.model;
 import java.util.Set;
 
 import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Extensions;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
 /**
  * Совокупная информация о пользователе
@@ -15,34 +13,47 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Valery Orlov
  * 
  */
-@PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
-public class UserProfile {
-
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
-	private String key;
+@PersistenceCapable(detachable = "true")
+public class UserProfile extends AbstractExtaObject {
 
 	// Login/email
 	@Persistent
 	private String login;
 
+	// Имя пользователя
+	@Persistent
+	private String name;
+
+	// Ссылка на контакт (ID)
+	@Persistent
+	private String contactId;
+
 	// Password (hash)
 	@Persistent
 	private String password;
 
+	// Требование сменить пароль при следующем входе
+	@Persistent
+	private boolean changePassword;
+
 	// Основная роль пользователя
 	@Persistent
-	private String role;
+	@Extensions({ @Extension(vendorName = "datanucleus", key = "enum-getter-by-value", value = "getRoleByName"),
+			@Extension(vendorName = "datanucleus", key = "enum-value-getter", value = "getName") })
+	private UserRole role;
 
-	// Группы в которых состоит пользователь
+	// Группы в которых состоит пользователь (ID)
 	@Persistent
-	private Set<UserGroup> groupList;
+	private Set<String> groupList;
+
+	// Пользователь заблокирован
+	@Persistent
+	private boolean blocked;
 
 	/**
 	 * @return the groupList
 	 */
-	public Set<UserGroup> getGroupList() {
+	public Set<String> getGroupList() {
 		return groupList;
 	}
 
@@ -50,7 +61,7 @@ public class UserProfile {
 	 * @param groupList
 	 *            the groupList to set
 	 */
-	public void setGroupList(Set<UserGroup> groupList) {
+	public void setGroupList(Set<String> groupList) {
 		this.groupList = groupList;
 	}
 
@@ -58,29 +69,14 @@ public class UserProfile {
 	 * @param role
 	 *            the role to set
 	 */
-	public void setRole(String role) {
+	public void setRole(UserRole role) {
 		this.role = role;
-	}
-
-	/**
-	 * @return the key
-	 */
-	public final String getKey() {
-		return key;
-	}
-
-	/**
-	 * @param key
-	 *            the key to set
-	 */
-	public final void setKey(String key) {
-		this.key = key;
 	}
 
 	/**
 	 * @return the login
 	 */
-	public final String getLogin() {
+	public String getLogin() {
 		return login;
 	}
 
@@ -88,14 +84,14 @@ public class UserProfile {
 	 * @param login
 	 *            the login to set
 	 */
-	public final void setLogin(String login) {
+	public void setLogin(String login) {
 		this.login = login;
 	}
 
 	/**
 	 * @return the password
 	 */
-	public final String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
@@ -103,12 +99,72 @@ public class UserProfile {
 	 * @param password
 	 *            the password to set
 	 */
-	public final void setPassword(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public UserRole getRole() {
 		return role;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the contactId
+	 */
+	public String getContactId() {
+		return contactId;
+	}
+
+	/**
+	 * @param contactId
+	 *            the contactId to set
+	 */
+	public void setContactId(String contactId) {
+		this.contactId = contactId;
+	}
+
+	/**
+	 * @return the changePassword
+	 */
+	public boolean isChangePassword() {
+		return changePassword;
+	}
+
+	/**
+	 * @param changePassword
+	 *            the changePassword to set
+	 */
+	public void setChangePassword(boolean changePassword) {
+		this.changePassword = changePassword;
+	}
+
+	/**
+	 * @return the blocked
+	 */
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	/**
+	 * @param blocked
+	 *            the blocked to set
+	 */
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
 	}
 
 }

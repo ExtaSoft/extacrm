@@ -1,15 +1,10 @@
 package ru.extas.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
 /**
  * Полис страхования
@@ -17,15 +12,8 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Valery Orlov
  * 
  */
-@PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
-public class Insurance implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
-	private String key;
+@PersistenceCapable(detachable = "true")
+public class Insurance extends AbstractExtaObject {
 
 	// Номер полиса
 	@Persistent
@@ -138,56 +126,6 @@ public class Insurance implements Serializable {
 		this.endDate = endDate;
 		this.createdBy = createdBy;
 		this.reseller = reseller;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((key == null) ? 0 : key.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Insurance other = (Insurance) obj;
-		if (key == null) {
-			if (other.key != null)
-				return false;
-		} else if (!key.equals(other.key))
-			return false;
-		return true;
-	}
-
-	/**
-	 * @return the key
-	 */
-	public final String getKey() {
-		return key;
-	}
-
-	/**
-	 * @param key
-	 *            the key to set
-	 */
-	public final void setKey(String key) {
-		this.key = key;
 	}
 
 	/**
@@ -418,6 +356,7 @@ public class Insurance implements Serializable {
 	/**
 	 * @return the createdBy
 	 */
+	@Override
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -426,6 +365,7 @@ public class Insurance implements Serializable {
 	 * @param createdBy
 	 *            the createdBy to set
 	 */
+	@Override
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
