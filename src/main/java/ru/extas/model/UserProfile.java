@@ -34,6 +34,10 @@ public class UserProfile extends AbstractExtaObject {
 	@Persistent
 	private String password;
 
+	// Ключ шифрования пароля
+	@Persistent
+	private String passwordSalt;
+
 	// Требование сменить пароль при следующем входе
 	@Persistent
 	private boolean changePassword;
@@ -167,6 +171,21 @@ public class UserProfile extends AbstractExtaObject {
 	 */
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
+	}
+
+	/**
+	 * @return the passwordSalt
+	 */
+	public String getPasswordSalt() {
+		return passwordSalt;
+	}
+
+	/**
+	 * @param passwordSalt
+	 *            the passwordSalt to set
+	 */
+	public void setPasswordSalt(String passwordSalt) {
+		this.passwordSalt = passwordSalt;
 	}
 
 }

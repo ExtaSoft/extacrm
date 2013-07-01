@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import ru.extas.model.PMF;
 import ru.extas.model.UserProfile;
+import ru.extas.model.UserRole;
+
+import com.google.appengine.api.utils.SystemProperty;
 
 /**
  * Имплементация сервиса управления пользователями и правами доступа
@@ -21,6 +24,7 @@ import ru.extas.model.UserProfile;
  */
 public class UserManagementServiceJdo implements UserManagementService {
 
+	private static final String SUPERUSER_LOGIN = "admin";
 	private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJdo.class);
 
 	/*
@@ -33,6 +37,10 @@ public class UserManagementServiceJdo implements UserManagementService {
 	@Override
 	public UserProfile findUserByLogin(String login) {
 		logger.info("Finding user by login: {}...", login);
+		if (login.equals(SUPERUSER_LOGIN)) {
+			logger.info("Returning superuser profile...");
+			return getSuperuser();
+		}
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query q = pm.newQuery(UserProfile.class);
 		q.setFilter("login == loginPrm");
@@ -92,6 +100,28 @@ public class UserManagementServiceJdo implements UserManagementService {
 		} finally {
 			pm.close();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ru.extas.server.UserManagementService#getSuperuser()
+	 */
+	@Override
+	public UserProfile getSuperuser() {
+		UserProfile user = new UserProfile();
+		user.setName("Global Superuser");
+		user.setLogin(SUPERUSER_LOGIN);
+		if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+			// The app is running on App Engine...
+			user.setPassword("wfrySeRJLIX11u4OdZqXzDky8pL0mk/Q8VDt8QwWCU8=");
+			user.setPasswordSalt("Dgr6Vo1PB7h4FWEEKCVXuQ==");
+		} else {
+			user.setPassword("y+ajXewM2qsaZBocksvfYKIlMzQBPW9SXORl4npgLWc=");
+			user.setPasswordSalt("YM8hMeHtHyPOa3eY+JmSVg==");
+		}
+		user.setRole(UserRole.ADMIN);
+		return user;
 	}
 
 }

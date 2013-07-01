@@ -1,5 +1,7 @@
 package ru.extas.web;
 
+import static ru.extas.server.ServiceLocator.lookup;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -13,11 +15,14 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.extas.model.UserProfile;
+import ru.extas.server.UserManagementService;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
 import ru.extas.web.insurance.InsuranceView;
 import ru.extas.web.loans.LoansView;
+import ru.extas.web.users.ChangePasswordForm;
 import ru.extas.web.users.UsersView;
 
 import com.vaadin.annotations.Theme;
@@ -47,6 +52,8 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.Window.CloseListener;
 
 /**
  * Основной класс приложения
@@ -199,10 +206,28 @@ public class ExtaCrmUI extends UI {
 					// token.setRememberMe(true);
 					try {
 						currentUser.login(token);
-						signin.removeShortcutListener(enter);
-						removeStyleName("login");
-						root.removeComponent(loginLayout);
-						buildMainView();
+
+						// Получить данные текущего пользователя
+						UserProfile currentUserProfile = lookup(UserManagementService.class).findUserByLogin((String) currentUser.getPrincipal());
+						if (currentUserProfile.isChangePassword()) {
+							// Поменять пароль
+							final ChangePasswordForm form = new ChangePasswordForm(currentUserProfile);
+							form.addCloseListener(new CloseListener() {
+								private static final long serialVersionUID = 1L;
+
+								@Override
+								public void windowClose(CloseEvent e) {
+									if (form.isSaved()) {
+										closeLoginAndBuildMain();
+									} else {
+										SecurityUtils.getSubject().logout();
+									}
+								}
+							});
+							form.showModal();
+						} else {
+							closeLoginAndBuildMain();
+						}
 					} catch (UnknownAccountException uae) {
 						// username wasn't in the system, show them an error
 						// message?
@@ -237,6 +262,17 @@ public class ExtaCrmUI extends UI {
 					loginPanel.addComponent(error);
 					username.focus();
 				}
+			}
+
+			/**
+			 * @param signin
+			 * @param enter
+			 */
+			private void closeLoginAndBuildMain() {
+				signin.removeShortcutListener(enter);
+				removeStyleName("login");
+				root.removeComponent(loginLayout);
+				buildMainView();
 			}
 		});
 
@@ -299,7 +335,6 @@ public class ExtaCrmUI extends UI {
 								Image profilePic = new Image(null, new ThemeResource("img/profile-pic.png"));
 								profilePic.setWidth("34px");
 								addComponent(profilePic);
-								// TODO: Add real user name
 								Label userName = new Label((String) SecurityUtils.getSubject().getPrincipal());
 								userName.setSizeUndefined();
 								addComponent(userName);

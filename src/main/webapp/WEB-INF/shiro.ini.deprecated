@@ -3,12 +3,16 @@
 # =======================
 
 [main]
+passwordMatcher = org.apache.shiro.authc.credential.PasswordMatcher
+iniRealm.credentialsMatcher = $passwordMatcher
+
 # Objects and their properties are defined here, 
 # Such as the securityManager, Realms and anything
 # else needed to build the SecurityManager
 
 [users]
-admin = admin, admin
+admin = $shiro1$SHA-256$500000$IKwf4EakQAad4NWAEYqBtg==$alkA0REj4D1BU4Tk2NP7wR9Ee/Tf3Ce39hSUYb5+0Ns=, admin
+
 # The 'users' section is for simple deployments
 # when you only need a small number of statically-defined 
 # set of User accounts.

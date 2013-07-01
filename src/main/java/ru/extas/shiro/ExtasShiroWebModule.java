@@ -2,11 +2,12 @@ package ru.extas.shiro;
 
 import javax.servlet.ServletContext;
 
-import org.apache.shiro.config.Ini;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.guice.web.ShiroWebModule;
-import org.apache.shiro.realm.text.IniRealm;
 
-import com.google.inject.Provides;
 import com.google.inject.name.Names;
 
 /**
@@ -23,24 +24,29 @@ public class ExtasShiroWebModule extends ShiroWebModule {
 
 	@Override
 	protected void configureShiroWeb() {
-		try {
-			bindRealm().toConstructor(IniRealm.class.getConstructor(Ini.class));
-		} catch (NoSuchMethodException e) {
-			addError(e);
-		}
+		// try {
+		// bindRealm().toConstructor(IniRealm.class.getConstructor(Ini.class));
+		// } catch (NoSuchMethodException e) {
+		// addError(e);
+		// }
 		bindRealm().to(UserRealm.class);
 		// addFilterChain("/**", AUTHC_BASIC);
-		// bind(CredentialsMatcher.class).to(HashedCredentialsMatcher.class);
-		// bind(HashedCredentialsMatcher.class);
-		// bindConstant().annotatedWith(Names.named("shiro.hashAlgorithmName")).to(Md5Hash.ALGORITHM_NAME);
+		bind(CredentialsMatcher.class).to(HashedCredentialsMatcher.class);
+		bind(HashedCredentialsMatcher.class);
+		bind(CacheManager.class).to(MemcacheManager.class);
+		bind(MemcacheManager.class);
+		bindConstant().annotatedWith(Names.named("shiro.hashAlgorithmName")).to(Sha256Hash.ALGORITHM_NAME);
+		bindConstant().annotatedWith(Names.named("shiro.hashIterations")).to(UserRealm.HASH_ITERATIONS);
+		bindConstant().annotatedWith(Names.named("shiro.storedCredentialsHexEncoded")).to(false);
 		bindConstant().annotatedWith(Names.named("shiro.globalSessionTimeout")).to(30000L);
+		bindConstant().annotatedWith(Names.named("shiro.rememberMe")).to(true);
 	}
 
-	/**
-	 * @return
-	 */
-	@Provides
-	Ini loadShiroIni() {
-		return Ini.fromResourcePath("./WEB-INF/shiro.ini");
-	}
+	// /**
+	// * @return
+	// */
+	// @Provides
+	// Ini loadShiroIni() {
+	// return Ini.fromResourcePath("./WEB-INF/shiro.ini");
+	// }
 }

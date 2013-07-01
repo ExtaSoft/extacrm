@@ -12,6 +12,11 @@
 		<param-value>${vaadin.production.mode}</param-value>
 	</context-param>
 
+	<context-param>
+		<param-name>heartbeatInterval</param-name>
+		<param-value>300</param-value>
+	</context-param>
+
 	<filter>
 		<filter-name>guiceFilter</filter-name>
 		<filter-class>ru.extas.guice.ExtasGuiceFilter</filter-class>

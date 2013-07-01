@@ -36,4 +36,11 @@ public interface UserManagementService {
 	 */
 	List<UserProfile> loadUsers();
 
+	/**
+	 * Получить профайл стандартного юзера (admin)
+	 * 
+	 * @return профайл юзера admin
+	 */
+	UserProfile getSuperuser();
+
 }

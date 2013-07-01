@@ -49,6 +49,12 @@ public class UsersView extends ExtaAbstractView {
 	protected Component getContent() {
 		logger.info("Creating view content...");
 
+		// Запрос данных
+		UserManagementService userService = lookup(UserManagementService.class);
+		final Collection<UserProfile> users = userService.loadUsers();
+		final BeanItemContainer<UserProfile> beans = new BeanItemContainer<UserProfile>(UserProfile.class);
+		beans.addAll(users);
+
 		CssLayout panel = new CssLayout();
 		panel.addStyleName("layout-panel");
 		panel.setSizeFull();
@@ -56,7 +62,7 @@ public class UsersView extends ExtaAbstractView {
 		// Формируем тулбар
 		HorizontalLayout commandBar = new HorizontalLayout();
 		commandBar.addStyleName("configure");
-		// commandBar.setSpacing(false);
+		commandBar.setSpacing(true);
 
 		Button newBtn = new Button("Новый");
 		newBtn.addStyleName("icon-user-add");
@@ -69,17 +75,17 @@ public class UsersView extends ExtaAbstractView {
 			public void buttonClick(ClickEvent event) {
 				final UserProfile newObj = new UserProfile();
 
-				final UserEditForm editWin = new UserEditForm("Новый пользователь", newObj);
+				final UserEditForm editWin = new UserEditForm("Ввод нового пользователя в систему", newObj);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void windowClose(CloseEvent e) {
-						if (editWin.isOkPressed()) {
-							// beans.addBean(newObj);
-							// table.setValue(newObj);
-							Notification.show("Полис сохранен", Type.TRAY_NOTIFICATION);
+						if (editWin.isSaved()) {
+							beans.addBean(newObj);
+							table.setValue(newObj);
+							Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
 						}
 					}
 				});
@@ -90,16 +96,33 @@ public class UsersView extends ExtaAbstractView {
 
 		Button editBtn = new Button("Изменить");
 		editBtn.addStyleName("icon-user-1");
-		editBtn.setDescription("Редактировать данные пользователя");
+		editBtn.setDescription("Редактирование данных пользователя");
+		editBtn.addClickListener(new ClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				final UserProfile curObj = new UserProfile();
+
+				final UserEditForm editWin = new UserEditForm("Редактирование данных пользователя", curObj);
+				editWin.addCloseListener(new CloseListener() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void windowClose(CloseEvent e) {
+						if (editWin.isSaved()) {
+							Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
+						}
+					}
+				});
+				editWin.showModal();
+			}
+		});
 		commandBar.addComponent(editBtn);
 
 		panel.addComponent(commandBar);
-
-		// Запрос данных
-		UserManagementService userService = lookup(UserManagementService.class);
-		final Collection<UserProfile> users = userService.loadUsers();
-		final BeanItemContainer<UserProfile> beans = new BeanItemContainer<UserProfile>(UserProfile.class);
-		beans.addAll(users);
 
 		// Создаем таблицу скроллинга
 		table = new Table("Пользователи", beans);

@@ -1,6 +1,6 @@
-@mixin extacrm-textfield {
+@mixin extacrm-textfield($primaryStyleName : v-textfield) {
 	
-	.v-textfield,
+	.#{$primaryStyleName},
 	.v-filterselect {
 		@include border-radius(3px);
 		border: 1px solid #c9c8c7;
@@ -16,37 +16,49 @@
 		margin: 0;
 	}
 	
-	input.v-widget.v-textfield,
+	input.v-widget.#{$primaryStyleName},
 	.v-filterselect {
 		padding: .25em .3em;	
 	}
 	
-	.v-webkit & input.v-textfield,
+	.v-webkit & input.#{$primaryStyleName},
 	.v-webkit & .v-filterselect {
 		padding-bottom: .3em;	
 	}
 	
-	.v-textfield:focus,
+	.#{$primaryStyleName}:focus,
 	.v-filterselect-focus {
 		outline: none;
 		border-color: #69a5e4;
 	}
 	
-	input.v-textfield-prompt,
+	input.#{$primaryStyleName}-prompt,
 	.v-filterselect-prompt .v-filterselect-input {
 		font-style: normal;
 	}
 	
-	input.v-widget.v-textfield.small,
+	input.v-widget.#{$primaryStyleName}.small,
 	.v-filterselect.small {
 		padding: .15em .2em;
 		font-size: 12px;
 	}
 	
 	
-	.v-webkit & input.v-textfield.small,
+	.v-webkit & input.#{$primaryStyleName}.small,
 	.v-webkit & .v-filterselect.small {
 		padding-bottom: .2em;
 	}
+
+  .v-textarea-error,
+  .#{$primaryStyleName}-error,
+  .v-richtextarea-error iframe.gwt-RichTextArea {
+  	background: #FFE0E0;	
+  }
+  
+  // .v-textarea-required,
+  // .#{$primaryStyleName}-required,
+  // .v-richtextarea-required iframe.gwt-RichTextArea {
+  	// background: #FFE0E0;	
+  // }
 
 }

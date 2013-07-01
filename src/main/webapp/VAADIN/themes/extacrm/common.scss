@@ -182,4 +182,16 @@ $font: normal $font-size/1.5 "Open Sans", Arial, sans-serif;
 		border-top-color: rgba(255,255,255,.1);
 	}
 
+  .v-tooltip .v-errormessage {
+    color: #FFE0E0;
+    padding-left: 14px;
+    background: transparent url(img/error-indicator.png) no-repeat 0 50%;
+    }
+
+  .v-errorindicator {
+    width: 13px;
+    height: 1.4em;
+    background: transparent url(img/error-indicator.png) no-repeat right 50%;
+    }
+
 }

@@ -4,36 +4,33 @@
 package ru.extas.web.users;
 
 import static ru.extas.server.ServiceLocator.lookup;
-import ru.extas.model.UserProfile;
-import ru.extas.server.UserManagementService;
 
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ru.extas.model.UserProfile;
+import ru.extas.model.UserRole;
+import ru.extas.server.UserManagementService;
+import ru.extas.shiro.UserRealm;
+import ru.extas.web.commons.AbstractEditForm;
+
+import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component;
+import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 
 /**
  * @author Valery Orlov
  * 
  */
-public class UserEditForm extends Window {
+public class UserEditForm extends AbstractEditForm<UserProfile> {
 
 	private static final long serialVersionUID = -5016687382646391930L;
-
-	private boolean okPressed = false;
-	private final HorizontalLayout buttonsPanel = new HorizontalLayout();
-	private final Button cancelBtn;
-	private final Button okBtn;
+	private final Logger logger = LoggerFactory.getLogger(UserEditForm.class);
 
 	// Компоненты редактирования
 	@PropertyId("name")
@@ -41,11 +38,17 @@ public class UserEditForm extends Window {
 	@PropertyId("login")
 	private TextField loginField;
 	@PropertyId("role")
-	private TextField roleField;
+	private ComboBox roleField;
 	@PropertyId("blocked")
-	private TextField blockedField;
+	private CheckBox blockedField;
 	@PropertyId("changePassword")
-	private TextField changePasswordField;
+	private CheckBox changePasswordField;
+	@PropertyId("password")
+	private PasswordField passField;
+
+	private PasswordField passConfField;
+
+	private final String initialPassword;
 
 	/**
 	 * @param string
@@ -53,112 +56,125 @@ public class UserEditForm extends Window {
 	 */
 	public UserEditForm(String caption, final UserProfile obj) {
 
-		super(caption);
+		super(caption, obj);
+		initialPassword = obj.getPassword();
+	}
 
-		FormLayout form = createEditFields();
-
-		BeanItem<UserProfile> item = new BeanItem<UserProfile>(obj);
-
-		// Now create a binder
-		final FieldGroup binder = new FieldGroup(item);
-		binder.setBuffered(true);
-		binder.bindMemberFields(this);
-
-		cancelBtn = new Button("Отмена", new Button.ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(final ClickEvent event) {
-				binder.discard();
-				UI.getCurrent().removeWindow(UserEditForm.this);
-			}
-		});
-		cancelBtn.setStyleName("icon-cancel");
-
-		okBtn = new Button("OK", new Button.ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(final ClickEvent event) {
-				try {
-					okPressed = true;
-					binder.commit();
-					UserManagementService userService = lookup(UserManagementService.class);
-					userService.persistUser(obj);
-				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				UI.getCurrent().removeWindow(UserEditForm.this);
-			}
-		});
-
-		okBtn.setStyleName("icon-ok");
-		this.buttonsPanel.addComponent(okBtn);
-		this.buttonsPanel.setComponentAlignment(okBtn, Alignment.MIDDLE_RIGHT);
-		this.buttonsPanel.addComponent(cancelBtn);
-		this.buttonsPanel.setComponentAlignment(cancelBtn, Alignment.MIDDLE_RIGHT);
-		this.buttonsPanel.setSpacing(true);
-
-		setContent(form);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ru.extas.web.commons.AbstractEditForm#initObject(ru.extas.model.
+	 * AbstractExtaObject)
+	 */
+	@Override
+	protected void initObject(UserProfile obj) {
+		if (obj.getKey() == null) {
+			// Инициализируем новый объект
+			obj.setRole(UserRole.USER);
+			obj.setChangePassword(true);
+		}
 
 	}
 
-	private FormLayout createEditFields() {
+	@Override
+	protected void saveObject(final UserProfile obj) {
+		logger.debug("Saving user profile...");
+		securePassword(obj);
+		UserManagementService userService = lookup(UserManagementService.class);
+		userService.persistUser(obj);
+	}
+
+	/**
+	 * @param user
+	 */
+	private void securePassword(UserProfile user) {
+		// Проверить менялся ли пароль
+		if (!passField.getValue().equals(initialPassword)) {
+			UserRealm.securePassword(user);
+		}
+	}
+
+	@Override
+	protected void checkBeforeSave(UserProfile obj) {
+	}
+
+	@Override
+	protected FormLayout createEditFields(final UserProfile obj) {
 		// Have some layout
 		FormLayout form = new FormLayout();
 
 		nameField = new TextField("Имя");
+		nameField.setImmediate(true);
+		nameField.setWidth(50, Unit.EX);
 		nameField.setDescription("Введите имя (ФИО) пользователя");
 		nameField.setInputPrompt("Имя (Отчество) Фамилия");
 		nameField.setRequired(true);
 		nameField.setRequiredError("Имя пользователя не может быть пустым. Пожалуйста введите ФИО пользователя.");
+		nameField.setNullRepresentation("");
 		form.addComponent(nameField);
 
 		loginField = new TextField("Логин (e-mail)");
+		loginField.setImmediate(true);
+		loginField.setWidth(40, Unit.EX);
 		loginField.setDescription("Введите имя e-mail пользователя который будет использоваться для входа в систему");
-		loginField.setInputPrompt("E-Mail");
+		loginField.setInputPrompt("e-mail");
 		loginField.setRequired(true);
 		loginField.setRequiredError("Логин пользователя не может быть пустым. Пожалуйста введите действительный e-mail пользователя.");
+		loginField.setNullRepresentation("");
+		loginField.addValidator(new EmailValidator("{0} не является допустимым адресом электронной почты."));
 		form.addComponent(loginField);
 
-		roleField = new TextField("Роль");
+		passField = new PasswordField("Пароль");
+		passField.setImmediate(true);
+		passField.setDescription("Введите пароль для входа в систему");
+		passField.setInputPrompt("Пароль");
+		passField.setRequired(true);
+		passField.setRequiredError("Пароль пользователя не может быть пустым.");
+		passField.setNullRepresentation("");
+		form.addComponent(passField);
+
+		passConfField = new PasswordField("Подтверждение пароля");
+		passConfField.setImmediate(true);
+		passConfField.setDescription("Введите повторно пароль для для его подтвержедения");
+		passConfField.setInputPrompt("Подтверждение пароля");
+		passConfField.setRequired(true);
+		passConfField.setNullRepresentation("");
+		// TODO: Сделать симметричную проверку пароля
+		passConfField.addValidator(new Validator() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void validate(Object value) throws InvalidValueException {
+				if (!value.equals(passField.getValue()))
+					throw new InvalidValueException("Пароли не совпадают!");
+
+			}
+		});
+		passConfField.setValue(initialPassword);
+		form.addComponent(passConfField);
+
+		roleField = new ComboBox("Роль");
 		roleField.setDescription("Роль пользователя в системе. Определяет основные права доступа к разделам и объектам системы.");
-		// roleField.setInputPrompt("E-Mail");
 		roleField.setRequired(true);
-		// roleField.setRequiredError("Логин пользователя не может быть пустым. Пожалуйста введите действительный e-mail пользователя.");
+		roleField.setNullSelectionAllowed(false);
+		roleField.addItem(UserRole.USER);
+		roleField.setItemCaption(UserRole.USER, "Пользователь");
+		roleField.addItem(UserRole.MANAGER);
+		roleField.setItemCaption(UserRole.MANAGER, "Руководитель");
+		roleField.addItem(UserRole.ADMIN);
+		roleField.setItemCaption(UserRole.ADMIN, "Администратор");
+		roleField.setValue(UserRole.USER);
 		form.addComponent(roleField);
 
-		blockedField = new TextField("Блокировать");
+		blockedField = new CheckBox("Блокировать");
+		blockedField.setDescription("Установите, чтобы блокировать вход пользователя в систему.");
 		form.addComponent(blockedField);
 
-		changePasswordField = new TextField("Сменить пароль");
-		form.addComponent(loginField);
+		changePasswordField = new CheckBox("Сменить пароль");
+		changePasswordField.setDescription("Установите, чтобы потребовать у пользователя смены пароля при следующем входе с систему.");
+		form.addComponent(changePasswordField);
 
 		return form;
 	}
-
-	@Override
-	public void setContent(Component content) {
-		if (content != null) {
-			final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
-			contentContainer.setMargin(true);
-			contentContainer.setSpacing(true);
-			contentContainer.setComponentAlignment(this.buttonsPanel, Alignment.MIDDLE_RIGHT);
-			content = contentContainer;
-		}
-		super.setContent(content);
-	}
-
-	public boolean isOkPressed() {
-		return this.okPressed;
-	}
-
-	public void showModal() {
-		setClosable(true);
-		setModal(true);
-
-		UI.getCurrent().addWindow(this);
-	}
-
 }
