@@ -17,6 +17,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -75,6 +77,8 @@ public abstract class AbstractEditForm<TEditObject extends AbstractExtaObject> e
 					} catch (CommitException e) {
 						// TODO Correct error handling
 						logger.error("Can't apply form changes", e);
+						Notification.show("Невозможно сохранить изменения", Type.ERROR_MESSAGE);
+						return;
 					}
 					UI.getCurrent().removeWindow(AbstractEditForm.this);
 				}

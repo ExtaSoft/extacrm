@@ -25,6 +25,10 @@ public class ExtasServicesModule extends AbstractModule {
 		bind(UserManagementService.class).to(UserManagementServiceJdo.class);
 		// Служба управления страховками
 		bind(InsuranceRepository.class).to(InsuranceRepositoryJdo.class);
+		// Служба управления контактами
+		bind(ContactService.class).to(ContactServiceJdo.class);
+		// Служба - поставщик простых справочных данных
+		bind(SupplementService.class).to(SupplementServiceImpl.class);
 
 	}
 

@@ -20,6 +20,7 @@
 @import "components/label.scss";
 @import "components/table/table.scss";
 @import "components/window/window.scss";
+@import "components/datefield/datefield.scss";
 
 @import "views/base.scss";
 
@@ -32,13 +33,14 @@
 	@include extacrm-common;
 	
 	@include extacrm-button;
-  @include extacrm-combobox;
+	@include extacrm-combobox;
 	@include extacrm-label;
 	@include extacrm-notification;
 	@include extacrm-table;
 	@include extacrm-tabsheet;
 	@include extacrm-textfield;
 	@include extacrm-window;
+	@include extacrm-datefield;
 	
 	@include extacrm-base-view;
 

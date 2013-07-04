@@ -103,7 +103,8 @@ public class UsersView extends ExtaAbstractView {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				final UserProfile curObj = new UserProfile();
+				// FIXME: Проверить, что имеется выбранная запись
+				final UserProfile curObj = (UserProfile) table.getValue();
 
 				final UserEditForm editWin = new UserEditForm("Редактирование данных пользователя", curObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -132,6 +133,10 @@ public class UsersView extends ExtaAbstractView {
 		table.setSelectable(true);
 		table.setColumnCollapsingAllowed(true);
 		table.setColumnReorderingAllowed(true);
+
+		// TODO: Корректно отображать столбец роли
+		// TODO: Корректно отображать булевые столбцы
+		// TODO: Добавить в таблицу маркеры изменений
 
 		UsersDataDecl ds = new UsersDataDecl();
 		ds.setTableColumnHeaders(table);

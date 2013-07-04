@@ -75,7 +75,6 @@ public class ExtaMainMenu extends CssLayout {
 
 		final String normFragment = "/" + fragment;
 
-		// TODO: Add injection support
 		// Регистрируем в навигаторе
 		navigator.addView(normFragment, viewCls);
 

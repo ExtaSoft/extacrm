@@ -73,7 +73,6 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 			obj.setRole(UserRole.USER);
 			obj.setChangePassword(true);
 		}
-
 	}
 
 	@Override
@@ -158,6 +157,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 		roleField.setDescription("Роль пользователя в системе. Определяет основные права доступа к разделам и объектам системы.");
 		roleField.setRequired(true);
 		roleField.setNullSelectionAllowed(false);
+		roleField.setNewItemsAllowed(false);
 		roleField.addItem(UserRole.USER);
 		roleField.setItemCaption(UserRole.USER, "Пользователь");
 		roleField.addItem(UserRole.MANAGER);

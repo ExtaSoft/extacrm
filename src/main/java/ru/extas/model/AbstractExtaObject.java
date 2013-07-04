@@ -189,7 +189,7 @@ public abstract class AbstractExtaObject implements StoreCallback, Serializable 
 		if (key == null) {
 			createdAt = dt;
 		}
-		// TODO Write current userId
+		// FIXME Write current userId
 
 	}
 

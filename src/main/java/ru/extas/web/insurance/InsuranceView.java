@@ -120,6 +120,7 @@ public class InsuranceView extends ExtaAbstractView {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// Взять текущий полис из грида
+				// FIXME: Проверить, что имеется выбранная запись
 				final Insurance selObj = (Insurance) table.getValue();
 
 				final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", selObj);

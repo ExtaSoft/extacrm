@@ -85,14 +85,12 @@ public class ExtaCrmUI extends UI {
 
 		// Configure the error handler for the UI
 		setErrorHandler(new DefaultErrorHandler() {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void error(final com.vaadin.server.ErrorEvent event) {
-				event.getThrowable().printStackTrace();
+				// Протоколируем ошибку
+				logger.error("", event.getThrowable());
 
 				final StringWriter strWr = new StringWriter();
 				strWr.append("<div class='exceptionStackTraceBox'><pre>");
@@ -100,7 +98,7 @@ public class ExtaCrmUI extends UI {
 				strWr.append("</pre></div>");
 
 				// Display the error message in a custom fashion
-				final Notification notif = new Notification("Uncaught Exception", strWr.toString(), Notification.Type.ERROR_MESSAGE);
+				final Notification notif = new Notification("Непредусмотренная серьезная ошибка", strWr.toString(), Notification.Type.ERROR_MESSAGE);
 
 				// Customize it
 				notif.setPosition(Position.MIDDLE_CENTER);
