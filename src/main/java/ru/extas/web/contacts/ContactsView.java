@@ -128,18 +128,10 @@ public class ContactsView extends ExtaAbstractView {
 
 		// Создаем таблицу скроллинга
 		table = new Table("Контакты", beans);
-
 		table.setSizeFull();
-		table.setPageLength(0);
-		table.setSelectable(true);
-		table.setColumnCollapsingAllowed(true);
-		table.setColumnReorderingAllowed(true);
-		table.setNullSelectionAllowed(false);
 
 		ContactDataDecl ds = new ContactDataDecl();
-		ds.setTableColumnHeaders(table);
-		ds.setTableVisibleColumns(table);
-		ds.setTableCollapsedColumns(table);
+		ds.initTableColumns(table);
 
 		panel.addComponent(table);
 

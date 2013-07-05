@@ -129,19 +129,9 @@ public class UsersView extends ExtaAbstractView {
 		table = new Table("Пользователи", beans);
 
 		table.setSizeFull();
-		table.setPageLength(0);
-		table.setSelectable(true);
-		table.setColumnCollapsingAllowed(true);
-		table.setColumnReorderingAllowed(true);
-
-		// TODO: Корректно отображать столбец роли
-		// TODO: Корректно отображать булевые столбцы
-		// TODO: Добавить в таблицу маркеры изменений
 
 		UsersDataDecl ds = new UsersDataDecl();
-		ds.setTableColumnHeaders(table);
-		ds.setTableVisibleColumns(table);
-		ds.setTableCollapsedColumns(table);
+		ds.initTableColumns(table);
 
 		panel.addComponent(table);
 

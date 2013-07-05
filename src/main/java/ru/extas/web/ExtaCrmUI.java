@@ -33,6 +33,7 @@ import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -78,6 +79,9 @@ public class ExtaCrmUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
+
+		// Регистрируем конверторы по умолчанию
+		VaadinSession.getCurrent().setConverterFactory(new ExtaConverterFactory());
 
 		setContent(root);
 		root.addStyleName("root");
@@ -240,6 +244,7 @@ public class ExtaCrmUI extends UI {
 					} catch (AuthenticationException ae) {
 						// unexpected condition - error?
 						errMessage = "Вход в систему невозможен";
+						logger.error("Authentication system error", ae);
 					}
 				} else {
 					errMessage = "Задайте имя пользователя и пароль";

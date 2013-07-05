@@ -9,15 +9,22 @@ $negative-popupdatefield-button-width: -22px;
 	
 }
 .#{$primaryStyleName}-button {
-	font-size:13px;
-	width: $popupdatefield-button-width;
+	width: 27px;
 	margin-right: $negative-popupdatefield-button-width;
-	height: 24px;
-	padding: 0;
+	height: 27px;
+	//padding: 0;
 	overflow: hidden;
 	border: none;
-	background: transparent url(img/open-button.png) no-repeat right 0;
+	background: transparent;
 }
+
+.#{$primaryStyleName}-button:before {
+  @include icon-font-decl;
+  font-size:22px;
+  color:gray;
+  content:'\e89b'
+}
+
 .#{$primaryStyleName}-popupcalendar {
 	min-width: 0;
 	padding-right: $popupdatefield-button-width;
@@ -157,5 +164,9 @@ td.#{$primaryStyleName}-calendarpanel-month {
 	color: #999;
 	font-style: normal;
 }
+
+  .#{$primaryStyleName}-error {
+    background: #FFE0E0;  
+  }
 
 }

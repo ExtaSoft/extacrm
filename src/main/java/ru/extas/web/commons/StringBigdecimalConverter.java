@@ -15,24 +15,32 @@ import com.vaadin.data.util.converter.Converter;
  * @author Valery Orlov
  * 
  */
-public class EnduserBigdecimalConverter implements Converter<String, BigDecimal> {
+public class StringBigdecimalConverter implements Converter<String, BigDecimal> {
 
 	private static final long serialVersionUID = -7818477340305539184L;
+	private transient DecimalFormat format;
 
 	protected DecimalFormat getFormat(Locale locale) {
 		if (locale == null) {
 			locale = Locale.getDefault();
 		}
-		DecimalFormat dc = (DecimalFormat) NumberFormat.getInstance(locale);
-		dc.applyPattern("#,##0.00");
-		dc.setParseBigDecimal(true);
-		dc.setRoundingMode(RoundingMode.HALF_UP);
-		return dc;
+		format = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
+		// format.applyPattern("#,##0.00");
+		format.setParseBigDecimal(true);
+		format.setRoundingMode(RoundingMode.HALF_UP);
+		return format;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.util.Locale)
+	 */
 	@Override
 	public BigDecimal convertToModel(String value, Locale locale) throws ConversionException {
-		if (value == null) {
+		if (value == null || value.isEmpty()) {
 			return null;
 		}
 
@@ -54,6 +62,13 @@ public class EnduserBigdecimalConverter implements Converter<String, BigDecimal>
 		return parsedValue;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
+	 * .Object, java.util.Locale)
+	 */
 	@Override
 	public String convertToPresentation(BigDecimal value, Locale locale) throws ConversionException {
 		if (value == null) {
@@ -63,11 +78,23 @@ public class EnduserBigdecimalConverter implements Converter<String, BigDecimal>
 		return getFormat(locale).format(value);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.vaadin.data.util.converter.Converter#getModelType()
+	 */
 	@Override
 	public Class<BigDecimal> getModelType() {
 		return BigDecimal.class;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.util.Locale)
+	 */
 	@Override
 	public Class<String> getPresentationType() {
 		return String.class;

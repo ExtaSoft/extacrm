@@ -9,10 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.extas.model.Contact;
+import ru.extas.model.Contact.Sex;
 import ru.extas.server.ContactService;
 import ru.extas.server.SupplementService;
 import ru.extas.web.commons.AbstractEditForm;
-import ru.extas.web.commons.DateToJodaLDConverter;
+import ru.extas.web.util.ComponentUtil;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -21,6 +22,7 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
@@ -73,7 +75,7 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 			// Инициализируем новый объект
 			// TODO: Инициализировать клиента в соответствии с локацией текущего
 			// пользователя (регион, город)
-			obj.setSex(Contact.Sex.MAN);
+			obj.setSex(Contact.Sex.MALE);
 		}
 	}
 
@@ -122,22 +124,20 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 		nameField.setNullRepresentation("");
 		form.addComponent(nameField);
 
-		birthdayField = new DateField("Дата рождения");
-		birthdayField.setImmediate(true);
-		birthdayField.setDescription("Введите дату рождения контакта");
-		birthdayField.setConverter(new DateToJodaLDConverter());
-		form.addComponent(birthdayField);
-
 		sexField = new ComboBox("Пол");
 		sexField.setDescription("Укажите пол контакта");
 		sexField.setRequired(true);
 		sexField.setNullSelectionAllowed(false);
 		sexField.setNewItemsAllowed(false);
-		sexField.addItem(Contact.Sex.MAN);
-		sexField.setItemCaption(Contact.Sex.MAN, "Мужской");
-		sexField.addItem(Contact.Sex.WOMAN);
-		sexField.setItemCaption(Contact.Sex.WOMAN, "Женский");
+		ComponentUtil.fillSelectByEnum(sexField, Sex.class);
 		form.addComponent(sexField);
+
+		birthdayField = new PopupDateField("Дата рождения");
+		birthdayField.setImmediate(true);
+		birthdayField.setDescription("Введите дату рождения контакта");
+		birthdayField.setDateFormat("dd.MM.yyyy");
+		birthdayField.setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ");
+		form.addComponent(birthdayField);
 
 		cellPhoneField = new TextField("Мобильный телефон");
 		cellPhoneField.setImmediate(true);
@@ -158,11 +158,12 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 		form.addComponent(emailField);
 
 		regionField = new ComboBox("Регион");
-		regionField.setDescription("Укажите регион проживания контакта");
+		regionField.setDescription("Укажите регион проживания");
 		regionField.setInputPrompt("Выберите или начните ввод...");
 		regionField.setImmediate(true);
 		regionField.setNullSelectionAllowed(false);
 		regionField.setNewItemsAllowed(false);
+		regionField.setWidth(18, Unit.EM);
 		for (String item : lookup(SupplementService.class).loadRegions())
 			regionField.addItem(item);
 		regionField.addValueChangeListener(new ValueChangeListener() {

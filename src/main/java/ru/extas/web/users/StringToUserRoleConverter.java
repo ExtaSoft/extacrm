@@ -1,0 +1,82 @@
+/**
+ * 
+ */
+package ru.extas.web.users;
+
+import java.util.Locale;
+
+import ru.extas.model.UserRole;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.vaadin.data.util.converter.Converter;
+
+/**
+ * Конвертирует роли пользователя в соответствующее перечисление
+ * 
+ * @author Valery Orlov
+ * 
+ */
+public class StringToUserRoleConverter implements Converter<String, UserRole> {
+
+	private static final long serialVersionUID = 568270351867767905L;
+
+	private final BiMap<UserRole, String> map;
+
+	public StringToUserRoleConverter() {
+		map = HashBiMap.create();
+		map.put(UserRole.USER, "Пользователь");
+		map.put(UserRole.MANAGER, "Руководитель");
+		map.put(UserRole.ADMIN, "Администратор");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.util.Locale)
+	 */
+	@Override
+	public UserRole convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		if (value == null || value.isEmpty())
+			return null;
+
+		return map.inverse().get(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
+	 * .Object, java.util.Locale)
+	 */
+	@Override
+	public String convertToPresentation(UserRole value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		if (value == null)
+			return null;
+		return map.get(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.vaadin.data.util.converter.Converter#getModelType()
+	 */
+	@Override
+	public Class<UserRole> getModelType() {
+		return UserRole.class;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.vaadin.data.util.converter.Converter#getPresentationType()
+	 */
+	@Override
+	public Class<String> getPresentationType() {
+		return String.class;
+	}
+
+}

@@ -15,8 +15,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ru.extas.server.ExtasServicesModule;
 import ru.extas.shiro.ExtasShiroWebModule;
+import ru.extas.web.WebUIModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -29,6 +33,7 @@ import com.google.inject.servlet.GuiceFilter;
  * 
  */
 public class ExtasGuiceFilter extends GuiceFilter {
+	private final Logger logger = LoggerFactory.getLogger(ExtasGuiceFilter.class);
 
 	private static Injector INJECTOR;
 
@@ -53,13 +58,13 @@ public class ExtasGuiceFilter extends GuiceFilter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		if (INJECTOR != null) {
+		if (INJECTOR != null)
 			throw new ServletException("Injector already created?!");
-		}
-		INJECTOR = Guice.createInjector(new ExtasShiroWebModule(filterConfig.getServletContext()), new ExtasWebGuiceModule(),
-				new ExtasServicesModule());
 
-		filterConfig.getServletContext().log("Created injector with " + INJECTOR.getAllBindings().size() + " bindings.");
+		INJECTOR = Guice.createInjector(new ExtasShiroWebModule(filterConfig.getServletContext()), new ExtasWebGuiceModule(),
+				new ExtasServicesModule(), new WebUIModule());
+
+		logger.debug("Created injector with {} bindings.", INJECTOR.getAllBindings().size());
 		super.init(filterConfig);
 	}
 

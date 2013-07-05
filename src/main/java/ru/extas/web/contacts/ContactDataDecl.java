@@ -15,13 +15,13 @@ public class ContactDataDecl extends GridDataDecl {
 
 	public ContactDataDecl() {
 		super();
-		addMapping("name", "Имя", true, true, false);
-		addMapping("birthday", "Дата рождения", true, true, false);
-		addMapping("sex", "Пол", true, true, false);
-		addMapping("cellPhone", "Мобильный телефон", true, true, false);
-		addMapping("email", "E-Mail", true, true, false);
-		addMapping("region", "Регион", true, true, false);
-		// TODO Add create/modify markers
+		addMapping("name", "Имя");
+		addMapping("birthday", "Дата рождения"/* , StringToJodaLDConverter.class */);
+		addMapping("sex", "Пол");
+		addMapping("cellPhone", "Мобильный телефон");
+		addMapping("email", "E-Mail");
+		addMapping("region", "Регион");
+		super.addCreateModifyMarkers();
 	}
 
 }

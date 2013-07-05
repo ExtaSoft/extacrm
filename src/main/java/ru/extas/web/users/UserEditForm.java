@@ -13,6 +13,7 @@ import ru.extas.model.UserRole;
 import ru.extas.server.UserManagementService;
 import ru.extas.shiro.UserRealm;
 import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.util.ComponentUtil;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -112,6 +113,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 		nameField.setNullRepresentation("");
 		form.addComponent(nameField);
 
+		// FIXME Проверить уникальность логина
 		loginField = new TextField("Логин (e-mail)");
 		loginField.setImmediate(true);
 		loginField.setWidth(40, Unit.EX);
@@ -140,7 +142,6 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 		passConfField.setNullRepresentation("");
 		// TODO: Сделать симметричную проверку пароля
 		passConfField.addValidator(new Validator() {
-
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -158,13 +159,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 		roleField.setRequired(true);
 		roleField.setNullSelectionAllowed(false);
 		roleField.setNewItemsAllowed(false);
-		roleField.addItem(UserRole.USER);
-		roleField.setItemCaption(UserRole.USER, "Пользователь");
-		roleField.addItem(UserRole.MANAGER);
-		roleField.setItemCaption(UserRole.MANAGER, "Руководитель");
-		roleField.addItem(UserRole.ADMIN);
-		roleField.setItemCaption(UserRole.ADMIN, "Администратор");
-		roleField.setValue(UserRole.USER);
+		ComponentUtil.fillSelectByEnum(roleField, UserRole.class);
 		form.addComponent(roleField);
 
 		blockedField = new CheckBox("Блокировать");

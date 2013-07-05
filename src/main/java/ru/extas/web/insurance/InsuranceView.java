@@ -165,19 +165,9 @@ public class InsuranceView extends ExtaAbstractView {
 
 		table.setSizeFull();
 		table.setPageLength(0);
-		// t.addStyleName("plain");
-		// t.addStyleName("borderless");
-		// t.setSortEnabled(false);
-		// t.setColumnAlignment("Revenue", Align.RIGHT);
-		// table.setRowHeaderMode(RowHeaderMode.INDEX);
-		table.setSelectable(true);
-		table.setColumnCollapsingAllowed(true);
-		table.setColumnReorderingAllowed(true);
 
 		GridDataDecl ds = new InsuranceDataDecl();
-		ds.setTableColumnHeaders(table);
-		ds.setTableVisibleColumns(table);
-		ds.setTableCollapsedColumns(table);
+		ds.initTableColumns(table);
 
 		panel.addComponent(table);
 		return panel;

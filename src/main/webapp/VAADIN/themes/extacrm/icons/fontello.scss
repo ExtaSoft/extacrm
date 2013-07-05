@@ -1,3 +1,16 @@
+  @mixin icon-font-decl {
+    font-family: 'fontello';
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    text-align: center;
+    line-height: 1;
+    margin-right: .4em;
+    vertical-align: 1px;
+  }
+
 @mixin icons-fontello {
 
 	@font-face {
@@ -8,6 +21,7 @@
 	  font-style: normal;
 	}
 	
+	
 	[class^="icon-"] > .v-button-wrap:before,
 	[class*=" icon-"] > .v-button-wrap:before,
 	[class^="icon-"].v-nativebutton:before,
@@ -15,16 +29,7 @@
 	[class^="icon-"].v-label:before,
 	[class*=" icon-"].v-label:before,
 	[class*="-icon-"].v-menubar-menuitem:before {
-	  font-family: 'fontello';
-	  font-style: normal;
-	  font-weight: normal;
-	  speak: none;
-	  display: inline-block;
-	  text-decoration: inherit;
-	  text-align: center;
-	  line-height: 1;
-	  margin-right: .4em;
-	  vertical-align: 1px;
+	  @include icon-font-decl;
 	}
 	
 	[class^="icon-"] > .v-button-wrap:before,

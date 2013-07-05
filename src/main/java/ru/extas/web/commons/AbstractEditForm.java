@@ -94,6 +94,18 @@ public abstract class AbstractEditForm<TEditObject extends AbstractExtaObject> e
 		this.buttonsPanel.setSpacing(true);
 
 		setContent(form);
+
+		this.addCloseListener(new CloseListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void windowClose(CloseEvent e) {
+
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 @mixin extacrm-textfield($primaryStyleName : v-textfield) {
 	
 	.#{$primaryStyleName},
+	.v-textarea,
 	.v-filterselect {
 		@include border-radius(3px);
 		border: 1px solid #c9c8c7;
@@ -27,15 +28,19 @@
 	}
 	
 	.#{$primaryStyleName}:focus,
+	.v-textarea:focus,
 	.v-filterselect-focus {
 		outline: none;
 		border-color: #69a5e4;
 	}
 	
+	/*
 	input.#{$primaryStyleName}-prompt,
+	.v-textarea-promt
 	.v-filterselect-prompt .v-filterselect-input {
 		font-style: normal;
 	}
+	*/
 	
 	input.v-widget.#{$primaryStyleName}.small,
 	.v-filterselect.small {

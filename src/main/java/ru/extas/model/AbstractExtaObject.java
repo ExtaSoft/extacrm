@@ -3,6 +3,8 @@
  */
 package ru.extas.model;
 
+import static ru.extas.server.ServiceLocator.lookup;
+
 import java.io.Serializable;
 
 import javax.jdo.annotations.Extension;
@@ -16,6 +18,8 @@ import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.listener.StoreCallback;
 
 import org.joda.time.DateTime;
+
+import ru.extas.server.UserManagementService;
 
 /**
  * Базовый класс для всех сущностей. Имплементирует ID и макеры изменений.
@@ -74,7 +78,7 @@ public abstract class AbstractExtaObject implements StoreCallback, Serializable 
 	}
 
 	/**
-	 * Получить идентификатор пользователя создавшего объект
+	 * Получить логин пользователя создавшего объект
 	 * 
 	 * @return идентификатор пользователя
 	 */
@@ -108,7 +112,7 @@ public abstract class AbstractExtaObject implements StoreCallback, Serializable 
 	}
 
 	/**
-	 * Получить идентификатор пользователя изменившего объект
+	 * Получить логин пользователя изменившего объект
 	 * 
 	 * @return идентификатор пользователя
 	 */
@@ -184,13 +188,15 @@ public abstract class AbstractExtaObject implements StoreCallback, Serializable 
 	@Override
 	public void jdoPreStore() {
 		// Ставим маркеры создания/модификации
+		UserProfile user = lookup(UserManagementService.class).getCurrentUser();
+		String login = user == null ? null : user.getLogin();
 		DateTime dt = DateTime.now();
 		modifiedAt = dt;
+		modifiedBy = login;
 		if (key == null) {
 			createdAt = dt;
+			createdBy = login;
 		}
-		// FIXME Write current userId
-
 	}
 
 }

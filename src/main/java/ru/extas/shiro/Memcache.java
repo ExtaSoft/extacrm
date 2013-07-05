@@ -56,13 +56,11 @@ public class Memcache<K, V> implements Cache<K, V> {
 
 	@Override
 	public Set<K> keys() {
-		// FIXME How to implement this?! Is it really necessary?
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Collection<V> values() {
-		// FIXME How to implement this?! Is it really necessary?
-		return null;
+		throw new UnsupportedOperationException();
 	}
 }

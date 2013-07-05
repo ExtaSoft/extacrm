@@ -20,7 +20,7 @@ public class Contact extends AbstractExtaObject {
 	private static final long serialVersionUID = -2543373135823969745L;
 
 	public enum Sex {
-		MAN, WOMAN;
+		MALE, FEMALE;
 	};
 
 	// Имя пользователя

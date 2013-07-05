@@ -2,7 +2,7 @@ package ru.extas.web.insurance;
 
 import ru.extas.model.Insurance;
 import ru.extas.server.InsuranceRepositoryJdo;
-import ru.extas.web.commons.EnduserBigdecimalConverter;
+import ru.extas.web.commons.StringBigdecimalConverter;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -125,7 +125,7 @@ public class InsuranceEditForm extends Window {
 		// Have some layout
 		FormLayout form = new FormLayout();
 
-		EnduserBigdecimalConverter decCnv = new EnduserBigdecimalConverter();
+		StringBigdecimalConverter decCnv = new StringBigdecimalConverter();
 		regNumField = new TextField("Номер полиса");
 		form.addComponent(regNumField);
 		chekNumField = new TextField("Номер счета");
@@ -148,10 +148,10 @@ public class InsuranceEditForm extends Window {
 		motorModelField = new TextField("Модель техники");
 		form.addComponent(motorModelField);
 		riskSumField = new TextField("Страховая сумма");
-		riskSumField.setConverter(decCnv);
+		// riskSumField.setConverter(decCnv);
 		form.addComponent(riskSumField);
 		premiumField = new TextField("Страховая премия");
-		premiumField.setConverter(decCnv);
+		// premiumField.setConverter(decCnv);
 		form.addComponent(premiumField);
 		paymentDateField = new PopupDateField("Дата оплаты страховой премии");
 		form.addComponent(paymentDateField);

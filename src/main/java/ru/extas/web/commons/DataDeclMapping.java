@@ -1,5 +1,9 @@
 package ru.extas.web.commons;
 
+import java.util.EnumSet;
+
+import com.vaadin.data.util.converter.Converter;
+
 /**
  * Привязка пользовательского интерфейса с данным
  * 
@@ -7,19 +11,46 @@ package ru.extas.web.commons;
  * 
  */
 public class DataDeclMapping {
-	private String propName;
-	private String caption;
-	private boolean visible;
-	private boolean inGrid;
-	private boolean collapsed;
 
-	public DataDeclMapping(String propName, String caption, boolean visible, boolean inGrid, boolean collapsed) {
+	private final String propName;
+	private final String caption;
+	private final EnumSet<PresentFlag> presentFlags;
+	private final Converter<String, ?> converter;
+
+	/**
+	 * Параметры отображения
+	 * 
+	 * @author Valery Orlov
+	 * 
+	 */
+	public enum PresentFlag {
+		/**
+		 * Свернутый столбец в гриде
+		 */
+		COLLAPSED;
+	}
+
+	public DataDeclMapping(String propName, String caption) {
+		this(propName, caption, null, null);
+	}
+
+	public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags) {
+		this(propName, caption, presentFlags, null);
+	}
+
+	public DataDeclMapping(String propName, String caption, Converter<String, ?> converter) {
+		this(propName, caption, null, converter);
+	}
+
+	public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags, Converter<String, ?> converter) {
 		super();
 		this.propName = propName;
 		this.caption = caption;
-		this.visible = visible;
-		this.inGrid = inGrid;
-		this.collapsed = collapsed;
+		if (presentFlags == null)
+			this.presentFlags = EnumSet.noneOf(PresentFlag.class);
+		else
+			this.presentFlags = presentFlags;
+		this.converter = converter;
 	}
 
 	/**
@@ -30,14 +61,6 @@ public class DataDeclMapping {
 	}
 
 	/**
-	 * @param propName
-	 *            the propName to set
-	 */
-	public final void setPropName(String propName) {
-		this.propName = propName;
-	}
-
-	/**
 	 * @return the caption
 	 */
 	public final String getCaption() {
@@ -45,55 +68,17 @@ public class DataDeclMapping {
 	}
 
 	/**
-	 * @param caption
-	 *            the caption to set
-	 */
-	public final void setCaption(String caption) {
-		this.caption = caption;
-	}
-
-	/**
-	 * @return the visible
-	 */
-	public final boolean isVisible() {
-		return visible;
-	}
-
-	/**
-	 * @param visible
-	 *            the visible to set
-	 */
-	public final void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-
-	/**
-	 * @return the inGrid
-	 */
-	public final boolean isInGrid() {
-		return inGrid;
-	}
-
-	/**
-	 * @param inGrid
-	 *            the inGrid to set
-	 */
-	public final void setInGrid(boolean inGrid) {
-		this.inGrid = inGrid;
-	}
-
-	/**
 	 * @return the collapsed
 	 */
 	public final boolean isCollapsed() {
-		return collapsed;
+		return presentFlags.contains(PresentFlag.COLLAPSED);
 	}
 
 	/**
-	 * @param collapsed
-	 *            the collapsed to set
+	 * @return the converter
 	 */
-	public final void setCollapsed(boolean collapsed) {
-		this.collapsed = collapsed;
+	public Converter<String, ?> getConverter() {
+		return converter;
 	}
+
 }

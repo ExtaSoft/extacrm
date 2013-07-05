@@ -43,4 +43,11 @@ public interface UserManagementService {
 	 */
 	UserProfile getSuperuser();
 
+	/**
+	 * Получить профайл текущего пользователя
+	 * 
+	 * @return профайл текущего пользователя
+	 */
+	UserProfile getCurrentUser();
+
 }

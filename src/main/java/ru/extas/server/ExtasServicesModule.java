@@ -4,6 +4,7 @@
 package ru.extas.server;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
 
 /**
  * Модуль инъекций для интерфейсов бизнес логики
@@ -22,13 +23,13 @@ public class ExtasServicesModule extends AbstractModule {
 	protected void configure() {
 
 		// Служба управления пользователями
-		bind(UserManagementService.class).to(UserManagementServiceJdo.class);
+		bind(UserManagementService.class).to(UserManagementServiceJdo.class).in(Scopes.SINGLETON);
 		// Служба управления страховками
-		bind(InsuranceRepository.class).to(InsuranceRepositoryJdo.class);
+		bind(InsuranceRepository.class).to(InsuranceRepositoryJdo.class).in(Scopes.SINGLETON);
 		// Служба управления контактами
-		bind(ContactService.class).to(ContactServiceJdo.class);
+		bind(ContactService.class).to(ContactServiceJdo.class).in(Scopes.SINGLETON);
 		// Служба - поставщик простых справочных данных
-		bind(SupplementService.class).to(SupplementServiceImpl.class);
+		bind(SupplementService.class).to(SupplementServiceImpl.class).in(Scopes.SINGLETON);
 
 	}
 

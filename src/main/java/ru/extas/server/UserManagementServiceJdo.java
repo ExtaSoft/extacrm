@@ -7,6 +7,8 @@ import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,6 +112,7 @@ public class UserManagementServiceJdo implements UserManagementService {
 	@Override
 	public UserProfile getSuperuser() {
 		UserProfile user = new UserProfile();
+		user.setLogin(SUPERUSER_LOGIN);
 		user.setName("Global Superuser");
 		user.setLogin(SUPERUSER_LOGIN);
 		if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
@@ -122,6 +125,17 @@ public class UserManagementServiceJdo implements UserManagementService {
 		}
 		user.setRole(UserRole.ADMIN);
 		return user;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ru.extas.server.UserManagementService#getCurrentUser()
+	 */
+	@Override
+	public UserProfile getCurrentUser() {
+		Subject subject = SecurityUtils.getSubject();
+		return findUserByLogin((String) subject.getPrincipal());
 	}
 
 }

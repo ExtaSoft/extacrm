@@ -1,5 +1,7 @@
 package ru.extas.shiro;
 
+import static ru.extas.server.ServiceLocator.lookup;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -25,7 +27,6 @@ import ru.extas.model.UserProfile;
 import ru.extas.server.UserManagementService;
 
 import com.google.common.collect.Sets;
-import com.google.inject.Inject;
 
 /**
  * Поставщик пользователей из базы данных
@@ -39,14 +40,10 @@ public class UserRealm extends AuthorizingRealm {
 
 	private final Logger logger = LoggerFactory.getLogger(UserRealm.class);
 
-	private final UserManagementService userManagerService;
-
-	@Inject
-	public UserRealm(UserManagementService mySecurityManagerService) {
-		// This is the thing that knows how to find user creds and roles
-		this.userManagerService = mySecurityManagerService;
+	public UserRealm() {
 		HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher(Sha256Hash.ALGORITHM_NAME);
 		credentialsMatcher.setHashIterations(1024);
+		credentialsMatcher.setStoredCredentialsHexEncoded(false);
 		this.setCredentialsMatcher(credentialsMatcher);
 	}
 
@@ -56,7 +53,7 @@ public class UserRealm extends AuthorizingRealm {
 		String username = (String) principalCollection.getPrimaryPrincipal();
 
 		// Find the thing that stores your user's roles.
-		UserProfile principal = userManagerService.findUserByLogin(username);
+		UserProfile principal = lookup(UserManagementService.class).findUserByLogin(username);
 		if (principal == null) {
 			logger.info("Principal not found for authorizing user with username: {}", username);
 			return null;
@@ -85,7 +82,7 @@ public class UserRealm extends AuthorizingRealm {
 		// Find the thing that stores your user's credentials. This may be the
 		// same or different than
 		// the thing that stores the roles.
-		UserProfile principal = userManagerService.findUserByLogin(usernamePasswordToken.getUsername());
+		UserProfile principal = lookup(UserManagementService.class).findUserByLogin(usernamePasswordToken.getUsername());
 		if (principal == null) {
 			logger.info("Principal not found for user with username: {}", usernamePasswordToken.getUsername());
 			return null;

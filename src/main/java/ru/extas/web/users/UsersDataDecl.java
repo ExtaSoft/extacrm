@@ -12,11 +12,12 @@ public class UsersDataDecl extends GridDataDecl {
 
 	public UsersDataDecl() {
 		super();
-		addMapping("name", "Имя", true, true, false);
-		addMapping("login", "Логин (e-mail)", true, true, false);
-		addMapping("role", "Роль", true, true, false);
-		addMapping("blocked", "Блокирован", true, true, false);
-		// TODO Add create/modify markers
+		addMapping("name", "Имя");
+		addMapping("login", "Логин (e-mail)");
+		addMapping("role", "Роль");
+		addMapping("blocked", "Блокирован");
+		addMapping("changePassword", "Сменить пароль");
+		super.addCreateModifyMarkers();
 	}
 
 }

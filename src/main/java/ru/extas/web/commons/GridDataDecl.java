@@ -3,9 +3,15 @@
  */
 package ru.extas.web.commons;
 
+import static ru.extas.server.ServiceLocator.lookup;
+
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
+import ru.extas.web.commons.DataDeclMapping.PresentFlag;
+
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.Table;
 
 /**
@@ -38,19 +44,56 @@ public class GridDataDecl {
 	 *            - Имя свойства
 	 * @param caption
 	 *            - Заголовок столбца
-	 * @param visible
-	 *            - Видимость столбца
-	 * @param inGrid
-	 *            - Доступность в гриде
-	 * @param collapsed
-	 *            - Свернутый столбец в гриде
+	 * @param presentFlags
+	 *            параметры отображения
 	 */
-	public void addMapping(String propName, String caption, boolean visible, boolean inGrid, boolean collapsed) {
-		mappings.add(new DataDeclMapping(propName, caption, visible, inGrid, collapsed));
+	public void addMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags) {
+		mappings.add(new DataDeclMapping(propName, caption, presentFlags));
 	}
 
 	/**
-	 * Устанавливает заголовки столбцов таблици
+	 * Задает параметры отображения для свойства объекта
+	 * 
+	 * @param propName
+	 *            - Имя свойства
+	 * @param caption
+	 *            - Заголовок столбца
+	 */
+	public void addMapping(String propName, String caption) {
+		mappings.add(new DataDeclMapping(propName, caption));
+	}
+
+	/**
+	 * Задает параметры отображения для свойства объекта
+	 * 
+	 * @param propName
+	 *            - Имя свойства
+	 * @param caption
+	 *            - Заголовок столбца
+	 * @param converterCls
+	 */
+	public void addMapping(String propName, String caption, Class<? extends Converter<String, ?>> converterCls) {
+		mappings.add(new DataDeclMapping(propName, caption, lookup(converterCls)));
+	}
+
+	/**
+	 * Задает параметры отображения для свойства объекта
+	 * 
+	 * @param propName
+	 *            - Имя свойства
+	 * @param caption
+	 *            - Заголовок столбца
+	 * @param presentFlags
+	 *            - параметры отображения
+	 * @param converterCls
+	 *            - конвертер значения
+	 */
+	public void addMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags, Class<? extends Converter<String, ?>> converterCls) {
+		mappings.add(new DataDeclMapping(propName, caption, presentFlags, lookup(converterCls)));
+	}
+
+	/**
+	 * Устанавливает заголовки столбцов таблицы
 	 * 
 	 * @param table
 	 *            таблица
@@ -72,8 +115,7 @@ public class GridDataDecl {
 
 		List<String> clmnIds = new ArrayList<String>(mappings.size());
 		for (DataDeclMapping prop : mappings)
-			if (prop.isVisible() || prop.isInGrid())
-				clmnIds.add(prop.getPropName());
+			clmnIds.add(prop.getPropName());
 
 		table.setVisibleColumns(clmnIds.toArray());
 	}
@@ -89,6 +131,59 @@ public class GridDataDecl {
 		for (DataDeclMapping prop : mappings)
 			table.setColumnCollapsed(prop.getPropName(), prop.isCollapsed());
 
+	}
+
+	/**
+	 * Полноценная инициализация колонок таблицы
+	 * 
+	 * @param table
+	 *            - таблица
+	 */
+	public void initTableColumns(Table table) {
+		// Общие настройки таблицы
+		table.setSelectable(true);
+		table.setColumnCollapsingAllowed(true);
+		table.setColumnReorderingAllowed(true);
+		table.setNullSelectionAllowed(false);
+
+		// Настройка столбцов таблицы
+		setTableColumnHeaders(table);
+		setTableVisibleColumns(table);
+		setTableCollapsedColumns(table);
+		setTableColumnConverters(table);
+
+	}
+
+	/**
+	 * Устанавливает конвертеры столбцов таблицы
+	 * 
+	 * @param table
+	 */
+	public void setTableColumnConverters(Table table) {
+		for (DataDeclMapping prop : mappings)
+			if (prop.getConverter() != null)
+				table.setConverter(prop.getPropName(), prop.getConverter());
+	}
+
+	/**
+	 * Добавляет маркеры создания/модификации записи
+	 * 
+	 */
+	public void addCreateModifyMarkers() {
+		addMapping("modifiedBy", "Кто изменил", EnumSet.of(PresentFlag.COLLAPSED));
+		addMapping("modifiedAt", "Когда изменил", EnumSet.of(PresentFlag.COLLAPSED)/*
+																					 * ,
+																					 * StringToJodaDTConverter
+																					 * .
+																					 * class
+																					 */);
+		addMapping("createdBy", "Кто создал", EnumSet.of(PresentFlag.COLLAPSED));
+		addMapping("createdAt", "Когда создал", EnumSet.of(PresentFlag.COLLAPSED)/*
+																				 * ,
+																				 * StringToJodaDTConverter
+																				 * .
+																				 * class
+																				 */);
 	}
 
 }
