@@ -16,9 +16,8 @@ public class InsuranceDataDecl extends GridDataDecl {
 	public InsuranceDataDecl() {
 		super();
 		addMapping("regNum", "Номер полиса");
-		addMapping("chekNum", "Номер счета", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("date", "Дата договора");
-		addMapping("clientName", "Клиент - ФИО");
+		addMapping("client.name", "Клиент");
 		addMapping("motorType", "Тип техники");
 		addMapping("motorBrand", "Марка техники");
 		addMapping("motorModel", "Модель техники");

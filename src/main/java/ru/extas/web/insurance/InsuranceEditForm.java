@@ -1,24 +1,25 @@
 package ru.extas.web.insurance;
 
-import ru.extas.model.Insurance;
-import ru.extas.server.InsuranceRepositoryJdo;
-import ru.extas.web.commons.StringBigdecimalConverter;
+import static ru.extas.server.ServiceLocator.lookup;
 
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import org.joda.time.LocalDate;
+
+import ru.extas.model.Insurance;
+import ru.extas.server.InsuranceRepository;
+import ru.extas.server.SupplementService;
+import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.LocalDateField;
+import ru.extas.web.contacts.ContactSelect;
+
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component;
+import com.vaadin.shared.ui.combobox.FilteringMode;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 
 /**
  * Форма ввода/редактирования имущественной страховки
@@ -26,33 +27,21 @@ import com.vaadin.ui.Window;
  * @author Valery Orlov
  * 
  */
-public class InsuranceEditForm extends Window {
+public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
 	private static final long serialVersionUID = 9510268415882116L;
-
-	private boolean okPressed = false;
-	private final HorizontalLayout buttonsPanel = new HorizontalLayout();
-	private final Button cancelBtn;
 
 	// Компоненты редактирования
 	@PropertyId("regNum")
 	private TextField regNumField;
-	@PropertyId("chekNum")
-	private TextField chekNumField;
 	@PropertyId("date")
 	private PopupDateField dateField;
-	@PropertyId("clientName")
-	private TextField clientNameField;
-	@PropertyId("clientBirthday")
-	private PopupDateField clientBirthdayField;
-	@PropertyId("clientPhone")
-	private TextField clientPhoneField;
-	@PropertyId("clientMale")
-	private TextField clientMaleField;
+	@PropertyId("client")
+	private ComboBox clientNameField;
 	@PropertyId("motorType")
-	private TextField motorTypeField;
+	private ComboBox motorTypeField;
 	@PropertyId("motorBrand")
-	private TextField motorBrandField;
+	private ComboBox motorBrandField;
 	@PropertyId("motorModel")
 	private TextField motorModelField;
 	@PropertyId("riskSum")
@@ -65,129 +54,151 @@ public class InsuranceEditForm extends Window {
 	private PopupDateField startDateField;
 	@PropertyId("endDate")
 	private PopupDateField endDateField;
-	@PropertyId("createdBy")
-	private TextField createdByField;
-	@PropertyId("reseller")
-	private TextField resellerField;
 
 	public InsuranceEditForm(String caption, final Insurance obj) {
-		super(caption);
-
-		FormLayout form = createEditFields();
-
-		BeanItem<Insurance> item = new BeanItem<Insurance>(obj);
-
-		// Now create a binder
-		final FieldGroup binder = new FieldGroup(item);
-		binder.setBuffered(true);
-		binder.bindMemberFields(this);
-
-		cancelBtn = new Button("Отмена", new Button.ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(final ClickEvent event) {
-				binder.discard();
-				UI.getCurrent().removeWindow(InsuranceEditForm.this);
-			}
-		});
-		cancelBtn.setStyleName("icon-cancel");
-
-		final Button okBtn = new Button("OK", new Button.ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(final ClickEvent event) {
-				try {
-					okPressed = true;
-					binder.commit();
-					new InsuranceRepositoryJdo().persist(obj);
-				} catch (CommitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				UI.getCurrent().removeWindow(InsuranceEditForm.this);
-			}
-		});
-
-		okBtn.setStyleName("icon-ok");
-		this.buttonsPanel.addComponent(okBtn);
-		this.buttonsPanel.setComponentAlignment(okBtn, Alignment.MIDDLE_RIGHT);
-		this.buttonsPanel.addComponent(cancelBtn);
-		this.buttonsPanel.setComponentAlignment(cancelBtn, Alignment.MIDDLE_RIGHT);
-		this.buttonsPanel.setSpacing(true);
-
-		setContent(form);
+		super(caption, obj);
 
 	}
 
-	private FormLayout createEditFields() {
-		// Have some layout
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ru.extas.web.commons.AbstractEditForm#createEditFields(ru.extas.model
+	 * .AbstractExtaObject)
+	 */
+	@Override
+	protected FormLayout createEditFields(Insurance obj) {
 		FormLayout form = new FormLayout();
 
-		StringBigdecimalConverter decCnv = new StringBigdecimalConverter();
-		regNumField = new TextField("Номер полиса");
+		// TODO Выбирать номер полиса из справочника
+		regNumField = new EditField("Номер полиса", "Введите номер полиса страхования. Выбирается из справочника БСО.");
+		regNumField.setColumns(20);
+		regNumField.setRequired(true);
 		form.addComponent(regNumField);
-		chekNumField = new TextField("Номер счета");
-		form.addComponent(chekNumField);
-		dateField = new PopupDateField("Дата договора");
+
+		dateField = new LocalDateField("Дата договора", "Введите дату оформления договора страхования");
+		dateField.setRequired(true);
 		form.addComponent(dateField);
-		clientNameField = new TextField("Клиент - ФИО");
-		clientNameField.setWidth(50, Unit.EX);
+
+		clientNameField = new ContactSelect("Страхователь");
 		form.addComponent(clientNameField);
-		clientBirthdayField = new PopupDateField("Клиент - Дата рождения");
-		form.addComponent(clientBirthdayField);
-		clientPhoneField = new TextField("Клиент - Телефон");
-		form.addComponent(clientPhoneField);
-		clientMaleField = new TextField("Клиент - Пол");
-		form.addComponent(clientMaleField);
-		motorTypeField = new TextField("Тип техники");
+
+		motorTypeField = new ComboBox("Тип техники");
+		motorTypeField.setDescription("Укажите тип страхуемой техники");
+		motorTypeField.setInputPrompt("Выберите или начните ввод...");
+		motorTypeField.setImmediate(true);
+		motorTypeField.setNullSelectionAllowed(false);
+		motorTypeField.setNewItemsAllowed(false);
+		motorTypeField.setFilteringMode(FilteringMode.CONTAINS);
+		motorTypeField.setWidth(13, Unit.EM);
+		for (String item : lookup(SupplementService.class).loadMotorTypes())
+			motorTypeField.addItem(item);
+		motorTypeField.setRequired(true);
 		form.addComponent(motorTypeField);
-		motorBrandField = new TextField("Марка техники");
+
+		motorBrandField = new ComboBox("Марка техники");
+		motorBrandField.setDescription("Укажите марку страхуемой техники");
+		motorBrandField.setInputPrompt("Выберите или начните ввод...");
+		motorBrandField.setImmediate(true);
+		motorBrandField.setNullSelectionAllowed(false);
+		motorBrandField.setNewItemsAllowed(false);
+		motorBrandField.setFilteringMode(FilteringMode.CONTAINS);
+		motorBrandField.setWidth(13, Unit.EM);
+		for (String item : lookup(SupplementService.class).loadMotorBrands())
+			motorBrandField.addItem(item);
+		motorBrandField.setRequired(true);
 		form.addComponent(motorBrandField);
-		motorModelField = new TextField("Модель техники");
+
+		motorModelField = new EditField("Модель техники", "Введите модель техники");
+		motorModelField.setRequired(true);
+		motorModelField.setColumns(13);
 		form.addComponent(motorModelField);
-		riskSumField = new TextField("Страховая сумма");
-		// riskSumField.setConverter(decCnv);
+
+		riskSumField = new EditField("Страховая сумма", "Введите сумму возмещения в рублях");
+		riskSumField.setRequired(true);
 		form.addComponent(riskSumField);
-		premiumField = new TextField("Страховая премия");
-		// premiumField.setConverter(decCnv);
+
+		premiumField = new EditField("Страховая премия", "Введите стоимость страховки в рублях");
+		premiumField.setRequired(true);
 		form.addComponent(premiumField);
-		paymentDateField = new PopupDateField("Дата оплаты страховой премии");
+
+		paymentDateField = new LocalDateField("Дата оплаты", "Введите дату оплаты страховой премии");
+		paymentDateField.setRequired(true);
+		paymentDateField.addValueChangeListener(new ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				// пересчитать дату начала действия договора
+				LocalDate newDate = (LocalDate) paymentDateField.getConvertedValue();
+				LocalDate startDate = (LocalDate) startDateField.getConvertedValue();
+				if (newDate != null && startDate != null && newDate.isAfter(startDate))
+					startDateField.setConvertedValue(newDate);
+			}
+		});
 		form.addComponent(paymentDateField);
-		startDateField = new PopupDateField("Дата начала срока действия договора");
+
+		startDateField = new LocalDateField("Дата начала договора", "Введите дату начала действия страхового договора");
+		startDateField.setRequired(true);
+		startDateField.addValueChangeListener(new ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				// пересчитать дату окончания договора
+				LocalDate newDate = (LocalDate) startDateField.getConvertedValue();
+				if (newDate != null && endDateField.getPropertyDataSource() != null)
+					endDateField.setConvertedValue(newDate.plusYears(1));
+			}
+		});
 		form.addComponent(startDateField);
-		endDateField = new PopupDateField("Дата окончания срока действия договора");
+
+		endDateField = new LocalDateField("Дата окончания договора", "Введите дату окончания ");
+		endDateField.setRequired(true);
 		form.addComponent(endDateField);
-		createdByField = new TextField("Сотрудник");
-		form.addComponent(createdByField);
-		resellerField = new TextField("Салон");
-		form.addComponent(resellerField);
 
 		return form;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ru.extas.web.commons.AbstractEditForm#initObject(ru.extas.model.
+	 * AbstractExtaObject)
+	 */
 	@Override
-	public void setContent(Component content) {
-		if (content != null) {
-			final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
-			contentContainer.setMargin(true);
-			contentContainer.setSpacing(true);
-			contentContainer.setComponentAlignment(this.buttonsPanel, Alignment.MIDDLE_RIGHT);
-			content = contentContainer;
+	protected void initObject(Insurance obj) {
+		if (obj.getKey() == null) {
+			final LocalDate now = LocalDate.now();
+			obj.setDate(now);
+			obj.setPaymentDate(now);
+			obj.setStartDate(now);
+			obj.setEndDate(now.plusYears(1));
 		}
-		super.setContent(content);
 	}
 
-	public boolean isOkPressed() {
-		return this.okPressed;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ru.extas.web.commons.AbstractEditForm#saveObject(ru.extas.model.
+	 * AbstractExtaObject)
+	 */
+	@Override
+	protected void saveObject(Insurance obj) {
+		InsuranceRepository contactService = lookup(InsuranceRepository.class);
+		contactService.persist(obj);
 	}
 
-	public void showModal() {
-		setClosable(true);
-		setModal(true);
-
-		UI.getCurrent().addWindow(this);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ru.extas.web.commons.AbstractEditForm#checkBeforeSave(ru.extas.model.
+	 * AbstractExtaObject)
+	 */
+	@Override
+	protected void checkBeforeSave(Insurance obj) {
 	}
 
 }

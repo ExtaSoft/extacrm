@@ -3,11 +3,11 @@
  */
 package ru.extas.web;
 
-import ru.extas.web.commons.DateToJodaDTConverter;
-import ru.extas.web.commons.DateToJodaLDConverter;
-import ru.extas.web.commons.StringBigdecimalConverter;
-import ru.extas.web.commons.StringToJodaDTConverter;
-import ru.extas.web.commons.StringToJodaLDConverter;
+import ru.extas.web.commons.converters.DateToJodaDTConverter;
+import ru.extas.web.commons.converters.DateToJodaLDConverter;
+import ru.extas.web.commons.converters.StringToJodaDTConverter;
+import ru.extas.web.commons.converters.StringToJodaLDConverter;
+import ru.extas.web.commons.converters.StringToMoneyConverter;
 import ru.extas.web.contacts.StringToContactSex;
 import ru.extas.web.users.StringToUserRoleConverter;
 
@@ -43,7 +43,7 @@ public class WebUIModule extends AbstractModule {
 		bind(StringToBooleanConverter.class).in(ServletScopes.SESSION);
 
 		// Конвертер денег
-		bind(StringBigdecimalConverter.class).in(ServletScopes.SESSION);
+		bind(StringToMoneyConverter.class).in(ServletScopes.SESSION);
 
 		// конвертер ролей пользователя
 		bind(StringToUserRoleConverter.class).in(ServletScopes.SESSION);

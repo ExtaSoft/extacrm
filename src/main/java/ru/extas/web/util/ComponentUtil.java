@@ -29,7 +29,12 @@ public class ComponentUtil {
 		Converter<String, TEnum> converter = VaadinSession.getCurrent().getConverterFactory().createConverter(String.class, cls);
 		for (TEnum en : EnumSet.allOf(cls)) {
 			component.addItem(en);
-			component.setItemCaption(en, converter.convertToPresentation(en, null));
+			component.setItemCaption(en, converter.convertToPresentation(en, /*
+																			 * String
+																			 * .
+																			 * class
+																			 * ,
+																			 */null));
 		}
 	}
 }

@@ -27,15 +27,15 @@ public class Contact extends AbstractExtaObject {
 	@Persistent
 	private String name;
 
-	// Клиент - Дата рождения
+	// Дата рождения
 	@Persistent
 	private LocalDate birthday;
 
-	// Клиент - Пол
+	// Пол
 	@Persistent
 	private Sex sex;
 
-	// Клиент - Телефон
+	// Телефон
 	@Persistent
 	private String cellPhone;
 

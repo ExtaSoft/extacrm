@@ -19,8 +19,8 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextArea;
@@ -39,7 +39,7 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 	@PropertyId("name")
 	private TextField nameField;
 	@PropertyId("birthday")
-	private DateField birthdayField;
+	private PopupDateField birthdayField;
 	@PropertyId("sex")
 	private ComboBox sexField;
 	@PropertyId("cellPhone")
@@ -134,6 +134,7 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 
 		birthdayField = new PopupDateField("Дата рождения");
 		birthdayField.setImmediate(true);
+		birthdayField.setInputPrompt("31.12.1978");
 		birthdayField.setDescription("Введите дату рождения контакта");
 		birthdayField.setDateFormat("dd.MM.yyyy");
 		birthdayField.setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ");
@@ -163,6 +164,7 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 		regionField.setImmediate(true);
 		regionField.setNullSelectionAllowed(false);
 		regionField.setNewItemsAllowed(false);
+		regionField.setFilteringMode(FilteringMode.CONTAINS);
 		regionField.setWidth(18, Unit.EM);
 		for (String item : lookup(SupplementService.class).loadRegions())
 			regionField.addItem(item);
@@ -184,6 +186,7 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 		cityField.setInputPrompt("Город");
 		cityField.setImmediate(true);
 		cityField.setNewItemsAllowed(true);
+		cityField.setFilteringMode(FilteringMode.CONTAINS);
 		for (String item : lookup(SupplementService.class).loadCities())
 			cityField.addItem(item);
 		cityField.addValueChangeListener(new ValueChangeListener() {

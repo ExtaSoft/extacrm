@@ -1,4 +1,4 @@
-package ru.extas.web.commons;
+package ru.extas.web.commons.converters;
 
 import java.util.Locale;
 
@@ -49,40 +49,6 @@ public class StringToJodaDTConverter implements Converter<String, DateTime> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
-	 * java.util.Locale)
-	 */
-	@Override
-	public DateTime convertToModel(String value, Locale locale) throws ConversionException {
-		if (value == null || value.isEmpty())
-			return null;
-		if (locale == null)
-			locale = Locale.getDefault();
-		return getFormatter().withLocale(locale).parseDateTime(value);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
-	 * .Object, java.util.Locale)
-	 */
-	@Override
-	public String convertToPresentation(DateTime value, Locale locale) throws ConversionException {
-		if (value == null)
-			return null;
-
-		if (locale == null)
-			locale = Locale.getDefault();
-
-		return getFormatter().withLocale(locale).print(value);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.vaadin.data.util.converter.Converter#getModelType()
 	 */
 	@Override
@@ -100,5 +66,45 @@ public class StringToJodaDTConverter implements Converter<String, DateTime> {
 	@Override
 	public Class<String> getPresentationType() {
 		return String.class;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.lang.Class, java.util.Locale)
+	 */
+	@Override
+	public DateTime convertToModel(String value, /*
+												 * Class<? extends DateTime>
+												 * targetType,
+												 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		if (value == null || value.isEmpty())
+			return null;
+		if (locale == null)
+			locale = Locale.getDefault();
+		return getFormatter().withLocale(locale).parseDateTime(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
+	 * .Object, java.lang.Class, java.util.Locale)
+	 */
+	@Override
+	public String convertToPresentation(DateTime value, /*
+														 * Class<? extends
+														 * String> targetType,
+														 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		if (value == null)
+			return null;
+
+		if (locale == null)
+			locale = Locale.getDefault();
+
+		return getFormatter().withLocale(locale).print(value);
 	}
 }

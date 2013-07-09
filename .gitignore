@@ -21,3 +21,4 @@ test-output
 /pom.xml.save
 /1.txt
 /target
+/build.log

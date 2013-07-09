@@ -44,4 +44,19 @@ public interface SupplementService {
 	 * @return найденный регион или <code>null</code>
 	 */
 	String findRegionByCity(String city);
+
+	/**
+	 * Запрашивает список видов техники
+	 * 
+	 * @return список видов техники
+	 */
+	Collection<String> loadMotorTypes();
+
+	/**
+	 * Запрашивает производителей техники
+	 * 
+	 * @return список производителей техники
+	 */
+	Collection<String> loadMotorBrands();
+
 }

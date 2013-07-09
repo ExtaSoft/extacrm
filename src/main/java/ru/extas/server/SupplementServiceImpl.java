@@ -3,7 +3,10 @@
  */
 package ru.extas.server;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.Collection;
+import java.util.List;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -15,6 +18,24 @@ import com.google.common.collect.HashBiMap;
  * 
  */
 public class SupplementServiceImpl implements SupplementService {
+	// FIXME Перенести данные в базу или в кэш
+
+	static private class MotorTypesFactory {
+		static final List<String> INSTANCE;
+		static {
+			INSTANCE = newArrayList("Мотоцикл", "Скутер", "Квадроцикл", "Снегоход", "Гидроцикл", "Лодочный мотор", "Лодка", "Катер",
+					"Снегоболотоход", "Мотовездеход");
+		}
+	}
+
+	static private class MotorBrandsFactory {
+		static final List<String> INSTANCE;
+		static {
+			INSTANCE = newArrayList("Ducati", "Kawasaki", "Yamaha", "Yamarin", "Husqvarna", "Arctic Cat", "Polaris", "CFMOTO", "SYM", "Honda",
+					"Suzuki", "CECTEK", "BRP", "Harley-Davidson", "KTM", "Royal Enfield", "Tohatsu", "Mercury", "Solano", "Silver", "UMS",
+					"WindBoat", "Moto Guzzi", "Aprilia", "DERBI", "Piaggio", "Vespa", "Gilera", "Русская механика", "Gamax");
+		}
+	}
 
 	static private class RegionCapitalsFactory {
 		static final BiMap<String, String> INSTANCE;
@@ -152,5 +173,25 @@ public class SupplementServiceImpl implements SupplementService {
 	public String findRegionByCity(String city) {
 
 		return getRegionCapitals().inverse().get(city);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ru.extas.server.SupplementService#loadMotorTypes()
+	 */
+	@Override
+	public Collection<String> loadMotorTypes() {
+		return MotorTypesFactory.INSTANCE;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ru.extas.server.SupplementService#loadMotorBrands()
+	 */
+	@Override
+	public Collection<String> loadMotorBrands() {
+		return MotorBrandsFactory.INSTANCE;
 	}
 }

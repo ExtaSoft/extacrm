@@ -56,6 +56,7 @@ public abstract class AbstractEditForm<TEditObject extends AbstractExtaObject> e
 
 			@Override
 			public void buttonClick(final ClickEvent event) {
+				// FIXME Проверять изменения и выдавать предупреждения
 				binder.discard();
 				UI.getCurrent().removeWindow(AbstractEditForm.this);
 			}
@@ -102,7 +103,7 @@ public abstract class AbstractEditForm<TEditObject extends AbstractExtaObject> e
 			@Override
 			public void windowClose(CloseEvent e) {
 
-				// TODO Auto-generated method stub
+				// TODO Обработать закрытие формы по кресту
 
 			}
 		});

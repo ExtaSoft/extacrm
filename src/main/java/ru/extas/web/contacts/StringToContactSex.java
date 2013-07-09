@@ -30,34 +30,6 @@ public class StringToContactSex implements Converter<String, Sex> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
-	 * java.util.Locale)
-	 */
-	@Override
-	public Sex convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
-		if (value == null || value.isEmpty())
-			return null;
-		return map.inverse().get(value);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
-	 * .Object, java.util.Locale)
-	 */
-	@Override
-	public String convertToPresentation(Sex value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
-		if (value == null)
-			return null;
-		return map.get(value);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.vaadin.data.util.converter.Converter#getModelType()
 	 */
 	@Override
@@ -73,6 +45,38 @@ public class StringToContactSex implements Converter<String, Sex> {
 	@Override
 	public Class<String> getPresentationType() {
 		return String.class;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.lang.Class, java.util.Locale)
+	 */
+	@Override
+	public Sex convertToModel(String value, /* Class<? extends Sex> targetType, */Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
+		if (value == null || value.isEmpty())
+			return null;
+		return map.inverse().get(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
+	 * .Object, java.lang.Class, java.util.Locale)
+	 */
+	@Override
+	public String convertToPresentation(Sex value, /*
+													 * Class<? extends String>
+													 * targetType,
+													 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		if (value == null)
+			return null;
+		return map.get(value);
 	}
 
 }

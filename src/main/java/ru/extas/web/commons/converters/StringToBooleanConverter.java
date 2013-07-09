@@ -1,34 +1,21 @@
 /**
  * 
  */
-package ru.extas.web.users;
+package ru.extas.web.commons.converters;
 
 import java.util.Locale;
 
-import ru.extas.model.UserRole;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
 
 /**
- * Конвертирует роли пользователя в соответствующее перечисление
+ * Простая конвертация флага в строку
  * 
  * @author Valery Orlov
  * 
  */
-public class StringToUserRoleConverter implements Converter<String, UserRole> {
+public class StringToBooleanConverter implements Converter<String, Boolean> {
 
-	private static final long serialVersionUID = 568270351867767905L;
-
-	private final BiMap<UserRole, String> map;
-
-	public StringToUserRoleConverter() {
-		map = HashBiMap.create();
-		map.put(UserRole.USER, "Пользователь");
-		map.put(UserRole.MANAGER, "Руководитель");
-		map.put(UserRole.ADMIN, "Администратор");
-	}
+	private static final long serialVersionUID = -3047437045883938183L;
 
 	/*
 	 * (non-Javadoc)
@@ -36,8 +23,8 @@ public class StringToUserRoleConverter implements Converter<String, UserRole> {
 	 * @see com.vaadin.data.util.converter.Converter#getModelType()
 	 */
 	@Override
-	public Class<UserRole> getModelType() {
-		return UserRole.class;
+	public Class<Boolean> getModelType() {
+		return Boolean.class;
 	}
 
 	/*
@@ -58,14 +45,13 @@ public class StringToUserRoleConverter implements Converter<String, UserRole> {
 	 * java.lang.Class, java.util.Locale)
 	 */
 	@Override
-	public UserRole convertToModel(String value, /*
-												 * Class<? extends UserRole>
+	public Boolean convertToModel(String value, /*
+												 * Class<? extends Boolean>
 												 * targetType,
 												 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null || value.isEmpty())
 			return null;
-
-		return map.inverse().get(value);
+		return value.equals("Да");
 	}
 
 	/*
@@ -76,13 +62,13 @@ public class StringToUserRoleConverter implements Converter<String, UserRole> {
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
 	@Override
-	public String convertToPresentation(UserRole value, /*
+	public String convertToPresentation(Boolean value, /*
 														 * Class<? extends
 														 * String> targetType,
 														 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
-		return map.get(value);
+		return value ? "Да" : "Нет";
 	}
 
 }

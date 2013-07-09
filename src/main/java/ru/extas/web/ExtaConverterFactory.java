@@ -10,12 +10,12 @@ import org.joda.time.LocalDate;
 
 import ru.extas.model.Contact.Sex;
 import ru.extas.model.UserRole;
-import ru.extas.web.commons.DateToJodaDTConverter;
-import ru.extas.web.commons.DateToJodaLDConverter;
-import ru.extas.web.commons.StringBigdecimalConverter;
-import ru.extas.web.commons.StringToBooleanConverter;
-import ru.extas.web.commons.StringToJodaDTConverter;
-import ru.extas.web.commons.StringToJodaLDConverter;
+import ru.extas.web.commons.converters.DateToJodaDTConverter;
+import ru.extas.web.commons.converters.DateToJodaLDConverter;
+import ru.extas.web.commons.converters.StringToBooleanConverter;
+import ru.extas.web.commons.converters.StringToJodaDTConverter;
+import ru.extas.web.commons.converters.StringToJodaLDConverter;
+import ru.extas.web.commons.converters.StringToMoneyConverter;
 import ru.extas.web.contacts.StringToContactSex;
 import ru.extas.web.users.StringToUserRoleConverter;
 
@@ -47,7 +47,7 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 
 		// Конвертер денег
 		if (presentationType == String.class && modelType == BigDecimal.class)
-			return (Converter<PRESENTATION, MODEL>) lookup(StringBigdecimalConverter.class);
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToMoneyConverter.class);
 
 		// конвертер ролей пользователя
 		if (presentationType == String.class && modelType == UserRole.class)
