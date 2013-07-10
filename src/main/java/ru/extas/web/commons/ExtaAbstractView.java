@@ -58,13 +58,13 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
 		top.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
 		top.setExpandRatio(title, 1);
 
-		Button notify = new Button();
-		notify.setDescription("Контекстная справка");
+		Button helpBtn = new Button();
+		helpBtn.setDescription("Контекстная справка");
 		// notify.addStyleName("borderless");
-		notify.addStyleName("notifications");
-		notify.addStyleName("icon-only");
-		notify.addStyleName("icon-help-1");
-		notify.addClickListener(new ClickListener() {
+		helpBtn.addStyleName("notifications");
+		helpBtn.addStyleName("icon-only");
+		helpBtn.addStyleName("icon-help-1");
+		helpBtn.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -74,10 +74,10 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
 				// new InsuranceRepositoryJdo().fillRegistry();
 			}
 		});
-		top.addComponent(notify);
-		top.setComponentAlignment(notify, Alignment.MIDDLE_LEFT);
+		top.addComponent(helpBtn);
+		top.setComponentAlignment(helpBtn, Alignment.MIDDLE_LEFT);
 
-		HorizontalLayout row = new HorizontalLayout();
+		VerticalLayout row = new VerticalLayout();
 		row.setMargin(true);
 		row.setSizeFull();
 		row.setSpacing(true);

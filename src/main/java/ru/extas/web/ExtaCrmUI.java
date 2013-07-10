@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.extas.model.UserProfile;
+import ru.extas.model.UserRole;
 import ru.extas.server.UserManagementService;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
@@ -363,15 +364,18 @@ public class ExtaCrmUI extends UI {
 								exit.setDescription("Выход из системы");
 								addComponent(exit);
 								exit.addClickListener(new ClickListener() {
-									/**
-									 * 
-									 */
 									private static final long serialVersionUID = 1L;
 
 									@Override
 									public void buttonClick(ClickEvent event) {
 										SecurityUtils.getSubject().logout();
-										buildLoginView(true);
+										// Redirect to avoid keeping the removed
+										// UI open in the browser
+										// getUI().getPage().setLocation("");
+										// Close the VaadinServiceSession
+										getUI().getSession().close();
+										// TODO: Исправить ошибку соединения
+										// после выхода
 									}
 								});
 							}
@@ -389,12 +393,14 @@ public class ExtaCrmUI extends UI {
 
 		// -------------------------------------------------------------
 		// Создаем кнопки основного меню
+		Subject currentUser = SecurityUtils.getSubject();
 		// TODO: Add permission rules
 		mainMenu.addChapter("", "Начало", "Начальный экран приложения", "icon-home", HomeView.class, null);
 		mainMenu.addChapter("contacts", "Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts", ContactsView.class, null);
 		mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella-1", InsuranceView.class, null);
 		mainMenu.addChapter("loans", "Кредитование", "Раздел посвященный кредитованию", "icon-dollar", LoansView.class, null);
-		mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3", UsersView.class, null);
+		if (currentUser.hasRole(UserRole.ADMIN.getName()))
+			mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3", UsersView.class, null);
 		mainMenu.addChapter("config", "Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt", ConfigView.class, null);
 
 		mainMenu.processURI(Page.getCurrent().getUriFragment());

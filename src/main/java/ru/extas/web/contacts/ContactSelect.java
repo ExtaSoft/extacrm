@@ -47,7 +47,6 @@ public class ContactSelect extends ComboBox {
 		setInputPrompt("Существующий или новый клиент");
 		setWidth(25, Unit.EM);
 		setImmediate(true);
-		setRequired(true);
 
 		// Инициализация контейнера
 		ContactService contactService = lookup(ContactService.class);

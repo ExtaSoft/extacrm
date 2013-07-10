@@ -5,7 +5,9 @@ import static ru.extas.server.ServiceLocator.lookup;
 import org.joda.time.LocalDate;
 
 import ru.extas.model.Insurance;
+import ru.extas.model.Policy;
 import ru.extas.server.InsuranceRepository;
+import ru.extas.server.PolicyRegistry;
 import ru.extas.server.SupplementService;
 import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.commons.component.EditField;
@@ -33,7 +35,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
 	// Компоненты редактирования
 	@PropertyId("regNum")
-	private TextField regNumField;
+	private PolicySelect regNumField;
 	@PropertyId("date")
 	private PopupDateField dateField;
 	@PropertyId("client")
@@ -71,10 +73,24 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	protected FormLayout createEditFields(Insurance obj) {
 		FormLayout form = new FormLayout();
 
-		// TODO Выбирать номер полиса из справочника
-		regNumField = new EditField("Номер полиса", "Введите номер полиса страхования. Выбирается из справочника БСО.");
-		regNumField.setColumns(20);
+		regNumField = new PolicySelect("Номер полиса", "Введите номер полиса страхования. Выбирается из справочника БСО.");
 		regNumField.setRequired(true);
+		regNumField.setConverter(String.class);
+		regNumField.addValueChangeListener(new ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				if (event.getProperty().getType() == Policy.class) {
+					Policy policy = (Policy) event.getProperty().getValue();
+					if (policy != null) {
+						// Зарезервировать полис в БСО
+						lookup(PolicyRegistry.class).bookPolicy(policy);
+					}
+
+				}
+			}
+		});
 		form.addComponent(regNumField);
 
 		dateField = new LocalDateField("Дата договора", "Введите дату оформления договора страхования");
@@ -82,6 +98,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		form.addComponent(dateField);
 
 		clientNameField = new ContactSelect("Страхователь");
+		clientNameField.setRequired(true);
 		form.addComponent(clientNameField);
 
 		motorTypeField = new ComboBox("Тип техники");
@@ -132,9 +149,9 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 			public void valueChange(ValueChangeEvent event) {
 				// пересчитать дату начала действия договора
 				LocalDate newDate = (LocalDate) paymentDateField.getConvertedValue();
-				LocalDate startDate = (LocalDate) startDateField.getConvertedValue();
+				LocalDate startDate = ((LocalDate) startDateField.getConvertedValue());
 				if (newDate != null && startDate != null && newDate.isAfter(startDate))
-					startDateField.setConvertedValue(newDate);
+					startDateField.setConvertedValue(newDate.plusDays(1));
 			}
 		});
 		form.addComponent(paymentDateField);
@@ -149,7 +166,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 				// пересчитать дату окончания договора
 				LocalDate newDate = (LocalDate) startDateField.getConvertedValue();
 				if (newDate != null && endDateField.getPropertyDataSource() != null)
-					endDateField.setConvertedValue(newDate.plusYears(1));
+					endDateField.setConvertedValue(newDate.plusYears(1).minusDays(1));
 			}
 		});
 		form.addComponent(startDateField);

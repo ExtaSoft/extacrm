@@ -30,6 +30,8 @@ public class ExtasServicesModule extends AbstractModule {
 		bind(ContactService.class).to(ContactServiceJdo.class).in(Scopes.SINGLETON);
 		// Служба - поставщик простых справочных данных
 		bind(SupplementService.class).to(SupplementServiceImpl.class).in(Scopes.SINGLETON);
+		// Полисы БСО
+		bind(PolicyRegistry.class).to(PolicyRegistryJdo.class).in(Scopes.SINGLETON);
 
 	}
 

@@ -1,5 +1,7 @@
 package ru.extas.server;
 
+import static ru.extas.server.ServiceLocator.lookup;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +32,7 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
 	 */
 	@Override
 	public Collection<Insurance> loadAll() {
-		logger.info("Requesting insuranses list...");
+		logger.debug("Requesting insuranses list...");
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			List<Insurance> insurances = new ArrayList<Insurance>();
@@ -54,10 +56,14 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
 	 */
 	@Override
 	public void persist(Insurance insurance) {
-		logger.info("Persisting insurance: {}", insurance.getRegNum());
+		logger.debug("Persisting insurance: {}", insurance.getRegNum());
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			pm.makePersistent(insurance);
+
+			// TODO: Запускать транзакцию
+			final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
+			policyRepository.issuePolicy(insurance.getRegNum());
 		} finally {
 			pm.close();
 		}
@@ -70,7 +76,7 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
 	 */
 	@Override
 	public void deleteById(String id) {
-		logger.info("Deleting insurance with id: {}", id);
+		logger.debug("Deleting insurance with id: {}", id);
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			pm.deletePersistent(pm.getObjectById(Insurance.class, id));

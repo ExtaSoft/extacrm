@@ -18,7 +18,7 @@ import com.google.common.collect.HashBiMap;
  * 
  */
 public class SupplementServiceImpl implements SupplementService {
-	// FIXME Перенести данные в базу или в кэш
+	// TODO Перенести данные в базу или в кэш
 
 	static private class MotorTypesFactory {
 		static final List<String> INSTANCE;

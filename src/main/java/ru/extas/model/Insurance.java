@@ -29,8 +29,8 @@ public class Insurance extends AbstractExtaObject {
 	private LocalDate date;
 
 	// Клиент
-	@Persistent(defaultFetchGroup = "true")
 	@Unowned
+	@Persistent(defaultFetchGroup = "true")
 	private Contact client;
 
 	// Предмет страхования - тип

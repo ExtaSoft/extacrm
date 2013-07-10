@@ -63,13 +63,10 @@ public class GenerateReport {
 			// PdfConverter.getInstance().convert(document, outPdf, options);
 
 		} catch (XWPFConverterException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (XDocReportException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

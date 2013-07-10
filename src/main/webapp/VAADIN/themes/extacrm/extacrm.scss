@@ -16,11 +16,15 @@
 @import "components/button.scss";
 @import "components/textfield.scss";
 @import "components/combobox.scss";
-@import "components/tabsheet.scss";
+@import "components/tabsheet/tabsheet.scss";
 @import "components/label.scss";
 @import "components/table/table.scss";
 @import "components/window/window.scss";
 @import "components/datefield/datefield.scss";
+@import "components/panel/panel.scss";
+
+@import "orderedlayout/orderedlayout.scss";
+@import "absolutelayout/absolutelayout.scss";
 
 @import "views/base.scss";
 
@@ -42,6 +46,9 @@
 	@include extacrm-window;
 	@include extacrm-datefield;
 	
+  @include extacrm-absolutelayout;
+  @include extacrm-orderedlayout;
+
 	@include extacrm-base-view;
 
 	.v-view {
@@ -451,6 +458,13 @@
 		-moz-box-shadow: 0 2px 3px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.07);
 		box-shadow: 0 2px 3px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.07);
 	}
+
+  .layout-panel .v-caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 	
 	.v-ie8 & .layout-panel {
 		border: 1px solid #d8d9d9;

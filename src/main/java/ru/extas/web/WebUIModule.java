@@ -9,6 +9,7 @@ import ru.extas.web.commons.converters.StringToJodaDTConverter;
 import ru.extas.web.commons.converters.StringToJodaLDConverter;
 import ru.extas.web.commons.converters.StringToMoneyConverter;
 import ru.extas.web.contacts.StringToContactSex;
+import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.users.StringToUserRoleConverter;
 
 import com.google.inject.AbstractModule;
@@ -50,6 +51,9 @@ public class WebUIModule extends AbstractModule {
 
 		// Конвертер половой принадлежности
 		bind(StringToContactSex.class).in(ServletScopes.SESSION);
+
+		// Конвертер полиса БСО
+		bind(StringToPolicyConverter.class).in(ServletScopes.SESSION);
 	}
 
 	/**

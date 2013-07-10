@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import ru.extas.model.Contact.Sex;
+import ru.extas.model.Policy;
 import ru.extas.model.UserRole;
 import ru.extas.web.commons.converters.DateToJodaDTConverter;
 import ru.extas.web.commons.converters.DateToJodaLDConverter;
@@ -17,6 +18,7 @@ import ru.extas.web.commons.converters.StringToJodaDTConverter;
 import ru.extas.web.commons.converters.StringToJodaLDConverter;
 import ru.extas.web.commons.converters.StringToMoneyConverter;
 import ru.extas.web.contacts.StringToContactSex;
+import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.users.StringToUserRoleConverter;
 
 import com.vaadin.data.util.converter.Converter;
@@ -57,8 +59,14 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 		if (presentationType == String.class && modelType == Sex.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToContactSex.class);
 
+		// Простой конвертор флага
 		if (presentationType == String.class && modelType == Boolean.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToBooleanConverter.class);
+
+		// Конвертер полиса БСО
+		if (presentationType == String.class && modelType == Policy.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToPolicyConverter.class);
+
 		// Let default factory handle the rest
 		return super.findConverter(presentationType, modelType);
 	}

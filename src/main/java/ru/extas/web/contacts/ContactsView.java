@@ -3,6 +3,7 @@
  */
 package ru.extas.web.contacts;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static ru.extas.server.ServiceLocator.lookup;
 
 import java.util.Collection;
@@ -14,6 +15,8 @@ import ru.extas.model.Contact;
 import ru.extas.server.ContactService;
 import ru.extas.web.commons.ExtaAbstractView;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -93,17 +96,17 @@ public class ContactsView extends ExtaAbstractView {
 		});
 		commandBar.addComponent(newBtn);
 
-		Button editBtn = new Button("Изменить");
+		final Button editBtn = new Button("Изменить");
 		editBtn.addStyleName("icon-user-2");
 		editBtn.setDescription("Редактирование контактных данных");
+		editBtn.setEnabled(false);
 		editBtn.addClickListener(new ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				// FIXME: Проверить, что имеется выбранная запись
-				final Contact curObj = (Contact) table.getValue();
+				final Contact curObj = checkNotNull((Contact) table.getValue());
 
 				final ContactEditForm editWin = new ContactEditForm("Редактирование контактных данных", curObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -113,7 +116,7 @@ public class ContactsView extends ExtaAbstractView {
 					@Override
 					public void windowClose(CloseEvent e) {
 						if (editWin.isSaved()) {
-							// FIXME: Избавиться от дорогой операции обновления
+							// TODO: Избавиться от дорогой операции обновления
 							table.refreshRowCache();
 							Notification.show("Контакт сохранен", Type.TRAY_NOTIFICATION);
 						}
@@ -129,6 +132,21 @@ public class ContactsView extends ExtaAbstractView {
 		// Создаем таблицу скроллинга
 		table = new Table("Контакты", beans);
 		table.setSizeFull();
+
+		// Обеспечиваем корректную работу кнопок зависящих от выбранной записи
+		table.setImmediate(true);
+		table.setSelectable(true);
+		table.setValue(beans.getItem(beans.firstItemId()));
+		table.addValueChangeListener(new ValueChangeListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				boolean enableBtb = event.getProperty().getValue() != null;
+				editBtn.setEnabled(enableBtb);
+			}
+		});
 
 		ContactDataDecl ds = new ContactDataDecl();
 		ds.initTableColumns(table);

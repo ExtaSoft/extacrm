@@ -1,0 +1,8 @@
+@mixin extacrm-absolutelayout($primaryStyleName : v-absolutelayout) {
+
+.#{$primaryStyleName}-wrapper {
+	position: absolute;
+	overflow:hidden;
+}
+
+}

@@ -71,8 +71,6 @@ public class ExtaMainMenu extends CssLayout {
 			String reqRerm // Право доступа к разделу
 	) {
 
-		// TODO: Add permission check!!!
-
 		final String normFragment = "/" + fragment;
 
 		// Регистрируем в навигаторе

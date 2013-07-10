@@ -3,6 +3,7 @@
  */
 package ru.extas.web.users;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static ru.extas.server.ServiceLocator.lookup;
 
 import java.util.Collection;
@@ -14,6 +15,8 @@ import ru.extas.model.UserProfile;
 import ru.extas.server.UserManagementService;
 import ru.extas.web.commons.ExtaAbstractView;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -94,17 +97,17 @@ public class UsersView extends ExtaAbstractView {
 		});
 		commandBar.addComponent(newBtn);
 
-		Button editBtn = new Button("Изменить");
+		final Button editBtn = new Button("Изменить");
 		editBtn.addStyleName("icon-user-1");
 		editBtn.setDescription("Редактирование данных пользователя");
+		editBtn.setEnabled(false);
 		editBtn.addClickListener(new ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				// FIXME: Проверить, что имеется выбранная запись
-				final UserProfile curObj = (UserProfile) table.getValue();
+				final UserProfile curObj = checkNotNull((UserProfile) table.getValue());
 
 				final UserEditForm editWin = new UserEditForm("Редактирование данных пользователя", curObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -127,8 +130,21 @@ public class UsersView extends ExtaAbstractView {
 
 		// Создаем таблицу скроллинга
 		table = new Table("Пользователи", beans);
-
 		table.setSizeFull();
+
+		// Обеспечиваем корректную работу кнопок зависящих от выбранной записи
+		table.setImmediate(true);
+		table.setValue(table.getItem(table.firstItemId()));
+		table.addValueChangeListener(new ValueChangeListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				boolean enableBtb = event.getProperty().getValue() != null;
+				editBtn.setEnabled(enableBtb);
+			}
+		});
 
 		UsersDataDecl ds = new UsersDataDecl();
 		ds.initTableColumns(table);
