@@ -1,0 +1,11 @@
+<!-- Indices written at Thu, 11 Jul 2013 01:37:28 MSK -->
+
+<datastore-indexes autoGenerate="true">
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Policy" ancestor="false" source="auto">
+        <property name="issueDate" direction="asc"/>
+        <property name="bookTime" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

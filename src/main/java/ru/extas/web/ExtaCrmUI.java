@@ -4,6 +4,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Locale;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -83,6 +84,9 @@ public class ExtaCrmUI extends UI {
 
 		// Регистрируем конверторы по умолчанию
 		VaadinSession.getCurrent().setConverterFactory(new ExtaConverterFactory());
+
+		// Устанавливаем локаль
+		VaadinSession.getCurrent().setLocale(lookup(Locale.class));
 
 		setContent(root);
 		root.addStyleName("root");

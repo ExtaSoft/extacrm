@@ -16,9 +16,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.extas.model.UserRole;
 import ru.extas.web.commons.ExtaAbstractView;
 
 import com.vaadin.ui.Component;
@@ -121,14 +123,16 @@ public class InsuranceView extends ExtaAbstractView {
 				return new InsuranceGrid();
 			}
 		});
-		ret.add(new AbstractTabInfo("Бланки (БСО)") {
-			private static final long serialVersionUID = 1L;
+		if (!SecurityUtils.getSubject().hasRole(UserRole.USER.getName())) {
+			ret.add(new AbstractTabInfo("Бланки (БСО)") {
+				private static final long serialVersionUID = 1L;
 
-			@Override
-			public Component createComponent() {
-				return new BSOGrid();
-			}
-		});
+				@Override
+				public Component createComponent() {
+					return new BSOGrid();
+				}
+			});
+		}
 		return ret;
 	}
 

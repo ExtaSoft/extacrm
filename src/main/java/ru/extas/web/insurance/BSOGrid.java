@@ -76,7 +76,7 @@ public class BSOGrid extends CustomComponent {
 						if (editWin.isSaved()) {
 							beans.addBean(newObj);
 							table.setValue(newObj);
-							Notification.show("Бланки сохранен", Type.TRAY_NOTIFICATION);
+							Notification.show("Бланк сохранен", Type.TRAY_NOTIFICATION);
 						}
 					}
 				});

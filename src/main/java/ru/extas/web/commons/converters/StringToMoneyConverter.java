@@ -1,5 +1,7 @@
 package ru.extas.web.commons.converters;
 
+import static ru.extas.server.ServiceLocator.lookup;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -33,7 +35,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 
 	protected DecimalFormat getFormat(Locale locale) {
 		if (locale == null) {
-			locale = Locale.getDefault();
+			locale = lookup(Locale.class);
 		}
 		if (format == null) {
 			format = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
@@ -46,7 +48,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 
 	protected DecimalFormat getLenientFormat(Locale locale) {
 		if (locale == null) {
-			locale = Locale.getDefault();
+			locale = lookup(Locale.class);
 		}
 		if (lenientFormat == null) {
 			lenientFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);

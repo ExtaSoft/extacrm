@@ -3,6 +3,8 @@
  */
 package ru.extas.web;
 
+import java.util.Locale;
+
 import ru.extas.web.commons.converters.DateToJodaDTConverter;
 import ru.extas.web.commons.converters.DateToJodaLDConverter;
 import ru.extas.web.commons.converters.StringToJodaDTConverter;
@@ -15,6 +17,7 @@ import ru.extas.web.users.StringToUserRoleConverter;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.servlet.ServletScopes;
+import com.google.inject.servlet.SessionScoped;
 import com.vaadin.data.util.converter.StringToBooleanConverter;
 import com.vaadin.ui.UI;
 
@@ -66,4 +69,9 @@ public class WebUIModule extends AbstractModule {
 		return ExtaCrmUI.class;
 	}
 
+	@Provides
+	@SessionScoped
+	private Locale provideDefaultLocale() {
+		return new Locale("ru", "RU");
+	}
 }

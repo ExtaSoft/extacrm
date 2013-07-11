@@ -136,11 +136,36 @@ public class InsuranceGrid extends CustomComponent {
 		editPolyceBtn.setEnabled(false);
 		commandBar.addComponent(editPolyceBtn);
 
-		final Button printPolyceBtn = new Button("Печать");
+		// PopupButton popupButton = new PopupButton("Action");
+		// HorizontalLayout popupLayout = new HorizontalLayout();
+		// popupButton.setContent(popupLayout); // Set popup content
+		// Button modifyButton = new Button("Modify");
+		// modifyButton.setIcon(new
+		// ThemeResource("../runo/icons/16/document-txt.png"));
+		// popupLayout.addComponent(modifyButton);
+		// Button addButton = new Button("Add");
+		// addButton.setIcon(new
+		// ThemeResource("../runo/icons/16/document-add.png"));
+		// popupLayout.addComponent(addButton);
+		// Button deleteButton = new Button("Delete");
+		// deleteButton.setIcon(new
+		// ThemeResource("../runo/icons/16/document-delete.png"));
+		// commandBar.addComponent(popupButton);
+		// popupLayout.addComponent(deleteButton);
+
+		final Button printPolyceMatBtn = new Button("Печать");
+		printPolyceMatBtn.addStyleName("icon-print-2");
+		printPolyceMatBtn.setDescription("Создать печатное представление полиса страхования");
+		printPolyceMatBtn.setEnabled(false);
+		createPolicyDownloader(true).extend(printPolyceMatBtn);
+		commandBar.addComponent(printPolyceMatBtn);
+
+		// TODO Заметить на раскрывающуюся кнопку
+		final Button printPolyceBtn = new Button("Печать без подложки");
 		printPolyceBtn.addStyleName("icon-print-2");
-		printPolyceBtn.setDescription("Создать печатное представление полиса страхования");
+		printPolyceBtn.setDescription("Создать печатное представление полиса страхования без подложки");
 		printPolyceBtn.setEnabled(false);
-		createPolicyDownloader().extend(printPolyceBtn);
+		createPolicyDownloader(false).extend(printPolyceBtn);
 		commandBar.addComponent(printPolyceBtn);
 
 		panel.addComponent(commandBar);
@@ -161,6 +186,7 @@ public class InsuranceGrid extends CustomComponent {
 				boolean enableBtb = event.getProperty().getValue() != null;
 				editPolyceBtn.setEnabled(enableBtb);
 				printPolyceBtn.setEnabled(enableBtb);
+				printPolyceMatBtn.setEnabled(enableBtb);
 			}
 		});
 
@@ -198,7 +224,7 @@ public class InsuranceGrid extends CustomComponent {
 	//
 	// }
 
-	private OnDemandFileDownloader createPolicyDownloader() {
+	private OnDemandFileDownloader createPolicyDownloader(final boolean withMat) {
 		return new OnDemandFileDownloader(new OnDemandStreamResource() {
 			private static final long serialVersionUID = 1L;
 
@@ -211,7 +237,9 @@ public class InsuranceGrid extends CustomComponent {
 					// 1) Load Docx file by filling Velocity template engine and
 					// cache
 					// it to the registry
-					InputStream in = getClass().getResourceAsStream("/reports/insurance/PropertyInsuranceTemplate.docx");
+					InputStream in = getClass().getResourceAsStream(
+							withMat ? "/reports/insurance/PropertyInsuranceTemplateWhitMat.docx"
+									: "/reports/insurance/PropertyInsuranceTemplate.docx");
 					IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Freemarker);
 
 					// 2) Create context Java model

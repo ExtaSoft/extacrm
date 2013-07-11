@@ -95,6 +95,17 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
 		dateField = new LocalDateField("Дата договора", "Введите дату оформления договора страхования");
 		dateField.setRequired(true);
+		dateField.addValueChangeListener(new ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				// пересчитать дату оплаты страховки
+				LocalDate newDate = (LocalDate) dateField.getConvertedValue();
+				if (newDate != null && paymentDateField.getPropertyDataSource() != null)
+					paymentDateField.setConvertedValue(newDate);
+			}
+		});
 		form.addComponent(dateField);
 
 		clientNameField = new ContactSelect("Страхователь");
@@ -190,8 +201,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 			final LocalDate now = LocalDate.now();
 			obj.setDate(now);
 			obj.setPaymentDate(now);
-			obj.setStartDate(now);
-			obj.setEndDate(now.plusYears(1));
+			obj.setStartDate(obj.getPaymentDate().plusDays(1));
+			obj.setEndDate(obj.getStartDate().plusYears(1).minusDays(1));
 		}
 	}
 

@@ -1,19 +1,22 @@
 package ru.extas.server;
 
+import static com.google.common.collect.Maps.newHashMap;
 import static ru.extas.server.ServiceLocator.lookup;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
-import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.extas.model.Insurance;
 import ru.extas.model.PMF;
+import ru.extas.model.UserRole;
 
 /**
  * Имплементация сервиса управления имущественными страховками
@@ -30,21 +33,27 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
 	 * 
 	 * @see ru.extas.server.InsuranceRepository#getAll()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Insurance> loadAll() {
 		logger.debug("Requesting insuranses list...");
 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Query q = pm.newQuery(Insurance.class);
+		Map<String, Object> parameters = newHashMap();
 		try {
-			List<Insurance> insurances = new ArrayList<Insurance>();
-			Extent<Insurance> extent = pm.getExtent(Insurance.class, false);
-			for (Insurance insurance : extent) {
-				insurances.add(insurance);
+			Subject subject = SecurityUtils.getSubject();
+			// пользователю доступны только собственные записи
+			if (subject.hasRole(UserRole.USER.getName())) {
+				q.setFilter("createdBy == createdByPrm");
+				q.declareParameters("String createdByPrm");
+				parameters.put("createdByPrm", subject.getPrincipal());
 			}
-			extent.closeAll();
+			Collection<Insurance> insurances = (Collection<Insurance>) q.executeWithMap(parameters);
 			logger.info("Retrieved {} insuranses", insurances.size());
 
 			return insurances;
 		} finally {
+			q.closeAll();
 			pm.close();
 		}
 	}
