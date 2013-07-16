@@ -37,10 +37,10 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/ExtaSoft/extacrm.git</connection>
-		<url>scm:git:https://github.com/ExtaSoft/extacrm.git</url>
 		<developerConnection>scm:git:https://github.com/ExtaSoft/extacrm.git</developerConnection>
-	  <tag>extacrm-0.0.3</tag>
-  </scm>
+		<url>https://github.com/ExtaSoft/extacrm</url>
+	  	<tag>extacrm-0.0.3</tag>
+  	</scm>
   
 	<repositories>
 		<repository>
