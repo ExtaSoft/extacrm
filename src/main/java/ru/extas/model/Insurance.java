@@ -65,6 +65,10 @@ public class Insurance extends AbstractExtaObject {
 	@Persistent
 	private LocalDate endDate;
 
+	// Точка продажи (Контрагент)
+	@Persistent
+	private String pointOfSale;
+
 	public Insurance() {
 	}
 
@@ -231,6 +235,21 @@ public class Insurance extends AbstractExtaObject {
 	 */
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+	}
+
+	/**
+	 * @return the pointOfSale
+	 */
+	public String getPointOfSale() {
+		return pointOfSale;
+	}
+
+	/**
+	 * @param pointOfSale
+	 *            the pointOfSale to set
+	 */
+	public void setPointOfSale(String pointOfSale) {
+		this.pointOfSale = pointOfSale;
 	}
 
 }

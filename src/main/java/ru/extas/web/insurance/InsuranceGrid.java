@@ -65,7 +65,6 @@ public class InsuranceGrid extends CustomComponent {
 		panel.setSizeFull();
 
 		// Запрос данных
-		// FIXME Применить фильтр безопасности к страховкам
 		final InsuranceRepository insuranceRepository = lookup(InsuranceRepository.class);
 		final Collection<Insurance> insurances = insuranceRepository.loadAll();
 		final BeanItemContainer<Insurance> beans = new BeanItemContainer<Insurance>(Insurance.class);

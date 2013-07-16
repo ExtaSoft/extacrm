@@ -29,8 +29,8 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
-	@Override
-	public Policy convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public Policy convertToModel(String value, Class<? extends Policy> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
 		return lookup(PolicyRegistry.class).findByNum(value);
@@ -43,8 +43,8 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.util.Locale)
 	 */
-	@Override
-	public String convertToPresentation(Policy value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public String convertToPresentation(Policy value, Class<? extends String> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
 		return value.getRegNum();
@@ -68,6 +68,30 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
 	@Override
 	public Class<String> getPresentationType() {
 		return String.class;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.util.Locale)
+	 */
+	@Override
+	public Policy convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToModel(value, null, locale);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
+	 * .Object, java.util.Locale)
+	 */
+	@Override
+	public String convertToPresentation(Policy value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToPresentation(value, null, locale);
 	}
 
 }

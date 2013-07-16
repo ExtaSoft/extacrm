@@ -92,11 +92,8 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
-	@Override
-	public BigDecimal convertToModel(String value, /*
-													 * Class<? extends
-													 * BigDecimal> targetType,
-													 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public BigDecimal convertToModel(String value, Class<? extends BigDecimal> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null || value.isEmpty()) {
 			return null;
 		}
@@ -124,15 +121,36 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
-	@Override
-	public String convertToPresentation(BigDecimal value, /*
-														 * Class<? extends
-														 * String> targetType,
-														 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public String convertToPresentation(BigDecimal value, Class<? extends String> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null) {
 			return null;
 		}
 
 		return getFormat(locale).format(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.util.Locale)
+	 */
+	@Override
+	public BigDecimal convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToModel(value, null, locale);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
+	 * .Object, java.util.Locale)
+	 */
+	@Override
+	public String convertToPresentation(BigDecimal value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToPresentation(value, null, locale);
 	}
 }

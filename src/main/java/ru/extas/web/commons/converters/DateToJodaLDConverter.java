@@ -39,11 +39,8 @@ public class DateToJodaLDConverter implements Converter<Date, LocalDate> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
-	@Override
-	public LocalDate convertToModel(Date value, /*
-												 * Class<? extends LocalDate>
-												 * targetType,
-												 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public LocalDate convertToModel(Date value, Class<? extends LocalDate> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
 		return new LocalDate(value);
@@ -56,14 +53,35 @@ public class DateToJodaLDConverter implements Converter<Date, LocalDate> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
-	@Override
-	public Date convertToPresentation(LocalDate value, /*
-														 * Class<? extends Date>
-														 * targetType,
-														 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public Date convertToPresentation(LocalDate value, Class<? extends Date> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
 		Date date = value.toDate();
 		return date;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.util.Locale)
+	 */
+	@Override
+	public LocalDate convertToModel(Date value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToModel(value, null, locale);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
+	 * .Object, java.util.Locale)
+	 */
+	@Override
+	public Date convertToPresentation(LocalDate value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToPresentation(value, null, locale);
 	}
 }

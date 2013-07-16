@@ -7,10 +7,10 @@
 
 	<groupId>ru.extas</groupId>
 	<artifactId>extacrm</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 
 	<properties>
-		<appengine.app.version>0-0-2beta</appengine.app.version>
+		<appengine.app.version>0-0-3beta</appengine.app.version>
 		<vaadin.production.mode>true</vaadin.production.mode>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		

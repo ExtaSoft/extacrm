@@ -73,11 +73,8 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
-	@Override
-	public LocalDate convertToModel(String value, /*
-												 * Class<? extends LocalDate>
-												 * targetType,
-												 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public LocalDate convertToModel(String value, Class<? extends LocalDate> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null || value.isEmpty())
 			return null;
 		if (locale == null)
@@ -92,17 +89,38 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
-	@Override
-	public String convertToPresentation(LocalDate value, /*
-														 * Class<? extends
-														 * String> targetType,
-														 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public String convertToPresentation(LocalDate value, Class<? extends String> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
 		if (locale == null)
 			locale = Locale.getDefault();
 
 		return getFormatter().withLocale(locale).print(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.util.Locale)
+	 */
+	@Override
+	public LocalDate convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToModel(value, null, locale);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
+	 * .Object, java.util.Locale)
+	 */
+	@Override
+	public String convertToPresentation(LocalDate value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToPresentation(value, null, locale);
 	}
 
 }

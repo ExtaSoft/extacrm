@@ -57,11 +57,8 @@ public class StringToUserRoleConverter implements Converter<String, UserRole> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
-	@Override
-	public UserRole convertToModel(String value, /*
-												 * Class<? extends UserRole>
-												 * targetType,
-												 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public UserRole convertToModel(String value, Class<? extends UserRole> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null || value.isEmpty())
 			return null;
 
@@ -75,14 +72,35 @@ public class StringToUserRoleConverter implements Converter<String, UserRole> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
-	@Override
-	public String convertToPresentation(UserRole value, /*
-														 * Class<? extends
-														 * String> targetType,
-														 */Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public String convertToPresentation(UserRole value, Class<? extends String> targetType, Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
 		return map.get(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
+	 * java.util.Locale)
+	 */
+	@Override
+	public UserRole convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToModel(value, null, locale);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
+	 * .Object, java.util.Locale)
+	 */
+	@Override
+	public String convertToPresentation(UserRole value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+		return convertToPresentation(value, null, locale);
 	}
 
 }

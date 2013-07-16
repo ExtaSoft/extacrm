@@ -37,7 +37,7 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 
 		Query q = pm.newQuery(Policy.class);
 		q.setFilter("issueDate == null && bookTime < expareTimePrm");
-		// q.setOrdering("height desc");
+		q.setOrdering("bookTime, regNum ascending");
 		q.declareParameters("DateTime expareTimePrm");
 		q.declareImports("import org.joda.time.DateTime;");
 		try {
@@ -101,6 +101,7 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
 		Query q = pm.newQuery(Policy.class);
+		q.setOrdering("regNum ascending");
 		try {
 			List<Policy> pilicies = (List<Policy>) q.execute(DateTime.now().minusHours(1));
 			logger.info("Retrieved {} policies", pilicies.size());

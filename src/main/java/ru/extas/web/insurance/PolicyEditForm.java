@@ -39,7 +39,6 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	 */
 	public PolicyEditForm(String caption, Policy obj) {
 		super(caption, obj);
-		// TODO Auto-generated constructor stub
 	}
 
 	/*
@@ -87,7 +86,6 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	protected FormLayout createEditFields(Policy obj) {
 		FormLayout form = new FormLayout();
 
-		// TODO Выбирать номер полиса из справочника
 		regNumField = new EditField("Номер полиса", "Введите номер полиса.");
 		regNumField.setColumns(20);
 		regNumField.setRequired(true);

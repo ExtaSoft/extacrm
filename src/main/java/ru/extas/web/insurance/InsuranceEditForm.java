@@ -56,6 +56,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	private PopupDateField startDateField;
 	@PropertyId("endDate")
 	private PopupDateField endDateField;
+	@PropertyId("pointOfSale")
+	private TextField pointOfSaleField;
 
 	public InsuranceEditForm(String caption, final Insurance obj) {
 		super(caption, obj);
@@ -73,7 +75,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	protected FormLayout createEditFields(Insurance obj) {
 		FormLayout form = new FormLayout();
 
-		regNumField = new PolicySelect("Номер полиса", "Введите номер полиса страхования. Выбирается из справочника БСО.");
+		regNumField = new PolicySelect("Номер полиса", "Введите номер полиса страхования. Выбирается из справочника БСО.", obj.getRegNum());
 		regNumField.setRequired(true);
 		regNumField.setConverter(String.class);
 		regNumField.addValueChangeListener(new ValueChangeListener() {
@@ -185,6 +187,11 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		endDateField = new LocalDateField("Дата окончания договора", "Введите дату окончания ");
 		endDateField.setRequired(true);
 		form.addComponent(endDateField);
+
+		pointOfSaleField = new EditField("Точка продажи", "Название автосоалона где продана страховка");
+		pointOfSaleField.setColumns(15);
+		pointOfSaleField.setRequired(true);
+		form.addComponent(pointOfSaleField);
 
 		return form;
 	}

@@ -22,13 +22,6 @@ public class PolicySelect extends ComboBox {
 
 	private static final long serialVersionUID = 6004206917183679455L;
 
-	/**
-	 * @param caption
-	 */
-	public PolicySelect(String caption) {
-		this(caption, "Выберете существующего клиента или введите нового");
-	}
-
 	@Override
 	public Class<Policy> getType() {
 		return Policy.class;
@@ -37,8 +30,9 @@ public class PolicySelect extends ComboBox {
 	/**
 	 * @param caption
 	 * @param description
+	 * @param forceNum
 	 */
-	public PolicySelect(String caption, String description) {
+	public PolicySelect(String caption, String description, String forceNum) {
 		super(caption);
 
 		// Преконфигурация
@@ -53,6 +47,10 @@ public class PolicySelect extends ComboBox {
 		final Collection<Policy> policies = policyRepository.loadAvailable();
 		final BeanItemContainer<Policy> clientsCont = new BeanItemContainer<Policy>(Policy.class);
 		clientsCont.addAll(policies);
+		if (forceNum != null) {
+			Policy forcePolicy = policyRepository.findByNum(forceNum);
+			clientsCont.addBean(forcePolicy);
+		}
 
 		// Устанавливаем контент выбора
 		setFilteringMode(FilteringMode.CONTAINS);
