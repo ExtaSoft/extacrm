@@ -37,7 +37,7 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/ExtaSoft/extacrm.git</connection>
-		<developerConnection>scm:git:https://github.com/ExtaSoft/extacrm.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:ExtaSoft/extacrm.git</developerConnection>
 		<url>https://github.com/ExtaSoft/extacrm</url>
 	  	<tag>extacrm-0.0.3</tag>
   	</scm>
