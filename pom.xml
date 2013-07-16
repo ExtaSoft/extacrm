@@ -10,7 +10,6 @@
 	<version>0.0.3-SNAPSHOT</version>
 
 	<properties>
-		<appengine.app.version>0-0-3beta</appengine.app.version>
 		<vaadin.production.mode>true</vaadin.production.mode>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
@@ -37,6 +36,12 @@
 		
 	</properties>
 
+	<scm>
+		<connection>scm:git:https://github.com/ExtaSoft/extacrm.git</connection>
+		<url>scm:git:https://github.com/ExtaSoft/extacrm.git</url>
+		<developerConnection>scm:git:https://github.com/ExtaSoft/extacrm.git</developerConnection>
+	</scm>
+  
 	<repositories>
 		<repository>
 			<id>vaadin-addons</id>
@@ -209,9 +214,16 @@
 	</dependencies>
 
 	<build>
-<!-- 		<outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/classes/</outputDirectory> -->
-		
+		<!-- <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/classes/</outputDirectory> -->
+
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4.1</version>
+			</plugin>
+
 			<!-- This plug-in "enhances" your domain model objects (i.e. makes them 
 				persistent for datanucleus) -->
 			<plugin>
@@ -262,13 +274,37 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.codehaus.groovy.maven</groupId>
+				<artifactId>gmaven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<rawVersion>${project.version}</rawVersion>
+							</properties>
+							<source>
+								// Convert POM version to valid GAE version identifier
+								project.properties['appengine.app.version'] =
+									(project.properties['rawVersion'] =~ /\./).replaceAll('-')
+							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>${appengine.target.version}</version>
 				<configuration>
-				 	<port>9090</port>
+					<port>9090</port>
 					<jvmFlags>
-<!-- 						<jvmFlag>-Dappengine.generated.dir=${project.build.directory}</jvmFlag> -->
+						<!-- <jvmFlag>-Dappengine.generated.dir=${project.build.directory}</jvmFlag> -->
 						<jvmFlag>-Xdebug</jvmFlag>
 						<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8989,server=y,suspend=n</jvmFlag>
 					</jvmFlags>
@@ -314,11 +350,12 @@
 					</execution>
 				</executions>
 			</plugin>
- 
+
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -358,6 +395,25 @@
 										</versionRange>
 										<goals>
 											<goal>java</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.groovy.maven
+										</groupId>
+										<artifactId>
+											gmaven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0,)
+										</versionRange>
+										<goals>
+											<goal>execute</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

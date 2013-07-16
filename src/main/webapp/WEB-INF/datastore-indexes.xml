@@ -6,6 +6,7 @@
     <datastore-index kind="Policy" ancestor="false" source="auto">
         <property name="issueDate" direction="asc"/>
         <property name="bookTime" direction="asc"/>
+        <property name="regNum" direction="asc"/>
     </datastore-index>
 
 </datastore-indexes>
