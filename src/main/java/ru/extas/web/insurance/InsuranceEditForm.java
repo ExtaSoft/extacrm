@@ -2,10 +2,13 @@ package ru.extas.web.insurance;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
+import java.math.BigDecimal;
+
 import org.joda.time.LocalDate;
 
 import ru.extas.model.Insurance;
 import ru.extas.model.Policy;
+import ru.extas.server.InsuranceCalculator;
 import ru.extas.server.InsuranceRepository;
 import ru.extas.server.PolicyRegistry;
 import ru.extas.server.SupplementService;
@@ -146,6 +149,19 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		form.addComponent(motorModelField);
 
 		riskSumField = new EditField("Страховая сумма", "Введите сумму возмещения в рублях");
+		riskSumField.addValueChangeListener(new ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				BigDecimal riskSum = (BigDecimal) riskSumField.getConvertedValue();
+				if (riskSum != null && premiumField.getPropertyDataSource() != null) {
+					InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+					BigDecimal premium = calc.calcPropInsPremium(new Insurance((String) motorBrandField.getValue(), riskSum));
+					premiumField.setConvertedValue(premium);
+				}
+			}
+		});
 		riskSumField.setRequired(true);
 		form.addComponent(riskSumField);
 

@@ -73,6 +73,15 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * @param motorBrand
+	 * @param riskSum
+	 */
+	public Insurance(String motorBrand, BigDecimal riskSum) {
+		this.motorBrand = motorBrand;
+		this.riskSum = riskSum;
+	}
+
+	/**
 	 * @return the regNum
 	 */
 	public final String getRegNum() {

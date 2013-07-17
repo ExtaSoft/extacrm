@@ -23,17 +23,24 @@ public class SupplementServiceImpl implements SupplementService {
 	static private class MotorTypesFactory {
 		static final List<String> INSTANCE;
 		static {
-			INSTANCE = newArrayList("Мотоцикл", "Скутер", "Квадроцикл", "Снегоход", "Гидроцикл", "Лодочный мотор", "Лодка", "Катер",
-					"Снегоболотоход", "Мотовездеход");
+			// INSTANCE = newArrayList("Мотоцикл", "Скутер", "Квадроцикл",
+			// "Снегоход", "Гидроцикл", "Лодочный мотор", "Лодка", "Катер",
+			// "Снегоболотоход", "Мотовездеход");
+			INSTANCE = newArrayList("Квадроцикл", "Снегоход", "Снегоболотоход", "Мотовездеход");
 		}
 	}
 
 	static private class MotorBrandsFactory {
 		static final List<String> INSTANCE;
 		static {
-			INSTANCE = newArrayList("Ducati", "Kawasaki", "Yamaha", "Yamarin", "Husqvarna", "Arctic Cat", "Polaris", "CFMOTO", "SYM", "Honda",
-					"Suzuki", "CECTEK", "BRP", "Harley-Davidson", "KTM", "Royal Enfield", "Tohatsu", "Mercury", "Solano", "Silver", "UMS",
-					"WindBoat", "Moto Guzzi", "Aprilia", "DERBI", "Piaggio", "Vespa", "Gilera", "Русская механика", "Gamax");
+			// INSTANCE = newArrayList("Ducati", "Kawasaki", "Yamaha",
+			// "Yamarin", "Husqvarna", "Arctic Cat", "Polaris", "CFMOTO", "SYM",
+			// "Honda", "Suzuki", "CECTEK", "BRP", "Harley-Davidson", "KTM",
+			// "Royal Enfield", "Tohatsu", "Mercury", "Solano", "Silver", "UMS",
+			// "WindBoat", "Moto Guzzi", "Aprilia", "DERBI", "Piaggio", "Vespa",
+			// "Gilera", "Русская механика", "Gamax");
+			INSTANCE = newArrayList("CFMOTO", "Kawasaki", "Arctic Cat", "Polaris", "CECTEK", "Baltmotors", "Suzuki", "Honda", "Polar Fox", "BRP",
+					"Yamaha", "STELS");
 		}
 	}
 
