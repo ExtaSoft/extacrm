@@ -90,15 +90,16 @@ public class InsuranceView extends ExtaAbstractView {
 				// Find the tab (here we know it's a layout)
 				VerticalLayout tab = (VerticalLayout) tabsheet.getSelectedTab();
 
-				if (tab.getComponentCount() == 0) {
-					// Инициализируем содержимое закладки
-					TabInfo info = (TabInfo) tab.getData();
+				// if (tab.getComponentCount() == 0) {
+				// Инициализируем содержимое закладки
+				TabInfo info = (TabInfo) tab.getData();
 
-					tab.removeAllComponents();
-					Component tabContent = info.createComponent();
-					tabContent.setSizeFull();
-					tab.addComponent(tabContent);
-				}
+				tab.removeAllComponents();
+				Component tabContent = info.createComponent();
+				tabContent.setSizeFull();
+				tab.addComponent(tabContent);
+				// } else
+				// tab.getComponent(0).markAsDirtyRecursive();
 			}
 		});
 

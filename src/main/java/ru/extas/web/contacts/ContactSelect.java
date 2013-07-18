@@ -81,7 +81,7 @@ public class ContactSelect extends ComboBox {
 						if (editWin.isSaved()) {
 							clientsCont.addBean(newcontact);
 							ContactSelect.this.setValue(newcontact);
-							Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
+							Notification.show("Контакт сохранен", Type.TRAY_NOTIFICATION);
 						}
 					}
 				});

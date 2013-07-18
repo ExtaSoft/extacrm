@@ -3,7 +3,7 @@
  */
 package ru.extas.server;
 
-import java.util.Collection;
+import java.util.List;
 
 import ru.extas.model.Policy;
 
@@ -18,16 +18,31 @@ public interface PolicyRegistry {
 	/**
 	 * Возвращает список всех зарегестрированных полисов
 	 * 
-	 * @return список полисов
+	 * @param startIndex
+	 *            начальный ндекс выборки
+	 * @param count
+	 *            размер выборки
+	 * @param sortPropertyIds
+	 *            сортируемые свойства
+	 * @param sortStates
+	 *            направление сортировки
+	 * @return
 	 */
-	Collection<Policy> loadAll();
+	List<Policy> loadAll(int startIndex, int count, Object[] sortPropertyIds, boolean[] sortStates);
+
+	/**
+	 * Запрашивает количество полисов в базе
+	 * 
+	 * @return количество полисов в базе
+	 */
+	int queryPoliciesCount();
 
 	/**
 	 * Возвращает список всех доступных полисов
 	 * 
 	 * @return список полисов
 	 */
-	Collection<Policy> loadAvailable();
+	List<Policy> loadAvailable();
 
 	/**
 	 * Сохраняет полис

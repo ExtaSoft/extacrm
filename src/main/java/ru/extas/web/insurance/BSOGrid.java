@@ -50,7 +50,7 @@ public class BSOGrid extends CustomComponent {
 
 		// Запрос данных
 		final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
-		final Collection<Policy> policies = policyRepository.loadAll();
+		final Collection<Policy> policies = policyRepository.loadAll(-1, 0, null, null);
 		final BeanItemContainer<Policy> beans = new BeanItemContainer<Policy>(Policy.class);
 		beans.addAll(policies);
 

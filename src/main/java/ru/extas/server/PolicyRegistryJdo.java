@@ -3,7 +3,6 @@
  */
 package ru.extas.server;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -31,7 +30,7 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Policy> loadAvailable() {
+	public List<Policy> loadAvailable() {
 		logger.debug("Requesting available policies...");
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
@@ -96,17 +95,18 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Policy> loadAll() {
-		logger.debug("Requesting all policies...");
+	public List<Policy> loadAll(int startIndex, int count, Object[] sortPropertyIds, boolean[] sortStates) {
+		logger.debug("Requesting all policies from {} count {}", startIndex, count);
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
 		Query q = pm.newQuery(Policy.class);
-		q.setOrdering("regNum ascending");
+		QueryUtils.setOrdering(q, sortPropertyIds, sortStates);
+		QueryUtils.setRange(q, startIndex, count);
 		try {
-			List<Policy> pilicies = (List<Policy>) q.execute(DateTime.now().minusHours(1));
-			logger.info("Retrieved {} policies", pilicies.size());
+			List<Policy> policies = (List<Policy>) q.execute();
+			logger.info("Retrieved {} policies", policies.size());
 
-			return pilicies;
+			return policies;
 		} finally {
 			q.closeAll();
 			pm.close();
@@ -162,6 +162,28 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 		Policy policy = findByNum(regNum);
 		if (policy != null) {
 			issuePolicy(policy);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ru.extas.server.PolicyRegistry#queryPoliciesCount()
+	 */
+	@Override
+	public int queryPoliciesCount() {
+		logger.debug("Requesting all policies count...");
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+
+		Query q = pm.newQuery(Policy.class);
+		q.setResult("count(this)");
+		try {
+			long count = (long) q.execute();
+			logger.debug("Policies count {}", count);
+			return (int) count;
+		} finally {
+			q.closeAll();
+			pm.close();
 		}
 	}
 
