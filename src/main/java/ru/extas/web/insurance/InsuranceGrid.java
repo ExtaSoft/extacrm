@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import ru.extas.model.Insurance;
 import ru.extas.server.InsuranceRepository;
+import ru.extas.web.commons.ExportTableDownloader;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.OnDemandFileDownloader;
 import ru.extas.web.commons.OnDemandFileDownloader.OnDemandStreamResource;
@@ -56,11 +57,11 @@ public class InsuranceGrid extends CustomComponent {
 
 	private final Logger logger = LoggerFactory.getLogger(InsuranceGrid.class);
 
-	private final Table table;
+	private final Table table = new Table();
 
 	public InsuranceGrid() {
 
-		CssLayout panel = new CssLayout();
+		final CssLayout panel = new CssLayout();
 		panel.addStyleName("layout-panel");
 		panel.setSizeFull();
 
@@ -71,16 +72,16 @@ public class InsuranceGrid extends CustomComponent {
 		beans.addNestedContainerProperty("client.name");
 		beans.addAll(insurances);
 
-		HorizontalLayout commandBar = new HorizontalLayout();
+		final HorizontalLayout commandBar = new HorizontalLayout();
 		commandBar.addStyleName("configure");
 		commandBar.setSpacing(true);
 
-		Button newPolyceBtn = new Button("Новый", new ClickListener() {
+		final Button newPolyceBtn = new Button("Новый", new ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void buttonClick(final ClickEvent event) {
 				final Insurance newObj = new Insurance();
 
 				final InsuranceEditForm editWin = new InsuranceEditForm("Новый полис", newObj);
@@ -89,7 +90,7 @@ public class InsuranceGrid extends CustomComponent {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void windowClose(CloseEvent e) {
+					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
 							beans.addBean(newObj);
 							table.setValue(newObj);
@@ -109,9 +110,9 @@ public class InsuranceGrid extends CustomComponent {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void buttonClick(final ClickEvent event) {
 				// Взять текущий полис из грида
-				final Insurance selObj = checkNotNull((Insurance) table.getValue(), "No selected row");
+				final Insurance selObj = checkNotNull((Insurance)table.getValue(), "No selected row");
 
 				final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", selObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -119,7 +120,7 @@ public class InsuranceGrid extends CustomComponent {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void windowClose(CloseEvent e) {
+					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
 							// TODO: Избавиться от дорогой операции обновления
 							table.refreshRowCache();
@@ -167,9 +168,14 @@ public class InsuranceGrid extends CustomComponent {
 		createPolicyDownloader(false).extend(printPolyceBtn);
 		commandBar.addComponent(printPolyceBtn);
 
+		final Button exportBtn = new Button("Экспорт");
+		exportBtn.addStyleName("icon-table");
+		exportBtn.setDescription("Экспорт содержимого таблицы в CSV файл");
+		new ExportTableDownloader(table, "PropertyInsurances.csv").extend(exportBtn);
+		commandBar.addComponent(exportBtn);
+
 		panel.addComponent(commandBar);
 
-		table = new Table();
 		table.setContainerDataSource(beans);
 		table.setSizeFull();
 
@@ -181,15 +187,15 @@ public class InsuranceGrid extends CustomComponent {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				boolean enableBtb = event.getProperty().getValue() != null;
+			public void valueChange(final ValueChangeEvent event) {
+				final boolean enableBtb = event.getProperty().getValue() != null;
 				editPolyceBtn.setEnabled(enableBtb);
 				printPolyceBtn.setEnabled(enableBtb);
 				printPolyceMatBtn.setEnabled(enableBtb);
 			}
 		});
 
-		GridDataDecl ds = new InsuranceDataDecl();
+		final GridDataDecl ds = new InsuranceDataDecl();
 		ds.initTableColumns(table);
 
 		panel.addComponent(table);
@@ -230,19 +236,20 @@ public class InsuranceGrid extends CustomComponent {
 			@Override
 			public InputStream getStream() {
 				// Взять текущий полис из грида
-				final Insurance insurance = (Insurance) table.getValue();
+				final Insurance insurance = (Insurance)table.getValue();
 				checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
 				try {
 					// 1) Load Docx file by filling Velocity template engine and
 					// cache
 					// it to the registry
-					InputStream in = getClass().getResourceAsStream(
+					final InputStream in = getClass().getResourceAsStream(
 							withMat ? "/reports/insurance/PropertyInsuranceTemplateWhitMat.docx"
 									: "/reports/insurance/PropertyInsuranceTemplate.docx");
-					IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Freemarker);
+					final IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
+							TemplateEngineKind.Freemarker);
 
 					// 2) Create context Java model
-					IContext context = report.createContext();
+					final IContext context = report.createContext();
 					context.put("ins", insurance);
 
 					// 3) Generate report by merging Java model with the Docx
@@ -275,13 +282,14 @@ public class InsuranceGrid extends CustomComponent {
 			@Override
 			public String getFilename() {
 				// Взять текущий полис из грида
-				final Insurance insurance = (Insurance) table.getValue();
-				String clientName = insurance.getClient().getName();
-				String policyNum = insurance.getRegNum();
+				final Insurance insurance = (Insurance)table.getValue();
+				final String clientName = insurance.getClient().getName();
+				final String policyNum = insurance.getRegNum();
 				try {
-					String fileName = MessageFormat.format("Полис.{0}.{1}.docx", policyNum, clientName).replaceAll(" ", ".");
+					final String fileName = MessageFormat.format("Полис.{0}.{1}.docx", policyNum, clientName)
+							.replaceAll(" ", ".");
 					return URLEncoder.encode(fileName, "UTF-8");
-				} catch (UnsupportedEncodingException e) {
+				} catch (final UnsupportedEncodingException e) {
 					logger.error("Print polycy error", e);
 				}
 				return "UnknownFileName.doc";
