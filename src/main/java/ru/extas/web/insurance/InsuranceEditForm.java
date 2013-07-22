@@ -62,7 +62,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	@PropertyId("pointOfSale")
 	private TextField pointOfSaleField;
 
-	public InsuranceEditForm(String caption, final Insurance obj) {
+	public InsuranceEditForm(final String caption, final Insurance obj) {
 		super(caption, obj);
 
 	}
@@ -75,19 +75,20 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	 * .AbstractExtaObject)
 	 */
 	@Override
-	protected FormLayout createEditFields(Insurance obj) {
-		FormLayout form = new FormLayout();
+	protected FormLayout createEditFields(final Insurance obj) {
+		final FormLayout form = new FormLayout();
 
-		regNumField = new PolicySelect("Номер полиса", "Введите номер полиса страхования. Выбирается из справочника БСО.", obj.getRegNum());
+		regNumField = new PolicySelect("Номер полиса",
+				"Введите номер полиса страхования. Выбирается из справочника БСО.", obj.getRegNum());
 		regNumField.setRequired(true);
 		regNumField.setConverter(String.class);
 		regNumField.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
+			public void valueChange(final ValueChangeEvent event) {
 				if (event.getProperty().getType() == Policy.class) {
-					Policy policy = (Policy) event.getProperty().getValue();
+					final Policy policy = (Policy)event.getProperty().getValue();
 					if (policy != null) {
 						// Зарезервировать полис в БСО
 						lookup(PolicyRegistry.class).bookPolicy(policy);
@@ -104,9 +105,9 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
+			public void valueChange(final ValueChangeEvent event) {
 				// пересчитать дату оплаты страховки
-				LocalDate newDate = (LocalDate) dateField.getConvertedValue();
+				final LocalDate newDate = (LocalDate)dateField.getConvertedValue();
 				if (newDate != null && paymentDateField.getPropertyDataSource() != null)
 					paymentDateField.setConvertedValue(newDate);
 			}
@@ -125,7 +126,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		motorTypeField.setNewItemsAllowed(false);
 		motorTypeField.setFilteringMode(FilteringMode.CONTAINS);
 		motorTypeField.setWidth(13, Unit.EM);
-		for (String item : lookup(SupplementService.class).loadMotorTypes())
+		for (final String item : lookup(SupplementService.class).loadMotorTypes())
 			motorTypeField.addItem(item);
 		motorTypeField.setRequired(true);
 		form.addComponent(motorTypeField);
@@ -138,9 +139,17 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		motorBrandField.setNewItemsAllowed(false);
 		motorBrandField.setFilteringMode(FilteringMode.CONTAINS);
 		motorBrandField.setWidth(13, Unit.EM);
-		for (String item : lookup(SupplementService.class).loadMotorBrands())
+		for (final String item : lookup(SupplementService.class).loadMotorBrands())
 			motorBrandField.addItem(item);
 		motorBrandField.setRequired(true);
+		motorBrandField.addValueChangeListener(new ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(final ValueChangeEvent event) {
+				calculatePremium();
+			}
+		});
 		form.addComponent(motorBrandField);
 
 		motorModelField = new EditField("Модель техники", "Введите модель техники");
@@ -153,13 +162,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				BigDecimal riskSum = (BigDecimal) riskSumField.getConvertedValue();
-				if (riskSum != null && premiumField.getPropertyDataSource() != null) {
-					InsuranceCalculator calc = lookup(InsuranceCalculator.class);
-					BigDecimal premium = calc.calcPropInsPremium(new Insurance((String) motorBrandField.getValue(), riskSum));
-					premiumField.setConvertedValue(premium);
-				}
+			public void valueChange(final ValueChangeEvent event) {
+				calculatePremium();
 			}
 		});
 		riskSumField.setRequired(true);
@@ -175,10 +179,10 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
+			public void valueChange(final ValueChangeEvent event) {
 				// пересчитать дату начала действия договора
-				LocalDate newDate = (LocalDate) paymentDateField.getConvertedValue();
-				LocalDate startDate = ((LocalDate) startDateField.getConvertedValue());
+				final LocalDate newDate = (LocalDate)paymentDateField.getConvertedValue();
+				final LocalDate startDate = ((LocalDate)startDateField.getConvertedValue());
 				if (newDate != null && startDate != null && newDate.isAfter(startDate))
 					startDateField.setConvertedValue(newDate.plusDays(1));
 			}
@@ -191,9 +195,9 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
+			public void valueChange(final ValueChangeEvent event) {
 				// пересчитать дату окончания договора
-				LocalDate newDate = (LocalDate) startDateField.getConvertedValue();
+				final LocalDate newDate = (LocalDate)startDateField.getConvertedValue();
 				if (newDate != null && endDateField.getPropertyDataSource() != null)
 					endDateField.setConvertedValue(newDate.plusYears(1).minusDays(1));
 			}
@@ -219,7 +223,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void initObject(Insurance obj) {
+	protected void initObject(final Insurance obj) {
 		if (obj.getKey() == null) {
 			final LocalDate now = LocalDate.now();
 			obj.setDate(now);
@@ -236,8 +240,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void saveObject(Insurance obj) {
-		InsuranceRepository contactService = lookup(InsuranceRepository.class);
+	protected void saveObject(final Insurance obj) {
+		final InsuranceRepository contactService = lookup(InsuranceRepository.class);
 		contactService.persist(obj);
 	}
 
@@ -249,7 +253,22 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void checkBeforeSave(Insurance obj) {
+	protected void checkBeforeSave(final Insurance obj) {
+	}
+
+	/**
+	 * 
+	 */
+	private void calculatePremium() {
+		if (motorBrandField.getPropertyDataSource() != null && premiumField.getPropertyDataSource() != null) {
+			final BigDecimal riskSum = (BigDecimal)riskSumField.getConvertedValue();
+			final String motorBrand = (String)motorBrandField.getValue();
+			if (riskSum != null && motorBrand != null) {
+				final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+				final BigDecimal premium = calc.calcPropInsPremium(new Insurance(motorBrand, riskSum));
+				premiumField.setConvertedValue(premium);
+			}
+		}
 	}
 
 }
