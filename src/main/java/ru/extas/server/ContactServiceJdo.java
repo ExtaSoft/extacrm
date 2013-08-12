@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.extas.model.Contact;
-import ru.extas.model.PMF;
 
 /**
  * JDO имплементация службы управления контактами

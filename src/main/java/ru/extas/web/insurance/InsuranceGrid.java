@@ -4,7 +4,6 @@
 package ru.extas.web.insurance;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static ru.extas.server.ServiceLocator.lookup;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,13 +12,16 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
-import java.util.Collection;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.extas.model.Insurance;
-import ru.extas.server.InsuranceRepository;
+import ru.extas.model.UserRole;
+import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
 import ru.extas.web.commons.ExportTableDownloader;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.OnDemandFileDownloader;
@@ -28,7 +30,8 @@ import ru.extas.web.commons.OnDemandFileDownloader.OnDemandStreamResource;
 import com.google.common.base.Throwables;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -66,11 +69,15 @@ public class InsuranceGrid extends CustomComponent {
 		panel.setSizeFull();
 
 		// Запрос данных
-		final InsuranceRepository insuranceRepository = lookup(InsuranceRepository.class);
-		final Collection<Insurance> insurances = insuranceRepository.loadAll();
-		final BeanItemContainer<Insurance> beans = new BeanItemContainer<Insurance>(Insurance.class);
-		beans.addNestedContainerProperty("client.name");
-		beans.addAll(insurances);
+		final LazyJdoContainer<Insurance> container = new LazyJdoContainer<Insurance>(Insurance.class, 50, null);
+		container.addContainerProperty("client.name", String.class, null, true, false);
+		container.addContainerProperty("client.birthday", LocalDate.class, null, true, false);
+		container.addContainerProperty("client.cellPhone", String.class, null, true, false);
+		final Subject subject = SecurityUtils.getSubject();
+		// пользователю доступны только собственные записи
+		if (subject.hasRole(UserRole.USER.getName())) {
+			container.addContainerFilter(new Compare.Equal("createdBy", subject.getPrincipal()));
+		}
 
 		final HorizontalLayout commandBar = new HorizontalLayout();
 		commandBar.addStyleName("configure");
@@ -80,9 +87,11 @@ public class InsuranceGrid extends CustomComponent {
 
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void buttonClick(final ClickEvent event) {
-				final Insurance newObj = new Insurance();
+				final Object newObjId = container.addItem();
+				final BeanItem<Insurance> newObj = (BeanItem<Insurance>)container.getItem(newObjId);
 
 				final InsuranceEditForm editWin = new InsuranceEditForm("Новый полис", newObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -92,9 +101,11 @@ public class InsuranceGrid extends CustomComponent {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							beans.addBean(newObj);
-							table.setValue(newObj);
+							container.commit();
+							table.select(newObjId);
 							Notification.show("Полис сохранен", Type.TRAY_NOTIFICATION);
+						} else {
+							container.discard();
 						}
 					}
 				});
@@ -109,12 +120,14 @@ public class InsuranceGrid extends CustomComponent {
 
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void buttonClick(final ClickEvent event) {
 				// Взять текущий полис из грида
-				final Insurance selObj = checkNotNull((Insurance)table.getValue(), "No selected row");
+				final Object curObjId = checkNotNull(table.getValue(), "No selected row");
+				final BeanItem<Insurance> curObj = (BeanItem<Insurance>)table.getItem(curObjId);
 
-				final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", selObj);
+				final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", curObj);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
@@ -122,8 +135,6 @@ public class InsuranceGrid extends CustomComponent {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							// TODO: Избавиться от дорогой операции обновления
-							table.refreshRowCache();
 							Notification.show("Полис сохранен", Type.TRAY_NOTIFICATION);
 						}
 					}
@@ -176,12 +187,11 @@ public class InsuranceGrid extends CustomComponent {
 
 		panel.addComponent(commandBar);
 
-		table.setContainerDataSource(beans);
+		table.setContainerDataSource(container);
 		table.setSizeFull();
 
 		// Обеспечиваем корректную работу кнопок зависящих от выбранной записи
 		table.setImmediate(true);
-		table.setValue(table.getItem(table.firstItemId()));
 		table.addValueChangeListener(new ValueChangeListener() {
 
 			private static final long serialVersionUID = 1L;
@@ -194,6 +204,8 @@ public class InsuranceGrid extends CustomComponent {
 				printPolyceMatBtn.setEnabled(enableBtb);
 			}
 		});
+// if (table.size() > 0)
+// table.select(table.firstItemId());
 
 		final GridDataDecl ds = new InsuranceDataDecl();
 		ds.initTableColumns(table);

@@ -1,4 +1,4 @@
-package ru.extas.model;
+package ru.extas.server;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;

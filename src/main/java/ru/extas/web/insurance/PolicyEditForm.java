@@ -11,6 +11,7 @@ import ru.extas.web.commons.component.DateTimeField;
 import ru.extas.web.commons.component.EditField;
 
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
@@ -35,10 +36,10 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 
 	/**
 	 * @param caption
-	 * @param obj
+	 * @param editedObj
 	 */
-	public PolicyEditForm(String caption, Policy obj) {
-		super(caption, obj);
+	public PolicyEditForm(final String caption, final BeanItem<Policy> editedObj) {
+		super(caption, editedObj);
 	}
 
 	/*
@@ -48,7 +49,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void initObject(Policy obj) {
+	protected void initObject(final Policy obj) {
 
 	}
 
@@ -59,7 +60,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void saveObject(Policy obj) {
+	protected void saveObject(final Policy obj) {
 		final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
 		policyRepository.persist(obj);
 	}
@@ -72,7 +73,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void checkBeforeSave(Policy obj) {
+	protected void checkBeforeSave(final Policy obj) {
 	}
 
 	/*
@@ -83,8 +84,8 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	 * .AbstractExtaObject)
 	 */
 	@Override
-	protected FormLayout createEditFields(Policy obj) {
-		FormLayout form = new FormLayout();
+	protected FormLayout createEditFields(final Policy obj) {
+		final FormLayout form = new FormLayout();
 
 		regNumField = new EditField("Номер полиса", "Введите номер полиса.");
 		regNumField.setColumns(20);

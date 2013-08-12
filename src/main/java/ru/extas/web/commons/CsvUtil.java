@@ -9,6 +9,7 @@ import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,7 +44,7 @@ public class CsvUtil {
 		checkArgument(table != null, "Table can not be null");
 		checkArgument(out != null, "Output stream can not be null");
 
-		final CSVWriter writer = new CSVWriter(new OutputStreamWriter(out), ';');
+		final CSVWriter writer = new CSVWriter(new OutputStreamWriter(out, "cp1251"), ';');
 		try {
 
 			// Формируем заголовки столбцов
@@ -71,12 +72,14 @@ public class CsvUtil {
 			Converter<String, Object> converter) {
 		if (property == null) { return ""; }
 
-		if (converter == null) {
+		if (property.getType() == BigDecimal.class) {
+			converter = null;
+		} else if (converter == null) {
 			converter = (Converter<String, Object>)ConverterUtil.getConverter(String.class, property.getType(), UI
 					.getCurrent().getSession());
 		}
 		final Object value = property.getValue();
-		if (converter != null) { return converter.convertToPresentation(value, locale); }
+		if (converter != null) { return converter.convertToPresentation(value, null, locale); }
 		return (null != value) ? value.toString() : "";
 	}
 }

@@ -4,20 +4,17 @@
 package ru.extas.web.users;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static ru.extas.server.ServiceLocator.lookup;
-
-import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.extas.model.UserProfile;
-import ru.extas.server.UserManagementService;
+import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
 import ru.extas.web.commons.ExtaAbstractView;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -53,30 +50,29 @@ public class UsersView extends ExtaAbstractView {
 		logger.info("Creating view content...");
 
 		// Запрос данных
-		UserManagementService userService = lookup(UserManagementService.class);
-		final Collection<UserProfile> users = userService.loadUsers();
-		final BeanItemContainer<UserProfile> beans = new BeanItemContainer<UserProfile>(UserProfile.class);
-		beans.addAll(users);
+		final LazyJdoContainer<UserProfile> container = new LazyJdoContainer<UserProfile>(UserProfile.class, 50, null);
 
-		CssLayout panel = new CssLayout();
+		final CssLayout panel = new CssLayout();
 		panel.addStyleName("layout-panel");
 		panel.setSizeFull();
 
 		// Формируем тулбар
-		HorizontalLayout commandBar = new HorizontalLayout();
+		final HorizontalLayout commandBar = new HorizontalLayout();
 		commandBar.addStyleName("configure");
 		commandBar.setSpacing(true);
 
-		Button newBtn = new Button("Новый");
+		final Button newBtn = new Button("Новый");
 		newBtn.addStyleName("icon-user-add");
 		newBtn.setDescription("Ввод нового пользователя в систему");
 		newBtn.addClickListener(new ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public void buttonClick(ClickEvent event) {
-				final UserProfile newObj = new UserProfile();
+			public void buttonClick(final ClickEvent event) {
+				final Object newObjId = table.addItem();
+				final BeanItem<UserProfile> newObj = (BeanItem<UserProfile>)table.getItem(newObjId);
 
 				final UserEditForm editWin = new UserEditForm("Ввод нового пользователя в систему", newObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -84,11 +80,12 @@ public class UsersView extends ExtaAbstractView {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void windowClose(CloseEvent e) {
+					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							beans.addBean(newObj);
-							table.setValue(newObj);
+							table.select(newObjId);
 							Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
+						} else {
+							table.removeItem(newObjId);
 						}
 					}
 				});
@@ -105,9 +102,11 @@ public class UsersView extends ExtaAbstractView {
 
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public void buttonClick(ClickEvent event) {
-				final UserProfile curObj = checkNotNull((UserProfile) table.getValue());
+			public void buttonClick(final ClickEvent event) {
+				final Object curObjId = checkNotNull(table.getValue(), "No selected row");
+				final BeanItem<UserProfile> curObj = (BeanItem<UserProfile>)table.getItem(curObjId);
 
 				final UserEditForm editWin = new UserEditForm("Редактирование данных пользователя", curObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -115,7 +114,7 @@ public class UsersView extends ExtaAbstractView {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void windowClose(CloseEvent e) {
+					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
 							Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
 						}
@@ -129,24 +128,25 @@ public class UsersView extends ExtaAbstractView {
 		panel.addComponent(commandBar);
 
 		// Создаем таблицу скроллинга
-		table = new Table("Пользователи", beans);
+		table = new Table("Пользователи", container);
 		table.setSizeFull();
 
 		// Обеспечиваем корректную работу кнопок зависящих от выбранной записи
 		table.setImmediate(true);
-		table.setValue(table.getItem(table.firstItemId()));
 		table.addValueChangeListener(new ValueChangeListener() {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				boolean enableBtb = event.getProperty().getValue() != null;
+			public void valueChange(final ValueChangeEvent event) {
+				final boolean enableBtb = event.getProperty().getValue() != null;
 				editBtn.setEnabled(enableBtb);
 			}
 		});
+// if (table.size() > 0)
+// table.select(table.firstItemId());
 
-		UsersDataDecl ds = new UsersDataDecl();
+		final UsersDataDecl ds = new UsersDataDecl();
 		ds.initTableColumns(table);
 
 		panel.addComponent(table);

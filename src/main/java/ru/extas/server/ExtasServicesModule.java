@@ -3,7 +3,10 @@
  */
 package ru.extas.server;
 
+import javax.jdo.PersistenceManager;
+
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import com.google.inject.Scopes;
 
 /**
@@ -35,6 +38,11 @@ public class ExtasServicesModule extends AbstractModule {
 		// Страховой калькулятор
 		bind(InsuranceCalculator.class).to(InsuranceCalculatorImpl.class).in(Scopes.SINGLETON);
 
+	}
+
+	@Provides
+	protected PersistenceManager providePersistenceManager() {
+		return PMF.get().getPersistenceManager();
 	}
 
 }

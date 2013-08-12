@@ -12,8 +12,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.extas.model.PMF;
 import ru.extas.model.Policy;
+import ru.extas.vaadin.addon.jdocontainer.QueryUtils;
 
 /**
  * @author Valery Orlov
@@ -32,15 +32,15 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	@Override
 	public List<Policy> loadAvailable() {
 		logger.debug("Requesting available policies...");
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+		final PersistenceManager pm = PMF.get().getPersistenceManager();
 
-		Query q = pm.newQuery(Policy.class);
-		q.setFilter("issueDate == null && bookTime < expareTimePrm");
-		q.setOrdering("bookTime, regNum ascending");
-		q.declareParameters("DateTime expareTimePrm");
-		q.declareImports("import org.joda.time.DateTime;");
+		final Query q = pm.newQuery(Policy.class);
 		try {
-			List<Policy> pilicies = (List<Policy>) q.execute(DateTime.now().minusHours(1));
+			q.setFilter("issueDate == null && bookTime < expareTimePrm");
+			q.setOrdering("bookTime, regNum ascending");
+			q.declareParameters("DateTime expareTimePrm");
+			q.declareImports("import org.joda.time.DateTime;");
+			final List<Policy> pilicies = (List<Policy>)q.execute(DateTime.now().minusHours(1));
 			logger.info("Retrieved {} available policies", pilicies.size());
 
 			return pilicies;
@@ -56,9 +56,9 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	 * @see ru.extas.server.PolicyRegistry#persist(ru.extas.model.Policy)
 	 */
 	@Override
-	public void persist(Policy policy) {
+	public void persist(final Policy policy) {
 		logger.debug("Persisting policy: {}", policy.getRegNum());
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+		final PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			pm.makePersistent(policy);
 		} finally {
@@ -72,7 +72,7 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	 * @see ru.extas.server.PolicyRegistry#bookPolicy(ru.extas.model.Policy)
 	 */
 	@Override
-	public void bookPolicy(Policy policy) {
+	public void bookPolicy(final Policy policy) {
 		policy.setBookTime(DateTime.now());
 		persist(policy);
 	}
@@ -83,7 +83,7 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	 * @see ru.extas.server.PolicyRegistry#issuePolicy(ru.extas.model.Policy)
 	 */
 	@Override
-	public void issuePolicy(Policy policy) {
+	public void issuePolicy(final Policy policy) {
 		policy.setIssueDate(DateTime.now());
 		persist(policy);
 	}
@@ -95,15 +95,16 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Policy> loadAll(int startIndex, int count, Object[] sortPropertyIds, boolean[] sortStates) {
+	public List<Policy> loadAll(final int startIndex, final int count, final Object[] sortPropertyIds,
+			final boolean[] sortStates) {
 		logger.debug("Requesting all policies from {} count {}", startIndex, count);
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+		final PersistenceManager pm = PMF.get().getPersistenceManager();
 
-		Query q = pm.newQuery(Policy.class);
+		final Query q = pm.newQuery(Policy.class);
 		QueryUtils.setOrdering(q, sortPropertyIds, sortStates);
 		QueryUtils.setRange(q, startIndex, count);
 		try {
-			List<Policy> policies = (List<Policy>) q.execute();
+			final List<Policy> policies = (List<Policy>)q.execute();
 			logger.info("Retrieved {} policies", policies.size());
 
 			return policies;
@@ -120,19 +121,17 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Policy findByNum(String regNum) {
+	public Policy findByNum(final String regNum) {
 		logger.debug("Requesting policy by number...");
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+		final PersistenceManager pm = PMF.get().getPersistenceManager();
 
-		Query q = pm.newQuery(Policy.class);
+		final Query q = pm.newQuery(Policy.class);
 		q.setFilter("regNum == regNumPrm");
 		q.declareParameters("String regNumPrm");
 		try {
-			List<Policy> pilicies = (List<Policy>) q.execute(regNum);
-			if (!pilicies.isEmpty())
-				return pilicies.get(0);
-			else
-				return null;
+			final List<Policy> pilicies = (List<Policy>)q.execute(regNum);
+			if (!pilicies.isEmpty()) return pilicies.get(0);
+			else return null;
 		} finally {
 			q.closeAll();
 			pm.close();
@@ -145,8 +144,8 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	 * @see ru.extas.server.PolicyRegistry#bookPolicy(java.lang.String)
 	 */
 	@Override
-	public void bookPolicy(String regNum) {
-		Policy policy = findByNum(regNum);
+	public void bookPolicy(final String regNum) {
+		final Policy policy = findByNum(regNum);
 		if (policy != null) {
 			bookPolicy(policy);
 		}
@@ -158,8 +157,8 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	 * @see ru.extas.server.PolicyRegistry#issuePolicy(java.lang.String)
 	 */
 	@Override
-	public void issuePolicy(String regNum) {
-		Policy policy = findByNum(regNum);
+	public void issuePolicy(final String regNum) {
+		final Policy policy = findByNum(regNum);
 		if (policy != null) {
 			issuePolicy(policy);
 		}
@@ -173,14 +172,14 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 	@Override
 	public int queryPoliciesCount() {
 		logger.debug("Requesting all policies count...");
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+		final PersistenceManager pm = PMF.get().getPersistenceManager();
 
-		Query q = pm.newQuery(Policy.class);
+		final Query q = pm.newQuery(Policy.class);
 		q.setResult("count(this)");
 		try {
-			long count = (long) q.execute();
+			final long count = (long)q.execute();
 			logger.debug("Policies count {}", count);
-			return (int) count;
+			return (int)count;
 		} finally {
 			q.closeAll();
 			pm.close();

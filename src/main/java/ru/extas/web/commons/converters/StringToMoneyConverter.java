@@ -38,7 +38,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 			locale = lookup(Locale.class);
 		}
 		if (format == null) {
-			format = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
+			format = (DecimalFormat)NumberFormat.getCurrencyInstance(locale);
 			format.setParseBigDecimal(true);
 			format.setRoundingMode(RoundingMode.HALF_UP);
 			logger.debug("Money format pattern {}", format.toPattern());
@@ -51,7 +51,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 			locale = lookup(Locale.class);
 		}
 		if (lenientFormat == null) {
-			lenientFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
+			lenientFormat = (DecimalFormat)NumberFormat.getCurrencyInstance(locale);
 			lenientFormat.setParseBigDecimal(true);
 			lenientFormat.setRoundingMode(RoundingMode.HALF_UP);
 
@@ -92,24 +92,22 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
-	public BigDecimal convertToModel(String value, Class<? extends BigDecimal> targetType, Locale locale)
+	@Override
+	public BigDecimal convertToModel(String value, final Class<? extends BigDecimal> targetType, final Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
-		if (value == null || value.isEmpty()) {
-			return null;
-		}
+		if (value == null || value.isEmpty()) { return null; }
 
 		// Remove leading and trailing white space
 		value = value.trim();
 
 		// Parse and detect errors. If the full string was not used, it is
 		// an error.
-		BigDecimal parsedValue = (BigDecimal) getFormat(locale).parse(value, new ParsePosition(0));
+		BigDecimal parsedValue = (BigDecimal)getFormat(locale).parse(value, new ParsePosition(0));
 		if (parsedValue == null) {
-			parsedValue = (BigDecimal) getLenientFormat(locale).parse(value, new ParsePosition(0));
+			parsedValue = (BigDecimal)getLenientFormat(locale).parse(value, new ParsePosition(0));
 		}
-		if (parsedValue == null) {
-			throw new ConversionException(MessageFormat.format("Значение '{0}' не является допустимым числом", value));
-		}
+		if (parsedValue == null) { throw new ConversionException(MessageFormat.format(
+				"Значение '{0}' не является допустимым числом", value)); }
 
 		return parsedValue;
 	}
@@ -121,11 +119,11 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
-	public String convertToPresentation(BigDecimal value, Class<? extends String> targetType, Locale locale)
+	@Override
+	public String convertToPresentation(final BigDecimal value, final Class<? extends String> targetType,
+			final Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
-		if (value == null) {
-			return null;
-		}
+		if (value == null) { return null; }
 
 		return getFormat(locale).format(value);
 	}
@@ -137,8 +135,8 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
-	@Override
-	public BigDecimal convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public BigDecimal convertToModel(final String value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToModel(value, null, locale);
 	}
 
@@ -149,8 +147,8 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.util.Locale)
 	 */
-	@Override
-	public String convertToPresentation(BigDecimal value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public String convertToPresentation(final BigDecimal value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToPresentation(value, null, locale);
 	}
 }

@@ -37,17 +37,16 @@ public abstract class AbstractEditForm<TEditObject extends AbstractExtaObject> e
 	protected final Button cancelBtn;
 	protected final Button okBtn;
 
-	public AbstractEditForm(String caption, final TEditObject obj) {
+	public AbstractEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
 		super(caption);
 
-		FormLayout form = createEditFields(obj);
+		final TEditObject bean = beanItem.getBean();
+		final FormLayout form = createEditFields(bean);
 
-		BeanItem<TEditObject> item = new BeanItem<TEditObject>(obj);
-
-		initObject(obj);
+		initObject(bean);
 
 		// Now create a binder
-		final FieldGroup binder = new FieldGroup(item);
+		final FieldGroup binder = new FieldGroup(beanItem);
 		binder.setBuffered(true);
 		binder.bindMemberFields(this);
 
@@ -72,10 +71,10 @@ public abstract class AbstractEditForm<TEditObject extends AbstractExtaObject> e
 				if (binder.isValid()) {
 					try {
 						binder.commit();
-						checkBeforeSave(obj);
-						saveObject(obj);
+						checkBeforeSave(bean);
+						saveObject(bean);
 						saved = true;
-					} catch (CommitException e) {
+					} catch (final CommitException e) {
 						// TODO Correct error handling
 						logger.error("Can't apply form changes", e);
 						Notification.show("Невозможно сохранить изменения", Type.ERROR_MESSAGE);
@@ -101,7 +100,7 @@ public abstract class AbstractEditForm<TEditObject extends AbstractExtaObject> e
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void windowClose(CloseEvent e) {
+			public void windowClose(final CloseEvent e) {
 
 				// TODO Обработать закрытие формы по кресту
 

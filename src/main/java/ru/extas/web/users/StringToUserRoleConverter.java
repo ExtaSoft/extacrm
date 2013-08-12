@@ -57,7 +57,8 @@ public class StringToUserRoleConverter implements Converter<String, UserRole> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
-	public UserRole convertToModel(String value, Class<? extends UserRole> targetType, Locale locale)
+	@Override
+	public UserRole convertToModel(final String value, final Class<? extends UserRole> targetType, final Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null || value.isEmpty())
 			return null;
@@ -72,7 +73,9 @@ public class StringToUserRoleConverter implements Converter<String, UserRole> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
-	public String convertToPresentation(UserRole value, Class<? extends String> targetType, Locale locale)
+	@Override
+	public String convertToPresentation(final UserRole value, final Class<? extends String> targetType,
+			final Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
@@ -86,8 +89,8 @@ public class StringToUserRoleConverter implements Converter<String, UserRole> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
-	@Override
-	public UserRole convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public UserRole convertToModel(final String value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToModel(value, null, locale);
 	}
 
@@ -98,8 +101,8 @@ public class StringToUserRoleConverter implements Converter<String, UserRole> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.util.Locale)
 	 */
-	@Override
-	public String convertToPresentation(UserRole value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public String convertToPresentation(final UserRole value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToPresentation(value, null, locale);
 	}
 

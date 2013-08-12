@@ -29,7 +29,8 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
-	public Policy convertToModel(String value, Class<? extends Policy> targetType, Locale locale)
+	@Override
+	public Policy convertToModel(final String value, final Class<? extends Policy> targetType, final Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
@@ -43,7 +44,9 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.util.Locale)
 	 */
-	public String convertToPresentation(Policy value, Class<? extends String> targetType, Locale locale)
+	@Override
+	public String convertToPresentation(final Policy value, final Class<? extends String> targetType,
+			final Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
@@ -77,8 +80,8 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
-	@Override
-	public Policy convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public Policy convertToModel(final String value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToModel(value, null, locale);
 	}
 
@@ -89,8 +92,8 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.util.Locale)
 	 */
-	@Override
-	public String convertToPresentation(Policy value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public String convertToPresentation(final Policy value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToPresentation(value, null, locale);
 	}
 

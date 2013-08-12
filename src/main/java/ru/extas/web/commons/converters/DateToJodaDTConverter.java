@@ -39,7 +39,9 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
-	public DateTime convertToModel(Date value, Class<? extends DateTime> targetType, Locale locale) throws ConversionException {
+	@Override
+	public DateTime convertToModel(final Date value, final Class<? extends DateTime> targetType, final Locale locale)
+			throws ConversionException {
 		if (value == null)
 			return null;
 		return new DateTime(value);
@@ -52,10 +54,12 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
-	public Date convertToPresentation(DateTime value, Class<? extends Date> targetType, Locale locale) throws ConversionException {
+	@Override
+	public Date convertToPresentation(final DateTime value, final Class<? extends Date> targetType, final Locale locale)
+			throws ConversionException {
 		if (value == null)
 			return null;
-		Date date = value.toDate();
+		final Date date = value.toDate();
 		return date;
 	}
 
@@ -66,8 +70,8 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
-	@Override
-	public DateTime convertToModel(Date value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public DateTime convertToModel(final Date value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToModel(value, null, locale);
 	}
 
@@ -78,8 +82,8 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.util.Locale)
 	 */
-	@Override
-	public Date convertToPresentation(DateTime value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public Date convertToPresentation(final DateTime value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToPresentation(value, null, locale);
 	}
 }

@@ -15,6 +15,7 @@ import ru.extas.web.commons.AbstractEditForm;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PasswordField;
 
@@ -38,7 +39,7 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 	 * @param caption
 	 * @param obj
 	 */
-	public ChangePasswordForm(UserProfile obj) {
+	public ChangePasswordForm(final BeanItem<UserProfile> obj) {
 		super("Смена пароля", obj);
 	}
 
@@ -49,7 +50,7 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void initObject(UserProfile obj) {
+	protected void initObject(final UserProfile obj) {
 	}
 
 	/*
@@ -59,7 +60,7 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void saveObject(UserProfile obj) {
+	protected void saveObject(final UserProfile obj) {
 		logger.debug("Saving changed password...");
 
 		// Шифруем пароль
@@ -67,7 +68,7 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 		// Сбрасываем флаг смены пароля.
 		obj.setChangePassword(false);
 
-		UserManagementService userService = lookup(UserManagementService.class);
+		final UserManagementService userService = lookup(UserManagementService.class);
 		userService.persistUser(obj);
 	}
 
@@ -79,7 +80,7 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void checkBeforeSave(UserProfile obj) {
+	protected void checkBeforeSave(final UserProfile obj) {
 	}
 
 	/*
@@ -90,8 +91,8 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 	 * .AbstractExtaObject)
 	 */
 	@Override
-	protected FormLayout createEditFields(UserProfile obj) {
-		FormLayout form = new FormLayout();
+	protected FormLayout createEditFields(final UserProfile obj) {
+		final FormLayout form = new FormLayout();
 
 		passField = new PasswordField("Пароль");
 		passField.setImmediate(true);
@@ -113,7 +114,7 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void validate(Object value) throws InvalidValueException {
+			public void validate(final Object value) throws InvalidValueException {
 				if (!value.equals(passField.getValue()))
 					throw new InvalidValueException("Пароли не совпадают!");
 

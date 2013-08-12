@@ -44,7 +44,8 @@ public class StringToBooleanConverter implements Converter<String, Boolean> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
-	public Boolean convertToModel(String value, Class<? extends Boolean> targetType, Locale locale)
+	@Override
+	public Boolean convertToModel(final String value, final Class<? extends Boolean> targetType, final Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null || value.isEmpty())
 			return null;
@@ -58,7 +59,9 @@ public class StringToBooleanConverter implements Converter<String, Boolean> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
-	public String convertToPresentation(Boolean value, Class<? extends String> targetType, Locale locale)
+	@Override
+	public String convertToPresentation(final Boolean value, final Class<? extends String> targetType,
+			final Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
@@ -72,8 +75,8 @@ public class StringToBooleanConverter implements Converter<String, Boolean> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
-	@Override
-	public Boolean convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public Boolean convertToModel(final String value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToModel(value, null, locale);
 	}
 
@@ -84,8 +87,8 @@ public class StringToBooleanConverter implements Converter<String, Boolean> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.util.Locale)
 	 */
-	@Override
-	public String convertToPresentation(Boolean value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public String convertToPresentation(final Boolean value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToPresentation(value, null, locale);
 	}
 

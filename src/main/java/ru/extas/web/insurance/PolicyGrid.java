@@ -4,17 +4,13 @@
 package ru.extas.web.insurance;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static ru.extas.server.ServiceLocator.lookup;
-
-import java.util.Collection;
-
 import ru.extas.model.Policy;
-import ru.extas.server.PolicyRegistry;
+import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
 import ru.extas.web.commons.GridDataDecl;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -33,7 +29,7 @@ import com.vaadin.ui.Window.CloseListener;
  * @author Valery Orlov
  * 
  */
-public class BSOGrid extends CustomComponent {
+public class PolicyGrid extends CustomComponent {
 
 	private static final long serialVersionUID = 4876073256421755574L;
 
@@ -42,29 +38,28 @@ public class BSOGrid extends CustomComponent {
 
 	private final Table table;
 
-	public BSOGrid() {
+	public PolicyGrid() {
 
-		CssLayout panel = new CssLayout();
+		final CssLayout panel = new CssLayout();
 		panel.addStyleName("layout-panel");
 		panel.setSizeFull();
 
 		// Запрос данных
-		final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
-		final Collection<Policy> policies = policyRepository.loadAll(-1, 0, null, null);
-		final BeanItemContainer<Policy> beans = new BeanItemContainer<Policy>(Policy.class);
-		beans.addAll(policies);
+		final LazyJdoContainer<Policy> container = new LazyJdoContainer<Policy>(Policy.class, 50, null);
 
-		HorizontalLayout commandBar = new HorizontalLayout();
+		final HorizontalLayout commandBar = new HorizontalLayout();
 		commandBar.addStyleName("configure");
 		commandBar.setSpacing(true);
 
-		Button newPolyceBtn = new Button("Новый", new ClickListener() {
+		final Button newPolyceBtn = new Button("Новый", new ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public void buttonClick(ClickEvent event) {
-				final Policy newObj = new Policy();
+			public void buttonClick(final ClickEvent event) {
+				final Object newObjId = table.addItem();
+				final BeanItem<Policy> newObj = (BeanItem<Policy>)table.getItem(newObjId);
 
 				final PolicyEditForm editWin = new PolicyEditForm("Новый бланк", newObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -72,11 +67,12 @@ public class BSOGrid extends CustomComponent {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void windowClose(CloseEvent e) {
+					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							beans.addBean(newObj);
-							table.setValue(newObj);
+							table.select(newObjId);
 							Notification.show("Бланк сохранен", Type.TRAY_NOTIFICATION);
+						} else {
+							table.removeItem(newObjId);
 						}
 					}
 				});
@@ -91,22 +87,22 @@ public class BSOGrid extends CustomComponent {
 
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void buttonClick(final ClickEvent event) {
 				// // Взять текущий полис из грида
-				final Policy selObj = checkNotNull((Policy) table.getValue(), "No selected row");
+				final Object curObjId = checkNotNull(table.getValue(), "No selected row");
+				final BeanItem<Policy> curObj = (BeanItem<Policy>)table.getItem(curObjId);
 
-				final PolicyEditForm editWin = new PolicyEditForm("Редактировать бланк", selObj);
+				final PolicyEditForm editWin = new PolicyEditForm("Редактировать бланк", curObj);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void windowClose(CloseEvent e) {
+					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							// TODO: Избавиться от дорогой операции обновления
-							table.refreshRowCache();
-							Notification.show("Полис сохранен", Type.TRAY_NOTIFICATION);
+							Notification.show("Бланк сохранен", Type.TRAY_NOTIFICATION);
 						}
 					}
 				});
@@ -121,28 +117,28 @@ public class BSOGrid extends CustomComponent {
 		panel.addComponent(commandBar);
 
 		table = new Table();
-		table.setContainerDataSource(beans);
+		table.setContainerDataSource(container);
 		table.setSizeFull();
 
 		// Обеспечиваем корректную работу кнопок зависящих от выбранной записи
 		table.setImmediate(true);
-		table.setValue(table.getItem(table.firstItemId()));
 		table.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				boolean enableBtb = event.getProperty().getValue() != null;
+			public void valueChange(final ValueChangeEvent event) {
+				final boolean enableBtb = event.getProperty().getValue() != null;
 				editPolyceBtn.setEnabled(enableBtb);
 			}
 		});
+// if (table.size() > 0)
+// table.select(table.firstItemId());
 
-		GridDataDecl ds = new PolicyDataDecl();
+		final GridDataDecl ds = new PolicyDataDecl();
 		ds.initTableColumns(table);
 
 		panel.addComponent(table);
 
 		setCompositionRoot(panel);
 	}
-
 }

@@ -20,6 +20,7 @@ import ru.extas.web.contacts.ContactSelect;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
@@ -62,7 +63,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	@PropertyId("pointOfSale")
 	private TextField pointOfSaleField;
 
-	public InsuranceEditForm(final String caption, final Insurance obj) {
+	public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
 		super(caption, obj);
 
 	}
@@ -81,17 +82,19 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		regNumField = new PolicySelect("Номер полиса",
 				"Введите номер полиса страхования. Выбирается из справочника БСО.", obj.getRegNum());
 		regNumField.setRequired(true);
-		regNumField.setConverter(String.class);
+		// regNumField.setConverter(String.class);
 		regNumField.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void valueChange(final ValueChangeEvent event) {
 				if (event.getProperty().getType() == Policy.class) {
-					final Policy policy = (Policy)event.getProperty().getValue();
-					if (policy != null) {
+					final Object selItemId = event.getProperty().getValue();
+					if (selItemId != null) {
+						final BeanItem<Policy> policy = (BeanItem<Policy>)regNumField.getItem(selItemId);
 						// Зарезервировать полис в БСО
-						lookup(PolicyRegistry.class).bookPolicy(policy);
+						lookup(PolicyRegistry.class).bookPolicy(policy.getBean());
 					}
 
 				}

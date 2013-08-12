@@ -130,7 +130,7 @@ public class InsuranceView extends ExtaAbstractView {
 
 				@Override
 				public Component createComponent() {
-					return new BSOGrid();
+					return new PolicyGrid();
 				}
 			});
 		}

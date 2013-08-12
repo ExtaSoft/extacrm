@@ -25,11 +25,13 @@ public class ComponentUtil {
 	 * @param cls
 	 *            тип перечисления
 	 */
-	public static <TEnum extends Enum<TEnum>> void fillSelectByEnum(AbstractSelect component, Class<TEnum> cls) {
-		Converter<String, TEnum> converter = VaadinSession.getCurrent().getConverterFactory().createConverter(String.class, cls);
-		for (TEnum en : EnumSet.allOf(cls)) {
+	public static <TEnum extends Enum<TEnum>> void fillSelectByEnum(final AbstractSelect component,
+			final Class<TEnum> cls) {
+		final Converter<String, TEnum> converter = VaadinSession.getCurrent().getConverterFactory()
+				.createConverter(String.class, cls);
+		for (final TEnum en : EnumSet.allOf(cls)) {
 			component.addItem(en);
-			component.setItemCaption(en, converter.convertToPresentation(en, null));
+			component.setItemCaption(en, converter.convertToPresentation(en, null, null));
 		}
 	}
 }

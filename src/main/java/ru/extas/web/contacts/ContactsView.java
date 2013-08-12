@@ -4,20 +4,17 @@
 package ru.extas.web.contacts;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static ru.extas.server.ServiceLocator.lookup;
-
-import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.extas.model.Contact;
-import ru.extas.server.ContactService;
+import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
 import ru.extas.web.commons.ExtaAbstractView;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -52,30 +49,29 @@ public class ContactsView extends ExtaAbstractView {
 	protected Component getContent() {
 		logger.info("Creating view content...");
 		// Запрос данных
-		ContactService contactService = lookup(ContactService.class);
-		final Collection<Contact> contacts = contactService.loadContacts();
-		final BeanItemContainer<Contact> beans = new BeanItemContainer<Contact>(Contact.class);
-		beans.addAll(contacts);
+		final LazyJdoContainer<Contact> container = new LazyJdoContainer<Contact>(Contact.class, 50, null);
 
-		CssLayout panel = new CssLayout();
+		final CssLayout panel = new CssLayout();
 		panel.addStyleName("layout-panel");
 		panel.setSizeFull();
 
 		// Формируем тулбар
-		HorizontalLayout commandBar = new HorizontalLayout();
+		final HorizontalLayout commandBar = new HorizontalLayout();
 		commandBar.addStyleName("configure");
 		commandBar.setSpacing(true);
 
-		Button newBtn = new Button("Новый");
+		final Button newBtn = new Button("Новый");
 		newBtn.addStyleName("icon-user-add-1");
 		newBtn.setDescription("Ввод нового Контакта в систему");
 		newBtn.addClickListener(new ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public void buttonClick(ClickEvent event) {
-				final Contact newObj = new Contact();
+			public void buttonClick(final ClickEvent event) {
+				final Object newObjId = table.addItem();
+				final BeanItem<Contact> newObj = (BeanItem<Contact>)table.getItem(newObjId);
 
 				final ContactEditForm editWin = new ContactEditForm("Ввод нового контакта в систему", newObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -83,11 +79,12 @@ public class ContactsView extends ExtaAbstractView {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void windowClose(CloseEvent e) {
+					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							beans.addBean(newObj);
-							table.setValue(newObj);
+							table.select(newObjId);
 							Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
+						} else {
+							table.removeItem(newObjId);
 						}
 					}
 				});
@@ -104,9 +101,11 @@ public class ContactsView extends ExtaAbstractView {
 
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
-			public void buttonClick(ClickEvent event) {
-				final Contact curObj = checkNotNull((Contact) table.getValue());
+			public void buttonClick(final ClickEvent event) {
+				final Object curObjId = checkNotNull(table.getValue(), "No selected row");
+				final BeanItem<Contact> curObj = (BeanItem<Contact>)table.getItem(curObjId);
 
 				final ContactEditForm editWin = new ContactEditForm("Редактирование контактных данных", curObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -114,10 +113,8 @@ public class ContactsView extends ExtaAbstractView {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void windowClose(CloseEvent e) {
+					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							// TODO: Избавиться от дорогой операции обновления
-							table.refreshRowCache();
 							Notification.show("Контакт сохранен", Type.TRAY_NOTIFICATION);
 						}
 					}
@@ -130,25 +127,25 @@ public class ContactsView extends ExtaAbstractView {
 		panel.addComponent(commandBar);
 
 		// Создаем таблицу скроллинга
-		table = new Table("Контакты", beans);
+		table = new Table("Контакты", container);
 		table.setSizeFull();
 
 		// Обеспечиваем корректную работу кнопок зависящих от выбранной записи
 		table.setImmediate(true);
 		table.setSelectable(true);
-		table.setValue(beans.getItem(beans.firstItemId()));
 		table.addValueChangeListener(new ValueChangeListener() {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				boolean enableBtb = event.getProperty().getValue() != null;
+			public void valueChange(final ValueChangeEvent event) {
+				final boolean enableBtb = event.getProperty().getValue() != null;
 				editBtn.setEnabled(enableBtb);
 			}
 		});
+		// table.select(container.firstItemId());
 
-		ContactDataDecl ds = new ContactDataDecl();
+		final ContactDataDecl ds = new ContactDataDecl();
 		ds.initTableColumns(table);
 
 		panel.addComponent(table);

@@ -18,6 +18,7 @@ import ru.extas.web.util.ComponentUtil;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
@@ -59,7 +60,7 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 	 * @param caption
 	 * @param obj
 	 */
-	public ContactEditForm(String caption, Contact obj) {
+	public ContactEditForm(final String caption, final BeanItem<Contact> obj) {
 		super(caption, obj);
 	}
 
@@ -70,7 +71,7 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void initObject(Contact obj) {
+	protected void initObject(final Contact obj) {
 		if (obj.getKey() == null) {
 			// Инициализируем новый объект
 			// TODO: Инициализировать клиента в соответствии с локацией текущего
@@ -86,9 +87,9 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void saveObject(Contact obj) {
+	protected void saveObject(final Contact obj) {
 		logger.debug("Saving contact data...");
-		ContactService contactService = lookup(ContactService.class);
+		final ContactService contactService = lookup(ContactService.class);
 		contactService.persistContact(obj);
 	}
 
@@ -100,7 +101,7 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 	 * AbstractExtaObject)
 	 */
 	@Override
-	protected void checkBeforeSave(Contact obj) {
+	protected void checkBeforeSave(final Contact obj) {
 	}
 
 	/*
@@ -111,8 +112,8 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 	 * .AbstractExtaObject)
 	 */
 	@Override
-	protected FormLayout createEditFields(Contact obj) {
-		FormLayout form = new FormLayout();
+	protected FormLayout createEditFields(final Contact obj) {
+		final FormLayout form = new FormLayout();
 
 		nameField = new TextField("Имя");
 		nameField.setImmediate(true);
@@ -166,15 +167,15 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 		regionField.setNewItemsAllowed(false);
 		regionField.setFilteringMode(FilteringMode.CONTAINS);
 		regionField.setWidth(18, Unit.EM);
-		for (String item : lookup(SupplementService.class).loadRegions())
+		for (final String item : lookup(SupplementService.class).loadRegions())
 			regionField.addItem(item);
 		regionField.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				String newRegion = (String) event.getProperty().getValue();
-				String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+			public void valueChange(final ValueChangeEvent event) {
+				final String newRegion = (String)event.getProperty().getValue();
+				final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
 				if (city != null)
 					cityField.setValue(city);
 			}
@@ -187,15 +188,15 @@ public class ContactEditForm extends AbstractEditForm<Contact> {
 		cityField.setImmediate(true);
 		cityField.setNewItemsAllowed(true);
 		cityField.setFilteringMode(FilteringMode.CONTAINS);
-		for (String item : lookup(SupplementService.class).loadCities())
+		for (final String item : lookup(SupplementService.class).loadCities())
 			cityField.addItem(item);
 		cityField.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				String newCity = (String) event.getProperty().getValue();
-				String region = lookup(SupplementService.class).findRegionByCity(newCity);
+			public void valueChange(final ValueChangeEvent event) {
+				final String newCity = (String)event.getProperty().getValue();
+				final String region = lookup(SupplementService.class).findRegionByCity(newCity);
 				if (region != null)
 					regionField.setValue(region);
 			}

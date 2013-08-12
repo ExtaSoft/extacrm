@@ -32,7 +32,7 @@ public class PolicySelect extends ComboBox {
 	 * @param description
 	 * @param forceNum
 	 */
-	public PolicySelect(String caption, String description, String forceNum) {
+	public PolicySelect(final String caption, final String description, final String forceNum) {
 		super(caption);
 
 		// Преконфигурация
@@ -43,12 +43,27 @@ public class PolicySelect extends ComboBox {
 		setNullSelectionAllowed(false);
 
 		// Инициализация контейнера
+// final LazyJdoContainer<Policy> container = new LazyJdoContainer<Policy>(Policy.class, 50, "key");
+// Filter filter = new And(new IsNull("issueDate"),
+// new Compare.Less("bookTime", DateTime.now().minusHours(1)));
+// if (forceNum != null) {
+// filter = new Or(new Compare.Equal("regNum", forceNum), filter);
+// }
+// container.addContainerFilter(filter);
+//
+// // Устанавливаем контент выбора
+// setFilteringMode(FilteringMode.STARTSWITH);
+// setContainerDataSource(container);
+// setItemCaptionMode(ItemCaptionMode.PROPERTY);
+// setItemCaptionPropertyId("regNum");
+//
+// setConverter(new SingleSelectConverter<Policy>(this, container));
 		final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
 		final Collection<Policy> policies = policyRepository.loadAvailable();
 		final BeanItemContainer<Policy> clientsCont = new BeanItemContainer<Policy>(Policy.class);
 		clientsCont.addAll(policies);
 		if (forceNum != null) {
-			Policy forcePolicy = policyRepository.findByNum(forceNum);
+			final Policy forcePolicy = policyRepository.findByNum(forceNum);
 			clientsCont.addBean(forcePolicy);
 		}
 
@@ -57,7 +72,6 @@ public class PolicySelect extends ComboBox {
 		setContainerDataSource(clientsCont);
 		setItemCaptionMode(ItemCaptionMode.PROPERTY);
 		setItemCaptionPropertyId("regNum");
-
 	}
 
 }

@@ -29,6 +29,7 @@ import ru.extas.web.users.UsersView;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.server.DefaultErrorHandler;
@@ -65,7 +66,7 @@ import com.vaadin.ui.Window.CloseListener;
  * 
  */
 @Theme("extacrm")
-@Title("Extrime Assistance CRM")
+@Title("Extreme Assistance CRM")
 public class ExtaCrmUI extends UI {
 
 	private final Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
@@ -80,7 +81,7 @@ public class ExtaCrmUI extends UI {
 	CssLayout content = new CssLayout();
 
 	@Override
-	protected void init(VaadinRequest request) {
+	protected void init(final VaadinRequest request) {
 
 		// Регистрируем конверторы по умолчанию
 		VaadinSession.getCurrent().setConverterFactory(new ExtaConverterFactory());
@@ -107,7 +108,8 @@ public class ExtaCrmUI extends UI {
 				strWr.append("</pre></div>");
 
 				// Display the error message in a custom fashion
-				final Notification notif = new Notification("Непредусмотренная серьезная ошибка", strWr.toString(), Notification.Type.ERROR_MESSAGE);
+				final Notification notif = new Notification("Непредусмотренная серьезная ошибка", strWr.toString(),
+						Notification.Type.ERROR_MESSAGE);
 
 				// Customize it
 				notif.setPosition(Position.MIDDLE_CENTER);
@@ -118,22 +120,20 @@ public class ExtaCrmUI extends UI {
 			}
 		});
 
-		Subject currentUser = SecurityUtils.getSubject();
-		if (currentUser.isAuthenticated())
-			buildMainView();
-		else
-			buildLoginView(false);
+		final Subject currentUser = SecurityUtils.getSubject();
+		if (currentUser.isAuthenticated()) buildMainView();
+		else buildLoginView(false);
 
 	}
 
-	private void buildLoginView(boolean exit) {
+	private void buildLoginView(final boolean exit) {
 		if (exit) {
 			root.removeAllComponents();
 		}
 
 		// Unfortunate to use an actual widget here, but since CSS generated
 		// elements can't be transitioned yet, we must
-		Label bg = new Label();
+		final Label bg = new Label();
 		bg.setSizeUndefined();
 		bg.addStyleName("login-bg");
 		root.addComponent(bg);
@@ -148,26 +148,26 @@ public class ExtaCrmUI extends UI {
 		final CssLayout loginPanel = new CssLayout();
 		loginPanel.addStyleName("login-panel");
 
-		HorizontalLayout labels = new HorizontalLayout();
+		final HorizontalLayout labels = new HorizontalLayout();
 		labels.setWidth("100%");
 		labels.setMargin(true);
 		labels.addStyleName("labels");
 		loginPanel.addComponent(labels);
 
-		Label welcome = new Label("Добро пожаловать");
+		final Label welcome = new Label("Добро пожаловать");
 		welcome.setSizeUndefined();
 		welcome.addStyleName("h4");
 		labels.addComponent(welcome);
 		labels.setComponentAlignment(welcome, Alignment.MIDDLE_LEFT);
 
-		Label title = new Label("Экстрим Ассистанс CRM");
+		final Label title = new Label("Экстрим Ассистанс CRM");
 		title.setSizeUndefined();
 		title.addStyleName("h2");
 		title.addStyleName("light");
 		labels.addComponent(title);
 		labels.setComponentAlignment(title, Alignment.MIDDLE_RIGHT);
 
-		HorizontalLayout fields = new HorizontalLayout();
+		final HorizontalLayout fields = new HorizontalLayout();
 		fields.setSpacing(true);
 		fields.setMargin(true);
 		fields.addStyleName("fields");
@@ -191,7 +191,7 @@ public class ExtaCrmUI extends UI {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void handleAction(Object sender, Object target) {
+			public void handleAction(final Object sender, final Object target) {
 				signin.click();
 			}
 		};
@@ -203,27 +203,29 @@ public class ExtaCrmUI extends UI {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void buttonClick(final ClickEvent event) {
 				String errMessage = "";
 				final String user = username.getValue();
 				final String pass = password.getValue();
-				Subject currentUser = SecurityUtils.getSubject();
+				final Subject currentUser = SecurityUtils.getSubject();
 				if (user != null && pass != null) {
-					UsernamePasswordToken token = new UsernamePasswordToken(user, pass);
+					final UsernamePasswordToken token = new UsernamePasswordToken(user, pass);
 					// token.setRememberMe(true);
 					try {
 						currentUser.login(token);
 
 						// Получить данные текущего пользователя
-						UserProfile currentUserProfile = lookup(UserManagementService.class).findUserByLogin((String) currentUser.getPrincipal());
+						final UserProfile currentUserProfile = lookup(UserManagementService.class).findUserByLogin(
+								(String)currentUser.getPrincipal());
 						if (currentUserProfile.isChangePassword()) {
 							// Поменять пароль
-							final ChangePasswordForm form = new ChangePasswordForm(currentUserProfile);
+							final ChangePasswordForm form = new ChangePasswordForm(new BeanItem<UserProfile>(
+									currentUserProfile));
 							form.addCloseListener(new CloseListener() {
 								private static final long serialVersionUID = 1L;
 
 								@Override
-								public void windowClose(CloseEvent e) {
+								public void windowClose(final CloseEvent e) {
 									if (form.isSaved()) {
 										closeLoginAndBuildMain();
 									} else {
@@ -235,18 +237,18 @@ public class ExtaCrmUI extends UI {
 						} else {
 							closeLoginAndBuildMain();
 						}
-					} catch (UnknownAccountException uae) {
+					} catch (final UnknownAccountException uae) {
 						// username wasn't in the system, show them an error
 						// message?
 						errMessage = "Пользователь не найден";
-					} catch (IncorrectCredentialsException ice) {
+					} catch (final IncorrectCredentialsException ice) {
 						// password didn't match, try again?
 						errMessage = "Неверный пароль";
-					} catch (LockedAccountException lae) {
+					} catch (final LockedAccountException lae) {
 						// account for that username is locked - can't login.
 						// Show them a message?
 						errMessage = "Пользователь заблокирован";
-					} catch (AuthenticationException ae) {
+					} catch (final AuthenticationException ae) {
 						// unexpected condition - error?
 						errMessage = "Вход в систему невозможен";
 						logger.error("Authentication system error", ae);
@@ -260,8 +262,10 @@ public class ExtaCrmUI extends UI {
 						loginPanel.removeComponent(loginPanel.getComponent(2));
 					}
 					// Add new error message
-					Label error = new Label(errMessage
-							+ " <br/><span>Проверьте правильность пары пользователь/пароль или обратитесь к администратору</span>", ContentMode.HTML);
+					final Label error = new Label(
+							errMessage
+									+ " <br/><span>Проверьте правильность пары пользователь/пароль или обратитесь к администратору</span>",
+							ContentMode.HTML);
 					error.addStyleName("error");
 					error.setSizeUndefined();
 					error.addStyleName("light");
@@ -319,7 +323,7 @@ public class ExtaCrmUI extends UI {
 
 							{
 								addStyleName("branding");
-								Label logo = new Label("<span>Экстрим Ассистанс</span> CRM", ContentMode.HTML);
+								final Label logo = new Label("<span>Экстрим Ассистанс</span> CRM", ContentMode.HTML);
 								logo.setSizeUndefined();
 								addComponent(logo);
 								// addComponent(new Image(null, new
@@ -340,30 +344,30 @@ public class ExtaCrmUI extends UI {
 							{
 								setSizeUndefined();
 								addStyleName("user");
-								Image profilePic = new Image(null, new ThemeResource("img/profile-pic.png"));
+								final Image profilePic = new Image(null, new ThemeResource("img/profile-pic.png"));
 								profilePic.setWidth("34px");
 								addComponent(profilePic);
-								Label userName = new Label((String) SecurityUtils.getSubject().getPrincipal());
+								final Label userName = new Label((String)SecurityUtils.getSubject().getPrincipal());
 								userName.setSizeUndefined();
 								addComponent(userName);
 
-								Command cmd = new Command() {
+								final Command cmd = new Command() {
 									private static final long serialVersionUID = 1L;
 
 									@Override
-									public void menuSelected(MenuItem selectedItem) {
+									public void menuSelected(final MenuItem selectedItem) {
 										Notification.show("Не реализовано пока");
 									}
 								};
-								MenuBar settings = new MenuBar();
-								MenuItem settingsMenu = settings.addItem("", null);
+								final MenuBar settings = new MenuBar();
+								final MenuItem settingsMenu = settings.addItem("", null);
 								settingsMenu.setStyleName("icon-cog");
 								settingsMenu.addItem("Настройки", cmd);
 								settingsMenu.addSeparator();
 								settingsMenu.addItem("Профиль", cmd);
 								addComponent(settings);
 
-								Button exit = new NativeButton("Выход");
+								final Button exit = new NativeButton("Выход");
 								exit.addStyleName("icon-cancel");
 								exit.setDescription("Выход из системы");
 								addComponent(exit);
@@ -371,7 +375,7 @@ public class ExtaCrmUI extends UI {
 									private static final long serialVersionUID = 1L;
 
 									@Override
-									public void buttonClick(ClickEvent event) {
+									public void buttonClick(final ClickEvent event) {
 										SecurityUtils.getSubject().logout();
 										// Redirect to avoid keeping the removed
 										// UI open in the browser
@@ -397,15 +401,20 @@ public class ExtaCrmUI extends UI {
 
 		// -------------------------------------------------------------
 		// Создаем кнопки основного меню
-		Subject currentUser = SecurityUtils.getSubject();
+		final Subject currentUser = SecurityUtils.getSubject();
 		// TODO: Add permission rules
 		mainMenu.addChapter("", "Начало", "Начальный экран приложения", "icon-home", HomeView.class, null);
-		mainMenu.addChapter("contacts", "Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts", ContactsView.class, null);
-		mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella-1", InsuranceView.class, null);
-		mainMenu.addChapter("loans", "Кредитование", "Раздел посвященный кредитованию", "icon-dollar", LoansView.class, null);
+		mainMenu.addChapter("contacts", "Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts",
+				ContactsView.class, null);
+		mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella-1",
+				InsuranceView.class, null);
+		mainMenu.addChapter("loans", "Кредитование", "Раздел посвященный кредитованию", "icon-dollar", LoansView.class,
+				null);
 		if (currentUser.hasRole(UserRole.ADMIN.getName()))
-			mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3", UsersView.class, null);
-		mainMenu.addChapter("config", "Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt", ConfigView.class, null);
+			mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3",
+					UsersView.class, null);
+		mainMenu.addChapter("config", "Настройки", "Настройки приложения и пользовательского интерфейса",
+				"icon-cog-alt", ConfigView.class, null);
 
 		mainMenu.processURI(Page.getCurrent().getUriFragment());
 

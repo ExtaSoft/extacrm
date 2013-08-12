@@ -3,14 +3,10 @@
  */
 package ru.extas.web.contacts;
 
-import static ru.extas.server.ServiceLocator.lookup;
-
-import java.util.Collection;
-
 import ru.extas.model.Contact;
-import ru.extas.server.ContactService;
+import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
 
-import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Notification;
@@ -31,7 +27,7 @@ public class ContactSelect extends ComboBox {
 	/**
 	 * @param caption
 	 */
-	public ContactSelect(String caption) {
+	public ContactSelect(final String caption) {
 		this(caption, "Выберете существующего клиента или введите нового");
 	}
 
@@ -39,7 +35,7 @@ public class ContactSelect extends ComboBox {
 	 * @param caption
 	 * @param description
 	 */
-	public ContactSelect(String caption, String description) {
+	public ContactSelect(final String caption, final String description) {
 		super(caption);
 
 		// Преконфигурация
@@ -49,14 +45,12 @@ public class ContactSelect extends ComboBox {
 		setImmediate(true);
 
 		// Инициализация контейнера
-		ContactService contactService = lookup(ContactService.class);
-		final Collection<Contact> contacts = contactService.loadContacts();
-		final BeanItemContainer<Contact> clientsCont = new BeanItemContainer<Contact>(Contact.class);
-		clientsCont.addAll(contacts);
+		final LazyJdoContainer<Contact> container = new LazyJdoContainer<Contact>(Contact.class, 20, "this");
+		// setConverter(new SingleSelectConverter<Contact>(this, container));
 
 		// Устанавливаем контент выбора
-		setFilteringMode(FilteringMode.CONTAINS);
-		setContainerDataSource(clientsCont);
+		setFilteringMode(FilteringMode.STARTSWITH);
+		setContainerDataSource(container);
 		setItemCaptionMode(ItemCaptionMode.PROPERTY);
 		setItemCaptionPropertyId("name");
 
@@ -66,23 +60,27 @@ public class ContactSelect extends ComboBox {
 		setNewItemHandler(new NewItemHandler() {
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings({ "unchecked" })
 			@Override
-			public void addNewItem(String newItemCaption) {
-				final Contact newcontact = new Contact();
-				newcontact.setName(newItemCaption);
+			public void addNewItem(final String newItemCaption) {
+				final Object newObjId = container.addItem();
+				final BeanItem<Contact> newObj = (BeanItem<Contact>)container.getItem(newObjId);
+				newObj.getBean().setName(newItemCaption);
 
-				final ContactEditForm editWin = new ContactEditForm("Ввод нового контакта в систему", newcontact);
+				final ContactEditForm editWin = new ContactEditForm("Ввод нового контакта в систему", newObj);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void windowClose(CloseEvent e) {
+					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							clientsCont.addBean(newcontact);
-							ContactSelect.this.setValue(newcontact);
+							ContactSelect.this.setValue(newObj.getBean());
 							Notification.show("Контакт сохранен", Type.TRAY_NOTIFICATION);
+						} else {
+							container.removeItem(newObjId);
 						}
+
 					}
 				});
 				editWin.showModal();

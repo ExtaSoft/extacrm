@@ -9,8 +9,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.vaadin.data.util.converter.Converter;
 
 /**
- * Обеспечивает преобразование между строкой и
- * <code>org.joda.time.LocalDate</code>
+ * Обеспечивает преобразование между строкой и <code>org.joda.time.LocalDate</code>
  * 
  * @author Valery Orlov
  * 
@@ -42,7 +41,7 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
 	 * @param pattern
 	 *            шаблон преобразования
 	 */
-	public StringToJodaLDConverter(String pattern) {
+	public StringToJodaLDConverter(final String pattern) {
 		this.pattern = pattern;
 	}
 
@@ -73,7 +72,8 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
-	public LocalDate convertToModel(String value, Class<? extends LocalDate> targetType, Locale locale)
+	@Override
+	public LocalDate convertToModel(final String value, final Class<? extends LocalDate> targetType, Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null || value.isEmpty())
 			return null;
@@ -89,7 +89,8 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
-	public String convertToPresentation(LocalDate value, Class<? extends String> targetType, Locale locale)
+	@Override
+	public String convertToPresentation(final LocalDate value, final Class<? extends String> targetType, Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null)
 			return null;
@@ -106,8 +107,8 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
-	@Override
-	public LocalDate convertToModel(String value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public LocalDate convertToModel(final String value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToModel(value, null, locale);
 	}
 
@@ -118,8 +119,8 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.util.Locale)
 	 */
-	@Override
-	public String convertToPresentation(LocalDate value, Locale locale) throws com.vaadin.data.util.converter.Converter.ConversionException {
+	public String convertToPresentation(final LocalDate value, final Locale locale)
+			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		return convertToPresentation(value, null, locale);
 	}
 
