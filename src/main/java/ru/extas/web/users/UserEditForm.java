@@ -116,6 +116,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 
 		// FIXME Проверить уникальность логина
 		loginField = new TextField("Логин (e-mail)");
+		loginField.setReadOnly(obj.getKey() != null);
 		loginField.setImmediate(true);
 		loginField.setWidth(40, Unit.EX);
 		loginField.setDescription("Введите имя e-mail пользователя который будет использоваться для входа в систему");

@@ -37,6 +37,10 @@ public class ExtasServicesModule extends AbstractModule {
 		bind(PolicyRegistry.class).to(PolicyRegistryJdo.class).in(Scopes.SINGLETON);
 		// Страховой калькулятор
 		bind(InsuranceCalculator.class).to(InsuranceCalculatorImpl.class).in(Scopes.SINGLETON);
+		// Управление актами приема передачи БСО
+		bind(FormTransferService.class).to(FormTransferServiceJdo.class).in(Scopes.SINGLETON);
+		// Управление формами А-7
+		bind(A7FormService.class).to(A7FormServiceJdo.class).in(Scopes.SINGLETON);
 
 	}
 

@@ -3,30 +3,24 @@
  */
 package ru.extas.web.users;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.extas.model.UserProfile;
-import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
 import ru.extas.web.commons.ExtaAbstractView;
+import ru.extas.web.commons.component.AbstractTabInfo;
+import ru.extas.web.commons.component.TabInfo;
 
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
+import com.vaadin.ui.VerticalLayout;
 
 /**
  * Реализует экран управления пользователями и правами доступа
@@ -38,7 +32,6 @@ public class UsersView extends ExtaAbstractView {
 
 	private static final long serialVersionUID = -1272779672761523416L;
 	private final Logger logger = LoggerFactory.getLogger(UsersView.class);
-	private Table table;
 
 	/*
 	 * (non-Javadoc)
@@ -49,109 +42,55 @@ public class UsersView extends ExtaAbstractView {
 	protected Component getContent() {
 		logger.info("Creating view content...");
 
-		// Запрос данных
-		final LazyJdoContainer<UserProfile> container = new LazyJdoContainer<UserProfile>(UserProfile.class, 50, null);
+		final TabSheet tabsheet = new TabSheet();
+		tabsheet.setSizeFull();
 
-		final CssLayout panel = new CssLayout();
-		panel.addStyleName("layout-panel");
-		panel.setSizeFull();
-
-		// Формируем тулбар
-		final HorizontalLayout commandBar = new HorizontalLayout();
-		commandBar.addStyleName("configure");
-		commandBar.setSpacing(true);
-
-		final Button newBtn = new Button("Новый");
-		newBtn.addStyleName("icon-user-add");
-		newBtn.setDescription("Ввод нового пользователя в систему");
-		newBtn.addClickListener(new ClickListener() {
-
-			private static final long serialVersionUID = 1L;
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public void buttonClick(final ClickEvent event) {
-				final Object newObjId = table.addItem();
-				final BeanItem<UserProfile> newObj = (BeanItem<UserProfile>)table.getItem(newObjId);
-
-				final UserEditForm editWin = new UserEditForm("Ввод нового пользователя в систему", newObj);
-				editWin.addCloseListener(new CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final CloseEvent e) {
-						if (editWin.isSaved()) {
-							table.select(newObjId);
-							Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
-						} else {
-							table.removeItem(newObjId);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-		commandBar.addComponent(newBtn);
-
-		final Button editBtn = new Button("Изменить");
-		editBtn.addStyleName("icon-user-1");
-		editBtn.setDescription("Редактирование данных пользователя");
-		editBtn.setEnabled(false);
-		editBtn.addClickListener(new ClickListener() {
-
-			private static final long serialVersionUID = 1L;
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public void buttonClick(final ClickEvent event) {
-				final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-				final BeanItem<UserProfile> curObj = (BeanItem<UserProfile>)table.getItem(curObjId);
-
-				final UserEditForm editWin = new UserEditForm("Редактирование данных пользователя", curObj);
-				editWin.addCloseListener(new CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final CloseEvent e) {
-						if (editWin.isSaved()) {
-							Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-		commandBar.addComponent(editBtn);
-
-		panel.addComponent(commandBar);
-
-		// Создаем таблицу скроллинга
-		table = new Table("Пользователи", container);
-		table.setSizeFull();
-
-		// Обеспечиваем корректную работу кнопок зависящих от выбранной записи
-		table.setImmediate(true);
-		table.addValueChangeListener(new ValueChangeListener() {
-
+		// Create tab content dynamically when tab is selected
+		tabsheet.addSelectedTabChangeListener(new SelectedTabChangeListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void valueChange(final ValueChangeEvent event) {
-				final boolean enableBtb = event.getProperty().getValue() != null;
-				editBtn.setEnabled(enableBtb);
+			public void selectedTabChange(final SelectedTabChangeEvent event) {
+				// Find the tabsheet
+				final TabSheet tabsheet = event.getTabSheet();
+				// Find the tab (here we know it's a layout)
+				final VerticalLayout tab = (VerticalLayout)tabsheet.getSelectedTab();
+
+				// if (tab.getComponentCount() == 0) {
+				// Инициализируем содержимое закладки
+				final TabInfo info = (TabInfo)tab.getData();
+
+				tab.removeAllComponents();
+				final Component tabContent = info.createComponent();
+				tabContent.setSizeFull();
+				tab.addComponent(tabContent);
+				// } else
+				// tab.getComponent(0).markAsDirtyRecursive();
 			}
 		});
-// if (table.size() > 0)
-// table.select(table.firstItemId());
 
-		final UsersDataDecl ds = new UsersDataDecl();
-		ds.initTableColumns(table);
+		// Создаем закладки в соответствии с описанием
+		for (final TabInfo info : getTabComponentsInfo()) {
+			final VerticalLayout viewTab = new VerticalLayout();
+			viewTab.setSizeFull();
+			viewTab.setData(info);
+			tabsheet.addTab(viewTab, info.getCaption());
+		}
 
-		panel.addComponent(table);
+		return tabsheet;
+	}
 
-		return panel;
+	protected List<TabInfo> getTabComponentsInfo() {
+		final ArrayList<TabInfo> ret = newArrayList();
+		ret.add(new AbstractTabInfo("Пользователи") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component createComponent() {
+				return new UsersGrid();
+			}
+		});
+		return ret;
 	}
 
 	/*
