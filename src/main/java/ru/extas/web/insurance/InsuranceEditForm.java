@@ -16,9 +16,9 @@ import ru.extas.server.InsuranceCalculator;
 import ru.extas.server.InsuranceRepository;
 import ru.extas.server.PolicyRegistry;
 import ru.extas.server.SupplementService;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
+import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.ContactSelect;
 
 import java.math.BigDecimal;
@@ -69,7 +69,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
      * (non-Javadoc)
      *
      * @see
-     * ru.extas.web.commons.AbstractEditForm#createEditFields(ru.extas.model
+     * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
      * .AbstractExtaObject)
      */
     @Override
@@ -219,7 +219,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     /*
      * (non-Javadoc)
      *
-     * @see ru.extas.web.commons.AbstractEditForm#initObject(ru.extas.model.
+     * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
      * AbstractExtaObject)
      */
     @Override
@@ -236,7 +236,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     /*
      * (non-Javadoc)
      *
-     * @see ru.extas.web.commons.AbstractEditForm#saveObject(ru.extas.model.
+     * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
      * AbstractExtaObject)
      */
     @Override
@@ -249,7 +249,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
      * (non-Javadoc)
      *
      * @see
-     * ru.extas.web.commons.AbstractEditForm#checkBeforeSave(ru.extas.model.
+     * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
      * AbstractExtaObject)
      */
     @Override

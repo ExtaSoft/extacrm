@@ -14,7 +14,7 @@ import ru.extas.model.UserProfile;
 import ru.extas.model.UserRole;
 import ru.extas.server.UserManagementService;
 import ru.extas.shiro.UserRealm;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.util.ComponentUtil;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -58,7 +58,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     /*
      * (non-Javadoc)
      *
-     * @see ru.extas.web.commons.AbstractEditForm#initObject(ru.extas.model.
+     * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
      * AbstractExtaObject)
      */
     @Override

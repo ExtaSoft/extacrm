@@ -1,7 +1,7 @@
 /**
  *
  */
-package ru.extas.web.commons;
+package ru.extas.web.commons.window;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -11,12 +11,11 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.AbstractExtaObject;
 
 /**
  * @author Valery Orlov
  */
-public abstract class AbstractEditForm<TEditObject extends AbstractExtaObject> extends Window {
+public abstract class AbstractEditForm<TEditObject> extends Window {
 
     private final Logger logger = LoggerFactory.getLogger(AbstractEditForm.class);
 

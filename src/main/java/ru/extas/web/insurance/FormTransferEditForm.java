@@ -8,8 +8,8 @@ import com.vaadin.ui.PopupDateField;
 import org.joda.time.LocalDate;
 import ru.extas.model.FormTransfer;
 import ru.extas.server.FormTransferService;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.commons.component.LocalDateField;
+import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.ContactSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -42,7 +42,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
      * (non-Javadoc)
      *
      * @see
-     * ru.extas.web.commons.AbstractEditForm#createEditFields(ru.extas.model
+     * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
      * .AbstractExtaObject)
      */
     @Override
@@ -71,7 +71,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
     /*
      * (non-Javadoc)
      *
-     * @see ru.extas.web.commons.AbstractEditForm#initObject(ru.extas.model.
+     * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
      * AbstractExtaObject)
      */
     @Override
@@ -86,7 +86,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
     /*
      * (non-Javadoc)
      *
-     * @see ru.extas.web.commons.AbstractEditForm#saveObject(ru.extas.model.
+     * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
      * AbstractExtaObject)
      */
     @Override
@@ -99,7 +99,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
      * (non-Javadoc)
      *
      * @see
-     * ru.extas.web.commons.AbstractEditForm#checkBeforeSave(ru.extas.model.
+     * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
      * AbstractExtaObject)
      */
     @Override

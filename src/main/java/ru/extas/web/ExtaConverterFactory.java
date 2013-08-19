@@ -59,6 +59,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
         if (presentationType == String.class && modelType == Policy.class)
             return (Converter<PRESENTATION, MODEL>) lookup(StringToPolicyConverter.class);
 
+        // Конвертер строк в длинное целое
+        if (presentationType == String.class && modelType == Long.class)
+            return (Converter<PRESENTATION, MODEL>) lookup(StringToLongConverter.class);
+
         // Let default factory handle the rest
         return super.findConverter(presentationType, modelType);
     }

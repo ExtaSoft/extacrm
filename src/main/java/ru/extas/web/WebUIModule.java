@@ -51,6 +51,9 @@ public class WebUIModule extends AbstractModule {
 
         // Конвертер полиса БСО
         bind(StringToPolicyConverter.class).in(ServletScopes.SESSION);
+
+        // Конвертер строк в длинное целое
+        bind(StringToLongConverter.class).in(ServletScopes.SESSION);
     }
 
     /**
