@@ -1,45 +1,40 @@
 package ru.extas.guice;
 
-import java.util.Properties;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.vaadin.server.DeploymentConfiguration;
-import com.vaadin.server.GAEVaadinServlet;
-import com.vaadin.server.ServiceException;
-import com.vaadin.server.SessionInitEvent;
-import com.vaadin.server.SessionInitListener;
+import com.vaadin.server.*;
+
+import java.util.Properties;
 
 /**
  * Сервлет пользовательского интерфейса
- * 
+ *
  * @author Valery Orlov
- * 
  */
 @Singleton
 public class ExtasGuiceServlet extends GAEVaadinServlet implements SessionInitListener {
 
-	private static final long serialVersionUID = -2786123692482071945L;
+    private static final long serialVersionUID = -2786123692482071945L;
 
-	@Inject
-	private ExtasGuiceProvider basicProvider;
+    @Inject
+    private ExtasGuiceProvider basicProvider;
 
-	@Override
-	protected DeploymentConfiguration createDeploymentConfiguration(Properties initParameters) {
+    @Override
+    protected DeploymentConfiguration createDeploymentConfiguration(Properties initParameters) {
 
-		// /initParameters.setProperty(SERVLET_PARAMETER_PRODUCTION_MODE,
-		// "false");
-		return super.createDeploymentConfiguration(initParameters);
-	}
+        // /initParameters.setProperty(SERVLET_PARAMETER_PRODUCTION_MODE,
+        // "false");
+        return super.createDeploymentConfiguration(initParameters);
+    }
 
-	@Override
-	protected void servletInitialized() {
-		getService().addSessionInitListener(this);
-	}
+    @Override
+    protected void servletInitialized() {
+        getService().addSessionInitListener(this);
+    }
 
-	@Override
-	public void sessionInit(SessionInitEvent event) throws ServiceException {
-		event.getSession().addUIProvider(basicProvider);
-	}
+    @Override
+    public void sessionInit(SessionInitEvent event) throws ServiceException {
+        event.getSession().addUIProvider(basicProvider);
+    }
 
 }

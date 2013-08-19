@@ -4,20 +4,19 @@ import ru.extas.web.commons.GridDataDecl;
 
 /**
  * Опции отрбражения пользователей
- * 
+ *
  * @author Valery Orlov
- * 
  */
-public class UsersDataDecl extends GridDataDecl {
+class UsersDataDecl extends GridDataDecl {
 
-	public UsersDataDecl() {
-		super();
-		addMapping("name", "Имя");
-		addMapping("login", "Логин (e-mail)");
-		addMapping("role", "Роль");
-		addMapping("blocked", "Блокирован");
-		addMapping("changePassword", "Сменить пароль");
-		super.addCreateModifyMarkers();
-	}
+    public UsersDataDecl() {
+        super();
+        addMapping("name", "Имя");
+        addMapping("login", "Логин (e-mail)");
+        addMapping("role", "Роль");
+        addMapping("blocked", "Блокирован");
+        addMapping("changePassword", "Сменить пароль");
+        super.addCreateModifyMarkers();
+    }
 
 }
