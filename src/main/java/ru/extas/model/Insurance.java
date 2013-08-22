@@ -21,6 +21,10 @@ public class Insurance extends AbstractExtaObject {
     @Persistent
     private String regNum;
 
+    // Номер квитанции А-7
+    @Persistent
+    String a7Num;
+
     // Дата заключения полиса
     @Persistent
     private LocalDate date;
@@ -246,4 +250,11 @@ public class Insurance extends AbstractExtaObject {
         this.pointOfSale = pointOfSale;
     }
 
+    public String getA7Num() {
+        return a7Num;
+    }
+
+    public void setA7Num(final String a7Num) {
+        this.a7Num = a7Num;
+    }
 }

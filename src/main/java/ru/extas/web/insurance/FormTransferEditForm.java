@@ -49,10 +49,12 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
     protected FormLayout createEditFields(final FormTransfer obj) {
         final FormLayout form = new FormLayout();
 
+        // FIXME Ограничить выбор контакта только сотрудниками и СК
         fromContactField = new ContactSelect("От кого");
         fromContactField.setRequired(true);
         form.addComponent(fromContactField);
 
+        // FIXME Ограничить выбор контакта только сотрудниками и СК
         toContactField = new ContactSelect("Кому");
         toContactField.setRequired(true);
         form.addComponent(toContactField);

@@ -3,12 +3,19 @@
  */
 package ru.extas.web.insurance;
 
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Table;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import ru.extas.model.A7Form;
+import ru.extas.model.UserRole;
+import ru.extas.server.UserManagementService;
 import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
 import ru.extas.web.commons.GridDataDecl;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * @author Valery Orlov
@@ -26,6 +33,12 @@ public class A7FormGrid extends CustomComponent {
         // Запрос данных
         final LazyJdoContainer<A7Form> container = new LazyJdoContainer<>(A7Form.class, 50, null);
         container.addContainerProperty("owner.name", String.class, null, true, false);
+        final Subject subject = SecurityUtils.getSubject();
+        // пользователю доступны только собственные записи
+        if (subject.hasRole(UserRole.USER.getName())) {
+            UserManagementService userService = lookup(UserManagementService.class);
+            container.addContainerFilter(new Compare.Equal("owner", userService.getCurrentUserContact()));
+        }
 
         final Table table = new Table();
         table.setContainerDataSource(container);

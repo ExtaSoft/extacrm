@@ -1,5 +1,8 @@
 package ru.extas.server;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -24,6 +27,11 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
 
     private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJdo.class);
 
+    @Inject
+    private Provider<PersistenceManager> pm;
+    @Inject
+    private Provider<UnitOfWork> unitOfWork;
+
     /*
      * (non-Javadoc)
      *
@@ -32,9 +40,9 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
     @SuppressWarnings("unchecked")
     @Override
     public Collection<Insurance> loadAll() {
-        logger.debug("Requesting insuranses list...");
-        PersistenceManager pm = PMF.get().getPersistenceManager();
-        Query q = pm.newQuery(Insurance.class);
+        logger.debug("Requesting insurances list...");
+        unitOfWork.get().begin();
+        Query q = pm.get().newQuery(Insurance.class);
         Map<String, Object> parameters = newHashMap();
         try {
             Subject subject = SecurityUtils.getSubject();
@@ -50,7 +58,7 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
             return insurances;
         } finally {
             q.closeAll();
-            pm.close();
+            unitOfWork.get().begin();
         }
     }
 
@@ -62,15 +70,15 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
     @Override
     public void persist(Insurance insurance) {
         logger.debug("Persisting insurance: {}", insurance.getRegNum());
-        PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
         try {
-            pm.makePersistent(insurance);
+            pm.get().makePersistent(insurance);
 
             // TODO: Запускать транзакцию
             final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
             policyRepository.issuePolicy(insurance.getRegNum());
         } finally {
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 
@@ -82,11 +90,11 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
     @Override
     public void deleteById(String id) {
         logger.debug("Deleting insurance with id: {}", id);
-        PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
         try {
-            pm.deletePersistent(pm.getObjectById(Insurance.class, id));
+            pm.get().deletePersistent(pm.get().getObjectById(Insurance.class, id));
         } finally {
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 

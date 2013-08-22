@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Valery Orlov
  */
-interface A7FormService {
+public interface A7FormService {
 
     /**
      * Найти квитанцию по номеру
@@ -60,4 +60,11 @@ interface A7FormService {
      * @param newStatus Новый статус
      */
     void changeStatus(List<String> formNums, A7Form.Status newStatus);
+
+    /**
+     * Загружает доступные пользователю квитанции А-7
+     *
+     * @return доступные пользователю квитанции А-7
+     */
+    List<A7Form> loadAvailable();
 }

@@ -4,6 +4,8 @@
 package ru.extas.server;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.FormTransfer;
@@ -19,16 +21,13 @@ public class FormTransferServiceJdo implements FormTransferService {
 
     private final Logger logger = LoggerFactory.getLogger(FormTransferServiceJdo.class);
 
-    private final A7FormService a7FormService;
-
-    /**
-     * @param a7FormService
-     */
     @Inject
-    public FormTransferServiceJdo(final A7FormService a7FormService) {
-        super();
-        this.a7FormService = a7FormService;
-    }
+    private A7FormService a7FormService;
+    @Inject
+    private Provider<PersistenceManager> pm;
+    @Inject
+    private Provider<UnitOfWork> unitOfWork;
+
 
     /*
      * (non-Javadoc)
@@ -37,14 +36,14 @@ public class FormTransferServiceJdo implements FormTransferService {
      */
     @Override
     public void persist(final FormTransfer tf) {
-        final PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
         try {
-            logger.info("Prsisting FormTransfer");
-            pm.makePersistent(tf);
+            logger.info("Persisting FormTransfer");
+            pm.get().makePersistent(tf);
+            a7FormService.changeOwner(tf.getFormNums(), tf.getToContact());
         } finally {
-            pm.close();
+            unitOfWork.get().end();
         }
-        a7FormService.changeOwner(tf.getFormNums(), tf.getToContact());
     }
 
     /*
@@ -56,9 +55,9 @@ public class FormTransferServiceJdo implements FormTransferService {
     @Override
     public List<FormTransfer> findByFormNum(final String formNum) {
         logger.debug("Requesting FormTransfer by form number...");
-        final PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
 
-        final Query q = pm.newQuery(FormTransfer.class);
+        final Query q = pm.get().newQuery(FormTransfer.class);
         q.setFilter("formNums.contains(regNumPrm)");
         q.declareParameters("String regNumPrm");
         try {
@@ -67,7 +66,7 @@ public class FormTransferServiceJdo implements FormTransferService {
             else return null;
         } finally {
             q.closeAll();
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 

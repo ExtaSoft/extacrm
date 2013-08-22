@@ -4,11 +4,13 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.DefaultConverterFactory;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import ru.extas.model.A7Form;
 import ru.extas.model.Contact.Sex;
 import ru.extas.model.Policy;
 import ru.extas.model.UserRole;
 import ru.extas.web.commons.converters.*;
 import ru.extas.web.contacts.StringToContactSex;
+import ru.extas.web.insurance.StringToA7FormConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.users.StringToUserRoleConverter;
 
@@ -62,6 +64,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
         // Конвертер строк в длинное целое
         if (presentationType == String.class && modelType == Long.class)
             return (Converter<PRESENTATION, MODEL>) lookup(StringToLongConverter.class);
+
+        // Конвертируем Квитанцию А-7 в строку (номер квитанции)
+        if (presentationType == String.class && modelType == A7Form.class)
+            return (Converter<PRESENTATION, MODEL>) lookup(StringToA7FormConverter.class);
 
         // Let default factory handle the rest
         return super.findConverter(presentationType, modelType);

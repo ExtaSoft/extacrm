@@ -37,6 +37,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     // Компоненты редактирования
     @PropertyId("regNum")
     private PolicySelect regNumField;
+    @PropertyId("a7FormNum")
+    private A7Select a7FormNumField;
     @PropertyId("date")
     private PopupDateField dateField;
     @PropertyId("client")
@@ -62,7 +64,6 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
     public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
         super(caption, obj);
-
     }
 
     /*
@@ -99,6 +100,11 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         });
         form.addComponent(regNumField);
 
+        a7FormNumField = new A7Select("Номер квитанции А-7",
+                "Введите номер квитанции А-7. Выбирается из справочника БСО.", obj.getA7Num());
+        // TODO a7FormNumField.setRequired(true);
+        form.addComponent(a7FormNumField);
+
         dateField = new LocalDateField("Дата договора", "Введите дату оформления договора страхования");
         dateField.setRequired(true);
         dateField.addValueChangeListener(new ValueChangeListener() {
@@ -114,6 +120,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         });
         form.addComponent(dateField);
 
+        // FIXME Ограничить выбор контакта только клиентами
         clientNameField = new ContactSelect("Страхователь");
         clientNameField.setRequired(true);
         form.addComponent(clientNameField);
