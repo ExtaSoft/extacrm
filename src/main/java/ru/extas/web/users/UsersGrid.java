@@ -39,6 +39,7 @@ public class UsersGrid extends CustomComponent {
         super();
         // Запрос данных
         final LazyJdoContainer<UserProfile> container = new LazyJdoContainer<>(UserProfile.class, 50, null);
+        container.addContainerProperty("contact.name", String.class, null, true, false);
 
         final CssLayout panel = new CssLayout();
         panel.addStyleName("layout-panel");

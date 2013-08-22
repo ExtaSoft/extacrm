@@ -11,7 +11,7 @@ class UsersDataDecl extends GridDataDecl {
 
     public UsersDataDecl() {
         super();
-        addMapping("name", "Имя");
+        addMapping("contact.name", "Имя");
         addMapping("login", "Логин (e-mail)");
         addMapping("role", "Роль");
         addMapping("blocked", "Блокирован");

@@ -15,6 +15,7 @@ import ru.extas.model.UserRole;
 import ru.extas.server.UserManagementService;
 import ru.extas.shiro.UserRealm;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.contacts.ContactSelect;
 import ru.extas.web.util.ComponentUtil;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -28,8 +29,8 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     private final Logger logger = LoggerFactory.getLogger(UserEditForm.class);
 
     // Компоненты редактирования
-    @PropertyId("name")
-    private TextField nameField;
+    @PropertyId("contact")
+    private ContactSelect nameField;
     @PropertyId("login")
     private TextField loginField;
     @PropertyId("role")
@@ -97,14 +98,14 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         // Have some layout
         final FormLayout form = new FormLayout();
 
-        nameField = new TextField("Имя");
+        // FIXME Ограничить выбор контакта только сотрудниками
+        nameField = new ContactSelect("Имя");
         nameField.setImmediate(true);
         nameField.setWidth(50, Unit.EX);
         nameField.setDescription("Введите имя (ФИО) пользователя");
-        nameField.setInputPrompt("Имя (Отчество) Фамилия");
+        nameField.setInputPrompt("Фамилия Имя Отчество");
         nameField.setRequired(true);
         nameField.setRequiredError("Имя пользователя не может быть пустым. Пожалуйста введите ФИО пользователя.");
-        nameField.setNullRepresentation("");
         form.addComponent(nameField);
 
         // FIXME Проверить уникальность логина

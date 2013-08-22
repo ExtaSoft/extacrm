@@ -1,5 +1,7 @@
 package ru.extas.model;
 
+import com.google.appengine.datanucleus.annotations.Unowned;
+
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.Extensions;
 import javax.jdo.annotations.PersistenceCapable;
@@ -20,13 +22,10 @@ public class UserProfile extends AbstractExtaObject {
     @Persistent
     private String login;
 
-    // Имя пользователя
-    @Persistent
-    private String name;
-
-    // Ссылка на контакт (ID)
-    @Persistent
-    private String contactId;
+    // Ссылка на контакт
+    @Unowned
+    @Persistent(defaultFetchGroup = "true")
+    private Contact contact;
 
     // Password (hash)
     @Persistent
@@ -108,31 +107,17 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
-     * @return the name
+     * @return the contact
      */
-    public String getName() {
-        return name;
+    public Contact getContact() {
+        return contact;
     }
 
     /**
-     * @param name the name to set
+     * @param contact the contact to set
      */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the contactId
-     */
-    public String getContactId() {
-        return contactId;
-    }
-
-    /**
-     * @param contactId the contactId to set
-     */
-    public void setContactId(String contactId) {
-        this.contactId = contactId;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     /**

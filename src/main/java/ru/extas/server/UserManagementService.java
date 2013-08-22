@@ -1,5 +1,6 @@
 package ru.extas.server;
 
+import ru.extas.model.Contact;
 import ru.extas.model.UserProfile;
 
 import java.util.List;
@@ -18,6 +19,14 @@ public interface UserManagementService {
      * @return найденный пользователь или null
      */
     UserProfile findUserByLogin(String login);
+
+    /**
+     * Найти контакт пользователя по логину
+     *
+     * @param login логин
+     * @return найденный контакт пользователя или null
+     */
+    Contact findUserContactByLogin(String login);
 
     /**
      * Сохранить пользователя
@@ -47,4 +56,10 @@ public interface UserManagementService {
      */
     UserProfile getCurrentUser();
 
+    /**
+     * Получить контакт текущего пользователя
+     *
+     * @return контакт текущего пользователя
+     */
+    Contact getCurrentUserContact();
 }

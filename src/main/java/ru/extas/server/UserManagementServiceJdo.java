@@ -1,10 +1,14 @@
 package ru.extas.server;
 
 import com.google.appengine.api.utils.SystemProperty;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.Contact;
 import ru.extas.model.UserProfile;
 import ru.extas.model.UserRole;
 
@@ -24,6 +28,11 @@ public class UserManagementServiceJdo implements UserManagementService {
     private static final String SUPERUSER_LOGIN = "admin";
     private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJdo.class);
 
+    @Inject
+    private Provider<PersistenceManager> pm;
+    @Inject
+    private Provider<UnitOfWork> unitOfWork;
+
     /*
      * (non-Javadoc)
      *
@@ -38,8 +47,8 @@ public class UserManagementServiceJdo implements UserManagementService {
             logger.info("Returning superuser profile...");
             return getSuperuser();
         }
-        PersistenceManager pm = PMF.get().getPersistenceManager();
-        Query q = pm.newQuery(UserProfile.class);
+        unitOfWork.get().begin();
+        Query q = pm.get().newQuery(UserProfile.class);
         q.setFilter("login == loginPrm");
         q.declareParameters("String loginPrm");
 
@@ -54,7 +63,20 @@ public class UserManagementServiceJdo implements UserManagementService {
             }
         } finally {
             q.closeAll();
+            unitOfWork.get().end();
         }
+    }
+
+    /**
+     * Найти контакт пользователя по логину
+     *
+     * @param login логин
+     * @return найденный контакт пользователя или null
+     */
+    @Override
+    public Contact findUserContactByLogin(final String login) {
+        final UserProfile currentUser = findUserByLogin(login);
+        return currentUser != null ? currentUser.getContact() : null;
     }
 
     /*
@@ -66,12 +88,12 @@ public class UserManagementServiceJdo implements UserManagementService {
      */
     @Override
     public void persistUser(UserProfile user) {
-        PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
         try {
             logger.info("Prsisting user with login name {}...", user.getLogin());
-            pm.makePersistent(user);
+            pm.get().makePersistent(user);
         } finally {
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 
@@ -82,11 +104,11 @@ public class UserManagementServiceJdo implements UserManagementService {
      */
     @Override
     public List<UserProfile> loadUsers() {
-        PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
         try {
             logger.info("Requesting user list...");
             List<UserProfile> users = new ArrayList<>();
-            Extent<UserProfile> extent = pm.getExtent(UserProfile.class, false);
+            Extent<UserProfile> extent = pm.get().getExtent(UserProfile.class, false);
             for (UserProfile user : extent) {
                 users.add(user);
             }
@@ -95,7 +117,7 @@ public class UserManagementServiceJdo implements UserManagementService {
 
             return users;
         } finally {
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 
@@ -108,7 +130,9 @@ public class UserManagementServiceJdo implements UserManagementService {
     public UserProfile getSuperuser() {
         UserProfile user = new UserProfile();
         user.setLogin(SUPERUSER_LOGIN);
-        user.setName("Global Superuser");
+        Contact contact = new Contact();
+        contact.setName("Global Superuser");
+        user.setContact(contact);
         user.setLogin(SUPERUSER_LOGIN);
         if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
             // The app is running on App Engine...
@@ -131,6 +155,17 @@ public class UserManagementServiceJdo implements UserManagementService {
     public UserProfile getCurrentUser() {
         Subject subject = SecurityUtils.getSubject();
         return findUserByLogin((String) subject.getPrincipal());
+    }
+
+    /**
+     * Получить контакт текущего пользователя
+     *
+     * @return контакт текущего пользователя
+     */
+    @Override
+    public Contact getCurrentUserContact() {
+        final UserProfile currentUser = getCurrentUser();
+        return currentUser != null ? currentUser.getContact() : null;
     }
 
 }
