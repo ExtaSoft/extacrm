@@ -3,6 +3,9 @@
  */
 package ru.extas.server;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,11 @@ public class PolicyRegistryJdo implements PolicyRegistry {
 
     private final Logger logger = LoggerFactory.getLogger(PolicyRegistryJdo.class);
 
+    @Inject
+    private Provider<PersistenceManager> pm;
+    @Inject
+    private Provider<UnitOfWork> unitOfWork;
+
     /*
      * (non-Javadoc)
      *
@@ -29,9 +37,9 @@ public class PolicyRegistryJdo implements PolicyRegistry {
     @Override
     public List<Policy> loadAvailable() {
         logger.debug("Requesting available policies...");
-        final PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
 
-        final Query q = pm.newQuery(Policy.class);
+        final Query q = pm.get().newQuery(Policy.class);
         try {
             q.setFilter("issueDate == null && bookTime < expareTimePrm");
             q.setOrdering("bookTime, regNum ascending");
@@ -43,7 +51,7 @@ public class PolicyRegistryJdo implements PolicyRegistry {
             return pilicies;
         } finally {
             q.closeAll();
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 
@@ -55,11 +63,11 @@ public class PolicyRegistryJdo implements PolicyRegistry {
     @Override
     public void persist(final Policy policy) {
         logger.debug("Persisting policy: {}", policy.getRegNum());
-        final PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
         try {
-            pm.makePersistent(policy);
+            pm.get().makePersistent(policy);
         } finally {
-            pm.close();
+            unitOfWork.get().begin();
         }
     }
 
@@ -70,8 +78,13 @@ public class PolicyRegistryJdo implements PolicyRegistry {
      */
     @Override
     public void bookPolicy(final Policy policy) {
-        policy.setBookTime(DateTime.now());
-        persist(policy);
+        unitOfWork.get().begin();
+        try {
+            policy.setBookTime(DateTime.now());
+            persist(policy);
+        } finally {
+            unitOfWork.get().end();
+        }
     }
 
     /*
@@ -81,8 +94,13 @@ public class PolicyRegistryJdo implements PolicyRegistry {
      */
     @Override
     public void issuePolicy(final Policy policy) {
-        policy.setIssueDate(DateTime.now());
-        persist(policy);
+        unitOfWork.get().begin();
+        try {
+            policy.setIssueDate(DateTime.now());
+            persist(policy);
+        } finally {
+            unitOfWork.get().end();
+        }
     }
 
     /*
@@ -95,9 +113,9 @@ public class PolicyRegistryJdo implements PolicyRegistry {
     public List<Policy> loadAll(final int startIndex, final int count, final Object[] sortPropertyIds,
                                 final boolean[] sortStates) {
         logger.debug("Requesting all policies from {} count {}", startIndex, count);
-        final PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
 
-        final Query q = pm.newQuery(Policy.class);
+        final Query q = pm.get().newQuery(Policy.class);
         QueryUtils.setOrdering(q, sortPropertyIds, sortStates);
         QueryUtils.setRange(q, startIndex, count);
         try {
@@ -107,7 +125,7 @@ public class PolicyRegistryJdo implements PolicyRegistry {
             return policies;
         } finally {
             q.closeAll();
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 
@@ -120,9 +138,9 @@ public class PolicyRegistryJdo implements PolicyRegistry {
     @Override
     public Policy findByNum(final String regNum) {
         logger.debug("Requesting policy by number...");
-        final PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
 
-        final Query q = pm.newQuery(Policy.class);
+        final Query q = pm.get().newQuery(Policy.class);
         q.setFilter("regNum == regNumPrm");
         q.declareParameters("String regNumPrm");
         try {
@@ -131,7 +149,7 @@ public class PolicyRegistryJdo implements PolicyRegistry {
             else return null;
         } finally {
             q.closeAll();
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 
@@ -142,9 +160,14 @@ public class PolicyRegistryJdo implements PolicyRegistry {
      */
     @Override
     public void bookPolicy(final String regNum) {
-        final Policy policy = findByNum(regNum);
-        if (policy != null) {
-            bookPolicy(policy);
+        unitOfWork.get().begin();
+        try {
+            final Policy policy = findByNum(regNum);
+            if (policy != null) {
+                bookPolicy(policy);
+            }
+        } finally {
+            unitOfWork.get().end();
         }
     }
 
@@ -155,9 +178,14 @@ public class PolicyRegistryJdo implements PolicyRegistry {
      */
     @Override
     public void issuePolicy(final String regNum) {
-        final Policy policy = findByNum(regNum);
-        if (policy != null) {
-            issuePolicy(policy);
+        unitOfWork.get().begin();
+        try {
+            final Policy policy = findByNum(regNum);
+            if (policy != null) {
+                issuePolicy(policy);
+            }
+        } finally {
+            unitOfWork.get().end();
         }
     }
 
@@ -169,9 +197,9 @@ public class PolicyRegistryJdo implements PolicyRegistry {
     @Override
     public int queryPoliciesCount() {
         logger.debug("Requesting all policies count...");
-        final PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
 
-        final Query q = pm.newQuery(Policy.class);
+        final Query q = pm.get().newQuery(Policy.class);
         q.setResult("count(this)");
         try {
             final long count = (long) q.execute();
@@ -179,7 +207,7 @@ public class PolicyRegistryJdo implements PolicyRegistry {
             return (int) count;
         } finally {
             q.closeAll();
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 

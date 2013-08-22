@@ -3,6 +3,9 @@
  */
 package ru.extas.server;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.Contact;
@@ -22,6 +25,11 @@ public class ContactServiceJdo implements ContactService {
 
     private final Logger logger = LoggerFactory.getLogger(ContactServiceJdo.class);
 
+    @Inject
+    private Provider<PersistenceManager> pm;
+    @Inject
+    private Provider<UnitOfWork> unitOfWork;
+
     /*
      * (non-Javadoc)
      *
@@ -30,10 +38,10 @@ public class ContactServiceJdo implements ContactService {
     @Override
     public Collection<Contact> loadContacts() {
         logger.debug("Requesting contact list...");
-        PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
         try {
             List<Contact> contacts = new ArrayList<>();
-            Extent<Contact> extent = pm.getExtent(Contact.class, false);
+            Extent<Contact> extent = pm.get().getExtent(Contact.class, false);
             for (Contact contact : extent) {
                 contacts.add(contact);
             }
@@ -42,7 +50,7 @@ public class ContactServiceJdo implements ContactService {
 
             return contacts;
         } finally {
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 
@@ -54,12 +62,12 @@ public class ContactServiceJdo implements ContactService {
      */
     @Override
     public void persistContact(Contact contact) {
-        PersistenceManager pm = PMF.get().getPersistenceManager();
+        unitOfWork.get().begin();
         try {
             logger.info("Prsisting contact with name {}...", contact.getName());
-            pm.makePersistent(contact);
+            pm.get().makePersistent(contact);
         } finally {
-            pm.close();
+            unitOfWork.get().end();
         }
     }
 

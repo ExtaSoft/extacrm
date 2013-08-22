@@ -4,10 +4,8 @@
 package ru.extas.server;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 import com.google.inject.Scopes;
-
-import javax.jdo.PersistenceManager;
+import ru.extas.guice.persist.jdo.JdoPersistModule;
 
 /**
  * Модуль инъекций для интерфейсов бизнес логики
@@ -23,6 +21,9 @@ public class ExtasServicesModule extends AbstractModule {
      */
     @Override
     protected void configure() {
+
+        // Guice JDO persistence
+        install(new JdoPersistModule("transactions-optional"));
 
         // Служба управления пользователями
         bind(UserManagementService.class).to(UserManagementServiceJdo.class).in(Scopes.SINGLETON);
@@ -41,11 +42,6 @@ public class ExtasServicesModule extends AbstractModule {
         // Управление формами А-7
         bind(A7FormService.class).to(A7FormServiceJdo.class).in(Scopes.SINGLETON);
 
-    }
-
-    @Provides
-    protected PersistenceManager providePersistenceManager() {
-        return PMF.get().getPersistenceManager();
     }
 
 }

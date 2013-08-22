@@ -25,13 +25,10 @@ import static java.util.regex.Pattern.compile;
  * @author Valery Orlov
  */
 public class ExtasGuiceFilter extends GuiceFilter {
-    private final Logger logger = LoggerFactory.getLogger(ExtasGuiceFilter.class);
-
-    private static Injector INJECTOR;
-
     private static final Pattern URI_ADMIN_PATTERN = compile("/_ah/.*");
-
     private static final Set<String> URI_NOADMIN_SET = new HashSet<>(asList("/_ah/warmup"));
+    private static Injector INJECTOR;
+    private final Logger logger = LoggerFactory.getLogger(ExtasGuiceFilter.class);
 
     public static Injector getInjector() {
         return INJECTOR;
@@ -53,8 +50,11 @@ public class ExtasGuiceFilter extends GuiceFilter {
         if (INJECTOR != null)
             throw new ServletException("Injector already created?!");
 
-        INJECTOR = Guice.createInjector(new ExtasShiroWebModule(filterConfig.getServletContext()), new ExtasWebGuiceModule(),
-                new ExtasServicesModule(), new WebUIModule());
+        INJECTOR = Guice.createInjector(
+                new ExtasShiroWebModule(filterConfig.getServletContext()),
+                new ExtasWebGuiceModule(),
+                new ExtasServicesModule(),
+                new WebUIModule());
 
         logger.debug("Created injector with {} bindings.", INJECTOR.getAllBindings().size());
         super.init(filterConfig);

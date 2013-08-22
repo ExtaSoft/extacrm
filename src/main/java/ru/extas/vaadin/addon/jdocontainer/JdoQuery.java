@@ -1,5 +1,6 @@
 package ru.extas.vaadin.addon.jdocontainer;
 
+import com.google.inject.persist.UnitOfWork;
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Item;
@@ -77,6 +78,9 @@ public class JdoQuery<E> implements Query, Serializable {
     public final int size() {
 
         if (querySize == -1) {
+            final UnitOfWork unitOfWork = lookup(UnitOfWork.class);
+            unitOfWork.begin();
+
             final PersistenceManager pm = lookup(PersistenceManager.class);
             final javax.jdo.Query query = pm.newQuery(entityClass);
             try {
@@ -90,7 +94,7 @@ public class JdoQuery<E> implements Query, Serializable {
                 querySize = (int) count;
             } finally {
                 query.closeAll();
-                pm.close();
+                unitOfWork.end();
             }
         }
         return querySize;
@@ -281,6 +285,9 @@ public class JdoQuery<E> implements Query, Serializable {
     @Override
     public final List<Item> loadItems(final int startIndex, final int count) {
 
+        final UnitOfWork unitOfWork = lookup(UnitOfWork.class);
+        unitOfWork.begin();
+
         final PersistenceManager pm = lookup(PersistenceManager.class);
         final javax.jdo.Query query = pm.newQuery(entityClass);
 
@@ -301,7 +308,7 @@ public class JdoQuery<E> implements Query, Serializable {
             return items;
         } finally {
             query.closeAll();
-            pm.close();
+            unitOfWork.end();
         }
     }
 
