@@ -67,4 +67,5 @@ public interface A7FormService {
      * @return доступные пользователю квитанции А-7
      */
     List<A7Form> loadAvailable();
+
 }

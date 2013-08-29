@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Имплементация сервиса управления имущественными страховками
@@ -31,6 +30,10 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
     private Provider<PersistenceManager> pm;
     @Inject
     private Provider<UnitOfWork> unitOfWork;
+    @Inject
+    private PolicyRegistry policyRepository;
+    @Inject
+    private A7FormService formService;
 
     /*
      * (non-Javadoc)
@@ -75,8 +78,8 @@ public class InsuranceRepositoryJdo implements InsuranceRepository {
             pm.get().makePersistent(insurance);
 
             // TODO: Запускать транзакцию
-            final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
             policyRepository.issuePolicy(insurance.getRegNum());
+            formService.spendForm(insurance.getA7Num());
         } finally {
             unitOfWork.get().end();
         }

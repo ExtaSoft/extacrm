@@ -23,7 +23,7 @@ public class A7Form extends AbstractExtaObject {
      *
      * @author Valery Orlov
      */
-    public static enum Status {
+    public enum Status {
         /**
          * Новый бланк
          */

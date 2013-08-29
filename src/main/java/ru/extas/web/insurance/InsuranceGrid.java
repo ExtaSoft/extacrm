@@ -232,10 +232,14 @@ public class InsuranceGrid extends CustomComponent {
         return new OnDemandFileDownloader(new OnDemandStreamResource() {
             private static final long serialVersionUID = 1L;
 
+            @SuppressWarnings("unchecked")
             @Override
             public InputStream getStream() {
                 // Взять текущий полис из грида
-                final Insurance insurance = (Insurance) table.getValue();
+                // Взять текущий полис из грида
+                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
+                final BeanItem<Insurance> curObj = (BeanItem<Insurance>) table.getItem(curObjId);
+                final Insurance insurance = curObj.getBean();
                 checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
                 try {
                     // 1) Load Docx file by filling Velocity template engine and
@@ -278,10 +282,14 @@ public class InsuranceGrid extends CustomComponent {
                 }
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             public String getFilename() {
                 // Взять текущий полис из грида
-                final Insurance insurance = (Insurance) table.getValue();
+                // Взять текущий полис из грида
+                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
+                final BeanItem<Insurance> curObj = (BeanItem<Insurance>) table.getItem(curObjId);
+                final Insurance insurance = curObj.getBean();
                 final String clientName = insurance.getClient().getName();
                 final String policyNum = insurance.getRegNum();
                 try {

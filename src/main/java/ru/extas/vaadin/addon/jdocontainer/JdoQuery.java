@@ -7,6 +7,8 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.*;
 import org.apache.commons.lang3.text.WordUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jdo.PersistenceManager;
 import java.io.Serializable;
@@ -26,6 +28,9 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class JdoQuery<E> implements Query, Serializable {
     private static final String PRM_PREFIX = "qprm";
+
+    private final Logger logger = LoggerFactory.getLogger(JdoQuery.class);
+
     /**
      * Java serialization version UID.
      */
@@ -235,9 +240,15 @@ public class JdoQuery<E> implements Query, Serializable {
             String strCriteria = ssFilter.getFilterString();
             final boolean isIgnoreCase = ssFilter.isIgnoreCase();
             if (ssFilter.isOnlyMatchPrefix()) {
+                final String capCriteria = WordUtils.capitalizeFully(strCriteria);
+                logger.info("SimpleStringFilter criteria: {}", capCriteria);
                 strFilter.append(property);
-                strFilter.append(".startsWith(").append(getPrmName(parameters)).append(")");
-                parameters.put(getPrmName(parameters), WordUtils.capitalizeFully(strCriteria));
+                strFilter.append(" >= ").append(getPrmName(parameters));
+                parameters.put(getPrmName(parameters), capCriteria);
+                strFilter.append("&&");
+                strFilter.append(property);
+                strFilter.append(" < ").append(getPrmName(parameters));
+                parameters.put(getPrmName(parameters), capCriteria + "\ufffd");
                 return strFilter;
             } else {
                 strCriteria = "%" + strCriteria + "%";
