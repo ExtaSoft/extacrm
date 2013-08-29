@@ -3,6 +3,7 @@ package ru.extas.web.insurance;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
 import org.joda.time.LocalDate;
@@ -46,16 +47,16 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
      * .AbstractExtaObject)
      */
     @Override
-    protected FormLayout createEditFields(final FormTransfer obj) {
+    protected ComponentContainer createEditFields(final FormTransfer obj) {
         final FormLayout form = new FormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
-        fromContactField = new ContactSelect("От кого");
+        fromContactField = new ContactSelect("От кого", null);
         fromContactField.setRequired(true);
         form.addComponent(fromContactField);
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
-        toContactField = new ContactSelect("Кому");
+        toContactField = new ContactSelect("Кому", null);
         toContactField.setRequired(true);
         form.addComponent(toContactField);
 

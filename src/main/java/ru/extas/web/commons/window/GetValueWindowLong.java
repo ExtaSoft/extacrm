@@ -3,6 +3,7 @@ package ru.extas.web.commons.window;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.RangeValidator;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
 import ru.extas.web.commons.component.EditField;
@@ -49,7 +50,7 @@ public class GetValueWindowLong extends AbstractEditForm<GetValueWindowLong.Valu
     }
 
     @Override
-    protected FormLayout createEditFields(final ValueContainer obj) {
+    protected ComponentContainer createEditFields(final ValueContainer obj) {
         final FormLayout form = new FormLayout();
 
         valueField = new EditField("Значение", "Введите целое число.");

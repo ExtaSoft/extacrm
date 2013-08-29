@@ -3,8 +3,8 @@
  */
 package ru.extas.web.commons.component;
 
-import com.google.appengine.repackaged.org.joda.time.LocalDate;
 import com.vaadin.ui.PopupDateField;
+import org.joda.time.LocalDate;
 
 /**
  * Преднастроенный компонент ввода даты

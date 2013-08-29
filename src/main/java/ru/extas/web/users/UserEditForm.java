@@ -10,6 +10,7 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.Contact;
 import ru.extas.model.UserProfile;
 import ru.extas.model.UserRole;
 import ru.extas.server.UserManagementService;
@@ -94,12 +95,12 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     }
 
     @Override
-    protected FormLayout createEditFields(final UserProfile obj) {
+    protected ComponentContainer createEditFields(final UserProfile obj) {
         // Have some layout
         final FormLayout form = new FormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками
-        nameField = new ContactSelect("Имя");
+        nameField = new ContactSelect("Имя", Contact.Type.PERSON);
         nameField.setImmediate(true);
         nameField.setWidth(50, Unit.EX);
         nameField.setDescription("Введите имя (ФИО) пользователя");

@@ -10,7 +10,8 @@ import com.google.inject.servlet.SessionScoped;
 import com.vaadin.data.util.converter.StringToBooleanConverter;
 import com.vaadin.ui.UI;
 import ru.extas.web.commons.converters.*;
-import ru.extas.web.contacts.StringToContactSex;
+import ru.extas.web.contacts.StringToPersonPosition;
+import ru.extas.web.contacts.StringToPersonSex;
 import ru.extas.web.insurance.StringToA7FormConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.users.StringToUserRoleConverter;
@@ -48,7 +49,7 @@ public class WebUIModule extends AbstractModule {
         bind(StringToUserRoleConverter.class).in(ServletScopes.SESSION);
 
         // Конвертер половой принадлежности
-        bind(StringToContactSex.class).in(ServletScopes.SESSION);
+        bind(StringToPersonSex.class).in(ServletScopes.SESSION);
 
         // Конвертер полиса БСО
         bind(StringToPolicyConverter.class).in(ServletScopes.SESSION);
@@ -58,6 +59,9 @@ public class WebUIModule extends AbstractModule {
 
         // Конвертируем Квитанцию А-7 в строку (номер квитанции)
         bind(StringToA7FormConverter.class).in(ServletScopes.SESSION);
+
+        // Конвертер должностей
+        bind(StringToPersonPosition.class).in(ServletScopes.SESSION);
     }
 
     /**

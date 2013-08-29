@@ -5,11 +5,13 @@ import com.vaadin.data.util.converter.DefaultConverterFactory;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import ru.extas.model.A7Form;
-import ru.extas.model.Contact.Sex;
+import ru.extas.model.PersonInfo;
+import ru.extas.model.PersonInfo.Sex;
 import ru.extas.model.Policy;
 import ru.extas.model.UserRole;
 import ru.extas.web.commons.converters.*;
-import ru.extas.web.contacts.StringToContactSex;
+import ru.extas.web.contacts.StringToPersonPosition;
+import ru.extas.web.contacts.StringToPersonSex;
 import ru.extas.web.insurance.StringToA7FormConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.users.StringToUserRoleConverter;
@@ -51,7 +53,7 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 
         // Конвертер половой принадлежности
         if (presentationType == String.class && modelType == Sex.class)
-            return (Converter<PRESENTATION, MODEL>) lookup(StringToContactSex.class);
+            return (Converter<PRESENTATION, MODEL>) lookup(StringToPersonSex.class);
 
         // Простой конвертор флага
         if (presentationType == String.class && modelType == Boolean.class)
@@ -68,6 +70,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
         // Конвертируем Квитанцию А-7 в строку (номер квитанции)
         if (presentationType == String.class && modelType == A7Form.class)
             return (Converter<PRESENTATION, MODEL>) lookup(StringToA7FormConverter.class);
+
+        // Конвертер должностей
+        if (presentationType == String.class && modelType == PersonInfo.Position.class)
+            return (Converter<PRESENTATION, MODEL>) lookup(StringToPersonPosition.class);
 
         // Let default factory handle the rest
         return super.findConverter(presentationType, modelType);

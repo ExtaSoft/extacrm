@@ -5,11 +5,9 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.PopupDateField;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.*;
 import org.joda.time.LocalDate;
+import ru.extas.model.Contact;
 import ru.extas.model.Insurance;
 import ru.extas.model.Policy;
 import ru.extas.server.InsuranceCalculator;
@@ -74,7 +72,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
      * .AbstractExtaObject)
      */
     @Override
-    protected FormLayout createEditFields(final Insurance obj) {
+    protected ComponentContainer createEditFields(final Insurance obj) {
         final FormLayout form = new FormLayout();
 
         regNumField = new PolicySelect("Номер полиса",
@@ -121,7 +119,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         form.addComponent(dateField);
 
         // FIXME Ограничить выбор контакта только клиентами
-        clientNameField = new ContactSelect("Страхователь");
+        clientNameField = new ContactSelect("Страхователь", Contact.Type.PERSON);
         clientNameField.setRequired(true);
         form.addComponent(clientNameField);
 

@@ -29,7 +29,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         super(caption);
 
         final TEditObject bean = beanItem.getBean();
-        final FormLayout form = createEditFields(bean);
+        final ComponentContainer form = createEditFields(bean);
 
         initObject(bean);
 
@@ -56,7 +56,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
             @Override
             public void buttonClick(final ClickEvent event) {
 
-                if (binder.isValid()) {
+                if (binder.isModified() && binder.isValid()) {
                     try {
                         binder.commit();
                         checkBeforeSave(bean);
@@ -137,6 +137,6 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
     /**
      * @return
      */
-    protected abstract FormLayout createEditFields(TEditObject obj);
+    protected abstract ComponentContainer createEditFields(TEditObject obj);
 
 }

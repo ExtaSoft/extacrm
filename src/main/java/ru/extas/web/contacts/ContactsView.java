@@ -78,12 +78,20 @@ public class ContactsView extends ExtaAbstractView {
 
     List<TabInfo> getTabComponentsInfo() {
         final ArrayList<TabInfo> ret = newArrayList();
-        ret.add(new AbstractTabInfo("Физ. лица") {
+        ret.add(new AbstractTabInfo("Физические лица") {
             private static final long serialVersionUID = 1L;
 
             @Override
             public Component createComponent() {
-                return new ContactsGrid();
+                return new PersonsGrid();
+            }
+        });
+        ret.add(new AbstractTabInfo("Юридические лица") {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Component createComponent() {
+                return new CompaniesGrid();
             }
         });
         return ret;

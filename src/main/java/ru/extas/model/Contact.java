@@ -3,8 +3,9 @@
  */
 package ru.extas.model;
 
-import org.joda.time.LocalDate;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
+import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
@@ -17,47 +18,62 @@ import javax.jdo.annotations.Persistent;
 public class Contact extends AbstractExtaObject {
 
     private static final long serialVersionUID = -2543373135823969745L;
-
-    public enum Sex {
-        MALE, FEMALE
-    }
-
+    // Фактический адрес
+    @Persistent(defaultFetchGroup = "true")
+    @Embedded
+    private AddressInfo actualAddress = new AddressInfo();
+    // Информация о физ. лице
+    @Persistent(defaultFetchGroup = "true")
+    @Embedded
+    private PersonInfo personInfo = new PersonInfo();
+    // Информация о юр. лице
+    @Persistent(defaultFetchGroup = "true")
+    @Embedded
+    private CompanyInfo companyInfo = new CompanyInfo();
+    // Тип контакта (физ. лицо/юр. лицо)
+    @Persistent
+    private Type type = Type.PERSON;
     // Имя пользователя
     @Persistent
     private String name;
-
-    // Дата рождения
-    @Persistent
-    private LocalDate birthday;
-
-    // Пол
-    @Persistent
-    private Sex sex;
-
     // Телефон
     @Persistent
     private String cellPhone;
-
     // Эл. почта
     @Persistent
     private String email;
-
-    // Адрес:
-    // Регион
+    // Вышестоящая организация
     @Persistent
-    private String region;
+    @Unowned
+    private Contact affiliation;
 
-    // Город
-    @Persistent
-    private String city;
+    public Contact getAffiliation() {
+        return affiliation;
+    }
 
-    // Индекс
-    @Persistent
-    private String postIndex;
+    public void setAffiliation(final Contact affiliation) {
+        this.affiliation = affiliation;
+    }
 
-    // Адрес (улица, дом и т.д.)
-    @Persistent
-    private String streetBld;
+    public PersonInfo getPersonInfo() {
+        return personInfo;
+    }
+
+    public CompanyInfo getCompanyInfo() {
+        return companyInfo;
+    }
+
+    public AddressInfo getActualAddress() {
+        return actualAddress;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(final Type type) {
+        this.type = type;
+    }
 
     /**
      * @return the name
@@ -71,20 +87,6 @@ public class Contact extends AbstractExtaObject {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return the birthday
-     */
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    /**
-     * @param birthday the birthday to set
-     */
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
     }
 
     /**
@@ -115,74 +117,24 @@ public class Contact extends AbstractExtaObject {
         this.email = email;
     }
 
-    /**
-     * @return the region
-     */
-    public String getRegion() {
-        return region;
+    public void setActualAddress(final AddressInfo actualAddress) {
+        this.actualAddress = actualAddress;
+    }
+
+    public void setPersonInfo(final PersonInfo personInfo) {
+        this.personInfo = personInfo;
+    }
+
+    public void setCompanyInfo(final CompanyInfo companyInfo) {
+        this.companyInfo = companyInfo;
     }
 
     /**
-     * @param region the region to set
+     * Тип контакта (физ. лицо/юр. лицо)
      */
-    public void setRegion(String region) {
-        this.region = region;
+    public enum Type {
+        PERSON, COMPANY
     }
 
-    /**
-     * @return the city
-     */
-    public String getCity() {
-        return city;
-    }
-
-    /**
-     * @param city the city to set
-     */
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    /**
-     * @return the postIndex
-     */
-    public String getPostIndex() {
-        return postIndex;
-    }
-
-    /**
-     * @param postIndex the postIndex to set
-     */
-    public void setPostIndex(String postIndex) {
-        this.postIndex = postIndex;
-    }
-
-    /**
-     * @return the streetBld
-     */
-    public String getStreetBld() {
-        return streetBld;
-    }
-
-    /**
-     * @param streetBld the streetBld to set
-     */
-    public void setStreetBld(String streetBld) {
-        this.streetBld = streetBld;
-    }
-
-    /**
-     * @return the sex
-     */
-    public Sex getSex() {
-        return sex;
-    }
-
-    /**
-     * @param sex the sex to set
-     */
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
 
 }

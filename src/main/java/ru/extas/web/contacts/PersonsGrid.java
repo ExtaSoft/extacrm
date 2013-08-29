@@ -6,13 +6,18 @@ package ru.extas.web.contacts;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.Compare;
+import com.vaadin.data.util.filter.IsNull;
+import com.vaadin.data.util.filter.Or;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
+import org.joda.time.LocalDate;
 import ru.extas.model.Contact;
+import ru.extas.model.PersonInfo;
 import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -22,15 +27,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author Valery Orlov
  */
-public class ContactsGrid extends CustomComponent {
+public class PersonsGrid extends CustomComponent {
 
     private static final long serialVersionUID = 2299363623807745654L;
     private final Table table;
 
-    public ContactsGrid() {
+    public PersonsGrid() {
         super();
         // Запрос данных
         final LazyJdoContainer<Contact> container = new LazyJdoContainer<>(Contact.class, 50, null);
+        container.addDefaultFilter(new Or(new Compare.Equal("type", Contact.Type.PERSON), new IsNull("type")));
+        container.addContainerProperty("actualAddress.region", String.class, null, true, true);
+        container.addContainerProperty("personInfo.birthday", LocalDate.class, null, true, true);
+        container.addContainerProperty("personInfo.sex", PersonInfo.Sex.class, null, true, true);
 
         final CssLayout panel = new CssLayout();
         panel.addStyleName("layout-panel");
@@ -53,8 +62,10 @@ public class ContactsGrid extends CustomComponent {
             public void buttonClick(final ClickEvent event) {
                 final Object newObjId = table.addItem();
                 final BeanItem<Contact> newObj = (BeanItem<Contact>) table.getItem(newObjId);
+                newObj.expandProperty("actualAddress");
+                newObj.expandProperty("personInfo");
 
-                final ContactEditForm editWin = new ContactEditForm("Ввод нового контакта в систему", newObj);
+                final PersonEditForm editWin = new PersonEditForm("Ввод нового контакта в систему", newObj);
                 editWin.addCloseListener(new CloseListener() {
 
                     private static final long serialVersionUID = 1L;
@@ -63,7 +74,7 @@ public class ContactsGrid extends CustomComponent {
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
                             table.select(newObjId);
-                            Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
+                            Notification.show("Контакт сохранен", Type.TRAY_NOTIFICATION);
                         } else {
                             table.removeItem(newObjId);
                         }
@@ -87,8 +98,10 @@ public class ContactsGrid extends CustomComponent {
             public void buttonClick(final ClickEvent event) {
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
                 final BeanItem<Contact> curObj = (BeanItem<Contact>) table.getItem(curObjId);
+                curObj.expandProperty("actualAddress");
+                curObj.expandProperty("personInfo");
 
-                final ContactEditForm editWin = new ContactEditForm("Редактирование контактных данных", curObj);
+                final PersonEditForm editWin = new PersonEditForm("Редактирование контактных данных", curObj);
                 editWin.addCloseListener(new CloseListener() {
 
                     private static final long serialVersionUID = 1L;
@@ -127,7 +140,7 @@ public class ContactsGrid extends CustomComponent {
         });
         // table.select(container.firstItemId());
 
-        final ContactDataDecl ds = new ContactDataDecl();
+        final PersonDataDecl ds = new PersonDataDecl();
         ds.initTableColumns(table);
 
         panel.addComponent(table);

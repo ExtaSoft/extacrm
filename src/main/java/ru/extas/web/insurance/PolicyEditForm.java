@@ -5,6 +5,7 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
@@ -83,7 +84,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
      * .AbstractExtaObject)
      */
     @Override
-    protected FormLayout createEditFields(final Policy obj) {
+    protected ComponentContainer createEditFields(final Policy obj) {
         final FormLayout form = new FormLayout();
 
         regNumField = new EditField("Номер полиса", "Введите номер полиса.");

@@ -11,8 +11,8 @@ import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import org.apache.poi.xwpf.converter.core.XWPFConverterException;
 import org.joda.time.LocalDate;
 import ru.extas.model.Contact;
-import ru.extas.model.Contact.Sex;
 import ru.extas.model.Insurance;
+import ru.extas.model.PersonInfo;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -73,9 +73,9 @@ public class GenerateReport {
         Insurance ins = new Insurance();
         Contact client = new Contact();
         client.setName("Снегирев Владимир Иванович");
-        client.setBirthday(new LocalDate(1979, 5, 25));
+        client.getPersonInfo().setBirthday(new LocalDate(1979, 5, 25));
         client.setCellPhone("+7 925 300 20 40");
-        client.setSex(Sex.MALE);
+        client.getPersonInfo().setSex(PersonInfo.Sex.MALE);
         ins.setRegNum("СП-2013/00046");
         ins.setDate(new LocalDate(2013, 5, 28));
         ins.setMotorType("Снегоболотоход");

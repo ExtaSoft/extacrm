@@ -54,7 +54,7 @@ class CsvUtil {
                     final Property<?> prop = item.getItemProperty(propId);
                     values.add(formatPropertyValue(prop, table.getLocale(), table.getConverter(propId)));
                 }
-                writer.writeNext(values.toArray(new String[0]));
+                writer.writeNext(values.toArray(new String[values.size()]));
                 values.clear();
             }
         }

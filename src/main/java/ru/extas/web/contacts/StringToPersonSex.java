@@ -6,23 +6,24 @@ package ru.extas.web.contacts;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
-import ru.extas.model.Contact.Sex;
+import ru.extas.model.PersonInfo;
+import ru.extas.model.PersonInfo.Sex;
 
 import java.util.Locale;
 
 /**
  * @author Valery Orlov
  */
-public class StringToContactSex implements Converter<String, Sex> {
+public class StringToPersonSex implements Converter<String, Sex> {
 
     private static final long serialVersionUID = 7270069509495749676L;
 
     private final BiMap<Sex, String> map;
 
-    public StringToContactSex() {
+    public StringToPersonSex() {
         map = HashBiMap.create();
-        map.put(Sex.MALE, "Мужской");
-        map.put(Sex.FEMALE, "Женский");
+        map.put(PersonInfo.Sex.MALE, "Мужской");
+        map.put(PersonInfo.Sex.FEMALE, "Женский");
     }
 
     /*

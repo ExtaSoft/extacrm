@@ -3,9 +3,9 @@
  */
 package ru.extas.web.commons.component;
 
-import com.google.appengine.repackaged.org.joda.time.LocalDate;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.PopupDateField;
+import org.joda.time.DateTime;
 
 /**
  * Преднастроенный компонент ввода даты
@@ -32,7 +32,7 @@ public class DateTimeField extends PopupDateField {
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setDateFormat("dd.MM.yyyy HH:mm:ss");
         setResolution(Resolution.SECOND);
-        setConverter(LocalDate.class);
+        setConverter(DateTime.class);
         setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ ЧЧ:ММ:СС");
     }
 

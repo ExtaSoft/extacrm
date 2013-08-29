@@ -57,7 +57,7 @@ public class QueryUtils {
     /**
      * Преобразует выражение SQL LIKE в регулярное выражение
      *
-     * @param value выражение SQL LIKE
+     * @param like выражение SQL LIKE
      * @return регулярное выражение
      */
     public static String likeToRegex(final String like, final boolean isIgnoreCase) {

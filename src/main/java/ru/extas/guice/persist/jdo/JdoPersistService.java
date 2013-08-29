@@ -60,7 +60,7 @@ class JdoPersistService implements Provider<PersistenceManager>, UnitOfWork, Per
         PersistenceManager pm = persistenceManager.get();
 
         // Let's not penalize users for calling end() multiple times.
-        if (null == pm && uowCount.get() == null) {
+        if (null == pm || uowCount.get() == null) {
             return;
         }
 

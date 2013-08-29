@@ -30,4 +30,12 @@ public class EditField extends TextField {
         setNullRepresentation("");
     }
 
+    /**
+     * Constructs an empty <code>TextField</code> with given caption.
+     *
+     * @param caption the caption <code>String</code> for the editor.
+     */
+    public EditField(final String caption) {
+        this(caption, caption);
+    }
 }

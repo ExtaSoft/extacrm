@@ -6,6 +6,7 @@ package ru.extas.web.users;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PasswordField;
 import org.slf4j.Logger;
@@ -87,7 +88,7 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
      * .AbstractExtaObject)
      */
     @Override
-    protected FormLayout createEditFields(final UserProfile obj) {
+    protected ComponentContainer createEditFields(final UserProfile obj) {
         final FormLayout form = new FormLayout();
 
         passField = new PasswordField("Пароль");

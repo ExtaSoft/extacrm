@@ -64,7 +64,7 @@ public class ContactServiceJdo implements ContactService {
     public void persistContact(Contact contact) {
         unitOfWork.get().begin();
         try {
-            logger.info("Prsisting contact with name {}...", contact.getName());
+            logger.debug("Persisting contact with name {}...", contact.getName());
             pm.get().makePersistent(contact);
         } finally {
             unitOfWork.get().end();
