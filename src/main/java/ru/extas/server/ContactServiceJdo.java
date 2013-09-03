@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * JDO имплементация службы управления контактами
  *
@@ -62,10 +64,32 @@ public class ContactServiceJdo implements ContactService {
      */
     @Override
     public void persistContact(Contact contact) {
+        checkNotNull(contact, "Can't persist NULL-value contact!!!");
+        checkNotNull(contact.getName(), "Can't persist contact with null name!!!");
         unitOfWork.get().begin();
         try {
             logger.debug("Persisting contact with name {}...", contact.getName());
             pm.get().makePersistent(contact);
+        } finally {
+            unitOfWork.get().end();
+        }
+    }
+
+    @Override
+    public void updateMissingType() {
+        logger.debug("Requesting contact list...");
+        unitOfWork.get().begin();
+        try {
+            final PersistenceManager persistenceManager = pm.get();
+            Extent<Contact> extent = persistenceManager.getExtent(Contact.class, false);
+            for (Contact contact : extent) {
+                if (contact.getType() == null) {
+                    contact.setType(Contact.Type.PERSON);
+                    persistenceManager.makePersistent(contact);
+                }
+            }
+            extent.closeAll();
+
         } finally {
             unitOfWork.get().end();
         }

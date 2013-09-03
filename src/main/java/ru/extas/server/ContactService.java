@@ -27,4 +27,6 @@ public interface ContactService {
      * @param contact - сохраняемый контакт
      */
     void persistContact(Contact contact);
+
+    void updateMissingType();
 }

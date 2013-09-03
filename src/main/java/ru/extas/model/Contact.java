@@ -21,15 +21,15 @@ public class Contact extends AbstractExtaObject {
     // Фактический адрес
     @Persistent(defaultFetchGroup = "true")
     @Embedded
-    private AddressInfo actualAddress = new AddressInfo();
+    private AddressInfo actualAddress;// = new AddressInfo();
     // Информация о физ. лице
     @Persistent(defaultFetchGroup = "true")
     @Embedded
-    private PersonInfo personInfo = new PersonInfo();
+    private PersonInfo personInfo;// = new PersonInfo();
     // Информация о юр. лице
     @Persistent(defaultFetchGroup = "true")
     @Embedded
-    private CompanyInfo companyInfo = new CompanyInfo();
+    private CompanyInfo companyInfo;// = new CompanyInfo();
     // Тип контакта (физ. лицо/юр. лицо)
     @Persistent
     private Type type = Type.PERSON;
@@ -43,7 +43,7 @@ public class Contact extends AbstractExtaObject {
     @Persistent
     private String email;
     // Вышестоящая организация
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Unowned
     private Contact affiliation;
 

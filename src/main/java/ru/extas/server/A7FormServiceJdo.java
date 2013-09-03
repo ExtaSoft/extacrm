@@ -124,8 +124,10 @@ public class A7FormServiceJdo implements A7FormService {
             q.setFilter("regNum == regNumPrm");
             q.declareParameters("String regNumPrm");
             final List<A7Form> forms = (List<A7Form>) q.execute(formNum);
-            if (!forms.isEmpty()) return forms.get(0);
-            else return null;
+            if (!forms.isEmpty())
+                return forms.get(0);
+            else
+                return null;
         } finally {
             q.closeAll();
             unitOfWork.get().end();

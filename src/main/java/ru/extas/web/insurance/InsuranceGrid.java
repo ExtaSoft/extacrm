@@ -58,7 +58,7 @@ public class InsuranceGrid extends CustomComponent {
         // Запрос данных
         final LazyJdoContainer<Insurance> container = new LazyJdoContainer<>(Insurance.class, 50, null);
         container.addContainerProperty("client.name", String.class, null, true, false);
-        container.addContainerProperty("client.birthday", LocalDate.class, null, true, false);
+        container.addContainerProperty("client.personInfo.birthday", LocalDate.class, null, true, false);
         container.addContainerProperty("client.cellPhone", String.class, null, true, false);
         final Subject subject = SecurityUtils.getSubject();
         // пользователю доступны только собственные записи
@@ -70,7 +70,7 @@ public class InsuranceGrid extends CustomComponent {
         commandBar.addStyleName("configure");
         commandBar.setSpacing(true);
 
-        final Button newPolyceBtn = new Button("Новый", new ClickListener() {
+        final Button newPolicyBtn = new Button("Новый", new ClickListener() {
 
             private static final long serialVersionUID = 1L;
 
@@ -99,11 +99,11 @@ public class InsuranceGrid extends CustomComponent {
                 editWin.showModal();
             }
         });
-        newPolyceBtn.addStyleName("icon-doc-new");
-        newPolyceBtn.setDescription("Ввод нового полиса страхования");
-        commandBar.addComponent(newPolyceBtn);
+        newPolicyBtn.addStyleName("icon-doc-new");
+        newPolicyBtn.setDescription("Ввод нового полиса страхования");
+        commandBar.addComponent(newPolicyBtn);
 
-        final Button editPolyceBtn = new Button("Изменить", new ClickListener() {
+        final Button editPolicyBtn = new Button("Изменить", new ClickListener() {
 
             private static final long serialVersionUID = 1L;
 
@@ -129,10 +129,10 @@ public class InsuranceGrid extends CustomComponent {
                 editWin.showModal();
             }
         });
-        editPolyceBtn.addStyleName("icon-edit-3");
-        editPolyceBtn.setDescription("Редактировать выделенный в списке полис страхования");
-        editPolyceBtn.setEnabled(false);
-        commandBar.addComponent(editPolyceBtn);
+        editPolicyBtn.addStyleName("icon-edit-3");
+        editPolicyBtn.setDescription("Редактировать выделенный в списке полис страхования");
+        editPolicyBtn.setEnabled(false);
+        commandBar.addComponent(editPolicyBtn);
 
         // PopupButton popupButton = new PopupButton("Action");
         // HorizontalLayout popupLayout = new HorizontalLayout();
@@ -159,12 +159,12 @@ public class InsuranceGrid extends CustomComponent {
         commandBar.addComponent(printPolyceMatBtn);
 
         // TODO Заметить на раскрывающуюся кнопку
-        final Button printPolyceBtn = new Button("Печать без подложки");
-        printPolyceBtn.addStyleName("icon-print-2");
-        printPolyceBtn.setDescription("Создать печатное представление полиса страхования без подложки");
-        printPolyceBtn.setEnabled(false);
-        createPolicyDownloader(false).extend(printPolyceBtn);
-        commandBar.addComponent(printPolyceBtn);
+        final Button printPolicyBan = new Button("Печать без подложки");
+        printPolicyBan.addStyleName("icon-print-2");
+        printPolicyBan.setDescription("Создать печатное представление полиса страхования без подложки");
+        printPolicyBan.setEnabled(false);
+        createPolicyDownloader(false).extend(printPolicyBan);
+        commandBar.addComponent(printPolicyBan);
 
         final Button exportBtn = new Button("Экспорт");
         exportBtn.addStyleName("icon-table");
@@ -186,8 +186,8 @@ public class InsuranceGrid extends CustomComponent {
             @Override
             public void valueChange(final ValueChangeEvent event) {
                 final boolean enableBtb = event.getProperty().getValue() != null;
-                editPolyceBtn.setEnabled(enableBtb);
-                printPolyceBtn.setEnabled(enableBtb);
+                editPolicyBtn.setEnabled(enableBtb);
+                printPolicyBan.setEnabled(enableBtb);
                 printPolyceMatBtn.setEnabled(enableBtb);
             }
         });
@@ -221,7 +221,7 @@ public class InsuranceGrid extends CustomComponent {
     // Notification.show("Полис напечатан", Type.TRAY_NOTIFICATION);
     //
     // } catch (Exception e) {
-    // logger.error("Print polycy error", e);
+    // logger.error("Print policy error", e);
     // Notification.show("Ошибка печати полиса", e.getMessage(),
     // Type.ERROR_MESSAGE);
     // }
@@ -236,15 +236,13 @@ public class InsuranceGrid extends CustomComponent {
             @Override
             public InputStream getStream() {
                 // Взять текущий полис из грида
-                // Взять текущий полис из грида
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
                 final BeanItem<Insurance> curObj = (BeanItem<Insurance>) table.getItem(curObjId);
                 final Insurance insurance = curObj.getBean();
                 checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
                 try {
                     // 1) Load Docx file by filling Velocity template engine and
-                    // cache
-                    // it to the registry
+                    // cache it to the registry
                     final InputStream in = getClass().getResourceAsStream(
                             withMat ? "/reports/insurance/PropertyInsuranceTemplateWhitMat.docx"
                                     : "/reports/insurance/PropertyInsuranceTemplate.docx");
@@ -277,7 +275,7 @@ public class InsuranceGrid extends CustomComponent {
 
                     return new ByteArrayInputStream(outDoc.toByteArray());
                 } catch (IOException | XDocReportException e) {
-                    logger.error("Print polycy error", e);
+                    logger.error("Print policy error", e);
                     throw Throwables.propagate(e);
                 }
             }

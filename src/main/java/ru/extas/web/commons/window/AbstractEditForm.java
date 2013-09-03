@@ -29,9 +29,9 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         super(caption);
 
         final TEditObject bean = beanItem.getBean();
-        final ComponentContainer form = createEditFields(bean);
-
         initObject(bean);
+
+        final ComponentContainer form = createEditFields(bean);
 
         // Now create a binder
         final FieldGroup binder = new FieldGroup(beanItem);

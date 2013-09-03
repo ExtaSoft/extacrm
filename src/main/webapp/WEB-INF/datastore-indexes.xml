@@ -1,5 +1,10 @@
 <datastore-indexes autoGenerate="true">
 
+    <datastore-index kind="Contact" ancestor="false" source="auto">
+        <property name="type" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
     <!-- Used 1 time in query history -->
     <datastore-index kind="Policy" ancestor="false" source="auto">
         <property name="issueDate" direction="asc"/>

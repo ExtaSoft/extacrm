@@ -10,8 +10,8 @@ import java.io.Serializable;
  *
  * @author Valery Orlov
  */
-@PersistenceCapable
 @EmbeddedOnly
+@PersistenceCapable(detachable = "true")
 public class AddressInfo implements Serializable {
 
     // Регион

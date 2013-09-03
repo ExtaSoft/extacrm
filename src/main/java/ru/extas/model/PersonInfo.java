@@ -12,8 +12,8 @@ import java.io.Serializable;
  *
  * @author Valery Orlov
  */
-@PersistenceCapable
 @EmbeddedOnly
+@PersistenceCapable(detachable = "true")
 public class PersonInfo implements Serializable {
 
     // Дата рождения

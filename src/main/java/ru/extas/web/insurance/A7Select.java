@@ -7,7 +7,6 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.A7Form;
-import ru.extas.model.Policy;
 import ru.extas.server.A7FormService;
 
 import java.util.Collection;
@@ -22,8 +21,8 @@ public class A7Select extends ComboBox {
     private static final long serialVersionUID = 6004206917183679455L;
 
     @Override
-    public Class<Policy> getType() {
-        return Policy.class;
+    public Class<A7Form> getType() {
+        return A7Form.class;
     }
 
     /**

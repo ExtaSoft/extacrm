@@ -35,7 +35,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     // Компоненты редактирования
     @PropertyId("regNum")
     private PolicySelect regNumField;
-    @PropertyId("a7FormNum")
+    @PropertyId("a7Num")
     private A7Select a7FormNumField;
     @PropertyId("date")
     private PopupDateField dateField;
@@ -246,8 +246,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
      */
     @Override
     protected void saveObject(final Insurance obj) {
-        final InsuranceRepository contactService = lookup(InsuranceRepository.class);
-        contactService.persist(obj);
+        final InsuranceRepository insuranceRepository = lookup(InsuranceRepository.class);
+        insuranceRepository.persist(obj);
     }
 
     /*

@@ -7,8 +7,6 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
-import com.vaadin.data.util.filter.IsNull;
-import com.vaadin.data.util.filter.Or;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -36,7 +34,7 @@ public class PersonsGrid extends CustomComponent {
         super();
         // Запрос данных
         final LazyJdoContainer<Contact> container = new LazyJdoContainer<>(Contact.class, 50, null);
-        container.addDefaultFilter(new Or(new Compare.Equal("type", Contact.Type.PERSON), new IsNull("type")));
+        container.addDefaultFilter(new Compare.Equal("type", Contact.Type.PERSON));
         container.addContainerProperty("actualAddress.region", String.class, null, true, true);
         container.addContainerProperty("personInfo.birthday", LocalDate.class, null, true, true);
         container.addContainerProperty("personInfo.sex", PersonInfo.Sex.class, null, true, true);

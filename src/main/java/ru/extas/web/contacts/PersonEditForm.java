@@ -12,6 +12,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.AddressInfo;
 import ru.extas.model.Contact;
 import ru.extas.model.PersonInfo;
 import ru.extas.model.PersonInfo.Sex;
@@ -89,6 +90,10 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
      */
     @Override
     protected void initObject(final Contact obj) {
+        if (obj.getActualAddress() == null)
+            obj.setActualAddress(new AddressInfo());
+        if (obj.getPersonInfo() == null)
+            obj.setPersonInfo(new PersonInfo());
         if (obj.getKey() == null) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
@@ -163,6 +168,8 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
 
         passIssuedByField = new TextArea("Кем выдан");
         passIssuedByField.setDescription("Наименование органа выдавшего документ");
+        passIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
+        passIssuedByField.setNullRepresentation("");
         passIssuedByField.setRows(3);
         passIssuedByField.setColumns(30);
         passForm.addComponent(passIssuedByField);

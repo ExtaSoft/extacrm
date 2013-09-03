@@ -3,13 +3,13 @@
  */
 package ru.extas.web.config;
 
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.server.ContactService;
 import ru.extas.web.commons.ExtaAbstractView;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Реализует экран настроек CRM
@@ -29,15 +29,26 @@ public class ConfigView extends ExtaAbstractView {
      */
     @Override
     protected Component getContent() {
-        logger.info("Creating view content...");
+        logger.debug("Creating view content...");
+        final Button updateBtn = new Button("Обновить базу", new Button.ClickListener() {
+            @Override
+            public void buttonClick(final Button.ClickEvent event) {
+                updateDataBase();
+            }
+        });
         final Component title = new Label("Скоро будет реализовано...");
         title.setSizeUndefined();
         title.addStyleName("h1");
         title.addStyleName("icon-wrench-1");
-        HorizontalLayout l = new HorizontalLayout(title);
+        HorizontalLayout l = new HorizontalLayout(title, updateBtn);
         l.setSizeFull();
         l.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         return l;
+    }
+
+    private void updateDataBase() {
+        ContactService service = lookup(ContactService.class);
+        service.updateMissingType();
     }
 
     /*

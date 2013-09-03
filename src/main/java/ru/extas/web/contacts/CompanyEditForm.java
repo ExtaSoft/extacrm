@@ -12,6 +12,8 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.AddressInfo;
+import ru.extas.model.CompanyInfo;
 import ru.extas.model.Contact;
 import ru.extas.server.ContactService;
 import ru.extas.server.SupplementService;
@@ -76,6 +78,10 @@ public class CompanyEditForm extends AbstractEditForm<Contact> {
             // TODO: Инициализировать клиента в соответствии с локацией текущего
             obj.setType(Contact.Type.COMPANY);
         }
+        if (obj.getActualAddress() == null)
+            obj.setActualAddress(new AddressInfo());
+        if (obj.getCompanyInfo() == null)
+            obj.setCompanyInfo(new CompanyInfo());
     }
 
     /*

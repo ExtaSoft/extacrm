@@ -25,10 +25,23 @@ public class ContactSelect extends ComboBox {
     private static final long serialVersionUID = -8005905898383483037L;
 
     /**
+     * Returns the type of the property. <code>getValue</code> and
+     * <code>setValue</code> methods must be compatible with this type: one can
+     * safely cast <code>getValue</code> to given type and pass any variable
+     * assignable to this type as a parameter to <code>setValue</code>.
+     *
+     * @return the Type of the property.
+     */
+    @Override
+    public Class<?> getType() {
+        return Contact.class;
+    }
+
+    /**
      * @param caption
      */
     public ContactSelect(final String caption, final Contact.Type contactType) {
-        this(caption, "Выберете существующего клиента или введите нового", contactType);
+        this(caption, "Выберете существующий контакт или введите новый", contactType);
     }
 
     /**
@@ -40,15 +53,16 @@ public class ContactSelect extends ComboBox {
 
         // Преконфигурация
         setDescription(description);
-        setInputPrompt("Существующий или новый клиент");
+        setInputPrompt("Существующий или новый контакт");
         setWidth(25, Unit.EM);
         setImmediate(true);
 
         // Инициализация контейнера
         final LazyJdoContainer<Contact> container = new LazyJdoContainer<>(Contact.class, 20, "this");
-        if (contactType != null)
-            container.addDefaultFilter(new Compare.Equal("type", Contact.Type.COMPANY));
-        // setConverter(new SingleSelectConverter<Contact>(this, container));
+        if (contactType != null) {
+            final Filter filter = new Compare.Equal("type", contactType);
+            container.addDefaultFilter(filter);
+        }
 
         // Устанавливаем контент выбора
         setFilteringMode(FilteringMode.STARTSWITH);
