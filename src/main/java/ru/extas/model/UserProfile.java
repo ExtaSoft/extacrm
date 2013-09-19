@@ -1,11 +1,7 @@
 package ru.extas.model;
 
-import com.google.appengine.datanucleus.annotations.Unowned;
-
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.Extensions;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -13,57 +9,51 @@ import java.util.Set;
  *
  * @author Valery Orlov
  */
-@PersistenceCapable(detachable = "true")
+@Entity
+@Table(name = "USER_PROFILE")
 public class UserProfile extends AbstractExtaObject {
 
     private static final long serialVersionUID = 6937423190833815234L;
 
     // Login/email
-    @Persistent
     private String login;
 
     // Ссылка на контакт
-    @Unowned
-    @Persistent(defaultFetchGroup = "true")
-    private Contact contact;
+    @OneToOne
+    private Person contact;
 
     // Password (hash)
-    @Persistent
     private String password;
 
     // Ключ шифрования пароля
-    @Persistent
     private String passwordSalt;
 
     // Требование сменить пароль при следующем входе
-    @Persistent
     private boolean changePassword;
 
     // Основная роль пользователя
-    @Persistent
-    @Extensions({@Extension(vendorName = "datanucleus", key = "enum-getter-by-value", value = "getRoleByName"),
-            @Extension(vendorName = "datanucleus", key = "enum-value-getter", value = "getName")})
+    @Convert(converter = UserRoleConverter.class)
     private UserRole role;
 
-    // Группы в которых состоит пользователь (ID)
-    @Persistent
-    private Set<String> groupList;
+    // Группы в которых состоит пользователь
+    @ManyToMany
+    @JoinTable(name = "USER_GROUP_LINK")
+    private Set<UserGroup> groupList = new HashSet<>();
 
     // Пользователь заблокирован
-    @Persistent
     private boolean blocked;
 
     /**
      * @return the groupList
      */
-    public Set<String> getGroupList() {
+    public Set<UserGroup> getGroupList() {
         return groupList;
     }
 
     /**
      * @param groupList the groupList to set
      */
-    public void setGroupList(Set<String> groupList) {
+    public void setGroupList(Set<UserGroup> groupList) {
         this.groupList = groupList;
     }
 
@@ -109,14 +99,14 @@ public class UserProfile extends AbstractExtaObject {
     /**
      * @return the contact
      */
-    public Contact getContact() {
+    public Person getContact() {
         return contact;
     }
 
     /**
      * @param contact the contact to set
      */
-    public void setContact(Contact contact) {
+    public void setContact(Person contact) {
         this.contact = contact;
     }
 

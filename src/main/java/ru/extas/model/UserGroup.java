@@ -1,15 +1,18 @@
 package ru.extas.model;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import java.util.List;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.Set;
 
 /**
  * Группа пользователей
  *
  * @author Valery Orlov
  */
-@PersistenceCapable(detachable = "true")
+@Entity
+@Table(name = "USER_GROUP")
 public class UserGroup extends AbstractExtaObject {
 
     private static final long serialVersionUID = 4149728748291041330L;
@@ -17,12 +20,12 @@ public class UserGroup extends AbstractExtaObject {
     /**
      * Имя группы
      */
-    @Persistent
     private String name;
 
     // Список разрешений группы
-    @Persistent
-    private List<String> permissionList;
+    @ElementCollection
+    @CollectionTable(name = "USER_GROUP_PERMISSION")
+    private Set<String> permissionList;
 
     /**
      * @return the name
@@ -41,14 +44,14 @@ public class UserGroup extends AbstractExtaObject {
     /**
      * @return the permissionList
      */
-    public List<String> getPermissionList() {
+    public Set<String> getPermissionList() {
         return permissionList;
     }
 
     /**
      * @param permissionList the permissionList to set
      */
-    public void setPermissionList(List<String> permissionList) {
+    public void setPermissionList(Set<String> permissionList) {
         this.permissionList = permissionList;
     }
 

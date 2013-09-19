@@ -6,24 +6,24 @@ package ru.extas.web.contacts;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
-import ru.extas.model.PersonInfo;
+import ru.extas.model.Person;
 
 import java.util.Locale;
 
 /**
  * @author Valery Orlov
  */
-public class StringToPersonPosition implements Converter<String, PersonInfo.Position> {
+public class StringToPersonPosition implements Converter<String, Person.Position> {
 
     private static final long serialVersionUID = 7270069509495749676L;
 
-    private final BiMap<PersonInfo.Position, String> map;
+    private final BiMap<Person.Position, String> map;
 
     public StringToPersonPosition() {
         map = HashBiMap.create();
-        map.put(PersonInfo.Position.EMPLOYEE, "Сотрудник");
-        map.put(PersonInfo.Position.DIRECTOR, "Генеральный директор");
-        map.put(PersonInfo.Position.ACCOUNTANT, "Главный бухгалтер");
+        map.put(Person.Position.EMPLOYEE, "Сотрудник");
+        map.put(Person.Position.DIRECTOR, "Генеральный директор");
+        map.put(Person.Position.ACCOUNTANT, "Главный бухгалтер");
     }
 
     /*
@@ -32,8 +32,8 @@ public class StringToPersonPosition implements Converter<String, PersonInfo.Posi
      * @see com.vaadin.data.util.converter.Converter#getModelType()
      */
     @Override
-    public Class<PersonInfo.Position> getModelType() {
-        return PersonInfo.Position.class;
+    public Class<Person.Position> getModelType() {
+        return Person.Position.class;
     }
 
     /*
@@ -54,7 +54,7 @@ public class StringToPersonPosition implements Converter<String, PersonInfo.Posi
      * java.lang.Class, java.util.Locale)
      */
     @Override
-    public PersonInfo.Position convertToModel(final String value, final Class<? extends PersonInfo.Position> targetType, final Locale locale)
+    public Person.Position convertToModel(final String value, final Class<? extends Person.Position> targetType, final Locale locale)
             throws ConversionException {
         if (value == null || value.isEmpty())
             return null;
@@ -69,7 +69,7 @@ public class StringToPersonPosition implements Converter<String, PersonInfo.Posi
      * .Object, java.lang.Class, java.util.Locale)
      */
     @Override
-    public String convertToPresentation(final PersonInfo.Position value, final Class<? extends String> targetType, final Locale locale)
+    public String convertToPresentation(final Person.Position value, final Class<? extends String> targetType, final Locale locale)
             throws ConversionException {
         if (value == null)
             return null;
@@ -83,7 +83,7 @@ public class StringToPersonPosition implements Converter<String, PersonInfo.Posi
      * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
      * java.util.Locale)
      */
-    public PersonInfo.Position convertToModel(final String value, final Locale locale)
+    public Person.Position convertToModel(final String value, final Locale locale)
             throws ConversionException {
         return convertToModel(value, null, locale);
     }
@@ -95,7 +95,7 @@ public class StringToPersonPosition implements Converter<String, PersonInfo.Posi
      * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
      * .Object, java.util.Locale)
      */
-    public String convertToPresentation(final PersonInfo.Position value, final Locale locale)
+    public String convertToPresentation(final Person.Position value, final Locale locale)
             throws ConversionException {
         return convertToPresentation(value, null, locale);
     }

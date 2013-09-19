@@ -15,24 +15,6 @@ import java.util.List;
 public interface PolicyRegistry {
 
     /**
-     * Возвращает список всех зарегестрированных полисов
-     *
-     * @param startIndex      начальный ндекс выборки
-     * @param count           размер выборки
-     * @param sortPropertyIds сортируемые свойства
-     * @param sortStates      направление сортировки
-     * @return
-     */
-    List<Policy> loadAll(int startIndex, int count, Object[] sortPropertyIds, boolean[] sortStates);
-
-    /**
-     * Запрашивает количество полисов в базе
-     *
-     * @return количество полисов в базе
-     */
-    int queryPoliciesCount();
-
-    /**
      * Возвращает список всех доступных полисов
      *
      * @return список полисов

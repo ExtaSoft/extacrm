@@ -4,6 +4,8 @@
 package ru.extas.web.insurance;
 
 import com.google.common.base.Throwables;
+import com.vaadin.addon.jpacontainer.EntityItem;
+import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
@@ -21,13 +23,12 @@ import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.Insurance;
 import ru.extas.model.UserRole;
-import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
 import ru.extas.web.commons.ExportTableDownloader;
+import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.OnDemandFileDownloader;
 import ru.extas.web.commons.OnDemandFileDownloader.OnDemandStreamResource;
@@ -44,9 +45,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class InsuranceGrid extends CustomComponent {
 
     private static final long serialVersionUID = -2317741378090152128L;
-
     private final Logger logger = LoggerFactory.getLogger(InsuranceGrid.class);
-
     private final Table table = new Table();
 
     public InsuranceGrid() {
@@ -56,10 +55,10 @@ public class InsuranceGrid extends CustomComponent {
         panel.setSizeFull();
 
         // Запрос данных
-        final LazyJdoContainer<Insurance> container = new LazyJdoContainer<>(Insurance.class, 50, null);
-        container.addContainerProperty("client.name", String.class, null, true, false);
-        container.addContainerProperty("client.personInfo.birthday", LocalDate.class, null, true, false);
-        container.addContainerProperty("client.cellPhone", String.class, null, true, false);
+        final JPAContainer<Insurance> container = new ExtaDataContainer<>(Insurance.class);
+        container.addNestedContainerProperty("client.name");
+        container.addNestedContainerProperty("client.birthday");
+        container.addNestedContainerProperty("client.cellPhone");
         final Subject subject = SecurityUtils.getSubject();
         // пользователю доступны только собственные записи
         if (subject.hasRole(UserRole.USER.getName())) {
@@ -77,8 +76,7 @@ public class InsuranceGrid extends CustomComponent {
             @SuppressWarnings("unchecked")
             @Override
             public void buttonClick(final ClickEvent event) {
-                final Object newObjId = container.addItem();
-                final BeanItem<Insurance> newObj = (BeanItem<Insurance>) container.getItem(newObjId);
+                final BeanItem<Insurance> newObj = new BeanItem<>(new Insurance());
 
                 final InsuranceEditForm editWin = new InsuranceEditForm("Новый полис", newObj);
                 editWin.addCloseListener(new CloseListener() {
@@ -88,11 +86,8 @@ public class InsuranceGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            container.commit();
-                            table.select(newObjId);
+                            container.refresh();
                             Notification.show("Полис сохранен", Type.TRAY_NOTIFICATION);
-                        } else {
-                            container.discard();
                         }
                     }
                 });
@@ -112,7 +107,7 @@ public class InsuranceGrid extends CustomComponent {
             public void buttonClick(final ClickEvent event) {
                 // Взять текущий полис из грида
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<Insurance> curObj = (BeanItem<Insurance>) table.getItem(curObjId);
+                final BeanItem<Insurance> curObj = new BeanItem<>(((EntityItem<Insurance>) table.getItem(curObjId)).getEntity());
 
                 final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", curObj);
                 editWin.addCloseListener(new CloseListener() {
@@ -122,6 +117,7 @@ public class InsuranceGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
+                            container.refreshItem(curObjId);
                             Notification.show("Полис сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }

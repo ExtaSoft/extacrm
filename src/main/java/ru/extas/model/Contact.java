@@ -3,76 +3,40 @@
  */
 package ru.extas.model;
 
-import com.google.appengine.datanucleus.annotations.Unowned;
 
-import javax.jdo.annotations.Embedded;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.persistence.*;
 
 /**
  * Контактное лицо контрагента, клиент физик или сотрудник
  *
  * @author Valery Orlov
  */
-@PersistenceCapable(detachable = "true")
-public class Contact extends AbstractExtaObject {
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "TYPE")
+@Table(name = "CONTACT")
+public abstract class Contact extends AbstractExtaObject {
 
     private static final long serialVersionUID = -2543373135823969745L;
     // Фактический адрес
-    @Persistent(defaultFetchGroup = "true")
     @Embedded
-    private AddressInfo actualAddress;// = new AddressInfo();
-    // Информация о физ. лице
-    @Persistent(defaultFetchGroup = "true")
-    @Embedded
-    private PersonInfo personInfo;// = new PersonInfo();
-    // Информация о юр. лице
-    @Persistent(defaultFetchGroup = "true")
-    @Embedded
-    private CompanyInfo companyInfo;// = new CompanyInfo();
-    // Тип контакта (физ. лицо/юр. лицо)
-    @Persistent
-    private Type type = Type.PERSON;
+    private AddressInfo actualAddress;
     // Имя пользователя
-    @Persistent
     private String name;
     // Телефон
-    @Persistent
     private String cellPhone;
     // Эл. почта
-    @Persistent
     private String email;
     // Вышестоящая организация
-    @Persistent(defaultFetchGroup = "true")
-    @Unowned
-    private Contact affiliation;
+    @OneToOne
+    private Company affiliation;
 
-    public Contact getAffiliation() {
+    public Company getAffiliation() {
         return affiliation;
     }
 
-    public void setAffiliation(final Contact affiliation) {
+    public void setAffiliation(final Company affiliation) {
         this.affiliation = affiliation;
-    }
-
-    public PersonInfo getPersonInfo() {
-        return personInfo;
-    }
-
-    public CompanyInfo getCompanyInfo() {
-        return companyInfo;
-    }
-
-    public AddressInfo getActualAddress() {
-        return actualAddress;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(final Type type) {
-        this.type = type;
     }
 
     /**
@@ -121,20 +85,8 @@ public class Contact extends AbstractExtaObject {
         this.actualAddress = actualAddress;
     }
 
-    public void setPersonInfo(final PersonInfo personInfo) {
-        this.personInfo = personInfo;
+    public AddressInfo getActualAddress() {
+        return actualAddress;
     }
-
-    public void setCompanyInfo(final CompanyInfo companyInfo) {
-        this.companyInfo = companyInfo;
-    }
-
-    /**
-     * Тип контакта (физ. лицо/юр. лицо)
-     */
-    public enum Type {
-        PERSON, COMPANY
-    }
-
 
 }

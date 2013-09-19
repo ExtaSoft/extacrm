@@ -1,8 +1,6 @@
 package ru.extas.model;
 
-import javax.jdo.annotations.EmbeddedOnly;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
@@ -10,21 +8,18 @@ import java.io.Serializable;
  *
  * @author Valery Orlov
  */
-@EmbeddedOnly
-@PersistenceCapable(detachable = "true")
+@Embeddable
 public class AddressInfo implements Serializable {
 
+    private static final long serialVersionUID = -7891940678175752858L;
+
     // Регион
-    @Persistent
     private String region;
     // Город
-    @Persistent
     private String city;
     // Индекс
-    @Persistent
     private String postIndex;
     // Адрес (улица, дом и т.д.)
-    @Persistent
     private String streetBld;
 
     public AddressInfo() {

@@ -48,7 +48,7 @@ public class ConfigView extends ExtaAbstractView {
 
     private void updateDataBase() {
         ContactService service = lookup(ContactService.class);
-        service.updateMissingType();
+        //service.updateMissingType();
     }
 
     /*

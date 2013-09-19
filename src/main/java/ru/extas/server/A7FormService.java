@@ -24,14 +24,6 @@ public interface A7FormService {
     A7Form findByNum(String formNum);
 
     /**
-     * Найти набор квитанций по номенам
-     *
-     * @param formNums Номера квитанций
-     * @return Найденные квитанции или null
-     */
-    List<A7Form> findByNum(List<String> formNums);
-
-    /**
      * Вставить/обновить квитанцию
      *
      * @param form Квитанцию для вставки\обновления

@@ -3,19 +3,18 @@ package ru.extas.server;
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.persist.UnitOfWork;
+import com.google.inject.persist.Transactional;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.Contact;
+import ru.extas.model.Person;
 import ru.extas.model.UserProfile;
 import ru.extas.model.UserRole;
 
-import javax.jdo.Extent;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -23,15 +22,12 @@ import java.util.List;
  *
  * @author Valery Orlov
  */
-public class UserManagementServiceJdo implements UserManagementService {
+public class UserManagementServiceJpa implements UserManagementService {
 
     private static final String SUPERUSER_LOGIN = "admin";
-    private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJdo.class);
-
+    private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJpa.class);
     @Inject
-    private Provider<PersistenceManager> pm;
-    @Inject
-    private Provider<UnitOfWork> unitOfWork;
+    private Provider<EntityManager> em;
 
     /*
      * (non-Javadoc)
@@ -39,31 +35,24 @@ public class UserManagementServiceJdo implements UserManagementService {
      * @see
      * ru.extas.server.UserManagementService#findUserByLogin(java.lang.String)
      */
-    @SuppressWarnings("unchecked")
+    @Transactional
     @Override
     public UserProfile findUserByLogin(String login) {
-        logger.info("Finding user by login: {}...", login);
+        logger.debug("Finding user by login: {}...", login);
         if (login.equals(SUPERUSER_LOGIN)) {
-            logger.info("Returning superuser profile...");
+            logger.debug("Returning superuser profile...");
             return getSuperuser();
         }
-        unitOfWork.get().begin();
-        Query q = pm.get().newQuery(UserProfile.class);
-        q.setFilter("login == loginPrm");
-        q.declareParameters("String loginPrm");
 
-        try {
-            List<UserProfile> results = (List<UserProfile>) q.execute(login);
-            if (!results.isEmpty()) {
-                logger.info("Found user with login name {}", login);
-                return results.get(0);
-            } else {
-                logger.info("User with login name {} doesn't found", login);
-                return null;
-            }
-        } finally {
-            q.closeAll();
-            unitOfWork.get().end();
+        Query q = em.get().createQuery("SELECT u FROM UserProfile u WHERE u.login = :loginPrm");
+        q.setParameter("loginPrm", login);
+        List<UserProfile> results = (List<UserProfile>) q.getResultList();
+        if (!results.isEmpty()) {
+            logger.debug("Found user with login name {}", login);
+            return results.get(0);
+        } else {
+            logger.debug("User with login name {} doesn't found", login);
+            return null;
         }
     }
 
@@ -73,6 +62,7 @@ public class UserManagementServiceJdo implements UserManagementService {
      * @param login логин
      * @return найденный контакт пользователя или null
      */
+    @Transactional
     @Override
     public Contact findUserContactByLogin(final String login) {
         final UserProfile currentUser = findUserByLogin(login);
@@ -86,39 +76,14 @@ public class UserManagementServiceJdo implements UserManagementService {
      * ru.extas.server.UserManagementService#persistUser(ru.extas.model.UserProfile
      * )
      */
+    @Transactional
     @Override
     public void persistUser(UserProfile user) {
-        unitOfWork.get().begin();
-        try {
-            logger.info("Prsisting user with login name {}...", user.getLogin());
-            pm.get().makePersistent(user);
-        } finally {
-            unitOfWork.get().end();
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see ru.extas.server.UserManagementService#loadUsers()
-     */
-    @Override
-    public List<UserProfile> loadUsers() {
-        unitOfWork.get().begin();
-        try {
-            logger.info("Requesting user list...");
-            List<UserProfile> users = new ArrayList<>();
-            Extent<UserProfile> extent = pm.get().getExtent(UserProfile.class, false);
-            for (UserProfile user : extent) {
-                users.add(user);
-            }
-            logger.info("Retrieved {} users", users.size());
-            extent.closeAll();
-
-            return users;
-        } finally {
-            unitOfWork.get().end();
-        }
+        logger.debug("Persisting user with login name {}...", user.getLogin());
+        if (user.getKey() == null)
+            em.get().persist(user);
+        else
+            em.get().merge(user);
     }
 
     /*
@@ -126,11 +91,12 @@ public class UserManagementServiceJdo implements UserManagementService {
      *
      * @see ru.extas.server.UserManagementService#getSuperuser()
      */
+    @Transactional
     @Override
     public UserProfile getSuperuser() {
         UserProfile user = new UserProfile();
         user.setLogin(SUPERUSER_LOGIN);
-        Contact contact = new Contact();
+        Person contact = new Person();
         contact.setName("Global Superuser");
         user.setContact(contact);
         user.setLogin(SUPERUSER_LOGIN);
@@ -151,6 +117,7 @@ public class UserManagementServiceJdo implements UserManagementService {
      *
      * @see ru.extas.server.UserManagementService#getCurrentUser()
      */
+    @Transactional
     @Override
     public UserProfile getCurrentUser() {
         Subject subject = SecurityUtils.getSubject();
@@ -162,6 +129,7 @@ public class UserManagementServiceJdo implements UserManagementService {
      *
      * @return контакт текущего пользователя
      */
+    @Transactional
     @Override
     public Contact getCurrentUserContact() {
         final UserProfile currentUser = getCurrentUser();

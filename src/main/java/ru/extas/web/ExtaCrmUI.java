@@ -1,5 +1,6 @@
 package ru.extas.web;
 
+import com.google.inject.Inject;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.util.BeanItem;
@@ -50,6 +51,9 @@ public class ExtaCrmUI extends UI {
 
     private static final long serialVersionUID = -6733655391417975375L;
 
+    @Inject
+    private Locale uiLocale;
+
     private final CssLayout root = new CssLayout();
 
     private VerticalLayout loginLayout;
@@ -64,7 +68,7 @@ public class ExtaCrmUI extends UI {
         VaadinSession.getCurrent().setConverterFactory(new ExtaConverterFactory());
 
         // Устанавливаем локаль
-        VaadinSession.getCurrent().setLocale(lookup(Locale.class));
+        VaadinSession.getCurrent().setLocale(uiLocale);
 
         setContent(root);
         root.addStyleName("root");

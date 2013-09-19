@@ -3,20 +3,19 @@
  */
 package ru.extas.web.contacts;
 
+import com.vaadin.addon.jpacontainer.EntityItem;
+import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
-import org.joda.time.LocalDate;
-import ru.extas.model.Contact;
-import ru.extas.model.PersonInfo;
-import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
+import ru.extas.model.Person;
+import ru.extas.web.commons.ExtaDataContainer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -33,11 +32,8 @@ public class PersonsGrid extends CustomComponent {
     public PersonsGrid() {
         super();
         // Запрос данных
-        final LazyJdoContainer<Contact> container = new LazyJdoContainer<>(Contact.class, 50, null);
-        container.addDefaultFilter(new Compare.Equal("type", Contact.Type.PERSON));
-        container.addContainerProperty("actualAddress.region", String.class, null, true, true);
-        container.addContainerProperty("personInfo.birthday", LocalDate.class, null, true, true);
-        container.addContainerProperty("personInfo.sex", PersonInfo.Sex.class, null, true, true);
+        final JPAContainer<Person> container = new ExtaDataContainer<>(Person.class);
+        container.addNestedContainerProperty("actualAddress.region");
 
         final CssLayout panel = new CssLayout();
         panel.addStyleName("layout-panel");
@@ -58,10 +54,8 @@ public class PersonsGrid extends CustomComponent {
             @SuppressWarnings("unchecked")
             @Override
             public void buttonClick(final ClickEvent event) {
-                final Object newObjId = table.addItem();
-                final BeanItem<Contact> newObj = (BeanItem<Contact>) table.getItem(newObjId);
+                final BeanItem<Person> newObj = new BeanItem<>(new Person());
                 newObj.expandProperty("actualAddress");
-                newObj.expandProperty("personInfo");
 
                 final PersonEditForm editWin = new PersonEditForm("Ввод нового контакта в систему", newObj);
                 editWin.addCloseListener(new CloseListener() {
@@ -71,10 +65,8 @@ public class PersonsGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            table.select(newObjId);
+                            container.refresh();
                             Notification.show("Контакт сохранен", Type.TRAY_NOTIFICATION);
-                        } else {
-                            table.removeItem(newObjId);
                         }
                     }
                 });
@@ -95,9 +87,8 @@ public class PersonsGrid extends CustomComponent {
             @Override
             public void buttonClick(final ClickEvent event) {
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<Contact> curObj = (BeanItem<Contact>) table.getItem(curObjId);
+                final BeanItem<Person> curObj = new BeanItem<>(((EntityItem<Person>) table.getItem(curObjId)).getEntity());
                 curObj.expandProperty("actualAddress");
-                curObj.expandProperty("personInfo");
 
                 final PersonEditForm editWin = new PersonEditForm("Редактирование контактных данных", curObj);
                 editWin.addCloseListener(new CloseListener() {
@@ -107,6 +98,7 @@ public class PersonsGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
+                            container.refreshItem(curObjId);
                             Notification.show("Контакт сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }

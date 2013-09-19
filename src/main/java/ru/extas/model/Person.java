@@ -2,48 +2,42 @@ package ru.extas.model;
 
 import org.joda.time.LocalDate;
 
-import javax.jdo.annotations.EmbeddedOnly;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import java.io.Serializable;
+import javax.persistence.*;
 
 /**
  * Данные контакта - физ. лица
  *
  * @author Valery Orlov
  */
-@EmbeddedOnly
-@PersistenceCapable(detachable = "true")
-public class PersonInfo implements Serializable {
+@Entity
+@DiscriminatorValue("PERSON")
+@Table(name = "PERSON")
+public class Person extends Contact {
+
+    private static final long serialVersionUID = -7891940552175345858L;
 
     // Дата рождения
-    @Persistent
     private LocalDate birthday;
     // Пол
-    @Persistent
+    @Enumerated(EnumType.STRING)
     private Sex sex;
     // Должность
-    @Persistent
+    @Enumerated(EnumType.STRING)
     private Position jobPosition;
     // Департамент
-    @Persistent
     private String jobDepartment;
     // Паспортные данные:
     // номер
-    @Persistent
     private String passNum;
     // дата выдачи
-    @Persistent
     private LocalDate passIssueDate;
     // кем выдан
-    @Persistent
     private String passIssuedBy;
     // код подразделения
-    @Persistent
     private String passIssuedByNum;
 
 
-    public PersonInfo() {
+    public Person() {
     }
 
     public Position getJobPosition() {

@@ -75,6 +75,11 @@ public class WebUIModule extends AbstractModule {
     }
 
     @Provides
+    private UI provideUIInstance() {
+        return new ExtaCrmUI();
+    }
+
+    @Provides
     @SessionScoped
     private Locale provideDefaultLocale() {
         return new Locale("ru", "RU");

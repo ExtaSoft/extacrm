@@ -3,17 +3,18 @@
  */
 package ru.extas.model;
 
-import com.google.appengine.datanucleus.annotations.Unowned;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * Данные о квитанции форма № А-7
  *
  * @author Valery Orlov
  */
-@PersistenceCapable(detachable = "true")
+@Entity
+@Table(name = "A7_FORM")
 public class A7Form extends AbstractExtaObject {
 
     private static final long serialVersionUID = -4643812782207400426L;
@@ -45,20 +46,17 @@ public class A7Form extends AbstractExtaObject {
     /**
      * Номер квитанции
      */
-    @Persistent
     private String regNum;
 
     /**
      * Статус квитанции
      */
-    @Persistent
     private Status status = Status.NEW;
 
     /**
      * Владелец квитанции
      */
-    @Unowned
-    @Persistent(defaultFetchGroup = "true")
+    @OneToOne
     private Contact owner;
 
     /**

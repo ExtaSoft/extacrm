@@ -12,6 +12,8 @@ import ru.extas.guice.ExtasGuiceFilter;
  */
 public final class ServiceLocator {
 
+    public static final String EXTACRM_JPA_UNIT = "extacrmJpaUnit";
+
     /**
      * Ищет подходящий экземпляр для интерфейса службы
      *

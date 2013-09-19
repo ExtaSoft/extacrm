@@ -3,19 +3,20 @@
  */
 package ru.extas.model;
 
-import com.google.appengine.datanucleus.annotations.Unowned;
 import org.joda.time.LocalDate;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.persistence.*;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Данные приема передачи форм строгой отчетности (БСО)
  *
  * @author Valery Orlov
  */
-@PersistenceCapable(detachable = "true")
+@Entity
+@Table(name = "FORM_TRANSFER")
 public class FormTransfer extends AbstractExtaObject {
 
     private static final long serialVersionUID = -3750723587703870668L;
@@ -23,28 +24,26 @@ public class FormTransfer extends AbstractExtaObject {
     /**
      * Контакт от которого принимаются бланки
      */
-    @Unowned
-    @Persistent(defaultFetchGroup = "true")
+    @OneToOne
     private Contact fromContact;
 
     /**
      * Контакт которому передются бланки
      */
-    @Unowned
-    @Persistent(defaultFetchGroup = "true")
+    @OneToOne
     private Contact toContact;
 
     /**
      * Дата прередачи бланков
      */
-    @Persistent
     private LocalDate transferDate;
 
     /**
      * Список номеров передаваемых бланков
      */
-    @Persistent
-    private List<String> formNums;
+    @ElementCollection
+    @CollectionTable(name = "FORM_TRANSFER_NUMS")
+    private List<String> formNums = newArrayList();
 
     /**
      * @return the fromContact

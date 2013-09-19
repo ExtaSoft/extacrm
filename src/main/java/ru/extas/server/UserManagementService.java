@@ -3,8 +3,6 @@ package ru.extas.server;
 import ru.extas.model.Contact;
 import ru.extas.model.UserProfile;
 
-import java.util.List;
-
 /**
  * Интерфейс управления пользователями и правами доступа
  *
@@ -34,13 +32,6 @@ public interface UserManagementService {
      * @param user объект ддя сохранения
      */
     void persistUser(UserProfile user);
-
-    /**
-     * Загрузить список пользователей
-     *
-     * @return список пользователей
-     */
-    List<UserProfile> loadUsers();
 
     /**
      * Получить профайл стандартного юзера (admin)

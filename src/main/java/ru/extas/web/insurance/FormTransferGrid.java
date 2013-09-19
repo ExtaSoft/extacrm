@@ -4,6 +4,8 @@
 package ru.extas.web.insurance;
 
 import com.google.common.base.Throwables;
+import com.vaadin.addon.jpacontainer.EntityItem;
+import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
@@ -21,9 +23,9 @@ import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.FormTransfer;
-import ru.extas.model.PersonInfo;
+import ru.extas.model.Person;
 import ru.extas.utils.ValueUtil;
-import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
+import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.OnDemandFileDownloader;
 
@@ -41,9 +43,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class FormTransferGrid extends CustomComponent {
 
     private static final long serialVersionUID = 1170175803163742829L;
-
     private final Logger logger = LoggerFactory.getLogger(FormTransferGrid.class);
-
     private final Table table = new Table();
 
     public FormTransferGrid() {
@@ -53,10 +53,9 @@ public class FormTransferGrid extends CustomComponent {
         panel.setSizeFull();
 
         // Запрос данных
-        final LazyJdoContainer<FormTransfer> container = new LazyJdoContainer<>(FormTransfer.class, 50,
-                null);
-        container.addContainerProperty("fromContact.name", String.class, null, true, false);
-        container.addContainerProperty("toContact.name", String.class, null, true, false);
+        final JPAContainer<FormTransfer> container = new ExtaDataContainer<>(FormTransfer.class);
+        container.addNestedContainerProperty("fromContact.name");
+        container.addNestedContainerProperty("toContact.name");
 
         final HorizontalLayout commandBar = new HorizontalLayout();
         commandBar.addStyleName("configure");
@@ -69,8 +68,7 @@ public class FormTransferGrid extends CustomComponent {
             @SuppressWarnings("unchecked")
             @Override
             public void buttonClick(final ClickEvent event) {
-                final Object newObjId = container.addItem();
-                final BeanItem<FormTransfer> newObj = (BeanItem<FormTransfer>) container.getItem(newObjId);
+                final BeanItem<FormTransfer> newObj = new BeanItem<>(new FormTransfer());
 
                 final FormTransferEditForm editWin = new FormTransferEditForm("Новый акт приема/передачи", newObj);
                 editWin.addCloseListener(new CloseListener() {
@@ -80,11 +78,8 @@ public class FormTransferGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            container.commit();
-                            table.select(newObjId);
+                            container.refresh();
                             Notification.show("Акт приема/передачи сохранен", Type.TRAY_NOTIFICATION);
-                        } else {
-                            container.discard();
                         }
                     }
                 });
@@ -104,7 +99,7 @@ public class FormTransferGrid extends CustomComponent {
             public void buttonClick(final ClickEvent event) {
                 // Взять текущий полис из грида
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<FormTransfer> curObj = (BeanItem<FormTransfer>) table.getItem(curObjId);
+                final BeanItem<FormTransfer> curObj = new BeanItem<>(((EntityItem<FormTransfer>) table.getItem(curObjId)).getEntity());
 
                 final FormTransferEditForm editWin = new FormTransferEditForm("Редактировать акт приема/передачи",
                         curObj);
@@ -186,13 +181,13 @@ public class FormTransferGrid extends CustomComponent {
                     // Дата передачи
                     final Date transferDate = formTransfer.getTransferDate().toDate();
                     // Передающее юр. лицо
-                    final String fromCompanyName = formTransfer.getFromContact().getAffiliation().getCompanyInfo().getFullName();
+                    final String fromCompanyName = formTransfer.getFromContact().getAffiliation().getFullName();
                     // Передающеее физ. лицо
                     final String fromContactName = formTransfer.getFromContact().getName();
                     // Принимающее физ. лицо
                     final String toContactName = formTransfer.getToContact().getName();
                     // Паспорт принимающего
-                    final PersonInfo toContactPass = formTransfer.getToContact().getPersonInfo();
+                    final Person toContactPass = (Person) formTransfer.getToContact();
                     // Список форм
                     final List<String> formsList = formTransfer.getFormNums();
                     // Колличество форм прописью

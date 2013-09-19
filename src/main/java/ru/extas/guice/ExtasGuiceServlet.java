@@ -17,7 +17,7 @@ public class ExtasGuiceServlet extends GAEVaadinServlet implements SessionInitLi
     private static final long serialVersionUID = -2786123692482071945L;
 
     @Inject
-    private ExtasGuiceProvider basicProvider;
+    private ExtasUIProvider uiProvider;
 
     @Override
     protected DeploymentConfiguration createDeploymentConfiguration(Properties initParameters) {
@@ -34,7 +34,7 @@ public class ExtasGuiceServlet extends GAEVaadinServlet implements SessionInitLi
 
     @Override
     public void sessionInit(SessionInitEvent event) throws ServiceException {
-        event.getSession().addUIProvider(basicProvider);
+        event.getSession().addUIProvider(uiProvider);
     }
 
 }

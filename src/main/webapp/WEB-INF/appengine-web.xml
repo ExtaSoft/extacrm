@@ -12,6 +12,8 @@
 
     <sessions-enabled>true</sessions-enabled>
 
+    <use-google-connector-j>true</use-google-connector-j>
+
     <static-files>
         <include path="/VAADIN/**"/>
     </static-files>

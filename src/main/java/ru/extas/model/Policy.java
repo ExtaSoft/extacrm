@@ -5,29 +5,28 @@ package ru.extas.model;
 
 import org.joda.time.DateTime;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 
 /**
  * Полис страхования в БСО
  *
  * @author Valery Orlov
  */
-@PersistenceCapable(detachable = "true")
+@Entity
+@Table(name = "POLICY")
 public class Policy extends AbstractExtaObject {
 
     private static final long serialVersionUID = 3160576591591414719L;
 
     // Номер полиса
-    @Persistent
     private String regNum;
 
     // Время бронирования полиса
-    @Persistent
     private DateTime bookTime;
 
     // Время реализации полиса
-    @Persistent
     private DateTime issueDate;
 
     /**

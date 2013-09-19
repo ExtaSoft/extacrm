@@ -3,6 +3,8 @@
  */
 package ru.extas.web.users;
 
+import com.vaadin.addon.jpacontainer.EntityItem;
+import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
@@ -15,7 +17,7 @@ import com.vaadin.ui.Window.CloseListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.UserProfile;
-import ru.extas.vaadin.addon.jdocontainer.LazyJdoContainer;
+import ru.extas.web.commons.ExtaDataContainer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -27,9 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class UsersGrid extends CustomComponent {
 
     private static final long serialVersionUID = -4385482673967616119L;
-
     private final Logger logger = LoggerFactory.getLogger(UsersGrid.class);
-
     private final Table table;
 
     /**
@@ -38,8 +38,8 @@ public class UsersGrid extends CustomComponent {
     public UsersGrid() {
         super();
         // Запрос данных
-        final LazyJdoContainer<UserProfile> container = new LazyJdoContainer<>(UserProfile.class, 50, null);
-        container.addContainerProperty("contact.name", String.class, null, true, false);
+        final JPAContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
+        container.addNestedContainerProperty("contact.name");
 
         final CssLayout panel = new CssLayout();
         panel.addStyleName("layout-panel");
@@ -61,8 +61,7 @@ public class UsersGrid extends CustomComponent {
             @Override
             public void buttonClick(final ClickEvent event) {
                 logger.debug("New User...");
-                final Object newObjId = table.addItem();
-                final BeanItem<UserProfile> newObj = (BeanItem<UserProfile>) table.getItem(newObjId);
+                final BeanItem<UserProfile> newObj = new BeanItem<>(new UserProfile());
 
                 final UserEditForm editWin = new UserEditForm("Ввод нового пользователя в систему", newObj);
                 editWin.addCloseListener(new CloseListener() {
@@ -72,11 +71,9 @@ public class UsersGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            container.commit();
-                            table.select(newObjId);
+                            container.refresh();
                             Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
-                        } else
-                            container.discard();
+                        }
                     }
                 });
                 editWin.showModal();
@@ -97,7 +94,7 @@ public class UsersGrid extends CustomComponent {
             public void buttonClick(final ClickEvent event) {
                 logger.debug("Edit User...");
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<UserProfile> curObj = (BeanItem<UserProfile>) table.getItem(curObjId);
+                final BeanItem<UserProfile> curObj = new BeanItem<>(((EntityItem<UserProfile>) table.getItem(curObjId)).getEntity());
 
                 final UserEditForm editWin = new UserEditForm("Редактирование данных пользователя", curObj);
                 editWin.addCloseListener(new CloseListener() {
@@ -107,6 +104,7 @@ public class UsersGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
+                            container.refreshItem(curObjId);
                             Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }

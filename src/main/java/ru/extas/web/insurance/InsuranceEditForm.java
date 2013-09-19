@@ -7,7 +7,6 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.joda.time.LocalDate;
-import ru.extas.model.Contact;
 import ru.extas.model.Insurance;
 import ru.extas.model.Policy;
 import ru.extas.server.InsuranceCalculator;
@@ -31,7 +30,6 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
     private static final long serialVersionUID = 9510268415882116L;
-
     // Компоненты редактирования
     @PropertyId("regNum")
     private PolicySelect regNumField;
@@ -119,7 +117,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         form.addComponent(dateField);
 
         // FIXME Ограничить выбор контакта только клиентами
-        clientNameField = new ContactSelect("Страхователь", Contact.Type.PERSON);
+        clientNameField = new ContactSelect("Страхователь");
         clientNameField.setRequired(true);
         form.addComponent(clientNameField);
 

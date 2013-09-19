@@ -1,10 +1,10 @@
 package ru.extas.model;
 
-import com.google.appengine.datanucleus.annotations.Unowned;
 import org.joda.time.LocalDate;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
@@ -12,62 +12,50 @@ import java.math.BigDecimal;
  *
  * @author Valery Orlov
  */
-@PersistenceCapable(detachable = "true")
+@Entity
+@Table(name = "INSURANCE")
 public class Insurance extends AbstractExtaObject {
 
     private static final long serialVersionUID = -1289533183659860816L;
 
     // Номер полиса
-    @Persistent
     private String regNum;
 
     // Номер квитанции А-7
-    @Persistent
     String a7Num;
 
     // Дата заключения полиса
-    @Persistent
     private LocalDate date;
 
     // Клиент
-    @Unowned
-    @Persistent(defaultFetchGroup = "true")
-    private Contact client;
+    @ManyToOne
+    private Person client;
 
     // Предмет страхования - тип
-    @Persistent
     private String motorType;
 
     // Предмет страхования - марка
-    @Persistent
     private String motorBrand;
 
     // Предмет страхования - модель
-    @Persistent
     private String motorModel;
 
     // Страховая сумма, руб.
-    @Persistent
     private BigDecimal riskSum;
 
     // Страховая премия, руб.
-    @Persistent
     private BigDecimal premium;
 
     // Дата оплаты страховой премии
-    @Persistent
     private LocalDate paymentDate;
 
     // Дата начала срока действия договора
-    @Persistent
     private LocalDate startDate;
 
     // Дата окончания срока действия договора
-    @Persistent
     private LocalDate endDate;
 
     // Точка продажи (Контрагент)
-    @Persistent
     private String pointOfSale;
 
     public Insurance() {
@@ -183,14 +171,14 @@ public class Insurance extends AbstractExtaObject {
     /**
      * @return the client
      */
-    public Contact getClient() {
+    public Person getClient() {
         return client;
     }
 
     /**
      * @param client the client to set
      */
-    public void setClient(Contact client) {
+    public void setClient(Person client) {
         this.client = client;
     }
 

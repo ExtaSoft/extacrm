@@ -6,8 +6,8 @@ package ru.extas.web.contacts;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
-import ru.extas.model.PersonInfo;
-import ru.extas.model.PersonInfo.Sex;
+import ru.extas.model.Person;
+import ru.extas.model.Person.Sex;
 
 import java.util.Locale;
 
@@ -22,8 +22,8 @@ public class StringToPersonSex implements Converter<String, Sex> {
 
     public StringToPersonSex() {
         map = HashBiMap.create();
-        map.put(PersonInfo.Sex.MALE, "Мужской");
-        map.put(PersonInfo.Sex.FEMALE, "Женский");
+        map.put(Person.Sex.MALE, "Мужской");
+        map.put(Person.Sex.FEMALE, "Женский");
     }
 
     /*

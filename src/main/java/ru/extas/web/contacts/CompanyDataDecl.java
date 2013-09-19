@@ -15,7 +15,7 @@ class CompanyDataDecl extends GridDataDecl {
     public CompanyDataDecl() {
         super();
         addMapping("name", "Имя");
-        addMapping("companyInfo.fullName", "Полное Наименование");
+        addMapping("fullName", "Полное Наименование");
         addMapping("cellPhone", "Телефон");
         addMapping("email", "E-Mail");
         addMapping("actualAddress.region", "Регион");

@@ -13,9 +13,8 @@ import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.AddressInfo;
-import ru.extas.model.Contact;
-import ru.extas.model.PersonInfo;
-import ru.extas.model.PersonInfo.Sex;
+import ru.extas.model.Person;
+import ru.extas.model.Person.Sex;
 import ru.extas.server.ContactService;
 import ru.extas.server.SupplementService;
 import ru.extas.web.commons.component.EditField;
@@ -29,18 +28,17 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class PersonEditForm extends AbstractEditForm<Contact> {
+public class PersonEditForm extends AbstractEditForm<Person> {
 
     private static final long serialVersionUID = -7787385620289376599L;
     private final Logger logger = LoggerFactory.getLogger(PersonEditForm.class);
-
     // Компоненты редактирования
     // Основные персональные данные
     @PropertyId("name")
     private EditField nameField;
-    @PropertyId("personInfo.birthday")
+    @PropertyId("birthday")
     private PopupDateField birthdayField;
-    @PropertyId("personInfo.sex")
+    @PropertyId("sex")
     private ComboBox sexField;
     @PropertyId("cellPhone")
     private EditField cellPhoneField;
@@ -54,23 +52,21 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
     private EditField postIndexField;
     @PropertyId("actualAddress.streetBld")
     private TextArea streetBldField;
-
     // Компания
     @PropertyId("affiliation")
-    private ContactSelect jobField;
-    @PropertyId("personInfo.jobPosition")
+    private AbstractContactSelect jobField;
+    @PropertyId("jobPosition")
     private ComboBox jobPositionField;
-    @PropertyId("personInfo.jobDepartment")
+    @PropertyId("jobDepartment")
     private EditField jobDepartmentField;
-
     // Паспортнве данные
-    @PropertyId("personInfo.passNum")
+    @PropertyId("passNum")
     private EditField passNumField;
-    @PropertyId("personInfo.passIssueDate")
+    @PropertyId("passIssueDate")
     private LocalDateField passIssueDateField;
-    @PropertyId("personInfo.passIssuedBy")
+    @PropertyId("passIssuedBy")
     private TextArea passIssuedByField;
-    @PropertyId("personInfo.passIssuedByNum")
+    @PropertyId("passIssuedByNum")
     private EditField passIssuedByNumField;
 
 
@@ -78,7 +74,7 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
      * @param caption
      * @param obj
      */
-    public PersonEditForm(final String caption, final BeanItem<Contact> obj) {
+    public PersonEditForm(final String caption, final BeanItem<Person> obj) {
         super(caption, obj);
     }
 
@@ -89,18 +85,15 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
      * AbstractExtaObject)
      */
     @Override
-    protected void initObject(final Contact obj) {
+    protected void initObject(final Person obj) {
         if (obj.getActualAddress() == null)
             obj.setActualAddress(new AddressInfo());
-        if (obj.getPersonInfo() == null)
-            obj.setPersonInfo(new PersonInfo());
         if (obj.getKey() == null) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
             // пользователя (регион, город)
-            obj.setType(Contact.Type.PERSON);
-            obj.getPersonInfo().setSex(PersonInfo.Sex.MALE);
-            obj.getPersonInfo().setJobPosition(PersonInfo.Position.EMPLOYEE);
+            obj.setSex(Person.Sex.MALE);
+            obj.setJobPosition(Person.Position.EMPLOYEE);
         }
     }
 
@@ -111,7 +104,7 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
      * AbstractExtaObject)
      */
     @Override
-    protected void saveObject(final Contact obj) {
+    protected void saveObject(final Person obj) {
         logger.debug("Saving contact data...");
         final ContactService contactService = lookup(ContactService.class);
         contactService.persistContact(obj);
@@ -125,7 +118,7 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
      * AbstractExtaObject)
      */
     @Override
-    protected void checkBeforeSave(final Contact obj) {
+    protected void checkBeforeSave(final Person obj) {
     }
 
     /*
@@ -136,7 +129,7 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
      * .AbstractExtaObject)
      */
     @Override
-    protected ComponentContainer createEditFields(final Contact obj) {
+    protected ComponentContainer createEditFields(final Person obj) {
         TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeUndefined();
 
@@ -183,7 +176,7 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
         final FormLayout companyForm = new FormLayout();
         companyForm.setMargin(true);
 
-        jobField = new ContactSelect("Компания", Contact.Type.COMPANY);
+        jobField = new CompanySelect("Компания");
         jobField.setDescription("Компания в которой работает контакт");
         companyForm.addComponent(jobField);
 
@@ -192,7 +185,7 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
         jobPositionField.setDescription("Укажите должность контакта");
         jobPositionField.setNullSelectionAllowed(false);
         jobPositionField.setNewItemsAllowed(false);
-        ComponentUtil.fillSelectByEnum(jobPositionField, PersonInfo.Position.class);
+        ComponentUtil.fillSelectByEnum(jobPositionField, Person.Position.class);
         companyForm.addComponent(jobPositionField);
 
         jobDepartmentField = new EditField("Департамент");
@@ -202,7 +195,7 @@ public class PersonEditForm extends AbstractEditForm<Contact> {
         return companyForm;
     }
 
-    private FormLayout createMainForm(final Contact obj) {
+    private FormLayout createMainForm(final Person obj) {
         final FormLayout personForm = new FormLayout();
         personForm.setMargin(true);
 

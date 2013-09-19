@@ -7,7 +7,6 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
 import org.joda.time.LocalDate;
-import ru.extas.model.Contact;
 import ru.extas.model.FormTransfer;
 import ru.extas.server.FormTransferService;
 import ru.extas.web.commons.component.LocalDateField;
@@ -24,7 +23,6 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 
     private static final long serialVersionUID = 9510268415882116L;
-
     // Компоненты редактирования
     @PropertyId("fromContact")
     private ComboBox fromContactField;
@@ -52,12 +50,12 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
         final FormLayout form = new FormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
-        fromContactField = new ContactSelect("От кого", Contact.Type.PERSON);
+        fromContactField = new ContactSelect("От кого");
         fromContactField.setRequired(true);
         form.addComponent(fromContactField);
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
-        toContactField = new ContactSelect("Кому", Contact.Type.PERSON);
+        toContactField = new ContactSelect("Кому");
         toContactField.setRequired(true);
         form.addComponent(toContactField);
 

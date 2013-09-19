@@ -13,7 +13,7 @@ import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.AddressInfo;
-import ru.extas.model.CompanyInfo;
+import ru.extas.model.Company;
 import ru.extas.model.Contact;
 import ru.extas.server.ContactService;
 import ru.extas.server.SupplementService;
@@ -26,16 +26,15 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class CompanyEditForm extends AbstractEditForm<Contact> {
+public class CompanyEditForm extends AbstractEditForm<Company> {
 
     private static final long serialVersionUID = -7787385620289376599L;
     private final Logger logger = LoggerFactory.getLogger(CompanyEditForm.class);
-
     // Компоненты редактирования
     // Основные персональные данные
     @PropertyId("name")
     private EditField nameField;
-    @PropertyId("companyInfo.fullName")
+    @PropertyId("fullName")
     private EditField fullNameField;
     @PropertyId("cellPhone")
     private EditField cellPhoneField;
@@ -49,10 +48,9 @@ public class CompanyEditForm extends AbstractEditForm<Contact> {
     private EditField postIndexField;
     @PropertyId("actualAddress.streetBld")
     private TextArea streetBldField;
-
     // Орг. структура
     @PropertyId("affiliation")
-    private ContactSelect affiliationField;
+    private AbstractContactSelect affiliationField;
 
     // Реквизиты юр. лица
 
@@ -61,7 +59,7 @@ public class CompanyEditForm extends AbstractEditForm<Contact> {
      * @param caption
      * @param obj
      */
-    public CompanyEditForm(final String caption, final BeanItem<Contact> obj) {
+    public CompanyEditForm(final String caption, final BeanItem<Company> obj) {
         super(caption, obj);
     }
 
@@ -72,16 +70,13 @@ public class CompanyEditForm extends AbstractEditForm<Contact> {
      * AbstractExtaObject)
      */
     @Override
-    protected void initObject(final Contact obj) {
+    protected void initObject(final Company obj) {
         if (obj.getKey() == null) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
-            obj.setType(Contact.Type.COMPANY);
         }
         if (obj.getActualAddress() == null)
             obj.setActualAddress(new AddressInfo());
-        if (obj.getCompanyInfo() == null)
-            obj.setCompanyInfo(new CompanyInfo());
     }
 
     /*
@@ -91,7 +86,7 @@ public class CompanyEditForm extends AbstractEditForm<Contact> {
      * AbstractExtaObject)
      */
     @Override
-    protected void saveObject(final Contact obj) {
+    protected void saveObject(final Company obj) {
         logger.debug("Saving contact data...");
         final ContactService contactService = lookup(ContactService.class);
         contactService.persistContact(obj);
@@ -105,7 +100,7 @@ public class CompanyEditForm extends AbstractEditForm<Contact> {
      * AbstractExtaObject)
      */
     @Override
-    protected void checkBeforeSave(final Contact obj) {
+    protected void checkBeforeSave(final Company obj) {
     }
 
     /*
@@ -116,7 +111,7 @@ public class CompanyEditForm extends AbstractEditForm<Contact> {
      * .AbstractExtaObject)
      */
     @Override
-    protected ComponentContainer createEditFields(final Contact obj) {
+    protected ComponentContainer createEditFields(final Company obj) {
         TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeUndefined();
 
@@ -151,7 +146,7 @@ public class CompanyEditForm extends AbstractEditForm<Contact> {
         final FormLayout companyForm = new FormLayout();
         companyForm.setMargin(true);
 
-        affiliationField = new ContactSelect("Вышестоящая организация", Contact.Type.COMPANY);
+        affiliationField = new CompanySelect("Вышестоящая организация");
         affiliationField.setDescription("Компания в которой работает контакт");
         companyForm.addComponent(affiliationField);
 

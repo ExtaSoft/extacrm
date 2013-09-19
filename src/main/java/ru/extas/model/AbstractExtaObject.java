@@ -7,8 +7,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.joda.time.DateTime;
 
-import javax.jdo.annotations.*;
-import javax.jdo.listener.StoreCallback;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -16,28 +15,21 @@ import java.io.Serializable;
  *
  * @author Valery Orlov
  */
-@PersistenceCapable(detachable = "true", identityType = IdentityType.DATASTORE)
-@Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
-public abstract class AbstractExtaObject implements StoreCallback, Serializable {
+@MappedSuperclass
+@Access(AccessType.FIELD)
+public abstract class AbstractExtaObject implements Serializable {
 
     private static final long serialVersionUID = 9098736299506726746L;
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    @Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
-    private String key;
-
-    @Persistent
-    private String createdBy;
-
-    @Persistent
-    private DateTime createdAt;
-
-    @Persistent
-    private String modifiedBy;
-
-    @Persistent
-    private DateTime modifiedAt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected String key;
+    protected String createdBy;
+    protected DateTime createdAt;
+    protected String modifiedBy;
+    protected DateTime modifiedAt;
+    @Version
+    protected int version;
 
     /**
      *
@@ -46,8 +38,16 @@ public abstract class AbstractExtaObject implements StoreCallback, Serializable 
         super();
     }
 
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(final int version) {
+        this.version = version;
+    }
+
     /**
-     * Получить ID объекта (gae.encoded-pk)
+     * Получить ID объекта (uuid.encoded-pk)
      *
      * @return ID объекта
      */
@@ -164,23 +164,24 @@ public abstract class AbstractExtaObject implements StoreCallback, Serializable 
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see javax.jdo.listener.StoreCallback#jdoPreStore()
-     */
-    @Override
-    public void jdoPreStore() {
+    @PrePersist
+    private void markCreating() {
         // Ставим маркеры создания/модификации
         Subject subject = SecurityUtils.getSubject();
         String login = (String) subject.getPrincipal();
         DateTime dt = DateTime.now();
         modifiedAt = dt;
         modifiedBy = login;
-        if (key == null) {
-            createdAt = dt;
-            createdBy = login;
-        }
+        createdAt = dt;
+        createdBy = login;
     }
 
+    @PreUpdate
+    private void markUpdating() {
+        // Ставим маркеры создания/модификации
+        Subject subject = SecurityUtils.getSubject();
+        String login = (String) subject.getPrincipal();
+        modifiedAt = DateTime.now();
+        modifiedBy = login;
+    }
 }

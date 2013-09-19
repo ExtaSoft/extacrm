@@ -1,7 +1,8 @@
 package ru.extas.model;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Коды контрагентов (ИНН, ОГРН...)
@@ -10,24 +11,26 @@ import javax.jdo.annotations.Persistent;
  *         Date: 26.08.13
  *         Time: 12:53
  */
-@PersistenceCapable(detachable = "true")
-public class ContactCode {
+@Entity
+@Table(name = "CONTACT_CODE")
+public class ContactCode extends AbstractExtaObject {
+
+    private static final long serialVersionUID = -7891940552175752834L;
+
 
     // Тип кода (ИНН, ОГРН...)
-    @Persistent
     private String type;
     // Значение кода
-    @Persistent
     private String code;
     // Контакт которому относится код
-    @Persistent
-    private Contact contact;
+    @ManyToOne
+    private Company contact;
 
-    public Contact getContact() {
+    public Company getContact() {
         return contact;
     }
 
-    public void setContact(final Contact contact) {
+    public void setContact(final Company contact) {
         this.contact = contact;
     }
 

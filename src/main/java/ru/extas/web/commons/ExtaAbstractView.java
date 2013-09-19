@@ -64,7 +64,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
             public void buttonClick(ClickEvent event) {
                 // TODO: Implement context help
                 Notification.show("Не реализовано пока");
-                // new InsuranceRepositoryJdo().fillRegistry();
+                // new InsuranceRepositoryJpa().fillRegistry();
             }
         });
         top.addComponent(helpBtn);

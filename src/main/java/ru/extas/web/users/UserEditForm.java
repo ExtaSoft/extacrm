@@ -10,13 +10,12 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.Contact;
 import ru.extas.model.UserProfile;
 import ru.extas.model.UserRole;
 import ru.extas.server.UserManagementService;
 import ru.extas.shiro.UserRealm;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.contacts.ContactSelect;
+import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.util.ComponentUtil;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -28,10 +27,10 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 
     private static final long serialVersionUID = -5016687382646391930L;
     private final Logger logger = LoggerFactory.getLogger(UserEditForm.class);
-
+    private final String initialPassword;
     // Компоненты редактирования
     @PropertyId("contact")
-    private ContactSelect nameField;
+    private PersonSelect nameField;
     @PropertyId("login")
     private TextField loginField;
     @PropertyId("role")
@@ -42,10 +41,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     private CheckBox changePasswordField;
     @PropertyId("password")
     private PasswordField passField;
-
     private PasswordField passConfField;
-
-    private final String initialPassword;
 
     /**
      * @param caption
@@ -100,7 +96,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         final FormLayout form = new FormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками
-        nameField = new ContactSelect("Имя", Contact.Type.PERSON);
+        nameField = new PersonSelect("Имя");
         nameField.setImmediate(true);
         nameField.setWidth(50, Unit.EX);
         nameField.setDescription("Введите имя (ФИО) пользователя");

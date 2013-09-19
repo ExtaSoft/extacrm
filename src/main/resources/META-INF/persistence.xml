@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="extacrmJpaUnit" transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+
+        <class>ru.extas.model.A7Form</class>
+        <class>ru.extas.model.AbstractExtaObject</class>
+        <class>ru.extas.model.AddressInfo</class>
+        <class>ru.extas.model.Company</class>
+        <class>ru.extas.model.Contact</class>
+        <class>ru.extas.model.ContactCode</class>
+        <class>ru.extas.model.FormTransfer</class>
+        <class>ru.extas.model.Insurance</class>
+        <class>ru.extas.model.PayAccount</class>
+        <class>ru.extas.model.Person</class>
+        <class>ru.extas.model.Policy</class>
+        <class>ru.extas.model.UserGroup</class>
+        <class>ru.extas.model.UserProfile</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <properties>
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:google:mysql://your-instance-name/demo?user=root"/>-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/extacrm?user=root"/>
+            <!--<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.GoogleDriver"/>-->
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="admin"/>
+            <property name="datanucleus.autoCreateSchema" value="false"/>
+            <property name="datanucleus.validateTables" value="false"/>
+            <property name="datanucleus.validateConstraints" value="false"/>
+            <property name="datanucleus.DetachAllOnCommit" value="true"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

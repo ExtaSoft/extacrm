@@ -15,8 +15,8 @@ class PersonDataDecl extends GridDataDecl {
     public PersonDataDecl() {
         super();
         addMapping("name", "Имя");
-        addMapping("personInfo.birthday", "Дата рождения"/* , StringToJodaLDConverter.class */);
-        addMapping("personInfo.sex", "Пол");
+        addMapping("birthday", "Дата рождения"/* , StringToJodaLDConverter.class */);
+        addMapping("sex", "Пол");
         addMapping("cellPhone", "Мобильный телефон");
         addMapping("email", "E-Mail");
         addMapping("actualAddress.region", "Регион");

@@ -1,7 +1,9 @@
 package ru.extas.model;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Платежные реквизиты контрагента
@@ -10,24 +12,23 @@ import javax.jdo.annotations.Persistent;
  *         Date: 26.08.13
  *         Time: 13:05
  */
-@PersistenceCapable(detachable = "true")
-public class PayAccount {
+@Entity
+@Table(name = "PAY_ACCOUNT")
+public class PayAccount extends AbstractExtaObject {
+
+    private static final long serialVersionUID = -7891940552175752858L;
 
     // Наименование банка
-    @Persistent
     private String bankName;
     // БИК
-    @Persistent
     private String bankCode;
     // Корреспондентский счет
-    @Persistent
     private String loroAccount;
     // Номер расчетного счета
-    @Persistent
     private String settlementAccount;
     // Контакт которому относится счет
-    @Persistent
-    private Contact contact;
+    @ManyToOne
+    private Company contact;
 
     public String getBankName() {
         return bankName;
@@ -61,11 +62,11 @@ public class PayAccount {
         this.settlementAccount = settlementAccount;
     }
 
-    public Contact getContact() {
+    public Company getContact() {
         return contact;
     }
 
-    public void setContact(final Contact contact) {
+    public void setContact(final Company contact) {
         this.contact = contact;
     }
 }

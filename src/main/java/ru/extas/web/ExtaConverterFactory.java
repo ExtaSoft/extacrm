@@ -5,8 +5,8 @@ import com.vaadin.data.util.converter.DefaultConverterFactory;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import ru.extas.model.A7Form;
-import ru.extas.model.PersonInfo;
-import ru.extas.model.PersonInfo.Sex;
+import ru.extas.model.Person;
+import ru.extas.model.Person.Sex;
 import ru.extas.model.Policy;
 import ru.extas.model.UserRole;
 import ru.extas.web.commons.converters.*;
@@ -72,7 +72,7 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
             return (Converter<PRESENTATION, MODEL>) lookup(StringToA7FormConverter.class);
 
         // Конвертер должностей
-        if (presentationType == String.class && modelType == PersonInfo.Position.class)
+        if (presentationType == String.class && modelType == Person.Position.class)
             return (Converter<PRESENTATION, MODEL>) lookup(StringToPersonPosition.class);
 
         // Let default factory handle the rest
