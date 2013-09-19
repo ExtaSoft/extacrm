@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "USER_GROUP")
+@Table(name = "user_group")
 public class UserGroup extends AbstractExtaObject {
 
     private static final long serialVersionUID = 4149728748291041330L;
@@ -24,7 +24,7 @@ public class UserGroup extends AbstractExtaObject {
 
     // Список разрешений группы
     @ElementCollection
-    @CollectionTable(name = "USER_GROUP_PERMISSION")
+    @CollectionTable(name = "user_group_permission")
     private Set<String> permissionList;
 
     /**

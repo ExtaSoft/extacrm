@@ -11,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @DiscriminatorValue("PERSON")
-@Table(name = "PERSON")
+@Table(name = "person")
 public class Person extends Contact {
 
     private static final long serialVersionUID = -7891940552175345858L;

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "INSURANCE")
+@Table(name = "insurance")
 public class Insurance extends AbstractExtaObject {
 
     private static final long serialVersionUID = -1289533183659860816L;

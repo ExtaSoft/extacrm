@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "A7_FORM")
+@Table(name = "a7_form")
 public class A7Form extends AbstractExtaObject {
 
     private static final long serialVersionUID = -4643812782207400426L;

@@ -36,7 +36,8 @@ public class PolicyRegistryJpa implements PolicyRegistry {
 
         final Query q = em.get().createQuery(
                 "SELECT p FROM Policy p " +
-                        "WHERE p.issueDate IS NULL AND p.bookTime < :expireTimePrm " +
+                        "WHERE p.issueDate IS NULL " +
+                        "AND (p.bookTime IS NULL OR p.bookTime < :expireTimePrm) " +
                         "ORDER BY p.bookTime, p.regNum");
         q.setParameter("expireTimePrm", DateTime.now().minusHours(1));
         final List<Policy> policies = (List<Policy>) q.getResultList();

@@ -233,8 +233,8 @@ public class InsuranceGrid extends CustomComponent {
             public InputStream getStream() {
                 // Взять текущий полис из грида
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<Insurance> curObj = (BeanItem<Insurance>) table.getItem(curObjId);
-                final Insurance insurance = curObj.getBean();
+                final EntityItem<Insurance> curObj = (EntityItem<Insurance>) table.getItem(curObjId);
+                final Insurance insurance = curObj.getEntity();
                 checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
                 try {
                     // 1) Load Docx file by filling Velocity template engine and
@@ -282,8 +282,8 @@ public class InsuranceGrid extends CustomComponent {
                 // Взять текущий полис из грида
                 // Взять текущий полис из грида
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<Insurance> curObj = (BeanItem<Insurance>) table.getItem(curObjId);
-                final Insurance insurance = curObj.getBean();
+                final EntityItem<Insurance> curObj = (EntityItem<Insurance>) table.getItem(curObjId);
+                final Insurance insurance = curObj.getEntity();
                 final String clientName = insurance.getClient().getName();
                 final String policyNum = insurance.getRegNum();
                 try {
@@ -291,7 +291,7 @@ public class InsuranceGrid extends CustomComponent {
                             .replaceAll(" ", ".");
                     return URLEncoder.encode(fileName, "UTF-8");
                 } catch (final UnsupportedEncodingException e) {
-                    logger.error("Print polycy error", e);
+                    logger.error("Print policy error", e);
                 }
                 return "UnknownFileName.doc";
             }

@@ -24,15 +24,27 @@
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
-            <!--<property name="javax.persistence.jdbc.url" value="jdbc:google:mysql://your-instance-name/demo?user=root"/>-->
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/extacrm?user=root"/>
-            <!--<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.GoogleDriver"/>-->
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="admin"/>
+            <!--Connection to DB-->
+            <property name="javax.persistence.jdbc.driver" value="${extacrm.jdbc.driver}"/>
+            <property name="javax.persistence.jdbc.url" value="${extacrm.jdbc.url}"/>
+            <property name="javax.persistence.jdbc.user" value="${extacrm.jdbc.user}"/>
+            <property name="javax.persistence.jdbc.password" value="${extacrm.jdbc.password}"/>
+
+            <!--schema creation-->
             <property name="datanucleus.autoCreateSchema" value="false"/>
+            <property name="datanucleus.autoCreateTables" value="false"/>
+            <property name="datanucleus.autoCreateColumns" value="false"/>
+            <property name="datanucleus.autoCreateConstraints" value="false"/>
+            <!--Which case to use in generated table and column names.-->
+            <property name="datanucleus.identifier.case" value="PreserveCase"/>
+
+            <!--schema validation-->
             <property name="datanucleus.validateTables" value="false"/>
             <property name="datanucleus.validateConstraints" value="false"/>
+            <property name="datanucleus.validateColumns" value="false"/>
+            <property name="datanucleus.rdbms.CheckExistTablesOrViews" value="false"/>
+            <property name="datanucleus.rdbms.initializeColumnInfo" value="None"/>
+
             <property name="datanucleus.DetachAllOnCommit" value="true"/>
         </properties>
 

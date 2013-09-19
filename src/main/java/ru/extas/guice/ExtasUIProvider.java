@@ -6,6 +6,8 @@ import com.vaadin.server.UICreateEvent;
 import com.vaadin.server.UIProvider;
 import com.vaadin.ui.UI;
 
+import static ru.extas.server.ServiceLocator.lookup;
+
 /**
  * Провайдер пользовательского интерфейса
  *
@@ -17,12 +19,12 @@ public class ExtasUIProvider extends UIProvider {
 
     @Inject
     private Class<? extends UI> uiClass;
-    @Inject
-    private UI uiInstance;
+//    @Inject
+//    private UI uiInstance;
 
     @Override
     public UI createInstance(UICreateEvent event) {
-        return uiInstance;
+        return lookup(UI.class);
     }
 
     @Override

@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "POLICY")
+@Table(name = "policy")
 public class Policy extends AbstractExtaObject {
 
     private static final long serialVersionUID = 3160576591591414719L;

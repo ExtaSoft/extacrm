@@ -165,8 +165,8 @@ public class FormTransferGrid extends CustomComponent {
             public InputStream getStream() {
                 // Взять текущий акт из грида
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<FormTransfer> curObj = (BeanItem<FormTransfer>) table.getItem(curObjId);
-                final FormTransfer formTransfer = curObj.getBean();
+                final EntityItem<FormTransfer> curObj = (EntityItem<FormTransfer>) table.getItem(curObjId);
+                final FormTransfer formTransfer = curObj.getEntity();
                 checkNotNull(formTransfer, "Нечего печатать", "Нет выбранной записи.");
                 try {
                     // 1) Load Docx file by filling Velocity template engine and
@@ -235,8 +235,8 @@ public class FormTransferGrid extends CustomComponent {
                 // Взять текущий полис из грида
                 // Взять текущий полис из грида
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<FormTransfer> curObj = (BeanItem<FormTransfer>) table.getItem(curObjId);
-                final FormTransfer formTransfer = curObj.getBean();
+                final EntityItem<FormTransfer> curObj = (EntityItem<FormTransfer>) table.getItem(curObjId);
+                final FormTransfer formTransfer = curObj.getEntity();
                 final String clientName = formTransfer.getToContact().getName();
                 try {
                     final String fileName = MessageFormat.format("Акт.приема.передачи.А7.({0}).docx", clientName)

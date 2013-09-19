@@ -6,7 +6,6 @@ package ru.extas.web;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.servlet.ServletScopes;
-import com.google.inject.servlet.SessionScoped;
 import com.vaadin.data.util.converter.StringToBooleanConverter;
 import com.vaadin.ui.UI;
 import ru.extas.web.commons.converters.*;
@@ -32,6 +31,8 @@ public class WebUIModule extends AbstractModule {
      */
     @Override
     protected void configure() {
+
+        bind(UI.class).to(ExtaCrmUI.class);
 
         // Конверторы дат
         bind(DateToJodaDTConverter.class).in(ServletScopes.SESSION);
@@ -74,13 +75,12 @@ public class WebUIModule extends AbstractModule {
         return ExtaCrmUI.class;
     }
 
+    //    @Provides
+//    private UI provideUIInstance() {
+//        return new ExtaCrmUI();
+//    }
+//
     @Provides
-    private UI provideUIInstance() {
-        return new ExtaCrmUI();
-    }
-
-    @Provides
-    @SessionScoped
     private Locale provideDefaultLocale() {
         return new Locale("ru", "RU");
     }

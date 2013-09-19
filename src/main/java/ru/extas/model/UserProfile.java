@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "USER_PROFILE")
+@Table(name = "user_profile")
 public class UserProfile extends AbstractExtaObject {
 
     private static final long serialVersionUID = 6937423190833815234L;
@@ -37,7 +37,7 @@ public class UserProfile extends AbstractExtaObject {
 
     // Группы в которых состоит пользователь
     @ManyToMany
-    @JoinTable(name = "USER_GROUP_LINK")
+    @JoinTable(name = "user_group_link")
     private Set<UserGroup> groupList = new HashSet<>();
 
     // Пользователь заблокирован

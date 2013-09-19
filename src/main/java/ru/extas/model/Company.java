@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Entity
 @DiscriminatorValue("COMPANY")
-@Table(name = "COMPANY")
+@Table(name = "company")
 public class Company extends Contact {
 
     private static final long serialVersionUID = -5681940552175752858L;

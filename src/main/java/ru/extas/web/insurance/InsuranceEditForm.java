@@ -99,7 +99,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         a7FormNumField = new A7Select("Номер квитанции А-7",
                 "Введите номер квитанции А-7. Выбирается из справочника БСО.", obj.getA7Num());
         // TODO a7FormNumField.setRequired(true);
-        form.addComponent(a7FormNumField);
+        // form.addComponent(a7FormNumField);
 
         dateField = new LocalDateField("Дата договора", "Введите дату оформления договора страхования");
         dateField.setRequired(true);

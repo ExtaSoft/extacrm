@@ -12,7 +12,7 @@ import javax.persistence.Table;
  *         Time: 12:53
  */
 @Entity
-@Table(name = "CONTACT_CODE")
+@Table(name = "contact_code")
 public class ContactCode extends AbstractExtaObject {
 
     private static final long serialVersionUID = -7891940552175752834L;
