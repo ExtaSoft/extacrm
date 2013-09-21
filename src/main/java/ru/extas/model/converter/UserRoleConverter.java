@@ -1,7 +1,10 @@
-package ru.extas.model;
+package ru.extas.model.converter;
 
+
+import ru.extas.model.UserRole;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
 /**
  * Конвертер для ролей пользователей в БД
@@ -11,6 +14,7 @@ import javax.persistence.AttributeConverter;
  *
  * @author Valery Orlov
  */
+@Converter(autoApply = true)
 public class UserRoleConverter implements AttributeConverter<UserRole, String> {
 
     @Override

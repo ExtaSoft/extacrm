@@ -2,6 +2,7 @@ package ru.extas.model;
 
 import org.joda.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -13,18 +14,21 @@ import java.math.BigDecimal;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "insurance")
+@Table(name = "INSURANCE")
 public class Insurance extends AbstractExtaObject {
 
     private static final long serialVersionUID = -1289533183659860816L;
 
     // Номер полиса
+    @Column(name = "REG_NUM")
     private String regNum;
 
     // Номер квитанции А-7
+    @Column(name = "A7_NUM")
     String a7Num;
 
     // Дата заключения полиса
+    @Column(name = "\"DATE\"")
     private LocalDate date;
 
     // Клиент
@@ -32,30 +36,38 @@ public class Insurance extends AbstractExtaObject {
     private Person client;
 
     // Предмет страхования - тип
+    @Column(name = "MOTOR_TYPE")
     private String motorType;
 
     // Предмет страхования - марка
+    @Column(name = "MOTOR_BRAND")
     private String motorBrand;
 
     // Предмет страхования - модель
+    @Column(name = "MOTOR_MODEL")
     private String motorModel;
 
     // Страховая сумма, руб.
+    @Column(name = "RISK_SUM")
     private BigDecimal riskSum;
 
     // Страховая премия, руб.
     private BigDecimal premium;
 
     // Дата оплаты страховой премии
+    @Column(name = "PAYMENT_DATE")
     private LocalDate paymentDate;
 
     // Дата начала срока действия договора
+    @Column(name = "START_DATE")
     private LocalDate startDate;
 
     // Дата окончания срока действия договора
+    @Column(name = "END_DATE")
     private LocalDate endDate;
 
     // Точка продажи (Контрагент)
+    @Column(name = "POINT_OF_SALE")
     private String pointOfSale;
 
     public Insurance() {

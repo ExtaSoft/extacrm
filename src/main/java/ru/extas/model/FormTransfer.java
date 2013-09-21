@@ -16,7 +16,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "form_transfer")
+@Table(name = "FORM_TRANSFER")
 public class FormTransfer extends AbstractExtaObject {
 
     private static final long serialVersionUID = -3750723587703870668L;
@@ -42,7 +42,7 @@ public class FormTransfer extends AbstractExtaObject {
      * Список номеров передаваемых бланков
      */
     @ElementCollection
-    @CollectionTable(name = "form_transfer_nums")
+    @CollectionTable(name = "FORM_TRANSFER_NUMS")
     private List<String> formNums = newArrayList();
 
     /**

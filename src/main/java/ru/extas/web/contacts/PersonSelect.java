@@ -49,7 +49,7 @@ public class PersonSelect extends AbstractContactSelect<Person> {
                     @Override
                     public void windowClose(final Window.CloseEvent e) {
                         if (editWin.isSaved()) {
-                            setValue(newObj.getBean().getKey());
+                            setValue(newObj.getBean().getId());
                             Notification.show("Контакт сохранен", Notification.Type.TRAY_NOTIFICATION);
                         }
                     }

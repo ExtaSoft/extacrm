@@ -20,10 +20,6 @@
         <joda-time.version>2.2</joda-time.version>
         <gson.version>2.2.4</gson.version>
 
-        <datanucleus.version>3.3.2</datanucleus.version>
-        <datanucleus.plugin.version>3.3.0-release</datanucleus.plugin.version>
-        <datanucleus.jodatime.version>3.2.1</datanucleus.jodatime.version>
-
         <vaadin.version>7.1.5</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <servlet-api.version>2.5</servlet-api.version>
@@ -51,6 +47,8 @@
                 <extacrm.jdbc.password>admin</extacrm.jdbc.password>
 
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
+                <jpa.logging.level>FINE</jpa.logging.level>
+                <jpa.ddl-generation>create-tables</jpa.ddl-generation>
             </properties>
         </profile>
 
@@ -66,6 +64,8 @@
                 <extacrm.jdbc.password/>
 
                 <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
+                <jpa.logging.level>WARNING</jpa.logging.level>
+                <jpa.ddl-generation>none</jpa.ddl-generation>
             </properties>
         </profile>
 
@@ -81,6 +81,8 @@
                 <extacrm.jdbc.password/>
 
                 <extacrm.gae.log.props>WEB-INF/logging-uat.properties</extacrm.gae.log.props>
+                <jpa.logging.level>FINE</jpa.logging.level>
+                <jpa.ddl-generation>create-tables</jpa.ddl-generation>
             </properties>
         </profile>
     </profiles>
@@ -227,26 +229,16 @@
 
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
-            <artifactId>javax.persistence</artifactId>
-            <version>2.1.0</version>
+            <artifactId>eclipselink</artifactId>
+            <version>2.5.1-RC3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.persistence</groupId>
+                    <artifactId>commonj.sdo</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.datanucleus</groupId>
-            <artifactId>datanucleus-accessplatform-jpa-rdbms</artifactId>
-            <version>${datanucleus.version}</version>
-            <type>pom</type>
-            <!--<exclusions>-->
-            <!--<exclusion>-->
-            <!--<groupId>javax.jdo</groupId>-->
-            <!--<artifactId>jdo-api</artifactId>-->
-            <!--</exclusion>-->
-            <!--</exclusions>-->
-        </dependency>
-        <dependency>
-            <groupId>org.datanucleus</groupId>
-            <artifactId>datanucleus-jodatime</artifactId>
-            <version>${datanucleus.jodatime.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -321,8 +313,9 @@
         <plugins>
 
             <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.1</version>
             </plugin>
 
             <plugin>
@@ -333,35 +326,6 @@
                     <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
                     <goals>appengine:update</goals>
                 </configuration>
-            </plugin>
-
-            <!-- This plug-in "enhances" your domain model objects (i.e. makes them
-                persistent for datanucleus) -->
-            <plugin>
-                <groupId>org.datanucleus</groupId>
-                <artifactId>datanucleus-maven-plugin</artifactId>
-                <version>${datanucleus.plugin.version}</version>
-                <configuration>
-                    <api>JPA</api>
-                    <persistenceUnitName>extacrmJpaUnit</persistenceUnitName>
-                    <!--<log4jConfiguration>${basedir}/log4j.properties</log4jConfiguration>-->
-                    <verbose>true</verbose>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>enhance</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <!--<dependencies>-->
-                <!--<dependency>-->
-                <!--<groupId>org.datanucleus</groupId>-->
-                <!--<artifactId>datanucleus-core</artifactId>-->
-                <!--<version>3.2.7</version>-->
-                <!--</dependency>-->
-                <!--</dependencies>-->
             </plugin>
 
             <plugin>
@@ -471,80 +435,6 @@
             </plugin>
 
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings
-                    only. It has no influence on the Maven build itself. -->
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.datanucleus
-                                        </groupId>
-                                        <artifactId>
-                                            maven-datanucleus-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [3.1.3,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>enhance</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.codehaus.mojo
-                                        </groupId>
-                                        <artifactId>
-                                            exec-maven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [1.2.1,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>java</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.codehaus.groovy.maven
-                                        </groupId>
-                                        <artifactId>
-                                            gmaven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [1.0,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>execute</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 
 </project>

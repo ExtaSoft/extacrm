@@ -55,7 +55,7 @@ public class PolicyRegistryJpa implements PolicyRegistry {
     @Override
     public void persist(final Policy policy) {
         logger.debug("Persisting policy: {}", policy.getRegNum());
-        if (policy.getKey() == null)
+        if (policy.getId() == null)
             em.get().persist(policy);
         else
             em.get().merge(policy);

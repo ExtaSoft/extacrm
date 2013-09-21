@@ -61,7 +61,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
      */
     @Override
     protected void initObject(final UserProfile obj) {
-        if (obj.getKey() == null) {
+        if (obj.getId() == null) {
             // Инициализируем новый объект
             obj.setRole(UserRole.USER);
             obj.setChangePassword(true);
@@ -107,7 +107,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 
         // FIXME Проверить уникальность логина
         loginField = new TextField("Логин (e-mail)");
-        loginField.setReadOnly(obj.getKey() != null);
+        loginField.setReadOnly(obj.getId() != null);
         loginField.setImmediate(true);
         loginField.setWidth(40, Unit.EX);
         loginField.setDescription("Введите имя e-mail пользователя который будет использоваться для входа в систему");

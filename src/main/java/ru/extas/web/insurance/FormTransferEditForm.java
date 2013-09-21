@@ -78,7 +78,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
      */
     @Override
     protected void initObject(final FormTransfer obj) {
-        if (obj.getKey() == null) {
+        if (obj.getId() == null) {
             final LocalDate now = LocalDate.now();
             obj.setTransferDate(now);
             // TODO: Инициализировать поле "От" текущим пользователем

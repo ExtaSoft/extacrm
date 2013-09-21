@@ -48,7 +48,7 @@ public class CompanySelect extends AbstractContactSelect<Company> {
                     public void windowClose(final Window.CloseEvent e) {
                         if (editWin.isSaved()) {
                             container.refresh();
-                            setValue(newObj.getBean().getKey());
+                            setValue(newObj.getBean().getId());
                             Notification.show("Контакт сохранен", Notification.Type.TRAY_NOTIFICATION);
                         }
                     }

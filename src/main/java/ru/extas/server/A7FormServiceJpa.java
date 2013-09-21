@@ -36,7 +36,7 @@ public class A7FormServiceJpa implements A7FormService {
     @Override
     public void persist(final A7Form form) {
         logger.info("Persisting A-7 with num {}...", form.getRegNum());
-        if (form.getKey() == null)
+        if (form.getId() == null)
             em.get().persist(form);
         else
             em.get().merge(form);

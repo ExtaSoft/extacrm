@@ -28,4 +28,5 @@ public interface ContactService {
      */
     void persistContact(Contact contact);
 
+    void updateMissingType();
 }

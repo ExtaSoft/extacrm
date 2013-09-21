@@ -1,6 +1,7 @@
 package ru.extas.model;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -13,18 +14,22 @@ import javax.persistence.Table;
  *         Time: 13:05
  */
 @Entity
-@Table(name = "pay_account")
+@Table(name = "PAY_ACCOUNT")
 public class PayAccount extends AbstractExtaObject {
 
     private static final long serialVersionUID = -7891940552175752858L;
 
     // Наименование банка
+    @Column(name = "BANK_NAME")
     private String bankName;
     // БИК
+    @Column(name = "BANK_CODE")
     private String bankCode;
     // Корреспондентский счет
+    @Column(name = "LORO_ACCOUNT")
     private String loroAccount;
     // Номер расчетного счета
+    @Column(name = "SETTLEMENT_ACCOUNT")
     private String settlementAccount;
     // Контакт которому относится счет
     @ManyToOne

@@ -5,6 +5,7 @@ package ru.extas.model;
 
 import org.joda.time.DateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -15,18 +16,21 @@ import javax.persistence.Table;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "policy")
+@Table(name = "POLICY")
 public class Policy extends AbstractExtaObject {
 
     private static final long serialVersionUID = 3160576591591414719L;
 
     // Номер полиса
+    @Column(name = "REG_NUM")
     private String regNum;
 
     // Время бронирования полиса
+    @Column(name = "BOOK_TIME")
     private DateTime bookTime;
 
     // Время реализации полиса
+    @Column(name = "ISSUE_DATE")
     private DateTime issueDate;
 
     /**

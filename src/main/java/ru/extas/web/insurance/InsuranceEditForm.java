@@ -227,7 +227,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
      */
     @Override
     protected void initObject(final Insurance obj) {
-        if (obj.getKey() == null) {
+        if (obj.getId() == null) {
             final LocalDate now = LocalDate.now();
             obj.setDate(now);
             obj.setPaymentDate(now);

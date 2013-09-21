@@ -71,7 +71,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
      */
     @Override
     protected void initObject(final Company obj) {
-        if (obj.getKey() == null) {
+        if (obj.getId() == null) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }

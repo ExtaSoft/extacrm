@@ -62,7 +62,7 @@ public class InsuranceRepositoryJpa implements InsuranceRepository {
     @Override
     public void persist(Insurance insurance) {
         logger.debug("Persisting insurance: {}", insurance.getRegNum());
-        if (insurance.getKey() == null) {
+        if (insurance.getId() == null) {
             em.get().persist(insurance);
         } else {
             em.get().merge(insurance);

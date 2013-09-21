@@ -35,7 +35,7 @@ public class FormTransferServiceJpa implements FormTransferService {
     public void persist(final FormTransfer tf) {
         logger.debug("Persisting FormTransfer");
         a7FormService.changeOwner(tf.getFormNums(), tf.getToContact());
-        if (tf.getKey() == null) {
+        if (tf.getId() == null) {
             em.get().persist(tf);
         } else {
             em.get().merge(tf);

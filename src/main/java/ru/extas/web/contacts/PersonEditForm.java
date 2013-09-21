@@ -88,7 +88,7 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     protected void initObject(final Person obj) {
         if (obj.getActualAddress() == null)
             obj.setActualAddress(new AddressInfo());
-        if (obj.getKey() == null) {
+        if (obj.getId() == null) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
             // пользователя (регион, город)

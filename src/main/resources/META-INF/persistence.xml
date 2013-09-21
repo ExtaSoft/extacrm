@@ -6,7 +6,7 @@
 
     <persistence-unit name="extacrmJpaUnit" transaction-type="RESOURCE_LOCAL">
 
-        <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>ru.extas.model.A7Form</class>
         <class>ru.extas.model.AbstractExtaObject</class>
@@ -21,6 +21,9 @@
         <class>ru.extas.model.Policy</class>
         <class>ru.extas.model.UserGroup</class>
         <class>ru.extas.model.UserProfile</class>
+        <class>ru.extas.model.converter.LocalDateConverter</class>
+        <class>ru.extas.model.converter.DateTimeConverter</class>
+        <class>ru.extas.model.converter.UserRoleConverter</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
@@ -30,22 +33,22 @@
             <property name="javax.persistence.jdbc.user" value="${extacrm.jdbc.user}"/>
             <property name="javax.persistence.jdbc.password" value="${extacrm.jdbc.password}"/>
 
-            <!--schema creation-->
-            <property name="datanucleus.autoCreateSchema" value="false"/>
-            <property name="datanucleus.autoCreateTables" value="false"/>
-            <property name="datanucleus.autoCreateColumns" value="false"/>
-            <property name="datanucleus.autoCreateConstraints" value="false"/>
-            <!--Which case to use in generated table and column names.-->
-            <property name="datanucleus.identifier.case" value="PreserveCase"/>
+            <property name="eclipselink.target-database" value="MySQL"/>
+            <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
+            <property name="eclipselink.jdbc.uppercase-columns" value="true"/>
+            <property name="eclipselink.jdbc.batch-writing" value="jdbc"/>
 
-            <!--schema validation-->
-            <property name="datanucleus.validateTables" value="false"/>
-            <property name="datanucleus.validateConstraints" value="false"/>
-            <property name="datanucleus.validateColumns" value="false"/>
-            <property name="datanucleus.rdbms.CheckExistTablesOrViews" value="false"/>
-            <property name="datanucleus.rdbms.initializeColumnInfo" value="None"/>
+            <property name="eclipselink.ddl-generation" value="${jpa.ddl-generation}"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            <!--<property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL_ddlGeneration.jdbc"/>-->
+            <!--<property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL_ddlGeneration.jdbc"/>-->
 
-            <property name="datanucleus.DetachAllOnCommit" value="true"/>
+            <property name="eclipselink.logging.level" value="${jpa.logging.level}"/>
+            <property name="eclipselink.logging.level.sql" value="${jpa.logging.level}"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+            <property name="eclipselink.logging.timestamp" value="false"/>
+            <property name="eclipselink.logging.session" value="false"/>
+            <property name="eclipselink.logging.thread" value="false"/>
         </properties>
 
     </persistence-unit>

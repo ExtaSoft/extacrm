@@ -1,10 +1,9 @@
 package ru.extas.model;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Данные контакта - физ. лица
@@ -13,19 +12,20 @@ import java.util.List;
  */
 @Entity
 @DiscriminatorValue("COMPANY")
-@Table(name = "company")
+@Table(name = "COMPANY")
 public class Company extends Contact {
 
     private static final long serialVersionUID = -5681940552175752858L;
 
     // Полное название (Юридическое имя)
+    @Column(name = "FULL_NAME")
     private String fullName;
     // Коды (ИНН, ОГРН...)
     @OneToMany(mappedBy = "contact")
-    private List<ContactCode> codes;
+    private List<ContactCode> codes = newArrayList();
     // Платежные реквизиты
     @OneToMany(mappedBy = "contact")
-    private List<PayAccount> payAccounts;
+    private List<PayAccount> payAccounts = newArrayList();
 
     public Company() {
     }

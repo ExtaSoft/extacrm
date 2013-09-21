@@ -11,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @DiscriminatorValue("PERSON")
-@Table(name = "person")
+@Table(name = "PERSON")
 public class Person extends Contact {
 
     private static final long serialVersionUID = -7891940552175345858L;
@@ -23,19 +23,24 @@ public class Person extends Contact {
     private Sex sex;
     // Должность
     @Enumerated(EnumType.STRING)
+    @Column(name = "JOB_POSITION")
     private Position jobPosition;
     // Департамент
+    @Column(name = "JOB_DEPARTMENT")
     private String jobDepartment;
     // Паспортные данные:
     // номер
+    @Column(name = "PASS_NUM")
     private String passNum;
     // дата выдачи
+    @Column(name = "PASS_ISSUE_DATE")
     private LocalDate passIssueDate;
     // кем выдан
+    @Column(name = "PASS_ISSUED_BY")
     private String passIssuedBy;
     // код подразделения
+    @Column(name = "PASS_ISSUED_BY_NUM")
     private String passIssuedByNum;
-
 
     public Person() {
     }

@@ -5,9 +5,11 @@ package ru.extas.model;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.eclipse.persistence.annotations.UuidGenerator;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -17,16 +19,22 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 @Access(AccessType.FIELD)
+@UuidGenerator(name = "system-uuid")
 public abstract class AbstractExtaObject implements Serializable {
 
     private static final long serialVersionUID = 9098736299506726746L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected String key;
+    @GeneratedValue(generator = "system-uuid")
+    @Column(name = "ID")
+    @Size(max = 46)
+    protected String id;
+    @Column(name = "CREATED_BY")
     protected String createdBy;
+    @Column(name = "CREATED_AT")
     protected DateTime createdAt;
+    @Column(name = "MODIFIED_BY")
     protected String modifiedBy;
+    @Column(name = "MODIFIED_AT")
     protected DateTime modifiedAt;
     @Version
     protected int version;
@@ -51,8 +59,8 @@ public abstract class AbstractExtaObject implements Serializable {
      *
      * @return ID объекта
      */
-    public String getKey() {
-        return key;
+    public String getId() {
+        return id;
     }
 
     /**
@@ -61,8 +69,8 @@ public abstract class AbstractExtaObject implements Serializable {
      *
      * @param key ID объекта
      */
-    public void setKey(String key) {
-        this.key = key;
+    public void setId(String key) {
+        this.id = key;
     }
 
     /**
@@ -138,7 +146,7 @@ public abstract class AbstractExtaObject implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((key == null) ? 0 : key.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
 
@@ -156,10 +164,10 @@ public abstract class AbstractExtaObject implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         AbstractExtaObject other = (AbstractExtaObject) obj;
-        if (key == null) {
-            if (other.key != null)
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        } else if (!key.equals(other.key))
+        } else if (!id.equals(other.id))
             return false;
         return true;
     }
@@ -167,13 +175,17 @@ public abstract class AbstractExtaObject implements Serializable {
     @PrePersist
     private void markCreating() {
         // Ставим маркеры создания/модификации
-        Subject subject = SecurityUtils.getSubject();
-        String login = (String) subject.getPrincipal();
-        DateTime dt = DateTime.now();
-        modifiedAt = dt;
-        modifiedBy = login;
-        createdAt = dt;
-        createdBy = login;
+        if (createdAt == null && createdBy == null) {
+            Subject subject = SecurityUtils.getSubject();
+            String login = (String) subject.getPrincipal();
+            DateTime dt = DateTime.now();
+            createdAt = dt;
+            createdBy = login;
+        }
+        if (modifiedAt == null && modifiedBy == null) {
+            modifiedAt = createdAt;
+            modifiedBy = createdBy;
+        }
     }
 
     @PreUpdate

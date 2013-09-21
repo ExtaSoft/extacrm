@@ -4,6 +4,7 @@
 package ru.extas.model;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "a7_form")
+@Table(name = "A7_FORM")
 public class A7Form extends AbstractExtaObject {
 
     private static final long serialVersionUID = -4643812782207400426L;
@@ -46,6 +47,7 @@ public class A7Form extends AbstractExtaObject {
     /**
      * Номер квитанции
      */
+    @Column(name = "REG_NUM")
     private String regNum;
 
     /**

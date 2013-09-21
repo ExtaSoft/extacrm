@@ -22,6 +22,7 @@ import java.util.List;
  *
  * @author Valery Orlov
  */
+@SuppressWarnings("unchecked")
 public class UserManagementServiceJpa implements UserManagementService {
 
     private static final String SUPERUSER_LOGIN = "admin";
@@ -80,7 +81,7 @@ public class UserManagementServiceJpa implements UserManagementService {
     @Override
     public void persistUser(UserProfile user) {
         logger.debug("Persisting user with login name {}...", user.getLogin());
-        if (user.getKey() == null)
+        if (user.getId() == null)
             em.get().persist(user);
         else
             em.get().merge(user);

@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "user_profile")
+@Table(name = "USER_PROFILE")
 public class UserProfile extends AbstractExtaObject {
 
     private static final long serialVersionUID = 6937423190833815234L;
@@ -26,18 +26,19 @@ public class UserProfile extends AbstractExtaObject {
     private String password;
 
     // Ключ шифрования пароля
+    @Column(name = "PASSWORD_SALT")
     private String passwordSalt;
 
     // Требование сменить пароль при следующем входе
+    @Column(name = "CHANGE_PASSWORD")
     private boolean changePassword;
 
     // Основная роль пользователя
-    @Convert(converter = UserRoleConverter.class)
     private UserRole role;
 
     // Группы в которых состоит пользователь
     @ManyToMany
-    @JoinTable(name = "user_group_link")
+    @JoinTable(name = "USER_GROUP_LINK")
     private Set<UserGroup> groupList = new HashSet<>();
 
     // Пользователь заблокирован

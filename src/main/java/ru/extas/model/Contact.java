@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE")
-@Table(name = "contact")
+@Table(name = "CONTACT")
 public abstract class Contact extends AbstractExtaObject {
 
     private static final long serialVersionUID = -2543373135823969745L;
@@ -24,6 +24,7 @@ public abstract class Contact extends AbstractExtaObject {
     // Имя пользователя
     private String name;
     // Телефон
+    @Column(name = "CELL_PHONE")
     private String cellPhone;
     // Эл. почта
     private String email;
