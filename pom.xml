@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.2-SNAPSHOT</version>
 
     <properties>
         <vaadin.production.mode>true</vaadin.production.mode>
@@ -43,7 +44,7 @@
                 <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
                 <extacrm.jdbc.url>jdbc:mysql://localhost:3306/extacrm</extacrm.jdbc.url>
                 <extacrm.jdbc.user>root</extacrm.jdbc.user>
-                <extacrm.jdbc.password />
+                <extacrm.jdbc.password/>
 
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
@@ -59,8 +60,8 @@
 
                 <extacrm.jdbc.driver>com.google.appengine.api.rdbms.AppEngineDriver</extacrm.jdbc.driver>
                 <extacrm.jdbc.url>jdbc:google:rdbms://extacrm:pss/extacrm</extacrm.jdbc.url>
-                <extacrm.jdbc.user />
-                <extacrm.jdbc.password />
+                <extacrm.jdbc.user/>
+                <extacrm.jdbc.password/>
 
                 <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
                 <jpa.logging.level>WARNING</jpa.logging.level>
@@ -76,8 +77,8 @@
 
                 <extacrm.jdbc.driver>com.google.appengine.api.rdbms.AppEngineDriver</extacrm.jdbc.driver>
                 <extacrm.jdbc.url>jdbc:google:rdbms://extacrm:uat/extacrm</extacrm.jdbc.url>
-                <extacrm.jdbc.user />
-                <extacrm.jdbc.password />
+                <extacrm.jdbc.user/>
+                <extacrm.jdbc.password/>
 
                 <extacrm.gae.log.props>WEB-INF/logging-uat.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
@@ -90,7 +91,7 @@
         <connection>scm:git:https://github.com/ExtaSoft/extacrm.git</connection>
         <developerConnection>scm:git:https://github.com/ExtaSoft/extacrm.git</developerConnection>
         <url>scm:git:https://github.com/ExtaSoft/extacrm.git</url>
-        <tag>extacrm-0.1.2</tag>
+        <tag>release-branch</tag>
     </scm>
 
     <repositories>
