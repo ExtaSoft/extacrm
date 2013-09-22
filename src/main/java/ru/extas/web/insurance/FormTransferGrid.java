@@ -22,6 +22,7 @@ import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.Company;
 import ru.extas.model.FormTransfer;
 import ru.extas.model.Person;
 import ru.extas.utils.ValueUtil;
@@ -181,7 +182,12 @@ public class FormTransferGrid extends CustomComponent {
                     // Дата передачи
                     final Date transferDate = formTransfer.getTransferDate().toDate();
                     // Передающее юр. лицо
-                    final String fromCompanyName = formTransfer.getFromContact().getAffiliation().getFullName();
+                    final Company affiliation = formTransfer.getFromContact().getAffiliation();
+                    if (affiliation == null) {
+                        Notification.show("Не могу напечатать акт", Type.ERROR_MESSAGE);
+                        return null;
+                    }
+                    final String fromCompanyName = affiliation.getFullName();
                     // Передающеее физ. лицо
                     final String fromContactName = formTransfer.getFromContact().getName();
                     // Принимающее физ. лицо

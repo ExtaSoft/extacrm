@@ -44,7 +44,7 @@
                 <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
                 <extacrm.jdbc.url>jdbc:mysql://localhost:3306/extacrm</extacrm.jdbc.url>
                 <extacrm.jdbc.user>root</extacrm.jdbc.user>
-                <extacrm.jdbc.password>admin</extacrm.jdbc.password>
+                <extacrm.jdbc.password/>
 
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
@@ -59,13 +59,13 @@
                 <extacrm.gae.name>extacrm</extacrm.gae.name>
 
                 <extacrm.jdbc.driver>com.google.cloud.sql.Driver</extacrm.jdbc.driver>
-                <extacrm.jdbc.url>jdbc:google:mysql://extacrm:prod/extacrm</extacrm.jdbc.url>
+                <extacrm.jdbc.url>jdbc:google:mysql://extacrm:pss/extacrm</extacrm.jdbc.url>
                 <extacrm.jdbc.user/>
                 <extacrm.jdbc.password/>
 
                 <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
                 <jpa.logging.level>WARNING</jpa.logging.level>
-                <jpa.ddl-generation>none</jpa.ddl-generation>
+                <jpa.ddl-generation>create-tables</jpa.ddl-generation>
             </properties>
         </profile>
 
@@ -307,6 +307,13 @@
                 <directory>src/main/resources/META-INF</directory>
                 <filtering>true</filtering>
                 <targetPath>META-INF</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>META-INF</exclude>
+                </excludes>
             </resource>
         </resources>
 

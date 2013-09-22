@@ -16,7 +16,7 @@ import ru.extas.server.SupplementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.contacts.ContactSelect;
+import ru.extas.web.contacts.PersonSelect;
 
 import java.math.BigDecimal;
 
@@ -117,7 +117,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         form.addComponent(dateField);
 
         // FIXME Ограничить выбор контакта только клиентами
-        clientNameField = new ContactSelect("Страхователь");
+        clientNameField = new PersonSelect("Страхователь");
         clientNameField.setRequired(true);
         form.addComponent(clientNameField);
 
