@@ -58,7 +58,7 @@
             <properties>
                 <extacrm.gae.name>extacrm</extacrm.gae.name>
 
-                <extacrm.jdbc.driver>com.google.cloud.sql.Driver</extacrm.jdbc.driver>
+                <extacrm.jdbc.driver>com.google.appengine.api.rdbms.AppEngineDriver</extacrm.jdbc.driver>
                 <extacrm.jdbc.url>jdbc:google:mysql://extacrm:pss/extacrm</extacrm.jdbc.url>
                 <extacrm.jdbc.user/>
                 <extacrm.jdbc.password/>
@@ -330,6 +330,7 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.4.1</version>
                 <configuration>
+                    <releaseProfiles>prod</releaseProfiles>
                     <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
                     <goals>appengine:update</goals>
                 </configuration>
