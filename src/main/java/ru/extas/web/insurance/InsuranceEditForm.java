@@ -16,6 +16,7 @@ import ru.extas.server.SupplementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.contacts.CompanySelect;
 import ru.extas.web.contacts.PersonSelect;
 
 import java.math.BigDecimal;
@@ -38,7 +39,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     @PropertyId("date")
     private PopupDateField dateField;
     @PropertyId("client")
-    private ComboBox clientNameField;
+    private PersonSelect clientNameField;
     @PropertyId("motorType")
     private ComboBox motorTypeField;
     @PropertyId("motorBrand")
@@ -55,8 +56,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     private PopupDateField startDateField;
     @PropertyId("endDate")
     private PopupDateField endDateField;
-    @PropertyId("pointOfSale")
-    private TextField pointOfSaleField;
+    @PropertyId("dealer")
+    private CompanySelect dealerField;
 
     public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
         super(caption, obj);
@@ -211,10 +212,9 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         endDateField.setRequired(true);
         form.addComponent(endDateField);
 
-        pointOfSaleField = new EditField("Точка продажи", "Название автосоалона где продана страховка");
-        pointOfSaleField.setColumns(15);
-        pointOfSaleField.setRequired(true);
-        form.addComponent(pointOfSaleField);
+        dealerField = new CompanySelect("Точка продажи", "Название автосоалона где продана страховка");
+        // dealerField.setRequired(true);
+        form.addComponent(dealerField);
 
         return form;
     }

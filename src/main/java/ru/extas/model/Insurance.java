@@ -4,7 +4,7 @@ import org.joda.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
@@ -32,7 +32,7 @@ public class Insurance extends AbstractExtaObject {
     private LocalDate date;
 
     // Клиент
-    @ManyToOne
+    @OneToOne
     private Person client;
 
     // Предмет страхования - тип
@@ -69,6 +69,9 @@ public class Insurance extends AbstractExtaObject {
     // Точка продажи (Контрагент)
     @Column(name = "POINT_OF_SALE")
     private String pointOfSale;
+
+    @OneToOne
+    private Company dealer;
 
     public Insurance() {
     }
@@ -256,5 +259,13 @@ public class Insurance extends AbstractExtaObject {
 
     public void setA7Num(final String a7Num) {
         this.a7Num = a7Num;
+    }
+
+    public Company getDealer() {
+        return dealer;
+    }
+
+    public void setDealer(Company dealer) {
+        this.dealer = dealer;
     }
 }
