@@ -81,7 +81,7 @@ public class PolicyRegistryJpa implements PolicyRegistry {
     @Transactional
     @Override
     public void issuePolicy(final Policy policy) {
-        if (policy.getIssueDate() != null) {
+        if (policy.getIssueDate() != null && policy.getIssueDate() != null) {
             policy.setIssueDate(DateTime.now());
             persist(policy);
         }
