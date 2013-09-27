@@ -100,7 +100,7 @@ public class FormTransferGrid extends CustomComponent {
             @SuppressWarnings("unchecked")
             @Override
             public void buttonClick(final ClickEvent event) {
-                // Взять текущий полис из грида
+                // Взять текущий объект из грида
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
                 final BeanItem<FormTransfer> curObj = new BeanItem<>(((EntityItem<FormTransfer>) table.getItem(curObjId)).getEntity());
 
@@ -113,6 +113,7 @@ public class FormTransferGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
+                            container.refreshItem(curObjId);
                             Notification.show("Акт приема/передачи сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }

@@ -48,10 +48,10 @@ public interface A7FormService {
     /**
      * Сменить статус для набора квитанций
      *
-     * @param formNums  Список номеров квитанций
+     * @param form      Список номеров квитанций
      * @param newStatus Новый статус
      */
-    void changeStatus(List<String> formNums, A7Form.Status newStatus);
+    void changeStatus(A7Form form, A7Form.Status newStatus);
 
     /**
      * Загружает доступные пользователю квитанции А-7
