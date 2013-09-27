@@ -30,11 +30,11 @@ import ru.extas.model.UserRole;
 import ru.extas.web.commons.ExportTableDownloader;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.OnDemandFileDownloader;
-import ru.extas.web.commons.OnDemandFileDownloader.OnDemandStreamResource;
+import ru.extas.web.commons.window.DownloadFileWindow;
 
-import java.io.*;
-import java.net.URLEncoder;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -147,19 +147,29 @@ public class InsuranceGrid extends CustomComponent {
         // commandBar.addComponent(popupButton);
         // popupLayout.addComponent(deleteButton);
 
-        final Button printPolyceMatBtn = new Button("Печать");
-        printPolyceMatBtn.addStyleName("icon-print-2");
-        printPolyceMatBtn.setDescription("Создать печатное представление полиса страхования");
-        printPolyceMatBtn.setEnabled(false);
-        createPolicyDownloader(true).extend(printPolyceMatBtn);
-        commandBar.addComponent(printPolyceMatBtn);
+        final Button printPolicyMatBtn = new Button("Печать");
+        printPolicyMatBtn.addStyleName("icon-print-2");
+        printPolicyMatBtn.setDescription("Создать печатное представление полиса страхования");
+        printPolicyMatBtn.setEnabled(false);
+        printPolicyMatBtn.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                printPolicy(true);
+            }
+        });
+        commandBar.addComponent(printPolicyMatBtn);
 
         // TODO Заметить на раскрывающуюся кнопку
         final Button printPolicyBan = new Button("Печать без подложки");
         printPolicyBan.addStyleName("icon-print-2");
         printPolicyBan.setDescription("Создать печатное представление полиса страхования без подложки");
         printPolicyBan.setEnabled(false);
-        createPolicyDownloader(false).extend(printPolicyBan);
+        printPolicyBan.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                printPolicy(false);
+            }
+        });
         commandBar.addComponent(printPolicyBan);
 
         final Button exportBtn = new Button("Экспорт");
@@ -184,7 +194,7 @@ public class InsuranceGrid extends CustomComponent {
                 final boolean enableBtb = event.getProperty().getValue() != null;
                 editPolicyBtn.setEnabled(enableBtb);
                 printPolicyBan.setEnabled(enableBtb);
-                printPolyceMatBtn.setEnabled(enableBtb);
+                printPolicyMatBtn.setEnabled(enableBtb);
             }
         });
 // if (table.size() > 0)
@@ -196,6 +206,41 @@ public class InsuranceGrid extends CustomComponent {
         panel.addComponent(table);
 
         setCompositionRoot(panel);
+    }
+
+    private void printPolicy(boolean withMat) {
+        final Object curObjId = checkNotNull(table.getValue(), "No selected row");
+        final EntityItem<Insurance> curObj = (EntityItem<Insurance>) table.getItem(curObjId);
+        final Insurance insurance = curObj.getEntity();
+        checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
+
+        try {
+            // 1) Load Docx file by filling Velocity template engine and
+            // cache it to the registry
+            final InputStream in = getClass().getResourceAsStream(
+                    withMat ? "/reports/insurance/PropertyInsuranceTemplateWhitMat.docx"
+                            : "/reports/insurance/PropertyInsuranceTemplate.docx");
+            final IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
+                    TemplateEngineKind.Freemarker);
+
+            // 2) Create context Java model
+            final IContext context = report.createContext();
+            context.put("ins", insurance);
+
+            // 3) Generate report by merging Java model with the Docx
+            final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
+            report.process(context, outDoc);
+
+            final String clientName = insurance.getClient().getName();
+            final String policyNum = insurance.getRegNum();
+            final String policyFileName = MessageFormat.format("Полис {0} {1}.docx", policyNum, clientName);
+
+            new DownloadFileWindow(outDoc.toByteArray(), policyFileName).showModal();
+
+        } catch (IOException | XDocReportException e) {
+            logger.error("Print policy error", e);
+            throw Throwables.propagate(e);
+        }
     }
 
     // TODO: Предоставлять полис в формате PDF
@@ -224,78 +269,5 @@ public class InsuranceGrid extends CustomComponent {
     //
     // }
 
-    private OnDemandFileDownloader createPolicyDownloader(final boolean withMat) {
-        return new OnDemandFileDownloader(new OnDemandStreamResource() {
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public InputStream getStream() {
-                // Взять текущий полис из грида
-                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final EntityItem<Insurance> curObj = (EntityItem<Insurance>) table.getItem(curObjId);
-                final Insurance insurance = curObj.getEntity();
-                checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
-                try {
-                    // 1) Load Docx file by filling Velocity template engine and
-                    // cache it to the registry
-                    final InputStream in = getClass().getResourceAsStream(
-                            withMat ? "/reports/insurance/PropertyInsuranceTemplateWhitMat.docx"
-                                    : "/reports/insurance/PropertyInsuranceTemplate.docx");
-                    final IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
-                            TemplateEngineKind.Freemarker);
-
-                    // 2) Create context Java model
-                    final IContext context = report.createContext();
-                    context.put("ins", insurance);
-
-                    // 3) Generate report by merging Java model with the Docx
-                    final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
-                    report.process(context, outDoc);
-
-                    // Конвертируем в PDF
-                    // 1) Load DOCX into XWPFDocument
-                    // XWPFDocument document = new XWPFDocument(new
-                    // ByteArrayInputStream(outDoc.toByteArray()));
-                    //
-                    // // 2) Prepare Pdf options
-                    // PdfOptions options = PdfOptions.create();
-                    // options.fontEncoding("cp1251");
-                    // options.fontProvider(new ExtaFontProvider());
-                    //
-                    // // 3) Convert XWPFDocument to Pdf
-                    // // final ByteArrayOutputStream outPdf = new
-                    // // ByteArrayOutputStream(outDoc.size());
-                    // // PdfConverter.getInstance().convert(document, outPdf,
-                    // options);
-
-                    return new ByteArrayInputStream(outDoc.toByteArray());
-                } catch (IOException | XDocReportException e) {
-                    logger.error("Print policy error", e);
-                    throw Throwables.propagate(e);
-                }
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public String getFilename() {
-                // Взять текущий полис из грида
-                // Взять текущий полис из грида
-                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final EntityItem<Insurance> curObj = (EntityItem<Insurance>) table.getItem(curObjId);
-                final Insurance insurance = curObj.getEntity();
-                final String clientName = insurance.getClient().getName();
-                final String policyNum = insurance.getRegNum();
-                try {
-                    final String fileName = MessageFormat.format("Полис.{0}.{1}.docx", policyNum, clientName)
-                            .replaceAll(" ", ".");
-                    return URLEncoder.encode(fileName, "UTF-8");
-                } catch (final UnsupportedEncodingException e) {
-                    logger.error("Print policy error", e);
-                }
-                return "UnknownFileName.doc";
-            }
-        });
-    }
 
 }
