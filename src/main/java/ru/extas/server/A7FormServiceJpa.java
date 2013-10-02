@@ -85,13 +85,10 @@ public class A7FormServiceJpa implements A7FormService {
      */
     @Transactional
     @Override
-    public void changeStatus(final List<String> formNums, final Status newStatus) {
-        for (final String num : formNums) {
-            A7Form form = findByNum(num);
-            if (form != null) {
-                form.setStatus(newStatus);
-                em.get().merge(form);
-            }
+    public void changeStatus(final A7Form form, final Status newStatus) {
+        if (form != null) {
+            form.setStatus(newStatus);
+            persist(form);
         }
     }
 

@@ -11,7 +11,7 @@ import ru.extas.model.FormTransfer;
 import ru.extas.server.FormTransferService;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.contacts.ContactSelect;
+import ru.extas.web.contacts.PersonSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -50,12 +50,12 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
         final FormLayout form = new FormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
-        fromContactField = new ContactSelect("От кого");
+        fromContactField = new PersonSelect("От кого");
         fromContactField.setRequired(true);
         form.addComponent(fromContactField);
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
-        toContactField = new ContactSelect("Кому");
+        toContactField = new PersonSelect("Кому");
         toContactField.setRequired(true);
         form.addComponent(toContactField);
 

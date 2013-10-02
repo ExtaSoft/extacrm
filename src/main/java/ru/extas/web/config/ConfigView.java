@@ -41,6 +41,7 @@ public class ConfigView extends ExtaAbstractView {
         title.addStyleName("h1");
         title.addStyleName("icon-wrench-1");
         HorizontalLayout l = new HorizontalLayout(title);
+//        l.addComponent(updateBtn);
         l.setSizeFull();
         l.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         return l;

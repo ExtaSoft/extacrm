@@ -28,15 +28,17 @@ import ru.extas.model.Person;
 import ru.extas.utils.ValueUtil;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.OnDemandFileDownloader;
+import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.window.DownloadFileWindow;
 
-import java.io.*;
-import java.net.URLEncoder;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Valery Orlov
@@ -98,7 +100,7 @@ public class FormTransferGrid extends CustomComponent {
             @SuppressWarnings("unchecked")
             @Override
             public void buttonClick(final ClickEvent event) {
-                // Взять текущий полис из грида
+                // Взять текущий объект из грида
                 final Object curObjId = checkNotNull(table.getValue(), "No selected row");
                 final BeanItem<FormTransfer> curObj = new BeanItem<>(((EntityItem<FormTransfer>) table.getItem(curObjId)).getEntity());
 
@@ -111,6 +113,7 @@ public class FormTransferGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
+                            container.refreshItem(curObjId);
                             Notification.show("Акт приема/передачи сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }
@@ -123,11 +126,15 @@ public class FormTransferGrid extends CustomComponent {
         editTFBtn.setEnabled(false);
         commandBar.addComponent(editTFBtn);
 
-        final Button printTFBtn = new Button("Печать");
+        final Button printTFBtn = new Button("Печать", new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                printFormTransfer();
+            }
+        });
         printTFBtn.addStyleName("icon-print-2");
         printTFBtn.setDescription("Создать печатное представление акта приема передачи квитанций");
         printTFBtn.setEnabled(false);
-        createFormTransferDownloader().extend(printTFBtn);
         commandBar.addComponent(printTFBtn);
 
         panel.addComponent(commandBar);
@@ -157,103 +164,76 @@ public class FormTransferGrid extends CustomComponent {
         setCompositionRoot(panel);
     }
 
-    private OnDemandFileDownloader createFormTransferDownloader() {
-        return new OnDemandFileDownloader(new OnDemandFileDownloader.OnDemandStreamResource() {
-            private static final long serialVersionUID = 1L;
+    private void printFormTransfer() {
+        // Взять текущий акт из грида
+        final Object curObjId = checkNotNull(table.getValue(), "No selected row");
+        final EntityItem<FormTransfer> curObj = (EntityItem<FormTransfer>) table.getItem(curObjId);
+        final FormTransfer formTransfer = curObj.getEntity();
+        checkNotNull(formTransfer, "Нечего печатать", "Нет выбранной записи.");
 
-            @SuppressWarnings("unchecked")
-            @Override
-            public InputStream getStream() {
-                // Взять текущий акт из грида
-                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final EntityItem<FormTransfer> curObj = (EntityItem<FormTransfer>) table.getItem(curObjId);
-                final FormTransfer formTransfer = curObj.getEntity();
-                checkNotNull(formTransfer, "Нечего печатать", "Нет выбранной записи.");
-                try {
-                    // 1) Load Docx file by filling Velocity template engine and
-                    // cache
-                    // it to the registry
-                    final InputStream in = getClass().getResourceAsStream("/reports/insurance/FormTransferTemplate.docx");
-                    final IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
-                            TemplateEngineKind.Freemarker);
+        if (!canPrintForm(formTransfer))
+            return;
 
-                    // 2) Create context Java model
-                    // Продготовка параметров отчета:
-                    // Дата передачи
-                    final Date transferDate = formTransfer.getTransferDate().toDate();
-                    // Передающее юр. лицо
-                    final Company affiliation = formTransfer.getFromContact().getAffiliation();
-                    if (affiliation == null) {
-                        Notification.show("Не могу напечатать акт", Type.ERROR_MESSAGE);
-                        return null;
-                    }
-                    final String fromCompanyName = affiliation.getFullName();
-                    // Передающеее физ. лицо
-                    final String fromContactName = formTransfer.getFromContact().getName();
-                    // Принимающее физ. лицо
-                    final String toContactName = formTransfer.getToContact().getName();
-                    // Паспорт принимающего
-                    final Person toContactPass = (Person) formTransfer.getToContact();
-                    // Список форм
-                    final List<String> formsList = formTransfer.getFormNums();
-                    // Колличество форм прописью
-                    final String formNumsStr = ValueUtil.spellOutThing(formsList.size());
-                    final IContext context = report.createContext();
-                    context.put("formTransfer", formTransfer);
-                    context.put("transferDate", transferDate);
-                    context.put("fromCompanyName", fromCompanyName);
-                    context.put("fromContactName", fromContactName);
-                    context.put("toContactName", toContactName);
-                    context.put("toContactPass", toContactPass);
-                    context.put("formsList", formsList);
-                    context.put("formNumsStr", formNumsStr);
+        try {
+            // 1) Load Docx file by filling Velocity template engine and
+            // cache
+            // it to the registry
+            final InputStream in = getClass().getResourceAsStream("/reports/insurance/FormTransferTemplate.docx");
+            final IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
+                    TemplateEngineKind.Freemarker);
 
-                    // 3) Generate report by merging Java model with the Docx
-                    final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
-                    report.process(context, outDoc);
+            // 2) Create context Java model
+            // Продготовка параметров отчета:
+            // Передающеее физ. лицо
+            final Person fromContact = formTransfer.getFromContact();
+            // Передающее юр. лицо
+            final Company fromCompany = fromContact.getAffiliation();
+            // Принимающее физ. лицо
+            final Person toContact = formTransfer.getToContact();
+            // Колличество форм прописью
+            final String formNumsStr = ValueUtil.spellOutThing(formTransfer.getFormNums().size());
+            final IContext context = report.createContext();
+            context.put("formTransfer", formTransfer);
+            context.put("fromCompany", fromCompany);
+            context.put("fromContact", fromContact);
+            context.put("toContact", toContact);
+            context.put("formNumsStr", formNumsStr);
 
-                    // Конвертируем в PDF
-                    // 1) Load DOCX into XWPFDocument
-                    // XWPFDocument document = new XWPFDocument(new
-                    // ByteArrayInputStream(outDoc.toByteArray()));
-                    //
-                    // // 2) Prepare Pdf options
-                    // PdfOptions options = PdfOptions.create();
-                    // options.fontEncoding("cp1251");
-                    // options.fontProvider(new ExtaFontProvider());
-                    //
-                    // // 3) Convert XWPFDocument to Pdf
-                    // // final ByteArrayOutputStream outPdf = new
-                    // // ByteArrayOutputStream(outDoc.size());
-                    // // PdfConverter.getInstance().convert(document, outPdf,
-                    // options);
+            // 3) Generate report by merging Java model with the Docx
+            final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
+            report.process(context, outDoc);
 
-                    return new ByteArrayInputStream(outDoc.toByteArray());
-                } catch (IOException | XDocReportException e) {
-                    logger.error("Print Form Transfer error", e);
-                    throw Throwables.propagate(e);
-                }
-            }
+            new DownloadFileWindow(
+                    outDoc.toByteArray(),
+                    MessageFormat.format("Акт.приема.передачи.А7.{0}.docx",
+                            formTransfer.getToContact().getName()))
+                    .showModal();
 
-            @SuppressWarnings("unchecked")
-            @Override
-            public String getFilename() {
-                // Взять текущий полис из грида
-                // Взять текущий полис из грида
-                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final EntityItem<FormTransfer> curObj = (EntityItem<FormTransfer>) table.getItem(curObjId);
-                final FormTransfer formTransfer = curObj.getEntity();
-                final String clientName = formTransfer.getToContact().getName();
-                try {
-                    final String fileName = MessageFormat.format("Акт.приема.передачи.А7.({0}).docx", clientName)
-                            .replaceAll(" ", ".");
-                    return URLEncoder.encode(fileName, "UTF-8");
-                } catch (final UnsupportedEncodingException e) {
-                    logger.error("Print polycy error", e);
-                }
-                return "UnknownFileName.doc";
-            }
-        });
+        } catch (IOException | XDocReportException e) {
+            logger.error("Print Form Transfer error", e);
+            throw Throwables.propagate(e);
+        }
+    }
+
+    private boolean canPrintForm(FormTransfer formTransfer) {
+        final Person fromContact = formTransfer.getFromContact();
+        final Person toContact = formTransfer.getToContact();
+
+        List<String> messages = newArrayList();
+        if (fromContact.getAffiliation() == null)
+            messages.add(MessageFormat.format("У конткта \"{0}\" нет информации о компании (организации).", fromContact.getName()));
+        if (toContact.getPassNum() == null)
+            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Номер паспорта\".", toContact.getName()));
+        if (toContact.getPassIssueDate() == null)
+            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Дата выдачи паспорта\".", toContact.getName()));
+        if (toContact.getPassIssuedBy() == null)
+            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Кем выдан паспорт\".", toContact.getName()));
+
+        if (!messages.isEmpty()) {
+            NotificationUtil.showErrors("Недостаточно информации для печати", messages);
+            return false;
+        }
+        return true;
     }
 
 }

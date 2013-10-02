@@ -25,13 +25,13 @@ public class FormTransfer extends AbstractExtaObject {
      * Контакт от которого принимаются бланки
      */
     @OneToOne
-    private Contact fromContact;
+    private Person fromContact;
 
     /**
      * Контакт которому передются бланки
      */
     @OneToOne
-    private Contact toContact;
+    private Person toContact;
 
     /**
      * Дата прередачи бланков
@@ -41,35 +41,35 @@ public class FormTransfer extends AbstractExtaObject {
     /**
      * Список номеров передаваемых бланков
      */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "FORM_TRANSFER_NUMS")
     private List<String> formNums = newArrayList();
 
     /**
      * @return the fromContact
      */
-    public Contact getFromContact() {
+    public Person getFromContact() {
         return fromContact;
     }
 
     /**
      * @param fromContact the fromContact to set
      */
-    public void setFromContact(final Contact fromContact) {
+    public void setFromContact(final Person fromContact) {
         this.fromContact = fromContact;
     }
 
     /**
      * @return the toContact
      */
-    public Contact getToContact() {
+    public Person getToContact() {
         return toContact;
     }
 
     /**
      * @param toContact the toContact to set
      */
-    public void setToContact(final Contact toContact) {
+    public void setToContact(final Person toContact) {
         this.toContact = toContact;
     }
 

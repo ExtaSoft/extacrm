@@ -13,6 +13,7 @@ import ru.extas.web.commons.converters.*;
 import ru.extas.web.contacts.StringToPersonPosition;
 import ru.extas.web.contacts.StringToPersonSex;
 import ru.extas.web.insurance.StringToA7FormConverter;
+import ru.extas.web.insurance.StringToA7StatusConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.users.StringToUserRoleConverter;
 
@@ -74,6 +75,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
         // Конвертер должностей
         if (presentationType == String.class && modelType == Person.Position.class)
             return (Converter<PRESENTATION, MODEL>) lookup(StringToPersonPosition.class);
+
+        // Конвертер статусов А-7
+        if (presentationType == String.class && modelType == A7Form.Status.class)
+            return (Converter<PRESENTATION, MODEL>) lookup(StringToA7StatusConverter.class);
 
         // Let default factory handle the rest
         return super.findConverter(presentationType, modelType);

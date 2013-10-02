@@ -13,7 +13,7 @@
         <vaadin.production.mode>true</vaadin.production.mode>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <appengine.target.version>1.8.4</appengine.target.version>
+        <appengine.target.version>1.8.5</appengine.target.version>
         <shiro.version>1.2.2</shiro.version>
         <guice.version>3.0</guice.version>
         <slf4j.version>1.7.5</slf4j.version>
@@ -48,7 +48,8 @@
 
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
-                <jpa.ddl-generation>create-tables</jpa.ddl-generation>
+                <!--<jpa.ddl-generation>create-tables</jpa.ddl-generation>-->
+                <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
             </properties>
         </profile>
 
@@ -65,7 +66,7 @@
 
                 <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
                 <jpa.logging.level>WARNING</jpa.logging.level>
-                <jpa.ddl-generation>create-tables</jpa.ddl-generation>
+                <jpa.ddl-generation>none</jpa.ddl-generation>
             </properties>
         </profile>
 
@@ -323,6 +324,12 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.1.0.M0</version>
             </plugin>
 
             <plugin>

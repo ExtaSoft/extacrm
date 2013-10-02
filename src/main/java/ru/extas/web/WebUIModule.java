@@ -12,6 +12,7 @@ import ru.extas.web.commons.converters.*;
 import ru.extas.web.contacts.StringToPersonPosition;
 import ru.extas.web.contacts.StringToPersonSex;
 import ru.extas.web.insurance.StringToA7FormConverter;
+import ru.extas.web.insurance.StringToA7StatusConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.users.StringToUserRoleConverter;
 
@@ -63,6 +64,9 @@ public class WebUIModule extends AbstractModule {
 
         // Конвертер должностей
         bind(StringToPersonPosition.class).in(ServletScopes.SESSION);
+
+        // Конвертер статусов А-7
+        bind(StringToA7StatusConverter.class).in(ServletScopes.SESSION);
     }
 
     /**
