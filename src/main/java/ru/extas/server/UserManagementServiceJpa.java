@@ -1,6 +1,5 @@
 package ru.extas.server;
 
-import com.google.appengine.api.utils.SystemProperty;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
@@ -101,13 +100,13 @@ public class UserManagementServiceJpa implements UserManagementService {
         contact.setName("Global Superuser");
         user.setContact(contact);
         user.setLogin(SUPERUSER_LOGIN);
-        if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
-            // The app is running on App Engine...
-            user.setPassword("wfrySeRJLIX11u4OdZqXzDky8pL0mk/Q8VDt8QwWCU8=");
-            user.setPasswordSalt("Dgr6Vo1PB7h4FWEEKCVXuQ==");
-        } else {
+        String is_dev_env = System.getProperty("IS_DEV_ENV");
+        if (is_dev_env != null && is_dev_env.equalsIgnoreCase("true")) {
             user.setPassword("y+ajXewM2qsaZBocksvfYKIlMzQBPW9SXORl4npgLWc=");
             user.setPasswordSalt("YM8hMeHtHyPOa3eY+JmSVg==");
+        } else {
+            user.setPassword("wfrySeRJLIX11u4OdZqXzDky8pL0mk/Q8VDt8QwWCU8=");
+            user.setPasswordSalt("Dgr6Vo1PB7h4FWEEKCVXuQ==");
         }
         user.setRole(UserRole.ADMIN);
         return user;

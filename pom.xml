@@ -13,7 +13,6 @@
         <vaadin.production.mode>true</vaadin.production.mode>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <appengine.target.version>1.8.5</appengine.target.version>
         <shiro.version>1.2.2</shiro.version>
         <guice.version>3.0</guice.version>
         <slf4j.version>1.7.5</slf4j.version>
@@ -42,14 +41,15 @@
                 <extacrm.gae.name>extacrm-dev</extacrm.gae.name>
 
                 <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
-                <extacrm.jdbc.url>jdbc:mysql://localhost:3306/extacrm</extacrm.jdbc.url>
+                <!--<extacrm.jdbc.url>jdbc:mysql://localhost:3306/extacrm</extacrm.jdbc.url>-->
+                <extacrm.jdbc.url>jdbc:mysql://mysql-extacrm.jelastic.regruhosting.ru/extacrm</extacrm.jdbc.url>
                 <extacrm.jdbc.user>root</extacrm.jdbc.user>
-                <extacrm.jdbc.password/>
+                <extacrm.jdbc.password>pLEgkYq2J5</extacrm.jdbc.password>
 
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
-                <!--<jpa.ddl-generation>create-tables</jpa.ddl-generation>-->
-                <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
+                <jpa.ddl-generation>create-tables</jpa.ddl-generation>
+                <!--<jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>-->
             </properties>
         </profile>
 
@@ -149,11 +149,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>${appengine.target.version}</version>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>${servlet-api.version}</version>
@@ -170,18 +165,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-testing</artifactId>
-            <version>${appengine.target.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-stubs</artifactId>
-            <version>${appengine.target.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -367,48 +350,6 @@
                         </resource>
                     </webResources>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.groovy.maven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <properties>
-                                <rawVersion>${project.version}</rawVersion>
-                            </properties>
-                            <source>
-                                // Convert POM version to valid GAE version identifier
-                                //noinspection GroovyAssignabilityCheck
-                                project.properties['appengine.app.version'] =
-                                    (project.properties['rawVersion'] =~ /\./).replaceAll('-').toLowerCase()
-                            </source>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.google.appengine</groupId>
-                <artifactId>appengine-maven-plugin</artifactId>
-                <version>${appengine.target.version}</version>
-                <configuration>
-                    <!-- 					<port>9090</port> -->
-                    <jvmFlags>
-                        <!--<jvmFlag>-Dappengine.generated.dir=${basedir}/gae.gen</jvmFlag>-->
-                        <jvmFlag>-Xdebug</jvmFlag>
-                        <jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8989,server=y,suspend=n</jvmFlag>
-                    </jvmFlags>
-                    <disableUpdateCheck>true</disableUpdateCheck>
-                    <fullScanSeconds>-1</fullScanSeconds>
-                </configuration>
-
             </plugin>
 
             <!-- As we are doing "inplace" GWT compilation, ensure the widgetset -->

@@ -8,7 +8,6 @@ classes/
 pom.xml.versionsBackup
 test-output/
 /atlassian-ide-plugin.xml
-.idea
 .DS_Store
 .classpath
 .settings
@@ -17,11 +16,7 @@ temp-testng-customsuite.xml
 test-output
 .externalToolBuilders
 *~
-/datanucleus.log
 /pom.xml.save
 /1.txt
 /target
 /build.log
-/PropertyInsurance.docx
-/PropertyInsurance.pdf
-/gae.gen
