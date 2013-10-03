@@ -21,7 +21,7 @@ public abstract class Contact extends AbstractExtaObject {
     // Фактический адрес
     @Embedded
     private AddressInfo actualAddress;
-    // Имя пользователя
+    // Имя контакта
     private String name;
     // Телефон
     @Column(name = "CELL_PHONE")

@@ -24,6 +24,7 @@
         <class>ru.extas.model.converter.LocalDateConverter</class>
         <class>ru.extas.model.converter.DateTimeConverter</class>
         <class>ru.extas.model.converter.UserRoleConverter</class>
+        <class>ru.extas.model.Lead</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
@@ -40,8 +41,8 @@
 
             <property name="eclipselink.ddl-generation" value="${jpa.ddl-generation}"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
-            <!--<property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL_ddlGeneration.jdbc"/>-->
-            <!--<property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL_ddlGeneration.jdbc"/>-->
+            <property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL_ddlGeneration.sql"/>
+            <property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL_ddlGeneration.sql"/>
 
             <property name="eclipselink.logging.level" value="${jpa.logging.level}"/>
             <property name="eclipselink.logging.level.sql" value="${jpa.logging.level}"/>
