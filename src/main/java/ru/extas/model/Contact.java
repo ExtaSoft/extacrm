@@ -5,6 +5,8 @@ package ru.extas.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 /**
  * Контактное лицо контрагента, клиент физик или сотрудник
@@ -14,20 +16,36 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE")
-@Table(name = "CONTACT")
+@Table(name = "CONTACT", indexes = {
+        @Index(columnList = "NAME"),
+        @Index(columnList = "TYPE, NAME")
+})
 public abstract class Contact extends AbstractExtaObject {
 
     private static final long serialVersionUID = -2543373135823969745L;
+
+    public static final int NAME_LENGTH = 50;
+
     // Фактический адрес
     @Embedded
     private AddressInfo actualAddress;
+
     // Имя контакта
+    @Column(length = NAME_LENGTH)
+    @Max(NAME_LENGTH)
+    @NotNull
     private String name;
+
     // Телефон
-    @Column(name = "CELL_PHONE")
+    @Column(name = "CELL_PHONE", length = 20)
+    @Max(20)
     private String cellPhone;
+
     // Эл. почта
+    @Column(length = 35)
+    @Max(35)
     private String email;
+
     // Вышестоящая организация
     @OneToOne
     private Company affiliation;

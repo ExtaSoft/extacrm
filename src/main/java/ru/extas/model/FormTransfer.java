@@ -42,7 +42,11 @@ public class FormTransfer extends AbstractExtaObject {
      * Список номеров передаваемых бланков
      */
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "FORM_TRANSFER_NUMS")
+    @CollectionTable(name = "FORM_TRANSFER_NUMS",
+            joinColumns = {@JoinColumn(name = "FORM_TRANSFER_ID")},
+            indexes = {
+                    @Index(columnList = "FORM_TRANSFER_ID, FORMNUMS")
+            })
     private List<String> formNums = newArrayList();
 
     /**

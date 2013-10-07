@@ -3,6 +3,7 @@ package ru.extas.model;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 
 /**
  * Данные контакта - физ. лица
@@ -18,28 +19,40 @@ public class Person extends Contact {
 
     // Дата рождения
     private LocalDate birthday;
+
     // Пол
     @Enumerated(EnumType.STRING)
+    @Column(length = 6)
     private Sex sex;
+
     // Должность
     @Enumerated(EnumType.STRING)
-    @Column(name = "JOB_POSITION")
+    @Column(name = "JOB_POSITION", length = 15)
     private Position jobPosition;
+
     // Департамент
-    @Column(name = "JOB_DEPARTMENT")
+    @Column(name = "JOB_DEPARTMENT", length = 50)
+    @Max(50)
     private String jobDepartment;
+
     // Паспортные данные:
     // номер
-    @Column(name = "PASS_NUM")
+    @Column(name = "PASS_NUM", length = 30)
+    @Max(30)
     private String passNum;
+
     // дата выдачи
     @Column(name = "PASS_ISSUE_DATE")
     private LocalDate passIssueDate;
+
     // кем выдан
-    @Column(name = "PASS_ISSUED_BY")
+    @Column(name = "PASS_ISSUED_BY", length = 255)
+    @Max(255)
     private String passIssuedBy;
+
     // код подразделения
-    @Column(name = "PASS_ISSUED_BY_NUM")
+    @Column(name = "PASS_ISSUED_BY_NUM", length = 10)
+    @Max(10)
     private String passIssuedByNum;
 
     public Person() {

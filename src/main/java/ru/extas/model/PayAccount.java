@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 
 /**
  * Платежные реквизиты контрагента
@@ -20,17 +21,25 @@ public class PayAccount extends AbstractExtaObject {
     private static final long serialVersionUID = -7891940552175752858L;
 
     // Наименование банка
-    @Column(name = "BANK_NAME")
+    @Column(name = "BANK_NAME", length = Contact.NAME_LENGTH)
+    @Max(Contact.NAME_LENGTH)
     private String bankName;
+
     // БИК
-    @Column(name = "BANK_CODE")
+    @Column(name = "BANK_CODE", length = 35)
+    @Max(35)
     private String bankCode;
+
     // Корреспондентский счет
-    @Column(name = "LORO_ACCOUNT")
+    @Column(name = "LORO_ACCOUNT", length = 35)
+    @Max(35)
     private String loroAccount;
+
     // Номер расчетного счета
-    @Column(name = "SETTLEMENT_ACCOUNT")
+    @Column(name = "SETTLEMENT_ACCOUNT", length = 35)
+    @Max(35)
     private String settlementAccount;
+
     // Контакт которому относится счет
     @ManyToOne
     private Company contact;

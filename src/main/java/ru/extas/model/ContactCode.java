@@ -1,8 +1,7 @@
 package ru.extas.model;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
 
 /**
  * Коды контрагентов (ИНН, ОГРН...)
@@ -12,16 +11,24 @@ import javax.persistence.Table;
  *         Time: 12:53
  */
 @Entity
-@Table(name = "CONTACT_CODE")
+@Table(name = "CONTACT_CODE", indexes = {
+        @Index(columnList = "TYPE, CODE", unique = true)
+})
 public class ContactCode extends AbstractExtaObject {
 
     private static final long serialVersionUID = -7891940552175752834L;
 
 
     // Тип кода (ИНН, ОГРН...)
+    @Column(length = 20)
+    @Max(20)
     private String type;
+
     // Значение кода
+    @Column(length = 35)
+    @Max(35)
     private String code;
+
     // Контакт которому относится код
     @ManyToOne
     private Company contact;

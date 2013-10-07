@@ -9,7 +9,6 @@ import org.eclipse.persistence.annotations.UuidGenerator;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -23,19 +22,25 @@ import java.io.Serializable;
 public abstract class AbstractExtaObject implements Serializable {
 
     private static final long serialVersionUID = 9098736299506726746L;
+    public static final int LOGIN_LENGTH = 20;
+
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @Column(name = "ID")
-    @Size(max = 46)
+    @Column(name = "ID", length = 46)
     protected String id;
-    @Column(name = "CREATED_BY")
+
+    @Column(name = "CREATED_BY", length = LOGIN_LENGTH)
     protected String createdBy;
+
     @Column(name = "CREATED_AT")
     protected DateTime createdAt;
-    @Column(name = "MODIFIED_BY")
+
+    @Column(name = "MODIFIED_BY", length = LOGIN_LENGTH)
     protected String modifiedBy;
+
     @Column(name = "MODIFIED_AT")
     protected DateTime modifiedAt;
+
     @Version
     protected int version;
 

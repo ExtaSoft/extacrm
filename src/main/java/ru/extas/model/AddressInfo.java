@@ -2,6 +2,8 @@ package ru.extas.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -15,14 +17,24 @@ public class AddressInfo implements Serializable {
     private static final long serialVersionUID = -7891940678175752858L;
 
     // Регион
+    @Column(length = 20)
+    @Max(20)
     private String region;
+
     // Город
+    @Column(length = 15)
+    @Max(15)
     private String city;
+
     // Индекс
-    @Column(name = "POST_INDEX")
+    @Column(name = "POST_INDEX", length = 6)
+    @Max(6)
+    @Pattern(regexp = "[0-9]*")
     private String postIndex;
+
     // Адрес (улица, дом и т.д.)
-    @Column(name = "STREET_BLD")
+    @Column(name = "STREET_BLD", length = 255)
+    @Max(255)
     private String streetBld;
 
     public AddressInfo() {

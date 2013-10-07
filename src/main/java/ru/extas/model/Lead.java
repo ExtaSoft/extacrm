@@ -50,6 +50,9 @@ public class Lead extends AbstractExtaObject {
     //    Персональные данные
     //-----------------------------------
 
+    @Column(name = "COMMENT")
+    private String comment;
+
     // Имя контакта
     @Column(name = "CONTACT_NAME")
     private String contactName;
@@ -75,6 +78,13 @@ public class Lead extends AbstractExtaObject {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public String getRegion() {
         return region;

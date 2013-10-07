@@ -1,9 +1,7 @@
 package ru.extas.model;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.util.Set;
 
 /**
@@ -20,6 +18,8 @@ public class UserGroup extends AbstractExtaObject {
     /**
      * Имя группы
      */
+    @Column(length = 50)
+    @Max(50)
     private String name;
 
     // Список разрешений группы

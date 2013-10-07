@@ -2,10 +2,8 @@ package ru.extas.model;
 
 import org.joda.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.math.BigDecimal;
 
 /**
@@ -14,18 +12,25 @@ import java.math.BigDecimal;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "INSURANCE")
+@Table(name = "INSURANCE",
+        indexes = {
+                @Index(columnList = "REG_NUM"),
+                @Index(columnList = "A7_NUM"),
+                @Index(columnList = "\"DATE\"")
+        })
 public class Insurance extends AbstractExtaObject {
 
     private static final long serialVersionUID = -1289533183659860816L;
 
     // Номер полиса
-    @Column(name = "REG_NUM")
+    @Column(name = "REG_NUM", length = Policy.REG_NUM_LENGTH, unique = true)
+    @Max(Policy.REG_NUM_LENGTH)
     private String regNum;
 
     // Номер квитанции А-7
-    @Column(name = "A7_NUM")
-    String a7Num;
+    @Column(name = "A7_NUM", length = A7Form.REG_NUM_LENGTH, unique = true)
+    @Max(A7Form.REG_NUM_LENGTH)
+    private String a7Num;
 
     // Дата заключения полиса
     @Column(name = "\"DATE\"")
@@ -36,15 +41,18 @@ public class Insurance extends AbstractExtaObject {
     private Person client;
 
     // Предмет страхования - тип
-    @Column(name = "MOTOR_TYPE")
+    @Column(name = "MOTOR_TYPE", length = 20)
+    @Max(20)
     private String motorType;
 
     // Предмет страхования - марка
-    @Column(name = "MOTOR_BRAND")
+    @Column(name = "MOTOR_BRAND", length = 20)
+    @Max(20)
     private String motorBrand;
 
     // Предмет страхования - модель
-    @Column(name = "MOTOR_MODEL")
+    @Column(name = "MOTOR_MODEL", length = 20)
+    @Max(20)
     private String motorModel;
 
     // Страховая сумма, руб.

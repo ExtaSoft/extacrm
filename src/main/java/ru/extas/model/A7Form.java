@@ -4,10 +4,9 @@
 package ru.extas.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 /**
  * Данные о квитанции форма № А-7
@@ -15,10 +14,14 @@ import javax.persistence.Table;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "A7_FORM")
+@Table(name = "A7_FORM",
+        indexes = {
+                @Index(columnList = "OWNER_ID, STATUS, REG_NUM")
+        })
 public class A7Form extends AbstractExtaObject {
 
     private static final long serialVersionUID = -4643812782207400426L;
+    public static final int REG_NUM_LENGTH = 20;
 
     /**
      * Статусы формы А-7
@@ -47,7 +50,9 @@ public class A7Form extends AbstractExtaObject {
     /**
      * Номер квитанции
      */
-    @Column(name = "REG_NUM")
+    @Column(name = "REG_NUM", length = REG_NUM_LENGTH, unique = true)
+    @Max(REG_NUM_LENGTH)
+    @NotNull
     private String regNum;
 
     /**

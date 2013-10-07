@@ -41,14 +41,13 @@
                 <extacrm.gae.name>extacrm-dev</extacrm.gae.name>
 
                 <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
-                <!--<extacrm.jdbc.url>jdbc:mysql://localhost:3306/extacrm</extacrm.jdbc.url>-->
-                <extacrm.jdbc.url>jdbc:mysql://mysql-extacrm.jelastic.regruhosting.ru/extacrm</extacrm.jdbc.url>
+                <extacrm.jdbc.url>jdbc:mysql://localhost:3306/extacrm</extacrm.jdbc.url>
                 <extacrm.jdbc.user>root</extacrm.jdbc.user>
-                <extacrm.jdbc.password>pLEgkYq2J5</extacrm.jdbc.password>
+                <extacrm.jdbc.password/>
 
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
-                <jpa.ddl-generation>create-tables</jpa.ddl-generation>
+                <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
                 <!--<jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>-->
             </properties>
         </profile>
@@ -391,6 +390,39 @@
             </plugin>
 
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>com.vaadin</groupId>
+                                        <artifactId>
+                                            vaadin-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [7.1.6,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>compile-theme</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>

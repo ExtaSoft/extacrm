@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-             version="2.0">
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
 
     <persistence-unit name="extacrmJpaUnit" transaction-type="RESOURCE_LOCAL">
 
@@ -16,15 +16,15 @@
         <class>ru.extas.model.ContactCode</class>
         <class>ru.extas.model.FormTransfer</class>
         <class>ru.extas.model.Insurance</class>
+        <class>ru.extas.model.Lead</class>
         <class>ru.extas.model.PayAccount</class>
         <class>ru.extas.model.Person</class>
         <class>ru.extas.model.Policy</class>
         <class>ru.extas.model.UserGroup</class>
         <class>ru.extas.model.UserProfile</class>
-        <class>ru.extas.model.converter.LocalDateConverter</class>
         <class>ru.extas.model.converter.DateTimeConverter</class>
+        <class>ru.extas.model.converter.LocalDateConverter</class>
         <class>ru.extas.model.converter.UserRoleConverter</class>
-        <class>ru.extas.model.Lead</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
@@ -40,9 +40,10 @@
             <property name="eclipselink.jdbc.batch-writing" value="jdbc"/>
 
             <property name="eclipselink.ddl-generation" value="${jpa.ddl-generation}"/>
-            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
-            <property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL_ddlGeneration.sql"/>
-            <property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL_ddlGeneration.sql"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="both"/>
+            <property name="eclipselink.application-location" value="src/main/resources/db"/>
+            <property name="eclipselink.create-ddl-jdbc-file-name" value="create_database.sql"/>
+            <property name="eclipselink.drop-ddl-jdbc-file-name" value="drop_database.sql"/>
 
             <property name="eclipselink.logging.level" value="${jpa.logging.level}"/>
             <property name="eclipselink.logging.level.sql" value="${jpa.logging.level}"/>

@@ -7,7 +7,9 @@ import org.joda.time.DateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 
 
 /**
@@ -16,13 +18,18 @@ import javax.persistence.Table;
  * @author Valery Orlov
  */
 @Entity
-@Table(name = "POLICY")
+@Table(name = "POLICY",
+        indexes = {
+                @Index(columnList = "ISSUE_DATE, BOOK_TIME, REG_NUM")
+        })
 public class Policy extends AbstractExtaObject {
 
     private static final long serialVersionUID = 3160576591591414719L;
+    public static final int REG_NUM_LENGTH = 20;
 
     // Номер полиса
-    @Column(name = "REG_NUM")
+    @Column(name = "REG_NUM", length = REG_NUM_LENGTH, unique = true)
+    @Max(REG_NUM_LENGTH)
     private String regNum;
 
     // Время бронирования полиса

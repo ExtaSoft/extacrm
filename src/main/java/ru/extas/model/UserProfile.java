@@ -1,6 +1,7 @@
 package ru.extas.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +17,8 @@ public class UserProfile extends AbstractExtaObject {
     private static final long serialVersionUID = 6937423190833815234L;
 
     // Login/email
+    @Column(length = LOGIN_LENGTH)
+    @Max(LOGIN_LENGTH)
     private String login;
 
     // Ссылка на контакт
@@ -26,11 +29,11 @@ public class UserProfile extends AbstractExtaObject {
     private String password;
 
     // Ключ шифрования пароля
-    @Column(name = "PASSWORD_SALT")
+    @Column(name = "PASSWORD_SALT", length = 26)
     private String passwordSalt;
 
     // Требование сменить пароль при следующем входе
-    @Column(name = "CHANGE_PASSWORD")
+    @Column(name = "CHANGE_PASSWORD", length = 46)
     private boolean changePassword;
 
     // Основная роль пользователя
