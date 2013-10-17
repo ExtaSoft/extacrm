@@ -6,11 +6,14 @@ package ru.extas.web.commons.window;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Iterator;
 
 /**
  * @author Valery Orlov
@@ -29,9 +32,8 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         super(caption);
 
         final TEditObject bean = beanItem.getBean();
-        initObject(bean);
-
         final ComponentContainer form = createEditFields(bean);
+        initObject(bean);
 
         // Now create a binder
         final FieldGroup binder = new FieldGroup(beanItem);
@@ -49,6 +51,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
             }
         });
         cancelBtn.setStyleName("icon-cancel");
+        cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 
         okBtn = new Button("OK", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
@@ -75,12 +78,14 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         });
 
         okBtn.setStyleName("icon-ok");
+        okBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
         this.buttonsPanel.addComponent(okBtn);
         this.buttonsPanel.setComponentAlignment(okBtn, Alignment.MIDDLE_RIGHT);
         this.buttonsPanel.addComponent(cancelBtn);
         this.buttonsPanel.setComponentAlignment(cancelBtn, Alignment.MIDDLE_RIGHT);
         this.buttonsPanel.setSpacing(true);
 
+        setDefaultFocus(form);
         setContent(form);
 
         this.addCloseListener(new CloseListener() {
@@ -94,6 +99,21 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
 
             }
         });
+    }
+
+    private boolean setDefaultFocus(HasComponents container) {
+        boolean focused = false;
+        Iterator<Component> childs = container.iterator();
+        while (childs.hasNext() && !focused) {
+            Component comp = childs.next();
+            if (comp instanceof Component.Focusable && comp.isEnabled() && comp.isVisible()) {
+                ((Component.Focusable) comp).focus();
+                focused = true;
+            } else if (comp instanceof HasComponents) {
+                focused = setDefaultFocus((HasComponents) comp);
+            }
+        }
+        return focused;
     }
 
     @Override

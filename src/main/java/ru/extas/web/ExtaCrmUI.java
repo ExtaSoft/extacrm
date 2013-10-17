@@ -28,6 +28,7 @@ import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
 import ru.extas.web.insurance.InsuranceView;
+import ru.extas.web.lead.LeadsView;
 import ru.extas.web.loans.LoansView;
 import ru.extas.web.users.ChangePasswordForm;
 import ru.extas.web.users.UsersView;
@@ -383,10 +384,10 @@ public class ExtaCrmUI extends UI {
         mainMenu.addChapter("", "Начало", "Начальный экран приложения", "icon-home", HomeView.class, null);
         mainMenu.addChapter("contacts", "Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts",
                 ContactsView.class, null);
+        mainMenu.addChapter("leads", "Лиды", "Входящие лиды", "icon-inbox-alt", LeadsView.class, null);
         mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella-1",
                 InsuranceView.class, null);
-        mainMenu.addChapter("loans", "Кредитование", "Раздел посвященный кредитованию", "icon-dollar", LoansView.class,
-                null);
+        mainMenu.addChapter("loans", "Кредитование", "Раздел посвященный кредитованию", "icon-dollar", LoansView.class, null);
         if (currentUser.hasRole(UserRole.ADMIN.getName()))
             mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3",
                     UsersView.class, null);

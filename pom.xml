@@ -19,7 +19,7 @@
         <joda-time.version>2.2</joda-time.version>
         <gson.version>2.2.4</gson.version>
 
-        <vaadin.version>7.1.6</vaadin.version>
+        <vaadin.version>7.1.7</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <servlet-api.version>2.5</servlet-api.version>
 
@@ -38,7 +38,7 @@
             </activation>
 
             <properties>
-                <extacrm.gae.name>extacrm-dev</extacrm.gae.name>
+                <jelastic.environment>extacrm-dev</jelastic.environment>
 
                 <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
                 <extacrm.jdbc.url>jdbc:mysql://localhost:3306/extacrm</extacrm.jdbc.url>
@@ -56,12 +56,12 @@
             <id>prod</id>
 
             <properties>
-                <extacrm.gae.name>extacrm</extacrm.gae.name>
+                <jelastic.environment>extacrm</jelastic.environment>
 
-                <extacrm.jdbc.driver>com.google.appengine.api.rdbms.AppEngineDriver</extacrm.jdbc.driver>
-                <extacrm.jdbc.url>jdbc:google:rdbms://extacrm:pss/extacrm</extacrm.jdbc.url>
-                <extacrm.jdbc.user/>
-                <extacrm.jdbc.password/>
+                <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
+                <extacrm.jdbc.url>${prod.db.url}</extacrm.jdbc.url>
+                <extacrm.jdbc.user>${prod.db.user}</extacrm.jdbc.user>
+                <extacrm.jdbc.password>${prod.db.password}</extacrm.jdbc.password>
 
                 <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
                 <jpa.logging.level>WARNING</jpa.logging.level>
@@ -73,16 +73,16 @@
             <id>uat</id>
 
             <properties>
-                <extacrm.gae.name>extacrm-uat</extacrm.gae.name>
+                <jelastic.environment>extacrm-uat</jelastic.environment>
 
-                <extacrm.jdbc.driver>com.google.appengine.api.rdbms.AppEngineDriver</extacrm.jdbc.driver>
-                <extacrm.jdbc.url>jdbc:google:rdbms://extacrm:uat/extacrm</extacrm.jdbc.url>
-                <extacrm.jdbc.user/>
-                <extacrm.jdbc.password/>
+                <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
+                <extacrm.jdbc.url>${uat.db.url}</extacrm.jdbc.url>
+                <extacrm.jdbc.user>${uat.db.user}</extacrm.jdbc.user>
+                <extacrm.jdbc.password>${uat.db.password}</extacrm.jdbc.password>
 
                 <extacrm.gae.log.props>WEB-INF/logging-uat.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
-                <jpa.ddl-generation>create-tables</jpa.ddl-generation>
+                <jpa.ddl-generation>none</jpa.ddl-generation>
             </properties>
         </profile>
     </profiles>
@@ -129,6 +129,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>14.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.flyway</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>2.2.1</version>
         </dependency>
 
         <dependency>
@@ -303,15 +309,39 @@
         <plugins>
 
             <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.1</version>
+                <groupId>com.jelastic</groupId>
+                <artifactId>jelastic-maven-plugin</artifactId>
+                <version>1.7</version>
+                <configuration>
+                    <email>${jelastic.email}</email>
+                    <password>${jelastic.password}</password>
+                    <environment>${jelastic.environment}</environment>
+                    <context>ROOT</context>
+                    <comment>${project.name} ${version} built at ${maven.build.timestamp}</comment>
+                    <api_hoster>app.jelastic.regruhosting.ru</api_hoster>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.googlecode.flyway</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.1.0.M0</version>
+                <configuration>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>IS_DEV_ENV</name>
+                            <value>true</value>
+                        </systemProperty>
+                    </systemProperties>
+                </configuration>
             </plugin>
 
             <plugin>
@@ -321,7 +351,7 @@
                 <configuration>
                     <releaseProfiles>prod</releaseProfiles>
                     <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
-                    <goals>appengine:update</goals>
+                    <goals>jelastic:deploy</goals>
                 </configuration>
             </plugin>
 
@@ -413,9 +443,9 @@
                                             <goal>compile-theme</goal>
                                         </goals>
                                     </pluginExecutionFilter>
-                                    <action>
+                                    <fire>
                                         <ignore></ignore>
-                                    </action>
+                                    </fire>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>

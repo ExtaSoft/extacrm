@@ -6,12 +6,9 @@ package ru.extas.web.insurance;
 import com.google.common.base.Throwables;
 import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
@@ -26,9 +23,7 @@ import ru.extas.model.Company;
 import ru.extas.model.FormTransfer;
 import ru.extas.model.Person;
 import ru.extas.utils.ValueUtil;
-import ru.extas.web.commons.ExtaDataContainer;
-import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
 import java.io.ByteArrayOutputStream;
@@ -43,34 +38,37 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * @author Valery Orlov
  */
-public class FormTransferGrid extends CustomComponent {
+public class FormTransferGrid extends ExtaGrid {
 
     private static final long serialVersionUID = 1170175803163742829L;
     private final Logger logger = LoggerFactory.getLogger(FormTransferGrid.class);
-    private final Table table = new Table();
 
     public FormTransferGrid() {
 
-        final CssLayout panel = new CssLayout();
-        panel.addStyleName("layout-panel");
-        panel.setSizeFull();
+    }
 
+    @Override
+    protected GridDataDecl createDataDecl() {
+        return new FormTransferDataDecl();
+    }
+
+    @Override
+    protected Container createContainer() {
         // Запрос данных
         final JPAContainer<FormTransfer> container = new ExtaDataContainer<>(FormTransfer.class);
         container.addNestedContainerProperty("fromContact.name");
         container.addNestedContainerProperty("toContact.name");
 
-        final HorizontalLayout commandBar = new HorizontalLayout();
-        commandBar.addStyleName("configure");
-        commandBar.setSpacing(true);
+        return container;
+    }
 
-        final Button newTFBtn = new Button("Новый", new ClickListener() {
+    @Override
+    protected List<UIAction> createActions() {
+        List<UIAction> actions = newArrayList();
 
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings("unchecked")
+        actions.add(new UIAction("Новый", "Ввод нового акта приема/передачи", "icon-doc-new") {
             @Override
-            public void buttonClick(final ClickEvent event) {
+            public void fire(Object itemId) {
                 final BeanItem<FormTransfer> newObj = new BeanItem<>(new FormTransfer());
 
                 final FormTransferEditForm editWin = new FormTransferEditForm("Новый акт приема/передачи", newObj);
@@ -81,7 +79,7 @@ public class FormTransferGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            container.refresh();
+                            ((JPAContainer) container).refresh();
                             Notification.show("Акт приема/передачи сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }
@@ -89,20 +87,11 @@ public class FormTransferGrid extends CustomComponent {
                 editWin.showModal();
             }
         });
-        newTFBtn.addStyleName("icon-doc-new");
-        newTFBtn.setDescription("Ввод нового акта приема/передачи");
-        commandBar.addComponent(newTFBtn);
 
-        final Button editTFBtn = new Button("Изменить", new ClickListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings("unchecked")
+        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке акта приема/передачи", "icon-edit-3") {
             @Override
-            public void buttonClick(final ClickEvent event) {
-                // Взять текущий объект из грида
-                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<FormTransfer> curObj = new BeanItem<>(((EntityItem<FormTransfer>) table.getItem(curObjId)).getEntity());
+            public void fire(final Object itemId) {
+                final BeanItem<FormTransfer> curObj = new BeanItem<>(((EntityItem<FormTransfer>) table.getItem(itemId)).getEntity());
 
                 final FormTransferEditForm editWin = new FormTransferEditForm("Редактировать акт приема/передачи",
                         curObj);
@@ -113,7 +102,7 @@ public class FormTransferGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            container.refreshItem(curObjId);
+                            ((JPAContainer) container).refreshItem(itemId);
                             Notification.show("Акт приема/передачи сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }
@@ -121,47 +110,8 @@ public class FormTransferGrid extends CustomComponent {
                 editWin.showModal();
             }
         });
-        editTFBtn.addStyleName("icon-edit-3");
-        editTFBtn.setDescription("Редактировать выделенный в списке акта приема/передачи");
-        editTFBtn.setEnabled(false);
-        commandBar.addComponent(editTFBtn);
 
-        final Button printTFBtn = new Button("Печать", new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                printFormTransfer();
-            }
-        });
-        printTFBtn.addStyleName("icon-print-2");
-        printTFBtn.setDescription("Создать печатное представление акта приема передачи квитанций");
-        printTFBtn.setEnabled(false);
-        commandBar.addComponent(printTFBtn);
-
-        panel.addComponent(commandBar);
-
-        table.setContainerDataSource(container);
-        table.setSizeFull();
-
-        // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
-        table.setImmediate(true);
-        table.addValueChangeListener(new ValueChangeListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final boolean enableBtb = event.getProperty().getValue() != null;
-                editTFBtn.setEnabled(enableBtb);
-                printTFBtn.setEnabled(enableBtb);
-            }
-        });
-
-        final GridDataDecl ds = new FormTransferDataDecl();
-        ds.initTableColumns(table);
-
-        panel.addComponent(table);
-
-        setCompositionRoot(panel);
+        return actions;
     }
 
     private void printFormTransfer() {

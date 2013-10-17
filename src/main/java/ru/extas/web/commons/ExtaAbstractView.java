@@ -64,20 +64,19 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
             public void buttonClick(ClickEvent event) {
                 // TODO: Implement context help
                 Notification.show("Не реализовано пока");
-                // new InsuranceRepositoryJpa().fillRegistry();
             }
         });
         top.addComponent(helpBtn);
         top.setComponentAlignment(helpBtn, Alignment.MIDDLE_LEFT);
 
-        VerticalLayout row = new VerticalLayout();
-        row.setMargin(true);
-        row.setSizeFull();
-        row.setSpacing(true);
-        addComponent(row);
-        setExpandRatio(row, 2);
+        VerticalLayout content = new VerticalLayout();
+        content.setMargin(true);
+        content.setSizeFull();
+        content.setSpacing(true);
+        addComponent(content);
+        setExpandRatio(content, 2);
 
-        row.addComponent(getContent());
+        content.addComponent(getContent());
 
     }
 

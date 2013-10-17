@@ -4,6 +4,9 @@
 package ru.extas.web.commons;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.converter.Converter;
@@ -11,6 +14,7 @@ import com.vaadin.data.util.converter.ConverterUtil;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -26,7 +30,7 @@ import static com.google.common.collect.Lists.newArrayListWithCapacity;
  *
  * @author Valery Orlov
  */
-class CsvUtil {
+public class CsvUtil {
 
     /**
      * Преобразует даные в таблице в CSV и пишет все в поток вывода
@@ -78,5 +82,35 @@ class CsvUtil {
             return converter.convertToPresentation(value, null, locale);
         }
         return (null != value) ? value.toString() : "";
+    }
+
+    public static void containerToCsv(Container container, GridDataDecl dataDecl, Locale local, ByteArrayOutputStream out) throws IOException {
+        checkArgument(container != null, "Table can not be null");
+        checkArgument(out != null, "Output stream can not be null");
+        checkArgument(dataDecl != null, "Data declaration can not be null");
+
+        try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(out, "cp1251"), ';')) {
+
+            // Формируем заголовки столбцов
+            List<String> headers = Lists.transform(dataDecl.getMappings(), new Function<DataDeclMapping, String>() {
+                @Override
+                public String apply(DataDeclMapping input) {
+                    return input.getCaption();
+                }
+            });
+            writer.writeNext(headers.toArray(new String[headers.size()]));
+
+            // Пишем данные
+            final List<String> values = newArrayListWithCapacity(headers.size());
+            for (final Object itemId : container.getItemIds()) {
+                final Item item = container.getItem(itemId);
+                for (final DataDeclMapping propMap : dataDecl.getMappings()) {
+                    final Property<?> prop = item.getItemProperty(propMap.getPropName());
+                    values.add(formatPropertyValue(prop, local, (Converter<String, Object>) propMap.getConverter()));
+                }
+                writer.writeNext(values.toArray(new String[values.size()]));
+                values.clear();
+            }
+        }
     }
 }

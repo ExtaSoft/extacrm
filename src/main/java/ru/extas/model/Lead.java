@@ -47,11 +47,11 @@ public class Lead extends AbstractExtaObject {
     @Column(name = "POINT_OF_SALE")
     private String pointOfSale;
 
-    //    Персональные данные
-    //-----------------------------------
-
     @Column(name = "COMMENT")
     private String comment;
+
+    //    Персональные данные
+    //-----------------------------------
 
     // Имя контакта
     @Column(name = "CONTACT_NAME")

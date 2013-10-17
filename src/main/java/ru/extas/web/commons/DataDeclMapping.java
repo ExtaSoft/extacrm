@@ -2,6 +2,7 @@ package ru.extas.web.commons;
 
 import com.vaadin.data.util.converter.Converter;
 
+import java.io.Serializable;
 import java.util.EnumSet;
 
 /**
@@ -9,7 +10,7 @@ import java.util.EnumSet;
  *
  * @author Valery Orlov
  */
-public class DataDeclMapping {
+public class DataDeclMapping implements Serializable {
 
     private final String propName;
     private final String caption;

@@ -5,55 +5,52 @@ package ru.extas.web.contacts;
 
 import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import ru.extas.model.Company;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.*;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Таблица контактов (физ. лица)
  *
  * @author Valery Orlov
  */
-public class CompaniesGrid extends CustomComponent {
+public class CompaniesGrid extends ExtaGrid {
 
     private static final long serialVersionUID = 2299363623807745654L;
-    private final Table table;
 
     public CompaniesGrid() {
         super();
+    }
+
+    @Override
+    protected GridDataDecl createDataDecl() {
+        return new CompanyDataDecl();
+    }
+
+    @Override
+    protected Container createContainer() {
         // Запрос данных
         final JPAContainer<Company> container = new ExtaDataContainer<>(Company.class);
         container.addNestedContainerProperty("actualAddress.region");
+        return container;
+    }
 
-        final CssLayout panel = new CssLayout();
-        panel.addStyleName("layout-panel");
-        panel.setSizeFull();
+    @Override
+    protected List<UIAction> createActions() {
+        List<UIAction> actions = newArrayList();
 
-        // Формируем тулбар
-        final HorizontalLayout commandBar = new HorizontalLayout();
-        commandBar.addStyleName("configure");
-        commandBar.setSpacing(true);
-
-        final Button newBtn = new Button("Новый");
-        newBtn.addStyleName("icon-doc-new");
-        newBtn.setDescription("Ввод нового Контакта в систему");
-        newBtn.addClickListener(new ClickListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings("unchecked")
+        actions.add(new UIAction("Новый", "Ввод нового Контакта в систему", "icon-doc-new") {
             @Override
-            public void buttonClick(final ClickEvent event) {
+            public void fire(Object itemId) {
                 final BeanItem<Company> newObj = new BeanItem<>(new Company());
                 newObj.expandProperty("actualAddress");
 
@@ -65,7 +62,7 @@ public class CompaniesGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            container.refresh();
+                            ((JPAContainer) container).refresh();
                             Notification.show("Контакт сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }
@@ -73,21 +70,11 @@ public class CompaniesGrid extends CustomComponent {
                 editWin.showModal();
             }
         });
-        commandBar.addComponent(newBtn);
 
-        final Button editBtn = new Button("Изменить");
-        editBtn.addStyleName("icon-edit-3");
-        editBtn.setDescription("Редактирование контактных данных");
-        editBtn.setEnabled(false);
-        editBtn.addClickListener(new ClickListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings("unchecked")
+        actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", "icon-edit-3") {
             @Override
-            public void buttonClick(final ClickEvent event) {
-                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<Company> beanItem = new BeanItem<>(((EntityItem<Company>) table.getItem(curObjId)).getEntity());
+            public void fire(final Object itemId) {
+                final BeanItem<Company> beanItem = new BeanItem<>(((EntityItem<Company>) table.getItem(itemId)).getEntity());
                 beanItem.expandProperty("actualAddress");
                 final CompanyEditForm editWin = new CompanyEditForm("Редактирование контактных данных", beanItem);
                 editWin.addCloseListener(new CloseListener() {
@@ -97,7 +84,7 @@ public class CompaniesGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            container.refreshItem(curObjId);
+                            ((JPAContainer) container).refreshItem(itemId);
                             Notification.show("Контакт сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }
@@ -105,35 +92,6 @@ public class CompaniesGrid extends CustomComponent {
                 editWin.showModal();
             }
         });
-        commandBar.addComponent(editBtn);
-
-        panel.addComponent(commandBar);
-
-        // Создаем таблицу скроллинга
-        table = new Table();
-        table.setContainerDataSource(container);
-        table.setSizeFull();
-
-        // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
-        table.setImmediate(true);
-        table.setSelectable(true);
-        table.addValueChangeListener(new ValueChangeListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final boolean enableBtb = event.getProperty().getValue() != null;
-                editBtn.setEnabled(enableBtb);
-            }
-        });
-        // table.select(container.firstItemId());
-
-        final CompanyDataDecl ds = new CompanyDataDecl();
-        ds.initTableColumns(table);
-
-        panel.addComponent(table);
-
-        setCompositionRoot(panel);
+        return actions;
     }
 }

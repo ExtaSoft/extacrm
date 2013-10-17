@@ -6,13 +6,10 @@ package ru.extas.web.insurance;
 import com.google.common.base.Throwables;
 import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
@@ -27,33 +24,39 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.Insurance;
 import ru.extas.model.UserRole;
-import ru.extas.web.commons.ExportTableDownloader;
-import ru.extas.web.commons.ExtaDataContainer;
-import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Valery Orlov
  */
-public class InsuranceGrid extends CustomComponent {
+public class InsuranceGrid extends ExtaGrid {
 
     private static final long serialVersionUID = -2317741378090152128L;
     private final Logger logger = LoggerFactory.getLogger(InsuranceGrid.class);
-    private final Table table = new Table();
+    private InsuranceDataDecl dataDecl;
 
     public InsuranceGrid() {
+    }
 
-        final CssLayout panel = new CssLayout();
-        panel.addStyleName("layout-panel");
-        panel.setSizeFull();
+    @Override
+    protected GridDataDecl createDataDecl() {
+        if (dataDecl == null)
+            dataDecl = new InsuranceDataDecl();
+        return dataDecl;
+    }
 
+    @Override
+    protected Container createContainer() {
         // Запрос данных
         final JPAContainer<Insurance> container = new ExtaDataContainer<>(Insurance.class);
         container.addNestedContainerProperty("client.name");
@@ -64,18 +67,17 @@ public class InsuranceGrid extends CustomComponent {
         if (subject.hasRole(UserRole.USER.getName())) {
             container.addContainerFilter(new Compare.Equal("createdBy", subject.getPrincipal()));
         }
+        return container;
+    }
 
-        final HorizontalLayout commandBar = new HorizontalLayout();
-        commandBar.addStyleName("configure");
-        commandBar.setSpacing(true);
+    @Override
+    protected List<UIAction> createActions() {
+        List<UIAction> actions = newArrayList();
 
-        final Button newPolicyBtn = new Button("Новый", new ClickListener() {
+        actions.add(new UIAction("Новый", "Ввод нового полиса страхования", "icon-doc-new") {
 
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings("unchecked")
             @Override
-            public void buttonClick(final ClickEvent event) {
+            public void fire(Object itemId) {
                 final BeanItem<Insurance> newObj = new BeanItem<>(new Insurance());
 
                 final InsuranceEditForm editWin = new InsuranceEditForm("Новый полис", newObj);
@@ -86,7 +88,7 @@ public class InsuranceGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            container.refresh();
+                            ((JPAContainer) container).refresh();
                             Notification.show("Полис сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }
@@ -94,20 +96,11 @@ public class InsuranceGrid extends CustomComponent {
                 editWin.showModal();
             }
         });
-        newPolicyBtn.addStyleName("icon-doc-new");
-        newPolicyBtn.setDescription("Ввод нового полиса страхования");
-        commandBar.addComponent(newPolicyBtn);
 
-        final Button editPolicyBtn = new Button("Изменить", new ClickListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings("unchecked")
+        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке полис страхования", "icon-edit-3") {
             @Override
-            public void buttonClick(final ClickEvent event) {
-                // Взять текущий полис из грида
-                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<Insurance> curObj = new BeanItem<>(((EntityItem<Insurance>) table.getItem(curObjId)).getEntity());
+            public void fire(final Object itemId) {
+                final BeanItem<Insurance> curObj = new BeanItem<>(((EntityItem<Insurance>) table.getItem(itemId)).getEntity());
 
                 final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", curObj);
                 editWin.addCloseListener(new CloseListener() {
@@ -117,7 +110,7 @@ public class InsuranceGrid extends CustomComponent {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            container.refreshItem(curObjId);
+                            ((JPAContainer) container).refreshItem(itemId);
                             Notification.show("Полис сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }
@@ -125,91 +118,45 @@ public class InsuranceGrid extends CustomComponent {
                 editWin.showModal();
             }
         });
-        editPolicyBtn.addStyleName("icon-edit-3");
-        editPolicyBtn.setDescription("Редактировать выделенный в списке полис страхования");
-        editPolicyBtn.setEnabled(false);
-        commandBar.addComponent(editPolicyBtn);
 
-        // PopupButton popupButton = new PopupButton("Action");
-        // HorizontalLayout popupLayout = new HorizontalLayout();
-        // popupButton.setContent(popupLayout); // Set popup content
-        // Button modifyButton = new Button("Modify");
-        // modifyButton.setIcon(new
-        // ThemeResource("../runo/icons/16/document-txt.png"));
-        // popupLayout.addComponent(modifyButton);
-        // Button addButton = new Button("Add");
-        // addButton.setIcon(new
-        // ThemeResource("../runo/icons/16/document-add.png"));
-        // popupLayout.addComponent(addButton);
-        // Button deleteButton = new Button("Delete");
-        // deleteButton.setIcon(new
-        // ThemeResource("../runo/icons/16/document-delete.png"));
-        // commandBar.addComponent(popupButton);
-        // popupLayout.addComponent(deleteButton);
-
-        final Button printPolicyMatBtn = new Button("Печать");
-        printPolicyMatBtn.addStyleName("icon-print-2");
-        printPolicyMatBtn.setDescription("Создать печатное представление полиса страхования");
-        printPolicyMatBtn.setEnabled(false);
-        printPolicyMatBtn.addClickListener(new ClickListener() {
+        actions.add(new ItemAction("Печать", "Создать печатное представление полиса страхования", "icon-print-2") {
             @Override
-            public void buttonClick(ClickEvent event) {
-                printPolicy(true);
+            public void fire(Object itemId) {
+                printPolicy(itemId, true);
             }
         });
-        commandBar.addComponent(printPolicyMatBtn);
 
-        // TODO Заметить на раскрывающуюся кнопку
-        final Button printPolicyBan = new Button("Печать без подложки");
-        printPolicyBan.addStyleName("icon-print-2");
-        printPolicyBan.setDescription("Создать печатное представление полиса страхования без подложки");
-        printPolicyBan.setEnabled(false);
-        printPolicyBan.addClickListener(new ClickListener() {
+        actions.add(new ItemAction("Печать без подложки", "Создать печатное представление полиса страхования без подложки", "icon-print-2") {
             @Override
-            public void buttonClick(ClickEvent event) {
-                printPolicy(false);
+            public void fire(Object itemId) {
+                printPolicy(itemId, false);
             }
         });
-        commandBar.addComponent(printPolicyBan);
 
-        final Button exportBtn = new Button("Экспорт");
-        exportBtn.addStyleName("icon-table");
-        exportBtn.setDescription("Экспорт содержимого таблицы в CSV файл");
-        new ExportTableDownloader(table, "PropertyInsurances.csv").extend(exportBtn);
-        commandBar.addComponent(exportBtn);
-
-        panel.addComponent(commandBar);
-
-        table.setContainerDataSource(container);
-        table.setSizeFull();
-
-        // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
-        table.setImmediate(true);
-        table.addValueChangeListener(new ValueChangeListener() {
-
-            private static final long serialVersionUID = 1L;
-
+        actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в CSV файл", "icon-table") {
             @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final boolean enableBtb = event.getProperty().getValue() != null;
-                editPolicyBtn.setEnabled(enableBtb);
-                printPolicyBan.setEnabled(enableBtb);
-                printPolicyMatBtn.setEnabled(enableBtb);
+            public void fire(Object itemId) {
+                exportTableData();
             }
         });
-// if (table.size() > 0)
-// table.select(table.firstItemId());
 
-        final GridDataDecl ds = new InsuranceDataDecl();
-        ds.initTableColumns(table);
-
-        panel.addComponent(table);
-
-        setCompositionRoot(panel);
+        return actions;
     }
 
-    private void printPolicy(boolean withMat) {
-        final Object curObjId = checkNotNull(table.getValue(), "No selected row");
+    private void exportTableData() {
+
+        try {
+            final ByteArrayOutputStream out = new ByteArrayOutputStream();
+            CsvUtil.containerToCsv(container, createDataDecl(), getLocale(), out);
+            new DownloadFileWindow(out.toByteArray(), "PropertyInsurances.csv").showModal();
+        } catch (IOException e) {
+            logger.error("Export to CSV error", e);
+            throw Throwables.propagate(e);
+        }
+    }
+
+    private void printPolicy(Object itemId, boolean withMat) {
+        final Object curObjId = itemId;
         final EntityItem<Insurance> curObj = (EntityItem<Insurance>) table.getItem(curObjId);
         final Insurance insurance = curObj.getEntity();
         checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
