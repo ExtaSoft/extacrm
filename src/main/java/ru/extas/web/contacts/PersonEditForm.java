@@ -275,7 +275,8 @@ public class PersonEditForm extends AbstractEditForm<Person> {
         cityField.setFilteringMode(FilteringMode.CONTAINS);
         for (final String item : lookup(SupplementService.class).loadCities())
             cityField.addItem(item);
-        if (obj.getActualAddress().getCity() != null) cityField.addItem(obj.getActualAddress().getCity());
+        if (obj.getActualAddress().getCity() != null)
+            cityField.addItem(obj.getActualAddress().getCity());
         cityField.addValueChangeListener(new ValueChangeListener() {
             private static final long serialVersionUID = 1L;
 

@@ -20,6 +20,7 @@
 @import "orderedlayout/orderedlayout.scss";
 @import "absolutelayout/absolutelayout.scss";
 @import "views/base.scss";
+@import "compound/compound.scss";
 
 @mixin extacrm {
 
@@ -42,6 +43,8 @@
   @include extacrm-orderedlayout;
 
   @include extacrm-base-view;
+
+  @include extacrm-compound;
 
   .v-view {
     overflow: hidden;

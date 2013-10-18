@@ -6,6 +6,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
+import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
@@ -27,15 +28,20 @@ public abstract class ExtaGrid extends CustomComponent {
 
     public static final String OVERALL_COLUMN = "OverallColumn";
 
-    protected final Table table;
+    protected Table table;
     protected final Container container;
     private final List<UIAction> actions;
     private final GridDataDecl dataDecl;
+    private Mode currentMode;
+    private List<Button> needCurrentBtns;
+
+    public enum Mode {
+        TABLE,
+        DETAIL_LIST
+    }
 
     public ExtaGrid() {
         super();
-        // Создаем таблицу скроллинга
-        table = new Table();
         // Запрос данных
         container = createContainer();
         // Действия в таблице
@@ -43,27 +49,65 @@ public abstract class ExtaGrid extends CustomComponent {
         // Описатель данных
         dataDecl = createDataDecl();
 
+        initContent(Mode.TABLE);
+    }
+
+    private void initContent(Mode mode) {
+        currentMode = mode;
         final CssLayout panel = new CssLayout();
         panel.addStyleName("layout-panel");
         panel.setSizeFull();
 
         // Формируем тулбар
-        final HorizontalLayout commandBar = createGridToolbar();
+        final HorizontalLayout commandBar = createGridToolbar(mode);
         panel.addComponent(commandBar);
 
+        // Переключение режима таблицы
+        final HorizontalLayout modeSwitchBar = new HorizontalLayout();
+        modeSwitchBar.addStyleName("mode-switch-bar segment");
+        final Button tableModeBtn = new Button("Таблица");
+        tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
+        tableModeBtn.addStyleName("first icon-table icon-only");
+        final Button detailModeBtn = new Button("Детали");
+        detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
+        detailModeBtn.addStyleName("last icon-list-alt icon-only");
+        if (currentMode == Mode.TABLE)
+            tableModeBtn.addStyleName("down");
+        else
+            detailModeBtn.addStyleName("down");
+        final Button.ClickListener switchListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (event.getButton() == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
+                    initContent(Mode.TABLE);
+                    tableModeBtn.addStyleName("down");
+                    detailModeBtn.removeStyleName("down");
+                } else if (currentMode == Mode.TABLE) {
+                    initContent(Mode.DETAIL_LIST);
+                    tableModeBtn.removeStyleName("down");
+                    detailModeBtn.addStyleName("down");
+                }
+            }
+        };
+        tableModeBtn.addClickListener(switchListener);
+        detailModeBtn.addClickListener(switchListener);
+        modeSwitchBar.addComponent(tableModeBtn);
+        modeSwitchBar.addComponent(detailModeBtn);
+        panel.addComponent(modeSwitchBar);
+
         // Таблица
-        initTable();
+        initTable(mode);
         panel.addComponent(table);
 
         setCompositionRoot(panel);
     }
 
-    private HorizontalLayout createGridToolbar() {
+    private HorizontalLayout createGridToolbar(Mode mode) {
         final HorizontalLayout commandBar = new HorizontalLayout();
         commandBar.addStyleName("grid-toolbar");
         commandBar.setSpacing(true);
 
-        final List<Button> needCurrent = newArrayList();
+        needCurrentBtns = newArrayList();
         for (final UIAction action : actions) {
             final Button button = new Button(action.getName());
             button.setDescription(action.getDescription());
@@ -85,27 +129,22 @@ public abstract class ExtaGrid extends CustomComponent {
             });
             commandBar.addComponent(button);
             if (action instanceof ItemAction) {
-                needCurrent.add(button);
+                needCurrentBtns.add(button);
                 button.setEnabled(false);
             }
         }
-        // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
-        table.addValueChangeListener(new Property.ValueChangeListener() {
-
-            @Override
-            public void valueChange(final Property.ValueChangeEvent event) {
-                final boolean enableBtb = event.getProperty().getValue() != null;
-                for (Button btn : needCurrent)
-                    btn.setEnabled(enableBtb);
-            }
-        });
         return commandBar;
     }
 
     /**
      * Полноценная инициализация колонок таблицы
+     *
+     * @param mode
      */
-    private void initTable() {
+    private void initTable(Mode mode) {
+
+        // Создаем таблицу
+        table = new Table();
         // Общие настройки таблицы
         table.setContainerDataSource(container);
         table.setSelectable(true);
@@ -114,13 +153,6 @@ public abstract class ExtaGrid extends CustomComponent {
         table.setColumnReorderingAllowed(true);
         table.setNullSelectionAllowed(false);
         table.setSizeFull();
-        table.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
-
-        // Настройка столбцов таблицы
-//        initTableColumnHeaders(table);
-//        initTableVisibleColumns(table);
-//        initTableCollapsedColumns(table);
-//        initTableColumnConverters(table);
 
         // Ищем действие по умолчанию
         final UIAction defAction = getDefaultAction(actions);
@@ -150,78 +182,113 @@ public abstract class ExtaGrid extends CustomComponent {
             });
         }
 
-        table.addGeneratedColumn(OVERALL_COLUMN, new Table.ColumnGenerator() {
-            @Override
-            public Object generateCell(final Table source, final Object itemId, Object columnId) {
-                Item item = source.getItem(itemId);
+        if (mode == Mode.DETAIL_LIST) {
+            table.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
+            table.addGeneratedColumn(OVERALL_COLUMN, new Table.ColumnGenerator() {
+                @Override
+                public Object generateCell(final Table source, final Object itemId, Object columnId) {
+                    Item item = source.getItem(itemId);
 
-                Iterator<DataDeclMapping> mapIterator = dataDecl.getMappings().iterator();
-                DataDeclMapping titleMap = mapIterator.next();
-                VerticalLayout panel = new VerticalLayout();
+                    Iterator<DataDeclMapping> mapIterator = dataDecl.getMappings().iterator();
+                    DataDeclMapping titleMap = mapIterator.next();
+                    VerticalLayout panel = new VerticalLayout();
 
-                // Основная строка данных
-                AbstractComponent titleComp;
-                if (defAction == null) {
-                    Label titleLbl = new Label(item.getItemProperty(titleMap.getPropName()));
-                    if (titleMap.getConverter() != null)
-                        titleLbl.setConverter(titleMap.getConverter());
-                    titleLbl.setDescription(titleMap.getCaption());
-                    titleComp = titleLbl;
-                } else {
-                    Button titleLink = new Button();
-                    titleLink.addStyleName("link");
-                    titleLink.setCaption((String) item.getItemProperty(titleMap.getPropName()).getValue());
-                    titleLink.setDescription(defAction.getDescription());
-                    titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-                    titleLink.addClickListener(new Button.ClickListener() {
+                    // Основная строка данных
+                    AbstractComponent titleComp;
+                    if (defAction == null) {
+                        Label titleLbl = new Label(item.getItemProperty(titleMap.getPropName()));
+                        if (titleMap.getConverter() != null)
+                            titleLbl.setConverter(titleMap.getConverter());
+                        titleLbl.setDescription(titleMap.getCaption());
+                        titleComp = titleLbl;
+                    } else {
+                        Button titleLink = new Button();
+                        titleLink.addStyleName("link");
+                        titleLink.setCaption((String) item.getItemProperty(titleMap.getPropName()).getValue());
+                        titleLink.setDescription(defAction.getDescription());
+                        titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+                        titleLink.addClickListener(new Button.ClickListener() {
+                            @Override
+                            public void buttonClick(Button.ClickEvent event) {
+                                defAction.fire(itemId);
+                            }
+                        });
+                        titleComp = titleLink;
+                    }
+                    titleComp.setImmediate(true);
+                    titleComp.addStyleName("main-item-text");
+                    panel.addComponent(titleComp);
+//                final HorizontalLayout header = new HorizontalLayout(titleComp, createItemToolbar(itemId));
+//                header.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
+//                panel.addComponent(header);
+
+                    // Дополнительные данные
+                    HorizontalLayout details = new HorizontalLayout();
+                    details.setSpacing(true);
+                    while (mapIterator.hasNext()) {
+                        DataDeclMapping prop = mapIterator.next();
+                        if (!prop.isCollapsed()) {
+                            Label detail = new Label(item.getItemProperty(prop.getPropName()));
+                            detail.addStyleName("h3");
+                            detail.setDescription(prop.getCaption());
+                            details.addComponent(detail);
+                        }
+                    }
+                    panel.addComponent(details);
+
+                    // Кнопки действий
+                    HorizontalLayout actionToolbar = createItemToolbar(itemId);
+                    if (actionToolbar.getComponentCount() > 0)
+                        panel.addComponent(actionToolbar);
+
+                    // Forward clicks on the layout as selection
+                    // in the table
+                    panel.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
                         @Override
-                        public void buttonClick(Button.ClickEvent event) {
-                            defAction.fire(itemId);
+                        public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                            source.select(itemId);
+                            if (event.isDoubleClick())
+                                defAction.fire(itemId);
                         }
                     });
-                    titleComp = titleLink;
+                    panel.setImmediate(true);
+
+                    return panel;
                 }
-                titleComp.setImmediate(true);
-                titleComp.addStyleName("main-item-text");
-                final HorizontalLayout header = new HorizontalLayout(titleComp, createItemToolbar(itemId));
-                header.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
-                panel.addComponent(header);
-
-                // Дополнительные данные
-                HorizontalLayout details = new HorizontalLayout();
-                details.setSpacing(true);
-                while (mapIterator.hasNext()) {
-                    DataDeclMapping prop = mapIterator.next();
-                    if (!prop.isCollapsed()) {
-                        Label detail = new Label(item.getItemProperty(prop.getPropName()));
-                        detail.addStyleName("h3");
-                        detail.setDescription(prop.getCaption());
-                        details.addComponent(detail);
-                    }
+            });
+            table.setColumnHeader(OVERALL_COLUMN, "Общая информация");
+            table.setVisibleColumns(OVERALL_COLUMN);
+            for (Button btn : needCurrentBtns)
+                btn.setVisible(false);
+        } else { // Classic table
+            // Настройка столбцов таблицы
+            table.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
+            //table.removecolutable.getVisibleColumns()
+            initTableColumnHeaders();
+            initTableVisibleColumns();
+            initTableCollapsedColumns();
+            initTableColumnConverters();
+            table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
+                @Override
+                public void itemClick(ItemClickEvent event) {
+                    if (event.isDoubleClick())
+                        defAction.fire(event.getItemId());
                 }
-                panel.addComponent(details);
+            });
+            for (Button btn : needCurrentBtns)
+                btn.setVisible(true);
+            // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
+            table.addValueChangeListener(new Property.ValueChangeListener() {
 
-                // Кнопки действий
-                //HorizontalLayout actionToolbar = createItemToolbar(itemId);
-                //panel.addComponent(actionToolbar);
+                @Override
+                public void valueChange(final Property.ValueChangeEvent event) {
+                    final boolean enableBtb = event.getProperty().getValue() != null;
+                    for (Button btn : needCurrentBtns)
+                        btn.setEnabled(enableBtb);
+                }
+            });
 
-                // Forward clicks on the layout as selection
-                // in the table
-                panel.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-                    @Override
-                    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                        source.select(itemId);
-                        if (event.isDoubleClick())
-                            defAction.fire(itemId);
-                    }
-                });
-                panel.setImmediate(true);
-
-                return panel;
-            }
-        });
-        table.setColumnHeader(OVERALL_COLUMN, "Общая информация");
-        table.setVisibleColumns(OVERALL_COLUMN);
+        }
     }
 
     private HorizontalLayout createItemToolbar(final Object itemId) {
@@ -230,7 +297,7 @@ public abstract class ExtaGrid extends CustomComponent {
         actionToolbar.setSpacing(true);
         actionToolbar.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
         for (final UIAction a : actions)
-            if (a instanceof ItemAction) {
+            if (a instanceof ItemAction && !(a instanceof DefaultAction)) {
                 Button command = new Button();
                 command.addStyleName("item-action");
                 command.setCaption(a.getName());

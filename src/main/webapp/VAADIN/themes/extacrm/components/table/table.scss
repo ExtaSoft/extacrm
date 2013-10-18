@@ -89,6 +89,7 @@
   .item-toolbar .v-button {
     position: relative;
     margin: 0;
+    padding-bottom: 5px;
   }
   .#{$primaryStyleName} tr.v-selected .v-button-item-action {
     background: #fff;

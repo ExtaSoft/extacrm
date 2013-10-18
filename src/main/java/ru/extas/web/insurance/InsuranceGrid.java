@@ -133,7 +133,7 @@ public class InsuranceGrid extends ExtaGrid {
             }
         });
 
-        actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в CSV файл", "icon-table") {
+        actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в CSV файл", "icon-grid") {
             @Override
             public void fire(Object itemId) {
                 exportTableData();

@@ -9,7 +9,7 @@
           <option name="localRepository" value="" />
           <option name="mavenHome" value="" />
           <option name="nonRecursive" value="false" />
-          <option name="outputLevel" value="DEBUG" />
+          <option name="outputLevel" value="INFO" />
           <option name="pluginUpdatePolicy" value="DEFAULT" />
           <option name="printErrorStackTraces" value="false" />
           <option name="usePluginRegistry" value="false" />

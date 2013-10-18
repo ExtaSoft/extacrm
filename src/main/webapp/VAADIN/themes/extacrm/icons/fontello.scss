@@ -46,6 +46,7 @@
     margin-left: .3em;
   }
 
+  @include icon(grid, '\e8b8');
   @include icon(inbox-1, '\e8bb');
   @include icon(inbox-alt, '\e8ba');
   @include icon(inbox, '\e8a9');
