@@ -5,32 +5,29 @@ import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.Lead;
+import ru.extas.model.Sale;
 
 import javax.persistence.EntityManager;
 
 /**
- * JPA имплементация службы управления лидами
- *
  * @author Valery Orlov
- *         Date: 23.10.13
- *         Time: 22:55
+ *         Date: 24.10.13
+ *         Time: 0:33
  */
-public class LeadServiceJpa implements LeadService {
+public class SaleServiceJpa implements SaleService {
 
-    private final Logger logger = LoggerFactory.getLogger(LeadServiceJpa.class);
+    private final Logger logger = LoggerFactory.getLogger(SaleServiceJpa.class);
 
     @Inject
     private Provider<EntityManager> em;
 
     @Transactional
     @Override
-    public void persist(Lead obj) {
-        logger.debug("Persisting lead");
+    public void persist(Sale obj) {
+        logger.debug("Persisting sale");
         if (obj.getId() == null)
             em.get().persist(obj);
         else
             em.get().merge(obj);
     }
-
 }
