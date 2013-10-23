@@ -9,12 +9,13 @@ import com.vaadin.ui.TextArea;
 import ru.extas.model.Sale;
 import ru.extas.server.SaleService;
 import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.component.EmailField;
-import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.contacts.CompanySelect;
+import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.reference.MotorBrandSelect;
 import ru.extas.web.reference.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
+import ru.extas.web.util.ComponentUtil;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -27,14 +28,14 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 
     private static final long serialVersionUID = 9510268415882116L;
     // Компоненты редактирования
-    // Имя контакта
-    @PropertyId("contactName")
-    private EditField contactField;
-    @PropertyId("contactPhone")
-    private PhoneField cellPhoneField;
-    // Эл. почта
-    @PropertyId("contactEmail")
-    private EmailField contactEmailField;
+    // Имя клиента
+    @PropertyId("client")
+    private PersonSelect clientField;
+    @PropertyId("type")
+    private ComboBox typeField;
+    // Продавец (банк, страх. компания)
+    @PropertyId("vendor")
+    private CompanySelect vendorField;
     // Регион покупки техники
     @PropertyId("region")
     private RegionSelect regionField;
@@ -51,8 +52,8 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     @PropertyId("motorPrice")
     private EditField mototPriceField;
     // Мотосалон
-    @PropertyId("pointOfSale")
-    private EditField pointOfSaleField;
+    @PropertyId("dealer")
+    private CompanySelect dealerField;
     @PropertyId("comment")
     private TextArea commentField;
 
@@ -71,17 +72,21 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     protected ComponentContainer createEditFields(final Sale obj) {
         final FormLayout form = new FormLayout();
 
-        contactField = new EditField("Клиент", "Введите имя клиента");
-        contactField.setColumns(25);
-        contactField.setRequired(true);
-        contactField.setRequiredError("Имя контакта не может быть пустым.");
-        form.addComponent(contactField);
+        clientField = new PersonSelect("Клиент", "Введите имя клиента");
+        clientField.setRequired(true);
+        clientField.setRequiredError("Имя контакта не может быть пустым.");
+        form.addComponent(clientField);
 
-        cellPhoneField = new PhoneField("Телефон");
-        form.addComponent(cellPhoneField);
+        typeField = new ComboBox("Тип");
+        typeField.setDescription("Укажите пол контакта");
+        typeField.setRequired(true);
+        typeField.setNullSelectionAllowed(false);
+        typeField.setNewItemsAllowed(false);
+        ComponentUtil.fillSelectByEnum(typeField, Sale.Type.class);
+        form.addComponent(typeField);
 
-        contactEmailField = new EmailField("E-Mail");
-        form.addComponent(contactEmailField);
+        vendorField = new CompanySelect("Поставщик");
+        form.addComponent(vendorField);
 
         regionField = new RegionSelect();
         regionField.setDescription("Укажите регион услуги");
@@ -100,8 +105,8 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
         mototPriceField = new EditField("Цена техники");
         form.addComponent(mototPriceField);
 
-        pointOfSaleField = new EditField("Мотосалон");
-        form.addComponent(pointOfSaleField);
+        dealerField = new CompanySelect("Мотосалон");
+        form.addComponent(dealerField);
 
         commentField = new TextArea("Комментарий");
         commentField.setColumns(25);
@@ -121,6 +126,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     protected void initObject(final Sale obj) {
         if (obj.getId() == null) {
             obj.setStatus(Sale.Status.NEW);
+            obj.setType(Sale.Type.CREDIT);
         }
     }
 

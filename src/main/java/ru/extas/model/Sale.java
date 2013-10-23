@@ -38,7 +38,7 @@ public class Sale extends AbstractExtaObject {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    // Продавец (дилер, страх. компания)
+    // Продавец (банк, страх. компания)
     @OneToOne
     private Company vendor;
 

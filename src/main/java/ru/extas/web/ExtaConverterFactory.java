@@ -4,17 +4,15 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.DefaultConverterFactory;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import ru.extas.model.A7Form;
-import ru.extas.model.Person;
+import ru.extas.model.*;
 import ru.extas.model.Person.Sex;
-import ru.extas.model.Policy;
-import ru.extas.model.UserRole;
 import ru.extas.web.commons.converters.*;
 import ru.extas.web.contacts.StringToPersonPosition;
 import ru.extas.web.contacts.StringToPersonSex;
 import ru.extas.web.insurance.StringToA7FormConverter;
 import ru.extas.web.insurance.StringToA7StatusConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
+import ru.extas.web.sale.StringToSaleType;
 import ru.extas.web.users.StringToUserRoleConverter;
 
 import java.math.BigDecimal;
@@ -79,6 +77,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
         // Конвертер статусов А-7
         if (presentationType == String.class && modelType == A7Form.Status.class)
             return (Converter<PRESENTATION, MODEL>) lookup(StringToA7StatusConverter.class);
+
+        // Котвертер типа продажи
+        if (presentationType == String.class && modelType == Sale.Type.class)
+            return (Converter<PRESENTATION, MODEL>) lookup(StringToSaleType.class);
 
         // Let default factory handle the rest
         return super.findConverter(presentationType, modelType);
