@@ -13,7 +13,7 @@ public class LeadDataDecl extends GridDataDecl {
         addMapping("motorType", "Тип техники");
         addMapping("motorBrand", "Марка техники");
         addMapping("motorModel", "Модель техники");
-        addMapping("mototPrice", "Стоимость техники");
+        addMapping("motorPrice", "Стоимость техники");
         addMapping("pointOfSale", "Мотосалон");
         addMapping("region", "Регион");
         super.addCreateModifyMarkers();

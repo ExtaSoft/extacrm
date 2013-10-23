@@ -22,8 +22,7 @@ public class ExtasGuiceServlet extends VaadinServlet implements SessionInitListe
     @Override
     protected DeploymentConfiguration createDeploymentConfiguration(Properties initParameters) {
 
-        // /initParameters.setProperty(SERVLET_PARAMETER_PRODUCTION_MODE,
-        // "false");
+        initParameters.setProperty(SERVLET_PARAMETER_PRODUCTION_MODE, "true");
         return super.createDeploymentConfiguration(initParameters);
     }
 

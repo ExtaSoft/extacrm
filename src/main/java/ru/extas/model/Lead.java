@@ -41,7 +41,7 @@ public class Lead extends AbstractExtaObject {
 
     // Стоимость техники
     @Column(name = "MOTOR_PRICE")
-    private BigDecimal mototPrice;
+    private BigDecimal motorPrice;
 
     // Мотосалон
     @Column(name = "POINT_OF_SALE")
@@ -118,12 +118,12 @@ public class Lead extends AbstractExtaObject {
         this.motorModel = motorModel;
     }
 
-    public BigDecimal getMototPrice() {
-        return mototPrice;
+    public BigDecimal getMotorPrice() {
+        return motorPrice;
     }
 
-    public void setMototPrice(BigDecimal mototPrice) {
-        this.mototPrice = mototPrice;
+    public void setMotorPrice(BigDecimal motorPrice) {
+        this.motorPrice = motorPrice;
     }
 
     public String getPointOfSale() {

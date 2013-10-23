@@ -7,8 +7,6 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +16,11 @@ import ru.extas.model.Contact;
 import ru.extas.server.ContactService;
 import ru.extas.server.SupplementService;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.EmailField;
+import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.reference.CitySelect;
+import ru.extas.web.reference.RegionSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -37,7 +39,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     @PropertyId("fullName")
     private EditField fullNameField;
     @PropertyId("cellPhone")
-    private EditField cellPhoneField;
+    private PhoneField cellPhoneField;
     @PropertyId("email")
     private EditField emailField;
     @PropertyId("actualAddress.region")
@@ -176,34 +178,14 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
         fullNameField.setRequiredError("Официальное Название компании не может быть пустым.");
         personForm.addComponent(fullNameField);
 
-        cellPhoneField = new EditField("Телефон");
-        cellPhoneField.setImmediate(true);
-        cellPhoneField.setColumns(20);
-        cellPhoneField.setDescription("Введите телефон в формате +7 XXX XXX XXXX");
-        cellPhoneField.setInputPrompt("+7 XXX XXX XXXX");
-        cellPhoneField.setNullRepresentation("");
-        // TODO: Добавить проверку правильности ввода телефона
+        cellPhoneField = new PhoneField("Телефон");
         personForm.addComponent(cellPhoneField);
 
-        emailField = new EditField("E-Mail");
-        emailField.setImmediate(true);
-        emailField.setColumns(20);
-        emailField.setDescription("Введите имя e-mail контакта который будет использоваться для связи");
-        emailField.setInputPrompt("e-mail");
-        emailField.setNullRepresentation("");
-        emailField.addValidator(new EmailValidator("{0} не является допустимым адресом электронной почты."));
+        emailField = new EmailField("E-Mail");
         personForm.addComponent(emailField);
 
-        regionField = new ComboBox("Регион");
-        regionField.setDescription("Укажите регион проживания");
-        regionField.setInputPrompt("Выберите или начните ввод...");
-        regionField.setImmediate(true);
-        regionField.setNullSelectionAllowed(false);
-        regionField.setNewItemsAllowed(false);
-        regionField.setFilteringMode(FilteringMode.CONTAINS);
-        regionField.setWidth(18, Unit.EM);
-        for (final String item : lookup(SupplementService.class).loadRegions())
-            regionField.addItem(item);
+        regionField = new RegionSelect();
+        regionField.setDescription("Укажите регион регистрации");
         regionField.addValueChangeListener(new ValueChangeListener() {
             private static final long serialVersionUID = 1L;
 
@@ -217,14 +199,8 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
         });
         personForm.addComponent(regionField);
 
-        cityField = new ComboBox("Город");
-        cityField.setDescription("Введите город проживания контакта");
-        cityField.setInputPrompt("Город");
-        cityField.setImmediate(true);
-        cityField.setNewItemsAllowed(true);
-        cityField.setFilteringMode(FilteringMode.CONTAINS);
-        for (final String item : lookup(SupplementService.class).loadCities())
-            cityField.addItem(item);
+        cityField = new CitySelect();
+        cityField.setDescription("Введите город регистрации");
         if (obj.getActualAddress().getCity() != null) cityField.addItem(obj.getActualAddress().getCity());
         cityField.addValueChangeListener(new ValueChangeListener() {
             private static final long serialVersionUID = 1L;

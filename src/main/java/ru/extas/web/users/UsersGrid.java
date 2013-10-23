@@ -18,7 +18,6 @@ import ru.extas.web.commons.*;
 
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
@@ -82,10 +81,9 @@ public class UsersGrid extends ExtaGrid {
 
         actions.add(new DefaultAction("Изменить", "Редактирование данных пользователя", "icon-user-1") {
             @Override
-            public void fire(Object itemId) {
+            public void fire(final Object itemId) {
                 logger.debug("Edit User...");
-                final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-                final BeanItem<UserProfile> curObj = new BeanItem<>(((EntityItem<UserProfile>) table.getItem(curObjId)).getEntity());
+                final BeanItem<UserProfile> curObj = new BeanItem<>(((EntityItem<UserProfile>) table.getItem(itemId)).getEntity());
 
                 final UserEditForm editWin = new UserEditForm("Редактирование данных пользователя", curObj);
                 editWin.addCloseListener(new CloseListener() {
@@ -95,7 +93,7 @@ public class UsersGrid extends ExtaGrid {
                     @Override
                     public void windowClose(final CloseEvent e) {
                         if (editWin.isSaved()) {
-                            ((JPAContainer) container).refreshItem(curObjId);
+                            ((JPAContainer) container).refreshItem(itemId);
                             Notification.show("Пользователь сохранен", Type.TRAY_NOTIFICATION);
                         }
                     }

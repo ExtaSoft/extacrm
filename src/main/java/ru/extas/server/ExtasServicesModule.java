@@ -37,7 +37,8 @@ public class ExtasServicesModule extends AbstractModule {
         bind(FormTransferService.class).to(FormTransferServiceJpa.class).in(Scopes.SINGLETON);
         // Управление формами А-7
         bind(A7FormService.class).to(A7FormServiceJpa.class).in(Scopes.SINGLETON);
-
+        // Управление лидами
+        bind(LeadService.class).to(LeadServiceJpa.class).in(Scopes.SINGLETON);
     }
 
 }

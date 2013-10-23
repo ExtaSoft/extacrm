@@ -111,13 +111,17 @@ public class FormTransferGrid extends ExtaGrid {
             }
         });
 
+        actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", "icon-print-2") {
+            @Override
+            public void fire(Object itemId) {
+                printFormTransfer(itemId);
+            }
+        });
         return actions;
     }
 
-    private void printFormTransfer() {
-        // Взять текущий акт из грида
-        final Object curObjId = checkNotNull(table.getValue(), "No selected row");
-        final EntityItem<FormTransfer> curObj = (EntityItem<FormTransfer>) table.getItem(curObjId);
+    private void printFormTransfer(final Object itemId) {
+        final EntityItem<FormTransfer> curObj = (EntityItem<FormTransfer>) table.getItem(itemId);
         final FormTransfer formTransfer = curObj.getEntity();
         checkNotNull(formTransfer, "Нечего печатать", "Нет выбранной записи.");
 

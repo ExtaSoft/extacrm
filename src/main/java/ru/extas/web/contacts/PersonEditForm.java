@@ -7,8 +7,6 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +16,12 @@ import ru.extas.model.Person.Sex;
 import ru.extas.server.ContactService;
 import ru.extas.server.SupplementService;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.LocalDateField;
+import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.reference.CitySelect;
+import ru.extas.web.reference.RegionSelect;
 import ru.extas.web.util.ComponentUtil;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -43,11 +45,11 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     @PropertyId("cellPhone")
     private EditField cellPhoneField;
     @PropertyId("email")
-    private EditField emailField;
+    private EmailField emailField;
     @PropertyId("actualAddress.region")
-    private ComboBox regionField;
+    private RegionSelect regionField;
     @PropertyId("actualAddress.city")
-    private ComboBox cityField;
+    private CitySelect cityField;
     @PropertyId("actualAddress.postIndex")
     private EditField postIndexField;
     @PropertyId("actualAddress.streetBld")
@@ -200,13 +202,11 @@ public class PersonEditForm extends AbstractEditForm<Person> {
         personForm.setMargin(true);
 
         nameField = new EditField("Имя");
-        nameField.setImmediate(true);
         nameField.setColumns(30);
         nameField.setDescription("Введите имя (ФИО) контакта");
-        nameField.setInputPrompt("Имя (Отчество) Фамилия");
+        nameField.setInputPrompt("Фамилия Имя (Отчество)");
         nameField.setRequired(true);
         nameField.setRequiredError("Имя контакта не может быть пустым. Пожалуйста введите ФИО контакта.");
-        nameField.setNullRepresentation("");
         personForm.addComponent(nameField);
 
         sexField = new ComboBox("Пол");
@@ -225,34 +225,14 @@ public class PersonEditForm extends AbstractEditForm<Person> {
         birthdayField.setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ");
         personForm.addComponent(birthdayField);
 
-        cellPhoneField = new EditField("Мобильный телефон");
-        cellPhoneField.setImmediate(true);
-        cellPhoneField.setColumns(20);
-        cellPhoneField.setDescription("Введите мобильный телефон в формате +7 XXX XXX XXXX");
-        cellPhoneField.setInputPrompt("+7 XXX XXX XXXX");
-        cellPhoneField.setNullRepresentation("");
-        // TODO: Добавить проверку правильности ввода телефона
+        cellPhoneField = new PhoneField("Мобильный телефон");
         personForm.addComponent(cellPhoneField);
 
-        emailField = new EditField("E-Mail");
-        emailField.setImmediate(true);
-        emailField.setColumns(20);
-        emailField.setDescription("Введите имя e-mail контакта который будет использоваться для связи");
-        emailField.setInputPrompt("e-mail");
-        emailField.setNullRepresentation("");
-        emailField.addValidator(new EmailValidator("{0} не является допустимым адресом электронной почты."));
+        emailField = new EmailField("E-Mail");
         personForm.addComponent(emailField);
 
-        regionField = new ComboBox("Регион");
+        regionField = new RegionSelect();
         regionField.setDescription("Укажите регион проживания");
-        regionField.setInputPrompt("Выберите или начните ввод...");
-        regionField.setImmediate(true);
-        regionField.setNullSelectionAllowed(false);
-        regionField.setNewItemsAllowed(false);
-        regionField.setFilteringMode(FilteringMode.CONTAINS);
-        regionField.setWidth(18, Unit.EM);
-        for (final String item : lookup(SupplementService.class).loadRegions())
-            regionField.addItem(item);
         regionField.addValueChangeListener(new ValueChangeListener() {
             private static final long serialVersionUID = 1L;
 
@@ -266,15 +246,8 @@ public class PersonEditForm extends AbstractEditForm<Person> {
         });
         personForm.addComponent(regionField);
 
-        cityField = new ComboBox("Город");
+        cityField = new CitySelect();
         cityField.setDescription("Введите город проживания контакта");
-        cityField.setInputPrompt("Город");
-        cityField.setImmediate(true);
-        cityField.setNewItemsAllowed(true);
-        cityField.setNullSelectionAllowed(false);
-        cityField.setFilteringMode(FilteringMode.CONTAINS);
-        for (final String item : lookup(SupplementService.class).loadCities())
-            cityField.addItem(item);
         if (obj.getActualAddress().getCity() != null)
             cityField.addItem(obj.getActualAddress().getCity());
         cityField.addValueChangeListener(new ValueChangeListener() {

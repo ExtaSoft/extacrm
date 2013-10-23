@@ -262,7 +262,7 @@ public abstract class ExtaGrid extends CustomComponent {
                 btn.setVisible(false);
         } else { // Classic table
             // Настройка столбцов таблицы
-            table.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
+            table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
             //table.removecolutable.getVisibleColumns()
             initTableColumnHeaders();
             initTableVisibleColumns();

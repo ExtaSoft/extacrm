@@ -4,20 +4,23 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.shared.ui.combobox.FilteringMode;
-import com.vaadin.ui.*;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.PopupDateField;
+import com.vaadin.ui.TextField;
 import org.joda.time.LocalDate;
 import ru.extas.model.Insurance;
 import ru.extas.model.Policy;
 import ru.extas.server.InsuranceCalculator;
 import ru.extas.server.InsuranceRepository;
 import ru.extas.server.PolicyRegistry;
-import ru.extas.server.SupplementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.CompanySelect;
 import ru.extas.web.contacts.PersonSelect;
+import ru.extas.web.reference.MotorBrandSelect;
+import ru.extas.web.reference.MotorTypeSelect;
 
 import java.math.BigDecimal;
 
@@ -41,9 +44,9 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     @PropertyId("client")
     private PersonSelect clientNameField;
     @PropertyId("motorType")
-    private ComboBox motorTypeField;
+    private MotorTypeSelect motorTypeField;
     @PropertyId("motorBrand")
-    private ComboBox motorBrandField;
+    private MotorBrandSelect motorBrandField;
     @PropertyId("motorModel")
     private TextField motorModelField;
     @PropertyId("riskSum")
@@ -122,29 +125,11 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         clientNameField.setRequired(true);
         form.addComponent(clientNameField);
 
-        motorTypeField = new ComboBox("Тип техники");
-        motorTypeField.setDescription("Укажите тип страхуемой техники");
-        motorTypeField.setInputPrompt("Выберите или начните ввод...");
-        motorTypeField.setImmediate(true);
-        motorTypeField.setNullSelectionAllowed(false);
-        motorTypeField.setNewItemsAllowed(false);
-        motorTypeField.setFilteringMode(FilteringMode.CONTAINS);
-        motorTypeField.setWidth(13, Unit.EM);
-        for (final String item : lookup(SupplementService.class).loadMotorTypes())
-            motorTypeField.addItem(item);
+        motorTypeField = new MotorTypeSelect();
         motorTypeField.setRequired(true);
         form.addComponent(motorTypeField);
 
-        motorBrandField = new ComboBox("Марка техники");
-        motorBrandField.setDescription("Укажите марку страхуемой техники");
-        motorBrandField.setInputPrompt("Выберите или начните ввод...");
-        motorBrandField.setImmediate(true);
-        motorBrandField.setNullSelectionAllowed(false);
-        motorBrandField.setNewItemsAllowed(false);
-        motorBrandField.setFilteringMode(FilteringMode.CONTAINS);
-        motorBrandField.setWidth(13, Unit.EM);
-        for (final String item : lookup(SupplementService.class).loadMotorBrands())
-            motorBrandField.addItem(item);
+        motorBrandField = new MotorBrandSelect();
         motorBrandField.setRequired(true);
         motorBrandField.addValueChangeListener(new ValueChangeListener() {
             private static final long serialVersionUID = 1L;
