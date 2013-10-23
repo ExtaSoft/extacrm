@@ -65,8 +65,20 @@ public class Sale extends AbstractExtaObject {
     @Column(name = "MOTOR_PRICE")
     private BigDecimal motorPrice;
 
+    // Мотосалон
+    @OneToOne
+    private Company dealer;
+
     @Column(name = "COMMENT")
     private String comment;
+
+    public Company getDealer() {
+        return dealer;
+    }
+
+    public void setDealer(Company dealer) {
+        this.dealer = dealer;
+    }
 
     public Person getClient() {
         return client;

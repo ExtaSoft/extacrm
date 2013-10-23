@@ -17,6 +17,7 @@
         <class>ru.extas.model.FormTransfer</class>
         <class>ru.extas.model.Insurance</class>
         <class>ru.extas.model.Lead</class>
+        <class>ru.extas.model.Sale</class>
         <class>ru.extas.model.PayAccount</class>
         <class>ru.extas.model.Person</class>
         <class>ru.extas.model.Policy</class>
