@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.bpm.BPMModule;
 import ru.extas.server.ExtasServicesModule;
 import ru.extas.shiro.ExtasShiroWebModule;
 import ru.extas.web.WebUIModule;
@@ -54,6 +55,7 @@ public class ExtasGuiceFilter extends GuiceFilter {
                 new ExtasShiroWebModule(filterConfig.getServletContext()),
                 new ExtasWebGuiceModule(),
                 new ExtasServicesModule(),
+                new BPMModule(),
                 new WebUIModule());
 
         logger.debug("Created injector with {} bindings.", INJECTOR.getAllBindings().size());

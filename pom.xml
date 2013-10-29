@@ -22,6 +22,7 @@
         <vaadin.version>7.1.7</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <servlet-api.version>2.5</servlet-api.version>
+        <activiti-version>5.14</activiti-version>
 
         <junit.version>4.11</junit.version>
         <mockito.version>1.9.5</mockito.version>
@@ -40,11 +41,6 @@
             <properties>
                 <jelastic.environment>extacrm-dev</jelastic.environment>
 
-                <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
-                <extacrm.jdbc.url>jdbc:mysql://localhost:3306/extacrm</extacrm.jdbc.url>
-                <extacrm.jdbc.user>root</extacrm.jdbc.user>
-                <extacrm.jdbc.password/>
-
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
                 <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
@@ -58,11 +54,6 @@
             <properties>
                 <jelastic.environment>extacrm</jelastic.environment>
 
-                <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
-                <extacrm.jdbc.url>${prod.db.url}</extacrm.jdbc.url>
-                <extacrm.jdbc.user>${prod.db.user}</extacrm.jdbc.user>
-                <extacrm.jdbc.password>${prod.db.password}</extacrm.jdbc.password>
-
                 <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
                 <jpa.logging.level>WARNING</jpa.logging.level>
                 <jpa.ddl-generation>none</jpa.ddl-generation>
@@ -74,11 +65,6 @@
 
             <properties>
                 <jelastic.environment>extacrm-uat</jelastic.environment>
-
-                <extacrm.jdbc.driver>com.mysql.jdbc.Driver</extacrm.jdbc.driver>
-                <extacrm.jdbc.url>${uat.db.url}</extacrm.jdbc.url>
-                <extacrm.jdbc.user>${uat.db.user}</extacrm.jdbc.user>
-                <extacrm.jdbc.password>${uat.db.password}</extacrm.jdbc.password>
 
                 <extacrm.gae.log.props>WEB-INF/logging-uat.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
@@ -95,6 +81,12 @@
     </scm>
 
     <repositories>
+
+        <repository>
+            <id>Alfresco Maven Repository</id>
+            <url>https://maven.alfresco.com/nexus/content/groups/public/</url>
+        </repository>
+
         <repository>
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
@@ -109,8 +101,10 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+
     </repositories>
     <pluginRepositories>
+
         <pluginRepository>
             <id>vaadin-snapshots</id>
             <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
@@ -121,9 +115,16 @@
                 <enabled>true</enabled>
             </snapshots>
         </pluginRepository>
+
     </pluginRepositories>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-engine</artifactId>
+            <version>${activiti-version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -293,15 +294,17 @@
 
         <resources>
             <resource>
-                <directory>src/main/resources/META-INF</directory>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <targetPath>META-INF</targetPath>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>META-INF</exclude>
+                    <exclude>**/*.xml</exclude>
                 </excludes>
             </resource>
         </resources>
@@ -437,15 +440,15 @@
                                             vaadin-maven-plugin
                                         </artifactId>
                                         <versionRange>
-                                            [7.1.6,)
+                                            [7.1.7,)
                                         </versionRange>
                                         <goals>
                                             <goal>compile-theme</goal>
                                         </goals>
                                     </pluginExecutionFilter>
-                                    <fire>
+                                    <action>
                                         <ignore></ignore>
-                                    </fire>
+                                    </action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>

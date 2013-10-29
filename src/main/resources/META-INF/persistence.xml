@@ -30,12 +30,12 @@
 
         <properties>
             <!--Connection to DB-->
-            <property name="javax.persistence.jdbc.driver" value="${extacrm.jdbc.driver}"/>
+            <property name="eclipselink.target-database" value="MySQL"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="${extacrm.jdbc.url}"/>
             <property name="javax.persistence.jdbc.user" value="${extacrm.jdbc.user}"/>
             <property name="javax.persistence.jdbc.password" value="${extacrm.jdbc.password}"/>
 
-            <property name="eclipselink.target-database" value="MySQL"/>
             <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
             <property name="eclipselink.jdbc.uppercase-columns" value="true"/>
             <property name="eclipselink.jdbc.batch-writing" value="jdbc"/>
