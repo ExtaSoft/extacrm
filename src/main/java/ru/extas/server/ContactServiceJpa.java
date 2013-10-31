@@ -3,14 +3,14 @@
  */
 package ru.extas.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.Contact;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Collection;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -20,11 +20,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author Valery Orlov
  */
+@Repository
 public class ContactServiceJpa implements ContactService {
 
     private final Logger logger = LoggerFactory.getLogger(ContactServiceJpa.class);
-    @Inject
-    private Provider<EntityManager> em;
+    @PersistenceContext
+    private EntityManager em;
 
     /*
      * (non-Javadoc)
@@ -50,9 +51,9 @@ public class ContactServiceJpa implements ContactService {
         checkNotNull(contact.getName(), "Can't persist contact with null name!!!");
         logger.debug("Persisting contact with name {}...", contact.getName());
         if (contact.getId() == null)
-            em.get().persist(contact);
+            em.persist(contact);
         else
-            em.get().merge(contact);
+            em.merge(contact);
     }
 
     @Transactional

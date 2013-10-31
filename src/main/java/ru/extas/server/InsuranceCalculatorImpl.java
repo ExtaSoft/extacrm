@@ -3,6 +3,7 @@
  */
 package ru.extas.server;
 
+import org.springframework.stereotype.Service;
 import ru.extas.model.Insurance;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import static com.google.common.collect.Lists.newArrayList;
  *
  * @author Valery Orlov
  */
+@Service
 public class InsuranceCalculatorImpl implements InsuranceCalculator {
 
     private static final ArrayList<String> tarif055Brands = newArrayList("BRP", "Yamaha");

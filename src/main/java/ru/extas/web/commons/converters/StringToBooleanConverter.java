@@ -4,6 +4,7 @@
 package ru.extas.web.commons.converters;
 
 import com.vaadin.data.util.converter.Converter;
+import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
@@ -12,6 +13,7 @@ import java.util.Locale;
  *
  * @author Valery Orlov
  */
+@Component
 public class StringToBooleanConverter implements Converter<String, Boolean> {
 
     private static final long serialVersionUID = -3047437045883938183L;

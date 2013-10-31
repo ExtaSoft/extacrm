@@ -6,6 +6,7 @@ package ru.extas.web.sale;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
+import org.springframework.stereotype.Component;
 import ru.extas.model.Sale;
 
 import java.util.Locale;
@@ -13,6 +14,7 @@ import java.util.Locale;
 /**
  * @author Valery Orlov
  */
+@Component
 public class StringToSaleType implements Converter<String, Sale.Type> {
 
     private static final long serialVersionUID = 7270069509495749676L;

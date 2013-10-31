@@ -2,10 +2,12 @@ package ru.extas.web.commons.converters;
 
 import com.vaadin.data.util.converter.Converter;
 import org.joda.time.LocalDate;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Locale;
 
+@Component
 public class DateToJodaLDConverter implements Converter<Date, LocalDate> {
     private static final long serialVersionUID = 6275343643194858906L;
 

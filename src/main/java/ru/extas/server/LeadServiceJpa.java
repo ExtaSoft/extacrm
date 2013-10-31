@@ -1,13 +1,13 @@
 package ru.extas.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.Lead;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * JPA имплементация службы управления лидами
@@ -16,21 +16,22 @@ import javax.persistence.EntityManager;
  *         Date: 23.10.13
  *         Time: 22:55
  */
+@Repository
 public class LeadServiceJpa implements LeadService {
 
     private final Logger logger = LoggerFactory.getLogger(LeadServiceJpa.class);
 
-    @Inject
-    private Provider<EntityManager> em;
+    @PersistenceContext
+    private EntityManager em;
 
     @Transactional
     @Override
     public void persist(Lead obj) {
         logger.debug("Persisting lead");
         if (obj.getId() == null)
-            em.get().persist(obj);
+            em.persist(obj);
         else
-            em.get().merge(obj);
+            em.merge(obj);
     }
 
 }

@@ -6,6 +6,7 @@ import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.addon.jpacontainer.provider.CachingLocalEntityProvider;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.io.Serializable;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -38,15 +39,15 @@ public class ExtaDataContainer<TEntityType> extends JPAContainer<TEntityType> {
         EntityProvider<TEntityType> entityProvider =
                 new CachingLocalEntityProvider<>(entityClass);
 
-        entityProvider.setEntityManagerProvider(new GuiceEntityManagerProvider());
+        entityProvider.setEntityManagerProvider(new InjectEntityManagerProvider());
 
         setEntityProvider(entityProvider);
     }
 
-    private static class GuiceEntityManagerProvider implements EntityManagerProvider, Serializable {
+    private static class InjectEntityManagerProvider implements EntityManagerProvider, Serializable {
         @Override
         public EntityManager getEntityManager() {
-            return lookup(EntityManager.class);
+            return lookup(EntityManagerFactory.class).createEntityManager();
         }
     }
 }

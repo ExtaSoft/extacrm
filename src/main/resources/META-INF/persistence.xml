@@ -29,29 +29,21 @@
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
-            <!--Connection to DB-->
-            <property name="eclipselink.target-database" value="MySQL"/>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="${extacrm.jdbc.url}"/>
-            <property name="javax.persistence.jdbc.user" value="${extacrm.jdbc.user}"/>
-            <property name="javax.persistence.jdbc.password" value="${extacrm.jdbc.password}"/>
-
             <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
             <property name="eclipselink.jdbc.uppercase-columns" value="true"/>
             <property name="eclipselink.jdbc.batch-writing" value="jdbc"/>
 
-            <property name="eclipselink.ddl-generation" value="${jpa.ddl-generation}"/>
             <property name="eclipselink.ddl-generation.output-mode" value="both"/>
             <property name="eclipselink.application-location" value="src/main/resources/db"/>
             <property name="eclipselink.create-ddl-jdbc-file-name" value="create_database.sql"/>
             <property name="eclipselink.drop-ddl-jdbc-file-name" value="drop_database.sql"/>
 
-            <property name="eclipselink.logging.level" value="${jpa.logging.level}"/>
-            <property name="eclipselink.logging.level.sql" value="${jpa.logging.level}"/>
             <property name="eclipselink.logging.parameters" value="true"/>
             <property name="eclipselink.logging.timestamp" value="false"/>
             <property name="eclipselink.logging.session" value="false"/>
             <property name="eclipselink.logging.thread" value="false"/>
+
+            <property name="eclipselink.weaving" value="static"/>
         </properties>
 
     </persistence-unit>

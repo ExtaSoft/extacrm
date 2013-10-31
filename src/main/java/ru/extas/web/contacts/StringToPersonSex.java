@@ -6,6 +6,7 @@ package ru.extas.web.contacts;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
+import org.springframework.stereotype.Component;
 import ru.extas.model.Person;
 import ru.extas.model.Person.Sex;
 
@@ -14,6 +15,7 @@ import java.util.Locale;
 /**
  * @author Valery Orlov
  */
+@Component
 public class StringToPersonSex implements Converter<String, Sex> {
 
     private static final long serialVersionUID = 7270069509495749676L;

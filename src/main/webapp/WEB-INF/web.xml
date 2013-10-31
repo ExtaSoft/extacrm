@@ -9,7 +9,7 @@
     <context-param>
         <description>Vaadin production mode</description>
         <param-name>productionMode</param-name>
-        <param-value>${vaadin.production.mode}</param-value>
+        <param-value>true</param-value>
     </context-param>
 
     <context-param>
@@ -17,33 +17,58 @@
         <param-value>300</param-value>
     </context-param>
 
-    <filter>
-        <filter-name>guiceFilter</filter-name>
-        <filter-class>ru.extas.guice.ExtasGuiceFilter</filter-class>
-    </filter>
+    <servlet>
+        <servlet-name>extaCrmUIServlet</servlet-name>
+        <servlet-class>
+            com.vaadin.server.VaadinServlet
+        </servlet-class>
 
-    <filter-mapping>
-        <filter-name>guiceFilter</filter-name>
+        <init-param>
+            <param-name>UI</param-name>
+            <param-value>ru.extas.web.ExtaCrmUI</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>closeIdleSessions</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>extaCrmUIServlet</servlet-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <!-- <servlet> -->
-    <!-- <servlet-name>Vaadin Application Servlet</servlet-name> -->
-    <!-- <servlet-class>com.vaadin.server.GAEVaadinServlet</servlet-class> -->
-    <!-- <init-param> -->
-    <!-- <description>Vaadin UI to display</description> -->
-    <!-- <param-name>UI</param-name> -->
-    <!-- <param-value>ru.extas.web.ExtaCrmUI</param-value> -->
-    <!-- </init-param> -->
-    <!-- </servlet> -->
-    <!-- <servlet-mapping> -->
-    <!-- <servlet-name>Vaadin Application Servlet</servlet-name> -->
-    <!-- <url-pattern>/*</url-pattern> -->
-    <!-- </servlet-mapping> -->
+    </servlet-mapping>
 
     <session-config>
-        <session-timeout>86400000</session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:applicationContext.xml</param-value>
+    </context-param>
+
+    <!-- The filter-name matches name of a 'shiroFilter' bean inside applicationContext.xml -->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <!-- Make sure any request you want accessible to Shiro is filtered. /* catches all -->
+    <!-- requests.  Usually this filter mapping is defined first (before all others) to -->
+    <!-- ensure that Shiro works in subsequent filters in the filter chain:             -->
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!--<security-constraint>-->
     <!--<web-resource-collection>-->

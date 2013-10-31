@@ -3,27 +3,30 @@
  */
 package ru.extas.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.A7Form;
 import ru.extas.model.A7Form.Status;
 import ru.extas.model.Contact;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
 /**
  * @author Valery Orlov
  */
+@Repository
 public class A7FormServiceJpa implements A7FormService {
 
     private final Logger logger = LoggerFactory.getLogger(A7FormServiceJpa.class);
-    @Inject
-    private Provider<EntityManager> em;
+
+    @PersistenceContext
+    private EntityManager em;
     @Inject
     private UserManagementService userService;
 
@@ -37,9 +40,9 @@ public class A7FormServiceJpa implements A7FormService {
     public void persist(final A7Form form) {
         logger.info("Persisting A-7 with num {}...", form.getRegNum());
         if (form.getId() == null)
-            em.get().persist(form);
+            em.persist(form);
         else
-            em.get().merge(form);
+            em.merge(form);
     }
 
     /*
@@ -69,11 +72,11 @@ public class A7FormServiceJpa implements A7FormService {
             A7Form form = findByNum(num);
             if (form != null) {
                 form.setOwner(owner);
-                em.get().merge(form);
+                em.merge(form);
             } else {
                 // НовыЙ бланки
                 form = new A7Form(num, owner);
-                em.get().persist(form);
+                em.persist(form);
             }
         }
     }
@@ -102,7 +105,7 @@ public class A7FormServiceJpa implements A7FormService {
     public A7Form findByNum(final String formNum) {
         logger.debug("Requesting A-7 by number...");
 
-        final Query q = em.get().createQuery(
+        final Query q = em.createQuery(
                 "SELECT a FROM A7Form a WHERE a.regNum = :regNumPrm");
         q.setParameter("regNumPrm", formNum);
         final List<A7Form> forms = (List<A7Form>) q.getResultList();
@@ -119,7 +122,7 @@ public class A7FormServiceJpa implements A7FormService {
 
         // Поиск контакта пользователя
         final Contact owner = userService.getCurrentUserContact();
-        final Query q = em.get().createQuery(
+        final Query q = em.createQuery(
                 "SELECT a FROM A7Form a WHERE a.owner = :ownerPrm AND a.status = :statusPrm");
         q.setParameter("ownerPrm", owner);
         q.setParameter("statusPrm", Status.NEW);

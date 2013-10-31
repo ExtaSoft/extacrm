@@ -6,6 +6,7 @@ package ru.extas.web.users;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
+import org.springframework.stereotype.Component;
 import ru.extas.model.UserRole;
 
 import java.util.Locale;
@@ -15,6 +16,7 @@ import java.util.Locale;
  *
  * @author Valery Orlov
  */
+@Component
 public class StringToUserRoleConverter implements Converter<String, UserRole> {
 
     private static final long serialVersionUID = 568270351867767905L;

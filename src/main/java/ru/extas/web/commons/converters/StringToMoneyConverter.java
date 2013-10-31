@@ -3,6 +3,7 @@ package ru.extas.web.commons.converters;
 import com.vaadin.data.util.converter.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import ru.extas.web.insurance.InsuranceView;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *
  * @author Valery Orlov
  */
+@Component
 public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 
     private static final long serialVersionUID = -7818477340305539184L;

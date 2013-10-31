@@ -5,6 +5,7 @@ package ru.extas.server;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +17,7 @@ import static com.google.common.collect.Lists.newArrayList;
  *
  * @author Valery Orlov
  */
+@Service
 public class SupplementServiceImpl implements SupplementService {
     // TODO Перенести данные в базу или в кэш
 

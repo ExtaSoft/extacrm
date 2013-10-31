@@ -1,18 +1,18 @@
 package ru.extas.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.Transactional;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.Contact;
 import ru.extas.model.Person;
 import ru.extas.model.UserProfile;
 import ru.extas.model.UserRole;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -22,12 +22,14 @@ import java.util.List;
  * @author Valery Orlov
  */
 @SuppressWarnings("unchecked")
+@Repository
 public class UserManagementServiceJpa implements UserManagementService {
 
     private static final String SUPERUSER_LOGIN = "admin";
     private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJpa.class);
-    @Inject
-    private Provider<EntityManager> em;
+
+    @PersistenceContext
+    private EntityManager em;
 
     /*
      * (non-Javadoc)
@@ -44,7 +46,7 @@ public class UserManagementServiceJpa implements UserManagementService {
             return getSuperuser();
         }
 
-        Query q = em.get().createQuery("SELECT u FROM UserProfile u WHERE u.login = :loginPrm");
+        Query q = em.createQuery("SELECT u FROM UserProfile u WHERE u.login = :loginPrm");
         q.setParameter("loginPrm", login);
         List<UserProfile> results = (List<UserProfile>) q.getResultList();
         if (!results.isEmpty()) {
@@ -81,9 +83,9 @@ public class UserManagementServiceJpa implements UserManagementService {
     public void persistUser(UserProfile user) {
         logger.debug("Persisting user with login name {}...", user.getLogin());
         if (user.getId() == null)
-            em.get().persist(user);
+            em.persist(user);
         else
-            em.get().merge(user);
+            em.merge(user);
     }
 
     /*

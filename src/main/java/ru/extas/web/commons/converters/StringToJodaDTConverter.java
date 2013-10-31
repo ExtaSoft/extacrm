@@ -4,6 +4,7 @@ import com.vaadin.data.util.converter.Converter;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
@@ -12,6 +13,7 @@ import java.util.Locale;
  *
  * @author Valery Orlov
  */
+@Component
 public class StringToJodaDTConverter implements Converter<String, DateTime> {
     private static final long serialVersionUID = 6275343643194858906L;
 

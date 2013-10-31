@@ -3,7 +3,11 @@
  */
 package ru.extas.server;
 
-import ru.extas.guice.ExtasGuiceFilter;
+import com.vaadin.server.VaadinServlet;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.ServletContext;
 
 /**
  * Поставщик служб приложения
@@ -17,10 +21,14 @@ public final class ServiceLocator {
     /**
      * Ищет подходящий экземпляр для интерфейса службы
      *
-     * @param srvType Тип интерфейса службы
-     * @return экземпляр интерфейса службы
+     * @param srvType Тип службы
+     * @return экземпляр службы
      */
     public static <TServiceType> TServiceType lookup(Class<TServiceType> srvType) {
-        return ExtasGuiceFilter.getInjector().getInstance(srvType);
+
+        ServletContext servletContext = VaadinServlet.getCurrent().getServletContext();
+        ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+
+        return context.getBean(srvType);
     }
 }

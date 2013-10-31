@@ -4,6 +4,7 @@
 package ru.extas.web.insurance;
 
 import com.vaadin.data.util.converter.Converter;
+import org.springframework.stereotype.Component;
 import ru.extas.model.Policy;
 import ru.extas.server.PolicyRegistry;
 
@@ -16,6 +17,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *
  * @author Valery Orlov
  */
+@Component
 public class StringToPolicyConverter implements Converter<String, Policy> {
 
     private static final long serialVersionUID = 3362579681121638152L;

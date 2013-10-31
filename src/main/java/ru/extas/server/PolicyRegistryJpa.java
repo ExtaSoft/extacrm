@@ -3,26 +3,27 @@
  */
 package ru.extas.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.Transactional;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.Policy;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
 /**
  * @author Valery Orlov
  */
+@Repository
 public class PolicyRegistryJpa implements PolicyRegistry {
 
     private final Logger logger = LoggerFactory.getLogger(PolicyRegistryJpa.class);
-    @Inject
-    private Provider<EntityManager> em;
+    @PersistenceContext
+    private EntityManager em;
 
     /*
      * (non-Javadoc)
@@ -34,7 +35,7 @@ public class PolicyRegistryJpa implements PolicyRegistry {
     public List<Policy> loadAvailable() {
         logger.debug("Requesting available policies...");
 
-        final Query q = em.get().createQuery(
+        final Query q = em.createQuery(
                 "SELECT p FROM Policy p " +
                         "WHERE p.issueDate IS NULL " +
                         "AND (p.bookTime IS NULL OR p.bookTime < :expireTimePrm) " +
@@ -56,9 +57,9 @@ public class PolicyRegistryJpa implements PolicyRegistry {
     public void persist(final Policy policy) {
         logger.debug("Persisting policy: {}", policy.getRegNum());
         if (policy.getId() == null)
-            em.get().persist(policy);
+            em.persist(policy);
         else
-            em.get().merge(policy);
+            em.merge(policy);
     }
 
     /*
@@ -97,7 +98,7 @@ public class PolicyRegistryJpa implements PolicyRegistry {
     public Policy findByNum(final String regNum) {
         logger.debug("Requesting policy by number...");
 
-        final Query q = em.get().createQuery("SELECT p FROM Policy p WHERE p.regNum = :regNumPrm");
+        final Query q = em.createQuery("SELECT p FROM Policy p WHERE p.regNum = :regNumPrm");
         q.setParameter("regNumPrm", regNum);
         return (Policy) q.getSingleResult();
     }
