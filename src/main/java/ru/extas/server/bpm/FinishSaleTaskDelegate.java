@@ -2,6 +2,8 @@ package ru.extas.server.bpm;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.Lead;
@@ -21,6 +23,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Time: 11:55
  */
 @Component("finishSaleTaskDelegate")
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class FinishSaleTaskDelegate implements JavaDelegate {
 
     @Transactional

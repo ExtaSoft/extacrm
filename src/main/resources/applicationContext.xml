@@ -115,7 +115,9 @@
     <!-- Устанавливает глобальное окружение Activiti для запроса -->
     <bean id="activitiAuthFilter" class="ru.extas.web.bpm.ActivitiAuthFilter"/>
     <!-- Обработчик пользовательской задачи в рамках бизнес процесса -->
-    <bean id="defUserTaskListener" class="ru.extas.server.bpm.DefaultUserTaskListener"/>
+    <bean id="defUserTaskListener" class="ru.extas.server.bpm.DefaultUserTaskListener">
+        <aop:scoped-proxy/>
+    </bean>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Shiro Security Congiguration -->

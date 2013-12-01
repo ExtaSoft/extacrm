@@ -23,6 +23,7 @@ class InsuranceDataDecl extends GridDataDecl {
         addMapping("motorBrand", "Марка техники");
         addMapping("motorModel", "Модель техники");
         addMapping("riskSum", "Страховая сумма");
+        addMapping("coverTime", "Период страхования", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("premium", "Страховая премия");
         addMapping("paymentDate", "Дата оплаты страховой премии", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("startDate", "Дата начала срока действия договора", EnumSet.of(PresentFlag.COLLAPSED));

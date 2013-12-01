@@ -250,7 +250,15 @@ public class TaskEditForm extends AbstractEditForm<Task> {
     @Override
     protected void saveObject(final Task obj) {
         TaskService taskService = lookup(TaskService.class);
-        taskService.saveTask(obj);
+        Task task = taskService.createTaskQuery().taskId(obj.getId()).singleResult();
+
+        task.setName(obj.getName());
+        task.setDescription(obj.getDescription());
+        task.setDueDate(obj.getDueDate());
+        task.setOwner(obj.getOwner());
+        task.setAssignee(obj.getAssignee());
+
+        taskService.saveTask(task);
     }
 
     /*

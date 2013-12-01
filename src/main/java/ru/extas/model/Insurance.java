@@ -22,6 +22,7 @@ public class Insurance extends AbstractExtaObject {
 
     private static final long serialVersionUID = -1289533183659860816L;
 
+
     // Номер полиса
     @Column(name = "REG_NUM", length = Policy.REG_NUM_LENGTH, unique = true)
     @Max(Policy.REG_NUM_LENGTH)
@@ -59,6 +60,10 @@ public class Insurance extends AbstractExtaObject {
     @Column(name = "RISK_SUM")
     private BigDecimal riskSum;
 
+    // Период покрытия
+    @Column(name = "COVER_TIME")
+    private PeriodOfCover coverTime;
+
     // Страховая премия, руб.
     private BigDecimal premium;
 
@@ -81,16 +86,30 @@ public class Insurance extends AbstractExtaObject {
     @OneToOne
     private Company dealer;
 
+    public enum PeriodOfCover {
+        YEAR,
+        HALF_A_YEAR;
+    }
+
     public Insurance() {
+    }
+
+    public PeriodOfCover getCoverTime() {
+        return coverTime;
+    }
+
+    public void setCoverTime(PeriodOfCover coverTime) {
+        this.coverTime = coverTime;
     }
 
     /**
      * @param motorBrand
      * @param riskSum
      */
-    public Insurance(String motorBrand, BigDecimal riskSum) {
+    public Insurance(String motorBrand, BigDecimal riskSum, PeriodOfCover coverPeriod) {
         this.motorBrand = motorBrand;
         this.riskSum = riskSum;
+        this.coverTime = coverPeriod;
     }
 
     /**

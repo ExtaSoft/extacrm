@@ -4,10 +4,7 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.PopupDateField;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.*;
 import org.joda.time.LocalDate;
 import ru.extas.model.Insurance;
 import ru.extas.model.Policy;
@@ -21,6 +18,7 @@ import ru.extas.web.contacts.CompanySelect;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.reference.MotorBrandSelect;
 import ru.extas.web.reference.MotorTypeSelect;
+import ru.extas.web.util.ComponentUtil;
 
 import java.math.BigDecimal;
 
@@ -51,6 +49,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     private TextField motorModelField;
     @PropertyId("riskSum")
     private TextField riskSumField;
+    @PropertyId("coverTime")
+    private OptionGroup coverTimeField;
     @PropertyId("premium")
     private TextField premiumField;
     @PropertyId("paymentDate")
@@ -158,6 +158,25 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         riskSumField.setRequired(true);
         form.addComponent(riskSumField);
 
+        // По умолчанию страховка на год.
+        if (obj.getCoverTime() == null)
+            obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
+        coverTimeField = new OptionGroup("Срок страхования");
+        coverTimeField.setDescription("Укажите требуемый срок действия страхового полиса");
+        coverTimeField.setRequired(true);
+        coverTimeField.setNullSelectionAllowed(false);
+        coverTimeField.setNewItemsAllowed(false);
+        coverTimeField.setImmediate(true);
+        ComponentUtil.fillSelectByEnum(coverTimeField, Insurance.PeriodOfCover.class);
+        coverTimeField.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(ValueChangeEvent event) {
+                calculatePremium();
+                calcEndDate();
+            }
+        });
+        form.addComponent(coverTimeField);
+
         premiumField = new EditField("Страховая премия", "Введите стоимость страховки в рублях");
         premiumField.setRequired(true);
         form.addComponent(premiumField);
@@ -185,10 +204,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
             @Override
             public void valueChange(final ValueChangeEvent event) {
-                // пересчитать дату окончания договора
-                final LocalDate newDate = (LocalDate) startDateField.getConvertedValue();
-                if (newDate != null && endDateField.getPropertyDataSource() != null)
-                    endDateField.setConvertedValue(newDate.plusYears(1).minusDays(1));
+                calcEndDate();
+
             }
         });
         form.addComponent(startDateField);
@@ -204,6 +221,18 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         return form;
     }
 
+    private void calcEndDate() {
+        // пересчитать дату окончания договора
+        final LocalDate newDate = (LocalDate) startDateField.getConvertedValue();
+        if (newDate != null && endDateField.getPropertyDataSource() != null) {
+            final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
+            if (coverPeriod == Insurance.PeriodOfCover.YEAR)
+                endDateField.setConvertedValue(newDate.plusYears(1).minusDays(1));
+            else
+                endDateField.setConvertedValue(newDate.plusMonths(6).minusDays(1));
+        }
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -216,6 +245,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
             final LocalDate now = LocalDate.now();
             obj.setDate(now);
             obj.setPaymentDate(now);
+            obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
             obj.setStartDate(obj.getPaymentDate().plusDays(1));
             obj.setEndDate(obj.getStartDate().plusYears(1).minusDays(1));
         }
@@ -248,12 +278,15 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
      *
      */
     private void calculatePremium() {
-        if (motorBrandField.getPropertyDataSource() != null && premiumField.getPropertyDataSource() != null) {
+        if (motorBrandField.getPropertyDataSource() != null &&
+                premiumField.getPropertyDataSource() != null &&
+                coverTimeField.getContainerDataSource() != null) {
+            final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
             final BigDecimal riskSum = (BigDecimal) riskSumField.getConvertedValue();
             final String motorBrand = (String) motorBrandField.getValue();
             if (riskSum != null && motorBrand != null) {
                 final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
-                final BigDecimal premium = calc.calcPropInsPremium(new Insurance(motorBrand, riskSum));
+                final BigDecimal premium = calc.calcPropInsPremium(new Insurance(motorBrand, riskSum, coverPeriod));
                 premiumField.setConvertedValue(premium);
             }
         }

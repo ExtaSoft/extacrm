@@ -11,6 +11,7 @@ import ru.extas.web.contacts.StringToPersonPosition;
 import ru.extas.web.contacts.StringToPersonSex;
 import ru.extas.web.insurance.StringToA7FormConverter;
 import ru.extas.web.insurance.StringToA7StatusConverter;
+import ru.extas.web.insurance.StringToPeriodOfCoverConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.lead.StringToLeadStatus;
 import ru.extas.web.sale.StringToSaleType;
@@ -86,6 +87,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
         // Конвертор статуса лида
         if (presentationType == String.class && modelType == Lead.Status.class)
             return (Converter<PRESENTATION, MODEL>) lookup(StringToLeadStatus.class);
+
+        // Конвертер периода страхования
+        if (presentationType == String.class && modelType == Insurance.PeriodOfCover.class)
+            return (Converter<PRESENTATION, MODEL>) lookup(StringToPeriodOfCoverConverter.class);
 
         // Let default factory handle the rest
         return super.findConverter(presentationType, modelType);

@@ -173,6 +173,9 @@ public class InsuranceGrid extends ExtaGrid {
             // 2) Create context Java model
             final IContext context = report.createContext();
             context.put("ins", insurance);
+            context.put("periodOfCover",
+                    insurance.getCoverTime() == null || insurance.getCoverTime() == Insurance.PeriodOfCover.YEAR
+                            ? "12 месяцев" : "6 месяцев");
 
             // 3) Generate report by merging Java model with the Docx
             final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();

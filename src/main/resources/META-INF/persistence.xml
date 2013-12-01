@@ -33,7 +33,7 @@
             <property name="eclipselink.jdbc.uppercase-columns" value="true"/>
             <property name="eclipselink.jdbc.batch-writing" value="jdbc"/>
 
-            <property name="eclipselink.ddl-generation.output-mode" value="both"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
             <property name="eclipselink.application-location" value="src/main/resources/db"/>
             <property name="eclipselink.create-ddl-jdbc-file-name" value="create_database.sql"/>
             <property name="eclipselink.drop-ddl-jdbc-file-name" value="drop_database.sql"/>
