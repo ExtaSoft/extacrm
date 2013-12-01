@@ -6,7 +6,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>0.1.7</version>
+    <version>0.1.8-SNAPSHOT</version>
 
     <properties>
         <vaadin.production.mode>true</vaadin.production.mode>
@@ -91,7 +91,7 @@
         <connection>scm:git:https://github.com/ExtaSoft/extacrm.git</connection>
         <developerConnection>scm:git:https://github.com/ExtaSoft/extacrm.git</developerConnection>
         <url>scm:git:https://github.com/ExtaSoft/extacrm.git</url>
-        <tag>extacrm-0.1.7</tag>
+        <tag>release-branch</tag>
     </scm>
 
     <repositories>
