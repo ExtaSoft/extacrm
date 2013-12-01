@@ -31,7 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class CompanyEditForm extends AbstractEditForm<Company> {
 
     private static final long serialVersionUID = -7787385620289376599L;
-    private final Logger logger = LoggerFactory.getLogger(CompanyEditForm.class);
+    private final static Logger logger = LoggerFactory.getLogger(CompanyEditForm.class);
     // Компоненты редактирования
     // Основные персональные данные
     @PropertyId("name")

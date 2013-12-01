@@ -26,7 +26,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class UserEditForm extends AbstractEditForm<UserProfile> {
 
     private static final long serialVersionUID = -5016687382646391930L;
-    private final Logger logger = LoggerFactory.getLogger(UserEditForm.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserEditForm.class);
     private final String initialPassword;
     // Компоненты редактирования
     @PropertyId("contact")

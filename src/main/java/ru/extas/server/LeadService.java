@@ -11,6 +11,17 @@ import ru.extas.model.Lead;
  */
 public interface LeadService {
 
+    /**
+     * Сохранить лид
+     *
+     * @param obj лид для сохранения
+     */
     public void persist(Lead obj);
 
+    /**
+     * Квалифицировать лид
+     *
+     * @param obj лид для квалификации
+     */
+    void qualify(Lead obj);
 }

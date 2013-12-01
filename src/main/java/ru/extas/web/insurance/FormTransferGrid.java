@@ -41,7 +41,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class FormTransferGrid extends ExtaGrid {
 
     private static final long serialVersionUID = 1170175803163742829L;
-    private final Logger logger = LoggerFactory.getLogger(FormTransferGrid.class);
+    private final static Logger logger = LoggerFactory.getLogger(FormTransferGrid.class);
 
     public FormTransferGrid() {
 

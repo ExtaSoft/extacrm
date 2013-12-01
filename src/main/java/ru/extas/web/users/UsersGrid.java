@@ -28,7 +28,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class UsersGrid extends ExtaGrid {
 
     private static final long serialVersionUID = -4385482673967616119L;
-    private final Logger logger = LoggerFactory.getLogger(UsersGrid.class);
+    private final static Logger logger = LoggerFactory.getLogger(UsersGrid.class);
 
     /**
      *

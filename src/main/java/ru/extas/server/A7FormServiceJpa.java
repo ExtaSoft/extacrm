@@ -5,6 +5,8 @@ package ru.extas.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.A7Form;
@@ -21,9 +23,10 @@ import java.util.List;
  * @author Valery Orlov
  */
 @Repository
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class A7FormServiceJpa implements A7FormService {
 
-    private final Logger logger = LoggerFactory.getLogger(A7FormServiceJpa.class);
+    private final static Logger logger = LoggerFactory.getLogger(A7FormServiceJpa.class);
 
     @PersistenceContext
     private EntityManager em;

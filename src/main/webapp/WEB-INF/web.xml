@@ -70,6 +70,17 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- Устанавливает глобальное окружение Activiti для запроса -->
+    <filter>
+        <filter-name>activitiAuthFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>activitiAuthFilter</filter-name>
+        <servlet-name>extaCrmUIServlet</servlet-name>
+    </filter-mapping>
+
     <!--<security-constraint>-->
     <!--<web-resource-collection>-->
     <!--<web-resource-name>allWebResources</web-resource-name>-->

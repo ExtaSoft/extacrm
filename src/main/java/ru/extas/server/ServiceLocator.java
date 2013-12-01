@@ -4,7 +4,7 @@
 package ru.extas.server;
 
 import com.vaadin.server.VaadinServlet;
-import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
@@ -27,7 +27,7 @@ public final class ServiceLocator {
     public static <TServiceType> TServiceType lookup(Class<TServiceType> srvType) {
 
         ServletContext servletContext = VaadinServlet.getCurrent().getServletContext();
-        ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
 
         return context.getBean(srvType);
     }

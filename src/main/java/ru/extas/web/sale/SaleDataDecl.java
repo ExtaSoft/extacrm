@@ -7,7 +7,7 @@ import ru.extas.web.commons.GridDataDecl;
  *         Date: 15.10.13
  *         Time: 12:52
  */
-public class SaleDataDecl extends GridDataDecl {
+class SaleDataDecl extends GridDataDecl {
     public SaleDataDecl() {
         addMapping("client.name", "Клиент");
         addMapping("type", "Тип продажи");

@@ -1,9 +1,9 @@
 package ru.extas.server;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.Insurance;
@@ -21,9 +21,10 @@ import java.util.Collection;
  * @author Valery Orlov
  */
 @Repository
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class InsuranceRepositoryJpa implements InsuranceRepository {
 
-    private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJpa.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserManagementServiceJpa.class);
 
     @PersistenceContext
     private EntityManager em;
@@ -32,6 +33,8 @@ public class InsuranceRepositoryJpa implements InsuranceRepository {
     private PolicyRegistry policyRepository;
     @Inject
     private A7FormService formService;
+    @Inject
+    private UserManagementService userService;
 
     /*
      * (non-Javadoc)
@@ -43,11 +46,10 @@ public class InsuranceRepositoryJpa implements InsuranceRepository {
     public Collection<Insurance> loadAll() {
         logger.debug("Requesting insurances list...");
         Query q;
-        Subject subject = SecurityUtils.getSubject();
         // пользователю доступны только собственные записи
-        if (subject.hasRole(UserRole.USER.getName())) {
+        if (userService.isCurUserHasRole(UserRole.USER)) {
             q = em.createQuery("SELECT i FROM Insurance i WHERE i.createdBy = :createdByPrm");
-            q.setParameter("createdByPrm", subject.getPrincipal());
+            q.setParameter("createdByPrm", userService.getCurrentUserLogin());
         } else
             q = em.createQuery("SELECT i FROM Insurance i");
 

@@ -3,43 +3,28 @@
              xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
              xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
              typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
-             targetNamespace="http://www.activiti.org/test">
+             targetNamespace="http://extremeassist.ru/crm">
     <process id="saleCreditProcess" name="Стандартный процесс продажи кредита" isExecutable="true">
-        <startEvent id="startevent1" name="Квалификация лида"></startEvent>
-        <userTask id="firstCallTask" name="Первая связь с клиентом">
+        <startEvent id="startevent1" name="Квалификация лида" activiti:initiator="currentUser"></startEvent>
+        <userTask id="firstCallTask" name="Первая связь с клиентом" activiti:dueDate="PT15M">
             <extensionElements>
-                <activiti:formProperty id="title" name="Заголовок" type="string"
-                                       required="true"></activiti:formProperty>
-                <activiti:formProperty id="startDate" name="Дата и время начала задачи"
-                                       type="date"></activiti:formProperty>
-                <activiti:formProperty id="status" name="Статус задачи" type="enum" default="New">
-                    <activiti:value id="New" name="Не начата"></activiti:value>
-                    <activiti:value id="InProgress" name="В работе"></activiti:value>
-                    <activiti:value id="Finished" name="Завершена"></activiti:value>
-                    <activiti:value id="Cenceled" name="Отменена"></activiti:value>
-                </activiti:formProperty>
                 <activiti:formProperty id="result" name="Результат" type="enum" variable="firstCallResult"
                                        default="ThereIsInterest">
                     <activiti:value id="CallLater" name="Перезвонить позже"></activiti:value>
                     <activiti:value id="Canceled" name="Отменена"></activiti:value>
                     <activiti:value id="ThereIsInterest" name="Есть интерес"></activiti:value>
                 </activiti:formProperty>
+                <activiti:taskListener event="create"
+                                       expression="${defUserTaskListener.createTask(task)}"></activiti:taskListener>
             </extensionElements>
         </userTask>
         <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="firstCallTask"></sequenceFlow>
         <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
         <sequenceFlow id="flow3" sourceRef="firstCallTask" targetRef="exclusivegateway1"></sequenceFlow>
-        <userTask id="sendContactToUserTask" name="Выслать контакты">
+        <userTask id="sendContactToUserTask" name="Выслать контакты" activiti:dueDate="PT15M">
             <extensionElements>
-                <activiti:formProperty id="title" name="Заголовок" type="string"
-                                       required="true"></activiti:formProperty>
-                <activiti:formProperty id="startDate" name="Дата и время начала задачи"
-                                       type="date"></activiti:formProperty>
-                <activiti:formProperty id="status" name="Статус задачи" type="enum" default="New">
-                    <activiti:value id="New" name="Не начата"></activiti:value>
-                    <activiti:value id="InProgress" name="В работе"></activiti:value>
-                    <activiti:value id="Finished" name="Завершена"></activiti:value>
-                </activiti:formProperty>
+                <activiti:taskListener event="create"
+                                       expression="${defUserTaskListener.createTask(task)}"></activiti:taskListener>
             </extensionElements>
         </userTask>
         <sequenceFlow id="flow5" name="Есть интерес" sourceRef="exclusivegateway1" targetRef="sendContactToUserTask">
@@ -56,43 +41,27 @@
                 <![CDATA[${firstCallResult == "Canceled"}]]></conditionExpression>
         </sequenceFlow>
         <serviceTask id="createSaleTask" name="Создать продажу"
-                     activiti:class="ru.extas.server.bpmn.CreateSaleTaskDelegate"></serviceTask>
+                     activiti:delegateExpression="${createSaleTaskDelegate}"></serviceTask>
         <sequenceFlow id="flow8" sourceRef="sendContactToUserTask" targetRef="createSaleTask"></sequenceFlow>
-        <userTask id="getDocsTask" name="Получить документы">
+        <userTask id="getDocsTask" name="Получить документы" activiti:dueDate="P3D">
             <extensionElements>
-                <activiti:formProperty id="title" name="Заголовок" type="string"
-                                       required="true"></activiti:formProperty>
-                <activiti:formProperty id="startDate" name="Дата и время начала задачи"
-                                       type="date"></activiti:formProperty>
-                <activiti:formProperty id="status" name="Статус задачи" type="enum" default="New">
-                    <activiti:value id="New" name="Не начата"></activiti:value>
-                    <activiti:value id="InProgress" name="В работе"></activiti:value>
-                    <activiti:value id="Finished" name="Завершена"></activiti:value>
-                    <activiti:value id="Cenceled" name="Отменена"></activiti:value>
-                </activiti:formProperty>
                 <activiti:formProperty id="result" name="Результат" type="enum" variable="getDocsTaskResult"
                                        default="HaveDocs">
                     <activiti:value id="HaveDocs" name="Документы получены"></activiti:value>
                     <activiti:value id="Canceled" name="Отменена"></activiti:value>
                 </activiti:formProperty>
+                <activiti:taskListener event="create"
+                                       expression="${defUserTaskListener.createTask(task)}"></activiti:taskListener>
             </extensionElements>
         </userTask>
         <sequenceFlow id="flow9" sourceRef="createSaleTask" targetRef="getDocsTask"></sequenceFlow>
         <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
         <sequenceFlow id="flow10" sourceRef="getDocsTask" targetRef="exclusivegateway2"></sequenceFlow>
-        <sequenceFlow id="flow11" sourceRef="inclusivegateway1" targetRef="endevent1"></sequenceFlow>
-        <userTask id="sendApplicationTask" name="Выслать заявку в банк">
+        <sequenceFlow id="flow11" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+        <userTask id="sendApplicationTask" name="Выслать заявку в банк" activiti:dueDate="P1D">
             <extensionElements>
-                <activiti:formProperty id="title" name="Заголовок" type="string"
-                                       required="true"></activiti:formProperty>
-                <activiti:formProperty id="startDate" name="Дата и время начала задачи"
-                                       type="date"></activiti:formProperty>
-                <activiti:formProperty id="status" name="Статус задачи" type="enum" default="New">
-                    <activiti:value id="New" name="Не начата"></activiti:value>
-                    <activiti:value id="InProgress" name="В работе"></activiti:value>
-                    <activiti:value id="Finished" name="Завершена"></activiti:value>
-                    <activiti:value id="Cenceled" name="Отменена"></activiti:value>
-                </activiti:formProperty>
+                <activiti:taskListener event="create"
+                                       expression="${defUserTaskListener.createTask(task)}"></activiti:taskListener>
             </extensionElements>
         </userTask>
         <sequenceFlow id="flow12" name="Документы получены" sourceRef="exclusivegateway2"
@@ -100,22 +69,15 @@
             <conditionExpression xsi:type="tFormalExpression">
                 <![CDATA[${getDocsTaskResult == "HaveDocs"}]]></conditionExpression>
         </sequenceFlow>
-        <userTask id="getBankResponseTask" name="Получить ответ от банка">
+        <userTask id="getBankResponseTask" name="Получить ответ от банка" activiti:dueDate="P1D">
             <extensionElements>
-                <activiti:formProperty id="title" name="Заголовок" type="string"
-                                       required="true"></activiti:formProperty>
-                <activiti:formProperty id="startDate" name="Дата и время начала задачи"
-                                       type="date"></activiti:formProperty>
-                <activiti:formProperty id="status" name="Статус задачи" type="enum" default="New">
-                    <activiti:value id="New" name="Не начата"></activiti:value>
-                    <activiti:value id="InProgress" name="В работе"></activiti:value>
-                    <activiti:value id="Finished" name="Завершена"></activiti:value>
-                </activiti:formProperty>
                 <activiti:formProperty id="result" name="Результат" type="enum" variable="getBankResponseTaskResult"
                                        default="Approved">
                     <activiti:value id="Approved" name="Заявка одобрена"></activiti:value>
                     <activiti:value id="Rejected" name="Заявка отклонена"></activiti:value>
                 </activiti:formProperty>
+                <activiti:taskListener event="create"
+                                       expression="${defUserTaskListener.createTask(task)}"></activiti:taskListener>
             </extensionElements>
         </userTask>
         <sequenceFlow id="flow13" sourceRef="sendApplicationTask" targetRef="getBankResponseTask"></sequenceFlow>
@@ -130,23 +92,16 @@
             <conditionExpression xsi:type="tFormalExpression">
                 <![CDATA[${getBankResponseTaskResult == "Rejected"}]]></conditionExpression>
         </sequenceFlow>
-        <userTask id="takeResponseToClientTask" name="Сообщить клиенту о положительном решении">
+        <userTask id="takeResponseToClientTask" name="Сообщить клиенту о положительном решении"
+                  activiti:dueDate="PT15M">
             <extensionElements>
-                <activiti:formProperty id="title" name="Заголовок" type="string"
-                                       required="true"></activiti:formProperty>
-                <activiti:formProperty id="startDate" name="Дата и время начала задачи"
-                                       type="date"></activiti:formProperty>
-                <activiti:formProperty id="status" name="Статус задачи" type="enum" default="New">
-                    <activiti:value id="New" name="Не начата"></activiti:value>
-                    <activiti:value id="InProgress" name="В работе"></activiti:value>
-                    <activiti:value id="Finished" name="Завершена"></activiti:value>
-                    <activiti:value id="Cenceled" name="Отменена"></activiti:value>
-                </activiti:formProperty>
                 <activiti:formProperty id="result" name="Результат" type="enum"
                                        variable="takeResponseToClientTaskResult" default="ClientApprove">
                     <activiti:value id="ClientApprove" name="Согласие клиента получено"></activiti:value>
                     <activiti:value id="Canceled" name="Отменена"></activiti:value>
                 </activiti:formProperty>
+                <activiti:taskListener event="create"
+                                       expression="${defUserTaskListener.createTask(task)}"></activiti:taskListener>
             </extensionElements>
         </userTask>
         <sequenceFlow id="flow17" name="Заявка одобрена" sourceRef="exclusivegateway3"
@@ -161,23 +116,15 @@
             <conditionExpression xsi:type="tFormalExpression">
                 <![CDATA[${takeResponseToClientTaskResult == "Cenceled"}]]></conditionExpression>
         </sequenceFlow>
-        <userTask id="doDealTask" name="Провести встречу">
+        <userTask id="doDealTask" name="Провести встречу" activiti:dueDate="P2D">
             <extensionElements>
-                <activiti:formProperty id="title" name="Заголовок" type="string"
-                                       required="true"></activiti:formProperty>
-                <activiti:formProperty id="startDate" name="Дата и время начала задачи"
-                                       type="date"></activiti:formProperty>
-                <activiti:formProperty id="status" name="Статус задачи" type="enum" default="New">
-                    <activiti:value id="New" name="Не начата"></activiti:value>
-                    <activiti:value id="InProgress" name="В работе"></activiti:value>
-                    <activiti:value id="Finished" name="Завершена"></activiti:value>
-                    <activiti:value id="Cenceled" name="Отменена"></activiti:value>
-                </activiti:formProperty>
                 <activiti:formProperty id="result" name="Результат" type="enum" variable="doDealTaskResult"
                                        default="HaveDeal">
                     <activiti:value id="HaveDeal" name="Договор подписан"></activiti:value>
                     <activiti:value id="Canceled" name="Сделка Отменена"></activiti:value>
                 </activiti:formProperty>
+                <activiti:taskListener event="create"
+                                       expression="${defUserTaskListener.createTask(task)}"></activiti:taskListener>
             </extensionElements>
         </userTask>
         <sequenceFlow id="flow21" name="Согласен на сделку" sourceRef="exclusivegateway4" targetRef="doDealTask">
@@ -190,28 +137,23 @@
             <conditionExpression xsi:type="tFormalExpression">
                 <![CDATA[${doDealTaskResult == "Canceled"}]]></conditionExpression>
         </sequenceFlow>
-        <serviceTask id="servicetask2" name="Завершить продажу"
-                     activiti:class="ru.extas.server.bpmn.FinishSaleTaskDelegate"></serviceTask>
+        <serviceTask id="servicetask2" name="Завершить продажу и лид"
+                     activiti:delegateExpression="${finishSaleTaskDelegate}"></serviceTask>
         <sequenceFlow id="flow25" sourceRef="checkPaymentTask" targetRef="servicetask2"></sequenceFlow>
-        <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="inclusivegateway1"></sequenceFlow>
-        <userTask id="checkPaymentTask" name="Убедиться в получении денег">
+        <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+        <userTask id="checkPaymentTask" name="Убедиться в получении денег" activiti:dueDate="P3D">
             <extensionElements>
-                <activiti:formProperty id="title" name="Заголовок" type="string"
-                                       required="true"></activiti:formProperty>
-                <activiti:formProperty id="startDate" name="Дата и время начала задачи"
-                                       type="date"></activiti:formProperty>
-                <activiti:formProperty id="status" name="Статус задачи" type="enum" default="New">
-                    <activiti:value id="New" name="Не начата"></activiti:value>
-                    <activiti:value id="InProgress" name="В работе"></activiti:value>
-                    <activiti:value id="Finished" name="Завершена"></activiti:value>
-                    <activiti:value id="Cenceled" name="Отменена"></activiti:value>
-                </activiti:formProperty>
+                <activiti:taskListener event="create"
+                                       expression="${defUserTaskListener.createTask(task)}"></activiti:taskListener>
             </extensionElements>
         </userTask>
         <sequenceFlow id="flow27" name="Договор заключен" sourceRef="exclusivegateway5" targetRef="checkPaymentTask">
             <conditionExpression xsi:type="tFormalExpression">
                 <![CDATA[${doDealTaskResult == "HaveDeal"}]]></conditionExpression>
         </sequenceFlow>
+        <serviceTask id="servicetask3" name="Отменить продажу и лид"
+                     activiti:delegateExpression="${cancelSaleTaskDelegate}"></serviceTask>
+        <sequenceFlow id="flow28" sourceRef="inclusivegateway1" targetRef="servicetask3"></sequenceFlow>
     </process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_saleCreditProcess">
         <bpmndi:BPMNPlane bpmnElement="saleCreditProcess" id="BPMNPlane_saleCreditProcess">
@@ -219,7 +161,7 @@
                 <omgdc:Bounds height="35.0" width="35.0" x="62.0" y="171.0"></omgdc:Bounds>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-                <omgdc:Bounds height="35.0" width="35.0" x="990.0" y="515.0"></omgdc:Bounds>
+                <omgdc:Bounds height="35.0" width="35.0" x="1160.0" y="605.0"></omgdc:Bounds>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
                 <omgdc:Bounds height="40.0" width="40.0" x="382.0" y="171.0"></omgdc:Bounds>
@@ -240,7 +182,7 @@
                 <omgdc:Bounds height="40.0" width="40.0" x="702.0" y="586.0"></omgdc:Bounds>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-                <omgdc:Bounds height="55.0" width="105.0" x="670.0" y="797.0"></omgdc:Bounds>
+                <omgdc:Bounds height="55.0" width="105.0" x="980.0" y="700.0"></omgdc:Bounds>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="firstCallTask" id="BPMNShape_firstCallTask">
                 <omgdc:Bounds height="55.0" width="105.0" x="162.0" y="161.0"></omgdc:Bounds>
@@ -268,6 +210,9 @@
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape bpmnElement="sendApplicationTask" id="BPMNShape_sendApplicationTask">
                 <omgdc:Bounds height="55.0" width="105.0" x="510.0" y="423.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+                <omgdc:Bounds height="55.0" width="105.0" x="975.0" y="505.0"></omgdc:Bounds>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
                 <omgdi:waypoint x="97.0" y="188.0"></omgdi:waypoint>
@@ -315,8 +260,9 @@
                 <omgdi:waypoint x="722.0" y="430.0"></omgdi:waypoint>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-                <omgdi:waypoint x="930.0" y="532.0"></omgdi:waypoint>
-                <omgdi:waypoint x="990.0" y="532.0"></omgdi:waypoint>
+                <omgdi:waypoint x="1080.0" y="532.0"></omgdi:waypoint>
+                <omgdi:waypoint x="1113.0" y="533.0"></omgdi:waypoint>
+                <omgdi:waypoint x="1177.0" y="605.0"></omgdi:waypoint>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
                 <omgdi:waypoint x="702.0" y="450.0"></omgdi:waypoint>
@@ -354,7 +300,7 @@
                 <omgdi:waypoint x="214.0" y="470.0"></omgdi:waypoint>
                 <omgdi:waypoint x="214.0" y="571.0"></omgdi:waypoint>
                 <bpmndi:BPMNLabel>
-                    <omgdc:Bounds height="14.0" width="100.0" x="10.0" y="0.0"></omgdc:Bounds>
+                    <omgdc:Bounds height="14.0" width="88.0" x="10.0" y="0.0"></omgdc:Bounds>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
@@ -374,7 +320,7 @@
                 <omgdi:waypoint x="412.0" y="606.0"></omgdi:waypoint>
                 <omgdi:waypoint x="548.0" y="606.0"></omgdi:waypoint>
                 <bpmndi:BPMNLabel>
-                    <omgdc:Bounds height="42.0" width="100.0" x="-50.0" y="-5.0"></omgdc:Bounds>
+                    <omgdc:Bounds height="14.0" width="100.0" x="-50.0" y="0.0"></omgdc:Bounds>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
@@ -390,13 +336,13 @@
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-                <omgdi:waypoint x="722.0" y="755.0"></omgdi:waypoint>
-                <omgdi:waypoint x="722.0" y="797.0"></omgdi:waypoint>
+                <omgdi:waypoint x="775.0" y="727.0"></omgdi:waypoint>
+                <omgdi:waypoint x="980.0" y="727.0"></omgdi:waypoint>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-                <omgdi:waypoint x="775.0" y="824.0"></omgdi:waypoint>
-                <omgdi:waypoint x="908.0" y="824.0"></omgdi:waypoint>
-                <omgdi:waypoint x="910.0" y="552.0"></omgdi:waypoint>
+                <omgdi:waypoint x="1085.0" y="727.0"></omgdi:waypoint>
+                <omgdi:waypoint x="1115.0" y="728.0"></omgdi:waypoint>
+                <omgdi:waypoint x="1177.0" y="640.0"></omgdi:waypoint>
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
                 <omgdi:waypoint x="722.0" y="626.0"></omgdi:waypoint>
@@ -404,6 +350,10 @@
                 <bpmndi:BPMNLabel>
                     <omgdc:Bounds height="14.0" width="94.0" x="5.0" y="-13.0"></omgdc:Bounds>
                 </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+                <omgdi:waypoint x="930.0" y="532.0"></omgdi:waypoint>
+                <omgdi:waypoint x="975.0" y="532.0"></omgdi:waypoint>
             </bpmndi:BPMNEdge>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>

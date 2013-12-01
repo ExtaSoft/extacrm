@@ -28,7 +28,7 @@
 
         <xdocreport.version>1.0.2</xdocreport.version>
 
-        <spring.version>3.2.4.RELEASE</spring.version>
+        <spring.version>3.2.5.RELEASE</spring.version>
         <eclipselink.version>2.5.1-RC3</eclipselink.version>
     </properties>
 
@@ -369,11 +369,23 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.1.0.M0</version>
+                <version>9.1.0.v20131115</version>
                 <configuration>
+                    <webAppConfig implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
+                        <sessionHandler implementation="org.eclipse.jetty.server.session.SessionHandler">
+                            <sessionManager implementation="org.eclipse.jetty.server.session.HashSessionManager">
+                                <storeDirectory>${basedir}/target/jetty-sessions</storeDirectory>
+                                <idleSavePeriod>1</idleSavePeriod>
+                            </sessionManager>
+                        </sessionHandler>
+                    </webAppConfig>
                     <systemProperties>
                         <systemProperty>
                             <name>IS_DEV_ENV</name>
+                            <value>true</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>sun.io.serialization.extendedDebugInfo</name>
                             <value>true</value>
                         </systemProperty>
                     </systemProperties>
@@ -477,6 +489,25 @@
                                         </versionRange>
                                         <goals>
                                             <goal>compile-theme</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            au.com.alderaan
+                                        </groupId>
+                                        <artifactId>
+                                            eclipselink-staticweave-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.0.4,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>weave</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>

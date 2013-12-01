@@ -20,7 +20,7 @@ public class ConfigView extends ExtaAbstractView {
 
     private static final long serialVersionUID = -1272779672761523416L;
 
-    private final Logger logger = LoggerFactory.getLogger(ConfigView.class);
+    private final static Logger logger = LoggerFactory.getLogger(ConfigView.class);
 
     /*
      * (non-Javadoc)

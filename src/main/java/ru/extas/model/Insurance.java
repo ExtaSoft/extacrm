@@ -41,18 +41,18 @@ public class Insurance extends AbstractExtaObject {
     private Person client;
 
     // Предмет страхования - тип
-    @Column(name = "MOTOR_TYPE", length = 20)
-    @Max(20)
+    @Column(name = "MOTOR_TYPE", length = 50)
+    @Max(50)
     private String motorType;
 
     // Предмет страхования - марка
-    @Column(name = "MOTOR_BRAND", length = 20)
-    @Max(20)
+    @Column(name = "MOTOR_BRAND", length = 50)
+    @Max(50)
     private String motorBrand;
 
     // Предмет страхования - модель
-    @Column(name = "MOTOR_MODEL", length = 20)
-    @Max(20)
+    @Column(name = "MOTOR_MODEL", length = 50)
+    @Max(50)
     private String motorModel;
 
     // Страховая сумма, руб.

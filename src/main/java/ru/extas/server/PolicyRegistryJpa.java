@@ -6,6 +6,8 @@ package ru.extas.server;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.Policy;
@@ -19,9 +21,10 @@ import java.util.List;
  * @author Valery Orlov
  */
 @Repository
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class PolicyRegistryJpa implements PolicyRegistry {
 
-    private final Logger logger = LoggerFactory.getLogger(PolicyRegistryJpa.class);
+    private final static Logger logger = LoggerFactory.getLogger(PolicyRegistryJpa.class);
     @PersistenceContext
     private EntityManager em;
 

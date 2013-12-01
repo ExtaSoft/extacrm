@@ -12,18 +12,18 @@ import java.io.Serializable;
  * @author Valery Orlov
  */
 @Embeddable
-public class AddressInfo implements Serializable {
+public class AddressInfo implements Cloneable, Serializable {
 
     private static final long serialVersionUID = -7891940678175752858L;
 
     // Регион
-    @Column(length = 20)
-    @Max(20)
+    @Column(length = 50)
+    @Max(50)
     private String region;
 
     // Город
-    @Column(length = 15)
-    @Max(15)
+    @Column(length = 30)
+    @Max(30)
     private String city;
 
     // Индекс
@@ -38,6 +38,19 @@ public class AddressInfo implements Serializable {
     private String streetBld;
 
     public AddressInfo() {
+    }
+
+    public AddressInfo(String region, String city, String postIndex, String streetBld) {
+        this.region = region;
+        this.city = city;
+        this.postIndex = postIndex;
+        this.streetBld = streetBld;
+    }
+
+    @Override
+    public AddressInfo clone() {
+        AddressInfo newObj = new AddressInfo(region, city, postIndex, streetBld);
+        return newObj;
     }
 
     public String getRegion() {

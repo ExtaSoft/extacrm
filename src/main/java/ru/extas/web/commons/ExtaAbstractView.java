@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public abstract class ExtaAbstractView extends VerticalLayout implements View {
 
     private static final long serialVersionUID = -9143359275908526515L;
-    private final Logger logger = LoggerFactory.getLogger(ExtaAbstractView.class);
+    private final static Logger logger = LoggerFactory.getLogger(ExtaAbstractView.class);
 
     /**
      *

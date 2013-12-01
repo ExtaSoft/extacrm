@@ -27,7 +27,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
     private static final long serialVersionUID = -7818477340305539184L;
     private transient DecimalFormat format;
     private transient DecimalFormat lenientFormat;
-    private final Logger logger = LoggerFactory.getLogger(InsuranceView.class);
+    private final static Logger logger = LoggerFactory.getLogger(InsuranceView.class);
 
     /**
      * DecimalFormat's currency symbol

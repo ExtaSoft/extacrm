@@ -1,12 +1,11 @@
 package ru.extas.web.commons;
 
 import com.vaadin.addon.jpacontainer.EntityManagerProvider;
-import com.vaadin.addon.jpacontainer.EntityProvider;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.addon.jpacontainer.provider.CachingLocalEntityProvider;
+import ru.extas.server.SpringEntityManagerProvider;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.io.Serializable;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -36,8 +35,11 @@ public class ExtaDataContainer<TEntityType> extends JPAContainer<TEntityType> {
         super(entityClass);
 
         // We need an entity provider to create a container
-        EntityProvider<TEntityType> entityProvider =
+        CachingLocalEntityProvider<TEntityType> entityProvider =
                 new CachingLocalEntityProvider<>(entityClass);
+
+        //entityProvider.setCacheEnabled(false);
+        entityProvider.setEntitiesDetached(false);
 
         entityProvider.setEntityManagerProvider(new InjectEntityManagerProvider());
 
@@ -47,7 +49,7 @@ public class ExtaDataContainer<TEntityType> extends JPAContainer<TEntityType> {
     private static class InjectEntityManagerProvider implements EntityManagerProvider, Serializable {
         @Override
         public EntityManager getEntityManager() {
-            return lookup(EntityManagerFactory.class).createEntityManager();
+            return lookup(SpringEntityManagerProvider.class).getEntityManager();
         }
     }
 }

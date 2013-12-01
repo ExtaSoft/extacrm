@@ -78,6 +78,17 @@ public class Lead extends AbstractExtaObject {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(name = "PROCESS_ID")
+    private String processId;
+
+    public String getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(String processId) {
+        this.processId = processId;
+    }
+
     public String getComment() {
         return comment;
     }

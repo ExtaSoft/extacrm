@@ -29,7 +29,7 @@ public class UserRealm extends AuthorizingRealm {
 
     public static final int HASH_ITERATIONS = 1024;
 
-    private final Logger logger = LoggerFactory.getLogger(UserRealm.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserRealm.class);
 
     public UserRealm() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher(Sha256Hash.ALGORITHM_NAME);

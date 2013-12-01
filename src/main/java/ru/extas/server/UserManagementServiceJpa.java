@@ -1,9 +1,13 @@
 package ru.extas.server;
 
+import org.activiti.engine.impl.identity.Authentication;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.Contact;
@@ -23,10 +27,11 @@ import java.util.List;
  */
 @SuppressWarnings("unchecked")
 @Repository
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class UserManagementServiceJpa implements UserManagementService {
 
     private static final String SUPERUSER_LOGIN = "admin";
-    private final Logger logger = LoggerFactory.getLogger(UserManagementServiceJpa.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserManagementServiceJpa.class);
 
     @PersistenceContext
     private EntityManager em;
@@ -122,8 +127,14 @@ public class UserManagementServiceJpa implements UserManagementService {
     @Transactional
     @Override
     public UserProfile getCurrentUser() {
+        return findUserByLogin(getCurrentUserLogin());
+    }
+
+    @Override
+    public String getCurrentUserLogin() {
         Subject subject = SecurityUtils.getSubject();
-        return findUserByLogin((String) subject.getPrincipal());
+        // TODO: Кинуть исключение если нет авторизованного пользователя
+        return (String) subject.getPrincipal();
     }
 
     /**
@@ -138,4 +149,39 @@ public class UserManagementServiceJpa implements UserManagementService {
         return currentUser != null ? currentUser.getContact() : null;
     }
 
+    @Override
+    public long userCount() {
+        Query q = em.createQuery("SELECT count(u)  FROM UserProfile u");
+        return (long) q.getSingleResult();
+    }
+
+    @Override
+    public boolean isUserAuthenticated() {
+        Subject subject = SecurityUtils.getSubject();
+        return subject.isAuthenticated();
+    }
+
+    @Override
+    public boolean isCurUserHasRole(UserRole role) {
+        Subject subject = SecurityUtils.getSubject();
+        return subject.hasRole(role.getName());
+    }
+
+    @Override
+    public void authenticate(String login, String password) {
+        Subject subject = SecurityUtils.getSubject();
+        final UsernamePasswordToken token = new UsernamePasswordToken(login, password);
+        subject.login(token);
+
+        // Логин в Activiti
+        Authentication.setAuthenticatedUserId(login);
+    }
+
+    @Override
+    public void logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        // Activiti logout
+        Authentication.setAuthenticatedUserId(null);
+    }
 }

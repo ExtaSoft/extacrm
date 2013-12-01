@@ -2,6 +2,7 @@ package ru.extas.server;
 
 import ru.extas.model.Contact;
 import ru.extas.model.UserProfile;
+import ru.extas.model.UserRole;
 
 /**
  * Интерфейс управления пользователями и правами доступа
@@ -48,9 +49,52 @@ public interface UserManagementService {
     UserProfile getCurrentUser();
 
     /**
+     * Получить логин текущего пользователя
+     *
+     * @return логин текущего пользователя
+     */
+    String getCurrentUserLogin();
+
+    /**
      * Получить контакт текущего пользователя
      *
      * @return контакт текущего пользователя
      */
     Contact getCurrentUserContact();
+
+    /**
+     * Возвращает количество пользователей системы
+     *
+     * @return
+     */
+    long userCount();
+
+    /**
+     * Определить есть ли аутентифицированный пользователь
+     *
+     * @return true если есть аутентифицированный пользователь
+     */
+    boolean isUserAuthenticated();
+
+    /**
+     * Определить облидает ли текущий пользователь указанной ролью
+     *
+     * @param role проверяемая роль
+     * @return true если текущий пользователь облидает указанной ролью
+     */
+    boolean isCurUserHasRole(UserRole role);
+
+    /**
+     * Аутентифицировать пользователя.
+     * Выбрасывает исключение при неудачной аутентификации
+     *
+     * @param login    логин
+     * @param password пароль
+     */
+    void authenticate(String login, String password);
+
+    /**
+     * Выйти из системы
+     */
+    void logout();
 }

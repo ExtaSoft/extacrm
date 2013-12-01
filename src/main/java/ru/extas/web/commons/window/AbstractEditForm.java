@@ -20,25 +20,35 @@ import java.util.Iterator;
  */
 public abstract class AbstractEditForm<TEditObject> extends Window {
 
-    private final Logger logger = LoggerFactory.getLogger(AbstractEditForm.class);
+    private final static Logger logger = LoggerFactory.getLogger(AbstractEditForm.class);
 
     private static final long serialVersionUID = -5592353839008000742L;
-    private boolean saved = false;
+    protected boolean saved = false;
     private final HorizontalLayout buttonsPanel = new HorizontalLayout();
-    private final Button cancelBtn;
-    private final Button okBtn;
+    private Button cancelBtn;
+    private Button okBtn;
+    private FieldGroup fieldGroup;
+    private boolean modified;
+
+    protected AbstractEditForm(final String caption) {
+        super(caption);
+    }
 
     protected AbstractEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
         super(caption);
 
+        initForm(beanItem);
+    }
+
+    protected void initForm(BeanItem<TEditObject> beanItem) {
         final TEditObject bean = beanItem.getBean();
         initObject(bean);
         final ComponentContainer form = createEditFields(bean);
 
         // Now create a binder
-        final FieldGroup binder = new FieldGroup(beanItem);
-        binder.setBuffered(true);
-        binder.bindMemberFields(this);
+        fieldGroup = new FieldGroup(beanItem);
+        fieldGroup.setBuffered(true);
+        fieldGroup.bindMemberFields(this);
 
         cancelBtn = new Button("Отмена", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
@@ -46,8 +56,8 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
             @Override
             public void buttonClick(final ClickEvent event) {
                 // TODO Проверять изменения и выдавать предупреждения
-                binder.discard();
-                UI.getCurrent().removeWindow(AbstractEditForm.this);
+                fieldGroup.discard();
+                close();
             }
         });
         cancelBtn.setStyleName("icon-cancel");
@@ -59,19 +69,22 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
             @Override
             public void buttonClick(final ClickEvent event) {
 
-                if (binder.isModified() && binder.isValid()) {
-                    try {
-                        binder.commit();
-                        checkBeforeSave(bean);
-                        saveObject(bean);
-                        saved = true;
-                    } catch (final CommitException e) {
-                        // TODO Correct error handling
-                        logger.error("Can't apply form changes", e);
-                        Notification.show("Невозможно сохранить изменения", Type.ERROR_MESSAGE);
-                        return;
-                    }
-                    UI.getCurrent().removeWindow(AbstractEditForm.this);
+                if (isModified()) {
+                    if (fieldGroup.isValid()) {
+                        try {
+                            fieldGroup.commit();
+                            checkBeforeSave(bean);
+                            saveObject(bean);
+                            saved = true;
+                        } catch (final CommitException e) {
+                            // TODO Correct error handling
+                            logger.error("Can't apply form changes", e);
+                            Notification.show("Невозможно сохранить изменения!", Type.ERROR_MESSAGE);
+                            return;
+                        }
+                        close();
+                    } else
+                        Notification.show("Невозможно сохранить изменения! Неверные данные в форме", Type.WARNING_MESSAGE);
                 }
             }
 
@@ -99,6 +112,14 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
 
             }
         });
+    }
+
+    public boolean isModified() {
+        return modified || fieldGroup.isModified();
+    }
+
+    public void setModified(boolean modified) {
+        this.modified = modified;
     }
 
     private boolean setDefaultFocus(HasComponents container) {

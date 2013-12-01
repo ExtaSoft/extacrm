@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
         @Index(columnList = "NAME"),
         @Index(columnList = "TYPE, NAME")
 })
-public abstract class Contact extends AbstractExtaObject {
+public abstract class Contact extends AbstractExtaObject implements Cloneable {
 
     private static final long serialVersionUID = -2543373135823969745L;
 
@@ -42,13 +42,23 @@ public abstract class Contact extends AbstractExtaObject {
     private String cellPhone;
 
     // Эл. почта
-    @Column(length = 35)
-    @Max(35)
+    @Column(length = 50)
+    @Max(50)
     private String email;
 
     // Вышестоящая организация
     @OneToOne
     private Company affiliation;
+
+    protected void copyTo(Contact toObj) {
+        if (actualAddress != null)
+            toObj.actualAddress = actualAddress.clone();
+        toObj.name = name;
+        toObj.cellPhone = cellPhone;
+        toObj.email = email;
+        if (affiliation != null)
+            toObj.affiliation = affiliation.clone();
+    }
 
     public Company getAffiliation() {
         return affiliation;

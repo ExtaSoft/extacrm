@@ -15,11 +15,14 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
-import org.apache.shiro.subject.Subject;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ru.extas.model.UserProfile;
 import ru.extas.model.UserRole;
 import ru.extas.server.UserManagementService;
@@ -30,6 +33,7 @@ import ru.extas.web.insurance.InsuranceView;
 import ru.extas.web.lead.LeadsView;
 import ru.extas.web.loans.LoansView;
 import ru.extas.web.sale.SalesView;
+import ru.extas.web.tasks.TasksView;
 import ru.extas.web.users.ChangePasswordForm;
 import ru.extas.web.users.UsersView;
 
@@ -44,11 +48,13 @@ import static ru.extas.server.ServiceLocator.lookup;
  *
  * @author Valery Orlov
  */
+@Component
+@Scope("session")
 @Theme("extacrm")
 @Title("Extreme Assistance CRM")
 public class ExtaCrmUI extends UI {
 
-    private final Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
+    private final static Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
 
     private static final long serialVersionUID = -6733655391417975375L;
 
@@ -62,7 +68,9 @@ public class ExtaCrmUI extends UI {
     @Override
     protected void init(final VaadinRequest request) {
 
+
         // Регистрируем конверторы по умолчанию
+
         VaadinSession.getCurrent().setConverterFactory(new ExtaConverterFactory());
 
         // Устанавливаем локаль
@@ -100,9 +108,10 @@ public class ExtaCrmUI extends UI {
             }
         });
 
-        final Subject currentUser = SecurityUtils.getSubject();
-        if (currentUser.isAuthenticated()) buildMainView();
-        else buildLoginView(false);
+        if (lookup(UserManagementService.class).isUserAuthenticated())
+            buildMainView();
+        else
+            buildLoginView(false);
 
     }
 
@@ -110,6 +119,7 @@ public class ExtaCrmUI extends UI {
         if (exit) {
             root.removeAllComponents();
         }
+
 
         // Unfortunate to use an actual widget here, but since CSS generated
         // elements can't be transitioned yet, we must
@@ -184,19 +194,17 @@ public class ExtaCrmUI extends UI {
 
             @Override
             public void buttonClick(final ClickEvent event) {
-                String errMessage = "";
+                UserManagementService userService = lookup(UserManagementService.class);
+
                 final String user = username.getValue();
                 final String pass = password.getValue();
-                final Subject currentUser = SecurityUtils.getSubject();
+                String errMessage = "";
                 if (user != null && pass != null) {
-                    final UsernamePasswordToken token = new UsernamePasswordToken(user, pass);
-                    // token.setRememberMe(true);
                     try {
-                        currentUser.login(token);
+                        userService.authenticate(user, pass);
 
                         // Получить данные текущего пользователя
-                        final UserProfile currentUserProfile = lookup(UserManagementService.class).findUserByLogin(
-                                (String) currentUser.getPrincipal());
+                        final UserProfile currentUserProfile = userService.getCurrentUser();
                         if (currentUserProfile.isChangePassword()) {
                             // Поменять пароль
                             final ChangePasswordForm form = new ChangePasswordForm(new BeanItem<>(
@@ -209,7 +217,7 @@ public class ExtaCrmUI extends UI {
                                     if (form.isSaved()) {
                                         closeLoginAndBuildMain();
                                     } else {
-                                        SecurityUtils.getSubject().logout();
+                                        lookup(UserManagementService.class).logout();
                                     }
                                 }
                             });
@@ -236,7 +244,7 @@ public class ExtaCrmUI extends UI {
                 } else {
                     errMessage = "Задайте имя пользователя и пароль";
                 }
-                if (!currentUser.isAuthenticated()) {
+                if (!userService.isUserAuthenticated()) {
                     if (loginPanel.getComponentCount() > 2) {
                         // Remove the previous error message
                         loginPanel.removeComponent(loginPanel.getComponent(2));
@@ -274,7 +282,7 @@ public class ExtaCrmUI extends UI {
 
     private void buildMainView() {
 
-        logger.info("Entering main view with user {}", SecurityUtils.getSubject().getPrincipal().getClass());
+        logger.info("Entering main view");
         root.addComponent(new HorizontalLayout() {
             private static final long serialVersionUID = 1L;
 
@@ -323,7 +331,8 @@ public class ExtaCrmUI extends UI {
                                 final Image profilePic = new Image(null, new ThemeResource("img/profile-pic.png"));
                                 profilePic.setWidth("34px");
                                 addComponent(profilePic);
-                                final Label userName = new Label((String) SecurityUtils.getSubject().getPrincipal());
+                                String login = lookup(UserManagementService.class).getCurrentUserLogin();
+                                final Label userName = new Label(login);
                                 userName.setSizeUndefined();
                                 addComponent(userName);
 
@@ -352,7 +361,7 @@ public class ExtaCrmUI extends UI {
 
                                     @Override
                                     public void buttonClick(final ClickEvent event) {
-                                        SecurityUtils.getSubject().logout();
+                                        lookup(UserManagementService.class).logout();
                                         // Redirect to avoid keeping the removed
                                         // UI open in the browser
                                         // getUI().getPage().setLocation("");
@@ -376,19 +385,17 @@ public class ExtaCrmUI extends UI {
 
         // -------------------------------------------------------------
         // Создаем кнопки основного меню
-        final Subject currentUser = SecurityUtils.getSubject();
         // TODO: Add permission rules
         mainMenu.addChapter("", "Начало", "Начальный экран приложения", "icon-home", HomeView.class, null);
+        mainMenu.addChapter("tasks", "Задачи", "Мои задачи", "icon-check", TasksView.class, null);
         mainMenu.addChapter("contacts", "Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts", ContactsView.class, null);
         mainMenu.addChapter("leads", "Лиды", "Входящие лиды", "icon-inbox-alt", LeadsView.class, null);
         mainMenu.addChapter("sales", "Продажи", "Раздел управления продажами", "icon-money-1", SalesView.class, null);
         mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella-1", InsuranceView.class, null);
         mainMenu.addChapter("loans", "Кредитование", "Раздел посвященный кредитованию", "icon-dollar", LoansView.class, null);
-        if (currentUser.hasRole(UserRole.ADMIN.getName()))
-            mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3",
-                    UsersView.class, null);
-        mainMenu.addChapter("config", "Настройки", "Настройки приложения и пользовательского интерфейса",
-                "icon-cog-alt", ConfigView.class, null);
+        if (lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN))
+            mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3", UsersView.class, null);
+        mainMenu.addChapter("config", "Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt", ConfigView.class, null);
 
         mainMenu.processURI(Page.getCurrent().getUriFragment());
 

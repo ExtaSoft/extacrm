@@ -16,7 +16,7 @@ import java.util.List;
  *         Time: 12:00
  */
 public abstract class AbstractTabView extends ExtaAbstractView {
-    private final Logger logger = LoggerFactory.getLogger(AbstractTabView.class);
+    private final static Logger logger = LoggerFactory.getLogger(AbstractTabView.class);
 
     protected AbstractTabView(String titleCaption) {
         this.titleCaption = titleCaption;

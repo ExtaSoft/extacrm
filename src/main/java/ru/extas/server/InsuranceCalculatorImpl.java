@@ -3,6 +3,8 @@
  */
 package ru.extas.server;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import ru.extas.model.Insurance;
 
@@ -18,6 +20,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  */
 @Service
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class InsuranceCalculatorImpl implements InsuranceCalculator {
 
     private static final ArrayList<String> tarif055Brands = newArrayList("BRP", "Yamaha");

@@ -58,6 +58,27 @@ public class Person extends Contact {
     public Person() {
     }
 
+    @Override
+    public Person clone() {
+        Person newObj = new Person();
+        copyTo(newObj);
+        return newObj;
+    }
+
+    protected void copyTo(Person toObj) {
+        super.copyTo(toObj);
+        if (birthday != null)
+            toObj.birthday = new LocalDate(birthday);
+        toObj.sex = sex;
+        toObj.jobPosition = jobPosition;
+        toObj.jobDepartment = jobDepartment;
+        toObj.passNum = passNum;
+        if (passIssueDate != null)
+            toObj.passIssueDate = new LocalDate(passIssueDate);
+        toObj.passIssuedBy = passIssuedBy;
+        toObj.passIssuedByNum = passIssuedByNum;
+    }
+
     public Position getJobPosition() {
         return jobPosition;
     }

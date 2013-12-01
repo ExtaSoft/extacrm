@@ -16,13 +16,26 @@ import ru.extas.model.Person;
  */
 public class PersonSelect extends AbstractContactSelect<Person> {
 
+    private Person defNewObj;
+
     public PersonSelect(final String caption) {
+        this(caption, new Person());
+    }
+
+    public PersonSelect(final String caption, Person defNewObj) {
         super(caption, Person.class);
+        this.defNewObj = defNewObj;
         addNewItemFeature();
     }
 
     public PersonSelect(final String caption, final String description) {
+        this(caption, description, new Person());
+        addNewItemFeature();
+    }
+
+    public PersonSelect(final String caption, final String description, Person defNewObj) {
         super(caption, description, Person.class);
+        this.defNewObj = defNewObj;
         addNewItemFeature();
     }
 
@@ -35,12 +48,14 @@ public class PersonSelect extends AbstractContactSelect<Person> {
             @Override
             public void addNewItem(final String newItemCaption) {
                 final BeanItem<Person> newObj;
-                newObj = new BeanItem<>(new Person());
-                newObj.getBean().setName(newItemCaption);
+                newObj = new BeanItem<>(defNewObj.clone());
+                if (defNewObj.getName() == null)
+                    newObj.getBean().setName(newItemCaption);
                 newObj.expandProperty("actualAddress");
 
                 final String edFormCaption = "Ввод нового контакта в систему";
                 final PersonEditForm editWin = new PersonEditForm(edFormCaption, newObj);
+                editWin.setModified(true);
 
                 editWin.addCloseListener(new Window.CloseListener() {
 
@@ -49,6 +64,7 @@ public class PersonSelect extends AbstractContactSelect<Person> {
                     @Override
                     public void windowClose(final Window.CloseEvent e) {
                         if (editWin.isSaved()) {
+                            container.refresh();
                             setValue(newObj.getBean().getId());
                             Notification.show("Контакт сохранен", Notification.Type.TRAY_NOTIFICATION);
                         }

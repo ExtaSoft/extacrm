@@ -3,13 +3,14 @@
  */
 package ru.extas.model;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.eclipse.persistence.annotations.UuidGenerator;
 import org.joda.time.DateTime;
+import ru.extas.server.UserManagementService;
 
 import javax.persistence.*;
 import java.io.Serializable;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Базовый класс для всех сущностей. Имплементирует ID и макеры изменений.
@@ -22,11 +23,11 @@ import java.io.Serializable;
 public abstract class AbstractExtaObject implements Serializable {
 
     private static final long serialVersionUID = 9098736299506726746L;
-    public static final int LOGIN_LENGTH = 20;
+    public static final int LOGIN_LENGTH = 50;
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @Column(name = "ID", length = 46)
+    @Column(name = "ID", length = 50)
     protected String id;
 
     @Column(name = "CREATED_BY", length = LOGIN_LENGTH)
@@ -181,8 +182,8 @@ public abstract class AbstractExtaObject implements Serializable {
     private void markCreating() {
         // Ставим маркеры создания/модификации
         if (createdAt == null && createdBy == null) {
-            Subject subject = SecurityUtils.getSubject();
-            String login = (String) subject.getPrincipal();
+            UserManagementService userManagementService = lookup(UserManagementService.class);
+            String login = userManagementService.getCurrentUserLogin();
             DateTime dt = DateTime.now();
             createdAt = dt;
             createdBy = login;
@@ -196,8 +197,8 @@ public abstract class AbstractExtaObject implements Serializable {
     @PreUpdate
     private void markUpdating() {
         // Ставим маркеры создания/модификации
-        Subject subject = SecurityUtils.getSubject();
-        String login = (String) subject.getPrincipal();
+        UserManagementService userManagementService = lookup(UserManagementService.class);
+        String login = userManagementService.getCurrentUserLogin();
         modifiedAt = DateTime.now();
         modifiedBy = login;
     }

@@ -4,6 +4,7 @@ import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import ru.extas.model.Sale;
@@ -20,8 +21,12 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class SalesGrid extends ExtaGrid {
     private static final long serialVersionUID = 4876073256421755574L;
+    private final Sale.Status status;
 
-    public SalesGrid() {
+    public SalesGrid(Sale.Status status) {
+        super(false);
+        this.status = status;
+        initialize();
     }
 
     @Override
@@ -36,6 +41,7 @@ public class SalesGrid extends ExtaGrid {
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("vendor.name");
         container.addNestedContainerProperty("dealer.name");
+        container.addContainerFilter(new Compare.Equal("status", status));
         return container;
     }
 

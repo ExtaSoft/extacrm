@@ -16,7 +16,7 @@ import static com.google.common.collect.Lists.newArrayList;
 @Table(name = "COMPANY", indexes = {
         @Index(columnList = "FULL_NAME")
 })
-public class Company extends Contact {
+public class Company extends Contact implements Cloneable {
 
     private static final long serialVersionUID = -5681940552175752858L;
 
@@ -34,6 +34,17 @@ public class Company extends Contact {
     private List<PayAccount> payAccounts = newArrayList();
 
     public Company() {
+    }
+
+    @Override
+    public Company clone() {
+        Company newObj = new Company();
+        super.copyTo(newObj);
+        newObj.fullName = fullName;
+        // FIXME: Copy collections in right way
+        newObj.codes = codes;
+        newObj.payAccounts = payAccounts;
+        return newObj;
     }
 
     public String getFullName() {

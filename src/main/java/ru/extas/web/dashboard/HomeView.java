@@ -19,7 +19,7 @@ import ru.extas.web.commons.ExtaAbstractView;
 public class HomeView extends ExtaAbstractView {
 
     private static final long serialVersionUID = -1272779672761523416L;
-    private final Logger logger = LoggerFactory.getLogger(HomeView.class);
+    private final static Logger logger = LoggerFactory.getLogger(HomeView.class);
 
     /*
      * (non-Javadoc)

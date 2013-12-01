@@ -7,8 +7,6 @@ import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import ru.extas.model.A7Form;
 import ru.extas.model.UserRole;
 import ru.extas.server.A7FormService;
@@ -39,10 +37,9 @@ public class A7FormGrid extends ExtaGrid {
     protected Container createContainer() {
         JPAContainer<A7Form> cnt = new ExtaDataContainer<>(A7Form.class);
         cnt.addNestedContainerProperty("owner.name");
-        final Subject subject = SecurityUtils.getSubject();
+        UserManagementService userService = lookup(UserManagementService.class);
         // пользователю доступны только собственные записи
-        if (subject.hasRole(UserRole.USER.getName())) {
-            UserManagementService userService = lookup(UserManagementService.class);
+        if (userService.isCurUserHasRole(UserRole.USER)) {
             cnt.addContainerFilter(new Compare.Equal("owner", userService.getCurrentUserContact()));
         }
         return cnt;

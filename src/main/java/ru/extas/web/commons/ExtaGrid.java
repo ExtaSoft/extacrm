@@ -29,9 +29,9 @@ public abstract class ExtaGrid extends CustomComponent {
     public static final String OVERALL_COLUMN = "OverallColumn";
 
     protected Table table;
-    protected final Container container;
-    private final List<UIAction> actions;
-    private final GridDataDecl dataDecl;
+    protected Container container;
+    private List<UIAction> actions;
+    private GridDataDecl dataDecl;
     private Mode currentMode;
     private List<Button> needCurrentBtns;
 
@@ -40,8 +40,16 @@ public abstract class ExtaGrid extends CustomComponent {
         DETAIL_LIST
     }
 
+    public ExtaGrid(boolean initNow) {
+        if (initNow)
+            initialize();
+    }
+
     public ExtaGrid() {
-        super();
+        this(true);
+    }
+
+    protected void initialize() {
         // Запрос данных
         container = createContainer();
         // Действия в таблице
@@ -116,17 +124,14 @@ public abstract class ExtaGrid extends CustomComponent {
             button.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(final Button.ClickEvent event) {
-                    button.addClickListener(new Button.ClickListener() {
-                        @Override
-                        public void buttonClick(final Button.ClickEvent event) {
-                            if (action instanceof ItemAction)
-                                action.fire(checkNotNull(table.getValue(), "No selected row"));
-                            else
-                                action.fire(null);
-                        }
-                    });
+                    if (action instanceof ItemAction)
+                        action.fire(checkNotNull(table.getValue(), "No selected row"));
+                    else
+                        action.fire(null);
                 }
             });
+            if (commandBar.getComponentCount() == 0)
+                button.focus(); // фокус на первую кнопку
             commandBar.addComponent(button);
             if (action instanceof ItemAction) {
                 needCurrentBtns.add(button);

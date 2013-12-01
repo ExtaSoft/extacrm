@@ -15,14 +15,27 @@ import ru.extas.model.Company;
  * @author Valery Orlov
  */
 public class CompanySelect extends AbstractContactSelect<Company> {
-    public CompanySelect(final String caption) {
+
+    private Company defNewObj;
+
+    public CompanySelect(final String caption, Company defNewObj) {
         super(caption, Company.class);
+        this.defNewObj = defNewObj;
+        addNewItemFeature();
+    }
+
+    public CompanySelect(final String caption) {
+        this(caption, new Company());
+    }
+
+    public CompanySelect(final String caption, final String description, Company defNewObj) {
+        super(caption, description, Company.class);
+        this.defNewObj = defNewObj;
         addNewItemFeature();
     }
 
     public CompanySelect(final String caption, final String description) {
-        super(caption, description, Company.class);
-        addNewItemFeature();
+        this(caption, description, new Company());
     }
 
     private void addNewItemFeature() {
@@ -33,12 +46,14 @@ public class CompanySelect extends AbstractContactSelect<Company> {
             @SuppressWarnings({"unchecked"})
             @Override
             public void addNewItem(final String newItemCaption) {
-                final BeanItem<Company> newObj = new BeanItem<>(new Company());
-                newObj.getBean().setName(newItemCaption);
+                final BeanItem<Company> newObj = new BeanItem<>(defNewObj.clone());
+                if (defNewObj.getName() == null)
+                    newObj.getBean().setName(newItemCaption);
                 newObj.expandProperty("actualAddress");
 
                 final String edFormCaption = "Ввод нового контакта в систему";
                 final CompanyEditForm editWin = new CompanyEditForm(edFormCaption, newObj);
+                editWin.setModified(true);
 
                 editWin.addCloseListener(new Window.CloseListener() {
 

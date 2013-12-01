@@ -4,15 +4,18 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Common Configuration -->
     <context:component-scan base-package="ru.extas"/>
-    <jpa:repositories base-package="ru.extas.server"/>
+    <jpa:repositories base-package="ru.extas.server" entity-manager-factory-ref="entityManagerFactory"
+                      transaction-manager-ref="transactionManager"/>
 
     <!-- Exception translation bean post processor -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
@@ -32,6 +35,7 @@
         <property name="url" value="${db.jdbc.url}"/>
         <property name="username" value="${db.jdbc.username}"/>
         <property name="password" value="${db.jdbc.password}"/>
+        <property name="connectionProperties" value="characterEncoding=UTF-8"/>
     </bean>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
@@ -76,15 +80,42 @@
         <property name="jpaEntityManagerFactory" ref="entityManagerFactory"/>
         <property name="jpaHandleTransaction" value="true"/>
         <property name="jpaCloseEntityManager" value="true"/>
+        <property name="history" value="full"/>
+        <property name="customSessionFactories">
+            <list>
+                <bean class="ru.extas.server.bpm.security.ExtaEntityManagerFactory"/>
+            </list>
+        </property>
     </bean>
     <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
         <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+        <aop:scoped-proxy/>
     </bean>
-    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
-    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
-    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
-    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
-    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService">
+        <aop:scoped-proxy/>
+    </bean>
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService">
+        <aop:scoped-proxy/>
+    </bean>
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService">
+        <aop:scoped-proxy/>
+    </bean>
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService">
+        <aop:scoped-proxy/>
+    </bean>
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService">
+        <aop:scoped-proxy/>
+    </bean>
+    <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService">
+        <aop:scoped-proxy/>
+    </bean>
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService">
+        <aop:scoped-proxy/>
+    </bean>
+    <!-- Устанавливает глобальное окружение Activiti для запроса -->
+    <bean id="activitiAuthFilter" class="ru.extas.web.bpm.ActivitiAuthFilter"/>
+    <!-- Обработчик пользовательской задачи в рамках бизнес процесса -->
+    <bean id="defUserTaskListener" class="ru.extas.server.bpm.DefaultUserTaskListener"/>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Shiro Security Congiguration -->

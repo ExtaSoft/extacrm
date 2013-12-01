@@ -19,8 +19,8 @@ public class Sale extends AbstractExtaObject {
      */
     public enum Status {
         NEW,
-        PENDING,
-        CLOSED
+        CANCELED,
+        FINISHED
     }
 
     /**
@@ -71,6 +71,17 @@ public class Sale extends AbstractExtaObject {
 
     @Column(name = "COMMENT")
     private String comment;
+
+    @Column(name = "PROCESS_ID")
+    private String processId;
+
+    public String getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(String processId) {
+        this.processId = processId;
+    }
 
     public Company getDealer() {
         return dealer;

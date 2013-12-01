@@ -26,7 +26,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 
     private static final long serialVersionUID = -6196099478095832935L;
-    private final Logger logger = LoggerFactory.getLogger(ChangePasswordForm.class);
+    private final static Logger logger = LoggerFactory.getLogger(ChangePasswordForm.class);
 
     @PropertyId("password")
     private PasswordField passField;

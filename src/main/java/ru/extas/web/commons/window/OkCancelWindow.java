@@ -33,7 +33,7 @@ public class OkCancelWindow extends Window {
             @Override
             public void buttonClick(final ClickEvent event) {
                 OkCancelWindow.this.okPressed = false;
-                UI.getCurrent().removeWindow(OkCancelWindow.this);
+                close();
             }
         });
         cancelBtn.setStyleName("icon-cancel");
@@ -43,7 +43,7 @@ public class OkCancelWindow extends Window {
             @Override
             public void buttonClick(final ClickEvent event) {
                 OkCancelWindow.this.okPressed = true;
-                UI.getCurrent().removeWindow(OkCancelWindow.this);
+                close();
             }
         });
         okBtn.setStyleName("icon-ok");

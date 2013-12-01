@@ -29,11 +29,11 @@ public class UserProfile extends AbstractExtaObject {
     private String password;
 
     // Ключ шифрования пароля
-    @Column(name = "PASSWORD_SALT", length = 26)
+    @Column(name = "PASSWORD_SALT", length = 30)
     private String passwordSalt;
 
     // Требование сменить пароль при следующем входе
-    @Column(name = "CHANGE_PASSWORD", length = 46)
+    @Column(name = "CHANGE_PASSWORD", length = 50)
     private boolean changePassword;
 
     // Основная роль пользователя

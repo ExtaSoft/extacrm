@@ -32,7 +32,7 @@ public class YesNoWindow extends Window {
             @Override
             public void buttonClick(final ClickEvent event) {
                 YesNoWindow.this.okPressed = false;
-                UI.getCurrent().removeWindow(YesNoWindow.this);
+                close();
             }
         });
         cancelBtn.setStyleName("icon-cancel");
@@ -42,7 +42,7 @@ public class YesNoWindow extends Window {
             @Override
             public void buttonClick(final ClickEvent event) {
                 YesNoWindow.this.okPressed = true;
-                UI.getCurrent().removeWindow(YesNoWindow.this);
+                close();
             }
         });
         okBtn.setStyleName("icon-ok");

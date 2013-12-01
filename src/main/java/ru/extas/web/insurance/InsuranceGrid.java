@@ -18,12 +18,11 @@ import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.Insurance;
 import ru.extas.model.UserRole;
+import ru.extas.server.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
@@ -35,6 +34,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * @author Valery Orlov
@@ -42,7 +42,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class InsuranceGrid extends ExtaGrid {
 
     private static final long serialVersionUID = -2317741378090152128L;
-    private final Logger logger = LoggerFactory.getLogger(InsuranceGrid.class);
+    private final static Logger logger = LoggerFactory.getLogger(InsuranceGrid.class);
     private InsuranceDataDecl dataDecl;
 
     public InsuranceGrid() {
@@ -62,10 +62,10 @@ public class InsuranceGrid extends ExtaGrid {
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.birthday");
         container.addNestedContainerProperty("client.cellPhone");
-        final Subject subject = SecurityUtils.getSubject();
+        UserManagementService userService = lookup(UserManagementService.class);
         // пользователю доступны только собственные записи
-        if (subject.hasRole(UserRole.USER.getName())) {
-            container.addContainerFilter(new Compare.Equal("createdBy", subject.getPrincipal()));
+        if (userService.isCurUserHasRole(UserRole.USER)) {
+            container.addContainerFilter(new Compare.Equal("createdBy", userService.getCurrentUserLogin()));
         }
         return container;
     }

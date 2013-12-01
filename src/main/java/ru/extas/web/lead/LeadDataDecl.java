@@ -7,7 +7,7 @@ import ru.extas.web.commons.GridDataDecl;
  *         Date: 15.10.13
  *         Time: 12:52
  */
-public class LeadDataDecl extends GridDataDecl {
+class LeadDataDecl extends GridDataDecl {
     public LeadDataDecl() {
         addMapping("contactName", "Имя контакта");
         addMapping("motorType", "Тип техники");
@@ -16,6 +16,7 @@ public class LeadDataDecl extends GridDataDecl {
         addMapping("motorPrice", "Стоимость техники");
         addMapping("pointOfSale", "Мотосалон");
         addMapping("region", "Регион");
+        addMapping("status", "Статус");
         super.addCreateModifyMarkers();
     }
 }

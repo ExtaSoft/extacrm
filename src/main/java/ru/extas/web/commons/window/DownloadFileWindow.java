@@ -20,7 +20,7 @@ import java.net.URLEncoder;
 public class DownloadFileWindow extends Window {
 
     private static final long serialVersionUID = -1869372339151029572L;
-    private final Logger logger = LoggerFactory.getLogger(DownloadFileWindow.class);
+    private final static Logger logger = LoggerFactory.getLogger(DownloadFileWindow.class);
 
     public DownloadFileWindow(final byte[] file, String fileName) {
         initWindow("Файл готов к загрузке...", file, fileName);

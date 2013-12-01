@@ -4,8 +4,11 @@ import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.extas.model.Lead;
 import ru.extas.web.commons.*;
 
@@ -20,8 +23,13 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class LeadsGrid extends ExtaGrid {
     private static final long serialVersionUID = 4876073256421755574L;
+    private final static Logger logger = LoggerFactory.getLogger(LeadsGrid.class);
+    private final Lead.Status status;
 
-    public LeadsGrid() {
+    public LeadsGrid(Lead.Status status) {
+        super(false);
+        this.status = status;
+        initialize();
     }
 
     @Override
@@ -33,6 +41,8 @@ public class LeadsGrid extends ExtaGrid {
     protected Container createContainer() {
         // Запрос данных
         final JPAContainer<Lead> container = new ExtaDataContainer<>(Lead.class);
+        container.addContainerFilter(new Compare.Equal("status", status));
+        container.sort(new Object[]{"createdAt"}, new boolean[]{false});
         return container;
     }
 
@@ -40,34 +50,36 @@ public class LeadsGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new UIAction("Новый", "Ввод нового лида", "icon-doc-new") {
-            @Override
-            public void fire(Object itemId) {
-                final BeanItem<Lead> newObj = new BeanItem<>(new Lead());
+        if (status == Lead.Status.NEW) {
+            actions.add(new UIAction("Новый", "Ввод нового лида", "icon-doc-new") {
+                @Override
+                public void fire(Object itemId) {
+                    final BeanItem<Lead> newObj = new BeanItem<>(new Lead());
 
-                final LeadEditForm editWin = new LeadEditForm("Ввод нового лида в систему", newObj);
-                editWin.addCloseListener(new Window.CloseListener() {
+                    final LeadEditForm editWin = new LeadEditForm("Ввод нового лида в систему", newObj, false);
+                    editWin.addCloseListener(new Window.CloseListener() {
 
-                    private static final long serialVersionUID = 1L;
+                        private static final long serialVersionUID = 1L;
 
-                    @Override
-                    public void windowClose(final Window.CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            ((JPAContainer) container).refresh();
-                            Notification.show("Лид сохранен", Notification.Type.TRAY_NOTIFICATION);
+                        @Override
+                        public void windowClose(final Window.CloseEvent e) {
+                            if (editWin.isSaved()) {
+                                ((JPAContainer) container).refresh();
+                                Notification.show("Лид сохранен", Notification.Type.TRAY_NOTIFICATION);
+                            }
                         }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
+                    });
+                    editWin.showModal();
+                }
+            });
+        }
 
         actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке лид", "icon-edit-3") {
             @Override
             public void fire(final Object itemId) {
                 final BeanItem<Lead> curObj = new BeanItem<>(((EntityItem<Lead>) table.getItem(itemId)).getEntity());
 
-                final LeadEditForm editWin = new LeadEditForm("Редактирование лида", curObj);
+                final LeadEditForm editWin = new LeadEditForm("Редактирование лида", curObj, false);
                 editWin.addCloseListener(new Window.CloseListener() {
 
                     private static final long serialVersionUID = 1L;
@@ -83,6 +95,30 @@ public class LeadsGrid extends ExtaGrid {
                 editWin.showModal();
             }
         });
+
+        if (status == Lead.Status.NEW) {
+            actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", "icon-doc-new") {
+                @Override
+                public void fire(final Object itemId) {
+                    final BeanItem<Lead> curObj = new BeanItem<>(((EntityItem<Lead>) table.getItem(itemId)).getEntity());
+
+                    final LeadEditForm editWin = new LeadEditForm("Квалификация лида", curObj, true);
+                    editWin.addCloseListener(new Window.CloseListener() {
+
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public void windowClose(final Window.CloseEvent e) {
+                            if (editWin.isSaved()) {
+                                ((JPAContainer) container).refreshItem(itemId);
+                                Notification.show("Лид квалифицирован", Notification.Type.TRAY_NOTIFICATION);
+                            }
+                        }
+                    });
+                    editWin.showModal();
+                }
+            });
+        }
 
         return actions;
     }
