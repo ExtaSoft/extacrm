@@ -38,6 +38,14 @@ public class LeadsGrid extends ExtaGrid {
     }
 
     @Override
+    protected void initTable(Mode mode) {
+        super.initTable(mode);
+        // Покозываем колонку результата в закрытых
+        if (status == Lead.Status.CLOSED)
+            table.setColumnCollapsed("result", false);
+    }
+
+    @Override
     protected Container createContainer() {
         // Запрос данных
         final JPAContainer<Lead> container = new ExtaDataContainer<>(Lead.class);

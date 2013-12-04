@@ -1,6 +1,9 @@
 package ru.extas.web.lead;
 
+import ru.extas.web.commons.DataDeclMapping;
 import ru.extas.web.commons.GridDataDecl;
+
+import java.util.EnumSet;
 
 /**
  * @author Valery Orlov
@@ -17,6 +20,7 @@ class LeadDataDecl extends GridDataDecl {
         addMapping("pointOfSale", "Мотосалон");
         addMapping("region", "Регион");
         addMapping("status", "Статус");
+        addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         super.addCreateModifyMarkers();
     }
 }

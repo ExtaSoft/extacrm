@@ -23,6 +23,24 @@ public class Lead extends AbstractExtaObject {
         CLOSED
     }
 
+    /**
+     * Результат завершения лида
+     */
+    public enum Result {
+        /**
+         * Успешное выполнение (кредит получен).
+         */
+        SUCCESSFUL,
+        /**
+         * Отказ контрагента (отказ банка).
+         */
+        VENDOR_REJECTED,
+        /**
+         * Отказ клиента.
+         */
+        CLIENT_REJECTED
+    }
+
     // Регион покупки техники
     @Column(name = "REGION")
     private String region;
@@ -80,6 +98,17 @@ public class Lead extends AbstractExtaObject {
 
     @Column(name = "PROCESS_ID")
     private String processId;
+
+    @Enumerated(EnumType.STRING)
+    private Result result;
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
 
     public String getProcessId() {
         return processId;

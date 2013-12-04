@@ -34,6 +34,10 @@ public class CancelSaleTaskDelegate implements JavaDelegate {
         if (processVariables.containsKey("lead")) {
             Lead lead = (Lead) processVariables.get("lead");
             lead.setStatus(Lead.Status.CLOSED);
+            if (processVariables.containsKey("getBankResponseTaskResult") && processVariables.get("getBankResponseTaskResult").equals("Rejected")) {
+                lead.setResult(Lead.Result.VENDOR_REJECTED);
+            } else
+                lead.setResult(Lead.Result.CLIENT_REJECTED);
             LeadService leadService = lookup(LeadService.class);
             leadService.persist(lead);
         }

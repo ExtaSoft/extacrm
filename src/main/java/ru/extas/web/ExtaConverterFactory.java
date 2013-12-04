@@ -13,6 +13,7 @@ import ru.extas.web.insurance.StringToA7FormConverter;
 import ru.extas.web.insurance.StringToA7StatusConverter;
 import ru.extas.web.insurance.StringToPeriodOfCoverConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
+import ru.extas.web.lead.StringToLeadResult;
 import ru.extas.web.lead.StringToLeadStatus;
 import ru.extas.web.sale.StringToSaleType;
 import ru.extas.web.users.StringToUserRoleConverter;
@@ -87,6 +88,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
         // Конвертор статуса лида
         if (presentationType == String.class && modelType == Lead.Status.class)
             return (Converter<PRESENTATION, MODEL>) lookup(StringToLeadStatus.class);
+
+        // Конвертор результата завершения лида
+        if (presentationType == String.class && modelType == Lead.Result.class)
+            return (Converter<PRESENTATION, MODEL>) lookup(StringToLeadResult.class);
 
         // Конвертер периода страхования
         if (presentationType == String.class && modelType == Insurance.PeriodOfCover.class)

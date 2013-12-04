@@ -13,7 +13,7 @@ import java.util.EnumSet;
 class TaskDataDecl extends GridDataDecl {
     public TaskDataDecl() {
         addMapping("name", "Название");
-        addMapping("description", "Описание");
+        addMapping("description", "Описание", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("priority", "Приоритет", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("dueDate", "Дата завершения");
         addMapping("createTime", "Дата создания", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
