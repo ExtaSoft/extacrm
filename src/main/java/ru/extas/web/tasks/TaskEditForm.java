@@ -144,12 +144,6 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         assigneeField.setWidth(25, Unit.EM);
         form.addComponent(assigneeField);
 
-//        statusField = new ComboBox("Состояние");
-//        form.addComponent(statusField);
-//
-//        resultField = new ComboBox("Результат выполнения");
-//        form.addComponent(resultField);
-
         formsContainer.addComponent(form);
 
         Map<String, Object> processVariables = runtimeService.getVariables(obj.getProcessInstanceId());

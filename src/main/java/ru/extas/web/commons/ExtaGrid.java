@@ -146,7 +146,7 @@ public abstract class ExtaGrid extends CustomComponent {
      *
      * @param mode
      */
-    private void initTable(Mode mode) {
+    protected void initTable(Mode mode) {
 
         // Создаем таблицу
         table = new Table();

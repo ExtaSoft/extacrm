@@ -4,11 +4,14 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.Window;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.joda.time.LocalDate;
+import ru.extas.model.Lead;
 import ru.extas.server.UserManagementService;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.ExtaGrid;
@@ -16,6 +19,7 @@ import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.UIAction;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -45,6 +49,41 @@ public class TasksGrid extends ExtaGrid {
     @Override
     protected GridDataDecl createDataDecl() {
         return new TaskDataDecl();
+    }
+
+    @Override
+    protected void initTable(Mode mode) {
+        super.initTable(mode);
+        table.addGeneratedColumn("clientName", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(Table source, Object itemId, Object columnId) {
+                String clientName = null;
+                Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
+                RuntimeService runtimeService = lookup(RuntimeService.class);
+                Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
+                if (processVariables.containsKey("lead")) {
+                    Lead lead = (Lead) processVariables.get("lead");
+                    clientName = lead.getContactName();
+                }
+                return clientName;
+            }
+        });
+        table.setColumnHeader("clientName", "Клиент");
+        table.addGeneratedColumn("dealerName", new Table.ColumnGenerator() {
+            @Override
+            public Object generateCell(Table source, Object itemId, Object columnId) {
+                String clientName = null;
+                Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
+                RuntimeService runtimeService = lookup(RuntimeService.class);
+                Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
+                if (processVariables.containsKey("lead")) {
+                    Lead lead = (Lead) processVariables.get("lead");
+                    clientName = lead.getPointOfSale();
+                }
+                return clientName;
+            }
+        });
+        table.setColumnHeader("dealerName", "Мотосалон");
     }
 
     @Override
