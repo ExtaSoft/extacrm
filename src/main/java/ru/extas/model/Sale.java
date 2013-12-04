@@ -31,6 +31,24 @@ public class Sale extends AbstractExtaObject {
         INSURANCE
     }
 
+    /**
+     * Результат завершения продажи
+     */
+    public enum Result {
+        /**
+         * Успешное выполнение (кредит получен).
+         */
+        SUCCESSFUL,
+        /**
+         * Отказ контрагента (отказ банка).
+         */
+        VENDOR_REJECTED,
+        /**
+         * Отказ клиента.
+         */
+        CLIENT_REJECTED
+    }
+
     // Клиент
     @OneToOne
     private Person client;
@@ -74,6 +92,17 @@ public class Sale extends AbstractExtaObject {
 
     @Column(name = "PROCESS_ID")
     private String processId;
+
+    @Enumerated(EnumType.STRING)
+    private Result result;
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
 
     public String getProcessId() {
         return processId;

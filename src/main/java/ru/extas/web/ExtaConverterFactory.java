@@ -15,6 +15,7 @@ import ru.extas.web.insurance.StringToPeriodOfCoverConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.lead.StringToLeadResult;
 import ru.extas.web.lead.StringToLeadStatus;
+import ru.extas.web.sale.StringToSaleResult;
 import ru.extas.web.sale.StringToSaleType;
 import ru.extas.web.users.StringToUserRoleConverter;
 
@@ -84,6 +85,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
         // Котвертер типа продажи
         if (presentationType == String.class && modelType == Sale.Type.class)
             return (Converter<PRESENTATION, MODEL>) lookup(StringToSaleType.class);
+
+        // Конвертор результата завершения Продажи
+        if (presentationType == String.class && modelType == Sale.Result.class)
+            return (Converter<PRESENTATION, MODEL>) lookup(StringToSaleResult.class);
 
         // Конвертор статуса лида
         if (presentationType == String.class && modelType == Lead.Status.class)

@@ -35,6 +35,13 @@ public class SalesGrid extends ExtaGrid {
     }
 
     @Override
+    protected void initTable(Mode mode) {
+        super.initTable(mode);
+        if (status == Sale.Status.CANCELED)
+            table.setColumnCollapsed("result", false);
+    }
+
+    @Override
     protected Container createContainer() {
         // Запрос данных
         final JPAContainer<Sale> container = new ExtaDataContainer<>(Sale.class);

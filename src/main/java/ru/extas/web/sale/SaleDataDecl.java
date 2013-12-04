@@ -1,6 +1,9 @@
 package ru.extas.web.sale;
 
+import ru.extas.web.commons.DataDeclMapping;
 import ru.extas.web.commons.GridDataDecl;
+
+import java.util.EnumSet;
 
 /**
  * @author Valery Orlov
@@ -18,6 +21,7 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("motorPrice", "Стоимость техники");
         addMapping("dealer.name", "Мотосалон");
         addMapping("region", "Регион");
+        addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         super.addCreateModifyMarkers();
     }
 }

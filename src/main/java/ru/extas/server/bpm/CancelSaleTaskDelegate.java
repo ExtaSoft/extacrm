@@ -44,6 +44,10 @@ public class CancelSaleTaskDelegate implements JavaDelegate {
         if (processVariables.containsKey("sale")) {
             Sale sale = (Sale) processVariables.get("sale");
             sale.setStatus(Sale.Status.CANCELED);
+            if (processVariables.containsKey("getBankResponseTaskResult") && processVariables.get("getBankResponseTaskResult").equals("Rejected")) {
+                sale.setResult(Sale.Result.VENDOR_REJECTED);
+            } else
+                sale.setResult(Sale.Result.CLIENT_REJECTED);
             SaleService saleService = lookup(SaleService.class);
             saleService.persist(sale);
         }
