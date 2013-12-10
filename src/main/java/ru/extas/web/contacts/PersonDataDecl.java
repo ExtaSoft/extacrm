@@ -10,7 +10,7 @@ import ru.extas.web.commons.GridDataDecl;
  *
  * @author Valery Orlov
  */
-class PersonDataDecl extends GridDataDecl {
+public class PersonDataDecl extends GridDataDecl {
 
     public PersonDataDecl() {
         super();

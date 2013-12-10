@@ -76,6 +76,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
                             checkBeforeSave(bean);
                             saveObject(bean);
                             saved = true;
+                            modified = false;
                         } catch (final CommitException e) {
                             // TODO Correct error handling
                             logger.error("Can't apply form changes", e);

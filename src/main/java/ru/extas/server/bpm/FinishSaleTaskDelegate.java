@@ -41,6 +41,7 @@ public class FinishSaleTaskDelegate implements JavaDelegate {
         if (processVariables.containsKey("sale")) {
             Sale sale = (Sale) processVariables.get("sale");
             sale.setStatus(Sale.Status.FINISHED);
+            sale.setResult(Sale.Result.SUCCESSFUL);
             SaleService saleService = lookup(SaleService.class);
             saleService.persist(sale);
         }

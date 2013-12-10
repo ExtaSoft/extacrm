@@ -58,13 +58,13 @@ public class LeadsGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        if (status == Lead.Status.NEW) {
+        if (status == Lead.Status.NEW || status == Lead.Status.QUALIFIED) {
             actions.add(new UIAction("Новый", "Ввод нового лида", "icon-doc-new") {
                 @Override
                 public void fire(Object itemId) {
                     final BeanItem<Lead> newObj = new BeanItem<>(new Lead());
 
-                    final LeadEditForm editWin = new LeadEditForm("Ввод нового лида в систему", newObj, false);
+                    final LeadEditForm editWin = new LeadEditForm("Ввод нового лида в систему", newObj, status == Lead.Status.QUALIFIED);
                     editWin.addCloseListener(new Window.CloseListener() {
 
                         private static final long serialVersionUID = 1L;

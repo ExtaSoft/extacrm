@@ -11,12 +11,12 @@ import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static ru.extas.web.commons.TableUtils.*;
 
 /**
  * @author Valery Orlov
@@ -269,10 +269,10 @@ public abstract class ExtaGrid extends CustomComponent {
             // Настройка столбцов таблицы
             table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
             //table.removecolutable.getVisibleColumns()
-            initTableColumnHeaders();
-            initTableVisibleColumns();
-            initTableCollapsedColumns();
-            initTableColumnConverters();
+            initTableColumnHeaders(table, dataDecl);
+            initTableVisibleColumns(table, dataDecl);
+            initTableCollapsedColumns(table, dataDecl);
+            initTableColumnConverters(table, dataDecl);
             table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
                 @Override
                 public void itemClick(ItemClickEvent event) {
@@ -327,47 +327,6 @@ public abstract class ExtaGrid extends CustomComponent {
                 break;
             }
         return defAction;
-    }
-
-    /**
-     * Устанавливает конвертеры столбцов таблицы
-     */
-    private void initTableColumnConverters() {
-        for (DataDeclMapping prop : dataDecl.getMappings())
-            if (prop.getConverter() != null)
-                table.setConverter(prop.getPropName(), prop.getConverter());
-    }
-
-    /**
-     * Устанавливает заголовки столбцов таблицы
-     */
-    private void initTableColumnHeaders() {
-
-        for (DataDeclMapping prop : dataDecl.getMappings())
-            table.setColumnHeader(prop.getPropName(), prop.getCaption());
-
-    }
-
-    /**
-     * Задает видимые в таблице столбци
-     */
-    private void initTableVisibleColumns() {
-
-        List<String> clmnIds = new ArrayList<>(dataDecl.getMappings().size());
-        for (DataDeclMapping prop : dataDecl.getMappings())
-            clmnIds.add(prop.getPropName());
-
-        table.setVisibleColumns(clmnIds.toArray());
-    }
-
-    /**
-     * Устанавливает столбцы доступные в таблице, но свернутые
-     */
-    private void initTableCollapsedColumns() {
-
-        for (DataDeclMapping prop : dataDecl.getMappings())
-            table.setColumnCollapsed(prop.getPropName(), prop.isCollapsed());
-
     }
 
 

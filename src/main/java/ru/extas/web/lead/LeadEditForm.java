@@ -1,27 +1,41 @@
 package ru.extas.web.lead;
 
+import com.google.common.base.Strings;
+import com.vaadin.addon.jpacontainer.EntityItem;
+import com.vaadin.addon.jpacontainer.JPAContainer;
+import com.vaadin.data.Container;
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.TextArea;
+import com.vaadin.data.util.filter.Like;
+import com.vaadin.data.util.filter.Or;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.ui.*;
 import ru.extas.model.AddressInfo;
 import ru.extas.model.Company;
 import ru.extas.model.Lead;
 import ru.extas.model.Person;
 import ru.extas.server.LeadService;
+import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.contacts.CompanySelect;
-import ru.extas.web.contacts.PersonSelect;
+import ru.extas.web.contacts.CompanyDataDecl;
+import ru.extas.web.contacts.CompanyEditForm;
+import ru.extas.web.contacts.PersonDataDecl;
+import ru.extas.web.contacts.PersonEditForm;
 import ru.extas.web.reference.MotorBrandSelect;
 import ru.extas.web.reference.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
 
+import java.text.MessageFormat;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
+import static ru.extas.web.commons.TableUtils.initTableColumns;
 
 /**
  * Форма ввода/редактирования лида
@@ -35,8 +49,6 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     // Имя контакта
     @PropertyId("contactName")
     private EditField contactNameField;
-    @PropertyId("client")
-    private PersonSelect clientField;
     @PropertyId("contactPhone")
     private PhoneField cellPhoneField;
     // Эл. почта
@@ -60,34 +72,36 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     // Мотосалон
     @PropertyId("pointOfSale")
     private EditField pointOfSaleField;
-    @PropertyId("vendor")
-    private CompanySelect vendorField;
     @PropertyId("comment")
     private TextArea commentField;
 
     private boolean qualifyForm;
+    private JPAContainer<Company> vendorsContainer;
+    private JPAContainer<Person> clientsContainer;
 
     public LeadEditForm(final String caption, final BeanItem<Lead> obj, boolean qualifyForm) {
-        super(caption, obj);
+        super(caption);
         this.qualifyForm = qualifyForm;
-        setFoeldsStatus();
+        initForm(obj);
     }
 
-    private void setFoeldsStatus() {
-        contactNameField.setEnabled(!qualifyForm);
-        clientField.setVisible(qualifyForm);
-        clientField.setRequired(qualifyForm);
-        cellPhoneField.setEnabled(!qualifyForm);
-        contactEmailField.setEnabled(!qualifyForm);
-        regionField.setEnabled(!qualifyForm);
-        motorTypeField.setEnabled(!qualifyForm);
-        motorBrandField.setEnabled(!qualifyForm);
-        motorModelField.setEnabled(!qualifyForm);
-        mototPriceField.setEnabled(!qualifyForm);
-        pointOfSaleField.setEnabled(!qualifyForm);
-        vendorField.setVisible(qualifyForm);
-        vendorField.setRequired(qualifyForm);
-        commentField.setEnabled(!qualifyForm);
+    @Override
+    public void attach() {
+        super.attach();
+        setFieldsStatus();
+    }
+
+    private void setFieldsStatus() {
+//        contactNameField.setReadOnly(qualifyForm);
+//        cellPhoneField.setReadOnly(qualifyForm);
+//        contactEmailField.setReadOnly(qualifyForm);
+//        regionField.setReadOnly(qualifyForm);
+//        motorTypeField.setReadOnly(qualifyForm);
+//        motorBrandField.setReadOnly(qualifyForm);
+//        motorModelField.setReadOnly(qualifyForm);
+//        mototPriceField.setReadOnly(qualifyForm);
+//        pointOfSaleField.setReadOnly(qualifyForm);
+//        commentField.setReadOnly(qualifyForm);
     }
 
     private Person createPersonFromLead(Lead lead) {
@@ -123,15 +137,25 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         contactNameField.setColumns(25);
         contactNameField.setRequired(true);
         contactNameField.setRequiredError("Имя контакта не может быть пустым.");
+        contactNameField.setImmediate(true);
+        contactNameField.addTextChangeListener(new FieldEvents.TextChangeListener() {
+            @Override
+            public void textChange(FieldEvents.TextChangeEvent event) {
+                if (qualifyForm)
+                    setClientsFilter(event.getText());
+            }
+        });
+        contactNameField.addValueChangeListener(new ConactChangeListener());
         form.addComponent(contactNameField);
 
-        clientField = new PersonSelect("Связан с клиентом", createPersonFromLead(obj));
-        form.addComponent(clientField);
-
         cellPhoneField = new PhoneField("Телефон");
+        cellPhoneField.setImmediate(true);
+        cellPhoneField.addValueChangeListener(new ConactChangeListener());
         form.addComponent(cellPhoneField);
 
         contactEmailField = new EmailField("E-Mail");
+        contactEmailField.setImmediate(true);
+        contactEmailField.addValueChangeListener(new ConactChangeListener());
         form.addComponent(contactEmailField);
 
         regionField = new RegionSelect();
@@ -152,25 +176,215 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         form.addComponent(mototPriceField);
 
         pointOfSaleField = new EditField("Мотосалон");
+        pointOfSaleField.setImmediate(true);
+        pointOfSaleField.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                if (qualifyForm)
+                    setVendorsFilter();
+            }
+        });
         form.addComponent(pointOfSaleField);
 
-        Company company = createCompanyFromLead(obj);
-        vendorField = new CompanySelect("Связан с контрагентом", company);
-//        vendorField.addFocusListener(new FieldEvents.FocusListener() {
-//            @Override
-//            public void focus(FieldEvents.FocusEvent event) {
-//                if(vendorField.getValue() == null)
-//                    vendorField.setConvertedValue();
-//            }
-//        });
-        form.addComponent(vendorField);
 
         commentField = new TextArea("Комментарий");
         commentField.setColumns(25);
+        commentField.setRows(6);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);
 
-        return form;
+        if (qualifyForm) {
+            HorizontalLayout layout = new HorizontalLayout(form, createQualifyForm(obj));
+            layout.setSpacing(true);
+            return layout;
+        } else
+            return form;
+    }
+
+    private Component createQualifyForm(Lead lead) {
+        Component clientPanel = createClientPanel(lead);
+        Component vendorPanel = createVendorPanel(lead);
+        VerticalLayout qForm = new VerticalLayout(clientPanel, vendorPanel);
+        qForm.setSpacing(true);
+        qForm.setExpandRatio(clientPanel, 1);
+        qForm.setExpandRatio(vendorPanel, 1);
+        return qForm;
+    }
+
+    private Panel createVendorPanel(final Lead lead) {
+        VerticalLayout panel = new VerticalLayout();
+        panel.setSpacing(true);
+
+        final Table table = new Table();
+        table.setRequired(true);
+        // Запрос данных
+        vendorsContainer = new ExtaDataContainer<>(Company.class);
+        vendorsContainer.addNestedContainerProperty("actualAddress.region");
+        setVendorsFilter();
+
+        Button newBtn = new Button("Новый");
+        newBtn.addStyleName("icon-doc-new");
+        newBtn.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                final BeanItem<Company> newObj = new BeanItem<>(createCompanyFromLead(lead));
+                newObj.expandProperty("actualAddress");
+
+                final String edFormCaption = "Ввод нового контакта в систему";
+                final CompanyEditForm editWin = new CompanyEditForm(edFormCaption, newObj);
+                editWin.setModified(true);
+
+                editWin.addCloseListener(new Window.CloseListener() {
+
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void windowClose(final Window.CloseEvent e) {
+                        if (editWin.isSaved()) {
+                            vendorsContainer.refresh();
+                            table.setValue(newObj.getBean().getId());
+                            Notification.show("Контакт сохранен", Notification.Type.TRAY_NOTIFICATION);
+                        }
+                    }
+                });
+                editWin.showModal();
+            }
+        });
+        panel.addComponent(newBtn);
+
+        // Общие настройки таблицы
+        table.setContainerDataSource(vendorsContainer);
+        table.setSelectable(true);
+        table.setImmediate(true);
+        table.setColumnCollapsingAllowed(true);
+        table.setColumnReorderingAllowed(true);
+        table.setNullSelectionAllowed(false);
+        table.setHeight(10, Unit.EM);
+        // Настройка столбцов таблицы
+        table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
+        GridDataDecl dataDecl = new CompanyDataDecl();
+        initTableColumns(table, dataDecl);
+        table.setColumnCollapsed("cellPhone", true);
+        table.setColumnCollapsed("email", true);
+        // Обрабатываем выбор контакта
+        table.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                final Company curObj = ((EntityItem<Company>) table.getItem(table.getValue())).getEntity();
+                lead.setVendor(curObj);
+                pointOfSaleField.setValue(curObj.getName());
+                setModified(true);
+            }
+        });
+        panel.addComponent(table);
+
+        return new Panel("Мото салон", panel);
+    }
+
+    private void setVendorsFilter() {
+        vendorsContainer.removeAllContainerFilters();
+        String name = pointOfSaleField.getValue();
+        if (!Strings.isNullOrEmpty(name))
+            vendorsContainer.addContainerFilter(new Like("name", MessageFormat.format("%{0}%", name), false));
+    }
+
+    private Panel createClientPanel(final Lead lead) {
+        VerticalLayout panel = new VerticalLayout();
+        panel.setSpacing(true);
+
+        final Table table = new Table();
+        table.setRequired(true);
+
+        // Запрос данных
+        clientsContainer = new ExtaDataContainer<>(Person.class);
+        clientsContainer.addNestedContainerProperty("actualAddress.region");
+        setClientsFilter(lead.getContactName());
+
+        Button newBtn = new Button("Новый");
+        newBtn.addStyleName("icon-doc-new");
+        newBtn.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                final BeanItem<Person> newObj = new BeanItem<>(createPersonFromLead(lead));
+                newObj.expandProperty("actualAddress");
+
+                final String edFormCaption = "Ввод нового контакта в систему";
+                final PersonEditForm editWin = new PersonEditForm(edFormCaption, newObj);
+                editWin.setModified(true);
+
+                editWin.addCloseListener(new Window.CloseListener() {
+
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void windowClose(final Window.CloseEvent e) {
+                        if (editWin.isSaved()) {
+                            clientsContainer.refresh();
+                            table.setValue(newObj.getBean().getId());
+                            Notification.show("Контакт сохранен", Notification.Type.TRAY_NOTIFICATION);
+                        }
+                    }
+                });
+                editWin.showModal();
+
+            }
+        });
+        panel.addComponent(newBtn);
+
+        // Общие настройки таблицы
+        table.setContainerDataSource(clientsContainer);
+        table.setSelectable(true);
+        table.setImmediate(true);
+        table.setColumnCollapsingAllowed(true);
+        table.setColumnReorderingAllowed(true);
+        table.setNullSelectionAllowed(false);
+        table.setHeight(10, Unit.EM);
+        // Настройка столбцов таблицы
+        table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
+        GridDataDecl dataDecl = new PersonDataDecl();
+        initTableColumns(table, dataDecl);
+        table.setColumnCollapsed("sex", true);
+        table.setColumnCollapsed("birthday", true);
+        table.setColumnCollapsed("email", true);
+        // Обрабатываем выбор контакта
+        table.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                final Person curObj = ((EntityItem<Person>) table.getItem(table.getValue())).getEntity();
+                lead.setClient(curObj);
+                fillLeadFromClient(curObj);
+                setModified(true);
+            }
+        });
+        panel.addComponent(table);
+
+
+        return new Panel("Клиент", panel);
+    }
+
+    private void fillLeadFromClient(Person contact) {
+        contactNameField.setValue(contact.getName());
+        cellPhoneField.setValue(contact.getCellPhone());
+        contactEmailField.setValue(contact.getEmail());
+    }
+
+    private void setClientsFilter(String name) {
+        //String name = contactNameField.getValue();
+        String email = contactEmailField.getValue();
+        String cellPhone = cellPhoneField.getValue();
+        clientsContainer.removeAllContainerFilters();
+        List<Container.Filter> filters = newArrayList();
+        if (!Strings.isNullOrEmpty(name)) {
+            filters.add(new Like("name", MessageFormat.format("%{0}%", name), false));
+        }
+        if (!Strings.isNullOrEmpty(cellPhone)) {
+            filters.add(new Like("cellPhone", MessageFormat.format("%{0}%", cellPhone), false));
+        }
+        if (!Strings.isNullOrEmpty(email)) {
+            filters.add(new Like("email", MessageFormat.format("%{0}%", email), false));
+        }
+        if (!filters.isEmpty())
+            clientsContainer.addContainerFilter(new Or(filters.toArray(new Container.Filter[filters.size()])));
     }
 
     /*
@@ -212,4 +426,15 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     protected void checkBeforeSave(final Lead obj) {
     }
 
+    private enum Qualify {
+        EXIST, NEW
+    }
+
+    private class ConactChangeListener implements Property.ValueChangeListener {
+        @Override
+        public void valueChange(Property.ValueChangeEvent event) {
+            if (qualifyForm)
+                setClientsFilter(contactNameField.getValue());
+        }
+    }
 }

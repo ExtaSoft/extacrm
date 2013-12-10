@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ru.extas.web.insurance.InsuranceView;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -13,8 +14,6 @@ import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.Locale;
-
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Конвертер для отображения BigDecimal элементах UI
@@ -29,6 +28,9 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
     private transient DecimalFormat lenientFormat;
     private final static Logger logger = LoggerFactory.getLogger(InsuranceView.class);
 
+    @Inject
+    Locale _locale;
+
     /**
      * DecimalFormat's currency symbol
      */
@@ -36,7 +38,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 
     DecimalFormat getFormat(Locale locale) {
         if (locale == null) {
-            locale = lookup(Locale.class);
+            locale = _locale;
         }
         if (format == null) {
             format = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
@@ -49,7 +51,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 
     DecimalFormat getLenientFormat(Locale locale) {
         if (locale == null) {
-            locale = lookup(Locale.class);
+            locale = _locale;
         }
         if (lenientFormat == null) {
             lenientFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
