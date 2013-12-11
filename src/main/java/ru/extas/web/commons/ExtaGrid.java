@@ -10,6 +10,7 @@ import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
+import org.tepi.filtertable.FilterTable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,7 @@ public abstract class ExtaGrid extends CustomComponent {
 
     public static final String OVERALL_COLUMN = "OverallColumn";
 
-    protected Table table;
+    protected FilterTable table;
     protected Container container;
     private List<UIAction> actions;
     private GridDataDecl dataDecl;
@@ -73,9 +74,23 @@ public abstract class ExtaGrid extends CustomComponent {
         // Переключение режима таблицы
         final HorizontalLayout modeSwitchBar = new HorizontalLayout();
         modeSwitchBar.addStyleName("mode-switch-bar segment");
+        final Button tableFilterBtn = new Button("Фильтр");
+        tableFilterBtn.setDescription("Показать строку фильтра таблицы");
+        tableFilterBtn.addStyleName("first icon-filter0 icon-only");
+        tableFilterBtn.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                boolean isFilterVisible = table.isFilterBarVisible();
+                table.setFilterBarVisible(!isFilterVisible);
+                if (isFilterVisible)
+                    tableFilterBtn.removeStyleName("down");
+                else
+                    tableFilterBtn.addStyleName("down");
+            }
+        });
         final Button tableModeBtn = new Button("Таблица");
         tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
-        tableModeBtn.addStyleName("first icon-table icon-only");
+        tableModeBtn.addStyleName("icon-table icon-only");
         final Button detailModeBtn = new Button("Детали");
         detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
         detailModeBtn.addStyleName("last icon-list-alt icon-only");
@@ -99,6 +114,7 @@ public abstract class ExtaGrid extends CustomComponent {
         };
         tableModeBtn.addClickListener(switchListener);
         detailModeBtn.addClickListener(switchListener);
+        modeSwitchBar.addComponent(tableFilterBtn);
         modeSwitchBar.addComponent(tableModeBtn);
         modeSwitchBar.addComponent(detailModeBtn);
         panel.addComponent(modeSwitchBar);
@@ -149,7 +165,7 @@ public abstract class ExtaGrid extends CustomComponent {
     protected void initTable(Mode mode) {
 
         // Создаем таблицу
-        table = new Table();
+        table = new FilterTable();
         // Общие настройки таблицы
         table.setContainerDataSource(container);
         table.setSelectable(true);
@@ -188,10 +204,10 @@ public abstract class ExtaGrid extends CustomComponent {
         }
 
         if (mode == Mode.DETAIL_LIST) {
-            table.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
-            table.addGeneratedColumn(OVERALL_COLUMN, new Table.ColumnGenerator() {
+            table.setColumnHeaderMode(CustomTable.ColumnHeaderMode.HIDDEN);
+            table.addGeneratedColumn(OVERALL_COLUMN, new CustomTable.ColumnGenerator() {
                 @Override
-                public Object generateCell(final Table source, final Object itemId, Object columnId) {
+                public Object generateCell(final CustomTable source, final Object itemId, Object columnId) {
                     Item item = source.getItem(itemId);
 
                     Iterator<DataDeclMapping> mapIterator = dataDecl.getMappings().iterator();
@@ -267,7 +283,7 @@ public abstract class ExtaGrid extends CustomComponent {
                 btn.setVisible(false);
         } else { // Classic table
             // Настройка столбцов таблицы
-            table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
+            table.setColumnHeaderMode(CustomTable.ColumnHeaderMode.EXPLICIT);
             //table.removecolutable.getVisibleColumns()
             initTableColumnHeaders(table, dataDecl);
             initTableVisibleColumns(table, dataDecl);

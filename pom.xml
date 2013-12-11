@@ -18,7 +18,7 @@
         <joda-time.version>2.2</joda-time.version>
         <gson.version>2.2.4</gson.version>
 
-        <vaadin.version>7.1.8</vaadin.version>
+        <vaadin.version>7.1.9</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <servlet-api.version>2.5</servlet-api.version>
         <activiti-version>5.14</activiti-version>
@@ -239,6 +239,11 @@
             <artifactId>popupbutton</artifactId>
             <version>2.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.vaadin.addons</groupId>
+            <artifactId>filteringtable</artifactId>
+            <version>0.9.2.v7</version>
+        </dependency>
 
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -450,6 +455,21 @@
                 <version>${vaadin.plugin.version}</version>
                 <configuration>
                     <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+                    <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+                    <!-- <runTarget>mobilemail</runTarget> -->
+                    <!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This
+                        way compatible with Vaadin eclipse plugin. -->
+                    <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets
+                    </webappDirectory>
+                    <hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets
+                    </hostedWebapp>
+                    <noServer>true</noServer>
+                    <!-- Remove draftCompile when project is ready -->
+                    <draftCompile>false</draftCompile>
+                    <compileReport>true</compileReport>
+                    <style>OBF</style>
+                    <strict>true</strict>
+                    <runTarget>http://localhost:8080/</runTarget>
                 </configuration>
                 <executions>
                     <execution>
@@ -461,7 +481,11 @@
                         </configuration>
                         <goals>
                             <goal>clean</goal>
+                            <goal>resources</goal>
+                            <goal>update-theme</goal>
+                            <goal>update-widgetset</goal>
                             <goal>compile-theme</goal>
+                            <goal>compile</goal>
                         </goals>
                     </execution>
                 </executions>

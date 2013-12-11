@@ -3,8 +3,8 @@ package ru.extas.web.tasks;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.CustomTable;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.Window;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -54,9 +54,9 @@ public class TasksGrid extends ExtaGrid {
     @Override
     protected void initTable(Mode mode) {
         super.initTable(mode);
-        table.addGeneratedColumn("clientName", new Table.ColumnGenerator() {
+        table.addGeneratedColumn("clientName", new CustomTable.ColumnGenerator() {
             @Override
-            public Object generateCell(Table source, Object itemId, Object columnId) {
+            public Object generateCell(CustomTable source, Object itemId, Object columnId) {
                 String clientName = null;
                 Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
                 RuntimeService runtimeService = lookup(RuntimeService.class);
@@ -69,9 +69,9 @@ public class TasksGrid extends ExtaGrid {
             }
         });
         table.setColumnHeader("clientName", "Клиент");
-        table.addGeneratedColumn("dealerName", new Table.ColumnGenerator() {
+        table.addGeneratedColumn("dealerName", new CustomTable.ColumnGenerator() {
             @Override
-            public Object generateCell(Table source, Object itemId, Object columnId) {
+            public Object generateCell(CustomTable source, Object itemId, Object columnId) {
                 String clientName = null;
                 Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
                 RuntimeService runtimeService = lookup(RuntimeService.class);
