@@ -28,19 +28,19 @@ public class CreateSaleTaskDelegate implements JavaDelegate {
 //    @Inject
 //    private RuntimeService runtimeService;
 //    @Autowired
-//    private SaleService saleService;
+//    private SaleRegistry saleService;
 
-    @Transactional
-    @Override
-    public void execute(DelegateExecution execution) throws Exception {
-        Map<String, Object> processVariables = execution.getVariables();
-        if (processVariables.containsKey("lead")) {
-            Lead lead = (Lead) processVariables.get("lead");
-            SaleService saleService = lookup(SaleService.class);
-            Sale sale = saleService.ctreateSaleByLead(lead);
-            execution.setVariable("sale", sale);
-        }
-    }
+@Transactional
+@Override
+public void execute(DelegateExecution execution) throws Exception {
+	Map<String, Object> processVariables = execution.getVariables();
+	if (processVariables.containsKey("lead")) {
+		Lead lead = (Lead) processVariables.get("lead");
+		SaleService saleRegistry = lookup(SaleService.class);
+		Sale sale = saleRegistry.ctreateSaleByLead(lead);
+		execution.setVariable("sale", sale);
+	}
+}
 
 
 }

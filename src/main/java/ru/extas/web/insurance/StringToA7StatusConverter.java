@@ -6,6 +6,7 @@ package ru.extas.web.insurance;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
+import org.springframework.stereotype.Component;
 import ru.extas.model.A7Form;
 
 import java.util.Locale;
@@ -15,6 +16,7 @@ import java.util.Locale;
  *
  * @author Valery Orlov
  */
+@Component
 public class StringToA7StatusConverter implements Converter<String, A7Form.Status> {
 
     private static final long serialVersionUID = 568270351867767905L;

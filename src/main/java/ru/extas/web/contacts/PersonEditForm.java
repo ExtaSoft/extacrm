@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.AddressInfo;
 import ru.extas.model.Person;
 import ru.extas.model.Person.Sex;
-import ru.extas.server.ContactService;
+import ru.extas.server.ContactRepository;
 import ru.extas.server.SupplementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
@@ -32,250 +32,250 @@ import static ru.extas.server.ServiceLocator.lookup;
 @SuppressWarnings("FieldCanBeLocal")
 public class PersonEditForm extends AbstractEditForm<Person> {
 
-    private static final long serialVersionUID = -7787385620289376599L;
-    private final static Logger logger = LoggerFactory.getLogger(PersonEditForm.class);
-    // Компоненты редактирования
-    // Основные персональные данные
-    @PropertyId("name")
-    private EditField nameField;
-    @PropertyId("birthday")
-    private PopupDateField birthdayField;
-    @PropertyId("sex")
-    private ComboBox sexField;
-    @PropertyId("cellPhone")
-    private EditField cellPhoneField;
-    @PropertyId("email")
-    private EmailField emailField;
-    @PropertyId("actualAddress.region")
-    private RegionSelect regionField;
-    @PropertyId("actualAddress.city")
-    private CitySelect cityField;
-    @PropertyId("actualAddress.postIndex")
-    private EditField postIndexField;
-    @PropertyId("actualAddress.streetBld")
-    private TextArea streetBldField;
-    // Компания
-    @PropertyId("affiliation")
-    private AbstractContactSelect jobField;
-    @PropertyId("jobPosition")
-    private ComboBox jobPositionField;
-    @PropertyId("jobDepartment")
-    private EditField jobDepartmentField;
-    // Паспортнве данные
-    @PropertyId("passNum")
-    private EditField passNumField;
-    @PropertyId("passIssueDate")
-    private LocalDateField passIssueDateField;
-    @PropertyId("passIssuedBy")
-    private TextArea passIssuedByField;
-    @PropertyId("passIssuedByNum")
-    private EditField passIssuedByNumField;
+private static final long serialVersionUID = -7787385620289376599L;
+private final static Logger logger = LoggerFactory.getLogger(PersonEditForm.class);
+// Компоненты редактирования
+// Основные персональные данные
+@PropertyId("name")
+private EditField nameField;
+@PropertyId("birthday")
+private PopupDateField birthdayField;
+@PropertyId("sex")
+private ComboBox sexField;
+@PropertyId("cellPhone")
+private EditField cellPhoneField;
+@PropertyId("email")
+private EmailField emailField;
+@PropertyId("actualAddress.region")
+private RegionSelect regionField;
+@PropertyId("actualAddress.city")
+private CitySelect cityField;
+@PropertyId("actualAddress.postIndex")
+private EditField postIndexField;
+@PropertyId("actualAddress.streetBld")
+private TextArea streetBldField;
+// Компания
+@PropertyId("affiliation")
+private AbstractContactSelect jobField;
+@PropertyId("jobPosition")
+private ComboBox jobPositionField;
+@PropertyId("jobDepartment")
+private EditField jobDepartmentField;
+// Паспортнве данные
+@PropertyId("passNum")
+private EditField passNumField;
+@PropertyId("passIssueDate")
+private LocalDateField passIssueDateField;
+@PropertyId("passIssuedBy")
+private TextArea passIssuedByField;
+@PropertyId("passIssuedByNum")
+private EditField passIssuedByNumField;
 
 
-    /**
-     * @param caption
-     * @param obj
-     */
-    public PersonEditForm(final String caption, final BeanItem<Person> obj) {
-        super(caption, obj);
-    }
+/**
+ * @param caption
+ * @param obj
+ */
+public PersonEditForm(final String caption, final BeanItem<Person> obj) {
+	super(caption, obj);
+}
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
-     * AbstractExtaObject)
-     */
-    @Override
-    protected void initObject(final Person obj) {
-        if (obj.getActualAddress() == null)
-            obj.setActualAddress(new AddressInfo());
-        if (obj.getId() == null) {
-            // Инициализируем новый объект
-            // TODO: Инициализировать клиента в соответствии с локацией текущего
-            // пользователя (регион, город)
-            obj.setSex(Person.Sex.MALE);
-            obj.setJobPosition(Person.Position.EMPLOYEE);
-        }
-    }
+/*
+ * (non-Javadoc)
+ *
+ * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
+ * AbstractExtaObject)
+ */
+@Override
+protected void initObject(final Person obj) {
+	if (obj.getActualAddress() == null)
+		obj.setActualAddress(new AddressInfo());
+	if (obj.getId() == null) {
+		// Инициализируем новый объект
+		// TODO: Инициализировать клиента в соответствии с локацией текущего
+		// пользователя (регион, город)
+		obj.setSex(Person.Sex.MALE);
+		obj.setJobPosition(Person.Position.EMPLOYEE);
+	}
+}
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
-     * AbstractExtaObject)
-     */
-    @Override
-    protected void saveObject(final Person obj) {
-        logger.debug("Saving contact data...");
-        final ContactService contactService = lookup(ContactService.class);
-        contactService.persistContact(obj);
-    }
+/*
+ * (non-Javadoc)
+ *
+ * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
+ * AbstractExtaObject)
+ */
+@Override
+protected void saveObject(final Person obj) {
+	logger.debug("Saving contact data...");
+	final ContactRepository contactRepository = lookup(ContactRepository.class);
+	contactRepository.save(obj);
+}
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
-     * AbstractExtaObject)
-     */
-    @Override
-    protected void checkBeforeSave(final Person obj) {
-    }
+/*
+ * (non-Javadoc)
+ *
+ * @see
+ * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
+ * AbstractExtaObject)
+ */
+@Override
+protected void checkBeforeSave(final Person obj) {
+}
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
-     * .AbstractExtaObject)
-     */
-    @Override
-    protected ComponentContainer createEditFields(final Person obj) {
-        TabSheet tabsheet = new TabSheet();
-        tabsheet.setSizeUndefined();
+/*
+ * (non-Javadoc)
+ *
+ * @see
+ * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
+ * .AbstractExtaObject)
+ */
+@Override
+protected ComponentContainer createEditFields(final Person obj) {
+	TabSheet tabsheet = new TabSheet();
+	tabsheet.setSizeUndefined();
 
-        // Форма редактирования персональных данных
-        final FormLayout personForm = createMainForm(obj);
-        tabsheet.addTab(personForm).setCaption("Общие данные");
+	// Форма редактирования персональных данных
+	final FormLayout personForm = createMainForm(obj);
+	tabsheet.addTab(personForm).setCaption("Общие данные");
 
-        // Форма редактирования данных о компании
-        final FormLayout companyForm = createCompanyForm();
-        tabsheet.addTab(companyForm).setCaption("Компания");
+	// Форма редактирования данных о компании
+	final FormLayout companyForm = createCompanyForm();
+	tabsheet.addTab(companyForm).setCaption("Компания");
 
-        // Форма редактирования паспортных данных
-        final FormLayout passForm = createPassForm();
-        tabsheet.addTab(passForm).setCaption("Паспортные данные");
+	// Форма редактирования паспортных данных
+	final FormLayout passForm = createPassForm();
+	tabsheet.addTab(passForm).setCaption("Паспортные данные");
 
-        return tabsheet;
-    }
+	return tabsheet;
+}
 
-    private FormLayout createPassForm() {
-        final FormLayout passForm = new FormLayout();
-        passForm.setMargin(true);
+private FormLayout createPassForm() {
+	final FormLayout passForm = new FormLayout();
+	passForm.setMargin(true);
 
-        passNumField = new EditField("Номер паспорта");
-        passNumField.setColumns(20);
-        passForm.addComponent(passNumField);
+	passNumField = new EditField("Номер паспорта");
+	passNumField.setColumns(20);
+	passForm.addComponent(passNumField);
 
-        passIssueDateField = new LocalDateField("Дата выдачи", "Дата выдачи документа");
-        passForm.addComponent(passIssueDateField);
+	passIssueDateField = new LocalDateField("Дата выдачи", "Дата выдачи документа");
+	passForm.addComponent(passIssueDateField);
 
-        passIssuedByField = new TextArea("Кем выдан");
-        passIssuedByField.setDescription("Наименование органа выдавшего документ");
-        passIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
-        passIssuedByField.setNullRepresentation("");
-        passIssuedByField.setRows(3);
-        passIssuedByField.setColumns(30);
-        passForm.addComponent(passIssuedByField);
+	passIssuedByField = new TextArea("Кем выдан");
+	passIssuedByField.setDescription("Наименование органа выдавшего документ");
+	passIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
+	passIssuedByField.setNullRepresentation("");
+	passIssuedByField.setRows(3);
+	passIssuedByField.setColumns(30);
+	passForm.addComponent(passIssuedByField);
 
-        passIssuedByNumField = new EditField("Код подразделения");
-        passForm.addComponent(passIssuedByNumField);
-        return passForm;
-    }
+	passIssuedByNumField = new EditField("Код подразделения");
+	passForm.addComponent(passIssuedByNumField);
+	return passForm;
+}
 
-    private FormLayout createCompanyForm() {
-        final FormLayout companyForm = new FormLayout();
-        companyForm.setMargin(true);
+private FormLayout createCompanyForm() {
+	final FormLayout companyForm = new FormLayout();
+	companyForm.setMargin(true);
 
-        jobField = new CompanySelect("Компания");
-        jobField.setDescription("Компания в которой работает контакт");
-        companyForm.addComponent(jobField);
+	jobField = new CompanySelect("Компания");
+	jobField.setDescription("Компания в которой работает контакт");
+	companyForm.addComponent(jobField);
 
-        jobPositionField = new ComboBox("Должность");
-        jobPositionField.setWidth(15, Unit.EM);
-        jobPositionField.setDescription("Укажите должность контакта");
-        jobPositionField.setNullSelectionAllowed(false);
-        jobPositionField.setNewItemsAllowed(false);
-        ComponentUtil.fillSelectByEnum(jobPositionField, Person.Position.class);
-        companyForm.addComponent(jobPositionField);
+	jobPositionField = new ComboBox("Должность");
+	jobPositionField.setWidth(15, Unit.EM);
+	jobPositionField.setDescription("Укажите должность контакта");
+	jobPositionField.setNullSelectionAllowed(false);
+	jobPositionField.setNewItemsAllowed(false);
+	ComponentUtil.fillSelectByEnum(jobPositionField, Person.Position.class);
+	companyForm.addComponent(jobPositionField);
 
-        jobDepartmentField = new EditField("Департамент");
-        jobDepartmentField.setDescription("Подразделение в котором работает контакт");
-        jobDepartmentField.setColumns(20);
-        companyForm.addComponent(jobDepartmentField);
-        return companyForm;
-    }
+	jobDepartmentField = new EditField("Департамент");
+	jobDepartmentField.setDescription("Подразделение в котором работает контакт");
+	jobDepartmentField.setColumns(20);
+	companyForm.addComponent(jobDepartmentField);
+	return companyForm;
+}
 
-    private FormLayout createMainForm(final Person obj) {
-        final FormLayout personForm = new FormLayout();
-        personForm.setMargin(true);
+private FormLayout createMainForm(final Person obj) {
+	final FormLayout personForm = new FormLayout();
+	personForm.setMargin(true);
 
-        nameField = new EditField("Имя");
-        nameField.setColumns(30);
-        nameField.setDescription("Введите имя (ФИО) контакта");
-        nameField.setInputPrompt("Фамилия Имя (Отчество)");
-        nameField.setRequired(true);
-        nameField.setRequiredError("Имя контакта не может быть пустым. Пожалуйста введите ФИО контакта.");
-        personForm.addComponent(nameField);
+	nameField = new EditField("Имя");
+	nameField.setColumns(30);
+	nameField.setDescription("Введите имя (ФИО) контакта");
+	nameField.setInputPrompt("Фамилия Имя (Отчество)");
+	nameField.setRequired(true);
+	nameField.setRequiredError("Имя контакта не может быть пустым. Пожалуйста введите ФИО контакта.");
+	personForm.addComponent(nameField);
 
-        sexField = new ComboBox("Пол");
-        sexField.setDescription("Укажите пол контакта");
-        sexField.setRequired(true);
-        sexField.setNullSelectionAllowed(false);
-        sexField.setNewItemsAllowed(false);
-        ComponentUtil.fillSelectByEnum(sexField, Sex.class);
-        personForm.addComponent(sexField);
+	sexField = new ComboBox("Пол");
+	sexField.setDescription("Укажите пол контакта");
+	sexField.setRequired(true);
+	sexField.setNullSelectionAllowed(false);
+	sexField.setNewItemsAllowed(false);
+	ComponentUtil.fillSelectByEnum(sexField, Sex.class);
+	personForm.addComponent(sexField);
 
-        birthdayField = new PopupDateField("Дата рождения");
-        birthdayField.setImmediate(true);
-        birthdayField.setInputPrompt("31.12.1978");
-        birthdayField.setDescription("Введите дату рождения контакта");
-        birthdayField.setDateFormat("dd.MM.yyyy");
-        birthdayField.setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ");
-        personForm.addComponent(birthdayField);
+	birthdayField = new PopupDateField("Дата рождения");
+	birthdayField.setImmediate(true);
+	birthdayField.setInputPrompt("31.12.1978");
+	birthdayField.setDescription("Введите дату рождения контакта");
+	birthdayField.setDateFormat("dd.MM.yyyy");
+	birthdayField.setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ");
+	personForm.addComponent(birthdayField);
 
-        cellPhoneField = new PhoneField("Мобильный телефон");
-        personForm.addComponent(cellPhoneField);
+	cellPhoneField = new PhoneField("Мобильный телефон");
+	personForm.addComponent(cellPhoneField);
 
-        emailField = new EmailField("E-Mail");
-        personForm.addComponent(emailField);
+	emailField = new EmailField("E-Mail");
+	personForm.addComponent(emailField);
 
-        regionField = new RegionSelect();
-        regionField.setDescription("Укажите регион проживания");
-        regionField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
+	regionField = new RegionSelect();
+	regionField.setDescription("Укажите регион проживания");
+	regionField.addValueChangeListener(new ValueChangeListener() {
+		private static final long serialVersionUID = 1L;
 
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newRegion = (String) event.getProperty().getValue();
-                final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
-                if (city != null)
-                    cityField.setValue(city);
-            }
-        });
-        personForm.addComponent(regionField);
+		@Override
+		public void valueChange(final ValueChangeEvent event) {
+			final String newRegion = (String) event.getProperty().getValue();
+			final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+			if (city != null)
+				cityField.setValue(city);
+		}
+	});
+	personForm.addComponent(regionField);
 
-        cityField = new CitySelect();
-        cityField.setDescription("Введите город проживания контакта");
-        if (obj.getActualAddress().getCity() != null)
-            cityField.addItem(obj.getActualAddress().getCity());
-        cityField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
+	cityField = new CitySelect();
+	cityField.setDescription("Введите город проживания контакта");
+	if (obj.getActualAddress().getCity() != null)
+		cityField.addItem(obj.getActualAddress().getCity());
+	cityField.addValueChangeListener(new ValueChangeListener() {
+		private static final long serialVersionUID = 1L;
 
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newCity = (String) event.getProperty().getValue();
-                final String region = lookup(SupplementService.class).findRegionByCity(newCity);
-                if (region != null)
-                    regionField.setValue(region);
-            }
-        });
-        personForm.addComponent(cityField);
+		@Override
+		public void valueChange(final ValueChangeEvent event) {
+			final String newCity = (String) event.getProperty().getValue();
+			final String region = lookup(SupplementService.class).findRegionByCity(newCity);
+			if (region != null)
+				regionField.setValue(region);
+		}
+	});
+	personForm.addComponent(cityField);
 
-        postIndexField = new EditField("Почтовый индекс");
-        postIndexField.setColumns(8);
-        postIndexField.setInputPrompt("Индекс");
-        postIndexField.setNullRepresentation("");
-        personForm.addComponent(postIndexField);
+	postIndexField = new EditField("Почтовый индекс");
+	postIndexField.setColumns(8);
+	postIndexField.setInputPrompt("Индекс");
+	postIndexField.setNullRepresentation("");
+	personForm.addComponent(postIndexField);
 
-        streetBldField = new TextArea("Адрес");
-        streetBldField.setColumns(30);
-        streetBldField.setRows(5);
-        streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
-        streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
-        streetBldField.setNullRepresentation("");
-        personForm.addComponent(streetBldField);
-        return personForm;
-    }
+	streetBldField = new TextArea("Адрес");
+	streetBldField.setColumns(30);
+	streetBldField.setRows(5);
+	streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
+	streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
+	streetBldField.setNullRepresentation("");
+	personForm.addComponent(streetBldField);
+	return personForm;
+}
 }

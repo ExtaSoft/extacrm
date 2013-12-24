@@ -1,35 +1,19 @@
 package ru.extas.server;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import ru.extas.model.Insurance;
-
-import java.util.Collection;
 
 /**
  * Интерфейс управления данными об иммущественном страховании
  *
  * @author Valery Orlov
  */
-public interface InsuranceRepository {
+@Repository
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+public interface InsuranceRepository extends CrudRepository<Insurance, String> {
 
-    /**
-     * Возвращает список всех зарегестрированных страховок
-     *
-     * @return список страховок
-     */
-    public abstract Collection<Insurance> loadAll();
-
-    /**
-     * Сохраняет страховку
-     *
-     * @param insurance что сохраняем
-     */
-    public abstract void persist(Insurance insurance);
-
-    /**
-     * Удаляет запись о страховке
-     *
-     * @param id идентификатор удаляемой записи
-     */
-    public abstract void deleteById(String id);
-
+Iterable<Insurance> findByCreatedBy(String createdBy);
 }

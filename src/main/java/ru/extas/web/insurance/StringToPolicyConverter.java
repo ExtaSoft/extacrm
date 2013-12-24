@@ -34,7 +34,7 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
             throws com.vaadin.data.util.converter.Converter.ConversionException {
         if (value == null)
             return null;
-        return lookup(PolicyRegistry.class).findByNum(value);
+	    return lookup(PolicyRegistry.class).findByRegNum(value);
     }
 
     /*

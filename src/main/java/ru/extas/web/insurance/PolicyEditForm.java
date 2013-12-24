@@ -24,84 +24,84 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class PolicyEditForm extends AbstractEditForm<Policy> {
 
-    private static final long serialVersionUID = 44314371625923505L;
+private static final long serialVersionUID = 44314371625923505L;
 
-    // Компоненты редактирования
-    @PropertyId("regNum")
-    private TextField regNumField;
-    @PropertyId("bookTime")
-    private PopupDateField bookTimeField;
-    @PropertyId("issueDate")
-    private PopupDateField issueDateField;
+// Компоненты редактирования
+@PropertyId("regNum")
+private TextField regNumField;
+@PropertyId("bookTime")
+private PopupDateField bookTimeField;
+@PropertyId("issueDate")
+private PopupDateField issueDateField;
 
-    /**
-     * @param caption
-     * @param editedObj
-     */
-    public PolicyEditForm(final String caption, final BeanItem<Policy> editedObj) {
-        super(caption, editedObj);
-    }
+/**
+ * @param caption
+ * @param editedObj
+ */
+public PolicyEditForm(final String caption, final BeanItem<Policy> editedObj) {
+	super(caption, editedObj);
+}
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
-     * AbstractExtaObject)
-     */
-    @Override
-    protected void initObject(final Policy obj) {
+/*
+ * (non-Javadoc)
+ *
+ * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
+ * AbstractExtaObject)
+ */
+@Override
+protected void initObject(final Policy obj) {
 
-    }
+}
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
-     * AbstractExtaObject)
-     */
-    @Override
-    protected void saveObject(final Policy obj) {
-        final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
-        policyRepository.persist(obj);
-    }
+/*
+ * (non-Javadoc)
+ *
+ * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
+ * AbstractExtaObject)
+ */
+@Override
+protected void saveObject(final Policy obj) {
+	final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
+	policyRepository.save(obj);
+}
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
-     * AbstractExtaObject)
-     */
-    @Override
-    protected void checkBeforeSave(final Policy obj) {
-    }
+/*
+ * (non-Javadoc)
+ *
+ * @see
+ * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
+ * AbstractExtaObject)
+ */
+@Override
+protected void checkBeforeSave(final Policy obj) {
+}
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
-     * .AbstractExtaObject)
-     */
-    @Override
-    protected ComponentContainer createEditFields(final Policy obj) {
-        final FormLayout form = new FormLayout();
+/*
+ * (non-Javadoc)
+ *
+ * @see
+ * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
+ * .AbstractExtaObject)
+ */
+@Override
+protected ComponentContainer createEditFields(final Policy obj) {
+	final FormLayout form = new FormLayout();
 
-        regNumField = new EditField("Номер полиса", "Введите номер полиса.");
-        regNumField.setColumns(20);
-        regNumField.setRequired(true);
-        form.addComponent(regNumField);
+	regNumField = new EditField("Номер полиса", "Введите номер полиса.");
+	regNumField.setColumns(20);
+	regNumField.setRequired(true);
+	form.addComponent(regNumField);
 
-        bookTimeField = new DateTimeField("Полис забронирован", "Введите дату бронирования");
-        bookTimeField.setWidth(15, Unit.EM);
-        bookTimeField.setDateFormat("dd.MM.yyyy HH:mm:ss");
-        form.addComponent(bookTimeField);
+	bookTimeField = new DateTimeField("Полис забронирован", "Введите дату бронирования");
+	bookTimeField.setWidth(15, Unit.EM);
+	bookTimeField.setDateFormat("dd.MM.yyyy HH:mm:ss");
+	form.addComponent(bookTimeField);
 
-        issueDateField = new DateTimeField("Дата реализации", "Введите дату оформления полиса");
-        issueDateField.setWidth(15, Unit.EM);
-        form.addComponent(issueDateField);
+	issueDateField = new DateTimeField("Дата реализации", "Введите дату оформления полиса");
+	issueDateField.setWidth(15, Unit.EM);
+	form.addComponent(issueDateField);
 
-        return form;
-    }
+	return form;
+}
 
 }

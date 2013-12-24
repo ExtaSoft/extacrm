@@ -20,6 +20,10 @@
 
         <vaadin.version>7.1.9</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+        <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
+        <vaadin.popupbutton.version>2.3.0</vaadin.popupbutton.version>
+        <vaadin.filteringtable.version>0.9.3.v7</vaadin.filteringtable.version>
+
         <servlet-api.version>2.5</servlet-api.version>
         <activiti-version>5.14</activiti-version>
 
@@ -28,7 +32,8 @@
 
         <xdocreport.version>1.0.2</xdocreport.version>
 
-        <spring.version>3.2.5.RELEASE</spring.version>
+        <spring.version>4.0.0.RELEASE</spring.version>
+        <spring-data.version>1.4.3.RELEASE</spring-data.version>
         <eclipselink.version>2.5.1-RC3</eclipselink.version>
     </properties>
 
@@ -140,7 +145,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>1.4.2.RELEASE</version>
+            <version>${spring-data.version}</version>
         </dependency>
 
         <dependency>
@@ -232,17 +237,17 @@
         <dependency>
             <groupId>com.vaadin.addon</groupId>
             <artifactId>jpacontainer</artifactId>
-            <version>3.1.0</version>
+            <version>${vaadin.jpacontainer.version}</version>
         </dependency>
         <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>popupbutton</artifactId>
-            <version>2.2.1</version>
+            <version>${vaadin.popupbutton.version}</version>
         </dependency>
         <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>filteringtable</artifactId>
-            <version>0.9.2.v7</version>
+            <version>${vaadin.filteringtable.version}</version>
         </dependency>
 
         <dependency>

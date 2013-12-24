@@ -1,6 +1,3 @@
-/**
- *
- */
 package ru.extas.server;
 
 import ru.extas.model.A7Form;
@@ -9,55 +6,38 @@ import ru.extas.model.Contact;
 import java.util.List;
 
 /**
- * Управление формами А-7
- *
  * @author Valery Orlov
+ *         Date: 18.12.13
+ *         Time: 12:49
  */
 public interface A7FormService {
+/**
+ * Использовать квитанцию
+ *
+ * @param formNum номер квитанции
+ */
+void spendForm(String formNum);
 
-    /**
-     * Найти квитанцию по номеру
-     *
-     * @param formNum Номер квитанции
-     * @return Найденная квитанция или null
-     */
-    A7Form findByNum(String formNum);
+/**
+ * Сменить владельца для набора квитанций
+ *
+ * @param formNums Список номеров квитанций
+ * @param owner    Новый владелец
+ */
+void changeOwner(List<String> formNums, Contact owner);
 
-    /**
-     * Вставить/обновить квитанцию
-     *
-     * @param form Квитанцию для вставки\обновления
-     */
-    void persist(A7Form form);
+/**
+ * Сменить статус для набора квитанций
+ *
+ * @param form      Список номеров квитанций
+ * @param newStatus Новый статус
+ */
+void changeStatus(A7Form form, A7Form.Status newStatus);
 
-    /**
-     * Использовать квитанцию
-     *
-     * @param formNum номер квитанции
-     */
-    void spendForm(String formNum);
-
-    /**
-     * Сменить владельца для набора квитанций
-     *
-     * @param formNums Список номеров квитанций
-     * @param owner    Новый владелец
-     */
-    void changeOwner(List<String> formNums, Contact owner);
-
-    /**
-     * Сменить статус для набора квитанций
-     *
-     * @param form      Список номеров квитанций
-     * @param newStatus Новый статус
-     */
-    void changeStatus(A7Form form, A7Form.Status newStatus);
-
-    /**
-     * Загружает доступные пользователю квитанции А-7
-     *
-     * @return доступные пользователю квитанции А-7
-     */
-    List<A7Form> loadAvailable();
-
+/**
+ * Загружает доступные пользователю квитанции А-7
+ *
+ * @return доступные пользователю квитанции А-7
+ */
+List<A7Form> loadAvailable();
 }

@@ -3,6 +3,12 @@
  */
 package ru.extas.server;
 
+import org.joda.time.DateTime;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import ru.extas.model.Policy;
 
 import java.util.List;
@@ -12,55 +18,22 @@ import java.util.List;
  *
  * @author Valery Orlov
  */
-public interface PolicyRegistry {
+@Repository
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+public interface PolicyRegistry extends CrudRepository<Policy, String> {
 
-    /**
-     * Возвращает список всех доступных полисов
-     *
-     * @return список полисов
-     */
-    List<Policy> loadAvailable();
+/**
+ * Найти полис по номеру
+ *
+ * @param regNum номер
+ *
+ * @return найденный полис или null
+ */
+Policy findByRegNum(String regNum);
 
-    /**
-     * Сохраняет полис
-     *
-     * @param policy что сохраняем
-     */
-    void persist(Policy policy);
-
-    /**
-     * Забронировать полис
-     *
-     * @param policy бронируемый полис
-     */
-    void bookPolicy(Policy policy);
-
-    /**
-     * Реализовать полис
-     *
-     * @param policy реализуемый полис
-     */
-    void issuePolicy(Policy policy);
-
-    /**
-     * Найти полис по номеру
-     *
-     * @param regNum номер
-     * @return найденный полис или null
-     */
-    Policy findByNum(String regNum);
-
-    /**
-     * Забронировать полис
-     *
-     * @param regNum номер резервируемого полиса
-     */
-    void bookPolicy(String regNum);
-
-    /**
-     * Реализовать полис
-     *
-     * @param regNum номер реализуемого полиса
-     */
-    void issuePolicy(String regNum);
+@Query("SELECT p FROM Policy p " +
+		"WHERE p.issueDate IS NULL " +
+		"AND (p.bookTime IS NULL OR p.bookTime < ?1) " +
+		"ORDER BY p.bookTime, p.regNum")
+List<Policy> findAvailableAtTime(DateTime dateTime);
 }

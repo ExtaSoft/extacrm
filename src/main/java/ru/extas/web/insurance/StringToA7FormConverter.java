@@ -6,7 +6,7 @@ package ru.extas.web.insurance;
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.extas.model.A7Form;
-import ru.extas.server.A7FormService;
+import ru.extas.server.A7FormRepository;
 
 import java.util.Locale;
 
@@ -34,7 +34,7 @@ public class StringToA7FormConverter implements Converter<String, A7Form> {
             throws ConversionException {
         if (value == null)
             return null;
-        return lookup(A7FormService.class).findByNum(value);
+	    return lookup(A7FormRepository.class).findByRegNum(value);
     }
 
     /*

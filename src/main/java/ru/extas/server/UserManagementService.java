@@ -11,90 +11,79 @@ import ru.extas.model.UserRole;
  */
 public interface UserManagementService {
 
-    /**
-     * Найти пользователя по логину
-     *
-     * @param login логин
-     * @return найденный пользователь или null
-     */
-    UserProfile findUserByLogin(String login);
+/**
+ * Найти пользователя по логину
+ *
+ * @param login логин
+ *
+ * @return найденный пользователь или null
+ */
+UserProfile findUserByLogin(String login);
 
-    /**
-     * Найти контакт пользователя по логину
-     *
-     * @param login логин
-     * @return найденный контакт пользователя или null
-     */
-    Contact findUserContactByLogin(String login);
+/**
+ * Найти контакт пользователя по логину
+ *
+ * @param login логин
+ *
+ * @return найденный контакт пользователя или null
+ */
+Contact findUserContactByLogin(String login);
 
-    /**
-     * Сохранить пользователя
-     *
-     * @param user объект ддя сохранения
-     */
-    void persistUser(UserProfile user);
+/**
+ * Получить профайл стандартного юзера (admin)
+ *
+ * @return профайл юзера admin
+ */
+UserProfile getSuperuser();
 
-    /**
-     * Получить профайл стандартного юзера (admin)
-     *
-     * @return профайл юзера admin
-     */
-    UserProfile getSuperuser();
+/**
+ * Получить профайл текущего пользователя
+ *
+ * @return профайл текущего пользователя
+ */
+UserProfile getCurrentUser();
 
-    /**
-     * Получить профайл текущего пользователя
-     *
-     * @return профайл текущего пользователя
-     */
-    UserProfile getCurrentUser();
+/**
+ * Получить логин текущего пользователя
+ *
+ * @return логин текущего пользователя
+ */
+String getCurrentUserLogin();
 
-    /**
-     * Получить логин текущего пользователя
-     *
-     * @return логин текущего пользователя
-     */
-    String getCurrentUserLogin();
+/**
+ * Получить контакт текущего пользователя
+ *
+ * @return контакт текущего пользователя
+ */
+Contact getCurrentUserContact();
 
-    /**
-     * Получить контакт текущего пользователя
-     *
-     * @return контакт текущего пользователя
-     */
-    Contact getCurrentUserContact();
+/**
+ * Определить есть ли аутентифицированный пользователь
+ *
+ * @return true если есть аутентифицированный пользователь
+ */
+boolean isUserAuthenticated();
 
-    /**
-     * Возвращает количество пользователей системы
-     *
-     * @return
-     */
-    long userCount();
+/**
+ * Определить облидает ли текущий пользователь указанной ролью
+ *
+ * @param role проверяемая роль
+ *
+ * @return true если текущий пользователь облидает указанной ролью
+ */
+boolean isCurUserHasRole(UserRole role);
 
-    /**
-     * Определить есть ли аутентифицированный пользователь
-     *
-     * @return true если есть аутентифицированный пользователь
-     */
-    boolean isUserAuthenticated();
+/**
+ * Аутентифицировать пользователя.
+ * Выбрасывает исключение при неудачной аутентификации
+ *
+ * @param login    логин
+ * @param password пароль
+ */
+void authenticate(String login, String password);
 
-    /**
-     * Определить облидает ли текущий пользователь указанной ролью
-     *
-     * @param role проверяемая роль
-     * @return true если текущий пользователь облидает указанной ролью
-     */
-    boolean isCurUserHasRole(UserRole role);
-
-    /**
-     * Аутентифицировать пользователя.
-     * Выбрасывает исключение при неудачной аутентификации
-     *
-     * @param login    логин
-     * @param password пароль
-     */
-    void authenticate(String login, String password);
-
-    /**
-     * Выйти из системы
-     */
-    void logout();
+/**
+ * Выйти из системы
+ */
+void logout();
 }
