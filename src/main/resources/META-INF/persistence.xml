@@ -23,6 +23,11 @@
         <class>ru.extas.model.Policy</class>
         <class>ru.extas.model.UserGroup</class>
         <class>ru.extas.model.UserProfile</class>
+        <class>ru.extas.model.Product</class>
+        <class>ru.extas.model.ProdCredit</class>
+        <class>ru.extas.model.ProdInsurance</class>
+        <class>ru.extas.model.ProdInstallments</class>
+        <class>ru.extas.model.ProductInSale</class>
         <class>ru.extas.model.converter.DateTimeConverter</class>
         <class>ru.extas.model.converter.LocalDateConverter</class>
         <class>ru.extas.model.converter.UserRoleConverter</class>

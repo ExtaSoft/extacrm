@@ -2,6 +2,7 @@ package ru.extas.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Модель данных для продажи
@@ -80,7 +81,7 @@ public class Sale extends AbstractExtaObject {
     private String motorModel;
 
     // Стоимость техники
-    @Column(name = "MOTOR_PRICE")
+    @Column(name = "MOTOR_PRICE", precision = 32, scale = 4)
     private BigDecimal motorPrice;
 
     // Мотосалон
@@ -96,7 +97,10 @@ public class Sale extends AbstractExtaObject {
     @Enumerated(EnumType.STRING)
     private Result result;
 
-    public Result getResult() {
+	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL})
+	private List<ProductInSale> productInSales;
+
+	public Result getResult() {
         return result;
     }
 
@@ -199,4 +203,12 @@ public class Sale extends AbstractExtaObject {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+	public List<ProductInSale> getProductInSales() {
+		return productInSales;
+	}
+
+	public void setProductInSales(final List<ProductInSale> productInSales) {
+		this.productInSales = productInSales;
+	}
 }

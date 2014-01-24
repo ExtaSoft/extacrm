@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
@@ -15,54 +14,40 @@ import java.text.ParsePosition;
 import java.util.Locale;
 
 /**
- * Конвертер для отображения BigDecimal элементах UI
+ * Конвертер для отображения BigDecimal процентов в элементах UI
  *
  * @author Valery Orlov
  */
 @Component
-public class StringToMoneyConverter implements Converter<String, BigDecimal> {
+public class StringToPercentConverter implements Converter<String, BigDecimal> {
 
 	private static final long serialVersionUID = -7818477340305539184L;
 	private transient DecimalFormat format;
-	private transient DecimalFormat lenientFormat;
-	private final static Logger logger = LoggerFactory.getLogger(StringToMoneyConverter.class);
+	private final static Logger logger = LoggerFactory.getLogger(StringToPercentConverter.class);
 
 	@Inject
 	Locale _locale;
 
 	/**
-	 * DecimalFormat's currency symbol
+	 * DecimalFormat's percent symbol
 	 */
-	private static final String CURRENCY_SYMBOL = "\u00A4";
+	private static final String PERCENT_SYMBOL = "%";
 
 	DecimalFormat getFormat(Locale locale) {
 		if (locale == null) {
 			locale = _locale;
 		}
 		if (format == null) {
-			format = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
+			format = (DecimalFormat) NumberFormat.getPercentInstance(locale);
 			format.setParseBigDecimal(true);
-			format.setRoundingMode(RoundingMode.HALF_UP);
-			logger.debug("Money format pattern {}", format.toPattern());
+			//format.setRoundingMode(RoundingMode.HALF_UP);
+			//format.setMultiplier(1);
+			format.setMaximumFractionDigits(2);
+			//format.setMinimumFractionDigits(2);
+			//format.setParseIntegerOnly(false);
+			logger.debug("Percent format pattern {}", format.toPattern());
 		}
 		return format;
-	}
-
-	DecimalFormat getLenientFormat(Locale locale) {
-		if (locale == null) {
-			locale = _locale;
-		}
-		if (lenientFormat == null) {
-			lenientFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
-			lenientFormat.setParseBigDecimal(true);
-			lenientFormat.setRoundingMode(RoundingMode.HALF_UP);
-
-			String pattern = getFormat(locale).toPattern();
-			pattern = pattern.replaceAll(CURRENCY_SYMBOL, "");
-			lenientFormat.applyPattern(pattern.trim());
-			logger.debug("Money lenient format pattern {}", lenientFormat.toPattern());
-		}
-		return lenientFormat;
 	}
 
 	/*
@@ -96,7 +81,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	 */
 	@Override
 	public BigDecimal convertToModel(String value, final Class<? extends BigDecimal> targetType, final Locale locale)
-			throws com.vaadin.data.util.converter.Converter.ConversionException {
+			throws ConversionException {
 		if (value == null || value.isEmpty()) {
 			return null;
 		}
@@ -108,7 +93,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 		// an error.
 		BigDecimal parsedValue = (BigDecimal) getFormat(locale).parse(value, new ParsePosition(0));
 		if (parsedValue == null) {
-			parsedValue = (BigDecimal) getLenientFormat(locale).parse(value, new ParsePosition(0));
+			parsedValue = (BigDecimal) getFormat(locale).parse(value + PERCENT_SYMBOL, new ParsePosition(0));
 		}
 		if (parsedValue == null) {
 			throw new ConversionException(MessageFormat.format(
@@ -128,7 +113,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	@Override
 	public String convertToPresentation(final BigDecimal value, final Class<? extends String> targetType,
 	                                    final Locale locale)
-			throws com.vaadin.data.util.converter.Converter.ConversionException {
+			throws ConversionException {
 		if (value == null) {
 			return null;
 		}
@@ -144,7 +129,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	 * java.util.Locale)
 	 */
 	public BigDecimal convertToModel(final String value, final Locale locale)
-			throws com.vaadin.data.util.converter.Converter.ConversionException {
+			throws ConversionException {
 		return convertToModel(value, null, locale);
 	}
 
@@ -156,7 +141,7 @@ public class StringToMoneyConverter implements Converter<String, BigDecimal> {
 	 * .Object, java.util.Locale)
 	 */
 	public String convertToPresentation(final BigDecimal value, final Locale locale)
-			throws com.vaadin.data.util.converter.Converter.ConversionException {
+			throws ConversionException {
 		return convertToPresentation(value, null, locale);
 	}
 }
