@@ -35,6 +35,8 @@
         <spring.version>4.0.0.RELEASE</spring.version>
         <spring-data.version>1.4.3.RELEASE</spring-data.version>
         <eclipselink.version>2.5.1-RC3</eclipselink.version>
+        <jasperreports.version>5.5.0</jasperreports.version>
+        <groovy.version>2.2.1</groovy.version>
     </properties>
 
     <profiles>
@@ -127,7 +129,24 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.springframework</groupId>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
+        </dependency>
+
+        <dependency>
+        <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
             <exclusions>
@@ -334,7 +353,76 @@
         <plugins>
 
             <plugin>
-                <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <configuration>
+                            <target>
+
+                                <property name="compile_classpath" refid="maven.compile.classpath"/>
+
+                                <echo message="Delete jaspers..."/>
+
+                                <delete>
+                                    <fileset dir="src/main/resources/reports" includes="*.jasper"/>
+                                </delete>
+
+                                <echo message="Compile reports..."/>
+
+                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"/>
+                                <jrc destdir="src/main/resources/reports">
+                                    <src>
+                                        <fileset dir="src/main/resources/reports">
+                                            <include name="*.jrxml"/>
+                                        </fileset>
+                                    </src>
+                                    <classpath>
+                                        <path path="${compile_classpath}"/>
+                                    </classpath>
+                                </jrc>
+
+                                <echo message="Copy reports..."/>
+
+                                <copy todir="target/classes/reports" overwrite="true">
+                                    <fileset dir="src/main/resources/reports"/>
+                                </copy>
+
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.jasperreports</groupId>
+                        <artifactId>jasperreports</artifactId>
+                        <version>${jasperreports.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>${groovy.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>servlet-api</artifactId>
+                        <version>${servlet-api.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant</artifactId>
+                        <version>1.8.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+            <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
                 <groupId>au.com.alderaan</groupId>
                 <version>1.0.4</version>
                 <executions>
@@ -459,6 +547,7 @@
                 <artifactId>vaadin-maven-plugin</artifactId>
                 <version>${vaadin.plugin.version}</version>
                 <configuration>
+                    <gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
                     <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
                     <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
                     <!-- <runTarget>mobilemail</runTarget> -->
@@ -542,6 +631,25 @@
                                         </versionRange>
                                         <goals>
                                             <goal>weave</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.apache.maven.plugins
+                                        </groupId>
+                                        <artifactId>
+                                            maven-antrun-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.7,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>run</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>

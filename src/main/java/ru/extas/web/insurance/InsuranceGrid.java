@@ -13,11 +13,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
-import fr.opensagres.xdocreport.core.XDocReportException;
-import fr.opensagres.xdocreport.document.IXDocReport;
-import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
-import fr.opensagres.xdocreport.template.IContext;
-import fr.opensagres.xdocreport.template.TemplateEngineKind;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.Insurance;
@@ -31,9 +28,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.gwt.thirdparty.guava.common.collect.Maps.newHashMap;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -156,68 +155,39 @@ public class InsuranceGrid extends ExtaGrid {
     }
 
     private void printPolicy(Object itemId, boolean withMat) {
-        final Object curObjId = itemId;
+
+	    final Object curObjId = itemId;
         final EntityItem<Insurance> curObj = (EntityItem<Insurance>) table.getItem(curObjId);
         final Insurance insurance = curObj.getEntity();
         checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
 
         try {
-            // 1) Load Docx file by filling Velocity template engine and
-            // cache it to the registry
-            final InputStream in = getClass().getResourceAsStream(
-                    withMat ? "/reports/insurance/PropertyInsuranceTemplateWhitMat.docx"
-                            : "/reports/insurance/PropertyInsuranceTemplate.docx");
-            final IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
-                    TemplateEngineKind.Freemarker);
+	        final InputStream in = getClass().getResourceAsStream("/reports/PropertyInsuranceTemplate.jasper");
 
-            // 2) Create context Java model
-            final IContext context = report.createContext();
-            context.put("ins", insurance);
-            context.put("periodOfCover",
-                    insurance.getCoverTime() == null || insurance.getCoverTime() == Insurance.PeriodOfCover.YEAR
-                            ? "12 месяцев" : "6 месяцев");
+	        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(in);
 
-            // 3) Generate report by merging Java model with the Docx
-            final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
-            report.process(context, outDoc);
+	        final Map<String, Object> params = newHashMap();
+	        params.put("ins", insurance);
+	        params.put("withMat", withMat);
+	        params.put("periodOfCover",
+			        insurance.getCoverTime() == null || insurance.getCoverTime() == Insurance.PeriodOfCover.YEAR
+					        ? "12 месяцев" : "6 месяцев");
+	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource(1));
 
-            final String clientName = insurance.getClient().getName();
+
+	        final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
+	        JasperExportManager.exportReportToPdfStream(jasperPrint, outDoc);
+
+	        final String clientName = insurance.getClient().getName();
             final String policyNum = insurance.getRegNum();
-            final String policyFileName = MessageFormat.format("Полис {0} {1}.docx", policyNum, clientName);
+	        final String policyFileName = MessageFormat.format("Полис {0} {1}.pdf", policyNum, clientName);
 
-            new DownloadFileWindow(outDoc.toByteArray(), policyFileName).showModal();
+	        new DownloadFileWindow(outDoc.toByteArray(), policyFileName).showModal();
 
-        } catch (IOException | XDocReportException e) {
-            logger.error("Print policy error", e);
+        } catch (JRException e) {
+	        logger.error("Print policy error", e);
             throw Throwables.propagate(e);
         }
     }
-
-    // TODO: Предоставлять полис в формате PDF
-    // private void printPolicy(Insurance insurance) {
-    // // Формирование отчета
-    // try {
-    // Window window = new Window("Полис для");
-    // window.setWidth("70%");
-    // window.setHeight("80%");
-    // window.setModal(true);
-    // BrowserFrame e = new BrowserFrame();
-    // e.setSizeFull();
-    // window.center();
-    // StreamResource resource = createPolicyResource(insurance);
-    // e.setSource(resource);
-    // window.setContent(e);
-    // UI.getCurrent().addWindow(window);
-    //
-    // Notification.show("Полис напечатан", Type.TRAY_NOTIFICATION);
-    //
-    // } catch (Exception e) {
-    // logger.error("Print policy error", e);
-    // Notification.show("Ошибка печати полиса", e.getMessage(),
-    // Type.ERROR_MESSAGE);
-    // }
-    //
-    // }
-
 
 }

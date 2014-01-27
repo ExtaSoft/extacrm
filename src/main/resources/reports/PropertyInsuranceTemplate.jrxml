@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="PropertyInsuranceTemplate" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575"
+              leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" isSummaryNewPage="true"
+              uuid="986df7ce-c89b-43fa-a244-5c098911f17a">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <property name="com.jaspersoft.studio.unit." value="pixel"/>
+    <import value="ru.extas.model.Person"/>
+    <style name="SimpleText" isDefault="true" hAlign="Left" vAlign="Middle" pattern="" fontName="DejaVu Sans"
+           fontSize="7" isBold="false" pdfEncoding="CP1251 (Cyrillic)" isPdfEmbedded="true"/>
+    <style name="Title" style="SimpleText" hAlign="Right" fontName="DejaVu Sans" fontSize="10" isBold="true"
+           pdfEncoding="CP1251 (Cyrillic)" isPdfEmbedded="true"/>
+    <style name="TableContent" style="SimpleText" hAlign="Left" vAlign="Middle"/>
+    <style name="TableCell" style="TableContent" pattern="">
+        <pen lineWidth="3.0" lineColor="#000000"/>
+        <box topPadding="0" leftPadding="0">
+            <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+            <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+            <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+            <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+        </box>
+    </style>
+    <parameter name="ins" class="ru.extas.model.Insurance" isForPrompting="false">
+        <defaultValueExpression><![CDATA[new ru.extas.model.Insurance()]]></defaultValueExpression>
+    </parameter>
+    <parameter name="periodOfCover" class="java.lang.String" isForPrompting="false"/>
+    <parameter name="withMat" class="java.lang.Boolean" isForPrompting="false">
+        <defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+    </parameter>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <background>
+        <band height="822" splitType="Stretch">
+            <property name="local_mesure_unitheight" value="pixel"/>
+            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+            <image scaleImage="RealSize">
+                <reportElement mode="Transparent" x="0" y="0" width="575" height="822"
+                               uuid="e9d1e9c8-897e-402c-8d28-542781e66227">
+                    <property name="local_mesure_unitheight" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression><![CDATA[$P{withMat}]]></printWhenExpression>
+                </reportElement>
+                <imageExpression>
+                    <![CDATA[this.getClass().getResourceAsStream("/reports/Alfa_blank.png")]]></imageExpression>
+            </image>
+        </band>
+    </background>
+    <title>
+        <band height="100" splitType="Stretch">
+            <property name="local_mesure_unitheight" value="pixel"/>
+            <property name="com.jaspersoft.studio.layout"
+                      value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+            <frame>
+                <reportElement x="25" y="70" width="525" height="30" uuid="132a99f9-fb99-414a-8a6e-f9d8689636c5">
+                    <property name="local_mesure_unity" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    <property name="local_mesure_unitheight" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <property name="local_mesure_unitwidth" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="local_mesure_unitx" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                </reportElement>
+                <staticText>
+                    <reportElement style="Title" x="0" y="0" width="525" height="15"
+                                   uuid="5168cf0e-9c71-4056-a9fa-a3454b25c520"/>
+                    <textElement textAlignment="Right"/>
+                    <text><![CDATA[Полис страхования имущества]]></text>
+                </staticText>
+                <textField>
+                    <reportElement style="Title" x="0" y="15" width="525" height="15"
+                                   uuid="cf43caf2-6bf2-42f8-9319-dacdad7ba329"/>
+                    <textElement textAlignment="Right"/>
+                    <textFieldExpression>
+                        <![CDATA["№ " + $P{ins}.getRegNum() + "	от " + new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getDate().toDate())]]></textFieldExpression>
+                </textField>
+            </frame>
+        </band>
+    </title>
+    <detail>
+        <band height="657" splitType="Stretch">
+            <property name="com.jaspersoft.studio.layout"
+                      value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+            <property name="local_mesure_unitheight" value="pixel"/>
+            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+            <frame>
+                <reportElement positionType="FixRelativeToBottom" x="25" y="0" width="575" height="657"
+                               uuid="40982303-0579-47ac-9017-3b26b64b5b24">
+                    <property name="local_mesure_unitx" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    <property name="local_mesure_unitwidth" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="local_mesure_unity" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    <property name="local_mesure_unitheight" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <staticText>
+                    <reportElement x="0" y="0" width="525" height="49" uuid="544ceb62-07c9-4c45-a527-be14ffba05fe"/>
+                    <text>
+                        <![CDATA[	По настоящему Полису-оферте (далее – Полис) Страховщик – ОАО «АльфаСтрахование» обязуется за обусловленную Полисом плату (страховую премию) возместить Страхователю или иному лицу, в пользу которого заключен Полис (Выгодоприобретателю), в пределах определенных Полисом страховых сумм убытки, причиненные в результате наступления предусмотренного Полисом события (страхового случая). Условия страхования по Полису разработаны на основании «Правил страхования имущественных рисков» в редакции от 27.06.2012.]]></text>
+                </staticText>
+                <frame>
+                    <reportElement style="TableContent" positionType="FixRelativeToBottom" x="0" y="50" width="525"
+                                   height="94" uuid="e0e68c7a-7828-4a92-8e5b-172c0323c701">
+                        <property name="com.jaspersoft.studio.layout"
+                                  value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+                        <property name="local_mesure_unity" value="pixel"/>
+                    </reportElement>
+                    <staticText>
+                        <reportElement x="0" y="0" width="128" height="25" uuid="6b3b0be8-4d7f-4a50-9a9a-2c21f43d097b">
+                            <property name="local_mesure_unitheight" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <leftPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="8" isBold="true"/>
+                        </textElement>
+                        <text><![CDATA[Страховщик]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="128" y="0" width="396" height="25"
+                                       uuid="a82a8db2-3d53-425d-a35d-db9b3a1e9f44">
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <leftPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="8"/>
+                        </textElement>
+                        <text>
+                            <![CDATA[ОАО «АльфаСтрахование», Российская Федерация, г. Москва, ул. Шаболовка, дом 31 строение Б. Телефон +7 495 788-09-99]]></text>
+                    </staticText>
+                    <textField>
+                        <reportElement x="128" y="29" width="396" height="19"
+                                       uuid="4c773007-83a7-4ba1-8f83-c1e9846914a2">
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                            <property name="local_mesure_unitwidth" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <leftPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="10"/>
+                        </textElement>
+                        <textFieldExpression><![CDATA[$P{ins}.getClient().getName()]]></textFieldExpression>
+                    </textField>
+                    <staticText>
+                        <reportElement x="0" y="29" width="128" height="19" uuid="52102858-7588-4800-b8c3-c28f76505448">
+                            <property name="local_mesure_unity" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <leftPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="8" isBold="true"/>
+                        </textElement>
+                        <text><![CDATA[Страхователь]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="52" width="128" height="19" uuid="24267f55-9334-4660-bfa8-81b2aff75e9c">
+                            <property name="local_mesure_unity" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="8" isBold="true"/>
+                        </textElement>
+                        <text><![CDATA[Дата рождения]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="0" y="75" width="128" height="19" uuid="95a00c62-68f0-4300-b99c-d86fdc20f002">
+                            <property name="local_mesure_unity" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="8" isBold="true"/>
+                        </textElement>
+                        <text><![CDATA[Выгодоприобретатель]]></text>
+                    </staticText>
+                    <textField>
+                        <reportElement x="128" y="75" width="396" height="19"
+                                       uuid="5d5ba59c-5355-4271-9cae-fd310ece7197">
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <leftPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                            <rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="10"/>
+                        </textElement>
+                        <textFieldExpression><![CDATA[$P{ins}.getClient().getName()]]></textFieldExpression>
+                    </textField>
+                    <textField>
+                        <reportElement x="128" y="52" width="129" height="19"
+                                       uuid="94c724e3-4085-45cf-a5d4-26710d981da7">
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                            <property name="local_mesure_unitheight" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="10"/>
+                        </textElement>
+                        <textFieldExpression>
+                            <![CDATA[new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getClient().getBirthday().toDate())]]></textFieldExpression>
+                    </textField>
+                    <staticText>
+                        <reportElement x="257" y="52" width="53" height="19"
+                                       uuid="22b15f68-339d-45ed-8725-64a407150cc0">
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                            <property name="local_mesure_unitheight" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="8" isBold="true"/>
+                        </textElement>
+                        <text><![CDATA[Телефон]]></text>
+                    </staticText>
+                    <textField>
+                        <reportElement x="310" y="52" width="109" height="19"
+                                       uuid="595edebb-ffe7-470c-b088-0d6cb1d643ba">
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                            <property name="local_mesure_unitheight" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font size="10"/>
+                        </textElement>
+                        <textFieldExpression><![CDATA[$P{ins}.getClient().getCellPhone()]]></textFieldExpression>
+                    </textField>
+                    <staticText>
+                        <reportElement x="419" y="52" width="29" height="19"
+                                       uuid="611889c4-9752-4ece-a0e1-29fc6ac3235b">
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement verticalAlignment="Middle">
+                            <font isBold="true"/>
+                        </textElement>
+                        <text><![CDATA[Пол]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="448" y="52" width="19" height="19"
+                                       uuid="1c75112b-2d7d-45bd-af1c-c12517f5dbbe">
+                            <property name="local_mesure_unitheight" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                            <property name="local_mesure_unitwidth" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font size="8" isBold="true"/>
+                        </textElement>
+                        <text><![CDATA[М.]]></text>
+                    </staticText>
+                    <staticText>
+                        <reportElement x="486" y="52" width="19" height="19"
+                                       uuid="babfbf28-f498-450e-b213-94f804080966">
+                            <property name="local_mesure_unitheight" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                            <property name="local_mesure_unitwidth" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font size="8" isBold="true"/>
+                        </textElement>
+                        <text><![CDATA[Ж.]]></text>
+                    </staticText>
+                    <textField>
+                        <reportElement x="505" y="52" width="19" height="19"
+                                       uuid="6c5fc5af-d405-4b9f-9039-48ed0bee65bd">
+                            <property name="local_mesure_unitwidth" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                            <property name="local_mesure_unitheight" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font size="12"/>
+                        </textElement>
+                        <textFieldExpression>
+                            <![CDATA[$P{ins}.getClient().getSex() == Person.Sex.MALE ? "" : "X"]]></textFieldExpression>
+                    </textField>
+                    <textField>
+                        <reportElement x="467" y="52" width="19" height="19"
+                                       uuid="a375434d-e2a1-46d5-83d0-b0f4b2bd8051">
+                            <property name="local_mesure_unitwidth" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                            <property name="local_mesure_unitheight" value="pixel"/>
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                            <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        </reportElement>
+                        <box padding="2">
+                            <topPen lineWidth="2.0"/>
+                            <leftPen lineWidth="2.0"/>
+                            <bottomPen lineWidth="2.0"/>
+                            <rightPen lineWidth="2.0"/>
+                        </box>
+                        <textElement textAlignment="Center" verticalAlignment="Middle">
+                            <font size="12"/>
+                        </textElement>
+                        <textFieldExpression>
+                            <![CDATA[$P{ins}.getClient().getSex() == Person.Sex.MALE ? "X" : ""]]></textFieldExpression>
+                    </textField>
+                </frame>
+                <staticText>
+                    <reportElement x="0" y="144" width="525" height="35" uuid="419a6343-6ec5-46e3-8d8f-690c5dab8b77"/>
+                    <textElement>
+                        <font size="7"/>
+                    </textElement>
+                    <text>
+                        <![CDATA[	Настоящий Полис может заключаться без указания имени или наименования Выгодоприобретателя. При этом при наступлении страхового события Страхователь (Выгодоприобретатель) обязан предоставить документы (паспорт самоходной машины, договор купли-продажи самоходной машины, акт приемки-передачи самоходной машины), подтверждающие имущественный интерес в сохранении застрахованного имущества), а также оригинал настоящего Полиса.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="180" width="525" height="30" uuid="233307aa-325a-4cf2-aafc-b26e35491ee4"/>
+                    <text>
+                        <![CDATA[	Объектом страхования являются не противоречащие действующему законодательству РФ имущественные интересы Страхователя или Выгодоприобретателя, связанные с владением, распоряжением, пользованием имуществом, указанным в Таблице «Предмет страхования, страховая сумма, страховая премия».]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="59" y="212" width="466" height="20" uuid="ec23729b-9448-46e4-b4ad-ffb04a0861d3">
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <text>
+                        <![CDATA[В рамках настоящего Полиса на страхование принимается движимое имущество: самоходная машина (квадроцикл, снегоход).]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="212" width="59" height="20" uuid="1aeb21b6-3a12-49ba-8977-c49484149a09">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <textElement textAlignment="Left">
+                        <font isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Предмет страхования:]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="59" y="236" width="466" height="20" uuid="39afefd5-f442-4e48-9a87-d7bd863bfbdc">
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <text>
+                        <![CDATA[Движимое имущество считается застрахованным от повреждения, гибели или утраты в результате противоправных действия третьих лиц (кража со взломом, грабеж, разбой).]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="1" y="236" width="58" height="20" uuid="e75a35dc-7763-43da-8880-c22e08de8454">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <textElement textAlignment="Left">
+                        <font isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Страховые риски:]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="256" width="525" height="163" uuid="6b046ee8-9da4-4221-ac80-427d10287e72"/>
+                    <text><![CDATA[1. Кража со взломом (тайное хищение чужого имущества с проникновением на территорию страхования) в смысле договора страхования имеет место, если злоумышленник:
+    a. Проникает на территорию страхования, взламывая двери, ворота или окна, применяя отмычки или поддельные ключи, или иные технические средства. Поддельными считаются ключи, изготовленные по поручению или с ведома лиц, не имеющих права распоряжаться подлинными ключами; одного факта исчезновения имущества с территории страхования недостаточно для доказательства использования поддельных ключей (факт использования поддельных ключей или отмычек должен быть подтвержден результатами трасологической экспертизы);
+     b. Взламывает в пределах территории страхования (в т.ч. помещения), используемые в качестве хранилищ имущества или вскрывает их с помощью отмычек, поддельных ключей или иных инструментов;
+    c. Изымает предметы из закрытых помещений, куда он ранее проник, используя средства, указанные в подпункте а), или обычным путем, в которых тайно продолжал оставаться до их закрытия и использовал средства, указанные в подпункте а) при выходе из помещения.
+Для соблюдения норм безопасности Страхователь или лица, ответственные за хранение обязаны обеспечивать запирание замков на застрахованной территории и принимать все меры для обеспечения степени безопасности.
+2. Грабеж (открытое хищение чужого имущества в соответствии со ст.161 УК РФ)
+3. Разбой (нападение в целях хищения чужого имущества, совершенное с применением насилия, опасного для жизни или здоровья, либо с угрозой применения такого насилия в соответствии со ст.162 УК РФ)]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="420" width="259" height="20" uuid="7eef68e2-51a6-4a7d-a2df-f199b569ff8e"/>
+                    <box padding="4">
+                        <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement>
+                        <font size="8" isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Территория страхования]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="260" y="420" width="264" height="20" uuid="26ebf921-b417-4076-a5ad-7355a79567b7"/>
+                    <box padding="4">
+                        <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement>
+                        <font size="8"/>
+                    </textElement>
+                    <text><![CDATA[Российская Федерация]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="443" width="525" height="30" uuid="348925a4-f8b2-452e-96c5-792d3379685f">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    </reportElement>
+                    <text>
+                        <![CDATA[По риску "кража со взломом" Территорией страхования является территория (в т.ч. помещение), находящаяся за ограждением высотой не менее 1,5 м и имеющая вход, который запирается на замок. Если застрахованное имущество изымается с Территории страхования, страховая защита в отношении этого имущества по риску "кража со взломом" прекращается.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="473" width="525" height="17" uuid="b6e520b3-02ff-4045-8b6b-34a556ffb096"/>
+                    <box leftPadding="0">
+                        <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement>
+                        <font isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[ОБЩИЕ УСЛОВИЯ СТРАХОВАНИЯ]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="490" width="525" height="18" uuid="713ccb43-5b5b-498e-aaee-900ce7a3d94d">
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    </reportElement>
+                    <textElement>
+                        <font isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Предмет страхования, страховая сумма, страховая премия]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="508" width="265" height="20" uuid="2b65b950-9fba-4ec1-a3ab-48934dcff30c"/>
+                    <box padding="0">
+                        <topPen lineWidth="1.5"/>
+                        <leftPen lineWidth="1.5"/>
+                        <bottomPen lineWidth="1.5"/>
+                        <rightPen lineWidth="1.5"/>
+                    </box>
+                    <textElement textAlignment="Center">
+                        <font size="8" isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Предмет страхования]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="265" y="508" width="130" height="20" uuid="97069c8f-3dd3-477d-b964-c981b96c7195">
+                        <property name="local_mesure_unitwidth" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    </reportElement>
+                    <box padding="0">
+                        <topPen lineWidth="1.5"/>
+                        <leftPen lineWidth="1.5"/>
+                        <bottomPen lineWidth="1.5"/>
+                        <rightPen lineWidth="1.5"/>
+                    </box>
+                    <textElement textAlignment="Center">
+                        <font size="8" isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Страховая сумма, рублей]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="395" y="508" width="130" height="20" uuid="1f0450bd-cd83-46a1-b819-4dfe05f781cc">
+                        <property name="local_mesure_unitwidth" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    </reportElement>
+                    <box padding="0">
+                        <topPen lineWidth="1.5"/>
+                        <leftPen lineWidth="1.5"/>
+                        <bottomPen lineWidth="1.5"/>
+                        <rightPen lineWidth="1.5"/>
+                    </box>
+                    <textElement textAlignment="Center">
+                        <font size="8" isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Страховая премия, рублей]]></text>
+                </staticText>
+                <textField>
+                    <reportElement x="0" y="528" width="265" height="20" uuid="0c60731b-c5cb-4b5d-b978-16ca057f43a0">
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    </reportElement>
+                    <box>
+                        <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center">
+                        <font size="10"/>
+                    </textElement>
+                    <textFieldExpression>
+                        <![CDATA[$P{ins}.getMotorType() + ", " + $P{ins}.getMotorBrand()]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="265" y="528" width="130" height="20" uuid="a90f933c-fb96-459e-9806-4facd1a80a80">
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        <property name="local_mesure_unitwidth" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    </reportElement>
+                    <box>
+                        <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center">
+                        <font size="10"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{ins}.getRiskSum()]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="395" y="528" width="130" height="20" uuid="abe538eb-af44-4c62-a51f-55d89ca16219">
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        <property name="local_mesure_unitwidth" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    </reportElement>
+                    <box>
+                        <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center">
+                        <font size="10"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{ins}.getPremium()]]></textFieldExpression>
+                </textField>
+                <staticText>
+                    <reportElement x="0" y="548" width="525" height="51" uuid="cd111228-70a8-44fd-8ce1-8fb90ca93f8c"/>
+                    <text><![CDATA[На основании ст. 435, 438 ГК РФ согласием Страхователя заключить Полис на предложенных Страховщиком условиях (акцептом) считается уплата страховой премии.
+Страховая премия уплачивается единовременно.
+Данное предложение действительно в течение 1 (Одного) календарного дня, в котором был выдан Полис.
+Сумма и дата оплаты страховой премии указываются в квитанции, являющейся подтверждением оплаты страховой премии.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="599" width="100" height="34" uuid="7d851e90-0810-4c5c-a8bd-c8b571f65d2b">
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                    </reportElement>
+                    <box padding="3">
+                        <topPen lineWidth="1.5"/>
+                        <leftPen lineWidth="1.5"/>
+                        <bottomPen lineWidth="1.5"/>
+                        <rightPen lineWidth="1.5"/>
+                    </box>
+                    <textElement textAlignment="Left">
+                        <font size="8" isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Период страхования по Полису]]></text>
+                </staticText>
+                <textField>
+                    <reportElement x="100" y="599" width="425" height="34" uuid="ce491b20-c2c7-49bc-bd9d-b774a32efa8f">
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    </reportElement>
+                    <box padding="3">
+                        <topPen lineWidth="1.5"/>
+                        <leftPen lineWidth="1.5"/>
+                        <bottomPen lineWidth="1.5"/>
+                        <rightPen lineWidth="1.5"/>
+                    </box>
+                    <textElement>
+                        <font size="8"/>
+                    </textElement>
+                    <textFieldExpression>
+                        <![CDATA[$P{periodOfCover} + " с даты вступления Полиса в силу. Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем покупки имущества и оплаты Страхователем полной суммы страховой премии."]]></textFieldExpression>
+                </textField>
+                <staticText>
+                    <reportElement x="0" y="637" width="525" height="20" uuid="aa13249b-f593-4769-ade9-5d3510435c17">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <text>
+                        <![CDATA[Моментом уплаты страховой премии считается поступление денежных средств в кассу представителя Страховщика или на расчетный счет представителя Страховщика.]]></text>
+                </staticText>
+            </frame>
+        </band>
+    </detail>
+    <summary>
+        <band height="822" splitType="Stretch">
+            <frame>
+                <reportElement positionType="Float" x="25" y="65" width="525" height="752"
+                               uuid="4ece58d7-3e9d-4abb-b6e1-be88e0e03073">
+                    <property name="local_mesure_unity" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    <property name="local_mesure_unitx" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    <property name="local_mesure_unitwidth" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                </reportElement>
+                <image>
+                    <reportElement x="222" y="615" width="140" height="80" uuid="95ecb8d1-dcad-450c-bcef-cd999ed5dbb1">
+                        <property name="local_mesure_unitwidth" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <imageExpression>
+                        <![CDATA[this.getClass().getResourceAsStream("/reports/Подпись-Альфа.png")]]></imageExpression>
+                </image>
+                <image>
+                    <reportElement x="376" y="582" width="129" height="119" uuid="a34ab76d-e22a-41a8-ac11-d951d48db983">
+                        <property name="local_mesure_unitwidth" value="pixel"/>
+                    </reportElement>
+                    <imageExpression>
+                        <![CDATA[this.getClass().getResourceAsStream("/reports/Печать-Альфа.png")]]></imageExpression>
+                </image>
+                <staticText>
+                    <reportElement x="0" y="0" width="525" height="12" uuid="ec449955-36cd-4f70-bd4b-d47ae3e0e69d">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    </reportElement>
+                    <textElement>
+                        <font isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Исключения из страхования.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="12" width="525" height="182" uuid="211a2726-4538-4700-8b1e-807b6df659a5">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    </reportElement>
+                    <textElement verticalAlignment="Top">
+                        <font size="6"/>
+                    </textElement>
+                    <text><![CDATA[Во всех случаях не подлежат возмещению убытки в результате:
+1. Умысла Страхователя, Выгодоприобретателя, или представителей:
+2. Повреждения, вызванные постепенным естественным износом, процессом окисления, ржавления или разрушения;
+3. Любого косвенного ущерба, не являющегося прямым следствием страхового случая;
+4. Убытков, вызванных хранением бомб, мин, снарядов или иного вооружения;
+5. Убытков, наступивших вследствие народных волнений, массовых беспорядков, забастовок или локаутов;
+6. Убытков наступивших в связи с конфискацией, реквизицией, арестом, уничтожением или повреждением имущества по распоряжению военных или гражданских властей, или иных действий административных органов;
+7. Убытков наступивших в результате гражданской войны, вооруженного восстания, мятежа, действий вооруженных повстанцев, а также действий властей, направленных на их подавление;
+8. Террористического акта и/или терроризма, несмотря на любые другие обстоятельства или события, действующие одновременно;
+9. Действий по контролированию, предупреждению, подавлению или любыми другими действиями, относящимися к террористическому акту и/или терроризму;
+10. Актов насилия или актов, опасных для человеческой жизни, материальной и нематериальной собственности с целью или желанием повлиять на любое правительство или с целью запугивания населения или какой-либо прослойки населения;
+11. Необъяснимого исчезновения застрахованного имущества; его пропажи или сокрытия;
+12. Перевозки/ перемещения по дорогам общего пользования;
+13. Повреждения или поломки, подлежащие ремонту в рамках гарантийного срока, установленного производителем застрахованного имущества;
+14. Повреждения или поломки в результате нарушений Страхователем (Выгодоприобретателем) или лицами, действовавшими по их поручению, указанию, рекомендации, содержащихся в инструкции, в правилах и рекомендациях по эксплуатации и обслуживанию застрахованного имущества, в том числе самостоятельного налаживания, монтажа, сборки, разборки застрахованного имущества;
+15. Повреждения или поломки во время технического обслуживания застрахованного имущества (чистка, экспертиза, сервисное обслуживание, настройка, ремонт и др.) сервисным центром, воздействия ультразвуковых волн;16. использования застрахованного имущества в целях, не соответствующих его прямому назначению;
+16. Нарушения правил, норм, сроков и условий эксплуатации, и хранения застрахованного имущества, изложенных в документации;
+17. Наличия следов попыток неквалифицированного ремонта;
+18. Возникновения дефекта, вызванного изменением конструкции или схемы застрахованного имущества, не предусмотренным Изготовителем.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0"
+                                   y="194" width="525" height="12" uuid="cb19a7f8-0c53-4183-af02-3b380a3bc6e4">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        <property name="local_mesure_unitx" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    </reportElement>
+                    <textElement>
+                        <font isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Действия Страхователя/ Выгодоприобретателя при страховом событии.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0"
+                                   y="206" width="525" height="73" uuid="86d28479-405b-47f4-ab97-6baf86fd5cb0">
+                        <property name="local_mesure_unitx" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <textElement verticalAlignment="Top">
+                        <font size="6"/>
+                    </textElement>
+                    <text><![CDATA[При возникновении убытка, в связи с которым Выгодоприобретатель обращается к Страховщику с претензией о выплате страхового возмещения, Выгодоприобретатель обязан:
+1. Принять все возможные меры по предотвращению или уменьшению ущерба и по спасению застрахованного имущества, если это представляется возможным; 
+2. Незамедлительно заявить о случившемся событии в органы внутренних дел;
+3. В течение трех рабочих дней с момента, когда Страхователю стало известно о наступлении события, подать письменное заявление о событии в ОАО «АльфаСтрахование»;
+4. При повреждении застрахованного имущества обратиться в сервисный центр, имеющий договорные отношения со Страховщиком. В случае если страховое событие произошло с застрахованным имуществом, которое может быть отремонтировано исключительно в сервисном центре, с которым у Страховщика отсутствуют договорные отношения, Страхователь с согласия Страховщика имеет право обратиться в любой авторизованный сервисный центр, обслуживающий данную марку и модель поврежденного имущества.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement positionType="FixRelativeToBottom" x="0" y="279" width="525" height="12"
+                                   uuid="8b9584cf-d56e-4684-a88e-629259c8f8d2">
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <textElement>
+                        <font isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Перечень документов при наступлении страхового события.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="291" width="525" height="79" uuid="62d9fd14-d297-475c-977a-bf3fd41129a4">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                        <property name="local_mesure_unitx" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    </reportElement>
+                    <textElement verticalAlignment="Top">
+                        <font size="6"/>
+                    </textElement>
+                    <text><![CDATA[Перечень документов, которые предоставляются Выгодоприобретателем при наступлении страхового события:
+1. Оригинал Полиса.
+2. Заявление об убытке по установленной форме, подписанное Выгодоприобретателем или его полномочным представителем.
+3. Копии Постановлений о возбуждении и приостановлении уголовного дела или передаче дела в суд, либо копии постановления о прекращении уголовного дела (выдается органом внутренних дел, проводящим проверку или расследование по заявленному событию).
+4. Паспорт самоходной машины, договор купли-продажи самоходной машины, акт приёмки-передачи самоходной машины, кредитный договор, документы, подтверждающие оплату взносов по кредитному договору. При этом дата, указанная в документах на оплату страховой премии по настоящему Полису, не может быть позже даты заключения договора купли-продажи/ подписания акта приёмки-передачи застрахованного имущества по настоящему Полису.
+5. В случае повреждения застрахованного имущества - заключение сервисного центра о причине повреждения имущества, возможности / не возможности проведения ремонта, стоимости ремонта (Акт о выполненной работе) или информации о невозможности его восстановления, а также подтверждение, что повреждение застрахованного имущества произошло в результате заявленного события.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement stretchType="RelativeToBandHeight" x="0" y="370" width="525" height="12"
+                                   uuid="5754b411-94a3-4218-9374-583bb2f11546">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    </reportElement>
+                    <textElement>
+                        <font isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Порядок выплаты страхового возмещения.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="0" y="382" width="525" height="198" uuid="827c444d-76a8-467b-86d9-639b58ed6a30">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                        <property name="local_mesure_unitheight" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    </reportElement>
+                    <textElement verticalAlignment="Top">
+                        <font size="6"/>
+                    </textElement>
+                    <text><![CDATA[1. При утрате и гибели застрахованного имущества по выбору Страхователя (Выгодоприобретателя) выплата страхового возмещения может осуществляться:
+    a. В денежной форме (в размере действительной стоимости застрахованного имущества на момент наступления страхового случая с учетом износа из расчета 20% в год, но не более страховой суммы);
+    b. В натуральной форме, т.е. имуществом – техникой, аналогичной застрахованной на момент наступления страхового случая.
+2. При частичном повреждении застрахованного имущества в размере ущерба без учета соотношения страховой суммы и страховой стоимости (по системе «первого риска») без учета износа, но не более страховой суммы.3. В случае если восстановительные расходы превышают действительную стоимость застрахованного имущества на момент заключения Полиса, то признается полная гибель застрахованного имущества.
+3. В случае если восстановительные расходы превышают действительную стоимость застрахованного имущества на момент заключения Полиса, то признается полная гибель застрахованного имущества.
+4. Если имеются лица, виновные в наступлении страхового случая, Страхователь обязан передать Страховщику все документы и предпринять все действия, необходимые для осуществления Страховщиком права требования к виновным лицам.
+5. Страховщик имеет право отказать в страховой выплате по страховым случаям, непосредственной причиной которых явилось нарушение Страхователем (Выгодоприобретателем) норм безопасности, включая, установленные правила и сроки эксплуатации (обслуживания, хранения, правил техники безопасности и т.д.) застрахованного имущества.
+6. Выплата страхового возмещения производится в течение 5 (Пяти) рабочих дней после утверждения Страховщиком страхового Акта.
+7. Общая сумма выплат страхового возмещения за весь период действия Полиса не может превышать страховой суммы, установленной Полисом.
+Согласен(а) на обработку Страховщиком и уполномоченными им третьими лицами сведений, указанных в настоящем Полисе (а также иных персональных сведений, получаемых Страховщиком при исполнении настоящего договора страхования (Полиса)), любыми способами, установленными законом, с целью исполнения договора страхования (Полиса), а также информирования Страхователя о программах страхования, о сроке действия договора (Полиса) и иными целями. Срок использования и обработки персональных сведений устанавливается в течение срока договорных отношений, связанных со страхованием, и срока исковой давности. Вы, может отозвать свое согласие на обработку персональных данных в любое время путем направления в ОАО «АльфаСтрахование» письменного и подписанного уведомления. ОАО «АльфаСтрахование» обязуется в течение 3 (трех) рабочих дней получения уведомления об отзыве согласия на обработку персональных данных прекратить их обработку, уничтожить и уведомить субъекта об уничтожении персональных данных. Вы подтверждаете, что согласие третьих лиц на передачу и обработку их персональных данных ОАО «АльфаСтрахование» в течение срока договорных отношений, связанных со страхованием, и срока исковой давности для целей формирования (разработки), заключения и исполнения договора страхования Вами получено в порядке, предусмотренном Федеральным законом от 27.07.2006 №152-ФЗ «О персональных данных».
+Стороны пришли к соглашению об использовании Страховщиком факсимильного воспроизведения подписи и печати Страховщика с помощью средств механического или иного копирования, электронно-цифровой подписи либо иного аналога собственноручной подписи.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="1" y="630" width="160" height="22" uuid="c85fbc82-25b8-4be7-a66a-7fc072a05686">
+                        <property name="local_mesure_unitx" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    </reportElement>
+                    <textElement>
+                        <font size="8" isBold="true"/>
+                    </textElement>
+                    <text><![CDATA[Страховщик ОАО "АльфаСтрахование"]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="1" y="652" width="169" height="40" uuid="969cd065-5cb9-4147-b3f2-ca7b91457778">
+                        <property name="local_mesure_unitx" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    </reportElement>
+                    <textElement>
+                        <font size="8"/>
+                    </textElement>
+                    <text><![CDATA[Орлов Дмитрий Александрович
+Доверенность № 5232/12 от 01.07.2013
+]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="431" y="654" width="24" height="27" uuid="5870d5d6-7d0b-4960-8251-447bff722e51"/>
+                    <text><![CDATA[М.П.]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="182" y="657" width="40" height="20" uuid="5e7d568c-d80c-4a9d-a7ab-f83bc530ff0a">
+                        <property name="local_mesure_unity" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    </reportElement>
+                    <text><![CDATA[Подпись]]></text>
+                </staticText>
+            </frame>
+        </band>
+    </summary>
+</jasperReport>
