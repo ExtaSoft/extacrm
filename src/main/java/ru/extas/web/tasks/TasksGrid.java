@@ -12,6 +12,7 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.joda.time.LocalDate;
 import ru.extas.model.Lead;
+import ru.extas.model.UserRole;
 import ru.extas.server.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
@@ -28,100 +29,104 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Time: 12:24
  */
 public class TasksGrid extends ExtaGrid {
-    private static final long serialVersionUID = 4876073256421755574L;
-    private final Period period;
+	private static final long serialVersionUID = 4876073256421755574L;
+	private final Period period;
 
-    public enum Period {
-        TODAY,
-        WEEK,
-        MONTH,
-        ALL;
-    }
+	public enum Period {
+		TODAY,
+		WEEK,
+		MONTH,
+		ALL;
+	}
 
-    public TasksGrid(Period period) {
-        super(false);
-        this.period = period;
-        initialize();
-    }
+	public TasksGrid(Period period) {
+		super(false);
+		this.period = period;
+		initialize();
+	}
 
-    @Override
-    protected GridDataDecl createDataDecl() {
-        return new TaskDataDecl();
-    }
+	@Override
+	protected GridDataDecl createDataDecl() {
+		return new TaskDataDecl();
+	}
 
-    @Override
-    protected void initTable(Mode mode) {
-        super.initTable(mode);
-        table.addGeneratedColumn("clientName", new CustomTable.ColumnGenerator() {
-            @Override
-            public Object generateCell(CustomTable source, Object itemId, Object columnId) {
-                String clientName = null;
-                Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
-                RuntimeService runtimeService = lookup(RuntimeService.class);
-                Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
-                if (processVariables.containsKey("lead")) {
-                    Lead lead = (Lead) processVariables.get("lead");
-                    clientName = lead.getContactName();
-                }
-                return clientName;
-            }
-        });
-        table.setColumnHeader("clientName", "Клиент");
-        table.addGeneratedColumn("dealerName", new CustomTable.ColumnGenerator() {
-            @Override
-            public Object generateCell(CustomTable source, Object itemId, Object columnId) {
-                String clientName = null;
-                Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
-                RuntimeService runtimeService = lookup(RuntimeService.class);
-                Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
-                if (processVariables.containsKey("lead")) {
-                    Lead lead = (Lead) processVariables.get("lead");
-                    clientName = lead.getPointOfSale();
-                }
-                return clientName;
-            }
-        });
-        table.setColumnHeader("dealerName", "Мотосалон");
-    }
+	@Override
+	protected void initTable(Mode mode) {
+		super.initTable(mode);
+		table.addGeneratedColumn("clientName", new CustomTable.ColumnGenerator() {
+			@Override
+			public Object generateCell(CustomTable source, Object itemId, Object columnId) {
+				String clientName = null;
+				Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
+				RuntimeService runtimeService = lookup(RuntimeService.class);
+				Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
+				if (processVariables.containsKey("lead")) {
+					Lead lead = (Lead) processVariables.get("lead");
+					clientName = lead.getContactName();
+				}
+				return clientName;
+			}
+		});
+		table.setColumnHeader("clientName", "Клиент");
+		table.addGeneratedColumn("dealerName", new CustomTable.ColumnGenerator() {
+			@Override
+			public Object generateCell(CustomTable source, Object itemId, Object columnId) {
+				String clientName = null;
+				Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
+				RuntimeService runtimeService = lookup(RuntimeService.class);
+				Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
+				if (processVariables.containsKey("lead")) {
+					Lead lead = (Lead) processVariables.get("lead");
+					clientName = lead.getPointOfSale();
+				}
+				return clientName;
+			}
+		});
+		table.setColumnHeader("dealerName", "Мотосалон");
+	}
 
-    @Override
-    protected Container createContainer() {
-        // Запрос данных
-        BeanItemContainer<Task> dataSource = new BeanItemContainer<>(Task.class);
-        fillDataContainer(dataSource);
-        return dataSource;
-    }
+	@Override
+	protected Container createContainer() {
+		// Запрос данных
+		BeanItemContainer<Task> dataSource = new BeanItemContainer<>(Task.class);
+		fillDataContainer(dataSource);
+		return dataSource;
+	}
 
-    private void fillDataContainer(BeanItemContainer<Task> dataSource) {
-        List<Task> tasks = queryForTasksToShow();
-        dataSource.removeAllItems();
-        dataSource.addAll(tasks);
-    }
+	private void fillDataContainer(BeanItemContainer<Task> dataSource) {
+		List<Task> tasks = queryForTasksToShow();
+		dataSource.removeAllItems();
+		dataSource.addAll(tasks);
+	}
 
-    private List<Task> queryForTasksToShow() {
-        String currentUser = lookup(UserManagementService.class).getCurrentUserLogin();
-        TaskService taskService = lookup(TaskService.class);
-        TaskQuery query = taskService.createTaskQuery();
-        switch (period) {
-            case TODAY:
-                query.dueBefore(LocalDate.now().plusDays(1).toDate());
-                break;
-            case WEEK:
-                query.dueBefore(LocalDate.now().plusWeeks(1).toDate());
-                break;
-            case MONTH:
-                query.dueBefore(LocalDate.now().plusMonths(1).toDate());
-                break;
-            case ALL:
-                break;
-        }
-        query.taskAssignee(currentUser).orderByTaskPriority().desc().orderByDueDate().asc();
-        return query.list();
-    }
+	private List<Task> queryForTasksToShow() {
+		TaskService taskService = lookup(TaskService.class);
+		TaskQuery query = taskService.createTaskQuery();
+		switch (period) {
+			case TODAY:
+				query.dueBefore(LocalDate.now().plusDays(1).toDate());
+				break;
+			case WEEK:
+				query.dueBefore(LocalDate.now().plusWeeks(1).toDate());
+				break;
+			case MONTH:
+				query.dueBefore(LocalDate.now().plusMonths(1).toDate());
+				break;
+			case ALL:
+				break;
+		}
+		final UserManagementService userService = lookup(UserManagementService.class);
+		if (userService.isCurUserHasRole(UserRole.USER)) {
+			String currentUser = userService.getCurrentUserLogin();
+			query.taskAssignee(currentUser);
+		}
+		query.orderByTaskPriority().desc().orderByDueDate().asc();
+		return query.list();
+	}
 
-    @Override
-    protected List<UIAction> createActions() {
-        List<UIAction> actions = newArrayList();
+	@Override
+	protected List<UIAction> createActions() {
+		List<UIAction> actions = newArrayList();
 
 //        actions.add(new UIAction("Новый", "Ввод новой задачи", "icon-doc-new") {
 //            @Override
@@ -146,47 +151,47 @@ public class TasksGrid extends ExtaGrid {
 //            }
 //        });
 
-        actions.add(new DefaultAction("Открыть", "Открыть выделенную в списке задачу", "icon-edit-3") {
-            @Override
-            public void fire(final Object itemId) {
-                final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
+		actions.add(new DefaultAction("Открыть", "Открыть выделенную в списке задачу", "icon-edit-3") {
+			@Override
+			public void fire(final Object itemId) {
+				final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
 
-	            final TaskEditForm editWin = new TaskEditForm("Редактирование задачи", curObj);
-	            editWin.addCloseListener(new Window.CloseListener() {
+				final TaskEditForm editWin = new TaskEditForm("Редактирование задачи", curObj);
+				editWin.addCloseListener(new Window.CloseListener() {
 
-                    private static final long serialVersionUID = 1L;
+					private static final long serialVersionUID = 1L;
 
-                    @Override
-                    public void windowClose(final Window.CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            //((JPAContainer) container).refreshItem(itemId);
-                            Notification.show("Задача сохранена", Notification.Type.TRAY_NOTIFICATION);
-                        }
-                        if (editWin.isTaskCompleted()) {
-                            refreshContainer();
-                            Notification.show("Задача выполнена", Notification.Type.TRAY_NOTIFICATION);
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
+					@Override
+					public void windowClose(final Window.CloseEvent e) {
+						if (editWin.isSaved()) {
+							//((JPAContainer) container).refreshItem(itemId);
+							Notification.show("Задача сохранена", Notification.Type.TRAY_NOTIFICATION);
+						}
+						if (editWin.isTaskCompleted()) {
+							refreshContainer();
+							Notification.show("Задача выполнена", Notification.Type.TRAY_NOTIFICATION);
+						}
+					}
+				});
+				editWin.showModal();
+			}
+		});
 
-	    actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", "icon-sitemap") {
-		    @Override
-		    public void fire(Object itemId) {
-			    final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
-			    // Показать статус выполнения процесса
-			    BPStatusForm statusForm = new BPStatusForm(curObj.getBean().getProcessInstanceId());
-			    statusForm.showModal();
-		    }
-        });
+		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", "icon-sitemap") {
+			@Override
+			public void fire(Object itemId) {
+				final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
+				// Показать статус выполнения процесса
+				BPStatusForm statusForm = new BPStatusForm(curObj.getBean().getProcessInstanceId());
+				statusForm.showModal();
+			}
+		});
 
-        return actions;
-    }
+		return actions;
+	}
 
-    private void refreshContainer() {
-        fillDataContainer((BeanItemContainer<Task>) container);
-    }
+	private void refreshContainer() {
+		fillDataContainer((BeanItemContainer<Task>) container);
+	}
 
 }
