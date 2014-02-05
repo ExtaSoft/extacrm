@@ -2,6 +2,7 @@ package ru.extas.web.bpm;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.TaskService;
@@ -12,6 +13,7 @@ import org.activiti.engine.task.TaskQuery;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 import ru.extas.web.tasks.TaskEditForm;
+import ru.extas.web.users.LoginToUserNameConverter;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -126,8 +128,9 @@ public class BPStatusForm extends CloseOnlylWindow {
 			endField.setCaption("Завершение задачи");
 			fieldsContainer.addComponent(endField);
 			// Ответственный
-			Label ownerField = new Label(task.getAssignee());
+			Label ownerField = new Label(new ObjectProperty(task.getAssignee()));
 			ownerField.setCaption("Ответственный");
+			ownerField.setConverter(lookup(LoginToUserNameConverter.class));
 			fieldsContainer.addComponent(ownerField);
 
 			container.addComponent(fieldsContainer);
@@ -175,8 +178,9 @@ public class BPStatusForm extends CloseOnlylWindow {
 			endField.setCaption("Завершение задачи");
 			container.addComponent(endField);
 			// Ответственный
-			Label ownerField = new Label(task.getAssignee());
+			Label ownerField = new Label(new ObjectProperty(task.getAssignee()));
 			ownerField.setCaption("Ответственный");
+			ownerField.setConverter(lookup(LoginToUserNameConverter.class));
 			container.addComponent(ownerField);
 		} else {
 			container.addComponent(new Label("Нет последней выполненой задачи."));

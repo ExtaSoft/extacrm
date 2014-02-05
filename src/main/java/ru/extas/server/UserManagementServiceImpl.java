@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.Contact;
 import ru.extas.model.Person;
 import ru.extas.model.UserProfile;
 import ru.extas.model.UserRole;
@@ -61,13 +60,14 @@ public UserProfile findUserByLogin(String login) {
 /**
  * Найти контакт пользователя по логину
  *
+ *
  * @param login логин
  *
  * @return найденный контакт пользователя или null
  */
 @Transactional
 @Override
-public Contact findUserContactByLogin(final String login) {
+public Person findUserContactByLogin(final String login) {
 	final UserProfile currentUser = findUserByLogin(login);
 	return currentUser != null ? currentUser.getContact() : null;
 }
@@ -123,7 +123,7 @@ public String getCurrentUserLogin() {
  */
 @Transactional
 @Override
-public Contact getCurrentUserContact() {
+public Person getCurrentUserContact() {
 	final UserProfile currentUser = getCurrentUser();
 	return currentUser != null ? currentUser.getContact() : null;
 }

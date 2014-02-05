@@ -5,6 +5,7 @@ package ru.extas.web.commons;
 
 import com.vaadin.data.util.converter.Converter;
 import ru.extas.web.commons.DataDeclMapping.PresentFlag;
+import ru.extas.web.users.LoginToUserNameConverter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -83,15 +84,15 @@ public class GridDataDecl implements Serializable {
      * Добавляет маркеры создания/модификации записи
      */
     protected void addCreateModifyMarkers() {
-        addMapping("modifiedBy", "Кто изменил", EnumSet.of(PresentFlag.COLLAPSED));
-        addMapping("modifiedAt", "Когда изменил", EnumSet.of(PresentFlag.COLLAPSED)/*
+	    addMapping("modifiedBy", "Кто изменил", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
+	    addMapping("modifiedAt", "Когда изменил", EnumSet.of(PresentFlag.COLLAPSED)/*
                                                                                      * ,
 																					 * StringToJodaDTConverter
 																					 * .
 																					 * class
 																					 */);
-        addMapping("createdBy", "Кто создал", EnumSet.of(PresentFlag.COLLAPSED));
-        addMapping("createdAt", "Когда создал", EnumSet.of(PresentFlag.COLLAPSED)/*
+	    addMapping("createdBy", "Кто создал", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
+	    addMapping("createdAt", "Когда создал", EnumSet.of(PresentFlag.COLLAPSED)/*
                                                                                  * ,
 																				 * StringToJodaDTConverter
 																				 * .

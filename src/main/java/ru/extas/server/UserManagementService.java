@@ -1,6 +1,6 @@
 package ru.extas.server;
 
-import ru.extas.model.Contact;
+import ru.extas.model.Person;
 import ru.extas.model.UserProfile;
 import ru.extas.model.UserRole;
 
@@ -23,13 +23,14 @@ UserProfile findUserByLogin(String login);
 /**
  * Найти контакт пользователя по логину
  *
+ *
  * @param login логин
  *
  * @return найденный контакт пользователя или null
  */
-Contact findUserContactByLogin(String login);
+Person findUserContactByLogin(String login);
 
-/**
+	/**
  * Получить профайл стандартного юзера (admin)
  *
  * @return профайл юзера admin
@@ -55,9 +56,9 @@ String getCurrentUserLogin();
  *
  * @return контакт текущего пользователя
  */
-Contact getCurrentUserContact();
+Person getCurrentUserContact();
 
-/**
+	/**
  * Определить есть ли аутентифицированный пользователь
  *
  * @return true если есть аутентифицированный пользователь

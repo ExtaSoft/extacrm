@@ -24,6 +24,7 @@ import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonField;
 import ru.extas.web.lead.LeadField;
 import ru.extas.web.sale.SaleField;
+import ru.extas.web.users.LoginToUserNameConverter;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -138,11 +139,13 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         ownerField = new EditField("Владелец");
         ownerField.setDescription("Владелец задачи");
         ownerField.setWidth(25, Unit.EM);
-        form.addComponent(ownerField);
+	    ownerField.setConverter(lookup(LoginToUserNameConverter.class));
+	    form.addComponent(ownerField);
 
         assigneeField = new EditField("Ответственный", "Ответственный за выполнение задачи");
         assigneeField.setWidth(25, Unit.EM);
-        form.addComponent(assigneeField);
+	    assigneeField.setConverter(lookup(LoginToUserNameConverter.class));
+	    form.addComponent(assigneeField);
 
 	    final String processId = obj.getProcessInstanceId();
 	    // Клиент (берется из лида): имя, телефон, почта.

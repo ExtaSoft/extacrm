@@ -3,6 +3,7 @@ package ru.extas.web;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.server.*;
@@ -35,6 +36,7 @@ import ru.extas.web.product.ProductView;
 import ru.extas.web.sale.SalesView;
 import ru.extas.web.tasks.TasksView;
 import ru.extas.web.users.ChangePasswordForm;
+import ru.extas.web.users.LoginToUserNameConverter;
 import ru.extas.web.users.UsersView;
 
 import java.io.PrintWriter;
@@ -332,8 +334,9 @@ public class ExtaCrmUI extends UI {
 								profilePic.setWidth("34px");
 								addComponent(profilePic);
 								String login = lookup(UserManagementService.class).getCurrentUserLogin();
-								final Label userName = new Label(login);
+								final Label userName = new Label(new ObjectProperty(login));
 								userName.setSizeUndefined();
+								userName.setConverter(lookup(LoginToUserNameConverter.class));
 								addComponent(userName);
 
 								final Command cmd = new Command() {
