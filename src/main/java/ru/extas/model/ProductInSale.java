@@ -30,9 +30,6 @@ public class ProductInSale extends AbstractExtaObject {
 	@Column(name = "PERIOD")
 	private int period;
 
-	@Column(name = "IS_MAIN")
-	private boolean mainProduct;
-
 	public ProductInSale() {
 	}
 
@@ -72,11 +69,4 @@ public class ProductInSale extends AbstractExtaObject {
 		this.period = period;
 	}
 
-	public boolean isMainProduct() {
-		return mainProduct;
-	}
-
-	public void setMainProduct(final boolean mainProduct) {
-		this.mainProduct = mainProduct;
-	}
 }

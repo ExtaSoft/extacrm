@@ -11,17 +11,15 @@ import java.util.EnumSet;
  *         Time: 12:52
  */
 class SaleDataDecl extends GridDataDecl {
-    public SaleDataDecl() {
-        addMapping("client.name", "Клиент");
-        addMapping("type", "Тип продажи");
-        addMapping("vendor.name", "Поставщик");
-        addMapping("motorType", "Тип техники");
-        addMapping("motorBrand", "Марка техники");
-        addMapping("motorModel", "Модель техники");
-        addMapping("motorPrice", "Стоимость техники");
-        addMapping("dealer.name", "Мотосалон");
-        addMapping("region", "Регион");
-        addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        super.addCreateModifyMarkers();
-    }
+	public SaleDataDecl() {
+		addMapping("client.name", "Клиент");
+		addMapping("motorType", "Тип техники");
+		addMapping("motorBrand", "Марка техники");
+		addMapping("motorModel", "Модель техники");
+		addMapping("motorPrice", "Стоимость техники");
+		addMapping("dealer.name", "Мотосалон");
+		addMapping("region", "Регион");
+		addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
+		super.addCreateModifyMarkers();
+	}
 }

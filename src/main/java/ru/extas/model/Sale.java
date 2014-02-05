@@ -15,194 +15,163 @@ import java.util.List;
 @Table(name = "SALE")
 public class Sale extends AbstractExtaObject {
 
-    /**
-     * Статусы продажи
-     */
-    public enum Status {
-        NEW,
-        CANCELED,
-        FINISHED
-    }
+	/**
+	 * Статусы продажи
+	 */
+	public enum Status {
+		NEW,
+		CANCELED,
+		FINISHED
+	}
 
-    /**
-     * Типы продаж
-     */
-    public enum Type {
-        CREDIT,
-        INSURANCE
-    }
+	/**
+	 * Результат завершения продажи
+	 */
+	public enum Result {
+		/**
+		 * Успешное выполнение (кредит получен).
+		 */
+		SUCCESSFUL,
+		/**
+		 * Отказ контрагента (отказ банка).
+		 */
+		VENDOR_REJECTED,
+		/**
+		 * Отказ клиента.
+		 */
+		CLIENT_REJECTED
+	}
 
-    /**
-     * Результат завершения продажи
-     */
-    public enum Result {
-        /**
-         * Успешное выполнение (кредит получен).
-         */
-        SUCCESSFUL,
-        /**
-         * Отказ контрагента (отказ банка).
-         */
-        VENDOR_REJECTED,
-        /**
-         * Отказ клиента.
-         */
-        CLIENT_REJECTED
-    }
+	// Клиент
+	@OneToOne
+	private Person client;
 
-    // Клиент
-    @OneToOne
-    private Person client;
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
-    @Enumerated(EnumType.STRING)
-    private Type type;
+	// Регион покупки техники
+	@Column(name = "REGION")
+	private String region;
 
-    // Продавец (банк, страх. компания)
-    @OneToOne
-    private Company vendor;
+	// Тип техники
+	@Column(name = "MOTOR_TYPE")
+	private String motorType;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+	// Марка техники
+	@Column(name = "MOTOR_BRAND")
+	private String motorBrand;
 
-    // Регион покупки техники
-    @Column(name = "REGION")
-    private String region;
+	// Модель техники
+	@Column(name = "MOTOR_MODEL")
+	private String motorModel;
 
-    // Тип техники
-    @Column(name = "MOTOR_TYPE")
-    private String motorType;
+	// Стоимость техники
+	@Column(name = "MOTOR_PRICE", precision = 32, scale = 4)
+	private BigDecimal motorPrice;
 
-    // Марка техники
-    @Column(name = "MOTOR_BRAND")
-    private String motorBrand;
+	// Мотосалон
+	@OneToOne
+	private Company dealer;
 
-    // Модель техники
-    @Column(name = "MOTOR_MODEL")
-    private String motorModel;
+	@Column(name = "COMMENT")
+	private String comment;
 
-    // Стоимость техники
-    @Column(name = "MOTOR_PRICE", precision = 32, scale = 4)
-    private BigDecimal motorPrice;
+	@Column(name = "PROCESS_ID")
+	private String processId;
 
-    // Мотосалон
-    @OneToOne
-    private Company dealer;
-
-    @Column(name = "COMMENT")
-    private String comment;
-
-    @Column(name = "PROCESS_ID")
-    private String processId;
-
-    @Enumerated(EnumType.STRING)
-    private Result result;
+	@Enumerated(EnumType.STRING)
+	private Result result;
 
 	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL})
 	private List<ProductInSale> productInSales;
 
 	public Result getResult() {
-        return result;
-    }
+		return result;
+	}
 
-    public void setResult(Result result) {
-        this.result = result;
-    }
+	public void setResult(Result result) {
+		this.result = result;
+	}
 
-    public String getProcessId() {
-        return processId;
-    }
+	public String getProcessId() {
+		return processId;
+	}
 
-    public void setProcessId(String processId) {
-        this.processId = processId;
-    }
+	public void setProcessId(String processId) {
+		this.processId = processId;
+	}
 
-    public Company getDealer() {
-        return dealer;
-    }
+	public Company getDealer() {
+		return dealer;
+	}
 
-    public void setDealer(Company dealer) {
-        this.dealer = dealer;
-    }
+	public void setDealer(Company dealer) {
+		this.dealer = dealer;
+	}
 
-    public Person getClient() {
-        return client;
-    }
+	public Person getClient() {
+		return client;
+	}
 
-    public void setClient(Person client) {
-        this.client = client;
-    }
+	public void setClient(Person client) {
+		this.client = client;
+	}
 
-    public Type getType() {
-        return type;
-    }
+	public Status getStatus() {
+		return status;
+	}
 
-    public void setType(Type type) {
-        this.type = type;
-    }
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
-    public Company getVendor() {
-        return vendor;
-    }
+	public String getRegion() {
+		return region;
+	}
 
-    public void setVendor(Company vendor) {
-        this.vendor = vendor;
-    }
+	public void setRegion(String region) {
+		this.region = region;
+	}
 
-    public Status getStatus() {
-        return status;
-    }
+	public String getMotorType() {
+		return motorType;
+	}
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+	public void setMotorType(String motorType) {
+		this.motorType = motorType;
+	}
 
-    public String getRegion() {
-        return region;
-    }
+	public String getMotorBrand() {
+		return motorBrand;
+	}
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
+	public void setMotorBrand(String motorBrand) {
+		this.motorBrand = motorBrand;
+	}
 
-    public String getMotorType() {
-        return motorType;
-    }
+	public String getMotorModel() {
+		return motorModel;
+	}
 
-    public void setMotorType(String motorType) {
-        this.motorType = motorType;
-    }
+	public void setMotorModel(String motorModel) {
+		this.motorModel = motorModel;
+	}
 
-    public String getMotorBrand() {
-        return motorBrand;
-    }
+	public BigDecimal getMotorPrice() {
+		return motorPrice;
+	}
 
-    public void setMotorBrand(String motorBrand) {
-        this.motorBrand = motorBrand;
-    }
+	public void setMotorPrice(BigDecimal motorPrice) {
+		this.motorPrice = motorPrice;
+	}
 
-    public String getMotorModel() {
-        return motorModel;
-    }
+	public String getComment() {
+		return comment;
+	}
 
-    public void setMotorModel(String motorModel) {
-        this.motorModel = motorModel;
-    }
-
-    public BigDecimal getMotorPrice() {
-        return motorPrice;
-    }
-
-    public void setMotorPrice(BigDecimal motorPrice) {
-        this.motorPrice = motorPrice;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
 	public List<ProductInSale> getProductInSales() {
 		return productInSales;

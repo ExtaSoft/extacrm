@@ -137,11 +137,10 @@ public class ProductInSaleGrid extends CustomField<List> {
 			}
 		});
 		// Колонки таблицы
-		productTable.setVisibleColumns("product.name", "summ", "period", "mainProduct");
+		productTable.setVisibleColumns("product.name", "summ", "period");
 		productTable.setColumnHeader("product.name", "Продукт");
 		productTable.setColumnHeader("summ", "Сумма");
 		productTable.setColumnHeader("period", "Срок");
-		productTable.setColumnHeader("mainProduct", "Основной продукт");
 		fieldLayout.addComponent(productTable);
 
 		return fieldLayout;

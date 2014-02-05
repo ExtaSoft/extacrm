@@ -2,7 +2,6 @@ package ru.extas.web.sale;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import ru.extas.model.ProductInSale;
@@ -26,8 +25,6 @@ public class ProdInSaleEditForm extends AbstractEditForm<ProductInSale> {
 	private EditField summField;
 	@PropertyId("period")
 	private EditField periodField;
-	@PropertyId("mainProduct")
-	private CheckBox mainProductField;
 
 	public ProdInSaleEditForm(final String caption, final BeanItem<ProductInSale> obj) {
 		super(caption, obj);
@@ -64,10 +61,6 @@ public class ProdInSaleEditForm extends AbstractEditForm<ProductInSale> {
 		periodField = new EditField("Срок", "Введите период действия продукта");
 		periodField.setRequired(true);
 		form.addComponent(periodField);
-
-		mainProductField = new CheckBox("Основной продукт");
-		mainProductField.setDescription("Основной продукт по программе");
-		form.addComponent(mainProductField);
 
 		return form;
 	}

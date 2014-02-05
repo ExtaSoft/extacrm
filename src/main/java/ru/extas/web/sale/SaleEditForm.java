@@ -15,7 +15,6 @@ import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.reference.MotorBrandSelect;
 import ru.extas.web.reference.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
-import ru.extas.web.util.ComponentUtil;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -31,11 +30,6 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 	// Имя клиента
 	@PropertyId("client")
 	private PersonSelect clientField;
-	@PropertyId("type")
-	private ComboBox typeField;
-	// Продавец (банк, страх. компания)
-	@PropertyId("vendor")
-	private CompanySelect vendorField;
 	// Регион покупки техники
 	@PropertyId("region")
 	private RegionSelect regionField;
@@ -79,17 +73,6 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 		clientField.setRequiredError("Имя контакта не может быть пустым.");
 		form.addComponent(clientField);
 
-		typeField = new ComboBox("Тип");
-		typeField.setDescription("Укажите пол контакта");
-		typeField.setRequired(true);
-		typeField.setNullSelectionAllowed(false);
-		typeField.setNewItemsAllowed(false);
-		ComponentUtil.fillSelectByEnum(typeField, Sale.Type.class);
-		form.addComponent(typeField);
-
-		vendorField = new CompanySelect("Поставщик");
-		form.addComponent(vendorField);
-
 		regionField = new RegionSelect();
 		regionField.setDescription("Укажите регион услуги");
 		form.addComponent(regionField);
@@ -131,7 +114,6 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 	protected void initObject(final Sale obj) {
 		if (obj.getId() == null) {
 			obj.setStatus(Sale.Status.NEW);
-			obj.setType(Sale.Type.CREDIT);
 		}
 	}
 

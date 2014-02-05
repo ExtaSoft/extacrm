@@ -31,8 +31,6 @@ public class SaleServiceImpl implements SaleService {
 		Sale sale = new Sale();
 
 		sale.setClient(lead.getClient());
-		sale.setType(Sale.Type.CREDIT);
-		sale.setVendor(null);
 		sale.setStatus(Sale.Status.NEW);
 		sale.setRegion(lead.getRegion());
 		sale.setMotorType(lead.getMotorType());
