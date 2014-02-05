@@ -72,11 +72,13 @@ public class BPStatusForm extends CloseOnlylWindow {
 			Container tableContainer = CollectionContainer.fromBeans(resultList);
 			Table table = new Table("Завершенные задачи", tableContainer);
 			table.setHeight(10, Unit.EM);
-			table.setVisibleColumns("name", "startTime", "endTime", "assignee");
+			table.setVisibleColumns("name", "startTime", "endTime", "assignee", "description");
 			table.setColumnHeader("name", "Имя задачи");
 			table.setColumnHeader("startTime", "Старт задачи");
 			table.setColumnHeader("endTime", "Завершение задачи");
 			table.setColumnHeader("assignee", "Ответственный");
+			table.setConverter("assignee", lookup(LoginToUserNameConverter.class));
+			table.setColumnHeader("description", "Описание задачи");
 			panel.setContent(table);
 		} else {
 			panel.setContent(new Label("Нет истории задач для бизнес процесса (Первая задача?)"));
