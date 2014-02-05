@@ -7,14 +7,18 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.Lead;
+import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * @author Valery Orlov
@@ -128,7 +132,30 @@ public class LeadsGrid extends ExtaGrid {
             });
         }
 
-        return actions;
+	    actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязан текущий Лид", "icon-sitemap") {
+		    @Override
+		    public void fire(Object itemId) {
+			    final Lead curObj = ((EntityItem<Lead>) table.getItem(itemId)).getEntity();
+
+			    // Ищем процесс к которому привязана текущая продажа
+			    RuntimeService runtimeService = lookup(RuntimeService.class);
+			    ProcessInstance process =
+					    runtimeService.createProcessInstanceQuery()
+							    .includeProcessVariables()
+							    .variableValueEquals("lead", curObj)
+							    .singleResult();
+
+			    if (process != null) {
+				    // Показать статус выполнения процесса
+				    BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
+				    statusForm.showModal();
+			    } else {
+				    Notification.show("Нет бизнес процесса с которым связан текущий Лид.");
+			    }
+		    }
+	    });
+
+	    return actions;
     }
 
 }

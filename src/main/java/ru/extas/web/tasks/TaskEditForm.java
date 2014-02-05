@@ -3,9 +3,9 @@ package ru.extas.web.tasks;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
 import org.activiti.engine.FormService;
@@ -16,8 +16,14 @@ import org.activiti.engine.form.FormType;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.task.Task;
 import ru.extas.model.Lead;
+import ru.extas.model.Person;
+import ru.extas.model.Sale;
+import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.contacts.PersonField;
+import ru.extas.web.lead.LeadField;
+import ru.extas.web.sale.SaleField;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -48,9 +54,10 @@ public class TaskEditForm extends AbstractEditForm<Task> {
     private EditField ownerField;
     @PropertyId("assignee")
     private EditField assigneeField;
+	private VerticalLayout formsContainer;
 
-    public TaskEditForm(final String caption, final BeanItem<Task> obj) {
-        super(caption, obj);
+	public TaskEditForm(final String caption, final BeanItem<Task> obj) {
+		super(caption, obj);
     }
 
     /*
@@ -62,12 +69,10 @@ public class TaskEditForm extends AbstractEditForm<Task> {
      */
     @Override
     protected ComponentContainer createEditFields(final Task obj) {
-        VerticalLayout formsContainer = new VerticalLayout();
-        final FormLayout form = new FormLayout();
+	    formsContainer = new VerticalLayout();
+	    //formsContainer.setSpacing(true);
 
-        FormService formService = lookup(FormService.class);
-        RuntimeService runtimeService = lookup(RuntimeService.class);
-
+	    FormService formService = lookup(FormService.class);
 
         TaskFormData taskData = formService.getTaskFormData(obj.getId());
         List<FormProperty> formProps = taskData.getFormProperties();
@@ -79,7 +84,8 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         });
         HorizontalLayout finishToolBar = new HorizontalLayout();
         finishToolBar.setSpacing(true);
-        if (result.isPresent()) {
+	    finishToolBar.setMargin(true);
+	    if (result.isPresent()) {
             // Кнопки завершения задачи
             FormType resultType = result.get().getType();
             Map<String, String> resultValues = (Map<String, String>) resultType.getInformation("values");
@@ -88,12 +94,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
                         String curValue = (String) event.getButton().getData();
-                        Map<String, String> submitFormProps = newHashMap();
-                        submitFormProps.put("result", curValue);
-                        lookup(FormService.class).submitTaskFormData(obj.getId(), submitFormProps);
-                        // Закрыть окно
-                        taskCompleted = true;
-                        close();
+	                    completeTask(curValue, obj);
                     }
                 });
                 btn.setData(resultValue.getKey());
@@ -104,18 +105,17 @@ public class TaskEditForm extends AbstractEditForm<Task> {
             Button btn = new Button("Завершить", new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    lookup(TaskService.class).complete(obj.getId());
-                    // Закрыть окно
-                    taskCompleted = true;
-                    close();
+	                completeTask(null, obj);
                 }
             });
             finishToolBar.addComponent(btn);
         }
         formsContainer.addComponent(new Panel("Завершить задачу", finishToolBar));
 
-        nameField = new EditField("Название", "Название задачи");
-        nameField.setRequired(true);
+	    final FormLayout form = new FormLayout();
+
+	    nameField = new EditField("Название", "Название задачи");
+	    nameField.setRequired(true);
         nameField.setRequiredError("Название не может быть пустым.");
         nameField.setWidth(25, Unit.EM);
         form.addComponent(nameField);
@@ -144,82 +144,121 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         assigneeField.setWidth(25, Unit.EM);
         form.addComponent(assigneeField);
 
-        formsContainer.addComponent(form);
+	    final String processId = obj.getProcessInstanceId();
+	    // Клиент (берется из лида): имя, телефон, почта.
+	    form.addComponent(createClientContent(processId));
 
-        Map<String, Object> processVariables = runtimeService.getVariables(obj.getProcessInstanceId());
-        if (processVariables.containsKey("lead")) {
-            Lead lead = (Lead) processVariables.get("lead");
+	    // Лид процесса: имя клиента, тип лида (кредит, страховка, рассрочка).
+	    form.addComponent(createLeadContent(processId));
+	    // Продажа процесса: наименование продажи. Возможно нужно сделать возможносьть создать продажу, если она еще не создана в рамкех БП.
+	    form.addComponent(createSaleContent(processId));
 
-            FormLayout leadPanel = new FormLayout();
-            BeanItem<Lead> leadBeanItem = new BeanItem<>(lead);
-            leadBeanItem.expandProperty("client", "name");
-            leadBeanItem.expandProperty("vendor", "name");
-            FieldGroup leadFieldGroup = new FieldGroup(leadBeanItem);
-            leadFieldGroup.setReadOnly(true);
+	    formsContainer.addComponent(form);
 
-            EditField contactNameField = new EditField("Клиент");
-            contactNameField.setColumns(25);
-            leadFieldGroup.bind(contactNameField, "client.name");
-            leadPanel.addComponent(contactNameField);
-
-            EditField cellPhoneField = new EditField("Телефон");
-            cellPhoneField.setWidth(13, Unit.EM);
-            leadFieldGroup.bind(cellPhoneField, "contactPhone");
-            leadPanel.addComponent(cellPhoneField);
-
-            EditField contactEmailField = new EditField("E-Mail");
-            contactEmailField.setWidth(20, Unit.EM);
-            leadFieldGroup.bind(contactEmailField, "contactEmail");
-            leadPanel.addComponent(contactEmailField);
-
-            EditField regionField = new EditField("Регион");
-            regionField.setDescription("Укажите регион услуги");
-            regionField.setWidth(18, Unit.EM);
-            leadFieldGroup.bind(regionField, "region");
-            leadPanel.addComponent(regionField);
-
-            EditField motorTypeField = new EditField("Тип техники");
-            motorTypeField.setWidth(13, Unit.EM);
-            leadFieldGroup.bind(motorTypeField, "motorType");
-            leadPanel.addComponent(motorTypeField);
-
-            EditField motorBrandField = new EditField("Марка техники");
-            motorBrandField.setWidth(13, Unit.EM);
-            leadFieldGroup.bind(motorBrandField, "motorBrand");
-            leadPanel.addComponent(motorBrandField);
-
-            EditField motorModelField = new EditField("Модель техники", "Введите модель техники");
-            motorModelField.setColumns(15);
-            leadFieldGroup.bind(motorModelField, "motorModel");
-            leadPanel.addComponent(motorModelField);
-
-            EditField motorPriceField = new EditField("Цена техники");
-            leadFieldGroup.bind(motorPriceField, "motorPrice");
-            leadPanel.addComponent(motorPriceField);
-
-            EditField pointOfSaleField = new EditField("Мотосалон");
-            pointOfSaleField.setWidth(25, Unit.EM);
-            leadFieldGroup.bind(pointOfSaleField, "vendor.name");
-            leadPanel.addComponent(pointOfSaleField);
-
-            TextArea commentField = new TextArea("Комментарий");
-            commentField.setColumns(25);
-            commentField.setNullRepresentation("");
-            leadFieldGroup.bind(commentField, "comment");
-            leadPanel.addComponent(commentField);
-
-            formsContainer.addComponent(new Panel("Данные лида", leadPanel));
-        }
-
-        if (processVariables.containsKey("sale")) {
-            // Возможно следует показывать продажу
-        }
-
-        return formsContainer;
+	    return formsContainer;
     }
 
-    @Override
-    public void attach() {
+	private Component createClientContent(final String processId) {
+		// Запрос данных
+		final Person person = queryPerson(processId);
+
+		if (person != null) {
+			PersonField personField = new PersonField("Клиент");
+			personField.setPropertyDataSource(new ObjectProperty(person));
+			return personField;
+		} else {
+			final Label label = new Label("Нет связанного с процессом лида, информация о клиенте недоступна.");
+			label.setCaption("Клиент");
+			return label;
+		}
+	}
+
+	private Person queryPerson(final String processId) {
+		Lead lead = queryLead(processId);
+		return lead != null ? lead.getClient() : null;
+	}
+
+	/**
+	 * Продажа процесса: наименование продажи.
+	 * Возможно нужно сделать возможносьть создать продажу, если она еще не создана в рамкех БП.
+	 *
+	 * @return созданный контент
+	 */
+	private Component createSaleContent(final String processId) {
+
+		// Запрос данных
+		final Sale sale = querySale(processId);
+
+		if (sale != null) {
+			SaleField saleField = new SaleField("Продажа");
+			saleField.setPropertyDataSource(new ObjectProperty(sale));
+			return saleField;
+		} else {
+			final Label label = new Label("Нет связанной с процессом продажи.");
+			label.setCaption("Продажа");
+			return label;
+		}
+	}
+
+	/**
+	 * Лид процесса: имя клиента, тип лида (кредит, страховка, рассрочка).
+	 *
+	 * @return созданный контент
+	 */
+	private Component createLeadContent(final String processId) {
+		// Запрос данных
+		final Lead lead = queryLead(processId);
+
+		if (lead != null) {
+			LeadField leadField = new LeadField("Лид");
+			leadField.setPropertyDataSource(new ObjectProperty(lead));
+			return leadField;
+		} else {
+			final Label label = new Label("Нет связанного с процессом лида.");
+			label.setCaption("Лид");
+			return label;
+		}
+	}
+
+	private Lead queryLead(final String processId) {
+		RuntimeService runtimeService = lookup(RuntimeService.class);
+		Map<String, Object> processVariables = runtimeService.getVariables(processId);
+		Lead lead = null;
+		if (processVariables.containsKey("lead")) {
+			lead = (Lead) processVariables.get("lead");
+		}
+		return lead;
+	}
+
+	private Sale querySale(final String processId) {
+		RuntimeService runtimeService = lookup(RuntimeService.class);
+		Map<String, Object> processVariables = runtimeService.getVariables(processId);
+		Sale sale = null;
+		if (processVariables.containsKey("sale")) {
+			sale = (Sale) processVariables.get("sale");
+		}
+		return sale;
+	}
+
+
+	private void completeTask(final String result, final Task obj) {
+		if (result != null) {
+			Map<String, String> submitFormProps = newHashMap();
+			submitFormProps.put("result", result);
+			lookup(FormService.class).submitTaskFormData(obj.getId(), submitFormProps);
+		} else {
+			lookup(TaskService.class).complete(obj.getId());
+		}
+		// Закрыть окно
+		taskCompleted = true;
+		close();
+		// Показать статус выполнения процесса
+		BPStatusForm statusForm = new BPStatusForm(obj.getProcessInstanceId());
+		statusForm.showModal();
+	}
+
+	@Override
+	public void attach() {
         super.attach();    //To change body of overridden methods use File | Settings | File Templates.
         assigneeField.setReadOnly(true);
         ownerField.setReadOnly(true);

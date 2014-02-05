@@ -115,8 +115,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 		commentField.setNullRepresentation("");
 		form.addComponent(commentField);
 
-		productInSaleField = new ProductInSaleGrid(obj);
-		productInSaleField.setCaption("Продукты в продаже");
+		productInSaleField = new ProductInSaleGrid("Продукты в продаже", obj);
 		form.addComponent(productInSaleField);
 
 		return form;

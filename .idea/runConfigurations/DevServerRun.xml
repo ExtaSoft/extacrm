@@ -12,6 +12,7 @@
           <option name="outputLevel" value="INFO" />
           <option name="pluginUpdatePolicy" value="DEFAULT" />
           <option name="printErrorStackTraces" value="false" />
+          <option name="threads" />
           <option name="usePluginRegistry" value="false" />
           <option name="userSettingsFile" value="" />
           <option name="workOffline" value="false" />
@@ -25,7 +26,7 @@
           </option>
           <option name="goals">
             <list>
-              <option value="jetty:run" />
+              <option value="tomcat7:run" />
             </list>
           </option>
           <option name="profilesMap">

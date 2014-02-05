@@ -392,7 +392,7 @@ public class ExtaCrmUI extends UI {
 		mainMenu.addChapter("leads", "Лиды", "Входящие лиды", "icon-inbox-alt", LeadsView.class, null);
 		mainMenu.addChapter("sales", "Продажи", "Раздел управления продажами", "icon-dollar", SalesView.class, null);
 		mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella-1", InsuranceView.class, null);
-		mainMenu.addChapter("product", "Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", "icon-money-1", ProductView.class, null);
+		mainMenu.addChapter("product", "Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", "icon-basket", ProductView.class, null);
 		if (lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN))
 			mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3", UsersView.class, null);
 		mainMenu.addChapter("config", "Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt", ConfigView.class, null);

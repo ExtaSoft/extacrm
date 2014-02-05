@@ -13,10 +13,8 @@ import org.activiti.engine.task.TaskQuery;
 import org.joda.time.LocalDate;
 import ru.extas.model.Lead;
 import ru.extas.server.UserManagementService;
-import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaGrid;
-import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.bpm.BPStatusForm;
+import ru.extas.web.commons.*;
 
 import java.util.List;
 import java.util.Map;
@@ -153,8 +151,8 @@ public class TasksGrid extends ExtaGrid {
             public void fire(final Object itemId) {
                 final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
 
-                final TaskEditForm editWin = new TaskEditForm("Редактирование ", curObj);
-                editWin.addCloseListener(new Window.CloseListener() {
+	            final TaskEditForm editWin = new TaskEditForm("Редактирование задачи", curObj);
+	            editWin.addCloseListener(new Window.CloseListener() {
 
                     private static final long serialVersionUID = 1L;
 
@@ -172,6 +170,16 @@ public class TasksGrid extends ExtaGrid {
                 });
                 editWin.showModal();
             }
+        });
+
+	    actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", "icon-sitemap") {
+		    @Override
+		    public void fire(Object itemId) {
+			    final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
+			    // Показать статус выполнения процесса
+			    BPStatusForm statusForm = new BPStatusForm(curObj.getBean().getProcessInstanceId());
+			    statusForm.showModal();
+		    }
         });
 
         return actions;

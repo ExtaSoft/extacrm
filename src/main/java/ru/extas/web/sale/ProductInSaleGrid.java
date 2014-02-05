@@ -1,6 +1,7 @@
 package ru.extas.web.sale;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
@@ -26,7 +27,12 @@ public class ProductInSaleGrid extends CustomField<List> {
 	private BeanItemContainer<ProductInSale> container;
 
 	public ProductInSaleGrid(final Sale sale) {
+		this("Продукты в продаже", sale);
+	}
+
+	public ProductInSaleGrid(final String caption, final Sale sale) {
 		this.sale = sale;
+		setCaption(caption);
 	}
 
 	@Override
@@ -34,44 +40,20 @@ public class ProductInSaleGrid extends CustomField<List> {
 		final VerticalLayout fieldLayout = new VerticalLayout();
 		fieldLayout.setSpacing(true);
 
-		final HorizontalLayout commandBar = new HorizontalLayout();
-		commandBar.addStyleName("configure");
-		commandBar.setSpacing(true);
+		if (!isReadOnly()) {
+			final HorizontalLayout commandBar = new HorizontalLayout();
+			commandBar.addStyleName("configure");
+			commandBar.setSpacing(true);
 
-		final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
+			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
 
-			private static final long serialVersionUID = 1L;
+				private static final long serialVersionUID = 1L;
 
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				final BeanItem<ProductInSale> newObj = new BeanItem<>(new ProductInSale(sale));
+				@Override
+				public void buttonClick(final Button.ClickEvent event) {
+					final BeanItem<ProductInSale> newObj = new BeanItem<>(new ProductInSale(sale));
 
-				final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", newObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							container.addBean(newObj.getBean());
-							Notification.show("Продукт добавлен", Notification.Type.TRAY_NOTIFICATION);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-		addProdBtn.setDescription("Добавить номер квитанции к акту приема/передачи");
-		addProdBtn.addStyleName("icon-doc-new");
-		commandBar.addComponent(addProdBtn);
-
-		final Button edtProdBtn = new Button("Изменить", new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				if (productTable.getValue() != null) {
-					final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getValue();
-					final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", prodItem);
+					final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", newObj);
 					editWin.addCloseListener(new Window.CloseListener() {
 
 						private static final long serialVersionUID = 1L;
@@ -79,31 +61,57 @@ public class ProductInSaleGrid extends CustomField<List> {
 						@Override
 						public void windowClose(final Window.CloseEvent e) {
 							if (editWin.isSaved()) {
-								Notification.show("Продукт изменен", Notification.Type.TRAY_NOTIFICATION);
+								container.addBean(newObj.getBean());
+								Notification.show("Продукт добавлен", Notification.Type.TRAY_NOTIFICATION);
 							}
 						}
 					});
 					editWin.showModal();
 				}
-			}
-		});
-		edtProdBtn.setDescription("Изменить выделенный в списке продукт");
-		edtProdBtn.addStyleName("icon-edit-3");
-		commandBar.addComponent(edtProdBtn);
+			});
+			addProdBtn.setDescription("Добавить продукт в продажу");
+			addProdBtn.addStyleName("icon-doc-new");
+			commandBar.addComponent(addProdBtn);
 
-		final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				if (productTable.getValue() != null) {
-					productTable.removeItem(productTable.getValue());
+			final Button edtProdBtn = new Button("Изменить", new Button.ClickListener() {
+				@Override
+				public void buttonClick(final Button.ClickEvent event) {
+					if (productTable.getValue() != null) {
+						final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getValue();
+						final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", prodItem);
+						editWin.addCloseListener(new Window.CloseListener() {
+
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void windowClose(final Window.CloseEvent e) {
+								if (editWin.isSaved()) {
+									Notification.show("Продукт изменен", Notification.Type.TRAY_NOTIFICATION);
+								}
+							}
+						});
+						editWin.showModal();
+					}
 				}
-			}
-		});
-		delProdBtn.setDescription("Удалить продукт из продажи");
-		delProdBtn.addStyleName("icon-trash");
-		commandBar.addComponent(delProdBtn);
+			});
+			edtProdBtn.setDescription("Изменить выделенный в списке продукт");
+			edtProdBtn.addStyleName("icon-edit-3");
+			commandBar.addComponent(edtProdBtn);
 
-		fieldLayout.addComponent(commandBar);
+			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
+				@Override
+				public void buttonClick(final Button.ClickEvent event) {
+					if (productTable.getValue() != null) {
+						productTable.removeItem(productTable.getValue());
+					}
+				}
+			});
+			delProdBtn.setDescription("Удалить продукт из продажи");
+			delProdBtn.addStyleName("icon-trash");
+			commandBar.addComponent(delProdBtn);
+
+			fieldLayout.addComponent(commandBar);
+		}
 
 		productTable = new Table();
 		productTable.addContainerProperty("Номер", String.class, null);
@@ -112,7 +120,8 @@ public class ProductInSaleGrid extends CustomField<List> {
 		productTable.setSelectable(true);
 		productTable.setHeight(10, Unit.EM);
 		productTable.setWidth(35, Unit.EM);
-		final List<ProductInSale> productInSaleList = (List<ProductInSale>) getPropertyDataSource().getValue();
+		final Property dataSource = getPropertyDataSource();
+		final List<ProductInSale> productInSaleList = dataSource != null ? (List<ProductInSale>) dataSource.getValue() : sale.getProductInSales();
 		container = new BeanItemContainer<>(ProductInSale.class);
 		container.addNestedContainerProperty("product.name");
 		if (productInSaleList != null) {
@@ -141,7 +150,9 @@ public class ProductInSaleGrid extends CustomField<List> {
 	@Override
 	public void commit() throws SourceException, Validator.InvalidValueException {
 		super.commit();
-		getPropertyDataSource().setValue(container.getItemIds());
+		final Property dataSource = getPropertyDataSource();
+		if (dataSource != null)
+			dataSource.setValue(container.getItemIds());
 	}
 
 	@Override

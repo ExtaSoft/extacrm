@@ -20,31 +20,30 @@ import javax.inject.Inject;
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class SaleServiceImpl implements SaleService {
 
-private final static Logger logger = LoggerFactory.getLogger(SaleServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(SaleServiceImpl.class);
 
-@Inject
-private SaleRegistry saleRegistry;
+	@Inject
+	private SaleRegistry saleRegistry;
 
-@Transactional
-@Override
-public Sale ctreateSaleByLead(Lead lead) {
-	Sale sale = new Sale();
+	@Transactional
+	@Override
+	public Sale ctreateSaleByLead(Lead lead) {
+		Sale sale = new Sale();
 
-	sale.setClient(lead.getClient());
-	sale.setType(Sale.Type.CREDIT);
-	sale.setVendor(null);
-	sale.setStatus(Sale.Status.NEW);
-	sale.setRegion(lead.getRegion());
-	sale.setMotorType(lead.getMotorType());
-	sale.setMotorBrand(lead.getMotorBrand());
-	sale.setMotorModel(lead.getMotorModel());
-	sale.setMotorPrice(lead.getMotorPrice());
-	sale.setDealer(lead.getVendor());
-	sale.setComment(lead.getComment());
-	sale.setProcessId(lead.getProcessId());
+		sale.setClient(lead.getClient());
+		sale.setType(Sale.Type.CREDIT);
+		sale.setVendor(null);
+		sale.setStatus(Sale.Status.NEW);
+		sale.setRegion(lead.getRegion());
+		sale.setMotorType(lead.getMotorType());
+		sale.setMotorBrand(lead.getMotorBrand());
+		sale.setMotorModel(lead.getMotorModel());
+		sale.setMotorPrice(lead.getMotorPrice());
+		sale.setDealer(lead.getVendor());
+		sale.setComment(lead.getComment());
+		sale.setProcessId(lead.getProcessId());
 
-	saleRegistry.save(sale);
+		return saleRegistry.save(sale);
 
-	return sale;
-}
+	}
 }

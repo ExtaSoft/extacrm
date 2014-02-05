@@ -8,50 +8,37 @@ import com.vaadin.ui.Button.ClickEvent;
  *
  * @author Valery Orlov
  */
-public class OkCancelWindow extends Window {
+public class CloseOnlylWindow extends Window {
 
 	private static final long serialVersionUID = -1869372339151029572L;
 	private boolean okPressed = false;
 	private final HorizontalLayout buttonsPanel = new HorizontalLayout();
-	protected Button cancelBtn;
-	protected Button okBtn;
+	protected Button closeBtn;
 
-	public OkCancelWindow(final String caption, final Component content) {
+	public CloseOnlylWindow(final String caption, final Component content) {
 		super(caption);
 		initInputWindow();
 		setContent(content);
 	}
 
-	public OkCancelWindow(final String caption) {
+	public CloseOnlylWindow(final String caption) {
 		super(caption);
 		initInputWindow();
 	}
 
 	private void initInputWindow() {
-		cancelBtn = new Button("Отмена", new Button.ClickListener() {
+		closeBtn = new Button("Закрыть", new Button.ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(final ClickEvent event) {
-				OkCancelWindow.this.okPressed = false;
+				CloseOnlylWindow.this.okPressed = true;
 				close();
 			}
 		});
-		cancelBtn.setStyleName("icon-cancel");
-		okBtn = new Button("OK", new Button.ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(final ClickEvent event) {
-				OkCancelWindow.this.okPressed = true;
-				close();
-			}
-		});
-		okBtn.setStyleName("icon-ok");
-		this.buttonsPanel.addComponent(okBtn);
-		this.buttonsPanel.setComponentAlignment(okBtn, Alignment.MIDDLE_RIGHT);
-		this.buttonsPanel.addComponent(cancelBtn);
-		this.buttonsPanel.setComponentAlignment(cancelBtn, Alignment.MIDDLE_RIGHT);
+		closeBtn.setStyleName("icon-ok");
+		this.buttonsPanel.addComponent(closeBtn);
+		this.buttonsPanel.setComponentAlignment(closeBtn, Alignment.MIDDLE_RIGHT);
 		this.buttonsPanel.setSpacing(true);
 	}
 

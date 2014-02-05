@@ -439,15 +439,39 @@
             "src": "entypo"
         },
         {
+            "uid": "922ab2cb66943a83de969990289ef1dc",
+            "css": "docs",
+            "code": 59587,
+            "src": "entypo"
+        },
+        {
             "uid": "da0fd38d651815e3a12f6c030ff1fe5b",
             "css": "newspaper",
             "code": 59453,
             "src": "entypo"
         },
         {
+            "uid": "51727ca007aa35ceabcaffc28934faee",
+            "css": "book-open",
+            "code": 59588,
+            "src": "entypo"
+        },
+        {
+            "uid": "48b79f27e4798f23bafa07b55dbe5b73",
+            "css": "book",
+            "code": 59589,
+            "src": "entypo"
+        },
+        {
             "uid": "96ea1be71f597a5bdfc8f791ada4f651",
             "css": "archive",
             "code": 59454,
+            "src": "entypo"
+        },
+        {
+            "uid": "5854855e963044f93b15738a5bb27a29",
+            "css": "phone",
+            "code": 59590,
             "src": "entypo"
         },
         {
@@ -463,9 +487,39 @@
             "src": "entypo"
         },
         {
+            "uid": "e126987944593dfee041f8e2a68145db",
+            "css": "basket",
+            "code": 59591,
+            "src": "entypo"
+        },
+        {
+            "uid": "8663320a860b00f26e94d3d15c9ba99a",
+            "css": "clock",
+            "code": 59592,
+            "src": "entypo"
+        },
+        {
+            "uid": "89eb512cb82a1c3fe83cb16134f9876c",
+            "css": "back-in-time",
+            "code": 59593,
+            "src": "entypo"
+        },
+        {
             "uid": "98c63f6b98c543b52d4c43bcd486d28f",
             "css": "flash",
             "code": 59457,
+            "src": "entypo"
+        },
+        {
+            "uid": "9ea7cce5e08e5ac2c225fabf2e6dc353",
+            "css": "briefcase",
+            "code": 59594,
+            "src": "entypo"
+        },
+        {
+            "uid": "11dd26ebf6934bf750a9156b353d7f2d",
+            "css": "suitcase",
+            "code": 59595,
             "src": "entypo"
         },
         {
@@ -490,6 +544,48 @@
             "uid": "32b4054f35918992f723e39f4095f005",
             "css": "chart-area",
             "code": 59461,
+            "src": "entypo"
+        },
+        {
+            "uid": "c5cd6ea1981cecdd85c42d9d209bc3b8",
+            "css": "credit-card",
+            "code": 59602,
+            "src": "entypo"
+        },
+        {
+            "uid": "898ddc67cb7d9ae53dbd4cce78043e9e",
+            "css": "flow-cascade",
+            "code": 59596,
+            "src": "entypo"
+        },
+        {
+            "uid": "4bcb3aaa98736be3027bef7c76c55021",
+            "css": "flow-branch",
+            "code": 59597,
+            "src": "entypo"
+        },
+        {
+            "uid": "8a1d446e5555e76f82ddb1c8b526f579",
+            "css": "flow-tree",
+            "code": 59598,
+            "src": "entypo"
+        },
+        {
+            "uid": "6cea40aa6cc50057083e4f0a5b92410c",
+            "css": "flow-line",
+            "code": 59599,
+            "src": "entypo"
+        },
+        {
+            "uid": "5f88095dc5e638863a0c733e99c32568",
+            "css": "flow-parallel",
+            "code": 59600,
+            "src": "entypo"
+        },
+        {
+            "uid": "3a6f0140c3a390bdb203f56d1bfdefcb",
+            "css": "gauge",
+            "code": 59601,
             "src": "entypo"
         },
         {
@@ -793,6 +889,30 @@
             "src": "typicons"
         },
         {
+            "uid": "e0d15ef5945000f5f264acc35494002f",
+            "css": "basket-1",
+            "code": 59603,
+            "src": "typicons"
+        },
+        {
+            "uid": "eh1m4shhgsndy7pmdzx3ynrakadhozgr",
+            "css": "clock-1",
+            "code": 59604,
+            "src": "typicons"
+        },
+        {
+            "uid": "cb8b402e2efdc57d6d37ad7d3da819fe",
+            "css": "stopwatch",
+            "code": 59605,
+            "src": "typicons"
+        },
+        {
+            "uid": "12d16dda691bda304e3b57d7bc0de5a9",
+            "css": "lightbulb",
+            "code": 59606,
+            "src": "typicons"
+        },
+        {
             "uid": "971842913945f59c7f3cf11e75e1e4f1",
             "css": "flash-outline",
             "code": 59501,
@@ -853,6 +973,30 @@
             "src": "typicons"
         },
         {
+            "uid": "da6c4728f6175a4b99b122274b8f921c",
+            "css": "flow-split",
+            "code": 59607,
+            "src": "typicons"
+        },
+        {
+            "uid": "c1bea2b4c01d1d4bd1e4e1f79e51cdd2",
+            "css": "flow-merge",
+            "code": 59608,
+            "src": "typicons"
+        },
+        {
+            "uid": "ccfaa7f5fe179987bd366051345ba985",
+            "css": "flow-parallel-1",
+            "code": 59610,
+            "src": "typicons"
+        },
+        {
+            "uid": "e45a44236f3f1ac013a1287bb60cd965",
+            "css": "flow-cross",
+            "code": 59609,
+            "src": "typicons"
+        },
+        {
             "uid": "c6344a6ed148da12354cc90705287696",
             "css": "search-2",
             "code": 59522,
@@ -910,6 +1054,12 @@
             "uid": "8aa58289df2cc42b260897d7e61aa2c2",
             "css": "chart-pie-alt",
             "code": 59518,
+            "src": "iconic"
+        },
+        {
+            "uid": "6db15bda083b09a04bd27dcc1d00744d",
+            "css": "at",
+            "code": 59611,
             "src": "iconic"
         },
         {
@@ -979,9 +1129,33 @@
             "src": "modernpics"
         },
         {
+            "uid": "pzy4lq1ak4datbxpdfj3ya74vjfhwxg1",
+            "css": "article-alt",
+            "code": 59612,
+            "src": "modernpics"
+        },
+        {
             "uid": "zc0c8s0nyweeeo9i8a3rucu7alwxt56r",
             "css": "wrench-1",
             "code": 59530,
+            "src": "modernpics"
+        },
+        {
+            "uid": "vqyhv5kmwcj9zxq28dhq5npykr2k39co",
+            "css": "basket-2",
+            "code": 59613,
+            "src": "modernpics"
+        },
+        {
+            "uid": "s51at1xi1fkaomxvp6dqaax5jmyhtn4h",
+            "css": "basket-alt",
+            "code": 59614,
+            "src": "modernpics"
+        },
+        {
+            "uid": "0ohst63cgq1mf1syayvfl8mphms8dbes",
+            "css": "clock-2",
+            "code": 59615,
             "src": "modernpics"
         },
         {
@@ -994,6 +1168,12 @@
             "uid": "o1c30odwfvgcvi5b4jsg95sur8v6ghsp",
             "css": "grid",
             "code": 59576,
+            "src": "modernpics"
+        },
+        {
+            "uid": "dplw5xo88mzzr7b45nvjcamyyhni6drs",
+            "css": "book-1",
+            "code": 59617,
             "src": "modernpics"
         },
         {
@@ -1018,6 +1198,12 @@
             "uid": "fhpup8jff2yw9kmuwavhyqxogczcbbhj",
             "css": "dollar",
             "code": 59535,
+            "src": "modernpics"
+        },
+        {
+            "uid": "mjbsqg8yglgu0esc6ru2vh111jmh7qng",
+            "css": "at-1",
+            "code": 59616,
             "src": "modernpics"
         },
         {
@@ -1055,6 +1241,42 @@
             "css": "trash-2",
             "code": 59557,
             "src": "mfglabs"
+        },
+        {
+            "uid": "981c9f3d44fd4fd6b37c0b5a981334ce",
+            "css": "clock-3",
+            "code": 59618,
+            "src": "mfglabs"
+        },
+        {
+            "uid": "53c977df16b09e3f7700a27ec90c43dc",
+            "css": "stopwatch-1",
+            "code": 59619,
+            "src": "mfglabs"
+        },
+        {
+            "uid": "d06b13f30947afbbdae6977413144183",
+            "css": "garden",
+            "code": 59621,
+            "src": "maki"
+        },
+        {
+            "uid": "00341f8df1496285c31db5988db1d8b5",
+            "css": "grocery-store",
+            "code": 59622,
+            "src": "maki"
+        },
+        {
+            "uid": "56a766cedf13005162899b02cf9546b9",
+            "css": "library",
+            "code": 59623,
+            "src": "maki"
+        },
+        {
+            "uid": "bc6ef9c6531c54e927e9dc18e45524b2",
+            "css": "warehouse",
+            "code": 59620,
+            "src": "maki"
         },
         {
             "uid": "2c576f7c6c3233c31abad0899fc9f4af",
@@ -1135,6 +1357,18 @@
             "src": "elusive"
         },
         {
+            "uid": "e2d87e7631c608efe71762a9f4c95e75",
+            "css": "check-2",
+            "code": 59624,
+            "src": "elusive"
+        },
+        {
+            "uid": "cc8e2a0eff0356811984b84a868524f8",
+            "css": "check-empty-1",
+            "code": 59625,
+            "src": "elusive"
+        },
+        {
             "uid": "5048fb5dd929882d2bac1ad3777b0b7d",
             "css": "filter-1",
             "code": 59550,
@@ -1159,6 +1393,12 @@
             "src": "linecons"
         },
         {
+            "uid": "f978da58836f23373882916f05fb70b4",
+            "css": "doc-2",
+            "code": 59626,
+            "src": "linecons"
+        },
+        {
             "uid": "29f4bce4a60650057c5248e30baa15a6",
             "css": "note",
             "code": 59553,
@@ -1171,10 +1411,22 @@
             "src": "linecons"
         },
         {
+            "uid": "efaf7e97e8b1aa7c2b52cc29432c96ca",
+            "css": "inbox-2",
+            "code": 59627,
+            "src": "linecons"
+        },
+        {
             "uid": "b8e88705f42bd79580be828233c65da0",
             "css": "money-2",
             "code": 59555,
             "src": "linecons"
+        },
+        {
+            "uid": "bb1090404a4d33340a9ad7302ef8b6e8",
+            "css": "archive-1",
+            "code": 59628,
+            "src": "websymbols"
         }
     ]
 }

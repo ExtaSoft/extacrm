@@ -46,6 +46,9 @@
     margin-left: .3em;
   }
 
+  @include icon(sitemap, '\e82e');
+  @include icon(basket, '\e8dd');
+  @include icon(flow-tree, '\e8ce');
   @include icon(grid, '\e8b8');
   @include icon(inbox-1, '\e8bb');
   @include icon(inbox-alt, '\e8ba');
