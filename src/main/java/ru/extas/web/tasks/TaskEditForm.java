@@ -3,6 +3,7 @@ package ru.extas.web.tasks;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
@@ -15,9 +16,8 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.FormType;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.task.Task;
-import ru.extas.model.Lead;
-import ru.extas.model.Person;
-import ru.extas.model.Sale;
+import ru.extas.model.*;
+import ru.extas.server.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
@@ -25,6 +25,7 @@ import ru.extas.web.contacts.PersonField;
 import ru.extas.web.lead.LeadField;
 import ru.extas.web.sale.SaleField;
 import ru.extas.web.users.LoginToUserNameConverter;
+import ru.extas.web.users.UserProfileSelect;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -55,11 +56,21 @@ public class TaskEditForm extends AbstractEditForm<Task> {
     private EditField ownerField;
     @PropertyId("assignee")
     private EditField assigneeField;
+
+	private UserProfileSelect profileSelect;
+
 	private VerticalLayout formsContainer;
+	private final boolean canAssigne;
 
 	public TaskEditForm(final String caption, final BeanItem<Task> obj) {
-		super(caption, obj);
-    }
+		super(caption);
+
+		// Может ли пользователь менять ответственного
+		UserManagementService userService = lookup(UserManagementService.class);
+		canAssigne = userService.isCurUserHasRole(UserRole.ADMIN) || userService.isCurUserHasRole(UserRole.MANAGER);
+
+		initForm(obj);
+	}
 
     /*
      * (non-Javadoc)
@@ -136,21 +147,43 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         dueDateField.setResolution(Resolution.MINUTE);
         form.addComponent(dueDateField);
 
-        ownerField = new EditField("Владелец");
-        ownerField.setDescription("Владелец задачи");
-        ownerField.setWidth(25, Unit.EM);
+	    // Поле для биндинга данных
+	    assigneeField = new EditField("Ответственный", "Ответственный за выполнение задачи");
+	    assigneeField.setWidth(25, Unit.EM);
+	    form.addComponent(assigneeField);
+
+	    if (canAssigne) {
+		    assigneeField.setVisible(false);
+		    // Поле для выбора пользователя
+		    profileSelect = new UserProfileSelect("Ответственный", "Ответственный за выполнение задачи");
+		    profileSelect.setWidth(25, Unit.EM);
+		    profileSelect.addValueChangeListener(new Property.ValueChangeListener() {
+			    @Override
+			    public void valueChange(final Property.ValueChangeEvent event) {
+				    UserProfile profile = (UserProfile) profileSelect.getConvertedValue();
+				    if (profile != null) {
+					    assigneeField.setValue(profile.getLogin());
+				    }
+			    }
+		    });
+		    if (obj.getAssignee() != null) {
+			    UserProfile profile = lookup(UserManagementService.class).findUserByLogin(obj.getAssignee());
+			    profileSelect.setConvertedValue(profile);
+		    }
+		    form.addComponent(profileSelect);
+	    } else {
+		    assigneeField.setVisible(true);
+		    assigneeField.setConverter(lookup(LoginToUserNameConverter.class));
+	    }
+
+	    ownerField = new EditField("Владелец", "Владелец (автор) задачи");
+	    ownerField.setWidth(25, Unit.EM);
 	    ownerField.setConverter(lookup(LoginToUserNameConverter.class));
 	    form.addComponent(ownerField);
-
-        assigneeField = new EditField("Ответственный", "Ответственный за выполнение задачи");
-        assigneeField.setWidth(25, Unit.EM);
-	    assigneeField.setConverter(lookup(LoginToUserNameConverter.class));
-	    form.addComponent(assigneeField);
 
 	    final String processId = obj.getProcessInstanceId();
 	    // Клиент (берется из лида): имя, телефон, почта.
 	    form.addComponent(createClientContent(processId));
-
 	    // Лид процесса: имя клиента, тип лида (кредит, страховка, рассрочка).
 	    form.addComponent(createLeadContent(processId));
 	    // Продажа процесса: наименование продажи. Возможно нужно сделать возможносьть создать продажу, если она еще не создана в рамкех БП.
@@ -262,12 +295,13 @@ public class TaskEditForm extends AbstractEditForm<Task> {
 
 	@Override
 	public void attach() {
-        super.attach();    //To change body of overridden methods use File | Settings | File Templates.
-        assigneeField.setReadOnly(true);
-        ownerField.setReadOnly(true);
-    }
+		super.attach();
+		ownerField.setReadOnly(true);
+		if (!canAssigne)
+			assigneeField.setReadOnly(true);
+	}
 
-    /*
+	/*
          * (non-Javadoc)
          *
          * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
