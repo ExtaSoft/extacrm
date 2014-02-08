@@ -78,7 +78,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 				public void buttonClick(final Button.ClickEvent event) {
 					if (productTable.getValue() != null) {
 						final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getValue();
-						final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", prodItem);
+						final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem);
 						editWin.addCloseListener(new Window.CloseListener() {
 
 							private static final long serialVersionUID = 1L;
@@ -114,8 +114,6 @@ public class ProductInSaleGrid extends CustomField<List> {
 		}
 
 		productTable = new Table();
-		productTable.addContainerProperty("Номер", String.class, null);
-		productTable.addContainerProperty("Действия", Button.class, null);
 		productTable.setRequired(true);
 		productTable.setSelectable(true);
 		productTable.setHeight(10, Unit.EM);

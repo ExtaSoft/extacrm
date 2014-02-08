@@ -14,10 +14,15 @@ class ProdCreditDataDecl extends GridDataDecl {
 	public ProdCreditDataDecl() {
 		addMapping("name", "Название продукта");
 		addMapping("vendor.name", "Банк");
-		addMapping("percent", "Процент по кредиту", StringToPercentConverter.class);
-		addMapping("maxPeroid", "Срок кредитования");
-		addMapping("minDownpayment", "Первоначальный взнос", StringToPercentConverter.class);
-		addMapping("maxSum", "Сумма кредита");
+		addMapping("programType", "Тип программы");
+		addMapping("minSum", "Мин.сумма");
+		addMapping("maxSum", "Макс.сумма");
+		addMapping("minDownpayment", "Мин.взнос", StringToPercentConverter.class);
+		addMapping("maxDownpayment", "Макс.взнос", StringToPercentConverter.class);
+		addMapping("minPeriod", "Мин.срок");
+		addMapping("maxPeriod", "Макс.срок");
+		addMapping("step", "Шаг кредита");
+		addMapping("dealerSubsidy", "Субсидия", StringToPercentConverter.class);
 		addMapping("active", "Активный продукт");
 		super.addCreateModifyMarkers();
 	}

@@ -30,11 +30,23 @@ public class ProductInSale extends AbstractExtaObject {
 	@Column(name = "PERIOD")
 	private int period;
 
+	// первый взнос
+	@Column(name = "DOWNPAYMENT", precision = 32, scale = 4)
+	private BigDecimal downpayment;
+
 	public ProductInSale() {
 	}
 
 	public ProductInSale(final Sale sale) {
 		this.sale = sale;
+	}
+
+	public BigDecimal getDownpayment() {
+		return downpayment;
+	}
+
+	public void setDownpayment(final BigDecimal downpayment) {
+		this.downpayment = downpayment;
 	}
 
 	public Sale getSale() {

@@ -82,7 +82,7 @@ public class Sale extends AbstractExtaObject {
 	@Enumerated(EnumType.STRING)
 	private Result result;
 
-	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL})
+	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<ProductInSale> productInSales;
 
 	public Result getResult() {

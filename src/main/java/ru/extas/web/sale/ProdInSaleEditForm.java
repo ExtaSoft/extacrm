@@ -23,6 +23,8 @@ public class ProdInSaleEditForm extends AbstractEditForm<ProductInSale> {
 	private ProductSelect productField;
 	@PropertyId("summ")
 	private EditField summField;
+	@PropertyId("downpayment")
+	private EditField downpaymentField;
 	@PropertyId("period")
 	private EditField periodField;
 
@@ -57,6 +59,10 @@ public class ProdInSaleEditForm extends AbstractEditForm<ProductInSale> {
 		summField = new EditField("Сумма", "Введите сумму по продукту");
 		summField.setRequired(true);
 		form.addComponent(summField);
+
+		downpaymentField = new EditField("Первоначальный взнос", "Введите сумму первоначального взноса по продукту");
+		//downpaymentField.setRequired(true);
+		form.addComponent(downpaymentField);
 
 		periodField = new EditField("Срок", "Введите период действия продукта");
 		periodField.setRequired(true);

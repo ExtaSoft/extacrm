@@ -50,7 +50,16 @@ public class SupplementServiceImpl implements SupplementService {
         }
     }
 
-    static private class RegionCapitalsFactory {
+	static private class DocumentTypesFactory {
+		static final List<String> INSTANCE;
+
+		static {
+			INSTANCE = newArrayList("Паспорт", "ПТС", "СТС", "Загранпаспорт", "Полис ДМС", "Справка 2НДФЛ",
+					"Водительское удостоверение", "СНИЛС", "Трудовая книжка", "Справка о доходах (по форме банка)");
+		}
+	}
+
+	static private class RegionCapitalsFactory {
         static final BiMap<String, String> INSTANCE;
 
         static {
@@ -208,4 +217,9 @@ public class SupplementServiceImpl implements SupplementService {
     public Collection<String> loadMotorBrands() {
         return MotorBrandsFactory.INSTANCE;
     }
+
+	@Override
+	public Collection<String> loadDocumentTypes() {
+		return DocumentTypesFactory.INSTANCE;
+	}
 }

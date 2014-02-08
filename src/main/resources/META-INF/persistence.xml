@@ -25,6 +25,8 @@
         <class>ru.extas.model.UserProfile</class>
         <class>ru.extas.model.Product</class>
         <class>ru.extas.model.ProdCredit</class>
+        <class>ru.extas.model.ProdCreditPercent</class>
+        <class>ru.extas.model.ProdCreditDoc</class>
         <class>ru.extas.model.ProdInsurance</class>
         <class>ru.extas.model.ProdInstallments</class>
         <class>ru.extas.model.ProductInSale</class>

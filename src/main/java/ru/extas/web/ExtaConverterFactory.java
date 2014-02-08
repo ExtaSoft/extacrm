@@ -15,6 +15,7 @@ import ru.extas.web.insurance.StringToPeriodOfCoverConverter;
 import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.lead.StringToLeadResult;
 import ru.extas.web.lead.StringToLeadStatus;
+import ru.extas.web.product.String2CreditProgramType;
 import ru.extas.web.sale.StringToSaleResult;
 import ru.extas.web.users.StringToUserRoleConverter;
 
@@ -96,6 +97,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 		// Конвертер периода страхования
 		if (presentationType == String.class && modelType == Insurance.PeriodOfCover.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToPeriodOfCoverConverter.class);
+
+		// Конвертер типов кредитных программ
+		if (presentationType == String.class && modelType == ProdCredit.ProgramType.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(String2CreditProgramType.class);
 
 		// Let default factory handle the rest
 		return super.findConverter(presentationType, modelType);

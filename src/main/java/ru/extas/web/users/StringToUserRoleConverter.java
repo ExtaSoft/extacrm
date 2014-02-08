@@ -5,11 +5,9 @@ package ru.extas.web.users;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.extas.model.UserRole;
-
-import java.util.Locale;
+import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**
  * Конвертирует роли пользователя в соответствующее перечисление
@@ -17,93 +15,18 @@ import java.util.Locale;
  * @author Valery Orlov
  */
 @Component
-public class StringToUserRoleConverter implements Converter<String, UserRole> {
+public class StringToUserRoleConverter extends String2EnumConverter<UserRole> {
 
-    private static final long serialVersionUID = 568270351867767905L;
+	public StringToUserRoleConverter() {
+		super(UserRole.class);
+	}
 
-    private final BiMap<UserRole, String> map;
-
-    public StringToUserRoleConverter() {
-        map = HashBiMap.create();
-        map.put(UserRole.USER, "Пользователь");
-        map.put(UserRole.MANAGER, "Руководитель");
-        map.put(UserRole.ADMIN, "Администратор");
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.vaadin.data.util.converter.Converter#getModelType()
-     */
-    @Override
-    public Class<UserRole> getModelType() {
-        return UserRole.class;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.vaadin.data.util.converter.Converter#getPresentationType()
-     */
-    @Override
-    public Class<String> getPresentationType() {
-        return String.class;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
-     * java.lang.Class, java.util.Locale)
-     */
-    @Override
-    public UserRole convertToModel(final String value, final Class<? extends UserRole> targetType, final Locale locale)
-            throws com.vaadin.data.util.converter.Converter.ConversionException {
-        if (value == null || value.isEmpty())
-            return null;
-
-        return map.inverse().get(value);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
-     * .Object, java.lang.Class, java.util.Locale)
-     */
-    @Override
-    public String convertToPresentation(final UserRole value, final Class<? extends String> targetType,
-                                        final Locale locale)
-            throws com.vaadin.data.util.converter.Converter.ConversionException {
-        if (value == null)
-            return null;
-        return map.get(value);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
-     * java.util.Locale)
-     */
-    public UserRole convertToModel(final String value, final Locale locale)
-            throws com.vaadin.data.util.converter.Converter.ConversionException {
-        return convertToModel(value, null, locale);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
-     * .Object, java.util.Locale)
-     */
-    public String convertToPresentation(final UserRole value, final Locale locale)
-            throws com.vaadin.data.util.converter.Converter.ConversionException {
-        return convertToPresentation(value, null, locale);
-    }
-
+	@Override
+	protected BiMap<UserRole, String> createEnum2StringMap() {
+		final BiMap<UserRole, String> map = HashBiMap.create();
+		map.put(UserRole.USER, "Пользователь");
+		map.put(UserRole.MANAGER, "Руководитель");
+		map.put(UserRole.ADMIN, "Администратор");
+		return map;
+	}
 }
