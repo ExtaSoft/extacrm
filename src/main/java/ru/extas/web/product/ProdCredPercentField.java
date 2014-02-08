@@ -75,7 +75,7 @@ public class ProdCredPercentField extends CustomField<List> {
 				@Override
 				public void buttonClick(final Button.ClickEvent event) {
 					if (procentTable.getValue() != null) {
-						final BeanItem<ProdCreditPercent> percentItem = (BeanItem<ProdCreditPercent>) procentTable.getValue();
+						final BeanItem<ProdCreditPercent> percentItem = (BeanItem<ProdCreditPercent>) procentTable.getItem(procentTable.getValue());
 						final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Редактирование процентной ставки", percentItem);
 						editWin.addCloseListener(new Window.CloseListener() {
 

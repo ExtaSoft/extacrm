@@ -6,7 +6,6 @@ package ru.extas.web.product;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.model.Policy;
 import ru.extas.model.Product;
 import ru.extas.server.ProductRepository;
 
@@ -24,8 +23,8 @@ public class ProductSelect extends ComboBox {
 	private static final long serialVersionUID = 6004206917183679455L;
 
 	@Override
-	public Class<Policy> getType() {
-		return Policy.class;
+	public Class<Product> getType() {
+		return Product.class;
 	}
 
 	public ProductSelect(final String caption, final String description, final Product product) {

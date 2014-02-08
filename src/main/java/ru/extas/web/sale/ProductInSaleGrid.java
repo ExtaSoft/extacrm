@@ -77,7 +77,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 				@Override
 				public void buttonClick(final Button.ClickEvent event) {
 					if (productTable.getValue() != null) {
-						final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getValue();
+						final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getItem(productTable.getValue());
 						final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem);
 						editWin.addCloseListener(new Window.CloseListener() {
 
