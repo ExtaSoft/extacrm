@@ -62,7 +62,6 @@ public class ProductInSaleGrid extends CustomField<List> {
 						public void windowClose(final Window.CloseEvent e) {
 							if (editWin.isSaved()) {
 								container.addBean(newObj.getBean());
-								Notification.show("Продукт добавлен", Notification.Type.TRAY_NOTIFICATION);
 							}
 						}
 					});
@@ -79,17 +78,6 @@ public class ProductInSaleGrid extends CustomField<List> {
 					if (productTable.getValue() != null) {
 						final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getItem(productTable.getValue());
 						final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem);
-						editWin.addCloseListener(new Window.CloseListener() {
-
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public void windowClose(final Window.CloseEvent e) {
-								if (editWin.isSaved()) {
-									Notification.show("Продукт изменен", Notification.Type.TRAY_NOTIFICATION);
-								}
-							}
-						});
 						editWin.showModal();
 					}
 				}

@@ -287,6 +287,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
 		}
 		// Закрыть окно
 		taskCompleted = true;
+		Notification.show("Задача выполнена", Notification.Type.TRAY_NOTIFICATION);
 		close();
 		// Показать статус выполнения процесса
 		BPStatusForm statusForm = new BPStatusForm(obj.getProcessInstanceId());
@@ -329,6 +330,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         task.setAssignee(obj.getAssignee());
 
         taskService.saveTask(task);
+	    Notification.show("Задача сохранена", Notification.Type.TRAY_NOTIFICATION);
     }
 
     /*

@@ -4,7 +4,6 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.CustomTable;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -165,11 +164,9 @@ public class TasksGrid extends ExtaGrid {
 					public void windowClose(final Window.CloseEvent e) {
 						if (editWin.isSaved()) {
 							//((JPAContainer) container).refreshItem(itemId);
-							Notification.show("Задача сохранена", Notification.Type.TRAY_NOTIFICATION);
 						}
 						if (editWin.isTaskCompleted()) {
 							refreshContainer();
-							Notification.show("Задача выполнена", Notification.Type.TRAY_NOTIFICATION);
 						}
 					}
 				});

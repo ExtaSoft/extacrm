@@ -2,10 +2,7 @@ package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.TextArea;
+import com.vaadin.ui.*;
 import ru.extas.model.ProdCredit;
 import ru.extas.server.ProdCreditRepository;
 import ru.extas.web.commons.component.EditField;
@@ -84,7 +81,7 @@ public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
 	@Override
 	protected void saveObject(ProdCredit obj) {
 		ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
-		obj = loc;
+		Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
 	}
 
 	@Override

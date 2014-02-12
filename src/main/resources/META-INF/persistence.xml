@@ -13,6 +13,8 @@
         <class>ru.extas.model.AddressInfo</class>
         <class>ru.extas.model.Company</class>
         <class>ru.extas.model.Contact</class>
+        <class>ru.extas.model.SalePoint</class>
+        <class>ru.extas.model.LegalEntity</class>
         <class>ru.extas.model.ContactCode</class>
         <class>ru.extas.model.FormTransfer</class>
         <class>ru.extas.model.Insurance</class>

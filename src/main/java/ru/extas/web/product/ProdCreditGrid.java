@@ -4,7 +4,6 @@ import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import ru.extas.model.ProdCredit;
 import ru.extas.web.commons.*;
@@ -56,7 +55,6 @@ public class ProdCreditGrid extends ExtaGrid {
 					public void windowClose(final Window.CloseEvent e) {
 						if (editWin.isSaved()) {
 							((JPAContainer) container).refresh();
-							Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
 						}
 					}
 				});
@@ -78,7 +76,6 @@ public class ProdCreditGrid extends ExtaGrid {
 					public void windowClose(final Window.CloseEvent e) {
 						if (editWin.isSaved()) {
 							((JPAContainer) container).refreshItem(itemId);
-							Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
 						}
 					}
 				});

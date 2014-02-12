@@ -4,6 +4,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Notification;
 import ru.extas.model.ProductInSale;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
@@ -40,6 +41,7 @@ public class ProdInSaleEditForm extends AbstractEditForm<ProductInSale> {
 
 	@Override
 	protected void saveObject(ProductInSale obj) {
+		Notification.show("Продукт сохранен в продаже", Notification.Type.TRAY_NOTIFICATION);
 	}
 
 	@Override

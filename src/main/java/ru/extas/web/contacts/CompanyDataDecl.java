@@ -12,14 +12,13 @@ import ru.extas.web.commons.GridDataDecl;
  */
 public class CompanyDataDecl extends GridDataDecl {
 
-    public CompanyDataDecl() {
-        super();
-        addMapping("name", "Имя");
-        addMapping("fullName", "Полное Наименование");
-        addMapping("cellPhone", "Телефон");
-        addMapping("email", "E-Mail");
-        addMapping("actualAddress.region", "Регион");
-        super.addCreateModifyMarkers();
-    }
+	public CompanyDataDecl() {
+		super();
+		addMapping("name", "Имя");
+		addMapping("phone", "Телефон");
+		addMapping("email", "E-Mail");
+		addMapping("www", "WWW");
+		super.addCreateModifyMarkers();
+	}
 
 }

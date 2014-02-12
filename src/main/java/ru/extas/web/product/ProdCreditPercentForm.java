@@ -4,6 +4,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Notification;
 import ru.extas.model.ProdCreditPercent;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
@@ -38,7 +39,7 @@ public class ProdCreditPercentForm extends AbstractEditForm<ProdCreditPercent> {
 
 	@Override
 	protected void saveObject(final ProdCreditPercent obj) {
-
+		Notification.show("Процентная ставка сохранена", Notification.Type.TRAY_NOTIFICATION);
 	}
 
 	@Override

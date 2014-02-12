@@ -20,32 +20,48 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class ContactsView extends AbstractTabView {
 
-    private static final long serialVersionUID = -1272779672761523416L;
+	private static final long serialVersionUID = -1272779672761523416L;
 
-    public ContactsView() {
-        super("Контакты");
-    }
+	public ContactsView() {
+		super("Контакты");
+	}
 
-    @Override
-    protected List<TabInfo> getTabComponentsInfo() {
-        final ArrayList<TabInfo> ret = newArrayList();
-        ret.add(new AbstractTabInfo("Физические лица") {
-            private static final long serialVersionUID = 1L;
+	@Override
+	protected List<TabInfo> getTabComponentsInfo() {
+		final ArrayList<TabInfo> ret = newArrayList();
+		ret.add(new AbstractTabInfo("Физические лица") {
+			private static final long serialVersionUID = 1L;
 
-            @Override
-            public Component createComponent() {
-                return new PersonsGrid();
-            }
-        });
-        ret.add(new AbstractTabInfo("Юридические лица") {
-            private static final long serialVersionUID = 1L;
+			@Override
+			public Component createComponent() {
+				return new PersonsGrid();
+			}
+		});
+		ret.add(new AbstractTabInfo("Компании") {
+			private static final long serialVersionUID = 1L;
 
-            @Override
-            public Component createComponent() {
-                return new CompaniesGrid();
-            }
-        });
-        return ret;
-    }
+			@Override
+			public Component createComponent() {
+				return new CompaniesGrid();
+			}
+		});
+		ret.add(new AbstractTabInfo("Юридические лица") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component createComponent() {
+				return new LegalEntitiesGrid();
+			}
+		});
+		ret.add(new AbstractTabInfo("Торговые точки") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component createComponent() {
+				return new SalePointsGrid();
+			}
+		});
+		return ret;
+	}
 
 }

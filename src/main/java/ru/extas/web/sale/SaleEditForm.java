@@ -2,10 +2,7 @@ package ru.extas.web.sale;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.TextArea;
+import com.vaadin.ui.*;
 import ru.extas.model.Sale;
 import ru.extas.server.SaleRegistry;
 import ru.extas.web.commons.component.EditField;
@@ -127,6 +124,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 	protected void saveObject(final Sale obj) {
 		final SaleRegistry leadService = lookup(SaleRegistry.class);
 		leadService.save(obj);
+		Notification.show("Продажа сохранена", Notification.Type.TRAY_NOTIFICATION);
 	}
 
 	/*

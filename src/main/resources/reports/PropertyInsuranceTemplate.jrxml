@@ -280,7 +280,7 @@
                         <textElement verticalAlignment="Middle">
                             <font size="10"/>
                         </textElement>
-                        <textFieldExpression><![CDATA[$P{ins}.getClient().getCellPhone()]]></textFieldExpression>
+                        <textFieldExpression><![CDATA[$P{ins}.getClient().getPhone()]]></textFieldExpression>
                     </textField>
                     <staticText>
                         <reportElement x="419" y="52" width="29" height="19"

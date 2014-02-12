@@ -74,6 +74,7 @@ protected void saveObject(final UserProfile obj) {
 	securePassword(obj);
 	final UserRegistry userService = lookup(UserRegistry.class);
 	userService.save(obj);
+	Notification.show("Пользователь сохранен", Notification.Type.TRAY_NOTIFICATION);
 }
 
 /**

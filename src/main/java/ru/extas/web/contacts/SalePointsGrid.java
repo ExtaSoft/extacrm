@@ -1,7 +1,7 @@
 /**
  *
  */
-package ru.extas.web.users;
+package ru.extas.web.contacts;
 
 import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
@@ -9,9 +9,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import ru.extas.model.UserProfile;
+import ru.extas.model.Company;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -19,33 +17,28 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
- * Таблица пользователей
+ * Таблица контактов (Точки продаж)
  *
  * @author Valery Orlov
  */
-public class UsersGrid extends ExtaGrid {
+public class SalePointsGrid extends ExtaGrid {
 
-	private static final long serialVersionUID = -4385482673967616119L;
-	private final static Logger logger = LoggerFactory.getLogger(UsersGrid.class);
+	private static final long serialVersionUID = 2299363623807745654L;
 
-	/**
-	 *
-	 */
-	public UsersGrid() {
+	public SalePointsGrid() {
 		super();
-
 	}
 
 	@Override
 	protected GridDataDecl createDataDecl() {
-		return new UsersDataDecl();
+		return new CompanyDataDecl();
 	}
 
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final JPAContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
-		container.addNestedContainerProperty("contact.name");
+		final JPAContainer<Company> container = new ExtaDataContainer<>(Company.class);
+		container.addNestedContainerProperty("actualAddress.region");
 		return container;
 	}
 
@@ -53,13 +46,13 @@ public class UsersGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового пользователя в систему", "icon-user-add") {
+		actions.add(new UIAction("Новый", "Ввод нового Контакта в систему", "icon-doc-new") {
 			@Override
 			public void fire(Object itemId) {
-				logger.debug("New User...");
-				final BeanItem<UserProfile> newObj = new BeanItem<>(new UserProfile());
+				final BeanItem<Company> newObj = new BeanItem<>(new Company());
+				newObj.expandProperty("actualAddress");
 
-				final UserEditForm editWin = new UserEditForm("Ввод нового пользователя в систему", newObj);
+				final CompanyEditForm editWin = new CompanyEditForm("Ввод нового юр. лица в систему", newObj);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
@@ -75,14 +68,12 @@ public class UsersGrid extends ExtaGrid {
 			}
 		});
 
-
-		actions.add(new DefaultAction("Изменить", "Редактирование данных пользователя", "icon-user-1") {
+		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", "icon-edit-3") {
 			@Override
 			public void fire(final Object itemId) {
-				logger.debug("Edit User...");
-				final BeanItem<UserProfile> curObj = new BeanItem<>(((EntityItem<UserProfile>) table.getItem(itemId)).getEntity());
-
-				final UserEditForm editWin = new UserEditForm("Редактирование данных пользователя", curObj);
+				final BeanItem<Company> beanItem = new BeanItem<>(((EntityItem<Company>) table.getItem(itemId)).getEntity());
+				beanItem.expandProperty("actualAddress");
+				final CompanyEditForm editWin = new CompanyEditForm("Редактирование контактных данных", beanItem);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
@@ -99,5 +90,4 @@ public class UsersGrid extends ExtaGrid {
 		});
 		return actions;
 	}
-
 }

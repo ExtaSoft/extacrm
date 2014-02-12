@@ -2,10 +2,7 @@ package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.TextArea;
+import com.vaadin.ui.*;
 import ru.extas.model.ProdInsurance;
 import ru.extas.server.ProdInsuranceRepository;
 import ru.extas.web.commons.component.EditField;
@@ -50,6 +47,7 @@ public class ProdInsuranceEditForm extends AbstractEditForm<ProdInsurance> {
 	@Override
 	protected void saveObject(final ProdInsurance obj) {
 		lookup(ProdInsuranceRepository.class).save(obj);
+		Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
 	}
 
 	@Override

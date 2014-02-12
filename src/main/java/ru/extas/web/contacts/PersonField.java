@@ -51,7 +51,7 @@ public class PersonField extends CustomField<Person> {
 		nameField.setCaption("Имя");
 		fieldsContainer.addComponent(nameField);
 		// Телефон
-		Label phoneField = new Label(personItem.getItemProperty("cellPhone"));
+		Label phoneField = new Label(personItem.getItemProperty("phone"));
 		phoneField.setCaption("Телефон");
 		fieldsContainer.addComponent(phoneField);
 		// Мыло

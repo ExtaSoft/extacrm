@@ -1,10 +1,7 @@
 package ru.extas.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Данные контакта - физ. лица
@@ -13,61 +10,66 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 @Entity
 @DiscriminatorValue("COMPANY")
-@Table(name = "COMPANY", indexes = {
-        @Index(columnList = "FULL_NAME")
-})
+@Table(name = "COMPANY")
 public class Company extends Contact implements Cloneable {
 
-    private static final long serialVersionUID = -5681940552175752858L;
+	private static final long serialVersionUID = -5681940552175752858L;
 
-    // Полное название (Юридическое имя)
-    @Column(name = "FULL_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
-    private String fullName;
+	// Собственник(и) Компании
+	@ManyToMany(targetEntity = Person.class)
+	@JoinTable(
+			name = "COMPANY_OWNER",
+			joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
+			inverseJoinColumns = {@JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")})
+	private List<Person> owners;
 
-    // Коды (ИНН, ОГРН...)
-    @OneToMany(mappedBy = "contact")
-    private List<ContactCode> codes = newArrayList();
+	// Торговые точки
+	@ManyToMany(targetEntity = SalePoint.class)
+	@JoinTable(
+			name = "COMPANY_SALEPOINT",
+			joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
+			inverseJoinColumns = {@JoinColumn(name = "SALEPOINT_ID", referencedColumnName = "ID")})
+	private List<SalePoint> salePoints;
 
-    // Платежные реквизиты
-    @OneToMany(mappedBy = "contact")
-    private List<PayAccount> payAccounts = newArrayList();
+	// Сотрудники
+	@ManyToMany(targetEntity = Person.class)
+	@JoinTable(
+			name = "COMPANY_EMPLOYEE",
+			joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
+			inverseJoinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")})
+	private List<Person> employeeList;
 
-    public Company() {
-    }
+	public Company() {
+	}
 
-    @Override
-    public Company clone() {
-        Company newObj = new Company();
-        super.copyTo(newObj);
-        newObj.fullName = fullName;
-        // FIXME: Copy collections in right way
-        newObj.codes = codes;
-        newObj.payAccounts = payAccounts;
-        return newObj;
-    }
+	@Override
+	public Company clone() {
+		Company newObj = new Company();
+		super.copyTo(newObj);
+		return newObj;
+	}
 
-    public String getFullName() {
-        return fullName;
-    }
+	public List<Person> getOwners() {
+		return owners;
+	}
 
-    public void setFullName(final String fullName) {
-        this.fullName = fullName;
-    }
+	public void setOwners(final List<Person> ownerList) {
+		this.owners = ownerList;
+	}
 
-    public List<ContactCode> getCodes() {
-        return codes;
-    }
+	public List<SalePoint> getSalePoints() {
+		return salePoints;
+	}
 
-    public void setCodes(final List<ContactCode> codes) {
-        this.codes = codes;
-    }
+	public void setSalePoints(final List<SalePoint> salePointList) {
+		this.salePoints = salePointList;
+	}
 
-    public List<PayAccount> getPayAccounts() {
-        return payAccounts;
-    }
+	public List<Person> getEmployeeList() {
+		return employeeList;
+	}
 
-    public void setPayAccounts(final List<PayAccount> payAccounts) {
-        this.payAccounts = payAccounts;
-    }
+	public void setEmployeeList(final List<Person> employeeList) {
+		this.employeeList = employeeList;
+	}
 }

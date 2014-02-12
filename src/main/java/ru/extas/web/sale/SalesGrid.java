@@ -73,7 +73,6 @@ public class SalesGrid extends ExtaGrid {
 					public void windowClose(final Window.CloseEvent e) {
 						if (editWin.isSaved()) {
 							((JPAContainer) container).refresh();
-							Notification.show("Продажа сохранена", Notification.Type.TRAY_NOTIFICATION);
 						}
 					}
 				});
@@ -95,7 +94,6 @@ public class SalesGrid extends ExtaGrid {
 					public void windowClose(final Window.CloseEvent e) {
 						if (editWin.isSaved()) {
 							((JPAContainer) container).refreshItem(itemId);
-							Notification.show("Продажа сохранена", Notification.Type.TRAY_NOTIFICATION);
 						}
 					}
 				});
