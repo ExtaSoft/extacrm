@@ -1,7 +1,8 @@
 package ru.extas.web.contacts;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
 import ru.extas.model.Person;
 
 /**
@@ -13,34 +14,46 @@ import ru.extas.model.Person;
  *
  * @author Valery Orlov
  */
-public class PersonSelect extends AbstractContactSelect<Person> {
+public class PersonSelect extends CustomField<Person> {
 
+	private PersonSelectField personSelectField;
 	private Person defNewObj;
+	private Label emailField;
+	private Label birthdayField;
+	private Label phoneField;
 
 	public PersonSelect(final String caption) {
 		this(caption, new Person());
 	}
 
 	public PersonSelect(final String caption, Person defNewObj) {
-		super(caption, Person.class);
-		this.defNewObj = defNewObj;
-		addNewItemFeature();
+		this(caption, "", defNewObj);
 	}
 
 	public PersonSelect(final String caption, final String description) {
 		this(caption, description, new Person());
-		addNewItemFeature();
 	}
 
 	public PersonSelect(final String caption, final String description, Person defNewObj) {
-		super(caption, description, Person.class);
 		this.defNewObj = defNewObj;
-		addNewItemFeature();
+		setCaption(caption);
+		setDescription(description);
+		setBuffered(true);
+		addStyleName("bordered-component");
 	}
 
-	private void addNewItemFeature() {
-		setNewItemsAllowed(true);
-		setNewItemHandler(new NewItemHandler() {
+	@Override
+	protected Component initContent() {
+
+		VerticalLayout container = new VerticalLayout();
+		container.setSpacing(true);
+
+		HorizontalLayout nameLay = new HorizontalLayout();
+
+		personSelectField = new PersonSelectField("Имя", "Введите или выберите имя контакта");
+		personSelectField.setPropertyDataSource(getPropertyDataSource());
+		personSelectField.setNewItemsAllowed(true);
+		personSelectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
 			private static final long serialVersionUID = 1L;
 
 			@SuppressWarnings({"unchecked"})
@@ -63,13 +76,120 @@ public class PersonSelect extends AbstractContactSelect<Person> {
 					@Override
 					public void windowClose(final Window.CloseEvent e) {
 						if (editWin.isSaved()) {
-							container.refresh();
-							setValue(newObj.getBean().getId());
+							personSelectField.refreshContainer();
+							personSelectField.setValue(newObj.getBean().getId());
 						}
 					}
 				});
 				editWin.showModal();
 			}
 		});
+		personSelectField.addValueChangeListener(new ValueChangeListener() {
+			@Override
+			public void valueChange(final Property.ValueChangeEvent event) {
+				refreshFields((Person) personSelectField.getConvertedValue());
+			}
+		});
+		nameLay.addComponent(personSelectField);
+
+		Button searchBtn = new Button("Поиск", new Button.ClickListener() {
+			@Override
+			public void buttonClick(final Button.ClickEvent event) {
+
+				final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
+				selectWindow.addCloseListener(new Window.CloseListener() {
+
+					@Override
+					public void windowClose(final Window.CloseEvent e) {
+						if (selectWindow.isSelectPressed()) {
+							personSelectField.setConvertedValue(selectWindow.getSelected());
+						}
+					}
+				});
+				selectWindow.showModal();
+
+			}
+		});
+		searchBtn.addStyleName("icon-search-outline");
+		searchBtn.addStyleName("icon-only");
+		nameLay.addComponent(searchBtn);
+		nameLay.setComponentAlignment(searchBtn, Alignment.BOTTOM_LEFT);
+
+		Button viewBtn = new Button("Просмотр", new Button.ClickListener() {
+			@Override
+			public void buttonClick(final Button.ClickEvent event) {
+				final BeanItem<Person> beanItem;
+				beanItem = new BeanItem<>((Person) personSelectField.getConvertedValue());
+				beanItem.expandProperty("actualAddress");
+
+				final String edFormCaption = "Просмотр/Редактирование физ. лица";
+				final PersonEditForm editWin = new PersonEditForm(edFormCaption, beanItem);
+				editWin.setModified(true);
+
+				editWin.addCloseListener(new Window.CloseListener() {
+
+					@Override
+					public void windowClose(final Window.CloseEvent e) {
+						if (editWin.isSaved()) {
+							refreshFields(beanItem.getBean());
+						}
+					}
+				});
+				editWin.showModal();
+			}
+		});
+		viewBtn.addStyleName("icon-edit-3");
+		viewBtn.addStyleName("icon-only");
+		nameLay.addComponent(viewBtn);
+		nameLay.setComponentAlignment(viewBtn, Alignment.BOTTOM_LEFT);
+
+		container.addComponent(nameLay);
+
+		HorizontalLayout fieldsContainer = new HorizontalLayout();
+		fieldsContainer.setSpacing(true);
+		//fieldsContainer.addStyleName("bordered-items");
+		// Дата рождения
+		birthdayField = new Label();
+		birthdayField.setCaption("Дата рождения");
+		fieldsContainer.addComponent(birthdayField);
+		// Телефон
+		phoneField = new Label();
+		phoneField.setCaption("Телефон");
+		fieldsContainer.addComponent(phoneField);
+		// Мыло
+		emailField = new Label();
+		emailField.setCaption("E-Mail");
+		fieldsContainer.addComponent(emailField);
+		refreshFields((Person) getPropertyDataSource().getValue());
+
+		container.addComponent(fieldsContainer);
+
+		return container;
+	}
+
+	private void refreshFields(final Person person) {
+		BeanItem<Person> personItem = new BeanItem<>(person == null ? new Person() : person);
+		// Дата рождения
+		birthdayField.setPropertyDataSource(personItem.getItemProperty("birthday"));
+		// Телефон
+		phoneField.setPropertyDataSource(personItem.getItemProperty("phone"));
+		// Мыло
+		emailField.setPropertyDataSource(personItem.getItemProperty("email"));
+	}
+
+	@Override
+	public Class<? extends Person> getType() {
+		return Person.class;
+	}
+
+	private class PersonSelectField extends AbstractContactSelect<Person> {
+
+		protected PersonSelectField(final String caption) {
+			super(caption, Person.class);
+		}
+
+		protected PersonSelectField(final String caption, final String description) {
+			super(caption, description, Person.class);
+		}
 	}
 }

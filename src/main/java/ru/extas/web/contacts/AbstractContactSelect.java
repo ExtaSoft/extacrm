@@ -51,8 +51,12 @@ public abstract class AbstractContactSelect<TContactType extends Contact> extend
         setNewItemsAllowed(false);
     }
 
-    /**
-     * Returns the type of the property. <code>getValue</code> and
+	public void refreshContainer() {
+		container.refresh();
+	}
+
+	/**
+	 * Returns the type of the property. <code>getValue</code> and
      * <code>setValue</code> methods must be compatible with this type: one can
      * safely cast <code>getValue</code> to given type and pass any variable
      * assignable to this type as a parameter to <code>setValue</code>.

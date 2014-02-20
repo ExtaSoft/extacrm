@@ -187,7 +187,8 @@ public class TasksGrid extends ExtaGrid {
 		return actions;
 	}
 
-	private void refreshContainer() {
+	@Override
+	protected void refreshContainer() {
 		fillDataContainer((BeanItemContainer<Task>) container);
 	}
 
