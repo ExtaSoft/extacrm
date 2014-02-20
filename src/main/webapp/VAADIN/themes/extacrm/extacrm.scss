@@ -1,4 +1,4 @@
-@import "../base/base.scss";
+@import "../runo/runo.scss";
 @import "icons/fontello.scss";
 @import "fonts/open-sans.scss";
 @import "keyframes.scss";
@@ -452,11 +452,10 @@
   .layout-panel {
     background: #fff;
     @include border-radius(4px);
-    /* TODO make this work in the Sass compiler */
-    /* 	@include box-shadow(0 2px 3px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.07)); */
-    -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, .14), 0 0 0 1px rgba(0, 0, 0, .07);
-    -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, .14), 0 0 0 1px rgba(0, 0, 0, .07);
-    box-shadow: 0 2px 3px rgba(0, 0, 0, .14), 0 0 0 1px rgba(0, 0, 0, .07);
+    @include box-shadow(0 2px 3px rgba(0, 0, 0, .14), 0 0 0 1px rgba(0, 0, 0, .07));
+    //    -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, .14), 0 0 0 1px rgba(0, 0, 0, .07);
+    //    -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, .14), 0 0 0 1px rgba(0, 0, 0, .07);
+    //    box-shadow: 0 2px 3px rgba(0, 0, 0, .14), 0 0 0 1px rgba(0, 0, 0, .07);
   }
 
   .layout-panel .v-caption {

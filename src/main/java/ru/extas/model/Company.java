@@ -23,21 +23,21 @@ public class Company extends Contact implements Cloneable {
 			inverseJoinColumns = {@JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")})
 	private List<Person> owners;
 
-	// Торговые точки
-	@ManyToMany(targetEntity = SalePoint.class)
-	@JoinTable(
-			name = "COMPANY_SALEPOINT",
-			joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
-			inverseJoinColumns = {@JoinColumn(name = "SALEPOINT_ID", referencedColumnName = "ID")})
-	private List<SalePoint> salePoints;
-
-	// Сотрудники
+	// Сотрудники компании
 	@ManyToMany(targetEntity = Person.class)
 	@JoinTable(
-			name = "COMPANY_EMPLOYEE",
-			joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
+			name = "CONTACT_EMPLOYEE",
+			joinColumns = {@JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")})
 	private List<Person> employeeList;
+
+	// Юридические лица компании
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<LegalEntity> legalEntities;
+
+	// Торговые точки компании
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<SalePoint> salePoints;
 
 	public Company() {
 	}
@@ -71,5 +71,13 @@ public class Company extends Contact implements Cloneable {
 
 	public void setEmployeeList(final List<Person> employeeList) {
 		this.employeeList = employeeList;
+	}
+
+	public List<LegalEntity> getLegalEntities() {
+		return legalEntities;
+	}
+
+	public void setLegalEntities(final List<LegalEntity> legalEntities) {
+		this.legalEntities = legalEntities;
 	}
 }

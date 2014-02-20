@@ -3,7 +3,6 @@
  */
 package ru.extas.web.insurance;
 
-import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window.CloseEvent;
@@ -66,7 +65,7 @@ public class PolicyGrid extends ExtaGrid {
 		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке бланк", "icon-edit-3") {
 			@Override
 			public void fire(final Object itemId) {
-				final BeanItem<Policy> curObj = new BeanItem<>(((EntityItem<Policy>) table.getItem(itemId)).getEntity());
+				final BeanItem<Policy> curObj = new GridItem<>(table.getItem(itemId));
 
 				final PolicyEditForm editWin = new PolicyEditForm("Редактировать бланк", curObj);
 				editWin.addCloseListener(new CloseListener() {

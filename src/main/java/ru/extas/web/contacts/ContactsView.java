@@ -50,7 +50,7 @@ public class ContactsView extends AbstractTabView {
 
 			@Override
 			public Component createComponent() {
-				return new LegalEntitiesGrid();
+				return new LegalEntitiesGrid(null);
 			}
 		});
 		ret.add(new AbstractTabInfo("Торговые точки") {
@@ -58,7 +58,7 @@ public class ContactsView extends AbstractTabView {
 
 			@Override
 			public Component createComponent() {
-				return new SalePointsGrid();
+				return new SalePointsGrid(null);
 			}
 		});
 		return ret;

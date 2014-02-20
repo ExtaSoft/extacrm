@@ -3,7 +3,6 @@
  */
 package ru.extas.web.users;
 
-import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
@@ -67,7 +66,7 @@ public class UsersGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refresh();
+							refreshContainer();
 						}
 					}
 				});
@@ -80,7 +79,7 @@ public class UsersGrid extends ExtaGrid {
 			@Override
 			public void fire(final Object itemId) {
 				logger.debug("Edit User...");
-				final BeanItem<UserProfile> curObj = new BeanItem<>(((EntityItem<UserProfile>) table.getItem(itemId)).getEntity());
+				final BeanItem<UserProfile> curObj = new GridItem<>(table.getItem(itemId));
 
 				final UserEditForm editWin = new UserEditForm("Редактирование данных пользователя", curObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -90,7 +89,7 @@ public class UsersGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refreshItem(itemId);
+							refreshContainerItem(itemId);
 						}
 					}
 				});

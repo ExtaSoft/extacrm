@@ -3,7 +3,6 @@
  */
 package ru.extas.web.contacts;
 
-import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
@@ -46,13 +45,13 @@ public class CompaniesGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового Контакта в систему", "icon-doc-new") {
+		actions.add(new UIAction("Новый", "Ввод новой компании в систему", "icon-doc-new") {
 			@Override
 			public void fire(Object itemId) {
 				final BeanItem<Company> newObj = new BeanItem<>(new Company());
 				newObj.expandProperty("actualAddress");
 
-				final CompanyEditForm editWin = new CompanyEditForm("Ввод нового юр. лица в систему", newObj);
+				final CompanyEditForm editWin = new CompanyEditForm("Ввод новой компании в систему", newObj);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
@@ -60,7 +59,7 @@ public class CompaniesGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refresh();
+							refreshContainer();
 						}
 					}
 				});
@@ -71,9 +70,10 @@ public class CompaniesGrid extends ExtaGrid {
 		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", "icon-edit-3") {
 			@Override
 			public void fire(final Object itemId) {
-				final BeanItem<Company> beanItem = new BeanItem<>(((EntityItem<Company>) table.getItem(itemId)).getEntity());
+				final BeanItem<Company> beanItem = new GridItem<>(table.getItem(itemId));
 				beanItem.expandProperty("actualAddress");
-				final CompanyEditForm editWin = new CompanyEditForm("Редактирование контактных данных", beanItem);
+				final String caption = String.format("Редактирование компании: %s", beanItem.getBean().getName());
+				final CompanyEditForm editWin = new CompanyEditForm(caption, beanItem);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
@@ -81,7 +81,7 @@ public class CompaniesGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refreshItem(itemId);
+							refreshContainerItem(itemId);
 						}
 					}
 				});

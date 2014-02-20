@@ -3,13 +3,14 @@
  */
 package ru.extas.web.contacts;
 
-import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import ru.extas.model.Company;
+import ru.extas.model.LegalEntity;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -24,20 +25,25 @@ import static com.google.common.collect.Lists.newArrayList;
 public class LegalEntitiesGrid extends ExtaGrid {
 
 	private static final long serialVersionUID = 2299363623807745654L;
+	private final Company company;
 
-	public LegalEntitiesGrid() {
-		super();
+	public LegalEntitiesGrid(final Company company) {
+		super(false);
+		this.company = company;
+		initialize();
 	}
 
 	@Override
 	protected GridDataDecl createDataDecl() {
-		return new CompanyDataDecl();
+		return new ContactDataDecl();
 	}
 
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final JPAContainer<Company> container = new ExtaDataContainer<>(Company.class);
+		final JPAContainer<LegalEntity> container = new ExtaDataContainer<>(LegalEntity.class);
+		if (company != null)
+			container.addContainerFilter(new Compare.Equal("company", company));
 		container.addNestedContainerProperty("actualAddress.region");
 		return container;
 	}
@@ -46,13 +52,15 @@ public class LegalEntitiesGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового Контакта в систему", "icon-doc-new") {
+		actions.add(new UIAction("Новый", "Ввод нового Юридического лица в систему", "icon-doc-new") {
 			@Override
 			public void fire(Object itemId) {
-				final BeanItem<Company> newObj = new BeanItem<>(new Company());
+				final LegalEntity entity = new LegalEntity();
+				entity.setCompany(company);
+				final BeanItem<LegalEntity> newObj = new BeanItem<>(entity);
 				newObj.expandProperty("actualAddress");
 
-				final CompanyEditForm editWin = new CompanyEditForm("Ввод нового юр. лица в систему", newObj);
+				final LegalEntityEditForm editWin = new LegalEntityEditForm("Ввод нового юр. лица в систему", newObj);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
@@ -60,7 +68,7 @@ public class LegalEntitiesGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refresh();
+							refreshContainer();
 						}
 					}
 				});
@@ -71,9 +79,9 @@ public class LegalEntitiesGrid extends ExtaGrid {
 		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", "icon-edit-3") {
 			@Override
 			public void fire(final Object itemId) {
-				final BeanItem<Company> beanItem = new BeanItem<>(((EntityItem<Company>) table.getItem(itemId)).getEntity());
+				final BeanItem<LegalEntity> beanItem = new GridItem<>(table.getItem(itemId));
 				beanItem.expandProperty("actualAddress");
-				final CompanyEditForm editWin = new CompanyEditForm("Редактирование контактных данных", beanItem);
+				final LegalEntityEditForm editWin = new LegalEntityEditForm("Редактирование контактных данных", beanItem);
 				editWin.addCloseListener(new CloseListener() {
 
 					private static final long serialVersionUID = 1L;
@@ -81,7 +89,7 @@ public class LegalEntitiesGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refreshItem(itemId);
+							refreshContainerItem(itemId);
 						}
 					}
 				});

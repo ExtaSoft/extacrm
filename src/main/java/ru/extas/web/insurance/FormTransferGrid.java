@@ -4,7 +4,6 @@
 package ru.extas.web.insurance;
 
 import com.google.common.base.Throwables;
-import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
@@ -32,6 +31,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * @author Valery Orlov
@@ -77,7 +77,7 @@ public class FormTransferGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refresh();
+							refreshContainer();
 						}
 					}
 				});
@@ -88,7 +88,7 @@ public class FormTransferGrid extends ExtaGrid {
 		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке акта приема/передачи", "icon-edit-3") {
 			@Override
 			public void fire(final Object itemId) {
-				final BeanItem<FormTransfer> curObj = new BeanItem<>(((EntityItem<FormTransfer>) table.getItem(itemId)).getEntity());
+				final BeanItem<FormTransfer> curObj = new GridItem<>(table.getItem(itemId));
 
 				final FormTransferEditForm editWin = new FormTransferEditForm("Редактировать акт приема/передачи",
 						curObj);
@@ -99,7 +99,7 @@ public class FormTransferGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refreshItem(itemId);
+							refreshContainerItem(itemId);
 						}
 					}
 				});
@@ -117,8 +117,7 @@ public class FormTransferGrid extends ExtaGrid {
 	}
 
 	private void printFormTransfer(final Object itemId) {
-		final EntityItem<FormTransfer> curObj = (EntityItem<FormTransfer>) table.getItem(itemId);
-		final FormTransfer formTransfer = curObj.getEntity();
+		final FormTransfer formTransfer = extractBean(table.getItem(itemId));
 		checkNotNull(formTransfer, "Нечего печатать", "Нет выбранной записи.");
 
 		if (!canPrintForm(formTransfer))

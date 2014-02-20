@@ -4,7 +4,6 @@
 package ru.extas.web.insurance;
 
 import com.google.common.base.Throwables;
-import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
@@ -32,6 +31,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.gwt.thirdparty.guava.common.collect.Maps.newHashMap;
 import static ru.extas.server.ServiceLocator.lookup;
+import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * @author Valery Orlov
@@ -85,7 +85,7 @@ public class InsuranceGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refresh();
+							refreshContainer();
 						}
 					}
 				});
@@ -96,7 +96,7 @@ public class InsuranceGrid extends ExtaGrid {
 		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке полис страхования", "icon-edit-3") {
 			@Override
 			public void fire(final Object itemId) {
-				final BeanItem<Insurance> curObj = new BeanItem<>(((EntityItem<Insurance>) table.getItem(itemId)).getEntity());
+				final BeanItem<Insurance> curObj = new GridItem<>(table.getItem(itemId));
 
 				final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", curObj);
 				editWin.addCloseListener(new CloseListener() {
@@ -106,7 +106,7 @@ public class InsuranceGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refreshItem(itemId);
+							refreshContainerItem(itemId);
 						}
 					}
 				});
@@ -152,9 +152,7 @@ public class InsuranceGrid extends ExtaGrid {
 
 	private void printPolicy(Object itemId, boolean withMat) {
 
-		final Object curObjId = itemId;
-		final EntityItem<Insurance> curObj = (EntityItem<Insurance>) table.getItem(curObjId);
-		final Insurance insurance = curObj.getEntity();
+		final Insurance insurance = extractBean(table.getItem(itemId));
 		checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
 
 		try {

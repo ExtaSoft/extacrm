@@ -68,6 +68,10 @@ public class CloseOnlylWindow extends Window {
 		UI.getCurrent().addWindow(this);
 	}
 
+	protected void setOkPressed(final boolean okPressed) {
+		this.okPressed = okPressed;
+	}
+
 	public boolean isOkPressed() {
 		return this.okPressed;
 	}

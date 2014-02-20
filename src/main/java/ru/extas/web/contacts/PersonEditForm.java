@@ -44,6 +44,10 @@ public class PersonEditForm extends AbstractEditForm<Person> {
 	private ComboBox sexField;
 	@PropertyId("phone")
 	private EditField cellPhoneField;
+	@PropertyId("workPhone")
+	private EditField workPhoneField;
+	@PropertyId("homePhone")
+	private EditField homePhoneField;
 	@PropertyId("email")
 	private EmailField emailField;
 	@PropertyId("actualAddress.region")
@@ -54,13 +58,7 @@ public class PersonEditForm extends AbstractEditForm<Person> {
 	private EditField postIndexField;
 	@PropertyId("actualAddress.streetBld")
 	private TextArea streetBldField;
-	// Компания
-	@PropertyId("affiliation")
-	private AbstractContactSelect jobField;
-	@PropertyId("jobPosition")
-	private ComboBox jobPositionField;
-	@PropertyId("jobDepartment")
-	private EditField jobDepartmentField;
+
 	// Паспортнве данные
 	@PropertyId("passNum")
 	private EditField passNumField;
@@ -70,6 +68,8 @@ public class PersonEditForm extends AbstractEditForm<Person> {
 	private TextArea passIssuedByField;
 	@PropertyId("passIssuedByNum")
 	private EditField passIssuedByNumField;
+	@PropertyId("passRegAdress")
+	private TextArea passRegAdressField;
 
 
 	/**
@@ -140,15 +140,22 @@ public class PersonEditForm extends AbstractEditForm<Person> {
 		final FormLayout personForm = createMainForm(obj);
 		tabsheet.addTab(personForm).setCaption("Общие данные");
 
-		// Форма редактирования данных о компании
-		final FormLayout companyForm = createCompanyForm();
-		tabsheet.addTab(companyForm).setCaption("Компания");
-
 		// Форма редактирования паспортных данных
 		final FormLayout passForm = createPassForm();
 		tabsheet.addTab(passForm).setCaption("Паспортные данные");
 
+		// Форма просмотра истории продаж
+		final FormLayout salesForm = createSelesForm();
+		tabsheet.addTab(salesForm).setCaption("История продаж");
+
 		return tabsheet;
+	}
+
+	private FormLayout createSelesForm() {
+		final FormLayout form = new FormLayout();
+		form.setMargin(true);
+
+		return form;
 	}
 
 	private FormLayout createPassForm() {
@@ -172,30 +179,16 @@ public class PersonEditForm extends AbstractEditForm<Person> {
 
 		passIssuedByNumField = new EditField("Код подразделения");
 		passForm.addComponent(passIssuedByNumField);
+
+		passRegAdressField = new TextArea("Адрес регистрации");
+		passRegAdressField.setDescription("Введите адрес регистрации (прописки) контакта");
+		passRegAdressField.setInputPrompt("Регион, Город, Улица, Дом...");
+		passRegAdressField.setNullRepresentation("");
+		passRegAdressField.setRows(3);
+		passRegAdressField.setColumns(30);
+		passForm.addComponent(passRegAdressField);
+
 		return passForm;
-	}
-
-	private FormLayout createCompanyForm() {
-		final FormLayout companyForm = new FormLayout();
-		companyForm.setMargin(true);
-
-		jobField = new CompanySelect("Компания");
-		jobField.setDescription("Компания в которой работает контакт");
-		companyForm.addComponent(jobField);
-
-		jobPositionField = new ComboBox("Должность");
-		jobPositionField.setWidth(15, Unit.EM);
-		jobPositionField.setDescription("Укажите должность контакта");
-		jobPositionField.setNullSelectionAllowed(false);
-		jobPositionField.setNewItemsAllowed(false);
-		ComponentUtil.fillSelectByEnum(jobPositionField, Person.Position.class);
-		companyForm.addComponent(jobPositionField);
-
-		jobDepartmentField = new EditField("Департамент");
-		jobDepartmentField.setDescription("Подразделение в котором работает контакт");
-		jobDepartmentField.setColumns(20);
-		companyForm.addComponent(jobDepartmentField);
-		return companyForm;
 	}
 
 	private FormLayout createMainForm(final Person obj) {
@@ -228,6 +221,12 @@ public class PersonEditForm extends AbstractEditForm<Person> {
 
 		cellPhoneField = new PhoneField("Мобильный телефон");
 		personForm.addComponent(cellPhoneField);
+
+		workPhoneField = new PhoneField("Рабочий телефон");
+		personForm.addComponent(workPhoneField);
+
+		homePhoneField = new PhoneField("Домашний телефон");
+		personForm.addComponent(homePhoneField);
 
 		emailField = new EmailField("E-Mail");
 		personForm.addComponent(emailField);

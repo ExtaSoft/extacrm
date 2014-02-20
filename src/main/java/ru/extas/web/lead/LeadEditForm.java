@@ -1,7 +1,6 @@
 package ru.extas.web.lead;
 
 import com.google.common.base.Strings;
-import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
@@ -36,6 +35,7 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
+import static ru.extas.web.commons.GridItem.extractBean;
 import static ru.extas.web.commons.TableUtils.initTableColumns;
 
 /**
@@ -269,7 +269,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 		table.addValueChangeListener(new Property.ValueChangeListener() {
 			@Override
 			public void valueChange(Property.ValueChangeEvent event) {
-				final Company curObj = ((EntityItem<Company>) table.getItem(table.getValue())).getEntity();
+				final Company curObj = extractBean(table.getItem(table.getValue()));
 				lead.setVendor(curObj);
 				pointOfSaleField.setValue(curObj.getName());
 				setModified(true);
@@ -348,7 +348,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 		table.addValueChangeListener(new Property.ValueChangeListener() {
 			@Override
 			public void valueChange(Property.ValueChangeEvent event) {
-				final Person curObj = ((EntityItem<Person>) table.getItem(table.getValue())).getEntity();
+				final Person curObj = extractBean(table.getItem(table.getValue()));
 				lead.setClient(curObj);
 				fillLeadFromClient(curObj);
 				setModified(true);

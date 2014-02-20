@@ -16,6 +16,10 @@ import java.util.Set;
 @Table(name = "LEGAL_ENTITY")
 public class LegalEntity extends Contact implements Cloneable {
 
+	// Компания
+	@ManyToOne(optional = false)
+	private Company company;
+
 	// ОГРН/ОГРИП
 	@Column(name = "OGRN_OGRIP", length = 15)
 	private String ogrnOgrip;
@@ -27,14 +31,6 @@ public class LegalEntity extends Contact implements Cloneable {
 	// Генеральный директор
 	@OneToOne
 	private Person director;
-
-	// Афилированные лица
-	@ManyToMany
-	@JoinTable(
-			name = "LEGAL_ENTITY_AFFILIATION",
-			joinColumns = {@JoinColumn(name = "LEGAL_ENTITY_ID", referencedColumnName = "ID")},
-			inverseJoinColumns = {@JoinColumn(name = "AFFILIATION_ID", referencedColumnName = "ID")})
-	private List<Contact> affiliations;
 
 	// Банки и кредитные продукты
 	@ManyToMany
@@ -73,13 +69,6 @@ public class LegalEntity extends Contact implements Cloneable {
 		this.director = director;
 	}
 
-	public List<Contact> getAffiliations() {
-		return affiliations;
-	}
-
-	public void setAffiliations(final List<Contact> affiliations) {
-		this.affiliations = affiliations;
-	}
 
 	public List<ProdCredit> getCredProducts() {
 		return credProducts;
@@ -95,5 +84,13 @@ public class LegalEntity extends Contact implements Cloneable {
 
 	public void setMotorBrands(final Set<String> motorBrands) {
 		this.motorBrands = motorBrands;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(final Company company) {
+		this.company = company;
 	}
 }

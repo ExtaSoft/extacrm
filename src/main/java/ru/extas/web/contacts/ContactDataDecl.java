@@ -10,9 +10,9 @@ import ru.extas.web.commons.GridDataDecl;
  *
  * @author Valery Orlov
  */
-public class CompanyDataDecl extends GridDataDecl {
+public class ContactDataDecl extends GridDataDecl {
 
-	public CompanyDataDecl() {
+	public ContactDataDecl() {
 		super();
 		addMapping("name", "Имя");
 		addMapping("phone", "Телефон");

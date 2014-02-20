@@ -3,7 +3,6 @@
  */
 package ru.extas.web.contacts;
 
-import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
@@ -55,7 +54,7 @@ public class PersonsGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer<Person>) container).refresh();
+							refreshContainer();
 						}
 					}
 				});
@@ -67,16 +66,17 @@ public class PersonsGrid extends ExtaGrid {
 			@Override
 			public void fire(final Object itemId) {
 
-				final BeanItem<Person> curObj = new BeanItem<>(((EntityItem<Person>) table.getItem(itemId)).getEntity());
+				final BeanItem<Person> curObj = new GridItem<>(table.getItem(itemId));
 				curObj.expandProperty("actualAddress");
 
-				final PersonEditForm editWin = new PersonEditForm("Редактирование контактных данных", curObj);
+				final String caption = String.format("Редактирование контакта: %s", curObj.getBean().getName());
+				final PersonEditForm editWin = new PersonEditForm(caption, curObj);
 				editWin.addCloseListener(new CloseListener() {
 
 					@Override
 					public void windowClose(final CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer<Person>) container).refreshItem(itemId);
+							refreshContainerItem(itemId);
 						}
 					}
 				});

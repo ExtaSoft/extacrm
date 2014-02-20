@@ -15,6 +15,10 @@ import java.util.List;
 @Table(name = "SALE_POINT")
 public class SalePoint extends Contact implements Cloneable {
 
+	// Компания
+	@ManyToOne(optional = false)
+	private Company company;
+
 	// Юр. лица работающие на торговой точке
 	@ManyToMany(targetEntity = LegalEntity.class)
 	@JoinTable(
@@ -26,8 +30,8 @@ public class SalePoint extends Contact implements Cloneable {
 	// Сотрудники
 	@ManyToMany(targetEntity = Person.class)
 	@JoinTable(
-			name = "SALEPOINT_EMPLOYEE",
-			joinColumns = {@JoinColumn(name = "SALEPOINT_ID", referencedColumnName = "ID")},
+			name = "CONTACT_EMPLOYEE",
+			joinColumns = {@JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")})
 	private List<Person> employes;
 
@@ -95,5 +99,13 @@ public class SalePoint extends Contact implements Cloneable {
 
 	public void setSetelemCode(final String setelemCode) {
 		this.setelemCode = setelemCode;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(final Company company) {
+		this.company = company;
 	}
 }

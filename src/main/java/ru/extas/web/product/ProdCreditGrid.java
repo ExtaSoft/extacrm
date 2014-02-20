@@ -1,7 +1,5 @@
 package ru.extas.web.product;
 
-import com.vaadin.addon.jpacontainer.EntityItem;
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window;
@@ -54,7 +52,7 @@ public class ProdCreditGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final Window.CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refresh();
+							refreshContainer();
 						}
 					}
 				});
@@ -65,7 +63,7 @@ public class ProdCreditGrid extends ExtaGrid {
 		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке страховой продукт", "icon-edit-3") {
 			@Override
 			public void fire(final Object itemId) {
-				final BeanItem<ProdCredit> curObj = new BeanItem<>(((EntityItem<ProdCredit>) table.getItem(itemId)).getEntity());
+				final BeanItem<ProdCredit> curObj = new GridItem<>(table.getItem(itemId));
 
 				final ProdCreditEditForm editWin = new ProdCreditEditForm("Редактировать продукт", curObj);
 				editWin.addCloseListener(new Window.CloseListener() {
@@ -75,7 +73,7 @@ public class ProdCreditGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final Window.CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refreshItem(itemId);
+							refreshContainerItem(itemId);
 						}
 					}
 				});

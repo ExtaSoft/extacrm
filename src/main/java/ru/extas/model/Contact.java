@@ -25,6 +25,7 @@ public abstract class Contact extends AbstractExtaObject implements Cloneable {
 	private static final long serialVersionUID = -2543373135823969745L;
 
 	public static final int NAME_LENGTH = 50;
+	public static final int PHONE_LINGHT = 20;
 
 	// Фактический адрес
 	@Embedded
@@ -37,7 +38,7 @@ public abstract class Contact extends AbstractExtaObject implements Cloneable {
 	private String name;
 
 	// Телефон
-	@Column(name = "CELL_PHONE", length = 20)
+	@Column(name = "CELL_PHONE", length = PHONE_LINGHT)
 	@Max(20)
 	private String phone;
 

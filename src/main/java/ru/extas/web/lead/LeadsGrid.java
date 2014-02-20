@@ -1,6 +1,5 @@
 package ru.extas.web.lead;
 
-import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
@@ -19,6 +18,7 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
+import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * @author Valery Orlov
@@ -76,7 +76,7 @@ public class LeadsGrid extends ExtaGrid {
 						@Override
 						public void windowClose(final Window.CloseEvent e) {
 							if (editWin.isSaved()) {
-								((JPAContainer) container).refresh();
+								refreshContainer();
 							}
 						}
 					});
@@ -88,7 +88,7 @@ public class LeadsGrid extends ExtaGrid {
 		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке лид", "icon-edit-3") {
 			@Override
 			public void fire(final Object itemId) {
-				final BeanItem<Lead> curObj = new BeanItem<>(((EntityItem<Lead>) table.getItem(itemId)).getEntity());
+				final BeanItem<Lead> curObj = new GridItem<>(table.getItem(itemId));
 
 				final LeadEditForm editWin = new LeadEditForm("Редактирование лида", curObj, false);
 				editWin.addCloseListener(new Window.CloseListener() {
@@ -98,7 +98,7 @@ public class LeadsGrid extends ExtaGrid {
 					@Override
 					public void windowClose(final Window.CloseEvent e) {
 						if (editWin.isSaved()) {
-							((JPAContainer) container).refreshItem(itemId);
+							refreshContainerItem(itemId);
 						}
 					}
 				});
@@ -110,7 +110,7 @@ public class LeadsGrid extends ExtaGrid {
 			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", "icon-doc-new") {
 				@Override
 				public void fire(final Object itemId) {
-					final BeanItem<Lead> curObj = new BeanItem<>(((EntityItem<Lead>) table.getItem(itemId)).getEntity());
+					final BeanItem<Lead> curObj = new GridItem<>(table.getItem(itemId));
 
 					final LeadEditForm editWin = new LeadEditForm("Квалификация лида", curObj, true);
 					editWin.addCloseListener(new Window.CloseListener() {
@@ -120,7 +120,7 @@ public class LeadsGrid extends ExtaGrid {
 						@Override
 						public void windowClose(final Window.CloseEvent e) {
 							if (editWin.isSaved()) {
-								((JPAContainer) container).refreshItem(itemId);
+								refreshContainerItem(itemId);
 							}
 						}
 					});
@@ -132,7 +132,7 @@ public class LeadsGrid extends ExtaGrid {
 		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязан текущий Лид", "icon-sitemap") {
 			@Override
 			public void fire(Object itemId) {
-				final Lead curObj = ((EntityItem<Lead>) table.getItem(itemId)).getEntity();
+				final Lead curObj = extractBean(table.getItem(itemId));
 
 				// Ищем процесс к которому привязана текущая продажа
 				RuntimeService runtimeService = lookup(RuntimeService.class);
