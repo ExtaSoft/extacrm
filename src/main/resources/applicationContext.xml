@@ -27,6 +27,16 @@
         <constructor-arg value="RU"/>
     </bean>
 
+    <!--Информация о версии и билде -->
+    <context:property-placeholder location="classpath:version.properties" ignore-unresolvable="true"/>
+    <bean id="application.version" class="java.lang.String">
+        <constructor-arg value="${extacrm.app.version}"/>
+    </bean>
+    <bean id="application.build.timestamp" class="java.lang.String">
+        <constructor-arg value="${extacrm.build.timestamp}"/>
+    </bean>
+
+
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Data Source -->
     <context:property-placeholder location="classpath:db.properties" ignore-unresolvable="true"/>

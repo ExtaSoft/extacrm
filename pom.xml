@@ -48,6 +48,7 @@
 
             <properties>
                 <jelastic.environment>extacrm-dev</jelastic.environment>
+                <extacrm.ssl.pattern>NONE</extacrm.ssl.pattern>
 
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
@@ -61,6 +62,7 @@
 
             <properties>
                 <jelastic.environment>extacrm</jelastic.environment>
+                <extacrm.ssl.pattern>CONFIDENTIAL</extacrm.ssl.pattern>
 
                 <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
                 <jpa.logging.level>WARNING</jpa.logging.level>
@@ -73,6 +75,7 @@
 
             <properties>
                 <jelastic.environment>extacrm-uat</jelastic.environment>
+                <extacrm.ssl.pattern>CONFIDENTIAL</extacrm.ssl.pattern>
 
                 <extacrm.gae.log.props>WEB-INF/logging-uat.properties</extacrm.gae.log.props>
                 <jpa.logging.level>FINE</jpa.logging.level>
@@ -476,10 +479,12 @@
                     <port>8080</port>
                     <!-- application path always starts with /-->
                     <path>/</path>
+
                     <!-- optional path to a context file -->
                     <!--<contextFile>\${tomcatContextXml}</contextFile>-->
                     <!-- optional system propoerties you want to add -->
                     <systemProperties>
+                        <extacrm.ssl.pattern>NONE</extacrm.ssl.pattern>
                         <IS_DEV_ENV>true</IS_DEV_ENV>
                         <appserver.base>${project.build.directory}/appserver-base</appserver.base>
                         <appserver.home>${project.build.directory}/appserver-home</appserver.home>
@@ -492,32 +497,6 @@
                     <additionalClasspathDirs>
                         <additionalClasspathDir></additionalClasspathDir>
                     </additionalClasspathDirs>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.1.1.v20140108</version>
-                <configuration>
-                    <webAppConfig implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
-                        <sessionHandler implementation="org.eclipse.jetty.server.session.SessionHandler">
-                            <sessionManager implementation="org.eclipse.jetty.server.session.HashSessionManager">
-                                <storeDirectory>${basedir}/target/jetty-sessions</storeDirectory>
-                                <idleSavePeriod>1</idleSavePeriod>
-                            </sessionManager>
-                        </sessionHandler>
-                    </webAppConfig>
-                    <systemProperties>
-                        <systemProperty>
-                            <name>IS_DEV_ENV</name>
-                            <value>true</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>sun.io.serialization.extendedDebugInfo</name>
-                            <value>true</value>
-                        </systemProperty>
-                    </systemProperties>
                 </configuration>
             </plugin>
 

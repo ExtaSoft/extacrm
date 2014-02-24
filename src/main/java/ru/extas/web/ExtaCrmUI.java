@@ -41,6 +41,7 @@ import ru.extas.web.users.UsersView;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.MessageFormat;
 import java.util.Locale;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -302,15 +303,15 @@ public class ExtaCrmUI extends UI {
 
 						// Branding element
 						addComponent(new CssLayout() {
-							/**
-							 *
-							 */
-							private static final long serialVersionUID = 1L;
-
 							{
+								String appVersion = lookup("application.version", String.class);
+								String appBuildTm = lookup("application.build.timestamp", String.class);
 								addStyleName("branding");
-								final Label logo = new Label("<span>Экстрим Ассистанс</span> CRM", ContentMode.HTML);
+								final String brandText = "<span>Экстрим Ассистанс</span> CRM";
+								final Label logo = new Label(brandText, ContentMode.HTML);
 								logo.setSizeUndefined();
+								final String logoDesc = MessageFormat.format("Версия {0}, собрано {1}", appVersion, appBuildTm);
+								logo.setDescription(logoDesc);
 								addComponent(logo);
 								// addComponent(new Image(null, new
 								// ThemeResource(
