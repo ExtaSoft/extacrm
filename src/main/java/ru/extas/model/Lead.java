@@ -91,7 +91,7 @@ public class Lead extends AbstractExtaObject {
 
 	// Продавец (дилер, страх. компания)
 	@OneToOne
-	private Company vendor;
+	private SalePoint vendor;
 
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -206,11 +206,11 @@ public class Lead extends AbstractExtaObject {
 		this.client = client;
 	}
 
-	public Company getVendor() {
+	public SalePoint getVendor() {
 		return vendor;
 	}
 
-	public void setVendor(Company vendor) {
+	public void setVendor(SalePoint vendor) {
 		this.vendor = vendor;
 	}
 

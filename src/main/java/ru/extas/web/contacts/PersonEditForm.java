@@ -145,13 +145,13 @@ public class PersonEditForm extends AbstractEditForm<Person> {
 		tabsheet.addTab(passForm).setCaption("Паспортные данные");
 
 		// Форма просмотра истории продаж
-		final FormLayout salesForm = createSelesForm();
+		final FormLayout salesForm = createSalesForm();
 		tabsheet.addTab(salesForm).setCaption("История продаж");
 
 		return tabsheet;
 	}
 
-	private FormLayout createSelesForm() {
+	private FormLayout createSalesForm() {
 		final FormLayout form = new FormLayout();
 		form.setMargin(true);
 

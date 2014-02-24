@@ -14,8 +14,8 @@ import ru.extas.server.PolicyService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.contacts.CompanySelect;
 import ru.extas.web.contacts.PersonSelect;
+import ru.extas.web.contacts.SalePointSelect;
 import ru.extas.web.reference.MotorBrandSelect;
 import ru.extas.web.reference.MotorTypeSelect;
 import ru.extas.web.util.ComponentUtil;
@@ -60,7 +60,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	@PropertyId("endDate")
 	private PopupDateField endDateField;
 	@PropertyId("dealer")
-	private CompanySelect dealerField;
+	private SalePointSelect dealerField;
 
 	public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
 		super(caption, obj);
@@ -214,7 +214,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		endDateField.setRequired(true);
 		form.addComponent(endDateField);
 
-		dealerField = new CompanySelect("Точка продажи", "Название автосоалона где продана страховка");
+		dealerField = new SalePointSelect("Точка продажи", "Название автосоалона где продана страховка", null);
 		// dealerField.setRequired(true);
 		form.addComponent(dealerField);
 

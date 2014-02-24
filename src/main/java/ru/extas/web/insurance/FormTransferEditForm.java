@@ -2,7 +2,10 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.PopupDateField;
 import org.joda.time.LocalDate;
 import ru.extas.model.FormTransfer;
 import ru.extas.server.FormTransferService;
@@ -22,9 +25,9 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 	private static final long serialVersionUID = 9510268415882116L;
 	// Компоненты редактирования
 	@PropertyId("fromContact")
-	private ComboBox fromContactField;
+	private PersonSelect fromContactField;
 	@PropertyId("toContact")
-	private ComboBox toContactField;
+	private PersonSelect toContactField;
 	@PropertyId("transferDate")
 	private PopupDateField transferDateField;
 	@PropertyId("formNums")

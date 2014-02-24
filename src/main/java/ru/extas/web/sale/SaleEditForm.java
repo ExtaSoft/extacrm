@@ -7,8 +7,8 @@ import ru.extas.model.Sale;
 import ru.extas.server.SaleRegistry;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.contacts.CompanySelect;
 import ru.extas.web.contacts.PersonSelect;
+import ru.extas.web.contacts.SalePointSelect;
 import ru.extas.web.reference.MotorBrandSelect;
 import ru.extas.web.reference.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
@@ -44,7 +44,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 	private EditField mototPriceField;
 	// Мотосалон
 	@PropertyId("dealer")
-	private CompanySelect dealerField;
+	private SalePointSelect dealerField;
 	@PropertyId("comment")
 	private TextArea commentField;
 	@PropertyId("productInSales")
@@ -87,7 +87,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 		mototPriceField = new EditField("Цена техники");
 		form.addComponent(mototPriceField);
 
-		dealerField = new CompanySelect("Мотосалон");
+		dealerField = new SalePointSelect("Мотосалон", "Введите точку продаж", null);
 		form.addComponent(dealerField);
 
 		commentField = new TextArea("Комментарий");

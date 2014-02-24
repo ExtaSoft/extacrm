@@ -85,7 +85,7 @@ public class Insurance extends AbstractExtaObject {
 	private String pointOfSale;
 
 	@OneToOne
-	private Company dealer;
+	private SalePoint dealer;
 
 	public enum PeriodOfCover {
 		YEAR,
@@ -289,11 +289,11 @@ public class Insurance extends AbstractExtaObject {
 		this.a7Num = a7Num;
 	}
 
-	public Company getDealer() {
+	public SalePoint getDealer() {
 		return dealer;
 	}
 
-	public void setDealer(Company dealer) {
+	public void setDealer(SalePoint dealer) {
 		this.dealer = dealer;
 	}
 }

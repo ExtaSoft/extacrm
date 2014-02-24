@@ -71,7 +71,7 @@ public class Sale extends AbstractExtaObject {
 
 	// Мотосалон
 	@OneToOne
-	private Company dealer;
+	private SalePoint dealer;
 
 	@Column(name = "COMMENT")
 	private String comment;
@@ -101,11 +101,11 @@ public class Sale extends AbstractExtaObject {
 		this.processId = processId;
 	}
 
-	public Company getDealer() {
+	public SalePoint getDealer() {
 		return dealer;
 	}
 
-	public void setDealer(Company dealer) {
+	public void setDealer(SalePoint dealer) {
 		this.dealer = dealer;
 	}
 

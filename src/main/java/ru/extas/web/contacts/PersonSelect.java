@@ -21,6 +21,7 @@ public class PersonSelect extends CustomField<Person> {
 	private Label emailField;
 	private Label birthdayField;
 	private Label phoneField;
+	private Button viewBtn;
 
 	public PersonSelect(final String caption) {
 		this(caption, new Person());
@@ -51,6 +52,7 @@ public class PersonSelect extends CustomField<Person> {
 		HorizontalLayout nameLay = new HorizontalLayout();
 
 		personSelectField = new PersonSelectField("Имя", "Введите или выберите имя контакта");
+		personSelectField.setInputPrompt("Фамилия Имя Отчество");
 		personSelectField.setPropertyDataSource(getPropertyDataSource());
 		personSelectField.setNewItemsAllowed(true);
 		personSelectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
@@ -115,7 +117,7 @@ public class PersonSelect extends CustomField<Person> {
 		nameLay.addComponent(searchBtn);
 		nameLay.setComponentAlignment(searchBtn, Alignment.BOTTOM_LEFT);
 
-		Button viewBtn = new Button("Просмотр", new Button.ClickListener() {
+		viewBtn = new Button("Просмотр", new Button.ClickListener() {
 			@Override
 			public void buttonClick(final Button.ClickEvent event) {
 				final BeanItem<Person> beanItem;
@@ -167,8 +169,14 @@ public class PersonSelect extends CustomField<Person> {
 		return container;
 	}
 
-	private void refreshFields(final Person person) {
-		BeanItem<Person> personItem = new BeanItem<>(person == null ? new Person() : person);
+	private void refreshFields(Person person) {
+		if (person == null) {
+			viewBtn.setEnabled(false);
+			person = new Person();
+		} else
+			viewBtn.setEnabled(true);
+
+		BeanItem<Person> personItem = new BeanItem<>(person);
 		// Дата рождения
 		birthdayField.setPropertyDataSource(personItem.getItemProperty("birthday"));
 		// Телефон

@@ -11,9 +11,9 @@ import com.vaadin.data.util.filter.Or;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.*;
 import ru.extas.model.AddressInfo;
-import ru.extas.model.Company;
 import ru.extas.model.Lead;
 import ru.extas.model.Person;
+import ru.extas.model.SalePoint;
 import ru.extas.server.LeadRepository;
 import ru.extas.server.LeadService;
 import ru.extas.web.commons.ExtaDataContainer;
@@ -22,10 +22,10 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.contacts.CompanyDataDecl;
-import ru.extas.web.contacts.CompanyEditForm;
+import ru.extas.web.contacts.ContactDataDecl;
 import ru.extas.web.contacts.PersonDataDecl;
 import ru.extas.web.contacts.PersonEditForm;
+import ru.extas.web.contacts.SalePointEditForm;
 import ru.extas.web.reference.MotorBrandSelect;
 import ru.extas.web.reference.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
@@ -77,7 +77,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 	private TextArea commentField;
 
 	private boolean qualifyForm;
-	private JPAContainer<Company> vendorsContainer;
+	private ExtaDataContainer<SalePoint> vendorsContainer;
 	private JPAContainer<Person> clientsContainer;
 
 	public LeadEditForm(final String caption, final BeanItem<Lead> obj, boolean qualifyForm) {
@@ -115,11 +115,11 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 
 	}
 
-	private Company createCompanyFromLead(Lead lead) {
-		Company company = new Company();
-		company.setName(lead.getPointOfSale());
-		company.setActualAddress(new AddressInfo(lead.getRegion(), null, null, null));
-		return company;
+	private SalePoint createCompanyFromLead(Lead lead) {
+		SalePoint salePoint = new SalePoint();
+		salePoint.setName(lead.getPointOfSale());
+		salePoint.setActualAddress(new AddressInfo(lead.getRegion(), null, null, null));
+		return salePoint;
 	}
 
 	/*
@@ -218,7 +218,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 		final Table table = new Table();
 		table.setRequired(true);
 		// Запрос данных
-		vendorsContainer = new ExtaDataContainer<>(Company.class);
+		vendorsContainer = new ExtaDataContainer<>(SalePoint.class);
 		vendorsContainer.addNestedContainerProperty("actualAddress.region");
 		setVendorsFilter();
 
@@ -227,11 +227,11 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 		newBtn.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(Button.ClickEvent event) {
-				final BeanItem<Company> newObj = new BeanItem<>(createCompanyFromLead(lead));
+				final BeanItem<SalePoint> newObj = new BeanItem<>(createCompanyFromLead(lead));
 				newObj.expandProperty("actualAddress");
 
 				final String edFormCaption = "Ввод нового контакта в систему";
-				final CompanyEditForm editWin = new CompanyEditForm(edFormCaption, newObj);
+				final SalePointEditForm editWin = new SalePointEditForm(edFormCaption, newObj);
 				editWin.setModified(true);
 
 				editWin.addCloseListener(new Window.CloseListener() {
@@ -261,7 +261,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 		table.setHeight(10, Unit.EM);
 		// Настройка столбцов таблицы
 		table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
-		GridDataDecl dataDecl = new CompanyDataDecl();
+		GridDataDecl dataDecl = new ContactDataDecl();
 		initTableColumns(table, dataDecl);
 		table.setColumnCollapsed("phone", true);
 		table.setColumnCollapsed("email", true);
@@ -269,7 +269,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 		table.addValueChangeListener(new Property.ValueChangeListener() {
 			@Override
 			public void valueChange(Property.ValueChangeEvent event) {
-				final Company curObj = extractBean(table.getItem(table.getValue()));
+				final SalePoint curObj = extractBean(table.getItem(table.getValue()));
 				lead.setVendor(curObj);
 				pointOfSaleField.setValue(curObj.getName());
 				setModified(true);
