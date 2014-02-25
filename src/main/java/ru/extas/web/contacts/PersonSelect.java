@@ -104,7 +104,8 @@ public class PersonSelect extends CustomField<Person> {
 					@Override
 					public void windowClose(final Window.CloseEvent e) {
 						if (selectWindow.isSelectPressed()) {
-							personSelectField.setConvertedValue(selectWindow.getSelected());
+							final Person selected = selectWindow.getSelected();
+							personSelectField.setConvertedValue(selected);
 						}
 					}
 				});
@@ -170,6 +171,8 @@ public class PersonSelect extends CustomField<Person> {
 	}
 
 	private void refreshFields(Person person) {
+		setValue(person);
+
 		if (person == null) {
 			viewBtn.setEnabled(false);
 			person = new Person();

@@ -6,7 +6,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
 
     <properties>
         <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
@@ -511,8 +511,8 @@
                 <configuration>
                     <releaseProfiles>prod</releaseProfiles>
                     <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
-                    <user>orlov332</user>
-                    <branchName>Release</branchName>
+                    <username>orlov332</username>
+                    <branchName>Release ${version}</branchName>
                     <updateBranchVersions>true</updateBranchVersions>
                     <goals>jelastic:deploy</goals>
                 </configuration>
