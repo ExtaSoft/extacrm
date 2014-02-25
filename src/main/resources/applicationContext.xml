@@ -40,12 +40,20 @@
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Data Source -->
     <context:property-placeholder location="classpath:db.properties" ignore-unresolvable="true"/>
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="${db.jdbc.driver}"/>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" depends-on="flyway">
+    <property name="driverClassName" value="${db.jdbc.driver}"/>
         <property name="url" value="${db.jdbc.url}"/>
         <property name="username" value="${db.jdbc.username}"/>
         <property name="password" value="${db.jdbc.password}"/>
         <property name="connectionProperties" value="characterEncoding=UTF-8"/>
+    </bean>
+
+    <!--//////////////////////////////////////////////////////////////////////////////////////-->
+    <!-- Проверяет версию БД и выполняет миграцию если необходимо -->
+    <bean id="flyway" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="initOnMigrate" value="true"/>
+        <property name="initVersion" value="0.1.0"/>
     </bean>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
@@ -67,6 +75,7 @@
             <props>
                 <prop key="eclipselink.target-database">${db.name}</prop>
                 <prop key="eclipselink.ddl-generation">${jpa.ddl-generation}</prop>
+                <prop key="eclipselink.ddl-generation.output-mode">${jpa.generation.output-mode}</prop>
                 <prop key="eclipselink.logging.level">${jpa.logging.level}</prop>
                 <prop key="eclipselink.logging.level.sql">${jpa.logging.level}</prop>
             </props>
@@ -81,8 +90,9 @@
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- BPMN Process Engine Configuration -->
-    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
-        <property name="dataSource" ref="dataSource"/>
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration"
+          depends-on="flyway">
+    <property name="dataSource" ref="dataSource"/>
         <property name="transactionManager" ref="transactionManager"/>
         <property name="databaseSchemaUpdate" value="true"/>
         <property name="jobExecutorActivate" value="false"/>
