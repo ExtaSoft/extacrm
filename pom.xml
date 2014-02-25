@@ -513,7 +513,7 @@
                     <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
                     <branchName>Release ${project.version}</branchName>
                     <updateBranchVersions>true</updateBranchVersions>
-                    <goals>jelastic:deploy</goals>
+                    <goals>package jelastic:deploy</goals>
                 </configuration>
             </plugin>
 
