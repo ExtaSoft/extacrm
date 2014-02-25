@@ -6,7 +6,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
 
     <properties>
         <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
@@ -92,7 +92,7 @@
         <connection>scm:git:https://github.com/ExtaSoft/extacrm.git</connection>
         <developerConnection>scm:git:https://github.com/ExtaSoft/extacrm.git</developerConnection>
         <url>scm:git:https://github.com/ExtaSoft/extacrm.git</url>
-        <tag>Release 0.2.0-SNAPSHOT</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <repositories>
@@ -458,7 +458,7 @@
                     <password>${jelastic.password}</password>
                     <environment>${jelastic.environment}</environment>
                     <context>ROOT</context>
-                    <comment>${project.name} ${version} built at ${maven.build.timestamp}</comment>
+                    <comment>${project.name} ${project.version} built at ${maven.build.timestamp}</comment>
                     <api_hoster>app.jelastic.regruhosting.ru</api_hoster>
                 </configuration>
             </plugin>
@@ -511,8 +511,7 @@
                 <configuration>
                     <releaseProfiles>prod</releaseProfiles>
                     <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
-                    <username>orlov332</username>
-                    <branchName>Release ${version}</branchName>
+                    <branchName>Release ${project.version}</branchName>
                     <updateBranchVersions>true</updateBranchVersions>
                     <goals>jelastic:deploy</goals>
                 </configuration>
