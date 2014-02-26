@@ -21,4 +21,14 @@ public interface InsuranceCalculator {
      * @return расчетная страховая премия
      */
     BigDecimal calcPropInsPremium(Insurance ins);
+
+	/**
+	 * Находит подходящий тариф.
+	 *
+	 * @param motorBrand бренд страхуемой техники
+	 * @param coverTime  период страхования
+	 *
+	 * @return найденный тариф или null
+	 */
+	BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime);
 }

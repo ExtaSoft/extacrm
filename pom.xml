@@ -512,7 +512,7 @@
                     <releaseProfiles>prod</releaseProfiles>
                     <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
                     <branchName>${project.version}</branchName>
-                    <goals>package jelastic:deploy</goals>
+                    <goals>install jelastic:deploy</goals>
                 </configuration>
             </plugin>
 

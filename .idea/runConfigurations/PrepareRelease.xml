@@ -23,6 +23,8 @@
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Run" />
     <method />
   </configuration>
 </component>
