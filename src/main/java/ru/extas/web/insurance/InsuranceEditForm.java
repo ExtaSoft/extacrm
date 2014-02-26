@@ -4,6 +4,7 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
 import org.joda.time.LocalDate;
 import ru.extas.model.Insurance;
@@ -13,6 +14,7 @@ import ru.extas.server.InsuranceService;
 import ru.extas.server.PolicyService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
+import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
@@ -61,6 +63,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	private PopupDateField endDateField;
 	@PropertyId("dealer")
 	private SalePointSelect dealerField;
+	private Label tarifField;
+	private ObjectProperty<BigDecimal> tarifDataSource;
 
 	public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
 		super(caption, obj);
@@ -132,14 +136,19 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		motorBrandField = new MotorBrandSelect();
 		motorBrandField.setRequired(true);
 		motorBrandField.addValueChangeListener(new ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void valueChange(final ValueChangeEvent event) {
 				calculatePremium();
+				updateTarifField();
 			}
 		});
 		form.addComponent(motorBrandField);
+
+		tarifDataSource = new ObjectProperty<>(new BigDecimal(0));
+		tarifField = new Label(tarifDataSource);
+		tarifField.setCaption("Тариф");
+		tarifField.setConverter(lookup(StringToPercentConverter.class));
+		form.addComponent(tarifField);
 
 		motorModelField = new EditField("Модель техники", "Введите модель техники");
 		motorModelField.setRequired(true);
@@ -173,6 +182,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 			public void valueChange(ValueChangeEvent event) {
 				calculatePremium();
 				calcEndDate();
+				updateTarifField();
 			}
 		});
 		form.addComponent(coverTimeField);
@@ -219,6 +229,19 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		form.addComponent(dealerField);
 
 		return form;
+	}
+
+	private void updateTarifField() {
+		if (motorBrandField.getPropertyDataSource() != null &&
+				coverTimeField.getContainerDataSource() != null) {
+			final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
+			final String motorBrand = (String) motorBrandField.getValue();
+			if (coverPeriod != null && motorBrand != null) {
+				final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+				final BigDecimal premium = calc.findTarif(motorBrand, coverPeriod);
+				tarifDataSource.setValue(premium);
+			}
+		}
 	}
 
 	private void calcEndDate() {
