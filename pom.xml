@@ -35,7 +35,7 @@
         <spring.version>4.0.0.RELEASE</spring.version>
         <spring-data.version>1.4.3.RELEASE</spring-data.version>
         <eclipselink.version>2.5.1-RC3</eclipselink.version>
-        <jasperreports.version>5.5.0</jasperreports.version>
+        <jasperreports.version>5.5.1</jasperreports.version>
         <groovy.version>2.2.1</groovy.version>
     </properties>
 
@@ -183,7 +183,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>14.0.1</version>
+            <version>16.0.1</version>
         </dependency>
 
         <dependency>
