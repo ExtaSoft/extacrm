@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version last-->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name="PropertyInsuranceTemplate" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575"
-              leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" isSummaryNewPage="true"
-              uuid="986df7ce-c89b-43fa-a244-5c098911f17a">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PropertyInsuranceTemplate" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" isSummaryNewPage="true" uuid="986df7ce-c89b-43fa-a244-5c098911f17a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<import value="ru.extas.model.Person"/>
-	<style name="SimpleText" isDefault="true" hAlign="Left" vAlign="Top" pattern="" fontName="DejaVu Sans" fontSize="7"
-           isBold="false" pdfEncoding="CP1251 (Cyrillic)" isPdfEmbedded="true"/>
-	<style name="Title" style="SimpleText" hAlign="Right" fontName="DejaVu Sans" fontSize="10" isBold="true"
-           pdfEncoding="CP1251 (Cyrillic)" isPdfEmbedded="true"/>
+	<style name="SimpleText" isDefault="true" hAlign="Left" vAlign="Middle" pattern="" fontName="DejaVu Sans" fontSize="7" isBold="false" pdfEncoding="CP1251 (Cyrillic)" isPdfEmbedded="true"/>
+	<style name="Title" style="SimpleText" hAlign="Right" fontName="DejaVu Sans" fontSize="10" isBold="true" pdfEncoding="CP1251 (Cyrillic)" isPdfEmbedded="true"/>
 	<style name="TableContent" style="SimpleText" hAlign="Left" vAlign="Middle"/>
 	<style name="TableCell" style="TableContent" pattern="">
 		<pen lineWidth="3.0" lineColor="#000000"/>
@@ -30,6 +23,7 @@
 	<parameter name="withMat" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
 	</parameter>
+	<parameter name="moneyFormatter" class="java.text.NumberFormat" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -38,8 +32,7 @@
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<image scaleImage="RealSize">
-				<reportElement mode="Transparent" x="0" y="0" width="575" height="822"
-                               uuid="e9d1e9c8-897e-402c-8d28-542781e66227">
+				<reportElement mode="Transparent" x="0" y="0" width="575" height="822" uuid="e9d1e9c8-897e-402c-8d28-542781e66227">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[$P{withMat}]]></printWhenExpression>
@@ -51,8 +44,7 @@
 	<title>
 		<band height="100" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
-			<property name="com.jaspersoft.studio.layout"
-                      value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
 				<reportElement x="25" y="70" width="525" height="30" uuid="132a99f9-fb99-414a-8a6e-f9d8689636c5">
@@ -66,14 +58,12 @@
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
 				<staticText>
-					<reportElement style="Title" x="0" y="0" width="525" height="15"
-                                   uuid="5168cf0e-9c71-4056-a9fa-a3454b25c520"/>
+					<reportElement style="Title" x="0" y="0" width="525" height="15" uuid="5168cf0e-9c71-4056-a9fa-a3454b25c520"/>
 					<textElement textAlignment="Right"/>
 					<text><![CDATA[Полис страхования имущества]]></text>
 				</staticText>
 				<textField>
-					<reportElement style="Title" x="0" y="15" width="525" height="15"
-                                   uuid="cf43caf2-6bf2-42f8-9319-dacdad7ba329"/>
+					<reportElement style="Title" x="0" y="15" width="525" height="15" uuid="cf43caf2-6bf2-42f8-9319-dacdad7ba329"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA["№ " + $P{ins}.getRegNum() + "	от " + new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getDate().toDate())]]></textFieldExpression>
 				</textField>
@@ -82,13 +72,11 @@
 	</title>
 	<detail>
 		<band height="657" splitType="Stretch">
-			<property name="com.jaspersoft.studio.layout"
-                      value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement positionType="FixRelativeToBottom" x="25" y="0" width="525" height="657"
-                               uuid="40982303-0579-47ac-9017-3b26b64b5b24">
+				<reportElement positionType="FixRelativeToBottom" x="25" y="0" width="525" height="657" uuid="40982303-0579-47ac-9017-3b26b64b5b24">
 					<property name="local_mesure_unitx" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -101,17 +89,15 @@
 				<staticText>
 					<reportElement x="0" y="0" width="525" height="48" uuid="544ceb62-07c9-4c45-a527-be14ffba05fe"/>
 					<box topPadding="0"/>
-					<textElement verticalAlignment="Top">
+					<textElement verticalAlignment="Middle">
 						<font pdfEncoding=""/>
 						<paragraph tabStopWidth="0"/>
 					</textElement>
 					<text><![CDATA[По настоящему Полису-оферте (далее – Полис) Страховщик – ОАО «АльфаСтрахование» обязуется за обусловленную Полисом плату (страховую премию) возместить Страхователю или иному лицу, в пользу которого заключен Полис (Выгодоприобретателю), в пределах определенных Полисом страховых сумм убытки, причиненные в результате наступления предусмотренного Полисом события (страхового случая). Условия страхования по Полису разработаны на основании «Правил страхования имущественных рисков» в редакции от 27.06.2012.]]></text>
 				</staticText>
 				<frame>
-					<reportElement style="TableContent" positionType="FixRelativeToBottom" x="0" y="50" width="525"
-                                   height="94" uuid="e0e68c7a-7828-4a92-8e5b-172c0323c701">
-						<property name="com.jaspersoft.studio.layout"
-                                  value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+					<reportElement style="TableContent" positionType="FixRelativeToBottom" x="0" y="50" width="525" height="94" uuid="e0e68c7a-7828-4a92-8e5b-172c0323c701">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 						<property name="local_mesure_unity" value="pixel"/>
 					</reportElement>
 					<staticText>
@@ -131,8 +117,7 @@
 						<text><![CDATA[Страховщик]]></text>
 					</staticText>
 					<staticText>
-						<reportElement x="128" y="0" width="396" height="25"
-                                       uuid="a82a8db2-3d53-425d-a35d-db9b3a1e9f44">
+						<reportElement x="128" y="0" width="396" height="25" uuid="a82a8db2-3d53-425d-a35d-db9b3a1e9f44">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						</reportElement>
 						<box padding="2">
@@ -147,8 +132,7 @@
 						<text><![CDATA[ОАО «АльфаСтрахование», Российская Федерация, г. Москва, ул. Шаболовка, дом 31 строение Б. Телефон +7 495 788-09-99]]></text>
 					</staticText>
 					<textField>
-						<reportElement x="128" y="29" width="396" height="19"
-                                       uuid="4c773007-83a7-4ba1-8f83-c1e9846914a2">
+						<reportElement x="128" y="29" width="396" height="19" uuid="4c773007-83a7-4ba1-8f83-c1e9846914a2">
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 							<property name="local_mesure_unitwidth" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -213,8 +197,7 @@
 						<text><![CDATA[Выгодоприобретатель]]></text>
 					</staticText>
 					<textField>
-						<reportElement x="128" y="75" width="396" height="19"
-                                       uuid="5d5ba59c-5355-4271-9cae-fd310ece7197">
+						<reportElement x="128" y="75" width="396" height="19" uuid="5d5ba59c-5355-4271-9cae-fd310ece7197">
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						</reportElement>
 						<box padding="2">
@@ -229,8 +212,7 @@
 						<textFieldExpression><![CDATA[$P{ins}.getClient().getName()]]></textFieldExpression>
 					</textField>
 					<textField>
-						<reportElement x="128" y="52" width="129" height="19"
-                                       uuid="94c724e3-4085-45cf-a5d4-26710d981da7">
+						<reportElement x="128" y="52" width="129" height="19" uuid="94c724e3-4085-45cf-a5d4-26710d981da7">
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -247,8 +229,7 @@
 						<textFieldExpression><![CDATA[new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getClient().getBirthday().toDate())]]></textFieldExpression>
 					</textField>
 					<staticText>
-						<reportElement x="257" y="52" width="53" height="19"
-                                       uuid="22b15f68-339d-45ed-8725-64a407150cc0">
+						<reportElement x="257" y="52" width="53" height="19" uuid="22b15f68-339d-45ed-8725-64a407150cc0">
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -265,8 +246,7 @@
 						<text><![CDATA[Телефон]]></text>
 					</staticText>
 					<textField>
-						<reportElement x="310" y="52" width="109" height="19"
-                                       uuid="595edebb-ffe7-470c-b088-0d6cb1d643ba">
+						<reportElement x="310" y="52" width="109" height="19" uuid="595edebb-ffe7-470c-b088-0d6cb1d643ba">
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -283,8 +263,7 @@
 						<textFieldExpression><![CDATA[$P{ins}.getClient().getPhone()]]></textFieldExpression>
 					</textField>
 					<staticText>
-						<reportElement x="419" y="52" width="29" height="19"
-                                       uuid="611889c4-9752-4ece-a0e1-29fc6ac3235b">
+						<reportElement x="419" y="52" width="29" height="19" uuid="611889c4-9752-4ece-a0e1-29fc6ac3235b">
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						</reportElement>
@@ -300,8 +279,7 @@
 						<text><![CDATA[Пол]]></text>
 					</staticText>
 					<staticText>
-						<reportElement x="448" y="52" width="19" height="19"
-                                       uuid="1c75112b-2d7d-45bd-af1c-c12517f5dbbe">
+						<reportElement x="448" y="52" width="19" height="19" uuid="1c75112b-2d7d-45bd-af1c-c12517f5dbbe">
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<property name="local_mesure_unitwidth" value="pixel"/>
@@ -320,8 +298,7 @@
 						<text><![CDATA[М.]]></text>
 					</staticText>
 					<staticText>
-						<reportElement x="486" y="52" width="19" height="19"
-                                       uuid="babfbf28-f498-450e-b213-94f804080966">
+						<reportElement x="486" y="52" width="19" height="19" uuid="babfbf28-f498-450e-b213-94f804080966">
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<property name="local_mesure_unitwidth" value="pixel"/>
@@ -340,8 +317,7 @@
 						<text><![CDATA[Ж.]]></text>
 					</staticText>
 					<textField>
-						<reportElement x="505" y="52" width="19" height="19"
-                                       uuid="6c5fc5af-d405-4b9f-9039-48ed0bee65bd">
+						<reportElement x="505" y="52" width="19" height="19" uuid="6c5fc5af-d405-4b9f-9039-48ed0bee65bd">
 							<property name="local_mesure_unitwidth" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="local_mesure_unitheight" value="pixel"/>
@@ -360,8 +336,7 @@
 						<textFieldExpression><![CDATA[$P{ins}.getClient().getSex() == Person.Sex.MALE ? "" : "X"]]></textFieldExpression>
 					</textField>
 					<textField>
-						<reportElement x="467" y="52" width="19" height="19"
-                                       uuid="a375434d-e2a1-46d5-83d0-b0f4b2bd8051">
+						<reportElement x="467" y="52" width="19" height="19" uuid="a375434d-e2a1-46d5-83d0-b0f4b2bd8051">
 							<property name="local_mesure_unitwidth" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="local_mesure_unitheight" value="pixel"/>
@@ -381,7 +356,12 @@
 					</textField>
 				</frame>
 				<staticText>
-					<reportElement x="0" y="144" width="525" height="35" uuid="419a6343-6ec5-46e3-8d8f-690c5dab8b77"/>
+					<reportElement x="0" y="145" width="525" height="35" uuid="419a6343-6ec5-46e3-8d8f-690c5dab8b77">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="local_mesure_unity" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
 					<textElement>
 						<font size="7"/>
 					</textElement>
@@ -466,8 +446,7 @@
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<text><![CDATA[
-                        По риску "кража со взломом" Территорией страхования является территория (в т.ч. помещение), находящаяся за ограждением высотой не менее 1,5 м и имеющая вход, который запирается на замок. Если застрахованное имущество изымается с Территории страхования, страховая защита в отношении этого имущества по риску "кража со взломом" прекращается.]]></text>
+					<text><![CDATA[По риску "кража со взломом" Территорией страхования является территория (в т.ч. помещение), находящаяся за ограждением высотой не менее 1,5 м и имеющая вход, который запирается на замок. Если застрахованное имущество изымается с Территории страхования, страховая защита в отношении этого имущества по риску "кража со взломом" прекращается.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="0" y="473" width="525" height="17" uuid="b6e520b3-02ff-4045-8b6b-34a556ffb096"/>
@@ -568,7 +547,7 @@
 					<textElement textAlignment="Center">
 						<font size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[new DecimalFormat("###,###.00").format($P{ins}.getRiskSum())]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{moneyFormatter}.format($P{ins}.getRiskSum())]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="395" y="528" width="130" height="20" uuid="abe538eb-af44-4c62-a51f-55d89ca16219">
@@ -585,7 +564,7 @@
 					<textElement textAlignment="Center">
 						<font size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[new DecimalFormat("###,###.00").format($P{ins}.getPremium())]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{moneyFormatter}.format($P{ins}.getPremium())]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="0" y="548" width="525" height="51" uuid="cd111228-70a8-44fd-8ce1-8fb90ca93f8c"/>
@@ -639,8 +618,7 @@
 	<summary>
 		<band height="822" splitType="Stretch">
 			<frame>
-				<reportElement positionType="Float" x="25" y="65" width="525" height="752"
-                               uuid="4ece58d7-3e9d-4abb-b6e1-be88e0e03073">
+				<reportElement positionType="Float" x="25" y="65" width="525" height="752" uuid="4ece58d7-3e9d-4abb-b6e1-be88e0e03073">
 					<property name="local_mesure_unity" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="local_mesure_unitx" value="pixel"/>
@@ -677,7 +655,7 @@
 					<text><![CDATA[Исключения из страхования.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="12" width="525" height="182" uuid="211a2726-4538-4700-8b1e-807b6df659a5">
+					<reportElement x="0" y="12" width="525" height="177" uuid="211a2726-4538-4700-8b1e-807b6df659a5">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -707,8 +685,7 @@
 18. Возникновения дефекта, вызванного изменением конструкции или схемы застрахованного имущества, не предусмотренным Изготовителем.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0"
-                                   y="194" width="525" height="12" uuid="cb19a7f8-0c53-4183-af02-3b380a3bc6e4">
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0" y="189" width="525" height="12" uuid="cb19a7f8-0c53-4183-af02-3b380a3bc6e4">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -722,8 +699,7 @@
 					<text><![CDATA[Действия Страхователя/ Выгодоприобретателя при страховом событии.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0"
-                                   y="206" width="525" height="58" uuid="86d28479-405b-47f4-ab97-6baf86fd5cb0">
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0" y="201" width="525" height="58" uuid="86d28479-405b-47f4-ab97-6baf86fd5cb0">
 						<property name="local_mesure_unitx" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -741,8 +717,7 @@
 4. При повреждении застрахованного имущества обратиться в авторизованный сервисный центр, обслуживающий данную марку и модель поврежденного имущества.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="FixRelativeToBottom" x="1" y="266" width="523" height="12"
-                                   uuid="8b9584cf-d56e-4684-a88e-629259c8f8d2">
+					<reportElement positionType="FixRelativeToBottom" x="1" y="261" width="523" height="12" uuid="8b9584cf-d56e-4684-a88e-629259c8f8d2">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unity" value="pixel"/>
@@ -754,7 +729,7 @@
 					<text><![CDATA[Перечень документов при наступлении страхового события.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="278" width="525" height="149" uuid="62d9fd14-d297-475c-977a-bf3fd41129a4">
+					<reportElement x="0" y="273" width="525" height="149" uuid="62d9fd14-d297-475c-977a-bf3fd41129a4">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -779,8 +754,7 @@
 5. В случае повреждения застрахованного имущества - заключение авторизованного сервисного центра о причине повреждения имущества, возможности/не возможности проведения ремонта , стоимости ремонта (Акт о выполненной работе) или заключение о невозможности восстановления застрахованного имущества, а также подтверждение, что событие не входит в перечень гарантийных, предусмотренных производителем.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="427" width="525" height="12"
-                                   uuid="5754b411-94a3-4218-9374-583bb2f11546">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="422" width="525" height="12" uuid="5754b411-94a3-4218-9374-583bb2f11546">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -794,7 +768,7 @@
 					<text><![CDATA[Порядок выплаты страхового возмещения.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="439" width="525" height="198" uuid="827c444d-76a8-467b-86d9-639b58ed6a30">
+					<reportElement x="0" y="434" width="525" height="198" uuid="827c444d-76a8-467b-86d9-639b58ed6a30">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>

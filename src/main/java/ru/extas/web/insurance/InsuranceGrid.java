@@ -24,7 +24,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -166,6 +168,10 @@ public class InsuranceGrid extends ExtaGrid {
 			params.put("periodOfCover",
 					insurance.getCoverTime() == null || insurance.getCoverTime() == Insurance.PeriodOfCover.YEAR
 							? "12 месяцев" : "6 месяцев");
+			NumberFormat format = NumberFormat.getInstance(lookup(Locale.class));
+			format.setMinimumFractionDigits(2);
+			format.setMaximumFractionDigits(2);
+			params.put("moneyFormatter", format);
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource(1));
 
 
