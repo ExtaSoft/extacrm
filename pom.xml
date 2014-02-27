@@ -6,7 +6,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>0.2.3</version>
 
     <properties>
         <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
@@ -76,6 +76,7 @@
         <profile>
             <id>uat</id>
 
+
             <properties>
                 <jelastic.environment>extacrm-uat</jelastic.environment>
                 <extacrm.ssl.pattern>CONFIDENTIAL</extacrm.ssl.pattern>
@@ -92,7 +93,7 @@
         <connection>scm:git:https://github.com/ExtaSoft/extacrm.git</connection>
         <developerConnection>scm:git:https://github.com/ExtaSoft/extacrm.git</developerConnection>
         <url>scm:git:https://github.com/ExtaSoft/extacrm.git</url>
-        <tag>0.2.0-SNAPSHOT</tag>
+        <tag>extacrm-0.2.3</tag>
     </scm>
 
     <repositories>
