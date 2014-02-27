@@ -61,6 +61,7 @@ public class InsuranceGrid extends ExtaGrid {
 		container.addNestedContainerProperty("client.name");
 		container.addNestedContainerProperty("client.birthday");
 		container.addNestedContainerProperty("client.phone");
+		container.addNestedContainerProperty("dealer.name");
 		UserManagementService userService = lookup(UserManagementService.class);
 		// пользователю доступны только собственные записи
 		if (userService.isCurUserHasRole(UserRole.USER)) {
