@@ -506,18 +506,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.4.2</version>
-                <configuration>
-                    <releaseProfiles>prod</releaseProfiles>
-                    <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
-                    <branchName>${project.version}</branchName>
-                    <goals>install jelastic:deploy</goals>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-jgitflow-plugin</artifactId>
                 <version>1.0-alpha27</version>
