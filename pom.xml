@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.2.5-SNAPSHOT</version>
 
     <properties>
         <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
@@ -55,7 +56,7 @@
                 <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
                 <!--<jpa.ddl-generation>none</jpa.ddl-generation>-->
                 <!--<jpa.generation.output-mode>both</jpa.generation.output-mode>-->
-                <jpa.generation.output-mode>sql-script</jpa.generation.output-mode>
+                <jpa.generation.output-mode>database</jpa.generation.output-mode>
             </properties>
         </profile>
 
@@ -369,32 +370,32 @@
                         <configuration>
                             <target>
 
-                                <property name="compile_classpath" refid="maven.compile.classpath" />
+                                <property name="compile_classpath" refid="maven.compile.classpath"/>
 
-                                <echo message="Delete jaspers..." />
+                                <echo message="Delete jaspers..."/>
 
                                 <delete>
-                                    <fileset dir="src/main/resources/reports" includes="*.jasper" />
+                                    <fileset dir="src/main/resources/reports" includes="*.jasper"/>
                                 </delete>
 
-                                <echo message="Compile reports..." />
+                                <echo message="Compile reports..."/>
 
-                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask" />
+                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"/>
                                 <jrc destdir="src/main/resources/reports">
                                     <src>
                                         <fileset dir="src/main/resources/reports">
-                                            <include name="*.jrxml" />
+                                            <include name="*.jrxml"/>
                                         </fileset>
                                     </src>
                                     <classpath>
-                                        <path path="${compile_classpath}" />
+                                        <path path="${compile_classpath}"/>
                                     </classpath>
                                 </jrc>
 
-                                <echo message="Copy reports..." />
+                                <echo message="Copy reports..."/>
 
                                 <copy todir="target/classes/reports" overwrite="true">
-                                    <fileset dir="src/main/resources/reports" />
+                                    <fileset dir="src/main/resources/reports"/>
                                 </copy>
 
                             </target>
@@ -499,7 +500,7 @@
                     <useTestClasspath>false</useTestClasspath>
                     <!-- optional if you want to add some extra directories into the classloader -->
                     <additionalClasspathDirs>
-                        <additionalClasspathDir />
+                        <additionalClasspathDir/>
                     </additionalClasspathDirs>
                 </configuration>
             </plugin>
@@ -513,6 +514,30 @@
                     <scmCommentPrefix>[RELEASE]</scmCommentPrefix>
                     <branchName>${project.version}</branchName>
                     <goals>install jelastic:deploy</goals>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>maven-jgitflow-plugin</artifactId>
+                <version>1.0-alpha27</version>
+                <configuration>
+                    <!--
+                    Pusing in-development features to origin allows all devs to see what each other
+                    are working on
+                    -->
+                    <pushFeatures>true</pushFeatures>
+                    <!--
+                    This allows the CI server (e.g. Jenkins) to automatically push new releases to
+                    origin; you can then either manually deploy them or, if you are doing Continuous
+                    Deployments, auto-deploy them to prod
+                    -->
+                    <pushReleases>true</pushReleases>
+                    <!--
+                      Hot Fixes should be pushed to origin as well so that any dev can pick them up
+                    -->
+                    <pushHotfixes>true</pushHotfixes>
+
                 </configuration>
             </plugin>
 
@@ -630,7 +655,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -649,7 +674,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -668,7 +693,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>

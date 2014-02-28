@@ -80,10 +80,6 @@ public class Insurance extends AbstractExtaObject {
 	@Column(name = "END_DATE")
 	private LocalDate endDate;
 
-	// Точка продажи (Контрагент)
-	@Column(name = "POINT_OF_SALE")
-	private String pointOfSale;
-
 	@OneToOne
 	private SalePoint dealer;
 
@@ -265,20 +261,6 @@ public class Insurance extends AbstractExtaObject {
 	 */
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
-	}
-
-	/**
-	 * @return the pointOfSale
-	 */
-	public String getPointOfSale() {
-		return pointOfSale;
-	}
-
-	/**
-	 * @param pointOfSale the pointOfSale to set
-	 */
-	public void setPointOfSale(String pointOfSale) {
-		this.pointOfSale = pointOfSale;
 	}
 
 	public String getA7Num() {

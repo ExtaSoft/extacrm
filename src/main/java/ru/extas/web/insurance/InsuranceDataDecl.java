@@ -28,7 +28,7 @@ class InsuranceDataDecl extends GridDataDecl {
 		addMapping("paymentDate", "Дата оплаты страховой премии", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("startDate", "Дата начала срока действия договора", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("endDate", "Дата окончания срока действия договора", EnumSet.of(PresentFlag.COLLAPSED));
-		addMapping("pointOfSale", "Точка продаж");
+		addMapping("dealer.name", "Торгова точка");
 		super.addCreateModifyMarkers();
 	}
 
