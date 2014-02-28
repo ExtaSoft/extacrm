@@ -365,8 +365,12 @@
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<imageExpression><![CDATA["/reports/insurance/EAFacsimile.png"]]></imageExpression>
+				<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/EAFacsimile.png")]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="370" y="103" width="120" height="20" uuid="00f12c52-e994-4eca-bd02-3c74778cdb8c"/>
+				<text><![CDATA[/Сладкевич А.А./]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
