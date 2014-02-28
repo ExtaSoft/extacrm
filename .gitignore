@@ -1,7 +1,9 @@
+src/main/webapp/VAADIN/widgetsets/
+src/main/webapp/VAADIN/gwt-unitCache/
+.idea/artifacts/
+.idea/libraries/
+/.idea/workspace.xml
 hotspot.log
-*.iml
-*.ipr
-*.iws
 target/
 classes/
 /var
