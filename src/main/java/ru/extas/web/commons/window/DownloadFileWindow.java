@@ -1,7 +1,9 @@
 package ru.extas.web.commons.window;
 
 import com.google.common.base.Throwables;
+import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.server.FileDownloader;
+import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,59 +21,69 @@ import java.net.URLEncoder;
  */
 public class DownloadFileWindow extends Window {
 
-    private static final long serialVersionUID = -1869372339151029572L;
-    private final static Logger logger = LoggerFactory.getLogger(DownloadFileWindow.class);
+	private static final long serialVersionUID = -1869372339151029572L;
+	private final static Logger logger = LoggerFactory.getLogger(DownloadFileWindow.class);
 
-    public DownloadFileWindow(final byte[] file, String fileName) {
-        initWindow("Файл готов к загрузке...", file, fileName);
-    }
+	public DownloadFileWindow(final byte[] file, String fileName) {
+		initWindow("Файл готов к загрузке...", file, fileName);
+	}
 
-    private void initWindow(String caption, byte[] file, String fileName) {
+	private void initWindow(String caption, final byte[] file, String fileName) {
 
-        setCaption(caption);
+		setCaption(caption);
 
-        final VerticalLayout contentContainer = new VerticalLayout();
-        contentContainer.setMargin(true);
-        contentContainer.setSpacing(true);
+		final VerticalLayout contentContainer = new VerticalLayout();
+		contentContainer.setMargin(true);
+		contentContainer.setSpacing(true);
 
-        final Label infoLbl = new Label(fileName);
-        contentContainer.addComponent(infoLbl);
+		final Label infoLbl = new Label(fileName);
+		contentContainer.addComponent(infoLbl);
 
-        final Button downloadBtn = new Button("Скачать");
-        //downloadBtn.setStyleName("icon-download");
-        createPolicyDownloader(file, fileName).extend(downloadBtn);
+		final HorizontalLayout toolbar = new HorizontalLayout();
+		toolbar.setSpacing(true);
 
-        contentContainer.addComponent(downloadBtn);
-        contentContainer.setComponentAlignment(downloadBtn, Alignment.MIDDLE_CENTER);
+		final Button downloadBtn = new Button("Скачать");
+		downloadBtn.setStyleName("icon-download");
+		createDownloader(file, fileName).extend(downloadBtn);
+		toolbar.addComponent(downloadBtn);
 
-        setContent(contentContainer);
-    }
+		final Button viewBtn = new Button("Посмотреть");
+		viewBtn.setStyleName("icon-search-1");
+		BrowserWindowOpener opener =
+				new BrowserWindowOpener(new StreamResource(
+						new StreamResource.StreamSource() {
+							@Override
+							public InputStream getStream() {
+								return new ByteArrayInputStream(file);
+							}
 
-    private FileDownloader createPolicyDownloader(final byte[] file, String fileName) {
+						}, encodeWebFileName(fileName)));
+		opener.extend(viewBtn);
+		toolbar.addComponent(viewBtn);
 
-        // Подготовить имя файла
-        final String webFileName;
-        try {
-            webFileName = URLEncoder.encode(fileName
-                    .replaceAll(" ", ".").replaceAll("/", "-")
-                    , "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            logger.error("Can't convert file name to web URI", e);
-            throw Throwables.propagate(e);
-        }
+		contentContainer.addComponent(toolbar);
+		contentContainer.setComponentAlignment(toolbar, Alignment.MIDDLE_CENTER);
+
+		setContent(contentContainer);
+	}
+
+	private FileDownloader createDownloader(final byte[] file, String fileName) {
+
+		// Подготовить имя файла
+		final String webFileName = encodeWebFileName(fileName);
 
 
-        return new OnDemandFileDownloader(new OnDemandFileDownloader.OnDemandStreamResource() {
-            @Override
-            public String getFilename() {
-                return webFileName;
-            }
+		return new OnDemandFileDownloader(new OnDemandFileDownloader.OnDemandStreamResource() {
+			@Override
+			public String getFilename() {
+				return webFileName;
+			}
 
-            @Override
-            public InputStream getStream() {
-                return new ByteArrayInputStream(file);
-            }
-        });
+			@Override
+			public InputStream getStream() {
+				return new ByteArrayInputStream(file);
+			}
+		});
 //        return new FileDownloader(
 //                new StreamResource(new StreamResource.StreamSource() {
 //                    @Override
@@ -80,14 +92,25 @@ public class DownloadFileWindow extends Window {
 //                    }
 //
 //                }, webFileName));
-    }
+	}
 
-    public void showModal() {
-        setClosable(true);
-        setResizable(false);
-        setModal(true);
+	private String encodeWebFileName(final String fileName) {
+		try {
+			return URLEncoder.encode(fileName
+					.replaceAll(" ", ".").replaceAll("/", "-")
+					, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			logger.error("Can't convert file name to web URI", e);
+			throw Throwables.propagate(e);
+		}
+	}
 
-        UI.getCurrent().addWindow(this);
-    }
+	public void showModal() {
+		setClosable(true);
+		setResizable(false);
+		setModal(true);
+
+		UI.getCurrent().addWindow(this);
+	}
 
 }

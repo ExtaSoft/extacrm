@@ -131,6 +131,13 @@ public class InsuranceGrid extends ExtaGrid {
 			}
 		});
 
+		actions.add(new ItemAction("Печать счета", "Создать печатную форму счета на оплату страховки", "icon-print-2") {
+			@Override
+			public void fire(Object itemId) {
+				printInvoice(itemId);
+			}
+		});
+
 		actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в CSV файл", "icon-grid") {
 			@Override
 			public void fire(Object itemId) {
@@ -159,7 +166,7 @@ public class InsuranceGrid extends ExtaGrid {
 		checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
 
 		try {
-			final InputStream in = getClass().getResourceAsStream("/reports/PropertyInsuranceTemplate.jasper");
+			final InputStream in = getClass().getResourceAsStream("/reports/insurance/PropertyInsuranceTemplate.jasper");
 
 			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(in);
 
@@ -191,4 +198,36 @@ public class InsuranceGrid extends ExtaGrid {
 		}
 	}
 
+	private void printInvoice(Object itemId) {
+
+		final Insurance insurance = extractBean(table.getItem(itemId));
+		checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
+
+		try {
+			final InputStream in = getClass().getResourceAsStream("/reports/insurance/InsuranceInvoiceTemplate.jasper");
+
+			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(in);
+
+			final Map<String, Object> params = newHashMap();
+			params.put("ins", insurance);
+			NumberFormat format = NumberFormat.getInstance(lookup(Locale.class));
+			format.setMinimumFractionDigits(2);
+			format.setMaximumFractionDigits(2);
+			params.put("moneyFormatter", format);
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource(1));
+
+
+			final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
+			JasperExportManager.exportReportToPdfStream(jasperPrint, outDoc);
+
+			final String clientName = insurance.getClient().getName();
+			final String regNum = insurance.getRegNum();
+			final String invoiceFileName = MessageFormat.format("Счет {0} {1}.pdf", regNum, clientName);
+
+			new DownloadFileWindow(outDoc.toByteArray(), invoiceFileName).showModal();
+		} catch (JRException e) {
+			logger.error("Print policy error", e);
+			throw Throwables.propagate(e);
+		}
+	}
 }

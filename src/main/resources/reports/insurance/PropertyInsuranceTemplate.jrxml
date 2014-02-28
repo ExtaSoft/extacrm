@@ -37,7 +37,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[$P{withMat}]]></printWhenExpression>
 				</reportElement>
-				<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/Alfa_blank.png")]]></imageExpression>
+				<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/Alfa_blank.png")]]></imageExpression>
 			</image>
 		</band>
 	</background>
@@ -634,13 +634,13 @@
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
-					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/Подпись-Альфа.png")]]></imageExpression>
+					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/Подпись-Альфа.png")]]></imageExpression>
 				</image>
 				<image>
 					<reportElement x="376" y="605" width="129" height="119" uuid="a34ab76d-e22a-41a8-ac11-d951d48db983">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 					</reportElement>
-					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/Печать-Альфа.png")]]></imageExpression>
+					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/Печать-Альфа.png")]]></imageExpression>
 				</image>
 				<staticText>
 					<reportElement x="0" y="0" width="525" height="12" uuid="ec449955-36cd-4f70-bd4b-d47ae3e0e69d">
