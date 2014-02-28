@@ -2,6 +2,7 @@ src/main/webapp/VAADIN/widgetsets/
 src/main/webapp/VAADIN/gwt-unitCache/
 .idea/artifacts/
 .idea/libraries/
+.idea/workspace.xml
 hotspot.log
 target/
 classes/

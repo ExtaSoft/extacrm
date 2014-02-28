@@ -3,22 +3,9 @@
   <component name="ChangeListManager">
     <list id="6f1d0187-085e-47c0-85f4-ccbac61f0bb0" name="Refactoring/Reformat" comment="Refactoring/Reformat to spring repository" />
     <list id="0f31d50a-f6e8-4912-af93-ae2b78493bd4" name="CRM-83 Личный кабинет Мотосалона" comment="CRM-83 Личный кабинет Мотосалона" />
-    <list default="true" id="02440f7f-3414-4f11-8d63-e9103afa10ad" name="Подготовка к релизу" comment="Влил хотфиксы">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/Valery.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/extacrm.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="02440f7f-3414-4f11-8d63-e9103afa10ad" name="Подготовка к релизу" comment="Всякие настроечные файлы">
+      <change type="DELETED" beforePath="D:\Projects\extacrm\.idea\workspace.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
     </list>
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -105,10 +92,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="100" column="86" selection-start="4092" selection-end="4092" vertical-scroll-proportion="0.6620306" vertical-offset="1224" max-vertical-offset="11713">
+            <state line="107" column="70" selection-start="4358" selection-end="4358" vertical-scroll-proportion="0.0" vertical-offset="1224" max-vertical-offset="11713">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="19" selection-start="126" selection-end="126" vertical-scroll-proportion="0.083333336" vertical-offset="0" max-vertical-offset="816">
               <folding />
             </state>
           </provider>
@@ -189,8 +185,8 @@
         <option value="$PROJECT_DIR$/src/main/java/ru/extas/server/UserManagementServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/extas/model/Insurance.java" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -540,6 +536,16 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="extacrm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="extacrm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="extacrm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1142,7 +1148,7 @@
       <workItem from="1393338350577" duration="9887000" />
       <workItem from="1393403687823" duration="1288000" />
       <workItem from="1393576828348" duration="889000" />
-      <workItem from="1393577735407" duration="3044000" />
+      <workItem from="1393577735407" duration="3259000" />
     </task>
     <task id="LOCAL-00014" summary="Подготовка к релизу:&#10; - Миграция базы данных&#10; - Настройки релиз бранча">
       <created>1393334673293</created>
@@ -1190,7 +1196,11 @@
       <created>1393579568224</created>
       <updated>1393579568224</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Всякие настроечные файлы">
+      <created>1393580822879</created>
+      <updated>1393580822879</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <option name="createBranch" value="false" />
     <servers>
       <YouTrack shared="false" url="http://extasoft.myjetbrains.com/youtrack">
@@ -1211,7 +1221,7 @@
   </component>
   <component name="TimeTrackingManager">
     <option name="enabled" value="true" />
-    <option name="totallyTimeSpent" value="512362000" />
+    <option name="totallyTimeSpent" value="512577000" />
     <option name="showSpentTimeFromLastPost" value="true" />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1238,7 +1248,7 @@
     <frame x="427" y="0" width="1707" height="1400" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33596215" sideWeight="0.49911296" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33596215" sideWeight="0.49911296" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20729484" sideWeight="0.19308126" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1259,7 +1269,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21224985" sideWeight="0.7299213" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Time Tracking" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20194057" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4022082" sideWeight="0.49798387" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4022082" sideWeight="0.49798387" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" x="2160" y="108" width="349" height="1200" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1294,7 +1304,6 @@
     </option>
     <confirmRemoveEmptyChangelist value="1" />
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <MESSAGE value="Refactoring/Reformat to spring repository" />
     <MESSAGE value="CRM-69 Реализовать раздел &quot;Продукты&quot;" />
     <MESSAGE value="CRM-82 Переделать печать полиса на PDF" />
     <MESSAGE value="CRM-84 Реализовать панель статуса БП" />
@@ -1319,7 +1328,8 @@
     <MESSAGE value="CRM-83 Личный кабинет Мотосалона" />
     <MESSAGE value="Merge commit '7172f1e600d29ee47e2be6a10c4f93e042f2a7c4'&#10;" />
     <MESSAGE value="Влил хотфиксы" />
-    <option name="LAST_COMMIT_MESSAGE" value="Влил хотфиксы" />
+    <MESSAGE value="Всякие настроечные файлы" />
+    <option name="LAST_COMMIT_MESSAGE" value="Всякие настроечные файлы" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1655,18 +1665,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="32436">
-          <folding>
-            <marker date="1393580726791" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1393580726791" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1393580726791" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1393580726791" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/dictionaries/Valery.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="732">
@@ -1702,16 +1700,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="33" selection-start="354" selection-end="354" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+        <state line="107" column="70" selection-start="4358" selection-end="4358" vertical-scroll-proportion="0.0" vertical-offset="1224" max-vertical-offset="11713">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="100" column="86" selection-start="4092" selection-end="4092" vertical-scroll-proportion="0.6620306" vertical-offset="1224" max-vertical-offset="11713">
+        <state line="4" column="19" selection-start="126" selection-end="126" vertical-scroll-proportion="0.083333336" vertical-offset="0" max-vertical-offset="816">
           <folding />
         </state>
       </provider>
