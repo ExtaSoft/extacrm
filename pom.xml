@@ -6,7 +6,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>0.2.4-SNAPSHOT</version>
+    <version>0.2.4</version>
 
     <properties>
         <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
