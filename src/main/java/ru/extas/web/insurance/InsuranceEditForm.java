@@ -49,6 +49,10 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	private MotorBrandSelect motorBrandField;
 	@PropertyId("motorModel")
 	private TextField motorModelField;
+	@PropertyId("saleNum")
+	private EditField saleNumField;
+	@PropertyId("saleDate")
+	private LocalDateField saleDateField;
 	@PropertyId("riskSum")
 	private TextField riskSumField;
 	@PropertyId("coverTime")
@@ -152,8 +156,17 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
 		motorModelField = new EditField("Модель техники", "Введите модель техники");
 		motorModelField.setRequired(true);
-		motorModelField.setColumns(13);
+		motorModelField.setColumns(20);
 		form.addComponent(motorModelField);
+
+		saleNumField = new EditField("Номер договора купли-продажи", "Введите номер договора купли-продажи");
+		saleNumField.setRequired(true);
+		saleNumField.setColumns(20);
+		form.addComponent(saleNumField);
+
+		saleDateField = new LocalDateField("Дата договора купли-продажи", "Введите дату договора купли-продажи");
+		saleDateField.setRequired(true);
+		form.addComponent(saleDateField);
 
 		riskSumField = new EditField("Страховая сумма", "Введите сумму возмещения в рублях");
 		riskSumField.addValueChangeListener(new ValueChangeListener() {

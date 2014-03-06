@@ -37,7 +37,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[$P{withMat}]]></printWhenExpression>
 				</reportElement>
-				<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/Alfa_blank.png")]]></imageExpression>
+				<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/Alfa_blank.png")]]></imageExpression>
 			</image>
 		</band>
 	</background>
@@ -71,12 +71,12 @@
 		</band>
 	</title>
 	<detail>
-		<band height="657" splitType="Stretch">
+		<band height="677" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement positionType="FixRelativeToBottom" x="25" y="0" width="525" height="657" uuid="40982303-0579-47ac-9017-3b26b64b5b24">
+				<reportElement positionType="FixRelativeToBottom" x="25" y="0" width="575" height="677" uuid="40982303-0579-47ac-9017-3b26b64b5b24">
 					<property name="local_mesure_unitx" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -356,7 +356,7 @@
 					</textField>
 				</frame>
 				<staticText>
-					<reportElement x="0" y="145" width="525" height="35" uuid="419a6343-6ec5-46e3-8d8f-690c5dab8b77">
+					<reportElement x="0" y="145" width="525" height="44" uuid="419a6343-6ec5-46e3-8d8f-690c5dab8b77">
 						<property name="local_mesure_unitx" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="local_mesure_unity" value="pixel"/>
@@ -365,20 +365,20 @@
 					<textElement>
 						<font size="7"/>
 					</textElement>
-					<text><![CDATA[Настоящий Полис может заключаться без указания имени или наименования Выгодоприобретателя. При этом при наступлении страхового события Страхователь (Выгодоприобретатель) обязан предоставить документы (паспорт самоходной машины, договор купли-продажи самоходной машины, акт приемки-передачи самоходной машины), подтверждающие имущественный интерес в сохранении застрахованного имущества), а также оригинал настоящего Полиса.]]></text>
+					<text><![CDATA[Настоящий Полис может заключаться без указания имени или наименования Выгодоприобретателя. При этом при наступлении страхового события Страхователь (Выгодоприобретатель) обязан предоставить документы (паспорт самоходной машины; договор купли-продажи самоходной машины; акт приемки-передачи самоходной машины; если техника приобреталась в кредит - кредитный договор и документы, подтверждающие оплату взносов по кредитному договору), подтверждающие имущественный интерес в сохранении застрахованного имущества), а также оригинал настоящего Полиса.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="180" width="525" height="30" uuid="233307aa-325a-4cf2-aafc-b26e35491ee4"/>
+					<reportElement x="0" y="190" width="525" height="30" uuid="233307aa-325a-4cf2-aafc-b26e35491ee4"/>
 					<text><![CDATA[Объектом страхования являются не противоречащие действующему законодательству РФ имущественные интересы Страхователя или Выгодоприобретателя, связанные с риском поврждения, гибели или утраты имущества, указанного в Таблице «Предмет страхования, страховая сумма, страховая премия».]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="59" y="212" width="466" height="20" uuid="ec23729b-9448-46e4-b4ad-ffb04a0861d3">
+					<reportElement x="59" y="222" width="466" height="20" uuid="ec23729b-9448-46e4-b4ad-ffb04a0861d3">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<text><![CDATA[В рамках настоящего Полиса на страхование принимается движимое имущество: самоходная машина (квадроцикл, снегоход).]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="212" width="59" height="20" uuid="1aeb21b6-3a12-49ba-8977-c49484149a09">
+					<reportElement x="0" y="222" width="59" height="20" uuid="1aeb21b6-3a12-49ba-8977-c49484149a09">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
@@ -388,13 +388,13 @@
 					<text><![CDATA[Предмет страхования:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="59" y="236" width="466" height="20" uuid="39afefd5-f442-4e48-9a87-d7bd863bfbdc">
+					<reportElement x="59" y="246" width="466" height="20" uuid="39afefd5-f442-4e48-9a87-d7bd863bfbdc">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<text><![CDATA[Движимое имущество считается застрахованным от повреждения, гибели или утраты в результате противоправных действия третьих лиц (кража со взломом, грабеж, разбой).]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="1" y="236" width="58" height="20" uuid="e75a35dc-7763-43da-8880-c22e08de8454">
+					<reportElement x="1" y="246" width="58" height="20" uuid="e75a35dc-7763-43da-8880-c22e08de8454">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
@@ -404,7 +404,7 @@
 					<text><![CDATA[Страховые риски:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="256" width="525" height="163" uuid="6b046ee8-9da4-4221-ac80-427d10287e72"/>
+					<reportElement x="0" y="265" width="525" height="154" uuid="6b046ee8-9da4-4221-ac80-427d10287e72"/>
 					<text><![CDATA[1. Кража со взломом (тайное хищение чужого имущества с проникновением на территорию страхования) в смысле договора страхования имеет место, если злоумышленник:
     a. Проникает на территорию страхования, взламывая двери, ворота или окна, применяя отмычки или поддельные ключи, или иные технические средства. Поддельными считаются ключи, изготовленные по поручению или с ведома лиц, не имеющих права распоряжаться подлинными ключами; одного факта исчезновения имущества с территории страхования недостаточно для доказательства использования поддельных ключей (факт использования поддельных ключей или отмычек должен быть подтвержден результатами трасологической экспертизы);
      b. Взламывает в пределах территории страхования (в т.ч. помещения), используемые в качестве хранилищ имущества или вскрывает их с помощью отмычек, поддельных ключей или иных инструментов;
@@ -574,7 +574,7 @@
 Сумма и дата оплаты страховой премии указываются в квитанции, являющейся подтверждением оплаты страховой премии.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="599" width="100" height="34" uuid="7d851e90-0810-4c5c-a8bd-c8b571f65d2b">
+					<reportElement x="0" y="599" width="100" height="50" uuid="7d851e90-0810-4c5c-a8bd-c8b571f65d2b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
 					</reportElement>
@@ -590,7 +590,7 @@
 					<text><![CDATA[Период страхования по Полису]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="100" y="599" width="425" height="34" uuid="ce491b20-c2c7-49bc-bd9d-b774a32efa8f">
+					<reportElement x="100" y="599" width="425" height="50" uuid="ce491b20-c2c7-49bc-bd9d-b774a32efa8f">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -603,10 +603,10 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{periodOfCover} + " с даты вступления Полиса в силу. Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем покупки имущества и оплаты Страхователем полной суммы страховой премии."]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{periodOfCover} + " с даты вступления Полиса в силу. Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем подписания Страхователем акта приема-передачи по договору купли-продажи № " + $P{ins}.getSaleNum() + " от "+ new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getSaleDate().toDate()) + "г. застрахованного имущества, но в любом случае не ранее даты оплаты страховой премии."]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="637" width="525" height="20" uuid="aa13249b-f593-4769-ade9-5d3510435c17">
+					<reportElement x="0" y="657" width="525" height="20" uuid="aa13249b-f593-4769-ade9-5d3510435c17">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
@@ -634,13 +634,13 @@
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
-					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/Подпись-Альфа.png")]]></imageExpression>
+					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/Подпись-Альфа.png")]]></imageExpression>
 				</image>
 				<image>
 					<reportElement x="376" y="605" width="129" height="119" uuid="a34ab76d-e22a-41a8-ac11-d951d48db983">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 					</reportElement>
-					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/Печать-Альфа.png")]]></imageExpression>
+					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/Печать-Альфа.png")]]></imageExpression>
 				</image>
 				<staticText>
 					<reportElement x="0" y="0" width="525" height="12" uuid="ec449955-36cd-4f70-bd4b-d47ae3e0e69d">
@@ -750,7 +750,7 @@
 – копия трасологической экспертизы, в случае наличия признаков проникновения в помещение путем подбора ключей;
 – постановление о приостановлении уголовного дела (в случае если нет постановления об отказе в возбуждении уголовного дела). Если уголовное дело не было приостановлено, то необходимо предоставить приговор суда или постановление о прекращении уголовного дела;
 – список похищенного имущества с указанием его стоимости, составленный собственноручно и заверенный печатью органа внутренних дел, проводящего расследование по заявленному событию.
-4. Паспорт самоходной машины; договор купли-продажи самоходной машины; акт приемки-передачи самоходной машины; кредитный договор; документы, подтверждающие оплату взносов по кредитному договору или договору лизинга. При этом дата, указанная в документах на оплату страховой премии по настоящему Полису, не может быть позже даты заключения договора купли-продажи/ подписания акта приемки-передачи застрахованного имущества по настоящему Полису.
+4. Паспорт самоходной машины; договор купли-продажи самоходной машины; акт приемки-передачи самоходной машины; если техника приобреталась в кредит - кредитный договор и документы, подтверждающие оплату взносов по кредитному договору. При этом дата, указанная в документах на оплату страховой премии по настоящему Полису, не может быть позже даты заключения договора купли-продажи/ подписания акта приемки-передачи застрахованного имущества по настоящему Полису.
 5. В случае повреждения застрахованного имущества - заключение авторизованного сервисного центра о причине повреждения имущества, возможности/не возможности проведения ремонта , стоимости ремонта (Акт о выполненной работе) или заключение о невозможности восстановления застрахованного имущества, а также подтверждение, что событие не входит в перечень гарантийных, предусмотренных производителем.]]></text>
 				</staticText>
 				<staticText>

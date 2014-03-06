@@ -374,7 +374,7 @@
                                 <echo message="Delete jaspers..." />
 
                                 <delete>
-                                    <fileset dir="src/main/resources/reports" includes="*.jasper" />
+                                    <fileset dir="src/main/resources/reports" includes="**/*.jasper" />
                                 </delete>
 
                                 <echo message="Compile reports..." />
@@ -383,7 +383,7 @@
                                 <jrc destdir="src/main/resources/reports">
                                     <src>
                                         <fileset dir="src/main/resources/reports">
-                                            <include name="*.jrxml" />
+                                            <include name="**/*.jrxml" />
                                         </fileset>
                                     </src>
                                     <classpath>
@@ -509,9 +509,9 @@
                 <artifactId>maven-jgitflow-plugin</artifactId>
                 <version>1.0-alpha27</version>
                 <configuration>
-                    <pushFeatures>true</pushFeatures>
-                    <pushReleases>true</pushReleases>
-                    <pushHotfixes>true</pushHotfixes>
+                    <pushFeatures>false</pushFeatures>
+                    <pushReleases>false</pushReleases>
+                    <pushHotfixes>false</pushHotfixes>
                     <noDeploy>true</noDeploy>
                 </configuration>
             </plugin>

@@ -56,6 +56,15 @@ public class Insurance extends AbstractExtaObject {
 	@Max(50)
 	private String motorModel;
 
+	// Номер договора купли-продажи
+	@Column(name = "SALE_NUM", length = 50)
+	@Max(50)
+	private String saleNum;
+
+	// Дата договора купли-продажи
+	@Column(name = "SALE_DATE")
+	private LocalDate saleDate;
+
 	// Страховая сумма, руб.
 	@Column(name = "RISK_SUM", precision = 32, scale = 4)
 	private BigDecimal riskSum;
@@ -277,5 +286,21 @@ public class Insurance extends AbstractExtaObject {
 
 	public void setDealer(SalePoint dealer) {
 		this.dealer = dealer;
+	}
+
+	public String getSaleNum() {
+		return saleNum;
+	}
+
+	public void setSaleNum(final String saleNum) {
+		this.saleNum = saleNum;
+	}
+
+	public LocalDate getSaleDate() {
+		return saleDate;
+	}
+
+	public void setSaleDate(final LocalDate saleDate) {
+		this.saleDate = saleDate;
 	}
 }
