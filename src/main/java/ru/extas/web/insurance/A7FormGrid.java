@@ -3,13 +3,9 @@
  */
 package ru.extas.web.insurance;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
-import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.A7Form;
-import ru.extas.model.UserRole;
 import ru.extas.server.A7FormService;
-import ru.extas.server.UserManagementService;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -35,13 +31,8 @@ public class A7FormGrid extends ExtaGrid {
 
 	@Override
 	protected Container createContainer() {
-		JPAContainer<A7Form> cnt = new ExtaDataContainer<>(A7Form.class);
+		ExtaDataContainer<A7Form> cnt = new ExtaDataContainer<>(A7Form.class);
 		cnt.addNestedContainerProperty("owner.name");
-		UserManagementService userService = lookup(UserManagementService.class);
-		// пользователю доступны только собственные записи
-		if (userService.isCurUserHasRole(UserRole.USER)) {
-			cnt.addContainerFilter(new Compare.Equal("owner", userService.getCurrentUserContact()));
-		}
 		return cnt;
 	}
 

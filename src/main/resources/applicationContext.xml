@@ -148,14 +148,14 @@
         <!-- Single realm app.  If you have multiple realms, use the 'realms' property instead. -->
         <property name="realm" ref="myRealm"/>
         <!-- By default the servlet container sessions will be used.  Uncomment this line
-             to use shiro's native sessions (see the JavaDoc for more): -->
+             to use security's native sessions (see the JavaDoc for more): -->
         <!-- <property name="sessionMode" value="native"/> -->
     </bean>
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
     <!-- Define the Shiro Realm implementation you want to use to connect to your back-end -->
     <!-- security datasource: -->
-    <bean id="myRealm" class="ru.extas.shiro.UserRealm">
+    <bean id="myRealm" class="ru.extas.security.UserRealm">
         <property name="credentialsMatcher" ref="credMatcher"/>
     </bean>
 

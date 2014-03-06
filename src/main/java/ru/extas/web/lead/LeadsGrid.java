@@ -1,6 +1,5 @@
 package ru.extas.web.lead;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
@@ -52,7 +51,7 @@ public class LeadsGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final JPAContainer<Lead> container = new ExtaDataContainer<>(Lead.class);
+		final ExtaDataContainer<Lead> container = new ExtaDataContainer<>(Lead.class);
 		container.addContainerFilter(new Compare.Equal("status", status));
 		container.sort(new Object[]{"createdAt"}, new boolean[]{false});
 		return container;

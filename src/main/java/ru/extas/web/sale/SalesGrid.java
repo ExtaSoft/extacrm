@@ -1,6 +1,5 @@
 package ru.extas.web.sale;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
@@ -48,7 +47,7 @@ public class SalesGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final JPAContainer<Sale> container = new ExtaDataContainer<>(Sale.class);
+		final ExtaDataContainer<Sale> container = new ExtaDataContainer<>(Sale.class);
 		container.addNestedContainerProperty("client.name");
 		container.addNestedContainerProperty("dealer.name");
 		container.addContainerFilter(new Compare.Equal("status", status));

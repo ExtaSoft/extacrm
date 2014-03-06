@@ -4,7 +4,6 @@
 package ru.extas.web.insurance;
 
 import com.google.common.base.Throwables;
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window.CloseEvent;
@@ -53,7 +52,7 @@ public class FormTransferGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final JPAContainer<FormTransfer> container = new ExtaDataContainer<>(FormTransfer.class);
+		final ExtaDataContainer<FormTransfer> container = new ExtaDataContainer<>(FormTransfer.class);
 		container.addNestedContainerProperty("fromContact.name");
 		container.addNestedContainerProperty("toContact.name");
 

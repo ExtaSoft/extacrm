@@ -2,7 +2,6 @@ package ru.extas.web.commons;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
@@ -342,13 +341,13 @@ public abstract class ExtaGrid extends CustomComponent {
 	}
 
 	protected void refreshContainer() {
-		if (container instanceof JPAContainer)
-			((JPAContainer) container).refresh();
+		if (container instanceof ExtaDataContainer)
+			((ExtaDataContainer) container).refresh();
 	}
 
 	protected void refreshContainerItem(final Object itemId) {
-		if (container instanceof JPAContainer)
-			((JPAContainer) container).refreshItem(itemId);
+		if (container instanceof ExtaDataContainer)
+			((ExtaDataContainer) container).refreshItem(itemId);
 	}
 
 	protected abstract GridDataDecl createDataDecl();

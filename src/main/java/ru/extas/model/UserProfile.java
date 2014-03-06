@@ -1,5 +1,7 @@
 package ru.extas.model;
 
+import ru.extas.security.UserRole;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import java.util.HashSet;

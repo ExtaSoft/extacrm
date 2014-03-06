@@ -13,7 +13,7 @@
         <vaadin.production.mode>true</vaadin.production.mode>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <shiro.version>1.2.2</shiro.version>
+        <shiro.version>1.2.3</shiro.version>
         <slf4j.version>1.7.5</slf4j.version>
         <joda-time.version>2.2</joda-time.version>
         <gson.version>2.2.4</gson.version>
@@ -428,6 +428,33 @@
                 </dependencies>
             </plugin>
 
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>2.2.4</version>
+                <executions>
+                    <execution>
+                        <id>eclipselink-jpa-metamodel</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <processors>
+                                <processor>org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor</processor>
+                            </processors>
+                            <outputDirectory>${project.build.directory}/generated-sources/meta-model</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.eclipse.persistence</groupId>
+                        <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
+                        <version>${eclipselink.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
                 <groupId>au.com.alderaan</groupId>

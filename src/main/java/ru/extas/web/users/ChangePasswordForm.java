@@ -12,8 +12,8 @@ import com.vaadin.ui.PasswordField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.UserProfile;
+import ru.extas.security.UserRealm;
 import ru.extas.server.UserRegistry;
-import ru.extas.shiro.UserRealm;
 import ru.extas.web.commons.window.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;

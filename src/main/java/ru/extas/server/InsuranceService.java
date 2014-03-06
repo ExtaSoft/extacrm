@@ -8,12 +8,6 @@ import ru.extas.model.Insurance;
  *         Time: 11:55
  */
 public interface InsuranceService {
-/**
- * Возвращает список всех зарегестрированных страховок
- *
- * @return список страховок
- */
-Iterable<Insurance> loadAll();
 
 /**
  * Сохраняет и выпускает полис страхования

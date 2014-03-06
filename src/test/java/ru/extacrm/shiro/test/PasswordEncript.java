@@ -4,7 +4,7 @@
 package ru.extacrm.shiro.test;
 
 import ru.extas.model.UserProfile;
-import ru.extas.shiro.UserRealm;
+import ru.extas.security.UserRealm;
 
 import java.util.Date;
 
