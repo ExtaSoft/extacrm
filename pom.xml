@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
@@ -369,32 +370,32 @@
                         <configuration>
                             <target>
 
-                                <property name="compile_classpath" refid="maven.compile.classpath" />
+                                <property name="compile_classpath" refid="maven.compile.classpath"/>
 
-                                <echo message="Delete jaspers..." />
+                                <echo message="Delete jaspers..."/>
 
                                 <delete>
-                                    <fileset dir="src/main/resources/reports" includes="*.jasper" />
+                                    <fileset dir="src/main/resources/reports" includes="*.jasper"/>
                                 </delete>
 
-                                <echo message="Compile reports..." />
+                                <echo message="Compile reports..."/>
 
-                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask" />
+                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"/>
                                 <jrc destdir="src/main/resources/reports">
                                     <src>
                                         <fileset dir="src/main/resources/reports">
-                                            <include name="*.jrxml" />
+                                            <include name="*.jrxml"/>
                                         </fileset>
                                     </src>
                                     <classpath>
-                                        <path path="${compile_classpath}" />
+                                        <path path="${compile_classpath}"/>
                                     </classpath>
                                 </jrc>
 
-                                <echo message="Copy reports..." />
+                                <echo message="Copy reports..."/>
 
                                 <copy todir="target/classes/reports" overwrite="true">
-                                    <fileset dir="src/main/resources/reports" />
+                                    <fileset dir="src/main/resources/reports"/>
                                 </copy>
 
                             </target>
@@ -440,6 +441,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <compilerArguments>-Aeclipselink.persistencexml=${project.basedir}/src/main/resources/META-INF/persistence.xml</compilerArguments>
                             <processors>
                                 <processor>org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor</processor>
                             </processors>
@@ -526,7 +528,7 @@
                     <useTestClasspath>false</useTestClasspath>
                     <!-- optional if you want to add some extra directories into the classloader -->
                     <additionalClasspathDirs>
-                        <additionalClasspathDir />
+                        <additionalClasspathDir/>
                     </additionalClasspathDirs>
                 </configuration>
             </plugin>
@@ -546,6 +548,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -657,7 +660,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -676,7 +679,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -695,7 +698,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
