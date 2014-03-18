@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.Insurance;
 import ru.extas.model.UserRole;
+import ru.extas.server.InsuranceCalculator;
 import ru.extas.server.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.DownloadFileWindow;
@@ -23,8 +24,11 @@ import ru.extas.web.commons.window.DownloadFileWindow;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -117,6 +121,47 @@ public class InsuranceGrid extends ExtaGrid {
 			}
 		});
 
+		actions.add(new ItemAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", "icon-clock") {
+			@Override
+			public void fire(Object itemId) {
+                final BeanItem<Insurance> curItem = new GridItem<>(table.getItem(itemId));
+                Insurance oldIns = curItem.getBean();
+
+                Insurance insurance = new Insurance();
+                // Копируем все необходимые данные из истекшего(истекающего) договора
+                insurance.setClient(oldIns.getClient());
+                insurance.setBeneficiary(oldIns.getBeneficiary());
+                insurance.setUsedMotor(true);
+                insurance.setMotorType(oldIns.getMotorType());
+                insurance.setMotorBrand(oldIns.getMotorBrand());
+                insurance.setMotorModel(oldIns.getMotorModel());
+                insurance.setMotorVin(oldIns.getMotorVin());
+                insurance.setCoverTime(oldIns.getCoverTime());
+                // СС сумма при пролонгации = СС в первоначальном полисе – 20%
+                insurance.setRiskSum(oldIns.getRiskSum().multiply(BigDecimal.valueOf(8L, 1)));
+                final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+                final BigDecimal premium = calc.calcPropInsPremium(insurance);
+                insurance.setPremium(premium);
+                insurance.setDealer(oldIns.getDealer());
+                insurance.setSaleNum(oldIns.getSaleNum());
+                insurance.setSaleDate(oldIns.getSaleDate());
+
+                final InsuranceEditForm editWin = new InsuranceEditForm("Пролонгация полиса", new BeanItem<>(insurance));
+                editWin.addCloseListener(new CloseListener() {
+
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void windowClose(final CloseEvent e) {
+                        if (editWin.isSaved()) {
+                            refreshContainer();
+                        }
+                    }
+                });
+                editWin.showModal();
+			}
+		});
+
 		actions.add(new ItemAction("Печать", "Создать печатное представление полиса страхования", "icon-print-2") {
 			@Override
 			public void fire(Object itemId) {
@@ -188,7 +233,7 @@ public class InsuranceGrid extends ExtaGrid {
 
 			final String clientName = insurance.getClient().getName();
 			final String policyNum = insurance.getRegNum();
-			final String policyFileName = MessageFormat.format("Полис {0} {1}.pdf", policyNum, clientName);
+			final String policyFileName = MessageFormat.format("Полис {0} {1} {2}.pdf", policyNum, clientName, new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
 
 			new DownloadFileWindow(outDoc.toByteArray(), policyFileName).showModal();
 
@@ -222,7 +267,7 @@ public class InsuranceGrid extends ExtaGrid {
 
 			final String clientName = insurance.getClient().getName();
 			final String regNum = insurance.getRegNum();
-			final String invoiceFileName = MessageFormat.format("Счет {0} {1}.pdf", regNum, clientName);
+			final String invoiceFileName = MessageFormat.format("Счет {0} {1} {2}.pdf", regNum, clientName, new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
 
 			new DownloadFileWindow(outDoc.toByteArray(), invoiceFileName).showModal();
 		} catch (JRException e) {

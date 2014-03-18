@@ -43,12 +43,18 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	private PopupDateField dateField;
 	@PropertyId("client")
 	private PersonSelect clientNameField;
+    @PropertyId("beneficiary")
+    private EditField beneficiaryField;
+    @PropertyId("usedMotor")
+    private CheckBox usedMotorField;
 	@PropertyId("motorType")
 	private MotorTypeSelect motorTypeField;
 	@PropertyId("motorBrand")
 	private MotorBrandSelect motorBrandField;
 	@PropertyId("motorModel")
 	private TextField motorModelField;
+    @PropertyId("motorVin")
+    private EditField motorVinField;
 	@PropertyId("saleNum")
 	private EditField saleNumField;
 	@PropertyId("saleDate")
@@ -131,9 +137,32 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 		// FIXME Ограничить выбор контакта только клиентами
 		clientNameField = new PersonSelect("Страхователь");
 		clientNameField.setRequired(true);
+        clientNameField.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(ValueChangeEvent event) {
+                if(beneficiaryField.getPropertyDataSource() != null)
+                    beneficiaryField.setValue(clientNameField.getValue().getName());
+            }
+        });
 		form.addComponent(clientNameField);
 
-		motorTypeField = new MotorTypeSelect();
+        beneficiaryField = new EditField("Выгодопреобретатель", "Введите имя выгодопреобретателя по данному договору страхования");
+        beneficiaryField.setRequired(true);
+        beneficiaryField.setColumns(25);
+        form.addComponent(beneficiaryField);
+
+        usedMotorField = new CheckBox("Б/у техника");
+        usedMotorField.setDescription("Признак бывшей в употреблении техники");
+        usedMotorField.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(final ValueChangeEvent event) {
+                calculatePremium();
+                updateTarifField();
+            }
+        });
+        form.addComponent(usedMotorField);
+
+        motorTypeField = new MotorTypeSelect();
 		motorTypeField.setRequired(true);
 		form.addComponent(motorTypeField);
 
@@ -156,8 +185,13 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
 		motorModelField = new EditField("Модель техники", "Введите модель техники");
 		motorModelField.setRequired(true);
-		motorModelField.setColumns(20);
+		motorModelField.setColumns(25);
 		form.addComponent(motorModelField);
+
+        motorVinField = new EditField("VIN", "Введите Идентификационный номер транспортного средства");
+        motorVinField.setRequired(true);
+        motorVinField.setColumns(20);
+        form.addComponent(motorVinField);
 
 		saleNumField = new EditField("Номер договора купли-продажи", "Введите номер договора купли-продажи");
 		saleNumField.setRequired(true);
@@ -246,12 +280,14 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
 	private void updateTarifField() {
 		if (motorBrandField.getPropertyDataSource() != null &&
-				coverTimeField.getContainerDataSource() != null) {
+				coverTimeField.getContainerDataSource() != null &&
+                usedMotorField.getPropertyDataSource() != null) {
 			final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
 			final String motorBrand = (String) motorBrandField.getValue();
-			if (coverPeriod != null && motorBrand != null) {
-				final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
-				final BigDecimal premium = calc.findTarif(motorBrand, coverPeriod);
+            Boolean isUsed = usedMotorField.getValue();
+            if (coverPeriod != null && motorBrand != null && isUsed != null) {
+                final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+                final BigDecimal premium = calc.findTarif(motorBrand, coverPeriod, isUsed);
 				tarifDataSource.setValue(premium);
 			}
 		}
@@ -316,13 +352,15 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 	private void calculatePremium() {
 		if (motorBrandField.getPropertyDataSource() != null &&
 				premiumField.getPropertyDataSource() != null &&
-				coverTimeField.getContainerDataSource() != null) {
+				coverTimeField.getContainerDataSource() != null &&
+                usedMotorField.getPropertyDataSource() != null) {
 			final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
 			final BigDecimal riskSum = (BigDecimal) riskSumField.getConvertedValue();
 			final String motorBrand = (String) motorBrandField.getValue();
-			if (riskSum != null && motorBrand != null) {
-				final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
-				final BigDecimal premium = calc.calcPropInsPremium(new Insurance(motorBrand, riskSum, coverPeriod));
+            boolean isUsedMotor = usedMotorField.getValue();
+            if (riskSum != null && motorBrand != null) {
+                final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+                final BigDecimal premium = calc.calcPropInsPremium(new Insurance(motorBrand, riskSum, coverPeriod, isUsedMotor));
 				premiumField.setConvertedValue(premium);
 			}
 		}

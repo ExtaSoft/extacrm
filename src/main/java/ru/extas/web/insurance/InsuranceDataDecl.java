@@ -15,13 +15,19 @@ class InsuranceDataDecl extends GridDataDecl {
 	public InsuranceDataDecl() {
 		super();
 		addMapping("regNum", "Номер полиса");
+		addMapping("a7Num", "Квитанция А-7", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("date", "Дата договора");
 		addMapping("client.name", "Клиент");
 		addMapping("client.birthday", "Дата рождения", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("client.phone", "Телефон", EnumSet.of(PresentFlag.COLLAPSED));
+		addMapping("beneficiary", "Выгодопреобретатель", EnumSet.of(PresentFlag.COLLAPSED));
+		addMapping("usedMotor", "Б/у", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("motorType", "Тип техники");
 		addMapping("motorBrand", "Марка техники");
 		addMapping("motorModel", "Модель техники");
+		addMapping("motorVin", "VIN", EnumSet.of(PresentFlag.COLLAPSED));
+		addMapping("saleNum", "№ дог.купли/продажи", EnumSet.of(PresentFlag.COLLAPSED));
+		addMapping("saleDate", "Дата дог.купли/продажи", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("riskSum", "Страховая сумма");
 		addMapping("coverTime", "Период страхования", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("premium", "Страховая премия");

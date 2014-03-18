@@ -22,6 +22,9 @@ public class Insurance extends AbstractExtaObject {
 
 	private static final long serialVersionUID = -1289533183659860816L;
 
+    // признак пролонгации договора
+    @Column(name = "IS_USED_MOTOR")
+    private boolean usedMotor;
 
 	// Номер полиса
 	@Column(name = "REG_NUM", length = Policy.REG_NUM_LENGTH, unique = true)
@@ -41,6 +44,10 @@ public class Insurance extends AbstractExtaObject {
 	@OneToOne
 	private Person client;
 
+    @Column(name = "BENEFICIARY", length = Contact.NAME_LENGTH)
+    @Max(Contact.NAME_LENGTH)
+    private String beneficiary;
+
 	// Предмет страхования - тип
 	@Column(name = "MOTOR_TYPE", length = 50)
 	@Max(50)
@@ -56,7 +63,12 @@ public class Insurance extends AbstractExtaObject {
 	@Max(50)
 	private String motorModel;
 
-	// Номер договора купли-продажи
+    // Серийный номер
+    @Column(name = "MOTOR_VIN", length = 50)
+    @Max(50)
+    private String motorVin;
+
+    // Номер договора купли-продажи
 	@Column(name = "SALE_NUM", length = 50)
 	@Max(50)
 	private String saleNum;
@@ -112,10 +124,11 @@ public class Insurance extends AbstractExtaObject {
 	 * @param motorBrand
 	 * @param riskSum
 	 */
-	public Insurance(String motorBrand, BigDecimal riskSum, PeriodOfCover coverPeriod) {
+	public Insurance(String motorBrand, BigDecimal riskSum, PeriodOfCover coverPeriod, boolean usedMotor) {
 		this.motorBrand = motorBrand;
 		this.riskSum = riskSum;
 		this.coverTime = coverPeriod;
+        this.usedMotor = usedMotor;
 	}
 
 	/**
@@ -303,4 +316,28 @@ public class Insurance extends AbstractExtaObject {
 	public void setSaleDate(final LocalDate saleDate) {
 		this.saleDate = saleDate;
 	}
+
+    public boolean isUsedMotor() {
+        return usedMotor;
+    }
+
+    public void setUsedMotor(boolean used) {
+        this.usedMotor = used;
+    }
+
+    public String getMotorVin() {
+        return motorVin;
+    }
+
+    public void setMotorVin(String motorVin) {
+        this.motorVin = motorVin;
+    }
+
+    public String getBeneficiary() {
+        return beneficiary;
+    }
+
+    public void setBeneficiary(String beneficiary) {
+        this.beneficiary = beneficiary;
+    }
 }

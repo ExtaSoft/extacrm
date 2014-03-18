@@ -209,7 +209,7 @@
 						<textElement verticalAlignment="Middle">
 							<font size="10"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$P{ins}.getClient().getName()]]></textFieldExpression>
+						<textFieldExpression><![CDATA[$P{ins}.getBeneficiary()]]></textFieldExpression>
 					</textField>
 					<textField>
 						<reportElement x="128" y="52" width="129" height="19" uuid="94c724e3-4085-45cf-a5d4-26710d981da7">
@@ -517,7 +517,7 @@
 					<text><![CDATA[Страховая премия, рублей]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="0" y="528" width="265" height="20" uuid="0c60731b-c5cb-4b5d-b978-16ca057f43a0">
+					<reportElement x="0" y="528" width="265" height="36" uuid="0c60731b-c5cb-4b5d-b978-16ca057f43a0">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -530,10 +530,10 @@
 					<textElement textAlignment="Center">
 						<font size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{ins}.getMotorType() + ", " + $P{ins}.getMotorBrand()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{ins}.getMotorType() + ", " + $P{ins}.getMotorBrand() + ", " + $P{ins}.getMotorModel() + ", " + System.lineSeparator() + "VIN:" + $P{ins}.getMotorVin()]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="265" y="528" width="130" height="20" uuid="a90f933c-fb96-459e-9806-4facd1a80a80">
+					<reportElement x="265" y="528" width="130" height="36" uuid="a90f933c-fb96-459e-9806-4facd1a80a80">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -550,10 +550,11 @@
 					<textFieldExpression><![CDATA[$P{moneyFormatter}.format($P{ins}.getRiskSum())]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="395" y="528" width="130" height="20" uuid="abe538eb-af44-4c62-a51f-55d89ca16219">
+					<reportElement x="395" y="528" width="130" height="36" uuid="abe538eb-af44-4c62-a51f-55d89ca16219">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
 					</reportElement>
 					<box>
 						<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -567,16 +568,18 @@
 					<textFieldExpression><![CDATA[$P{moneyFormatter}.format($P{ins}.getPremium())]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="548" width="525" height="51" uuid="cd111228-70a8-44fd-8ce1-8fb90ca93f8c"/>
+					<reportElement x="0" y="564" width="525" height="43" uuid="cd111228-70a8-44fd-8ce1-8fb90ca93f8c"/>
 					<text><![CDATA[На основании ст. 435, 438 ГК РФ согласием Страхователя заключить Полис на предложенных Страховщиком условиях (акцептом) считается уплата страховой премии.
 Страховая премия уплачивается единовременно.
 Данное предложение действительно в течение 1 (Одного) календарного дня, в котором был выдан Полис.
 Сумма и дата оплаты страховой премии указываются в квитанции, являющейся подтверждением оплаты страховой премии.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="599" width="100" height="50" uuid="7d851e90-0810-4c5c-a8bd-c8b571f65d2b">
+					<reportElement x="0" y="607" width="100" height="50" uuid="7d851e90-0810-4c5c-a8bd-c8b571f65d2b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
 					<box padding="3">
 						<topPen lineWidth="1.5"/>
@@ -590,9 +593,11 @@
 					<text><![CDATA[Период страхования по Полису]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="100" y="599" width="425" height="50" uuid="ce491b20-c2c7-49bc-bd9d-b774a32efa8f">
+					<reportElement x="100" y="607" width="425" height="50" uuid="ce491b20-c2c7-49bc-bd9d-b774a32efa8f">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
 					<box padding="3">
 						<topPen lineWidth="1.5"/>
@@ -603,7 +608,9 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{periodOfCover} + " с даты вступления Полиса в силу. Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем подписания Страхователем акта приема-передачи по договору купли-продажи № " + $P{ins}.getSaleNum() + " от "+ new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getSaleDate().toDate()) + "г. застрахованного имущества, но в любом случае не ранее даты оплаты страховой премии."]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{periodOfCover} + " с даты вступления Полиса в силу. " + 
+(($P{ins}.isUsedMotor() == true) ? ("Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем оплаты Страхователем полной суммы страховой премии.")
+: ("Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем подписания Страхователем акта приема-передачи по договору купли-продажи № " + $P{ins}.getSaleNum() + " от "+ new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getSaleDate().toDate()) + "г. застрахованного имущества, но в любом случае не ранее даты оплаты страховой премии."))]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="0" y="657" width="525" height="20" uuid="aa13249b-f593-4769-ade9-5d3510435c17">

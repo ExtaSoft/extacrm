@@ -30,5 +30,6 @@ public interface InsuranceCalculator {
 	 *
 	 * @return найденный тариф или null
 	 */
-	BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime);
+	BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime, boolean isUsed);
+
 }
