@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import ru.extas.model.Insurance;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Реализация калькулятора страховых премий
@@ -28,62 +31,52 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
 //			"Suzuki", "Honda", "Polar Fox");
 //	private static final ArrayList<String> tarig06Brands = newArrayList("STELS");
 
-	private static final Table<String, Insurance.PeriodOfCover, BigDecimal> tarifTable;
+	private static final Table<String, String, BigDecimal> tarifTable;
 
 	static {
 		tarifTable = HashBasedTable.create();
-		BigDecimal yearTarif = BigDecimal.valueOf(.045);
-		BigDecimal halfTarif = BigDecimal.valueOf(.032);
-		tarifTable.put("Kawasaki", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("Kawasaki", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
-		tarifTable.put("Arctic Cat", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("Arctic Cat", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
-		tarifTable.put("Polaris", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("Polaris", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
-		tarifTable.put("CECTEK", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("CECTEK", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
+        fillBrandTarif(newHashSet("Kawasaki", "Arctic Cat", "Polaris", "CECTEK"), BigDecimal.valueOf(.045), BigDecimal.valueOf(.032));
+        fillBrandTarif(newHashSet("Kawasaki", "Arctic Cat", "Polaris", "CECTEK"), BigDecimal.valueOf(.05), BigDecimal.valueOf(.035), true);
 
-		yearTarif = BigDecimal.valueOf(.045);
-		halfTarif = BigDecimal.valueOf(.032);
-		tarifTable.put("Baltmotors", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("Baltmotors", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
-		tarifTable.put("Suzuki", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("Suzuki", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
-		tarifTable.put("Honda", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("Honda", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
-		tarifTable.put("Polar Fox", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("Polar Fox", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
+        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda", "Polar Fox"), BigDecimal.valueOf(.045), BigDecimal.valueOf(.032));
+        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda", "Polar Fox"), BigDecimal.valueOf(.05), BigDecimal.valueOf(.035), true);
 
-		yearTarif = BigDecimal.valueOf(.06);
-		halfTarif = BigDecimal.valueOf(.042);
-		tarifTable.put("STELS", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("STELS", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
+        fillBrandTarif(newHashSet("STELS"), BigDecimal.valueOf(.06), BigDecimal.valueOf(.042));
+        fillBrandTarif(newHashSet("STELS"), BigDecimal.valueOf(.065), BigDecimal.valueOf(.046), true);
 
-		yearTarif = BigDecimal.valueOf(.055);
-		halfTarif = BigDecimal.valueOf(.039);
-		tarifTable.put("BRP", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("BRP", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
-		tarifTable.put("Yamaha", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("Yamaha", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
+        fillBrandTarif(newHashSet("BRP", "Yamaha"), BigDecimal.valueOf(.055), BigDecimal.valueOf(.039));
+        fillBrandTarif(newHashSet("BRP", "Yamaha"), BigDecimal.valueOf(.06), BigDecimal.valueOf(.043), true);
 
-		yearTarif = BigDecimal.valueOf(.035);
-		halfTarif = BigDecimal.valueOf(.025);
-		tarifTable.put("Тингер", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("Тингер", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
+        fillBrandTarif(newHashSet("Тингер"), BigDecimal.valueOf(.035), BigDecimal.valueOf(.025));
+        fillBrandTarif(newHashSet("Тингер"), BigDecimal.valueOf(.04), BigDecimal.valueOf(.029), true);
 
-		yearTarif = BigDecimal.valueOf(.035);
-		halfTarif = BigDecimal.valueOf(.025);
-		tarifTable.put("CFMOTO", Insurance.PeriodOfCover.YEAR, yearTarif);
-		tarifTable.put("CFMOTO", Insurance.PeriodOfCover.HALF_A_YEAR, halfTarif);
+        fillBrandTarif(newHashSet("CFMOTO"), BigDecimal.valueOf(.035), BigDecimal.valueOf(.025));
+        fillBrandTarif(newHashSet("CFMOTO"), BigDecimal.valueOf(.04), BigDecimal.valueOf(.029), true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * ru.extas.server.InsuranceCalculator#calcPropInsPremium(ru.extas.model
-	 * .Insurance)
-	 */
+    private static void fillBrandTarif(HashSet<String> brands, BigDecimal yearTarif, BigDecimal halfTarif) {
+        fillBrandTarif(brands, yearTarif, halfTarif, false);
+
+    }
+
+    private static void fillBrandTarif(Set<String> brands, BigDecimal yearTarif, BigDecimal halfTarif, boolean isUsed) {
+        for(String brand : brands) {
+            tarifTable.put(brand, getTarifKey(Insurance.PeriodOfCover.YEAR, isUsed), yearTarif);
+            tarifTable.put(brand, getTarifKey(Insurance.PeriodOfCover.HALF_A_YEAR, isUsed), halfTarif);
+        }
+    }
+
+    private static String getTarifKey(Insurance.PeriodOfCover periodOfCover, boolean isUsed) {
+        return periodOfCover.toString() + (isUsed ? "_used" : "");
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * ru.extas.server.InsuranceCalculator#calcPropInsPremium(ru.extas.model
+     * .Insurance)
+     */
 	@Override
 	public BigDecimal calcPropInsPremium(Insurance ins) {
 		checkArgument(ins != null, "Can't calculate premium. No insurance paramenets.");
@@ -91,7 +84,7 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
 		checkArgument(ins.getMotorBrand() != null, "Can't calculate premium. No insurance motor brand.");
 		checkArgument(ins.getCoverTime() != null, "Can't calculate premium. No period of cover.");
 
-		final BigDecimal tarif = findTarif(ins.getMotorBrand(), ins.getCoverTime());
+		final BigDecimal tarif = findTarif(ins.getMotorBrand(), ins.getCoverTime(), ins.isUsedMotor());
 
 		if (tarif == null)
 			throw new IllegalArgumentException("Unsupported motor brand");
@@ -100,13 +93,11 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
 	}
 
 	@Override
-	public BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime) {
+	public BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime, boolean isUsed) {
 		checkArgument(motorBrand != null, "Can't calculate premium. No insurance motor brand.");
 		checkArgument(coverTime != null, "Can't calculate premium. No period of cover.");
 
-		final BigDecimal tarif = tarifTable.get(motorBrand, coverTime);
-
-		return tarif;
+        return tarifTable.get(motorBrand, getTarifKey(coverTime, isUsed));
 	}
 
 }
