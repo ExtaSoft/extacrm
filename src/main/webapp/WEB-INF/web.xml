@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="extacrm" version="2.5">
 
-    <display-name>Vaadin Web Application</display-name>
+    <display-name>Extreme Assistance CRM Application</display-name>
 
     <context-param>
         <description>Vaadin production mode</description>
@@ -17,38 +17,38 @@
         <param-value>300</param-value>
     </context-param>
 
-    <servlet>
-        <servlet-name>extaCrmUIServlet</servlet-name>
-        <servlet-class>
-            com.vaadin.server.VaadinServlet
-        </servlet-class>
+    <!--<servlet>-->
+        <!--<servlet-name>extaCrmUIServlet</servlet-name>-->
+        <!--<servlet-class>-->
+            <!--com.vaadin.server.VaadinServlet-->
+        <!--</servlet-class>-->
 
-        <init-param>
-            <param-name>UI</param-name>
-            <param-value>ru.extas.web.ExtaCrmUI</param-value>
-        </init-param>
+        <!--<init-param>-->
+            <!--<param-name>UI</param-name>-->
+            <!--<param-value>ru.extas.web.ExtaCrmUI</param-value>-->
+        <!--</init-param>-->
 
-        <init-param>
-            <param-name>closeIdleSessions</param-name>
-            <param-value>true</param-value>
-        </init-param>
+        <!--<init-param>-->
+            <!--<param-name>closeIdleSessions</param-name>-->
+            <!--<param-value>true</param-value>-->
+        <!--</init-param>-->
 
-        <init-param>
-            <description>Widget Set to Use</description>
-            <param-name>widgetset</param-name>
-            <param-value>ru.extas.web.AppWidgetSet</param-value>
-        </init-param>
+        <!--<init-param>-->
+            <!--<description>Widget Set to Use</description>-->
+            <!--<param-name>widgetset</param-name>-->
+            <!--<param-value>ru.extas.web.AppWidgetSet</param-value>-->
+        <!--</init-param>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
 
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>extaCrmUIServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-
-    <session-config>
-        <session-timeout>30</session-timeout>
-    </session-config>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>extaCrmUIServlet</servlet-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>extaCrmUIServlet</servlet-name>-->
+        <!--<url-pattern>/VAADIN/*</url-pattern>-->
+    <!--</servlet-mapping>-->
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -58,6 +58,25 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath*:applicationContext.xml</param-value>
     </context-param>
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath*:dispatcher-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
 
     <!-- The filter-name matches name of a 'shiroFilter' bean inside applicationContext.xml -->
     <filter>
@@ -85,7 +104,7 @@
 
     <filter-mapping>
         <filter-name>activitiAuthFilter</filter-name>
-        <servlet-name>extaCrmUIServlet</servlet-name>
+        <servlet-name>dispatcher</servlet-name>
     </filter-mapping>
 
     <security-constraint>

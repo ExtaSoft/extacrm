@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- Activate Spring annotation support -->
+    <!--<context:annotation-config/>-->
+    <mvc:annotation-driven />
+    <context:component-scan base-package="ru.extas.server.rest"/>
+
+    <!-- Vaadin application controller -->
+    <bean id="applicationServlet" class="org.springframework.web.servlet.mvc.ServletWrappingController"
+          p:servletClass="com.vaadin.server.VaadinServlet">
+        <property name="initParameters">
+            <props>
+                <prop key="UI">ru.extas.web.ExtaCrmUI</prop>
+                <prop key="productionMode">true</prop>
+                <prop key="closeIdleSessions">true</prop>
+                <prop key="widgetset">ru.extas.web.AppWidgetSet</prop>
+                <prop key="heartbeatInterval">300</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+
+    <!-- Map URIs to web controllers -->
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="defaultHandler" ref="handlerMapping"/>
+        <property name="urlMap">
+            <map>
+                <entry key="/*" value-ref="applicationServlet"/>
+            </map>
+        </property>
+    </bean>
+
+</beans>
