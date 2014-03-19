@@ -80,13 +80,16 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 	public void attach() {
 		super.attach();
 
-		if (salePoint.getCompany() == null)
-			companyField.setReadOnly(false);
-		else {
+		if (salePoint.getCompany() == null) {
+            companyField.setReadOnly(false);
+            companyField.setVisible(true);
+            companyField.setRequired(true);
+        } else {
 			companyField.setReadOnly(true);
-			companyField.setVisible(false);
+            companyField.getPropertyDataSource().setReadOnly(true);
 			if (salePoint.getCompany().getId() == null) {
-				companyField.setRequired(false);
+                companyField.setVisible(false);
+                companyField.setRequired(false);
 			}
 		}
 	}

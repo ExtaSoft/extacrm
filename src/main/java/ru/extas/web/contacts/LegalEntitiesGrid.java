@@ -35,7 +35,7 @@ public class LegalEntitiesGrid extends ExtaGrid {
 
 	@Override
 	protected GridDataDecl createDataDecl() {
-		return new ContactDataDecl();
+		return new LegalEntityDataDecl();
 	}
 
 	@Override
@@ -45,6 +45,7 @@ public class LegalEntitiesGrid extends ExtaGrid {
 		if (company != null)
 			container.addContainerFilter(new Compare.Equal("company", company));
 		container.addNestedContainerProperty("actualAddress.region");
+		container.addNestedContainerProperty("company.name");
 		return container;
 	}
 

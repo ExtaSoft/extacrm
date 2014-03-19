@@ -36,7 +36,7 @@ public class SalePointsGrid extends ExtaGrid {
 
 	@Override
 	protected GridDataDecl createDataDecl() {
-		return new ContactDataDecl();
+		return new SalePointsDataDecl();
 	}
 
 	@Override
@@ -44,6 +44,7 @@ public class SalePointsGrid extends ExtaGrid {
 		// Запрос данных
 		final JPAContainer<SalePoint> container = new ExtaDataContainer<>(SalePoint.class);
 		container.addNestedContainerProperty("actualAddress.region");
+		container.addNestedContainerProperty("company.name");
 		if (company != null)
 			container.addContainerFilter(new Compare.Equal("company", company));
 		return container;

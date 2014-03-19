@@ -81,12 +81,16 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
 	public void attach() {
 		super.attach();
 
-		if (legalEntity.getCompany() == null)
-			companyField.setReadOnly(false);
-		else {
-			companyField.setVisible(false);
+		if (legalEntity.getCompany() == null) {
+            companyField.setReadOnly(false);
+            companyField.setVisible(true);
+            companyField.setRequired(true);
+        } else {
+            companyField.setReadOnly(true);
+            companyField.getPropertyDataSource().setReadOnly(true);
 			if (legalEntity.getCompany().getId() == null) {
-				companyField.setRequired(false);
+                companyField.setVisible(false);
+                companyField.setRequired(false);
 			}
 		}
 	}
