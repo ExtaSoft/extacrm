@@ -15,23 +15,21 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <shiro.version>1.2.3</shiro.version>
-        <slf4j.version>1.7.5</slf4j.version>
-        <joda-time.version>2.2</joda-time.version>
+        <slf4j.version>1.7.6</slf4j.version>
+        <joda-time.version>2.3</joda-time.version>
         <gson.version>2.2.4</gson.version>
 
-        <vaadin.version>7.1.11</vaadin.version>
+        <vaadin.version>7.1.12</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
         <vaadin.popupbutton.version>2.3.0</vaadin.popupbutton.version>
-        <vaadin.filteringtable.version>0.9.3.v7</vaadin.filteringtable.version>
+        <vaadin.filteringtable.version>0.9.6.v7</vaadin.filteringtable.version>
 
         <servlet-api.version>2.5</servlet-api.version>
         <activiti-version>5.14</activiti-version>
 
         <junit.version>4.11</junit.version>
         <mockito.version>1.9.5</mockito.version>
-
-        <xdocreport.version>1.0.2</xdocreport.version>
 
         <spring.version>4.0.2.RELEASE</spring.version>
         <spring-data.version>1.5.1.RELEASE</spring-data.version>
@@ -170,6 +168,11 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>${spring-data.version}</version>
@@ -191,22 +194,6 @@
             <groupId>com.googlecode.flyway</groupId>
             <artifactId>flyway-core</artifactId>
             <version>2.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>fr.opensagres.xdocreport</groupId>
-            <artifactId>fr.opensagres.xdocreport.document.docx</artifactId>
-            <version>${xdocreport.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.opensagres.xdocreport</groupId>
-            <artifactId>fr.opensagres.xdocreport.template.freemarker</artifactId>
-            <version>${xdocreport.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.opensagres.xdocreport</groupId>
-            <artifactId>org.apache.poi.xwpf.converter.pdf-gae</artifactId>
-            <version>${xdocreport.version}</version>
         </dependency>
 
         <dependency>
@@ -370,32 +357,32 @@
                         <configuration>
                             <target>
 
-                                <property name="compile_classpath" refid="maven.compile.classpath"/>
+                                <property name="compile_classpath" refid="maven.compile.classpath" />
 
-                                <echo message="Delete jaspers..."/>
+                                <echo message="Delete jaspers..." />
 
                                 <delete>
-                                    <fileset dir="src/main/resources/reports" includes="*.jasper"/>
+                                    <fileset dir="src/main/resources/reports" includes="**/*.jasper" />
                                 </delete>
 
-                                <echo message="Compile reports..."/>
+                                <echo message="Compile reports..." />
 
-                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"/>
+                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask" />
                                 <jrc destdir="src/main/resources/reports">
                                     <src>
                                         <fileset dir="src/main/resources/reports">
-                                            <include name="*.jrxml"/>
+                                            <include name="**/*.jrxml" />
                                         </fileset>
                                     </src>
                                     <classpath>
-                                        <path path="${compile_classpath}"/>
+                                        <path path="${compile_classpath}" />
                                     </classpath>
                                 </jrc>
 
-                                <echo message="Copy reports..."/>
+                                <echo message="Copy reports..." />
 
                                 <copy todir="target/classes/reports" overwrite="true">
-                                    <fileset dir="src/main/resources/reports"/>
+                                    <fileset dir="src/main/resources/reports" />
                                 </copy>
 
                             </target>
