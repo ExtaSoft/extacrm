@@ -19,17 +19,22 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  * @author Valery Orlov
  *         Date: 17.02.14
  *         Time: 16:40
+ * @version $Id: $Id
  */
 public class LegalProductsField extends CustomField<List> {
 
 	private Table table;
 	private BeanItemContainer<Product> container;
 
+	/**
+	 * <p>Constructor for LegalProductsField.</p>
+	 */
 	public LegalProductsField() {
 		setBuffered(true);
 		setWidth(600, Unit.PIXELS);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 		final VerticalLayout fieldLayout = new VerticalLayout();
@@ -107,6 +112,7 @@ public class LegalProductsField extends CustomField<List> {
 		return fieldLayout;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends List> getType() {
 		return List.class;

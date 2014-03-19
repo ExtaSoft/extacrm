@@ -15,6 +15,7 @@ import ru.extas.web.commons.ExtaAbstractView;
  * Реализует экран кредитной деятельности
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class LoansView extends ExtaAbstractView {
 
@@ -26,6 +27,7 @@ public class LoansView extends ExtaAbstractView {
      *
      * @see ru.extas.web.ExtaAbstractView#getContent()
      */
+    /** {@inheritDoc} */
     @Override
     protected Component getContent() {
         logger.info("Creating view content...");
@@ -44,6 +46,7 @@ public class LoansView extends ExtaAbstractView {
      *
      * @see ru.extas.web.ExtaAbstractView#getTitle()
      */
+    /** {@inheritDoc} */
     @Override
     protected Component getTitle() {
         final Component title = new Label("Кредитование");

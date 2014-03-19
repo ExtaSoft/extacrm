@@ -9,6 +9,7 @@ import com.vaadin.ui.TextField;
  * Преднастроенный компонент ввода текста
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class EditField extends TextField {
 

@@ -17,16 +17,21 @@ import static com.google.common.collect.Lists.newArrayList;
  * Реализует экран "Продукты"
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class ProductView extends AbstractTabView {
 
 	private static final long serialVersionUID = -1272779672761523416L;
 
+	/**
+	 * <p>Constructor for ProductView.</p>
+	 */
 	public ProductView() {
 		super("Продукты");
 	}
 
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<TabInfo> getTabComponentsInfo() {
 		final ArrayList<TabInfo> ret = newArrayList();

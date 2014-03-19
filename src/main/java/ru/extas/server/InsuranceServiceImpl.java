@@ -15,6 +15,7 @@ import javax.inject.Inject;
  * Имплементация сервиса управления имущественными страховками
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -37,6 +38,7 @@ private UserManagementService userService;
  *
  * @see ru.extas.server.InsuranceRepository#getAll()
  */
+/** {@inheritDoc} */
 @Transactional
 @Override
 public Iterable<Insurance> loadAll() {
@@ -54,6 +56,7 @@ public Iterable<Insurance> loadAll() {
  *
  * @see ru.extas.server.InsuranceRepository#create(ru.extas.model.Insurance)
  */
+/** {@inheritDoc} */
 @Transactional
 @Override
 public void saveAndIssue(Insurance insurance) {

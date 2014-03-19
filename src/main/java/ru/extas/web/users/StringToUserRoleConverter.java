@@ -13,14 +13,19 @@ import ru.extas.web.commons.converters.String2EnumConverter;
  * Конвертирует роли пользователя в соответствующее перечисление
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 public class StringToUserRoleConverter extends String2EnumConverter<UserRole> {
 
+	/**
+	 * <p>Constructor for StringToUserRoleConverter.</p>
+	 */
 	public StringToUserRoleConverter() {
 		super(UserRole.class);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected BiMap<UserRole, String> createEnum2StringMap() {
 		final BiMap<UserRole, String> map = HashBiMap.create();

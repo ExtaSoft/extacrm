@@ -9,6 +9,7 @@ import java.util.EnumSet;
  * Привязка пользовательского интерфейса с данным
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class DataDeclMapping implements Serializable {
 
@@ -29,18 +30,46 @@ public class DataDeclMapping implements Serializable {
         COLLAPSED
     }
 
+    /**
+     * <p>Constructor for DataDeclMapping.</p>
+     *
+     * @param propName a {@link java.lang.String} object.
+     * @param caption a {@link java.lang.String} object.
+     */
     public DataDeclMapping(String propName, String caption) {
         this(propName, caption, null, null);
     }
 
+    /**
+     * <p>Constructor for DataDeclMapping.</p>
+     *
+     * @param propName a {@link java.lang.String} object.
+     * @param caption a {@link java.lang.String} object.
+     * @param presentFlags a {@link java.util.EnumSet} object.
+     */
     public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags) {
         this(propName, caption, presentFlags, null);
     }
 
+    /**
+     * <p>Constructor for DataDeclMapping.</p>
+     *
+     * @param propName a {@link java.lang.String} object.
+     * @param caption a {@link java.lang.String} object.
+     * @param converter a {@link com.vaadin.data.util.converter.Converter} object.
+     */
     public DataDeclMapping(String propName, String caption, Converter<String, ?> converter) {
         this(propName, caption, null, converter);
     }
 
+    /**
+     * <p>Constructor for DataDeclMapping.</p>
+     *
+     * @param propName a {@link java.lang.String} object.
+     * @param caption a {@link java.lang.String} object.
+     * @param presentFlags a {@link java.util.EnumSet} object.
+     * @param converter a {@link com.vaadin.data.util.converter.Converter} object.
+     */
     public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags, Converter<String, ?> converter) {
         super();
         this.propName = propName;
@@ -53,6 +82,8 @@ public class DataDeclMapping implements Serializable {
     }
 
     /**
+     * <p>Getter for the field <code>propName</code>.</p>
+     *
      * @return the propName
      */
     public final String getPropName() {
@@ -60,6 +91,8 @@ public class DataDeclMapping implements Serializable {
     }
 
     /**
+     * <p>Getter for the field <code>caption</code>.</p>
+     *
      * @return the caption
      */
     public final String getCaption() {
@@ -67,6 +100,8 @@ public class DataDeclMapping implements Serializable {
     }
 
     /**
+     * <p>isCollapsed.</p>
+     *
      * @return the collapsed
      */
     public final boolean isCollapsed() {
@@ -74,6 +109,8 @@ public class DataDeclMapping implements Serializable {
     }
 
     /**
+     * <p>Getter for the field <code>converter</code>.</p>
+     *
      * @return the converter
      */
     public Converter<String, ?> getConverter() {

@@ -24,11 +24,17 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  *         Date: 17.02.14
  *         Time: 20:03
+ * @version $Id: $Id
  */
 public class LegalEntitiesField extends CustomField<List> {
 
 	private final Company company;
 
+	/**
+	 * <p>Constructor for LegalEntitiesField.</p>
+	 *
+	 * @param company a {@link ru.extas.model.Company} object.
+	 */
 	public LegalEntitiesField(Company company) {
 		this.company = company;
 		setBuffered(true);
@@ -37,6 +43,7 @@ public class LegalEntitiesField extends CustomField<List> {
 		setWidth(600, Unit.PIXELS);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 		LegalEntitiesGrid grid = new LegalEntitiesGrid(company) {
@@ -107,6 +114,7 @@ public class LegalEntitiesField extends CustomField<List> {
 		return grid;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends List> getType() {
 		return List.class;

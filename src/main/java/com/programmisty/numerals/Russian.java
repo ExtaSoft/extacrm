@@ -25,8 +25,9 @@ import static com.programmisty.numerals.Util.toUpperCaseFirstLetter;
 
 /**
  * Russian numbers
- * 
+ *
  * @author vit
+ * @version $Id: $Id
  */
 public class Russian extends AbstractNumeral {
 
@@ -43,6 +44,7 @@ public class Russian extends AbstractNumeral {
         "октиллион", "нониллион", "дециллион"
     };
 
+    /** {@inheritDoc} */
     @Override
     public String format(Number number) {
         // check number type
@@ -192,9 +194,9 @@ public class Russian extends AbstractNumeral {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Сумма прописью: Семьсот семьдесят семь рублей 77 копеек
-     * @param bi
-     * @return
      */
     @Override
     public String amount(BigDecimal bi) {

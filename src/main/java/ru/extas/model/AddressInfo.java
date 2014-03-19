@@ -10,6 +10,7 @@ import java.io.Serializable;
  * Адресные данные контакта
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Embeddable
 public class AddressInfo implements Cloneable, Serializable {
@@ -37,9 +38,20 @@ public class AddressInfo implements Cloneable, Serializable {
     @Max(255)
     private String streetBld;
 
+    /**
+     * <p>Constructor for AddressInfo.</p>
+     */
     public AddressInfo() {
     }
 
+    /**
+     * <p>Constructor for AddressInfo.</p>
+     *
+     * @param region a {@link java.lang.String} object.
+     * @param city a {@link java.lang.String} object.
+     * @param postIndex a {@link java.lang.String} object.
+     * @param streetBld a {@link java.lang.String} object.
+     */
     public AddressInfo(String region, String city, String postIndex, String streetBld) {
         this.region = region;
         this.city = city;
@@ -47,40 +59,81 @@ public class AddressInfo implements Cloneable, Serializable {
         this.streetBld = streetBld;
     }
 
+    /** {@inheritDoc} */
     @Override
     public AddressInfo clone() {
         AddressInfo newObj = new AddressInfo(region, city, postIndex, streetBld);
         return newObj;
     }
 
+    /**
+     * <p>Getter for the field <code>region</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getRegion() {
         return region;
     }
 
+    /**
+     * <p>Setter for the field <code>region</code>.</p>
+     *
+     * @param region a {@link java.lang.String} object.
+     */
     public void setRegion(final String region) {
         this.region = region;
     }
 
+    /**
+     * <p>Getter for the field <code>city</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getCity() {
         return city;
     }
 
+    /**
+     * <p>Setter for the field <code>city</code>.</p>
+     *
+     * @param city a {@link java.lang.String} object.
+     */
     public void setCity(final String city) {
         this.city = city;
     }
 
+    /**
+     * <p>Getter for the field <code>postIndex</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getPostIndex() {
         return postIndex;
     }
 
+    /**
+     * <p>Setter for the field <code>postIndex</code>.</p>
+     *
+     * @param postIndex a {@link java.lang.String} object.
+     */
     public void setPostIndex(final String postIndex) {
         this.postIndex = postIndex;
     }
 
+    /**
+     * <p>Getter for the field <code>streetBld</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getStreetBld() {
         return streetBld;
     }
 
+    /**
+     * <p>Setter for the field <code>streetBld</code>.</p>
+     *
+     * @param streetBld a {@link java.lang.String} object.
+     */
     public void setStreetBld(final String streetBld) {
         this.streetBld = streetBld;
     }

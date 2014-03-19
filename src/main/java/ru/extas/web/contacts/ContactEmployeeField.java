@@ -17,16 +17,21 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  * @author Valery Orlov
  *         Date: 17.02.14
  *         Time: 13:04
+ * @version $Id: $Id
  */
 public class ContactEmployeeField extends CustomField<List> {
 
 	private Table table;
 	private BeanItemContainer<Person> container;
 
+	/**
+	 * <p>Constructor for ContactEmployeeField.</p>
+	 */
 	public ContactEmployeeField() {
 		super.setBuffered(true);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 		final VerticalLayout fieldLayout = new VerticalLayout();
@@ -102,6 +107,7 @@ public class ContactEmployeeField extends CustomField<List> {
 		return fieldLayout;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends List> getType() {
 		return List.class;

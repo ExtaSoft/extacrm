@@ -16,7 +16,10 @@ import org.slf4j.LoggerFactory;
 import java.util.Iterator;
 
 /**
+ * <p>Abstract AbstractEditForm class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public abstract class AbstractEditForm<TEditObject> extends Window {
 
@@ -30,16 +33,32 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
     private FieldGroup fieldGroup;
     private boolean modified;
 
+    /**
+     * <p>Constructor for AbstractEditForm.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     protected AbstractEditForm(final String caption) {
         super(caption);
     }
 
+    /**
+     * <p>Constructor for AbstractEditForm.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
+     */
     protected AbstractEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
         super(caption);
 
         initForm(beanItem);
     }
 
+    /**
+     * <p>initForm.</p>
+     *
+     * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
+     */
     protected void initForm(BeanItem<TEditObject> beanItem) {
         final TEditObject bean = beanItem.getBean();
         initObject(bean);
@@ -115,10 +134,20 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         });
     }
 
+    /**
+     * <p>isModified.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isModified() {
         return modified || fieldGroup.isModified();
     }
 
+    /**
+     * <p>Setter for the field <code>modified</code>.</p>
+     *
+     * @param modified a boolean.
+     */
     public void setModified(boolean modified) {
         this.modified = modified;
     }
@@ -138,6 +167,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         return focused;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setContent(Component content) {
         if (content != null) {
@@ -150,10 +180,18 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         super.setContent(content);
     }
 
+    /**
+     * <p>isSaved.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isSaved() {
         return this.saved;
     }
 
+    /**
+     * <p>showModal.</p>
+     */
     public void showModal() {
         setClosable(true);
         setModal(true);
@@ -162,22 +200,31 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
     }
 
     /**
-     * @param obj
+     * <p>initObject.</p>
+     *
+     * @param obj a TEditObject object.
      */
     protected abstract void initObject(TEditObject obj);
 
     /**
-     * @param obj
+     * <p>saveObject.</p>
+     *
+     * @param obj a TEditObject object.
      */
     protected abstract void saveObject(TEditObject obj);
 
     /**
-     * @param obj
+     * <p>checkBeforeSave.</p>
+     *
+     * @param obj a TEditObject object.
      */
     protected abstract void checkBeforeSave(TEditObject obj);
 
     /**
-     * @return
+     * <p>createEditFields.</p>
+     *
+     * @param obj a TEditObject object.
+     * @return a {@link com.vaadin.ui.ComponentContainer} object.
      */
     protected abstract ComponentContainer createEditFields(TEditObject obj);
 

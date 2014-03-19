@@ -11,6 +11,9 @@ import java.util.EnumSet;
  *         Time: 12:52
  */
 class SaleDataDecl extends GridDataDecl {
+	/**
+	 * <p>Constructor for SaleDataDecl.</p>
+	 */
 	public SaleDataDecl() {
 		addMapping("client.name", "Клиент");
 		addMapping("motorType", "Тип техники");

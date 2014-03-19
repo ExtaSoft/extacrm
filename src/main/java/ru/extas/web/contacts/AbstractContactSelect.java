@@ -14,6 +14,7 @@ import ru.extas.web.commons.ExtaDataContainer;
  * Абстрактный компонент для выбора контакта
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class AbstractContactSelect<TContactType extends Contact> extends ComboBox {
 
@@ -21,10 +22,23 @@ public class AbstractContactSelect<TContactType extends Contact> extends ComboBo
 	private final Class<TContactType> contactType;
 	protected JPAContainer<TContactType> container;
 
+	/**
+	 * <p>Constructor for AbstractContactSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param contactType a {@link java.lang.Class} object.
+	 */
 	protected AbstractContactSelect(final String caption, final Class<TContactType> contactType) {
 		this(caption, "Выберете существующий контакт или введите новый", contactType);
 	}
 
+	/**
+	 * <p>Constructor for AbstractContactSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 * @param contactType a {@link java.lang.Class} object.
+	 */
 	protected AbstractContactSelect(final String caption, final String description, final Class<TContactType> contactType) {
 		super(caption);
 
@@ -51,6 +65,9 @@ public class AbstractContactSelect<TContactType extends Contact> extends ComboBo
 		setNewItemsAllowed(false);
 	}
 
+	/**
+	 * <p>refreshContainer.</p>
+	 */
 	public void refreshContainer() {
 		container.refresh();
 	}

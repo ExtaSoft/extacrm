@@ -19,6 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  *         Date: 21.01.14
  *         Time: 15:28
+ * @version $Id: $Id
  */
 public class ProductInSaleGrid extends CustomField<List> {
 
@@ -26,15 +27,27 @@ public class ProductInSaleGrid extends CustomField<List> {
 	private Table productTable;
 	private BeanItemContainer<ProductInSale> container;
 
+	/**
+	 * <p>Constructor for ProductInSaleGrid.</p>
+	 *
+	 * @param sale a {@link ru.extas.model.Sale} object.
+	 */
 	public ProductInSaleGrid(final Sale sale) {
 		this("Продукты в продаже", sale);
 	}
 
+	/**
+	 * <p>Constructor for ProductInSaleGrid.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param sale a {@link ru.extas.model.Sale} object.
+	 */
 	public ProductInSaleGrid(final String caption, final Sale sale) {
 		this.sale = sale;
 		setCaption(caption);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 		final VerticalLayout fieldLayout = new VerticalLayout();
@@ -132,6 +145,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 		return fieldLayout;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void commit() throws SourceException, Validator.InvalidValueException {
 		super.commit();
@@ -140,6 +154,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 			dataSource.setValue(container.getItemIds());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends List> getType() {
 		return List.class;

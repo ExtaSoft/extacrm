@@ -11,12 +11,18 @@ import javax.inject.Inject;
  * @author Valery Orlov
  *         Date: 19.11.13
  *         Time: 13:28
+ * @version $Id: $Id
  */
 public class DefaultUserTaskListener {
 
     @Inject
     UserManagementService userManagementService;
 
+    /**
+     * <p>createTask.</p>
+     *
+     * @param task a {@link org.activiti.engine.delegate.DelegateTask} object.
+     */
     public void createTask(DelegateTask task) {
         String user = userManagementService.getCurrentUserLogin();
 

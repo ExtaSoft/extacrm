@@ -12,9 +12,13 @@ import java.util.EnumSet;
  * Опции отображения контактов в списке
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class LegalEntityDataDecl extends GridDataDecl {
 
+	/**
+	 * <p>Constructor for LegalEntityDataDecl.</p>
+	 */
 	public LegalEntityDataDecl() {
 		super();
 		addMapping("name", "Имя");

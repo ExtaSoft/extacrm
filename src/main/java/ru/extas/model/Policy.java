@@ -16,6 +16,7 @@ import javax.validation.constraints.Max;
  * Полис страхования в БСО
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Entity
 @Table(name = "POLICY",
@@ -25,6 +26,7 @@ import javax.validation.constraints.Max;
 public class Policy extends AbstractExtaObject {
 
     private static final long serialVersionUID = 3160576591591414719L;
+    /** Constant <code>REG_NUM_LENGTH=20</code> */
     public static final int REG_NUM_LENGTH = 20;
 
     // Номер полиса
@@ -41,6 +43,8 @@ public class Policy extends AbstractExtaObject {
     private DateTime issueDate;
 
     /**
+     * <p>Getter for the field <code>regNum</code>.</p>
+     *
      * @return the regNum
      */
     public String getRegNum() {
@@ -48,6 +52,8 @@ public class Policy extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>regNum</code>.</p>
+     *
      * @param regNum the regNum to set
      */
     public void setRegNum(String regNum) {
@@ -55,6 +61,8 @@ public class Policy extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>bookTime</code>.</p>
+     *
      * @return the bookTime
      */
     public DateTime getBookTime() {
@@ -62,6 +70,8 @@ public class Policy extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>bookTime</code>.</p>
+     *
      * @param bookTime the bookTime to set
      */
     public void setBookTime(DateTime bookTime) {
@@ -69,6 +79,8 @@ public class Policy extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>issueDate</code>.</p>
+     *
      * @return the issueDate
      */
     public DateTime getIssueDate() {
@@ -76,6 +88,8 @@ public class Policy extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>issueDate</code>.</p>
+     *
      * @param issueDate the issueDate to set
      */
     public void setIssueDate(DateTime issueDate) {

@@ -9,9 +9,13 @@ import ru.extas.web.commons.GridDataDecl;
  * Опции отображения контактов в списке
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class CompanyDataDecl extends GridDataDecl {
 
+	/**
+	 * <p>Constructor for CompanyDataDecl.</p>
+	 */
 	public CompanyDataDecl() {
 		super();
 		addMapping("name", "Имя");

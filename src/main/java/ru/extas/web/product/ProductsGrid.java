@@ -12,16 +12,21 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
+ * <p>ProductsGrid class.</p>
+ *
  * @author Valery Orlov
  *         Date: 17.02.14
  *         Time: 17:15
+ * @version $Id: $Id
  */
 public class ProductsGrid extends ExtaGrid {
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new ProductDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
@@ -31,6 +36,7 @@ public class ProductsGrid extends ExtaGrid {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		return newArrayList();

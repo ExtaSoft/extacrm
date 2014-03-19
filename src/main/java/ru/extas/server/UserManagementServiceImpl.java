@@ -20,6 +20,7 @@ import javax.inject.Inject;
  * Имплементация сервиса управления пользователями и правами доступа
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @SuppressWarnings("unchecked")
 @Component
@@ -38,6 +39,7 @@ private UserRegistry userRegistry;
  * @see
  * ru.extas.server.UserManagementService#findUserByLogin(java.lang.String)
  */
+/** {@inheritDoc} */
 @Transactional
 @Override
 public UserProfile findUserByLogin(String login) {
@@ -58,12 +60,9 @@ public UserProfile findUserByLogin(String login) {
 }
 
 /**
+ * {@inheritDoc}
+ *
  * Найти контакт пользователя по логину
- *
- *
- * @param login логин
- *
- * @return найденный контакт пользователя или null
  */
 @Transactional
 @Override
@@ -77,6 +76,7 @@ public Person findUserContactByLogin(final String login) {
  *
  * @see ru.extas.server.UserManagementService#getSuperuser()
  */
+/** {@inheritDoc} */
 @Transactional
 @Override
 public UserProfile getSuperuser() {
@@ -103,12 +103,14 @@ public UserProfile getSuperuser() {
  *
  * @see ru.extas.server.UserManagementService#getCurrentUser()
  */
+/** {@inheritDoc} */
 @Transactional
 @Override
 public UserProfile getCurrentUser() {
 	return findUserByLogin(getCurrentUserLogin());
 }
 
+/** {@inheritDoc} */
 @Override
 public String getCurrentUserLogin() {
 	Subject subject = SecurityUtils.getSubject();
@@ -117,9 +119,9 @@ public String getCurrentUserLogin() {
 }
 
 /**
- * Получить контакт текущего пользователя
+ * {@inheritDoc}
  *
- * @return контакт текущего пользователя
+ * Получить контакт текущего пользователя
  */
 @Transactional
 @Override
@@ -128,18 +130,21 @@ public Person getCurrentUserContact() {
 	return currentUser != null ? currentUser.getContact() : null;
 }
 
+/** {@inheritDoc} */
 @Override
 public boolean isUserAuthenticated() {
 	Subject subject = SecurityUtils.getSubject();
 	return subject.isAuthenticated();
 }
 
+/** {@inheritDoc} */
 @Override
 public boolean isCurUserHasRole(UserRole role) {
 	Subject subject = SecurityUtils.getSubject();
 	return subject.hasRole(role.getName());
 }
 
+/** {@inheritDoc} */
 @Override
 public void authenticate(String login, String password) {
 	Subject subject = SecurityUtils.getSubject();
@@ -150,6 +155,7 @@ public void authenticate(String login, String password) {
 	Authentication.setAuthenticatedUserId(login);
 }
 
+/** {@inheritDoc} */
 @Override
 public void logout() {
 	Subject subject = SecurityUtils.getSubject();

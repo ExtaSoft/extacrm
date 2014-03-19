@@ -19,6 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * Заполнение простых справочников
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Service
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -162,6 +163,7 @@ public class SupplementServiceImpl implements SupplementService {
 	 *
 	 * @see ru.extas.server.SupplementService#loadRegions()
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public Collection<String> loadRegions() {
 		return getRegionCapitals().keySet();
@@ -176,6 +178,7 @@ public class SupplementServiceImpl implements SupplementService {
 	 *
 	 * @see ru.extas.server.SupplementService#loadCities()
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public Collection<String> loadCities() {
 		return getRegionCapitals().values();
@@ -186,6 +189,7 @@ public class SupplementServiceImpl implements SupplementService {
 	 *
 	 * @see ru.extas.server.SupplementService#findCityByRegion(java.lang.String)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public String findCityByRegion(String region) {
 		return getRegionCapitals().get(region);
@@ -196,6 +200,7 @@ public class SupplementServiceImpl implements SupplementService {
 	 *
 	 * @see ru.extas.server.SupplementService#findRegionByCity(java.lang.String)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public String findRegionByCity(String city) {
 
@@ -207,6 +212,7 @@ public class SupplementServiceImpl implements SupplementService {
 	 *
 	 * @see ru.extas.server.SupplementService#loadMotorTypes()
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public Collection<String> loadMotorTypes() {
 		return MotorTypesFactory.INSTANCE;
@@ -217,11 +223,13 @@ public class SupplementServiceImpl implements SupplementService {
 	 *
 	 * @see ru.extas.server.SupplementService#loadMotorBrands()
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public Collection<String> loadMotorBrands() {
 		return MotorBrandsFactory.INSTANCE;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Collection<String> loadDocumentTypes() {
 		return DocumentTypesFactory.INSTANCE;

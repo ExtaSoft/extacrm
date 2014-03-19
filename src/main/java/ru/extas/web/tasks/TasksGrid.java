@@ -23,9 +23,12 @@ import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
+ * <p>TasksGrid class.</p>
+ *
  * @author Valery Orlov
  *         Date: 15.10.13
  *         Time: 12:24
+ * @version $Id: $Id
  */
 public class TasksGrid extends ExtaGrid {
 	private static final long serialVersionUID = 4876073256421755574L;
@@ -38,17 +41,24 @@ public class TasksGrid extends ExtaGrid {
 		ALL;
 	}
 
+	/**
+	 * <p>Constructor for TasksGrid.</p>
+	 *
+	 * @param period a {@link ru.extas.web.tasks.TasksGrid.Period} object.
+	 */
 	public TasksGrid(Period period) {
 		super(false);
 		this.period = period;
 		initialize();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new TaskDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void initTable(Mode mode) {
 		super.initTable(mode);
@@ -84,6 +94,7 @@ public class TasksGrid extends ExtaGrid {
 		table.setColumnHeader("dealerName", "Мотосалон");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
@@ -123,6 +134,7 @@ public class TasksGrid extends ExtaGrid {
 		return query.list();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
@@ -187,6 +199,7 @@ public class TasksGrid extends ExtaGrid {
 		return actions;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void refreshContainer() {
 		fillDataContainer((BeanItemContainer<Task>) container);

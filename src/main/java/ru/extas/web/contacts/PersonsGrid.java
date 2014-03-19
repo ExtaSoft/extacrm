@@ -19,18 +19,24 @@ import static com.google.common.collect.Lists.newArrayList;
  * Таблица контактов (физ. лица)
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class PersonsGrid extends ExtaGrid {
 
+	/**
+	 * <p>Constructor for PersonsGrid.</p>
+	 */
 	public PersonsGrid() {
 		super();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new PersonDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		final JPAContainer<Person> container = new ExtaDataContainer<>(Person.class);
@@ -38,6 +44,7 @@ public class PersonsGrid extends ExtaGrid {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();

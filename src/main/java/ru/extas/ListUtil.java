@@ -10,22 +10,22 @@ import static com.google.common.collect.Lists.newArrayList;
 class ListUtil {
 
     /**
-     * Checks if {@link List} is null or empty.
+     * Checks if {@link java.util.List} is null or empty.
      *
      * @param <E>  the generic type
      * @param list the list
-     * @return true, if is null or empty
+     * @return a boolean.
      */
     public static <E> boolean isNullOrEmpty(List<E> list) {
         return list == null || list.size() == 0;
     }
 
     /**
-     * Checks if {@link List} is not null and empty.
+     * Checks if {@link java.util.List} is not null and empty.
      *
      * @param <E>  the generic type
      * @param list the list
-     * @return true, if is not null and empty
+     * @return a boolean.
      */
     public static <E> boolean isNotNullAndEmpty(List<E> list) {
         return list != null && list.size() != 0;
@@ -36,6 +36,7 @@ class ListUtil {
      *
      * @param list the list
      * @return the provided list or an empty one if it was null
+     * @param <T> a T object.
      */
     public static <T> List<T> emptyIfNull(List<T> list) {
         if (list == null) {

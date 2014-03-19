@@ -19,14 +19,19 @@ import java.util.Map;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
+ * <p>ExtaUserEntityManager class.</p>
+ *
  * @author Valery Orlov
  *         Date: 14.11.13
  *         Time: 18:58
+ * @version $Id: $Id
  */
 public class ExtaUserEntityManager extends UserEntityManager {
 
+    /** Constant <code>LOG</code> */
     public static Logger LOG = LoggerFactory.getLogger(ExtaUserEntityManager.class);
 
+    /** {@inheritDoc} */
     @Override
     public UserEntity findUserById(String userId) {
         UserProfile user = lookup(UserManagementService.class).findUserByLogin(userId);
@@ -38,84 +43,100 @@ public class ExtaUserEntityManager extends UserEntityManager {
         return userEntity;
     }
 
+    /** {@inheritDoc} */
     @Override
     public UserQuery createNewUserQuery() {
         ExtaUserQuery query = new ExtaUserQuery();
         return query;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Boolean checkPassword(String userId, String password) {
         return Boolean.TRUE;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void insertUser(User user) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void updateUser(UserEntity updatedUser) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void deleteUser(String userId) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void flush() {
         super.flush();
         LOG.error("flush");
     }
 
+    /** {@inheritDoc} */
     @Override
     public void close() {
         super.close();
         LOG.error("close");
     }
 
+    /** {@inheritDoc} */
     @Override
     public User createNewUser(String userId) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<User> findUserByQueryCriteria(UserQueryImpl query, Page page) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public long findUserCountByQueryCriteria(UserQueryImpl query) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<Group> findGroupsByUser(String userId) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public IdentityInfoEntity findUserInfoByUserIdAndKey(String userId, String key) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<String> findUserInfoKeysByUserIdAndType(String userId, String type) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<User> findPotentialStarterUsers(String proceDefId) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<User> findUsersByNativeQuery(Map<String, Object> parameterMap, int firstResult, int maxResults) {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     @Override
     public long findUserCountByNativeQuery(Map<String, Object> parameterMap) {
         throw new UnsupportedOperationException();

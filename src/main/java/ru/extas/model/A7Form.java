@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
  * Данные о квитанции форма № А-7
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Entity
 @Table(name = "A7_FORM",
@@ -21,6 +22,7 @@ import javax.validation.constraints.NotNull;
 public class A7Form extends AbstractExtaObject {
 
     private static final long serialVersionUID = -4643812782207400426L;
+    /** Constant <code>REG_NUM_LENGTH=20</code> */
     public static final int REG_NUM_LENGTH = 20;
 
     /**
@@ -78,10 +80,15 @@ public class A7Form extends AbstractExtaObject {
         this.owner = owner;
     }
 
+    /**
+     * <p>Constructor for A7Form.</p>
+     */
     public A7Form() {
     }
 
     /**
+     * <p>Getter for the field <code>regNum</code>.</p>
+     *
      * @return the regNum
      */
     public String getRegNum() {
@@ -89,6 +96,8 @@ public class A7Form extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>regNum</code>.</p>
+     *
      * @param regNum the regNum to set
      */
     public void setRegNum(final String regNum) {
@@ -96,6 +105,8 @@ public class A7Form extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>status</code>.</p>
+     *
      * @return the status
      */
     public Status getStatus() {
@@ -103,6 +114,8 @@ public class A7Form extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>status</code>.</p>
+     *
      * @param status the status to set
      */
     public void setStatus(final Status status) {
@@ -110,6 +123,8 @@ public class A7Form extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>owner</code>.</p>
+     *
      * @return the owner
      */
     public Contact getOwner() {
@@ -117,6 +132,8 @@ public class A7Form extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>owner</code>.</p>
+     *
      * @param owner the owner to set
      */
     public void setOwner(final Contact owner) {

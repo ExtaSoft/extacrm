@@ -12,13 +12,25 @@ import ru.extas.web.commons.ExtaDataContainer;
  * @author Valery Orlov
  *         Date: 05.02.14
  *         Time: 22:19
+ * @version $Id: $Id
  */
 public class UserProfileSelect extends ComboBox {
 
+	/**
+	 * <p>Constructor for UserProfileSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public UserProfileSelect(final String caption) {
 		this(caption, "Позволяет выбрать пользователя");
 	}
 
+	/**
+	 * <p>Constructor for UserProfileSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 */
 	public UserProfileSelect(final String caption, final String description) {
 		super(caption);
 		// Преконфигурация

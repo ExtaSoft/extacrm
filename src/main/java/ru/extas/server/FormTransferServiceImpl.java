@@ -14,7 +14,10 @@ import ru.extas.model.FormTransfer;
 import javax.inject.Inject;
 
 /**
+ * <p>FormTransferServiceImpl class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -32,6 +35,7 @@ private A7FormService a7FormService;
  *
  * @see ru.extas.server.FormTransferRepository#saveAndChangeOwner(ru.extas.model.FormTransfer)
  */
+/** {@inheritDoc} */
 @Transactional
 @Override
 public void saveAndChangeOwner(final FormTransfer tf) {

@@ -42,6 +42,7 @@ import static ru.extas.web.commons.TableUtils.initTableColumns;
  * Форма ввода/редактирования лида
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class LeadEditForm extends AbstractEditForm<Lead> {
 
@@ -80,12 +81,20 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 	private ExtaDataContainer<SalePoint> vendorsContainer;
 	private JPAContainer<Person> clientsContainer;
 
+	/**
+	 * <p>Constructor for LeadEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
+	 * @param qualifyForm a boolean.
+	 */
 	public LeadEditForm(final String caption, final BeanItem<Lead> obj, boolean qualifyForm) {
 		super(caption);
 		this.qualifyForm = qualifyForm;
 		initForm(obj);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void attach() {
 		super.attach();
@@ -129,6 +138,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
 	 * .AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final Lead obj) {
 		final FormLayout form = new FormLayout();
@@ -391,6 +401,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final Lead obj) {
 		if (obj.getId() == null) {
@@ -404,6 +415,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final Lead obj) {
 		if (qualifyForm) {
@@ -422,6 +434,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final Lead obj) {
 	}

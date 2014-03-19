@@ -13,14 +13,19 @@ import ru.extas.web.commons.converters.String2EnumConverter;
  * Конвертирует роли пользователя в соответствующее перечисление
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 public class StringToA7StatusConverter extends String2EnumConverter<A7Form.Status> {
 
+	/**
+	 * <p>Constructor for StringToA7StatusConverter.</p>
+	 */
 	public StringToA7StatusConverter() {
 		super(A7Form.Status.class);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected BiMap<A7Form.Status, String> createEnum2StringMap() {
 		BiMap<A7Form.Status, String> map = HashBiMap.create();

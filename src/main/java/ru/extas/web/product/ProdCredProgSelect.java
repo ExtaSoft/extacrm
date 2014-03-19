@@ -10,9 +10,16 @@ import ru.extas.web.util.ComponentUtil;
  * @author Valery Orlov
  *         Date: 07.02.14
  *         Time: 15:26
+ * @version $Id: $Id
  */
 public class ProdCredProgSelect extends ComboBox {
 
+	/**
+	 * <p>Constructor for ProdCredProgSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 */
 	public ProdCredProgSelect(final String caption, final String description) {
 		super(caption);
 		setDescription(description);

@@ -8,6 +8,7 @@ import ru.extas.model.UserRole;
  * Интерфейс управления пользователями и правами доступа
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public interface UserManagementService {
 
@@ -15,7 +16,6 @@ public interface UserManagementService {
  * Найти пользователя по логину
  *
  * @param login логин
- *
  * @return найденный пользователь или null
  */
 UserProfile findUserByLogin(String login);
@@ -23,14 +23,12 @@ UserProfile findUserByLogin(String login);
 /**
  * Найти контакт пользователя по логину
  *
- *
  * @param login логин
- *
  * @return найденный контакт пользователя или null
  */
 Person findUserContactByLogin(String login);
 
-	/**
+/**
  * Получить профайл стандартного юзера (admin)
  *
  * @return профайл юзера admin
@@ -58,7 +56,7 @@ String getCurrentUserLogin();
  */
 Person getCurrentUserContact();
 
-	/**
+/**
  * Определить есть ли аутентифицированный пользователь
  *
  * @return true если есть аутентифицированный пользователь
@@ -69,7 +67,6 @@ boolean isUserAuthenticated();
  * Определить облидает ли текущий пользователь указанной ролью
  *
  * @param role проверяемая роль
- *
  * @return true если текущий пользователь облидает указанной ролью
  */
 boolean isCurUserHasRole(UserRole role);

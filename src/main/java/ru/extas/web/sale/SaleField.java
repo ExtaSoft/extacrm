@@ -11,20 +11,30 @@ import ru.extas.model.Sale;
  * @author Valery Orlov
  *         Date: 05.02.14
  *         Time: 11:42
+ * @version $Id: $Id
  */
 public class SaleField extends CustomField<Sale> {
 
 	private BeanItem<Sale> saleItem;
 	private ProductInSaleGrid productInSaleField;
 
+	/**
+	 * <p>Constructor for SaleField.</p>
+	 */
 	public SaleField() {
 		this("Продажа");
 	}
 
+	/**
+	 * <p>Constructor for SaleField.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public SaleField(String caption) {
 		setCaption(caption);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 
@@ -65,6 +75,7 @@ public class SaleField extends CustomField<Sale> {
 		return productInSale;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends Sale> getType() {
 		return Sale.class;

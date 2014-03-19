@@ -13,16 +13,19 @@ import java.io.IOException;
  * @author Valery Orlov
  *         Date: 19.11.13
  *         Time: 12:34
+ * @version $Id: $Id
  */
 public class ActivitiAuthFilter implements Filter {
 
     @Inject
     private UserManagementService userManagementService;
 
+    /** {@inheritDoc} */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    /** {@inheritDoc} */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (userManagementService.isUserAuthenticated())
@@ -33,6 +36,7 @@ public class ActivitiAuthFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void destroy() {
     }

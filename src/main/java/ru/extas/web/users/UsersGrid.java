@@ -21,6 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * Таблица пользователей
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class UsersGrid extends ExtaGrid {
 
@@ -28,18 +29,20 @@ public class UsersGrid extends ExtaGrid {
 	private final static Logger logger = LoggerFactory.getLogger(UsersGrid.class);
 
 	/**
-	 *
+	 * <p>Constructor for UsersGrid.</p>
 	 */
 	public UsersGrid() {
 		super();
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new UsersDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
@@ -48,6 +51,7 @@ public class UsersGrid extends ExtaGrid {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();

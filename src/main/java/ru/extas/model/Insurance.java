@@ -10,6 +10,7 @@ import java.math.BigDecimal;
  * Полис страхования
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Entity
 @Table(name = "INSURANCE",
@@ -109,20 +110,37 @@ public class Insurance extends AbstractExtaObject {
 		HALF_A_YEAR;
 	}
 
+	/**
+	 * <p>Constructor for Insurance.</p>
+	 */
 	public Insurance() {
 	}
 
+	/**
+	 * <p>Getter for the field <code>coverTime</code>.</p>
+	 *
+	 * @return a {@link ru.extas.model.Insurance.PeriodOfCover} object.
+	 */
 	public PeriodOfCover getCoverTime() {
 		return coverTime;
 	}
 
+	/**
+	 * <p>Setter for the field <code>coverTime</code>.</p>
+	 *
+	 * @param coverTime a {@link ru.extas.model.Insurance.PeriodOfCover} object.
+	 */
 	public void setCoverTime(PeriodOfCover coverTime) {
 		this.coverTime = coverTime;
 	}
 
 	/**
-	 * @param motorBrand
-	 * @param riskSum
+	 * <p>Constructor for Insurance.</p>
+	 *
+	 * @param motorBrand a {@link java.lang.String} object.
+	 * @param riskSum a {@link java.math.BigDecimal} object.
+	 * @param coverPeriod a {@link ru.extas.model.Insurance.PeriodOfCover} object.
+	 * @param usedMotor a boolean.
 	 */
 	public Insurance(String motorBrand, BigDecimal riskSum, PeriodOfCover coverPeriod, boolean usedMotor) {
 		this.motorBrand = motorBrand;
@@ -132,6 +150,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>regNum</code>.</p>
+	 *
 	 * @return the regNum
 	 */
 	public final String getRegNum() {
@@ -139,6 +159,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>regNum</code>.</p>
+	 *
 	 * @param regNum the regNum to set
 	 */
 	public final void setRegNum(String regNum) {
@@ -146,6 +168,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>motorType</code>.</p>
+	 *
 	 * @return the motorType
 	 */
 	public final String getMotorType() {
@@ -153,6 +177,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>motorType</code>.</p>
+	 *
 	 * @param motorType the motorType to set
 	 */
 	public final void setMotorType(String motorType) {
@@ -160,6 +186,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>motorBrand</code>.</p>
+	 *
 	 * @return the motorBrand
 	 */
 	public final String getMotorBrand() {
@@ -167,6 +195,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>motorBrand</code>.</p>
+	 *
 	 * @param motorBrand the motorBrand to set
 	 */
 	public final void setMotorBrand(String motorBrand) {
@@ -174,6 +204,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>motorModel</code>.</p>
+	 *
 	 * @return the motorModel
 	 */
 	public final String getMotorModel() {
@@ -181,6 +213,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>motorModel</code>.</p>
+	 *
 	 * @param motorModel the motorModel to set
 	 */
 	public final void setMotorModel(String motorModel) {
@@ -188,6 +222,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>riskSum</code>.</p>
+	 *
 	 * @return the riskSum
 	 */
 	public final BigDecimal getRiskSum() {
@@ -195,6 +231,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>riskSum</code>.</p>
+	 *
 	 * @param riskSum the riskSum to set
 	 */
 	public final void setRiskSum(BigDecimal riskSum) {
@@ -202,6 +240,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>premium</code>.</p>
+	 *
 	 * @return the premium
 	 */
 	public final BigDecimal getPremium() {
@@ -209,6 +249,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>premium</code>.</p>
+	 *
 	 * @param premium the premium to set
 	 */
 	public final void setPremium(BigDecimal premium) {
@@ -216,6 +258,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>date</code>.</p>
+	 *
 	 * @return the date
 	 */
 	public LocalDate getDate() {
@@ -223,6 +267,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>date</code>.</p>
+	 *
 	 * @param date the date to set
 	 */
 	public void setDate(LocalDate date) {
@@ -230,6 +276,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>client</code>.</p>
+	 *
 	 * @return the client
 	 */
 	public Person getClient() {
@@ -237,6 +285,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>client</code>.</p>
+	 *
 	 * @param client the client to set
 	 */
 	public void setClient(Person client) {
@@ -244,6 +294,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>paymentDate</code>.</p>
+	 *
 	 * @return the paymentDate
 	 */
 	public LocalDate getPaymentDate() {
@@ -251,6 +303,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>paymentDate</code>.</p>
+	 *
 	 * @param paymentDate the paymentDate to set
 	 */
 	public void setPaymentDate(LocalDate paymentDate) {
@@ -258,6 +312,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>startDate</code>.</p>
+	 *
 	 * @return the startDate
 	 */
 	public LocalDate getStartDate() {
@@ -265,6 +321,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>startDate</code>.</p>
+	 *
 	 * @param startDate the startDate to set
 	 */
 	public void setStartDate(LocalDate startDate) {
@@ -272,6 +330,8 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Getter for the field <code>endDate</code>.</p>
+	 *
 	 * @return the endDate
 	 */
 	public LocalDate getEndDate() {
@@ -279,64 +339,136 @@ public class Insurance extends AbstractExtaObject {
 	}
 
 	/**
+	 * <p>Setter for the field <code>endDate</code>.</p>
+	 *
 	 * @param endDate the endDate to set
 	 */
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
+	/**
+	 * <p>Getter for the field <code>a7Num</code>.</p>
+	 *
+	 * @return a {@link java.lang.String} object.
+	 */
 	public String getA7Num() {
 		return a7Num;
 	}
 
+	/**
+	 * <p>Setter for the field <code>a7Num</code>.</p>
+	 *
+	 * @param a7Num a {@link java.lang.String} object.
+	 */
 	public void setA7Num(final String a7Num) {
 		this.a7Num = a7Num;
 	}
 
+	/**
+	 * <p>Getter for the field <code>dealer</code>.</p>
+	 *
+	 * @return a {@link ru.extas.model.SalePoint} object.
+	 */
 	public SalePoint getDealer() {
 		return dealer;
 	}
 
+	/**
+	 * <p>Setter for the field <code>dealer</code>.</p>
+	 *
+	 * @param dealer a {@link ru.extas.model.SalePoint} object.
+	 */
 	public void setDealer(SalePoint dealer) {
 		this.dealer = dealer;
 	}
 
+	/**
+	 * <p>Getter for the field <code>saleNum</code>.</p>
+	 *
+	 * @return a {@link java.lang.String} object.
+	 */
 	public String getSaleNum() {
 		return saleNum;
 	}
 
+	/**
+	 * <p>Setter for the field <code>saleNum</code>.</p>
+	 *
+	 * @param saleNum a {@link java.lang.String} object.
+	 */
 	public void setSaleNum(final String saleNum) {
 		this.saleNum = saleNum;
 	}
 
+	/**
+	 * <p>Getter for the field <code>saleDate</code>.</p>
+	 *
+	 * @return a {@link org.joda.time.LocalDate} object.
+	 */
 	public LocalDate getSaleDate() {
 		return saleDate;
 	}
 
+	/**
+	 * <p>Setter for the field <code>saleDate</code>.</p>
+	 *
+	 * @param saleDate a {@link org.joda.time.LocalDate} object.
+	 */
 	public void setSaleDate(final LocalDate saleDate) {
 		this.saleDate = saleDate;
 	}
 
+    /**
+     * <p>isUsedMotor.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isUsedMotor() {
         return usedMotor;
     }
 
+    /**
+     * <p>Setter for the field <code>usedMotor</code>.</p>
+     *
+     * @param used a boolean.
+     */
     public void setUsedMotor(boolean used) {
         this.usedMotor = used;
     }
 
+    /**
+     * <p>Getter for the field <code>motorVin</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getMotorVin() {
         return motorVin;
     }
 
+    /**
+     * <p>Setter for the field <code>motorVin</code>.</p>
+     *
+     * @param motorVin a {@link java.lang.String} object.
+     */
     public void setMotorVin(String motorVin) {
         this.motorVin = motorVin;
     }
 
+    /**
+     * <p>Getter for the field <code>beneficiary</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getBeneficiary() {
         return beneficiary;
     }
 
+    /**
+     * <p>Setter for the field <code>beneficiary</code>.</p>
+     *
+     * @param beneficiary a {@link java.lang.String} object.
+     */
     public void setBeneficiary(String beneficiary) {
         this.beneficiary = beneficiary;
     }

@@ -18,6 +18,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 07.02.14
  *         Time: 19:17
+ * @version $Id: $Id
  */
 public class ProdCreditPercentForm extends AbstractEditForm<ProdCreditPercent> {
 
@@ -28,25 +29,35 @@ public class ProdCreditPercentForm extends AbstractEditForm<ProdCreditPercent> {
 	@PropertyId("downpayment")
 	private EditField downpaymentField;
 
+	/**
+	 * <p>Constructor for ProdCreditPercentForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
+	 */
 	protected ProdCreditPercentForm(final String caption, final BeanItem<ProdCreditPercent> beanItem) {
 		super(caption, beanItem);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdCreditPercent obj) {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final ProdCreditPercent obj) {
 		Notification.show("Процентная ставка сохранена", Notification.Type.TRAY_NOTIFICATION);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final ProdCreditPercent obj) {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdCreditPercent obj) {
 		final FormLayout form = new FormLayout();

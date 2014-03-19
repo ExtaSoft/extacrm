@@ -12,19 +12,21 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * Поставщик служб приложения
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public final class ServiceLocator {
 
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ServiceLocator.class);
 
+	/** Constant <code>EXTACRM_JPA_UNIT="extacrmJpaUnit"</code> */
 	public static final String EXTACRM_JPA_UNIT = "extacrmJpaUnit";
 
 	/**
 	 * Ищет подходящий экземпляр для интерфейса службы
 	 *
 	 * @param srvType Тип службы
-	 *
 	 * @return экземпляр службы
+	 * @param <TServiceType> a TServiceType object.
 	 */
 	public static <TServiceType> TServiceType lookup(Class<TServiceType> srvType) {
 
@@ -43,8 +45,8 @@ public final class ServiceLocator {
 	 *
 	 * @param name    Имя
 	 * @param srvType Тип
-	 *
 	 * @return экземпляр
+	 * @param <TServiceType> a TServiceType object.
 	 */
 	public static <TServiceType> TServiceType lookup(String name, Class<TServiceType> srvType) {
 

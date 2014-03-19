@@ -9,6 +9,7 @@ import javax.validation.constraints.Max;
  * @author Valery Orlov
  *         Date: 26.08.13
  *         Time: 12:53
+ * @version $Id: $Id
  */
 @Entity
 @Table(name = "CONTACT_CODE", indexes = {
@@ -33,26 +34,56 @@ public class ContactCode extends AbstractExtaObject {
     @ManyToOne
     private Company contact;
 
+    /**
+     * <p>Getter for the field <code>contact</code>.</p>
+     *
+     * @return a {@link ru.extas.model.Company} object.
+     */
     public Company getContact() {
         return contact;
     }
 
+    /**
+     * <p>Setter for the field <code>contact</code>.</p>
+     *
+     * @param contact a {@link ru.extas.model.Company} object.
+     */
     public void setContact(final Company contact) {
         this.contact = contact;
     }
 
+    /**
+     * <p>Getter for the field <code>type</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * <p>Setter for the field <code>type</code>.</p>
+     *
+     * @param type a {@link java.lang.String} object.
+     */
     public void setType(final String type) {
         this.type = type;
     }
 
+    /**
+     * <p>Getter for the field <code>code</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * <p>Setter for the field <code>code</code>.</p>
+     *
+     * @param code a {@link java.lang.String} object.
+     */
     public void setCode(final String code) {
         this.code = code;
     }

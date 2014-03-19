@@ -21,9 +21,12 @@ import ru.extas.web.reference.RegionSelect;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
+ * <p>SalePointEditForm class.</p>
+ *
  * @author Valery Orlov
  *         Date: 19.02.14
  *         Time: 13:08
+ * @version $Id: $Id
  */
 public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 
@@ -68,14 +71,17 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 	private SalePoint salePoint;
 
 	/**
-	 * @param caption
-	 * @param obj
+	 * <p>Constructor for SalePointEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
 	 */
 	public SalePointEditForm(final String caption, final BeanItem<SalePoint> obj) {
 		super(caption, obj);
 		salePoint = obj.getBean();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void attach() {
 		super.attach();
@@ -100,6 +106,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 		 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
 		 * AbstractExtaObject)
 		 */
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final SalePoint obj) {
 		if (obj.getId() == null) {
@@ -116,6 +123,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final SalePoint obj) {
 		if (obj.getCompany().getId() != null) {
@@ -133,6 +141,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final SalePoint obj) {
 	}
@@ -144,6 +153,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
 	 * .AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final SalePoint obj) {
 		TabSheet tabsheet = new TabSheet();

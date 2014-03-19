@@ -9,6 +9,7 @@ import java.util.Set;
  * Совокупная информация о пользователе
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Entity
 @Table(name = "USER_PROFILE")
@@ -48,6 +49,8 @@ public class UserProfile extends AbstractExtaObject {
     private boolean blocked;
 
     /**
+     * <p>Getter for the field <code>groupList</code>.</p>
+     *
      * @return the groupList
      */
     public Set<UserGroup> getGroupList() {
@@ -55,6 +58,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>groupList</code>.</p>
+     *
      * @param groupList the groupList to set
      */
     public void setGroupList(Set<UserGroup> groupList) {
@@ -62,6 +67,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>role</code>.</p>
+     *
      * @param role the role to set
      */
     public void setRole(UserRole role) {
@@ -69,6 +76,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>login</code>.</p>
+     *
      * @return the login
      */
     public String getLogin() {
@@ -76,6 +85,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>login</code>.</p>
+     *
      * @param login the login to set
      */
     public void setLogin(String login) {
@@ -83,6 +94,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>password</code>.</p>
+     *
      * @return the password
      */
     public String getPassword() {
@@ -90,17 +103,26 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>password</code>.</p>
+     *
      * @param password the password to set
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * <p>Getter for the field <code>role</code>.</p>
+     *
+     * @return a {@link ru.extas.model.UserRole} object.
+     */
     public UserRole getRole() {
         return role;
     }
 
     /**
+     * <p>Getter for the field <code>contact</code>.</p>
+     *
      * @return the contact
      */
     public Person getContact() {
@@ -108,6 +130,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>contact</code>.</p>
+     *
      * @param contact the contact to set
      */
     public void setContact(Person contact) {
@@ -115,6 +139,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>isChangePassword.</p>
+     *
      * @return the changePassword
      */
     public boolean isChangePassword() {
@@ -122,6 +148,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>changePassword</code>.</p>
+     *
      * @param changePassword the changePassword to set
      */
     public void setChangePassword(boolean changePassword) {
@@ -129,6 +157,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>isBlocked.</p>
+     *
      * @return the blocked
      */
     public boolean isBlocked() {
@@ -136,6 +166,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>blocked</code>.</p>
+     *
      * @param blocked the blocked to set
      */
     public void setBlocked(boolean blocked) {
@@ -143,6 +175,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>passwordSalt</code>.</p>
+     *
      * @return the passwordSalt
      */
     public String getPasswordSalt() {
@@ -150,6 +184,8 @@ public class UserProfile extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>passwordSalt</code>.</p>
+     *
      * @param passwordSalt the passwordSalt to set
      */
     public void setPasswordSalt(String passwordSalt) {

@@ -20,6 +20,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  *         Date: 07.02.14
  *         Time: 15:30
+ * @version $Id: $Id
  */
 public class ProdCredDocsField extends CustomField<List> {
 
@@ -27,12 +28,20 @@ public class ProdCredDocsField extends CustomField<List> {
 	private Table docTable;
 	private BeanItemContainer<ProdCreditDoc> container;
 
+	/**
+	 * <p>Constructor for ProdCredDocsField.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 * @param product a {@link ru.extas.model.ProdCredit} object.
+	 */
 	public ProdCredDocsField(String caption, final String description, ProdCredit product) {
 		this.product = product;
 		setCaption(caption);
 		setDescription(description);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 		final VerticalLayout fieldLayout = new VerticalLayout();
@@ -154,6 +163,7 @@ public class ProdCredDocsField extends CustomField<List> {
 		return fieldLayout;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void commit() throws SourceException, Validator.InvalidValueException {
 		super.commit();
@@ -162,6 +172,7 @@ public class ProdCredDocsField extends CustomField<List> {
 			dataSource.setValue(container.getItemIds());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends List> getType() {
 		return List.class;

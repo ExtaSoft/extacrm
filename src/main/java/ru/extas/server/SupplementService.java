@@ -9,6 +9,7 @@ import java.util.Collection;
  * Поставщик простых справочных данных
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public interface SupplementService {
 
@@ -30,7 +31,6 @@ public interface SupplementService {
 	 * Ищет город (региональный центр) по названию региона
 	 *
 	 * @param region - название региона
-	 *
 	 * @return найденный город или <code>null</code>
 	 */
 	String findCityByRegion(String region);
@@ -39,7 +39,6 @@ public interface SupplementService {
 	 * Ищет региот по городу (региональному центру)
 	 *
 	 * @param city город (региональный центр)
-	 *
 	 * @return найденный регион или <code>null</code>
 	 */
 	String findRegionByCity(String city);

@@ -18,12 +18,19 @@ import java.net.URLEncoder;
  * Окошко с информацией о файле и кнопкой "Скачать"
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class DownloadFileWindow extends Window {
 
 	private static final long serialVersionUID = -1869372339151029572L;
 	private final static Logger logger = LoggerFactory.getLogger(DownloadFileWindow.class);
 
+	/**
+	 * <p>Constructor for DownloadFileWindow.</p>
+	 *
+	 * @param file an array of byte.
+	 * @param fileName a {@link java.lang.String} object.
+	 */
 	public DownloadFileWindow(final byte[] file, String fileName) {
 		initWindow("Файл готов к загрузке...", file, fileName);
 	}
@@ -105,6 +112,9 @@ public class DownloadFileWindow extends Window {
 		}
 	}
 
+	/**
+	 * <p>showModal.</p>
+	 */
 	public void showModal() {
 		setClosable(true);
 		setResizable(false);

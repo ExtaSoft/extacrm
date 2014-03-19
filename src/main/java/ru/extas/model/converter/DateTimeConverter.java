@@ -6,9 +6,16 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.sql.Timestamp;
 
+/**
+ * <p>DateTimeConverter class.</p>
+ *
+ * @author Valery_2
+ * @version $Id: $Id
+ */
 @Converter(autoApply = true)
 public class DateTimeConverter implements AttributeConverter<DateTime, Timestamp> {
 
+    /** {@inheritDoc} */
     @Override
     public Timestamp convertToDatabaseColumn(final DateTime attribute) {
         Timestamp dbVal = null;
@@ -18,6 +25,7 @@ public class DateTimeConverter implements AttributeConverter<DateTime, Timestamp
         return dbVal;
     }
 
+    /** {@inheritDoc} */
     @Override
     public DateTime convertToEntityAttribute(final Timestamp dbData) {
         DateTime attribute = null;

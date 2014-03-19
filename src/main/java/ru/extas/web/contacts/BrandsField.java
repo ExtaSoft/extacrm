@@ -17,13 +17,18 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 17.02.14
  *         Time: 16:44
+ * @version $Id: $Id
  */
 public class BrandsField extends CustomField<Set> {
 
+	/**
+	 * <p>Constructor for BrandsField.</p>
+	 */
 	public BrandsField() {
 		setBuffered(true);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 
@@ -54,6 +59,7 @@ public class BrandsField extends CustomField<Set> {
 		return twin;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends Set> getType() {
 		return Set.class;

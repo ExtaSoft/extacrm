@@ -17,16 +17,25 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Компонент выбора продукта
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class ProductSelect extends ComboBox {
 
 	private static final long serialVersionUID = 6004206917183679455L;
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<Product> getType() {
 		return Product.class;
 	}
 
+	/**
+	 * <p>Constructor for ProductSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 * @param product a {@link ru.extas.model.Product} object.
+	 */
 	public ProductSelect(final String caption, final String description, final Product product) {
 		super(caption);
 

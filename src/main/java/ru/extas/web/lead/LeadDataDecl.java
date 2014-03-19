@@ -11,6 +11,9 @@ import java.util.EnumSet;
  *         Time: 12:52
  */
 class LeadDataDecl extends GridDataDecl {
+    /**
+     * <p>Constructor for LeadDataDecl.</p>
+     */
     public LeadDataDecl() {
         addMapping("contactName", "Имя контакта");
         addMapping("motorType", "Тип техники");

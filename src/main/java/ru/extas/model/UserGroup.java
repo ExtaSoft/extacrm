@@ -8,6 +8,7 @@ import java.util.Set;
  * Группа пользователей
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Entity
 @Table(name = "USER_GROUP")
@@ -28,6 +29,8 @@ public class UserGroup extends AbstractExtaObject {
     private Set<String> permissionList;
 
     /**
+     * <p>Getter for the field <code>name</code>.</p>
+     *
      * @return the name
      */
     public String getName() {
@@ -35,6 +38,8 @@ public class UserGroup extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>name</code>.</p>
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -42,6 +47,8 @@ public class UserGroup extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>permissionList</code>.</p>
+     *
      * @return the permissionList
      */
     public Set<String> getPermissionList() {
@@ -49,6 +56,8 @@ public class UserGroup extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>permissionList</code>.</p>
+     *
      * @param permissionList the permissionList to set
      */
     public void setPermissionList(Set<String> permissionList) {

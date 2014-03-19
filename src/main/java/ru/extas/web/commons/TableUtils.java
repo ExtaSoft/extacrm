@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * <p>TableUtils class.</p>
+ *
  * @author Valery Orlov
  *         Date: 09.12.13
  *         Time: 12:53
+ * @version $Id: $Id
  */
 public class TableUtils {
 

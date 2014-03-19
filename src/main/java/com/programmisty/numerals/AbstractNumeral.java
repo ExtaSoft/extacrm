@@ -20,13 +20,22 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * 
+ * <p>Abstract AbstractNumeral class.</p>
+ *
+ * @author Valery_2
+ * @version $Id: $Id
  */
 public abstract class AbstractNumeral {
 
+    /** Constant <code>MAX_SUPPORTED</code> */
     public static final BigInteger MAX_SUPPORTED = new BigInteger("1000000000000000000000000000000000000").subtract(BigInteger.ONE);
     //10^33
     
+    /**
+     * <p>checkSupported.</p>
+     *
+     * @param number a {@link java.lang.Number} object.
+     */
     protected void checkSupported(Number number) {
         if (number instanceof Integer
                 || number instanceof Long
@@ -43,10 +52,28 @@ public abstract class AbstractNumeral {
         }
     }
 
+    /**
+     * <p>format.</p>
+     *
+     * @param number a {@link java.lang.Number} object.
+     * @return a {@link java.lang.String} object.
+     */
     public abstract String format(Number number);
 
+    /**
+     * <p>amount.</p>
+     *
+     * @param amount a {@link java.math.BigDecimal} object.
+     * @return a {@link java.lang.String} object.
+     */
     public abstract String amount(BigDecimal amount);
 
+    /**
+     * <p>amount.</p>
+     *
+     * @param amount a {@link java.lang.Number} object.
+     * @return a {@link java.lang.String} object.
+     */
     public String amount(Number amount) {
         return amount(Util.toBigDecimal(amount));
     }

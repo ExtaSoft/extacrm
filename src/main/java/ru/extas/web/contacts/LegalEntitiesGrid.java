@@ -21,23 +21,31 @@ import static com.google.common.collect.Lists.newArrayList;
  * Таблица контактов (физ. лица)
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class LegalEntitiesGrid extends ExtaGrid {
 
 	private static final long serialVersionUID = 2299363623807745654L;
 	private final Company company;
 
+	/**
+	 * <p>Constructor for LegalEntitiesGrid.</p>
+	 *
+	 * @param company a {@link ru.extas.model.Company} object.
+	 */
 	public LegalEntitiesGrid(final Company company) {
 		super(false);
 		this.company = company;
 		initialize();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new LegalEntityDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
@@ -49,6 +57,7 @@ public class LegalEntitiesGrid extends ExtaGrid {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();

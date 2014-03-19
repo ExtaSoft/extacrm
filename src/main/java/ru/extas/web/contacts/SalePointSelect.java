@@ -12,6 +12,7 @@ import ru.extas.model.SalePoint;
  * @author Valery Orlov
  *         Date: 21.02.14
  *         Time: 12:53
+ * @version $Id: $Id
  */
 public class SalePointSelect extends CustomField<SalePoint> {
 
@@ -22,6 +23,13 @@ public class SalePointSelect extends CustomField<SalePoint> {
 	private Label adressField;
 	private Company company;
 
+	/**
+	 * <p>Constructor for SalePointSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 * @param company a {@link ru.extas.model.Company} object.
+	 */
 	public SalePointSelect(final String caption, final String description, final Company company) {
 		this.company = company;
 		setCaption(caption);
@@ -30,6 +38,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
 		addStyleName("bordered-component");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 
@@ -176,6 +185,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
 		adressField.setPropertyDataSource(personItem.getItemProperty("actualAddress.streetBld"));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends SalePoint> getType() {
 		return SalePoint.class;

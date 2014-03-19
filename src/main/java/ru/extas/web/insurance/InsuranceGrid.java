@@ -40,7 +40,10 @@ import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
+ * <p>InsuranceGrid class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class InsuranceGrid extends ExtaGrid {
 
@@ -48,9 +51,13 @@ public class InsuranceGrid extends ExtaGrid {
 	private final static Logger logger = LoggerFactory.getLogger(InsuranceGrid.class);
 	private InsuranceDataDecl dataDecl;
 
+	/**
+	 * <p>Constructor for InsuranceGrid.</p>
+	 */
 	public InsuranceGrid() {
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		if (dataDecl == null)
@@ -58,6 +65,7 @@ public class InsuranceGrid extends ExtaGrid {
 		return dataDecl;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
@@ -74,6 +82,7 @@ public class InsuranceGrid extends ExtaGrid {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();

@@ -19,6 +19,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Форма ввода/редактирования имущественной страховки
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 
@@ -33,6 +34,12 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 	@PropertyId("formNums")
 	private A7NumListEdit formNums;
 
+	/**
+	 * <p>Constructor for FormTransferEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
+	 */
 	public FormTransferEditForm(final String caption, final BeanItem<FormTransfer> obj) {
 		super(caption, obj);
 
@@ -45,6 +52,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
 	 * .AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final FormTransfer obj) {
 		final FormLayout form = new FormLayout();
@@ -76,6 +84,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final FormTransfer obj) {
 		if (obj.getId() == null) {
@@ -91,6 +100,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final FormTransfer obj) {
 		lookup(FormTransferService.class).saveAndChangeOwner(obj);
@@ -104,6 +114,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final FormTransfer obj) {
 	}

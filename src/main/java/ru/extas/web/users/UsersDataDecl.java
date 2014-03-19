@@ -9,6 +9,9 @@ import ru.extas.web.commons.GridDataDecl;
  */
 class UsersDataDecl extends GridDataDecl {
 
+    /**
+     * <p>Constructor for UsersDataDecl.</p>
+     */
     public UsersDataDecl() {
         super();
         addMapping("contact.name", "Имя");

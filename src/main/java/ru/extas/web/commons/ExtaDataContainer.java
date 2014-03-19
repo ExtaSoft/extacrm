@@ -17,6 +17,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Time: 22:50
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class ExtaDataContainer<TEntityType> extends JPAContainer<TEntityType> {
 
@@ -25,7 +26,7 @@ public class ExtaDataContainer<TEntityType> extends JPAContainer<TEntityType> {
     /**
      * Creates a new <code>JPAContainer</code> instance for entities of class
      * <code>entityClass</code>. An entity provider must be provided using the
-     * {@link #setEntityProvider(com.vaadin.addon.jpacontainer.EntityProvider) }
+     * {@link #setEntityProvider(com.vaadin.addon.jpacontainer.EntityProvider)}
      * before the container can be used.
      *
      * @param entityClass the class of the entities that will reside in this container

@@ -25,7 +25,10 @@ import ru.extas.web.reference.RegionSelect;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
+ * <p>CompanyEditForm class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @SuppressWarnings("FieldCanBeLocal")
 public class CompanyEditForm extends AbstractEditForm<Company> {
@@ -71,8 +74,10 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
 
 
 	/**
-	 * @param caption
-	 * @param obj
+	 * <p>Constructor for CompanyEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
 	 */
 	public CompanyEditForm(final String caption, final BeanItem<Company> obj) {
 		super(caption, obj);
@@ -84,6 +89,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final Company obj) {
 		if (obj.getId() == null) {
@@ -100,6 +106,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final Company obj) {
 		logger.debug("Saving contact data...");
@@ -115,6 +122,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
 	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final Company obj) {
 	}
@@ -126,6 +134,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
 	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
 	 * .AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final Company obj) {
 		TabSheet tabsheet = new TabSheet();

@@ -17,17 +17,29 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @author Valery Orlov
  *         Date: 21.02.14
  *         Time: 13:40
+ * @version $Id: $Id
  */
 public class SalePointSelectWindow extends CloseOnlylWindow {
 	private SalePoint selected;
 	private boolean selectPressed;
 
+	/**
+	 * <p>Constructor for SalePointSelectWindow.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param company a {@link ru.extas.model.Company} object.
+	 */
 	public SalePointSelectWindow(final String caption, final Company company) {
 		super(caption);
 		addStyleName("base-view");
 		setContent(new SelectGrid(company));
 	}
 
+	/**
+	 * <p>isSelectPressed.</p>
+	 *
+	 * @return a boolean.
+	 */
 	public boolean isSelectPressed() {
 		return selectPressed;
 	}
@@ -57,6 +69,11 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 		}
 	}
 
+	/**
+	 * <p>Getter for the field <code>selected</code>.</p>
+	 *
+	 * @return a {@link ru.extas.model.SalePoint} object.
+	 */
 	public SalePoint getSelected() {
 		return selected;
 	}

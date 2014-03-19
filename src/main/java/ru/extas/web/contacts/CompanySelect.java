@@ -12,27 +12,52 @@ import ru.extas.model.Company;
  * Time: 12:15
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class CompanySelect extends AbstractContactSelect<Company> {
 
 	private Company defNewObj;
 
+	/**
+	 * <p>Constructor for CompanySelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param defNewObj a {@link ru.extas.model.Company} object.
+	 */
 	public CompanySelect(final String caption, Company defNewObj) {
 		super(caption, Company.class);
 		this.defNewObj = defNewObj;
 		addNewItemFeature();
 	}
 
+	/**
+	 * <p>Constructor for CompanySelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public CompanySelect(final String caption) {
 		this(caption, new Company());
 	}
 
+	/**
+	 * <p>Constructor for CompanySelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 * @param defNewObj a {@link ru.extas.model.Company} object.
+	 */
 	public CompanySelect(final String caption, final String description, Company defNewObj) {
 		super(caption, description, Company.class);
 		this.defNewObj = defNewObj;
 		addNewItemFeature();
 	}
 
+	/**
+	 * <p>Constructor for CompanySelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 */
 	public CompanySelect(final String caption, final String description) {
 		this(caption, description, new Company());
 	}

@@ -11,13 +11,21 @@ import ru.extas.web.commons.component.TabInfo;
 import java.util.List;
 
 /**
+ * <p>Abstract AbstractTabView class.</p>
+ *
  * @author Valery Orlov
  *         Date: 15.10.13
  *         Time: 12:00
+ * @version $Id: $Id
  */
 public abstract class AbstractTabView extends ExtaAbstractView {
     private final static Logger logger = LoggerFactory.getLogger(AbstractTabView.class);
 
+    /**
+     * <p>Constructor for AbstractTabView.</p>
+     *
+     * @param titleCaption a {@link java.lang.String} object.
+     */
     protected AbstractTabView(String titleCaption) {
         this.titleCaption = titleCaption;
     }
@@ -29,6 +37,7 @@ public abstract class AbstractTabView extends ExtaAbstractView {
          *
          * @see ru.extas.web.ExtaAbstractView#getContent()
          */
+    /** {@inheritDoc} */
     @Override
     protected Component getContent() {
         logger.debug("Creating view content...");
@@ -70,6 +79,11 @@ public abstract class AbstractTabView extends ExtaAbstractView {
         return tabsheet;
     }
 
+    /**
+     * <p>getTabComponentsInfo.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     abstract protected List<TabInfo> getTabComponentsInfo();
 
     /*
@@ -77,6 +91,7 @@ public abstract class AbstractTabView extends ExtaAbstractView {
          *
          * @see ru.extas.web.ExtaAbstractView#getTitle()
          */
+    /** {@inheritDoc} */
     @Override
     protected Component getTitle() {
         final Component title = new Label(titleCaption);

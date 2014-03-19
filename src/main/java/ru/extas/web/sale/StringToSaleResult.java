@@ -13,14 +13,19 @@ import ru.extas.web.commons.converters.String2EnumConverter;
  * Конвертируем результат завершения продажи в текстовое представление
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 public class StringToSaleResult extends String2EnumConverter<Sale.Result> {
 
+	/**
+	 * <p>Constructor for StringToSaleResult.</p>
+	 */
 	public StringToSaleResult() {
 		super(Sale.Result.class);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected BiMap<Sale.Result, String> createEnum2StringMap() {
 		BiMap<Sale.Result, String> map = HashBiMap.create();

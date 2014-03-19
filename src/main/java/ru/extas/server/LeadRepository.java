@@ -12,6 +12,7 @@ import ru.extas.model.Lead;
  * @author Valery Orlov
  *         Date: 23.10.13
  *         Time: 22:52
+ * @version $Id: $Id
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)

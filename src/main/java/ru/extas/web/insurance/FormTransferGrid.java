@@ -34,22 +34,30 @@ import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
+ * <p>FormTransferGrid class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class FormTransferGrid extends ExtaGrid {
 
 	private static final long serialVersionUID = 1170175803163742829L;
 	private final static Logger logger = LoggerFactory.getLogger(FormTransferGrid.class);
 
+	/**
+	 * <p>Constructor for FormTransferGrid.</p>
+	 */
 	public FormTransferGrid() {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new FormTransferDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
@@ -60,6 +68,7 @@ public class FormTransferGrid extends ExtaGrid {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();

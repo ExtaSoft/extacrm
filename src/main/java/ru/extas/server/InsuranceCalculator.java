@@ -11,6 +11,7 @@ import java.math.BigDecimal;
  * Калькулятор страховых премий
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public interface InsuranceCalculator {
 
@@ -27,8 +28,8 @@ public interface InsuranceCalculator {
 	 *
 	 * @param motorBrand бренд страхуемой техники
 	 * @param coverTime  период страхования
-	 *
 	 * @return найденный тариф или null
+	 * @param isUsed a boolean.
 	 */
 	BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime, boolean isUsed);
 

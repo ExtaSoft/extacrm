@@ -29,6 +29,9 @@ import java.util.*;
  * simple case) are included as container properties. Furthermore, the
  * CollectionContainer does not allow addition or removal of container
  * properties.
+ *
+ * @author Valery_2
+ * @version $Id: $Id
  */
 public class CollectionContainer implements Container, Container.Ordered,
         Container.Sortable {
@@ -158,9 +161,9 @@ public class CollectionContainer implements Container, Container.Ordered,
     /**
      * See {@link #CollectionContainer(Collection, boolean, int)}
      *
-     * @param items
-     * @param createBeanItems
-     * @param itemIdMode
+     * @param items an array of {@link java.lang.Object} objects.
+     * @param createBeanItems a boolean.
+     * @param itemIdMode a int.
      */
     public CollectionContainer(final Object[] items, final boolean createBeanItems,
                                final int itemIdMode) {
@@ -187,8 +190,8 @@ public class CollectionContainer implements Container, Container.Ordered,
     /**
      * See {@link #CollectionContainer(Collection, Object)}.
      *
-     * @param arrayOfBeans
-     * @param idPropertyId
+     * @param arrayOfBeans an array of {@link java.lang.Object} objects.
+     * @param idPropertyId a {@link java.lang.Object} object.
      */
     public CollectionContainer(final Object[] arrayOfBeans, final Object idPropertyId) {
         this(Arrays.asList(arrayOfBeans), idPropertyId);
@@ -201,6 +204,7 @@ public class CollectionContainer implements Container, Container.Ordered,
      * ITEM_ID_MODE_INDEX.
      *
      * @param primitives The collection to be wrapped.
+     * @return a {@link org.vaadin.data.collectioncontainer.CollectionContainer} object.
      */
     public static CollectionContainer fromPrimitives(final Object[] primitives) {
         return fromPrimitives(Arrays.asList(primitives), false);
@@ -209,14 +213,22 @@ public class CollectionContainer implements Container, Container.Ordered,
     /**
      * Create an indexed collection container from two dimensional data.
      *
-     * @param primitives
-     * @return
+     * @param primitives an array of {@link java.lang.Object} objects.
+     * @param idIndex a int.
+     * @return a {@link org.vaadin.data.collectioncontainer.CollectionContainer} object.
      */
     public static CollectionContainer fromPrimitives(final Object[][] primitives,
                                                      final int idIndex) {
         return fromPrimitives(Arrays.asList(primitives), idIndex);
     }
 
+    /**
+     * <p>fromPrimitives.</p>
+     *
+     * @param primitives an array of {@link java.lang.Object} objects.
+     * @param indexed a boolean.
+     * @return a {@link org.vaadin.data.collectioncontainer.CollectionContainer} object.
+     */
     public static CollectionContainer fromPrimitives(final Object[] primitives,
                                                      final boolean indexed) {
         return fromPrimitives(Arrays.asList(primitives), indexed);
@@ -233,19 +245,45 @@ public class CollectionContainer implements Container, Container.Ordered,
         return new CollectionContainer(primitives, idIndex);
     }
 
+    /**
+     * <p>fromBeans.</p>
+     *
+     * @param beans an array of {@link java.lang.Object} objects.
+     * @return a {@link org.vaadin.data.collectioncontainer.CollectionContainer} object.
+     */
     public static CollectionContainer fromBeans(final Object[] beans) {
         return fromBeans(Arrays.asList(beans), false);
     }
 
+    /**
+     * <p>fromBeans.</p>
+     *
+     * @param beans an array of {@link java.lang.Object} objects.
+     * @param indexed a boolean.
+     * @return a {@link org.vaadin.data.collectioncontainer.CollectionContainer} object.
+     */
     public static CollectionContainer fromBeans(final Object[] beans, final boolean indexed) {
         return fromBeans(Arrays.asList(beans), indexed);
     }
 
+    /**
+     * <p>fromBeans.</p>
+     *
+     * @param beans an array of {@link java.lang.Object} objects.
+     * @param idProperty a {@link java.lang.Object} object.
+     * @return a {@link org.vaadin.data.collectioncontainer.CollectionContainer} object.
+     */
     public static CollectionContainer fromBeans(final Object[] beans,
                                                 final Object idProperty) {
         return fromBeans(Arrays.asList(beans), idProperty);
     }
 
+    /**
+     * <p>fromBeans.</p>
+     *
+     * @param beans a {@link java.util.Collection} object.
+     * @return a {@link com.vaadin.data.Container} object.
+     */
     public static Container fromBeans(final Collection<?> beans) {
         return fromBeans(beans, false);
     }
@@ -281,6 +319,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container#getItem(java.lang.Object)
      */
+    /** {@inheritDoc} */
     @Override
     public Item getItem(final Object id) {
 
@@ -353,14 +392,16 @@ public class CollectionContainer implements Container, Container.Ordered,
      *
      * @see com.vaadin.data.Container#getContainerPropertyIds()
      */
+    /** {@inheritDoc} */
     @Override
     public Collection<?> getContainerPropertyIds() {
         return propertyIds;
     }
 
     /**
-     * Try to avoid calling this, as it instantiates all item ids.
+     * {@inheritDoc}
      *
+     * Try to avoid calling this, as it instantiates all item ids.
      * @see com.vaadin.data.Container#getItemIds()
      */
     @Override
@@ -417,9 +458,10 @@ public class CollectionContainer implements Container, Container.Ordered,
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Get container property for itemId and propertyId. This is equal to:
      * <code>getItem(itemId).getItemPropertyId(propertyId);</code>
-     *
      * @see com.vaadin.data.Container#getContainerProperty(java.lang.Object, java.lang.Object)
      */
     @Override
@@ -434,6 +476,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container#getType(java.lang.Object)
      */
+    /** {@inheritDoc} */
     @Override
     public Class<?> getType(final Object propertyId) {
         return this.types.get(propertyId);
@@ -442,8 +485,8 @@ public class CollectionContainer implements Container, Container.Ordered,
     /**
      * Override the default type. Use this with caution.
      *
-     * @param propertyId
-     * @param type
+     * @param propertyId a {@link java.lang.Object} object.
+     * @param type a {@link java.lang.Class} object.
      */
     public void setType(final Object propertyId, final Class<?> type) {
         this.types.put(propertyId, type);
@@ -452,6 +495,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container#size()
      */
+    /** {@inheritDoc} */
     @Override
     public int size() {
         if (!itemIdsInitialized) {
@@ -463,6 +507,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container#containsId(java.lang.Object)
      */
+    /** {@inheritDoc} */
     @Override
     public boolean containsId(final Object id) {
         if (this.itemIdMode == ITEM_ID_MODE_INDEX && id instanceof Integer) {
@@ -476,8 +521,9 @@ public class CollectionContainer implements Container, Container.Ordered,
     }
 
     /**
-     * This is not supported.
+     * {@inheritDoc}
      *
+     * This is not supported.
      * @see com.vaadin.data.Container#addItem(java.lang.Object)
      */
     @Override
@@ -487,8 +533,9 @@ public class CollectionContainer implements Container, Container.Ordered,
     }
 
     /**
-     * This is not supported.
+     * {@inheritDoc}
      *
+     * This is not supported.
      * @see com.vaadin.data.Container#addItem()
      */
     @Override
@@ -500,18 +547,27 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container#removeItem(java.lang.Object)
      */
+    /** {@inheritDoc} */
     @Override
     public boolean removeItem(final Object id) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Item removal not supported");
     }
 
+    /**
+     * <p>removeObject.</p>
+     *
+     * @param id a {@link java.lang.Object} object.
+     * @return a boolean.
+     * @throws java.lang.UnsupportedOperationException if any.
+     */
     public boolean removeObject(final Object id) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Object removal not supported");
     }
 
     /**
-     * This is not supported.
+     * {@inheritDoc}
      *
+     * This is not supported.
      * @see com.vaadin.data.Container#addContainerProperty(java.lang.Object, java.lang.Class, java.lang.Object)
      */
     @Override
@@ -522,8 +578,9 @@ public class CollectionContainer implements Container, Container.Ordered,
     }
 
     /**
-     * This is not supported.
+     * {@inheritDoc}
      *
+     * This is not supported.
      * @see com.vaadin.data.Container#removeContainerProperty(java.lang.Object)
      */
     @Override
@@ -536,6 +593,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container#removeAllItems()
      */
+    /** {@inheritDoc} */
     @Override
     public boolean removeAllItems() throws UnsupportedOperationException {
 
@@ -549,6 +607,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container.Ordered#nextItemId(java.lang.Object)
      */
+    /** {@inheritDoc} */
     @Override
     public Object nextItemId(final Object id) {
         /*
@@ -599,6 +658,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container.Ordered#prevItemId(java.lang.Object)
      */
+    /** {@inheritDoc} */
     @Override
     public Object prevItemId(final Object id) {
         if (this.itemIdMode == ITEM_ID_MODE_INDEX && id instanceof Integer) {
@@ -624,6 +684,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container.Ordered#firstItemId()
      */
+    /** {@inheritDoc} */
     @Override
     public Object firstItemId() {
         if (this.itemIdsInitialized) {
@@ -663,6 +724,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container.Ordered#lastItemId()
      */
+    /** {@inheritDoc} */
     @Override
     public Object lastItemId() {
         if (this.itemIdsInitialized) {
@@ -689,6 +751,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container.Ordered#isFirstId(java.lang.Object)
      */
+    /** {@inheritDoc} */
     @Override
     public boolean isFirstId(final Object id) {
         final Object first = firstItemId();
@@ -698,6 +761,7 @@ public class CollectionContainer implements Container, Container.Ordered,
     /*
      * @see com.vaadin.data.Container.Ordered#isLastId(java.lang.Object)
      */
+    /** {@inheritDoc} */
     @Override
     public boolean isLastId(final Object id) {
         final Object last = lastItemId();
@@ -705,8 +769,9 @@ public class CollectionContainer implements Container, Container.Ordered,
     }
 
     /**
-     * This is not supported.
+     * {@inheritDoc}
      *
+     * This is not supported.
      * @see com.vaadin.data.Container.Ordered#addItemAfter(java.lang.Object)
      */
     @Override
@@ -716,8 +781,9 @@ public class CollectionContainer implements Container, Container.Ordered,
     }
 
     /**
-     * This is not supported.
+     * {@inheritDoc}
      *
+     * This is not supported.
      * @see com.vaadin.data.Container.Ordered#addItemAfter(java.lang.Object, java.lang.Object)
      */
     @Override
@@ -862,6 +928,7 @@ public class CollectionContainer implements Container, Container.Ordered,
      * @see com.vaadin.data.Container.Sortable#sort(java.lang.Object[],
      * boolean[])
      */
+    /** {@inheritDoc} */
     @Override
     public void sort(final Object[] propertyId, final boolean[] ascending) {
         if (isNotSortable())
@@ -880,6 +947,7 @@ public class CollectionContainer implements Container, Container.Ordered,
      *
      * @see com.vaadin.data.Container.Sortable#getSortableContainerPropertyIds()
      */
+    /** {@inheritDoc} */
     @Override
     public Collection<?> getSortableContainerPropertyIds() {
         if (isNotSortable()) return null;
@@ -979,8 +1047,8 @@ public class CollectionContainer implements Container, Container.Ordered,
     /**
      * See {@link #getObject(Object)}.
      *
-     * @param id
-     * @return
+     * @param id a {@link java.lang.Object} object.
+     * @return a {@link java.lang.Object} object.
      */
     public Object getBean(final Object id) {
         return getObject(id);
@@ -988,6 +1056,8 @@ public class CollectionContainer implements Container, Container.Ordered,
 
     /**
      * Returns the underlying collection.
+     *
+     * @return a {@link java.util.Collection} object.
      */
     public Collection<?> getCollection() {
         return collection;

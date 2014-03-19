@@ -11,37 +11,46 @@ import java.util.List;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
+ * <p>ExtaUserQuery class.</p>
+ *
  * @author Valery Orlov
  *         Date: 14.11.13
  *         Time: 19:21
+ * @version $Id: $Id
  */
 public class ExtaUserQuery implements UserQuery {
 
+/** {@inheritDoc} */
 @Override
 public UserQuery asc() {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public long count() {
 	return lookup(UserRegistry.class).count();
 }
 
+/** {@inheritDoc} */
 @Override
 public User singleResult() {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public List<User> list() {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public List<User> listPage(int firstResult, int maxResults) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery userId(String id) {
 	final UserProfile userProfile = lookup(UserManagementService.class).findUserByLogin(id);
@@ -151,71 +160,85 @@ public UserQuery userId(String id) {
 	};
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery userFirstName(String firstName) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery userFirstNameLike(String firstNameLike) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery userLastName(String lastName) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery userLastNameLike(String lastNameLike) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery userFullNameLike(String fullNameLike) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery userEmail(String email) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery userEmailLike(String emailLike) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery memberOfGroup(String groupId) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery potentialStarter(String procDefId) {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery orderByUserId() {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery orderByUserFirstName() {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery orderByUserLastName() {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery orderByUserEmail() {
 	throw new UnsupportedOperationException();
 }
 
+/** {@inheritDoc} */
 @Override
 public UserQuery desc() {
 	throw new UnsupportedOperationException();

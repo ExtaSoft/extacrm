@@ -10,15 +10,22 @@ import ru.extas.model.Lead;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**
+ * <p>StringToLeadStatus class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 public class StringToLeadStatus extends String2EnumConverter<Lead.Status> {
 
+	/**
+	 * <p>Constructor for StringToLeadStatus.</p>
+	 */
 	public StringToLeadStatus() {
 		super(Lead.Status.class);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected BiMap<Lead.Status, String> createEnum2StringMap() {
 		BiMap<Lead.Status, String> map = HashBiMap.create();

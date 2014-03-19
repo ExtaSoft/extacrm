@@ -18,16 +18,21 @@ import static com.google.common.collect.Lists.newArrayList;
  * Реализует экран лидов
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class LeadsView extends AbstractTabView {
 
     private static final long serialVersionUID = -1272779672761523416L;
 
+    /**
+     * <p>Constructor for LeadsView.</p>
+     */
     public LeadsView() {
         super("Входящие лиды");
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected List<TabInfo> getTabComponentsInfo() {
         final ArrayList<TabInfo> ret = newArrayList();

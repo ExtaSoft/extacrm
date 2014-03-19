@@ -21,7 +21,10 @@ import ru.extas.web.util.ComponentUtil;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
+ * <p>UserEditForm class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class UserEditForm extends AbstractEditForm<UserProfile> {
 
@@ -44,8 +47,10 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 	private PasswordField passConfField;
 
 	/**
-	 * @param caption
-	 * @param obj
+	 * <p>Constructor for UserEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
 	 */
 	public UserEditForm(final String caption, final BeanItem<UserProfile> obj) {
 
@@ -59,6 +64,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final UserProfile obj) {
 		if (obj.getId() == null) {
@@ -68,6 +74,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final UserProfile obj) {
 		logger.debug("Saving user profile...");
@@ -87,10 +94,12 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final UserProfile obj) {
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final UserProfile obj) {
 		// Have some layout

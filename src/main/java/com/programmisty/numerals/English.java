@@ -22,8 +22,9 @@ import java.math.BigDecimal;
 import static com.programmisty.numerals.Util.toUpperCaseFirstLetter;
 /**
  * English Numerals
- * 
+ *
  * @author vit
+ * @version $Id: $Id
  */
 public class English extends AbstractNumeral {
 
@@ -41,15 +42,14 @@ public class English extends AbstractNumeral {
         "octillion", "nonillion", "decillion"};
 
     /**
+     * {@inheritDoc}
+     *
      * Number in word in english.
      * Sample:
      * 123 => one hundred twenty-three
      *
      * Supported only integer numbers: Integer, Long, Short, Byte, BigInteger
      * Max supported number: 1000000000000000000000000000000000000-1
-     * 
-     * @param number
-     * @return
      */
     @Override
     public String format(Number number) {
@@ -111,10 +111,9 @@ public class English extends AbstractNumeral {
 
 
     /**
+     * {@inheritDoc}
+     *
      * 123.17 One hundred twenty-three and 17/100
-     * 
-     * @param bi
-     * @return
      */
     @Override
      public String amount(BigDecimal bi) {

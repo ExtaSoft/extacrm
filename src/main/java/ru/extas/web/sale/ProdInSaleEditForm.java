@@ -16,6 +16,7 @@ import ru.extas.web.product.ProductSelect;
  * @author Valery Orlov
  *         Date: 20.01.14
  *         Time: 18:27
+ * @version $Id: $Id
  */
 public class ProdInSaleEditForm extends AbstractEditForm<ProductInSale> {
 
@@ -29,26 +30,36 @@ public class ProdInSaleEditForm extends AbstractEditForm<ProductInSale> {
 	@PropertyId("period")
 	private EditField periodField;
 
+	/**
+	 * <p>Constructor for ProdInSaleEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
+	 */
 	public ProdInSaleEditForm(final String caption, final BeanItem<ProductInSale> obj) {
 		super(caption, obj);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProductInSale obj) {
 		if (obj.getId() == null) {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(ProductInSale obj) {
 		Notification.show("Продукт сохранен в продаже", Notification.Type.TRAY_NOTIFICATION);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final ProductInSale obj) {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProductInSale obj) {
 		final FormLayout form = new FormLayout();

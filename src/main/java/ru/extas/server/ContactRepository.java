@@ -13,6 +13,7 @@ import ru.extas.model.Contact;
  * Интерфейс управления контактами
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)

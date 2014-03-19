@@ -12,13 +12,22 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 23.10.13
  *         Time: 15:36
+ * @version $Id: $Id
  */
 public class MotorBrandSelect extends ComboBox {
 
+    /**
+     * <p>Constructor for MotorBrandSelect.</p>
+     */
     public MotorBrandSelect() {
         this("Марка техники");
     }
 
+    /**
+     * <p>Constructor for MotorBrandSelect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public MotorBrandSelect(String caption) {
         super(caption);
 

@@ -15,21 +15,27 @@ import java.util.Collection;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
+ * <p>A7Select class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class A7Select extends ComboBox {
 
 private static final long serialVersionUID = 6004206917183679455L;
 
+/** {@inheritDoc} */
 @Override
 public Class<A7Form> getType() {
 	return A7Form.class;
 }
 
 /**
- * @param caption
- * @param description
- * @param forceNum
+ * <p>Constructor for A7Select.</p>
+ *
+ * @param caption a {@link java.lang.String} object.
+ * @param description a {@link java.lang.String} object.
+ * @param forceNum a {@link java.lang.String} object.
  */
 public A7Select(final String caption, final String description, final String forceNum) {
 	super(caption);

@@ -16,18 +16,29 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @author Valery Orlov
  *         Date: 13.02.14
  *         Time: 16:26
+ * @version $Id: $Id
  */
 public class PersonSelectWindow extends CloseOnlylWindow {
 
 	private Person selected;
 	private boolean selectPressed;
 
+	/**
+	 * <p>Constructor for PersonSelectWindow.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public PersonSelectWindow(final String caption) {
 		super(caption);
 		addStyleName("base-view");
 		setContent(new SelectGrid());
 	}
 
+	/**
+	 * <p>isSelectPressed.</p>
+	 *
+	 * @return a boolean.
+	 */
 	public boolean isSelectPressed() {
 		return selectPressed;
 	}
@@ -53,6 +64,11 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 		}
 	}
 
+	/**
+	 * <p>Getter for the field <code>selected</code>.</p>
+	 *
+	 * @return a {@link ru.extas.model.Person} object.
+	 */
 	public Person getSelected() {
 		return selected;
 	}
