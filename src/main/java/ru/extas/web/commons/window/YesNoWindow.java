@@ -7,6 +7,7 @@ import com.vaadin.ui.Button.ClickEvent;
  * Стандартное окошко OK/Отмена
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class YesNoWindow extends Window {
 
@@ -14,12 +15,23 @@ public class YesNoWindow extends Window {
     private boolean okPressed = false;
     private final HorizontalLayout buttonsPanel = new HorizontalLayout();
 
+    /**
+     * <p>Constructor for YesNoWindow.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param content a {@link com.vaadin.ui.Component} object.
+     */
     public YesNoWindow(final String caption, final Component content) {
         super(caption);
         initInputWindow();
         setContent(content);
     }
 
+    /**
+     * <p>Constructor for YesNoWindow.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public YesNoWindow(final String caption) {
         super(caption);
         initInputWindow();
@@ -60,6 +72,7 @@ public class YesNoWindow extends Window {
      * com.vaadin.ui.AbstractSingleComponentContainer#setContent(com.vaadin.
      * ui.Component)
      */
+    /** {@inheritDoc} */
     @Override
     public void setContent(Component content) {
         if (content != null) {
@@ -72,6 +85,9 @@ public class YesNoWindow extends Window {
         super.setContent(content);
     }
 
+    /**
+     * <p>showModal.</p>
+     */
     public void showModal() {
         setClosable(true);
         setModal(true);
@@ -79,6 +95,11 @@ public class YesNoWindow extends Window {
         UI.getCurrent().addWindow(this);
     }
 
+    /**
+     * <p>isOkPressed.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isOkPressed() {
         return this.okPressed;
     }

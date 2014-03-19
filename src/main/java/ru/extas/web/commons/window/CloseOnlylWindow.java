@@ -7,6 +7,7 @@ import com.vaadin.ui.Button.ClickEvent;
  * Стандартное окошко OK/Отмена
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class CloseOnlylWindow extends Window {
 
@@ -15,12 +16,23 @@ public class CloseOnlylWindow extends Window {
 	private final HorizontalLayout buttonsPanel = new HorizontalLayout();
 	protected Button closeBtn;
 
+	/**
+	 * <p>Constructor for CloseOnlylWindow.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param content a {@link com.vaadin.ui.Component} object.
+	 */
 	public CloseOnlylWindow(final String caption, final Component content) {
 		super(caption);
 		initInputWindow();
 		setContent(content);
 	}
 
+	/**
+	 * <p>Constructor for CloseOnlylWindow.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public CloseOnlylWindow(final String caption) {
 		super(caption);
 		initInputWindow();
@@ -49,6 +61,7 @@ public class CloseOnlylWindow extends Window {
 	 * com.vaadin.ui.AbstractSingleComponentContainer#setContent(com.vaadin.
 	 * ui.Component)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public void setContent(Component content) {
 		if (content != null) {
@@ -61,6 +74,9 @@ public class CloseOnlylWindow extends Window {
 		super.setContent(content);
 	}
 
+	/**
+	 * <p>showModal.</p>
+	 */
 	public void showModal() {
 		setClosable(true);
 		setModal(true);
@@ -68,10 +84,20 @@ public class CloseOnlylWindow extends Window {
 		UI.getCurrent().addWindow(this);
 	}
 
+	/**
+	 * <p>Setter for the field <code>okPressed</code>.</p>
+	 *
+	 * @param okPressed a boolean.
+	 */
 	protected void setOkPressed(final boolean okPressed) {
 		this.okPressed = okPressed;
 	}
 
+	/**
+	 * <p>isOkPressed.</p>
+	 *
+	 * @return a boolean.
+	 */
 	public boolean isOkPressed() {
 		return this.okPressed;
 	}

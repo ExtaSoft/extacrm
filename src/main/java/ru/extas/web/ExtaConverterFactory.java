@@ -29,10 +29,12 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Определяет кнверторы по умолчанию
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class ExtaConverterFactory extends DefaultConverterFactory {
 	private static final long serialVersionUID = -1489942684787774107L;
 
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected <PRESENTATION, MODEL> Converter<PRESENTATION, MODEL> findConverter(Class<PRESENTATION> presentationType, Class<MODEL> modelType) {

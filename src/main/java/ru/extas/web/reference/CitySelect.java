@@ -12,8 +12,14 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 23.10.13
  *         Time: 22:31
+ * @version $Id: $Id
  */
 public class CitySelect extends ComboBox {
+    /**
+     * <p>Constructor for CitySelect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public CitySelect(String caption) {
         super(caption);
         setDescription("Введите город");
@@ -27,6 +33,9 @@ public class CitySelect extends ComboBox {
 
     }
 
+    /**
+     * <p>Constructor for CitySelect.</p>
+     */
     public CitySelect() {
         this("Город");
     }

@@ -12,8 +12,14 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 23.10.13
  *         Time: 15:09
+ * @version $Id: $Id
  */
 public class MotorTypeSelect extends ComboBox {
+    /**
+     * <p>Constructor for MotorTypeSelect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public MotorTypeSelect(String caption) {
         super(caption);
         setDescription("Укажите тип техники");
@@ -27,6 +33,9 @@ public class MotorTypeSelect extends ComboBox {
             addItem(item);
     }
 
+    /**
+     * <p>Constructor for MotorTypeSelect.</p>
+     */
     public MotorTypeSelect() {
         this("Тип техники");
     }

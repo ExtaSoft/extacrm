@@ -51,6 +51,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Основной класс приложения
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 @Scope("session")
@@ -69,6 +70,7 @@ public class ExtaCrmUI extends UI {
 	private ExtaMainMenu mainMenu;
 	private final CssLayout content = new CssLayout();
 
+	/** {@inheritDoc} */
 	@Override
 	protected void init(final VaadinRequest request) {
 

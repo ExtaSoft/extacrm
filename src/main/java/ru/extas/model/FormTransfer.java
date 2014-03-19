@@ -14,6 +14,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * Данные приема передачи форм строгой отчетности (БСО)
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Entity
 @Table(name = "FORM_TRANSFER")
@@ -50,6 +51,8 @@ public class FormTransfer extends AbstractExtaObject {
     private List<String> formNums = newArrayList();
 
     /**
+     * <p>Getter for the field <code>fromContact</code>.</p>
+     *
      * @return the fromContact
      */
     public Person getFromContact() {
@@ -57,6 +60,8 @@ public class FormTransfer extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>fromContact</code>.</p>
+     *
      * @param fromContact the fromContact to set
      */
     public void setFromContact(final Person fromContact) {
@@ -64,6 +69,8 @@ public class FormTransfer extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>toContact</code>.</p>
+     *
      * @return the toContact
      */
     public Person getToContact() {
@@ -71,6 +78,8 @@ public class FormTransfer extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>toContact</code>.</p>
+     *
      * @param toContact the toContact to set
      */
     public void setToContact(final Person toContact) {
@@ -78,6 +87,8 @@ public class FormTransfer extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>transferDate</code>.</p>
+     *
      * @return the transferDate
      */
     public LocalDate getTransferDate() {
@@ -85,6 +96,8 @@ public class FormTransfer extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>transferDate</code>.</p>
+     *
      * @param transferDate the transferDate to set
      */
     public void setTransferDate(final LocalDate transferDate) {
@@ -92,6 +105,8 @@ public class FormTransfer extends AbstractExtaObject {
     }
 
     /**
+     * <p>Getter for the field <code>formNums</code>.</p>
+     *
      * @return the formNums
      */
     public List<String> getFormNums() {
@@ -99,6 +114,8 @@ public class FormTransfer extends AbstractExtaObject {
     }
 
     /**
+     * <p>Setter for the field <code>formNums</code>.</p>
+     *
      * @param formNums the formNums to set
      */
     public void setFormNums(final List<String> formNums) {

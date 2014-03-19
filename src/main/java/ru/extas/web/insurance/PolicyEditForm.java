@@ -18,6 +18,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Ввод редактирование полиса в рамках БСО
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class PolicyEditForm extends AbstractEditForm<Policy> {
 
@@ -32,8 +33,10 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	private PopupDateField issueDateField;
 
 	/**
-	 * @param caption
-	 * @param editedObj
+	 * <p>Constructor for PolicyEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param editedObj a {@link com.vaadin.data.util.BeanItem} object.
 	 */
 	public PolicyEditForm(final String caption, final BeanItem<Policy> editedObj) {
 		super(caption, editedObj);
@@ -45,6 +48,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final Policy obj) {
 
@@ -56,6 +60,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final Policy obj) {
 		final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
@@ -70,6 +75,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final Policy obj) {
 	}
@@ -81,6 +87,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
 	 * .AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final Policy obj) {
 		final FormLayout form = new FormLayout();

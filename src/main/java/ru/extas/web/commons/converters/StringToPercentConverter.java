@@ -17,6 +17,7 @@ import java.util.Locale;
  * Конвертер для отображения BigDecimal процентов в элементах UI
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 public class StringToPercentConverter implements Converter<String, BigDecimal> {
@@ -55,6 +56,7 @@ public class StringToPercentConverter implements Converter<String, BigDecimal> {
 	 *
 	 * @see com.vaadin.data.util.converter.Converter#getModelType()
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public Class<BigDecimal> getModelType() {
 		return BigDecimal.class;
@@ -67,6 +69,7 @@ public class StringToPercentConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public Class<String> getPresentationType() {
 		return String.class;
@@ -79,6 +82,7 @@ public class StringToPercentConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.lang.Class, java.util.Locale)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public BigDecimal convertToModel(String value, final Class<? extends BigDecimal> targetType, final Locale locale)
 			throws ConversionException {
@@ -110,6 +114,7 @@ public class StringToPercentConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.lang.Class, java.util.Locale)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public String convertToPresentation(final BigDecimal value, final Class<? extends String> targetType,
 	                                    final Locale locale)
@@ -128,6 +133,14 @@ public class StringToPercentConverter implements Converter<String, BigDecimal> {
 	 * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
 	 * java.util.Locale)
 	 */
+	/**
+	 * <p>convertToModel.</p>
+	 *
+	 * @param value a {@link java.lang.String} object.
+	 * @param locale a {@link java.util.Locale} object.
+	 * @return a {@link java.math.BigDecimal} object.
+	 * @throws ConversionException if any.
+	 */
 	public BigDecimal convertToModel(final String value, final Locale locale)
 			throws ConversionException {
 		return convertToModel(value, null, locale);
@@ -139,6 +152,14 @@ public class StringToPercentConverter implements Converter<String, BigDecimal> {
 	 * @see
 	 * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
 	 * .Object, java.util.Locale)
+	 */
+	/**
+	 * <p>convertToPresentation.</p>
+	 *
+	 * @param value a {@link java.math.BigDecimal} object.
+	 * @param locale a {@link java.util.Locale} object.
+	 * @return a {@link java.lang.String} object.
+	 * @throws ConversionException if any.
 	 */
 	public String convertToPresentation(final BigDecimal value, final Locale locale)
 			throws ConversionException {

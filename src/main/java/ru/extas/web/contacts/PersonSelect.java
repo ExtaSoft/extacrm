@@ -13,6 +13,7 @@ import ru.extas.model.Person;
  * Time: 12:15
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class PersonSelect extends CustomField<Person> {
 
@@ -23,18 +24,42 @@ public class PersonSelect extends CustomField<Person> {
 	private Label phoneField;
 	private Button viewBtn;
 
+	/**
+	 * <p>Constructor for PersonSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public PersonSelect(final String caption) {
 		this(caption, new Person());
 	}
 
+	/**
+	 * <p>Constructor for PersonSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param defNewObj a {@link ru.extas.model.Person} object.
+	 */
 	public PersonSelect(final String caption, Person defNewObj) {
 		this(caption, "", defNewObj);
 	}
 
+	/**
+	 * <p>Constructor for PersonSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 */
 	public PersonSelect(final String caption, final String description) {
 		this(caption, description, new Person());
 	}
 
+	/**
+	 * <p>Constructor for PersonSelect.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 * @param defNewObj a {@link ru.extas.model.Person} object.
+	 */
 	public PersonSelect(final String caption, final String description, Person defNewObj) {
 		this.defNewObj = defNewObj;
 		setCaption(caption);
@@ -43,6 +68,7 @@ public class PersonSelect extends CustomField<Person> {
 		addStyleName("bordered-component");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 
@@ -188,6 +214,7 @@ public class PersonSelect extends CustomField<Person> {
 		emailField.setPropertyDataSource(personItem.getItemProperty("email"));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends Person> getType() {
 		return Person.class;

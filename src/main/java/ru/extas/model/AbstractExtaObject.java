@@ -16,6 +16,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Базовый класс для всех сущностей. Имплементирует ID и макеры изменений.
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -23,6 +24,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public abstract class AbstractExtaObject implements Serializable {
 
 	private static final long serialVersionUID = 9098736299506726746L;
+	/** Constant <code>LOGIN_LENGTH=50</code> */
 	public static final int LOGIN_LENGTH = 50;
 
 	@Id
@@ -52,10 +54,20 @@ public abstract class AbstractExtaObject implements Serializable {
 		super();
 	}
 
+	/**
+	 * <p>Getter for the field <code>version</code>.</p>
+	 *
+	 * @return a int.
+	 */
 	public int getVersion() {
 		return version;
 	}
 
+	/**
+	 * <p>Setter for the field <code>version</code>.</p>
+	 *
+	 * @param version a int.
+	 */
 	public void setVersion(final int version) {
 		this.version = version;
 	}
@@ -89,6 +101,8 @@ public abstract class AbstractExtaObject implements Serializable {
 	}
 
 	/**
+	 * <p>Setter for the field <code>createdBy</code>.</p>
+	 *
 	 * @param createdBy the createdBy to set
 	 */
 	public void setCreatedBy(String createdBy) {
@@ -105,6 +119,8 @@ public abstract class AbstractExtaObject implements Serializable {
 	}
 
 	/**
+	 * <p>Setter for the field <code>createdAt</code>.</p>
+	 *
 	 * @param createdAt the createdAt to set
 	 */
 	public void setCreatedAt(DateTime createdAt) {
@@ -121,6 +137,8 @@ public abstract class AbstractExtaObject implements Serializable {
 	}
 
 	/**
+	 * <p>Setter for the field <code>modifiedBy</code>.</p>
+	 *
 	 * @param modifiedBy the modifiedBy to set
 	 */
 	public void setModifiedBy(String modifiedBy) {
@@ -137,6 +155,8 @@ public abstract class AbstractExtaObject implements Serializable {
 	}
 
 	/**
+	 * <p>Setter for the field <code>modifiedAt</code>.</p>
+	 *
 	 * @param modifiedAt the modifiedAt to set
 	 */
 	public void setModifiedAt(DateTime modifiedAt) {
@@ -148,6 +168,7 @@ public abstract class AbstractExtaObject implements Serializable {
 	 *
 	 * @see java.lang.Object#hashCode()
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode() {
 		int result;
@@ -166,6 +187,7 @@ public abstract class AbstractExtaObject implements Serializable {
 	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

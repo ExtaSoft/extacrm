@@ -24,6 +24,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  *         Date: 18.03.14
  *         Time: 18:48
+ * @version $Id: $Id
  */
 @Controller
 @RequestMapping("/service/salepoint")
@@ -100,6 +101,12 @@ public class SalePointRestService {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
+    /**
+     * <p>greeting.</p>
+     *
+     * @param name a {@link java.lang.String} object.
+     * @return a {@link ru.extas.server.rest.SalePointRestService.Greeting} object.
+     */
     @RequestMapping(value = "/greeting", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -110,6 +117,11 @@ public class SalePointRestService {
     }
 
     // Общая информация о сервисе
+    /**
+     * <p>info.</p>
+     *
+     * @return a {@link org.springframework.http.HttpEntity} object.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public HttpEntity<String> info() {
         HttpHeaders headers = new HttpHeaders();
@@ -118,6 +130,11 @@ public class SalePointRestService {
     }
 
     // количество объектов
+    /**
+     * <p>count.</p>
+     *
+     * @return a {@link org.springframework.http.HttpEntity} object.
+     */
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public HttpEntity<String> count() {
         HttpHeaders headers = new HttpHeaders();
@@ -126,6 +143,11 @@ public class SalePointRestService {
     }
 
     // количество объектов
+    /**
+     * <p>list.</p>
+     *
+     * @return a {@link org.springframework.http.HttpEntity} object.
+     */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public HttpEntity<Iterable> list() {
         List<RestSalePoint> points = newArrayList();

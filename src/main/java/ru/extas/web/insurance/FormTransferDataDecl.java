@@ -12,6 +12,9 @@ import ru.extas.web.commons.GridDataDecl;
  */
 class FormTransferDataDecl extends GridDataDecl {
 
+    /**
+     * <p>Constructor for FormTransferDataDecl.</p>
+     */
     public FormTransferDataDecl() {
         addMapping("fromContact.name", "От кого");
         addMapping("toContact.name", "Кому");

@@ -12,6 +12,9 @@ import ru.extas.web.commons.GridDataDecl;
  */
 class PolicyDataDecl extends GridDataDecl {
 
+    /**
+     * <p>Constructor for PolicyDataDecl.</p>
+     */
     public PolicyDataDecl() {
         addMapping("regNum", "Номер полиса");
         addMapping("bookTime", "Зарезервирован");

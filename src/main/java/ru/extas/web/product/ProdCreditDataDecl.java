@@ -11,6 +11,9 @@ import ru.extas.web.commons.converters.StringToPercentConverter;
  *         Time: 12:52
  */
 class ProdCreditDataDecl extends GridDataDecl {
+	/**
+	 * <p>Constructor for ProdCreditDataDecl.</p>
+	 */
 	public ProdCreditDataDecl() {
 		addMapping("name", "Название продукта");
 		addMapping("vendor.name", "Банк");

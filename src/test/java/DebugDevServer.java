@@ -3,12 +3,18 @@
  */
 
 /**
+ * <p>DebugDevServer class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
+ * @since 0.2.9
  */
 public class DebugDevServer {
 
     /**
-     * @param args
+     * <p>main.</p>
+     *
+     * @param args an array of {@link java.lang.String} objects.
      */
     public static void main(String[] args) {
         // Running C:\jdk1.7\jre\bin\java

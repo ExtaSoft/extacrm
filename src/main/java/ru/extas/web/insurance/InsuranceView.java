@@ -27,16 +27,21 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Раздел страхование
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class InsuranceView extends AbstractTabView {
 
     private static final long serialVersionUID = -2524035728558575428L;
 
+    /**
+     * <p>Constructor for InsuranceView.</p>
+     */
     public InsuranceView() {
         super("Страхование техники");
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected List<TabInfo> getTabComponentsInfo() {
         UserManagementService userService = lookup(UserManagementService.class);

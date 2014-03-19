@@ -6,9 +6,12 @@ import ru.extas.model.Contact;
 import java.util.List;
 
 /**
+ * <p>A7FormService interface.</p>
+ *
  * @author Valery Orlov
  *         Date: 18.12.13
  *         Time: 12:49
+ * @version $Id: $Id
  */
 public interface A7FormService {
 /**

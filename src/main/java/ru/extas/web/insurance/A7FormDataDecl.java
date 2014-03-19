@@ -12,6 +12,9 @@ import ru.extas.web.commons.GridDataDecl;
  */
 class A7FormDataDecl extends GridDataDecl {
 
+    /**
+     * <p>Constructor for A7FormDataDecl.</p>
+     */
     public A7FormDataDecl() {
         addMapping("regNum", "Номер квитанции");
         addMapping("owner.name", "Владелец");

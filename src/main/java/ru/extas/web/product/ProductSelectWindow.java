@@ -16,17 +16,28 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @author Valery Orlov
  *         Date: 17.02.14
  *         Time: 17:11
+ * @version $Id: $Id
  */
 public class ProductSelectWindow extends CloseOnlylWindow {
 	private Product selected;
 	private boolean selectPressed;
 
+	/**
+	 * <p>Constructor for ProductSelectWindow.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public ProductSelectWindow(final String caption) {
 		super(caption);
 		addStyleName("base-view");
 		setContent(new SelectGrid());
 	}
 
+	/**
+	 * <p>isSelectPressed.</p>
+	 *
+	 * @return a boolean.
+	 */
 	public boolean isSelectPressed() {
 		return selectPressed;
 	}
@@ -52,6 +63,11 @@ public class ProductSelectWindow extends CloseOnlylWindow {
 		}
 	}
 
+	/**
+	 * <p>Getter for the field <code>selected</code>.</p>
+	 *
+	 * @return a {@link ru.extas.model.Product} object.
+	 */
 	public Product getSelected() {
 		return selected;
 	}

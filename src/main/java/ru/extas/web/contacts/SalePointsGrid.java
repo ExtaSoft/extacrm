@@ -20,6 +20,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * Таблица контактов (Точки продаж)
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class SalePointsGrid extends ExtaGrid {
 
@@ -27,27 +28,36 @@ public class SalePointsGrid extends ExtaGrid {
 
 	private final Company company;
 
+	/**
+	 * <p>Constructor for SalePointsGrid.</p>
+	 *
+	 * @param company a {@link ru.extas.model.Company} object.
+	 */
 	public SalePointsGrid(final Company company) {
 		super(false);
 		this.company = company;
 		initialize();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
-		return new ContactDataDecl();
+		return new SalePointsDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
 		final ExtaDataContainer<SalePoint> container = new ExtaDataContainer<>(SalePoint.class);
 		container.addNestedContainerProperty("actualAddress.region");
+		container.addNestedContainerProperty("company.name");
 		if (company != null)
 			container.addContainerFilter(new Compare.Equal("company", company));
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();

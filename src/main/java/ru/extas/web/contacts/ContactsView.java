@@ -18,15 +18,20 @@ import static com.google.common.collect.Lists.newArrayList;
  * Реализует экран контактов
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class ContactsView extends AbstractTabView {
 
 	private static final long serialVersionUID = -1272779672761523416L;
 
+	/**
+	 * <p>Constructor for ContactsView.</p>
+	 */
 	public ContactsView() {
 		super("Контакты");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<TabInfo> getTabComponentsInfo() {
 		final ArrayList<TabInfo> ret = newArrayList();

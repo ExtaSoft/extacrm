@@ -12,9 +12,12 @@ import ru.extas.model.Sale;
 import javax.inject.Inject;
 
 /**
+ * <p>SaleServiceImpl class.</p>
+ *
  * @author Valery Orlov
  *         Date: 24.10.13
  *         Time: 0:33
+ * @version $Id: $Id
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -25,6 +28,7 @@ public class SaleServiceImpl implements SaleService {
 	@Inject
 	private SaleRegistry saleRegistry;
 
+	/** {@inheritDoc} */
 	@Transactional
 	@Override
 	public Sale ctreateSaleByLead(Lead lead) {

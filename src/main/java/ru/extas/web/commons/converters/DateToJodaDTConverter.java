@@ -8,6 +8,12 @@ import java.util.Date;
 import java.util.Locale;
 
 @Component
+/**
+ * <p>DateToJodaDTConverter class.</p>
+ *
+ * @author Valery_2
+ * @version $Id: $Id
+ */
 public class DateToJodaDTConverter implements Converter<Date, DateTime> {
     private static final long serialVersionUID = 6275343643194858906L;
 
@@ -16,6 +22,7 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
      *
      * @see com.vaadin.data.util.converter.Converter#getModelType()
      */
+    /** {@inheritDoc} */
     @Override
     public Class<DateTime> getModelType() {
         return DateTime.class;
@@ -28,6 +35,7 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
      * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
      * java.util.Locale)
      */
+    /** {@inheritDoc} */
     @Override
     public Class<Date> getPresentationType() {
         return Date.class;
@@ -40,6 +48,7 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
      * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
      * java.lang.Class, java.util.Locale)
      */
+    /** {@inheritDoc} */
     @Override
     public DateTime convertToModel(final Date value, final Class<? extends DateTime> targetType, final Locale locale)
             throws ConversionException {
@@ -55,6 +64,7 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
      * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
      * .Object, java.lang.Class, java.util.Locale)
      */
+    /** {@inheritDoc} */
     @Override
     public Date convertToPresentation(final DateTime value, final Class<? extends Date> targetType, final Locale locale)
             throws ConversionException {
@@ -70,6 +80,14 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
      * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
      * java.util.Locale)
      */
+    /**
+     * <p>convertToModel.</p>
+     *
+     * @param value a {@link java.util.Date} object.
+     * @param locale a {@link java.util.Locale} object.
+     * @return a {@link org.joda.time.DateTime} object.
+     * @throws com.vaadin.data.util.converter.Converter$ConversionException if any.
+     */
     public DateTime convertToModel(final Date value, final Locale locale)
             throws com.vaadin.data.util.converter.Converter.ConversionException {
         return convertToModel(value, null, locale);
@@ -81,6 +99,14 @@ public class DateToJodaDTConverter implements Converter<Date, DateTime> {
      * @see
      * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
      * .Object, java.util.Locale)
+     */
+    /**
+     * <p>convertToPresentation.</p>
+     *
+     * @param value a {@link org.joda.time.DateTime} object.
+     * @param locale a {@link java.util.Locale} object.
+     * @return a {@link java.util.Date} object.
+     * @throws com.vaadin.data.util.converter.Converter$ConversionException if any.
      */
     public Date convertToPresentation(final DateTime value, final Locale locale)
             throws com.vaadin.data.util.converter.Converter.ConversionException {

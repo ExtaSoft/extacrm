@@ -17,7 +17,10 @@ import javax.inject.Inject;
 import java.util.List;
 
 /**
+ * <p>A7FormServiceImpl class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -35,6 +38,7 @@ private UserManagementService userService;
  *
  * @see ru.extas.server.A7FormRepository#spendForm(java.lang.String)
  */
+/** {@inheritDoc} */
 @Transactional
 @Override
 public void spendForm(final String formNum) {
@@ -50,6 +54,7 @@ public void spendForm(final String formNum) {
  *
  * @see ru.extas.server.A7FormRepository#changeOwner(java.util.List)
  */
+/** {@inheritDoc} */
 @Transactional
 @Override
 public void changeOwner(final List<String> formNums, final Contact owner) {
@@ -71,6 +76,7 @@ public void changeOwner(final List<String> formNums, final Contact owner) {
  *
  * @see ru.extas.server.A7FormRepository#changeStatus(java.util.List, ru.extas.model.A7Form.Status)
  */
+/** {@inheritDoc} */
 @Transactional
 @Override
 public void changeStatus(final A7Form form, final Status newStatus) {
@@ -80,6 +86,7 @@ public void changeStatus(final A7Form form, final Status newStatus) {
 	}
 }
 
+/** {@inheritDoc} */
 @Transactional
 @Override
 public List<A7Form> loadAvailable() {

@@ -10,15 +10,22 @@ import ru.extas.model.Person;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**
+ * <p>StringToPersonPosition class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Component
 public class StringToPersonPosition extends String2EnumConverter<Person.Position> {
 
+	/**
+	 * <p>Constructor for StringToPersonPosition.</p>
+	 */
 	public StringToPersonPosition() {
 		super(Person.Position.class);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected BiMap<Person.Position, String> createEnum2StringMap() {
 		BiMap<Person.Position, String> map = HashBiMap.create();

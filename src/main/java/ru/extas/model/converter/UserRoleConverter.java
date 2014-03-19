@@ -13,15 +13,18 @@ import javax.persistence.Converter;
  * Time: 14:37
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Converter(autoApply = true)
 public class UserRoleConverter implements AttributeConverter<UserRole, String> {
 
+    /** {@inheritDoc} */
     @Override
     public String convertToDatabaseColumn(final UserRole attribute) {
         return attribute.getName();
     }
 
+    /** {@inheritDoc} */
     @Override
     public UserRole convertToEntityAttribute(final String dbData) {
         return UserRole.getRoleByName(dbData);

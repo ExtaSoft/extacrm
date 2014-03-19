@@ -24,13 +24,14 @@ import static ru.extas.server.ServiceLocator.lookup;
  * </ul>
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class GridDataDecl implements Serializable {
 
     private final List<DataDeclMapping> mappings = new ArrayList<>();
 
     /**
-     *
+     * <p>Constructor for GridDataDecl.</p>
      */
     protected GridDataDecl() {
         super();
@@ -62,7 +63,7 @@ public class GridDataDecl implements Serializable {
      *
      * @param propName     - Имя свойства
      * @param caption      - Заголовок столбца
-     * @param converterCls
+     * @param converterCls a {@link java.lang.Class} object.
      */
     public void addMapping(String propName, String caption, Class<? extends Converter<String, ?>> converterCls) {
         mappings.add(new DataDeclMapping(propName, caption, lookup(converterCls)));
@@ -100,6 +101,11 @@ public class GridDataDecl implements Serializable {
 																				 */);
     }
 
+    /**
+     * <p>Getter for the field <code>mappings</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<DataDeclMapping> getMappings() {
         return mappings;
     }

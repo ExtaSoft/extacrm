@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkState;
  * @author Valery Orlov
  *         Date: 23.10.13
  *         Time: 22:55
+ * @version $Id: $Id
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -33,6 +34,7 @@ private LeadRepository leadRepository;
 @Inject
 private RuntimeService runtimeService;
 
+/** {@inheritDoc} */
 @Transactional
 @Override
 public void qualify(Lead obj) {

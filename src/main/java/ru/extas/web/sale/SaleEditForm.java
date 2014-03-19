@@ -19,6 +19,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Форма ввода/редактирования лида
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class SaleEditForm extends AbstractEditForm<Sale> {
 
@@ -50,6 +51,12 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 	@PropertyId("productInSales")
 	private ProductInSaleGrid productInSaleField;
 
+	/**
+	 * <p>Constructor for SaleEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
+	 */
 	public SaleEditForm(final String caption, final BeanItem<Sale> obj) {
 		super(caption, obj);
 	}
@@ -61,6 +68,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
 	 * .AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final Sale obj) {
 		final FormLayout form = new FormLayout();
@@ -107,6 +115,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final Sale obj) {
 		if (obj.getId() == null) {
@@ -120,6 +129,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final Sale obj) {
 		final SaleRegistry leadService = lookup(SaleRegistry.class);
@@ -134,6 +144,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final Sale obj) {
 	}

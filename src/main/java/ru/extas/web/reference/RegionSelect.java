@@ -12,9 +12,15 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 23.10.13
  *         Time: 18:04
+ * @version $Id: $Id
  */
 public class RegionSelect extends ComboBox {
 
+    /**
+     * <p>Constructor for RegionSelect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public RegionSelect(String caption) {
         super(caption);
 
@@ -29,6 +35,9 @@ public class RegionSelect extends ComboBox {
             addItem(item);
     }
 
+    /**
+     * <p>Constructor for RegionSelect.</p>
+     */
     public RegionSelect() {
         this("Регион");
     }

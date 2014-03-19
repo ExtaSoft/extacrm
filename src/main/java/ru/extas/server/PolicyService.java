@@ -5,9 +5,12 @@ import ru.extas.model.Policy;
 import java.util.List;
 
 /**
+ * <p>PolicyService interface.</p>
+ *
  * @author Valery Orlov
  *         Date: 19.12.13
  *         Time: 12:13
+ * @version $Id: $Id
  */
 public interface PolicyService {
 /**

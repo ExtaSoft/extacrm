@@ -13,10 +13,17 @@ import java.util.List;
  * @author Valery Orlov
  *         Date: 27.09.13
  *         Time: 9:14
+ * @version $Id: $Id
  */
 public class NotificationUtil {
 
 
+    /**
+     * <p>showErrors.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param messages a {@link java.util.List} object.
+     */
     public static void showErrors(String caption, List<String> messages) {
 
         StringBuilder content = new StringBuilder();

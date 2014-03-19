@@ -20,13 +20,17 @@ import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.web.commons.TableUtils.fullInitTable;
 
 /**
+ * <p>Abstract ExtaGrid class.</p>
+ *
  * @author Valery Orlov
  *         Date: 15.10.13
  *         Time: 17:48
+ * @version $Id: $Id
  */
 public abstract class ExtaGrid extends CustomComponent {
 	private static final long serialVersionUID = 2299363623807745654L;
 
+	/** Constant <code>OVERALL_COLUMN="OverallColumn"</code> */
 	public static final String OVERALL_COLUMN = "OverallColumn";
 
 	protected FilterTable table;
@@ -41,15 +45,26 @@ public abstract class ExtaGrid extends CustomComponent {
 		DETAIL_LIST
 	}
 
+	/**
+	 * <p>Constructor for ExtaGrid.</p>
+	 *
+	 * @param initNow a boolean.
+	 */
 	public ExtaGrid(boolean initNow) {
 		if (initNow)
 			initialize();
 	}
 
+	/**
+	 * <p>Constructor for ExtaGrid.</p>
+	 */
 	public ExtaGrid() {
 		this(true);
 	}
 
+	/**
+	 * <p>initialize.</p>
+	 */
 	protected void initialize() {
 		// Запрос данных
 		container = createContainer();
@@ -159,6 +174,8 @@ public abstract class ExtaGrid extends CustomComponent {
 
 	/**
 	 * Полноценная инициализация колонок таблицы
+	 *
+	 * @param mode a {@link ru.extas.web.commons.ExtaGrid.Mode} object.
 	 */
 	protected void initTable(Mode mode) {
 
@@ -340,19 +357,42 @@ public abstract class ExtaGrid extends CustomComponent {
 		return defAction;
 	}
 
+	/**
+	 * <p>refreshContainer.</p>
+	 */
 	protected void refreshContainer() {
 		if (container instanceof ExtaDataContainer)
 			((ExtaDataContainer) container).refresh();
 	}
 
+	/**
+	 * <p>refreshContainerItem.</p>
+	 *
+	 * @param itemId a {@link java.lang.Object} object.
+	 */
 	protected void refreshContainerItem(final Object itemId) {
 		if (container instanceof ExtaDataContainer)
 			((ExtaDataContainer) container).refreshItem(itemId);
 	}
 
+	/**
+	 * <p>createDataDecl.</p>
+	 *
+	 * @return a {@link ru.extas.web.commons.GridDataDecl} object.
+	 */
 	protected abstract GridDataDecl createDataDecl();
 
+	/**
+	 * <p>createContainer.</p>
+	 *
+	 * @return a {@link com.vaadin.data.Container} object.
+	 */
 	protected abstract Container createContainer();
 
+	/**
+	 * <p>createActions.</p>
+	 *
+	 * @return a {@link java.util.List} object.
+	 */
 	protected abstract List<UIAction> createActions();
 }

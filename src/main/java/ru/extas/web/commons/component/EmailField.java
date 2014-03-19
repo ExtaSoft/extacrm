@@ -8,13 +8,25 @@ import com.vaadin.data.validator.EmailValidator;
  * @author Valery Orlov
  *         Date: 23.10.13
  *         Time: 13:15
+ * @version $Id: $Id
  */
 public class EmailField extends EditField {
+    /**
+     * <p>Constructor for EmailField.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param description a {@link java.lang.String} object.
+     */
     public EmailField(String caption, String description) {
         super(caption, description);
         initField();
     }
 
+    /**
+     * <p>Constructor for EmailField.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public EmailField(String caption) {
         super(caption);
         initField();

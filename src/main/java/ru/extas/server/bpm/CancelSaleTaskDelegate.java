@@ -21,11 +21,13 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 14.11.13
  *         Time: 11:55
+ * @version $Id: $Id
  */
 @Component("cancelSaleTaskDelegate")
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class CancelSaleTaskDelegate implements JavaDelegate {
 
+/** {@inheritDoc} */
 @Transactional
 @Override
 public void execute(DelegateExecution execution) throws Exception {

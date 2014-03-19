@@ -18,25 +18,35 @@ import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
+ * <p>SalesGrid class.</p>
+ *
  * @author Valery Orlov
  *         Date: 15.10.13
  *         Time: 12:24
+ * @version $Id: $Id
  */
 public class SalesGrid extends ExtaGrid {
 	private static final long serialVersionUID = 4876073256421755574L;
 	private final Sale.Status status;
 
+	/**
+	 * <p>Constructor for SalesGrid.</p>
+	 *
+	 * @param status a {@link ru.extas.model.Sale.Status} object.
+	 */
 	public SalesGrid(Sale.Status status) {
 		super(false);
 		this.status = status;
 		initialize();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new SaleDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void initTable(Mode mode) {
 		super.initTable(mode);
@@ -44,6 +54,7 @@ public class SalesGrid extends ExtaGrid {
 			table.setColumnCollapsed("result", false);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
@@ -54,6 +65,7 @@ public class SalesGrid extends ExtaGrid {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();

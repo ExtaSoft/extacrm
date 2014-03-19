@@ -14,11 +14,18 @@ import java.util.List;
  * @author Valery Orlov
  *         Date: 16.01.14
  *         Time: 18:22
+ * @version $Id: $Id
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public interface ProdInstallmentsRepository extends CrudRepository<ProdInstallments, String> {
 
+	/**
+	 * <p>findByActive.</p>
+	 *
+	 * @param active a boolean.
+	 * @return a {@link java.util.List} object.
+	 */
 	List<ProdInstallments> findByActive(boolean active);
 
 }

@@ -16,14 +16,17 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  *         Date: 16.01.14
  *         Time: 20:33
+ * @version $Id: $Id
  */
 public class ProdInsuranceGrid extends ExtaGrid {
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new ProdInsuranceDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
@@ -33,6 +36,7 @@ public class ProdInsuranceGrid extends ExtaGrid {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();

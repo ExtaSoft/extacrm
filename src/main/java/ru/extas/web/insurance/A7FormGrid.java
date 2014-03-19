@@ -15,20 +15,28 @@ import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
+ * <p>A7FormGrid class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class A7FormGrid extends ExtaGrid {
 
 	private static final long serialVersionUID = 6290106109723378415L;
 
+	/**
+	 * <p>Constructor for A7FormGrid.</p>
+	 */
 	public A7FormGrid() {
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new A7FormDataDecl();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
 		ExtaDataContainer<A7Form> cnt = new ExtaDataContainer<>(A7Form.class);
@@ -36,6 +44,7 @@ public class A7FormGrid extends ExtaGrid {
 		return cnt;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();

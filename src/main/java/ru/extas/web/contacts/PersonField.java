@@ -10,19 +10,29 @@ import ru.extas.model.Person;
  * @author Valery Orlov
  *         Date: 04.02.14
  *         Time: 19:09
+ * @version $Id: $Id
  */
 public class PersonField extends CustomField<Person> {
 
 	private BeanItem<Person> personItem;
 
+	/**
+	 * <p>Constructor for PersonField.</p>
+	 */
 	public PersonField() {
 		this("Клиент");
 	}
 
+	/**
+	 * <p>Constructor for PersonField.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public PersonField(String caption) {
 		setCaption(caption);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 		VerticalLayout container = new VerticalLayout();
@@ -64,6 +74,7 @@ public class PersonField extends CustomField<Person> {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends Person> getType() {
 		return Person.class;

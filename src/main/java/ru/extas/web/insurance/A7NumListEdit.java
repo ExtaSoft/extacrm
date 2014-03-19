@@ -22,6 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * Компонент для редактирования списка номеров квитанций
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @SuppressWarnings("rawtypes")
 public class A7NumListEdit extends CustomField<List> {
@@ -43,6 +44,7 @@ public class A7NumListEdit extends CustomField<List> {
      *
      * @see com.vaadin.ui.CustomField#initContent()
      */
+    /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
     protected Component initContent() {
@@ -147,6 +149,7 @@ public class A7NumListEdit extends CustomField<List> {
      *
      * @see com.vaadin.ui.AbstractField#getType()
      */
+    /** {@inheritDoc} */
     @Override
     public Class<? extends List> getType() {
         return List.class;
@@ -157,6 +160,7 @@ public class A7NumListEdit extends CustomField<List> {
      *
      * @see com.vaadin.ui.AbstractField#commit()
      */
+    /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
     public void commit() throws SourceException, InvalidValueException {

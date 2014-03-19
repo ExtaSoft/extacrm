@@ -29,6 +29,7 @@ import static com.google.common.collect.Lists.newArrayListWithCapacity;
  * Облегчает работу с CSV
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class CsvUtil {
 
@@ -37,7 +38,7 @@ public class CsvUtil {
      *
      * @param table таблица
      * @param out   поток вывода
-     * @throws IOException
+     * @throws java.io.IOException if any.
      */
     public static void tableToCsv(final Table table, final OutputStream out) throws IOException {
 
@@ -84,6 +85,15 @@ public class CsvUtil {
         return (null != value) ? value.toString() : "";
     }
 
+    /**
+     * <p>containerToCsv.</p>
+     *
+     * @param container a {@link com.vaadin.data.Container} object.
+     * @param dataDecl a {@link ru.extas.web.commons.GridDataDecl} object.
+     * @param local a {@link java.util.Locale} object.
+     * @param out a {@link java.io.ByteArrayOutputStream} object.
+     * @throws java.io.IOException if any.
+     */
     public static void containerToCsv(Container container, GridDataDecl dataDecl, Locale local, ByteArrayOutputStream out) throws IOException {
         checkArgument(container != null, "Table can not be null");
         checkArgument(out != null, "Output stream can not be null");

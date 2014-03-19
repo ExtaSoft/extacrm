@@ -19,6 +19,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @author Valery Orlov
  *         Date: 13.02.14
  *         Time: 16:26
+ * @version $Id: $Id
  */
 public class LegalEntitySelectWindow extends CloseOnlylWindow {
 
@@ -26,6 +27,12 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 	private LegalEntity selected;
 	private boolean selectPressed;
 
+	/**
+	 * <p>Constructor for LegalEntitySelectWindow.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param company a {@link ru.extas.model.Company} object.
+	 */
 	public LegalEntitySelectWindow(final String caption, final Company company) {
 		super(caption);
 		this.company = company;
@@ -33,6 +40,11 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 		setContent(new SelectGrid());
 	}
 
+	/**
+	 * <p>isSelectPressed.</p>
+	 *
+	 * @return a boolean.
+	 */
 	public boolean isSelectPressed() {
 		return selectPressed;
 	}
@@ -52,6 +64,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 				}
 			}
 			itemContainer.addNestedContainerProperty("actualAddress.region");
+            itemContainer.addNestedContainerProperty("company.name");
 			return itemContainer;
 		}
 
@@ -75,6 +88,11 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 		}
 	}
 
+	/**
+	 * <p>Getter for the field <code>selected</code>.</p>
+	 *
+	 * @return a {@link ru.extas.model.LegalEntity} object.
+	 */
 	public LegalEntity getSelected() {
 		return selected;
 	}

@@ -16,6 +16,7 @@ import java.util.List;
  * Управление актами приема передачи БСО
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -25,7 +26,6 @@ public interface FormTransferRepository extends CrudRepository<FormTransfer, Str
  * Найти акты приема передачи по номеру бланка
  *
  * @param formNum номер бланка
- *
  * @return список найденных актов или null
  */
 @Query("SELECT o FROM FormTransfer o WHERE ?1 IN (o.formNums)")

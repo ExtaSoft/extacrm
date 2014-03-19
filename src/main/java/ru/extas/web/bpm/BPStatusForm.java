@@ -27,11 +27,17 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 29.01.14
  *         Time: 14:01
+ * @version $Id: $Id
  */
 public class BPStatusForm extends CloseOnlylWindow {
 
 	private final VerticalLayout content;
 
+	/**
+	 * <p>Constructor for BPStatusForm.</p>
+	 *
+	 * @param processId a {@link java.lang.String} object.
+	 */
 	public BPStatusForm(final String processId) {
 		super("Статус выполнения бизнес процесса");
 

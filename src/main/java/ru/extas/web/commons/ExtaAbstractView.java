@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
  * Базовый абстрактный класс для классов раздела
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public abstract class ExtaAbstractView extends VerticalLayout implements View {
 
@@ -22,7 +23,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
     private final static Logger logger = LoggerFactory.getLogger(ExtaAbstractView.class);
 
     /**
-     *
+     * <p>Constructor for ExtaAbstractView.</p>
      */
     protected ExtaAbstractView() {
         super();
@@ -35,6 +36,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
         super(children);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void enter(ViewChangeEvent event) {
         logger.info("Entering view {}...", event.getViewName());
@@ -81,12 +83,16 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
     }
 
     /**
-     * @return
+     * <p>getContent.</p>
+     *
+     * @return a {@link com.vaadin.ui.Component} object.
      */
     protected abstract Component getContent();
 
     /**
-     * @return
+     * <p>getTitle.</p>
+     *
+     * @return a {@link com.vaadin.ui.Component} object.
      */
     protected abstract Component getTitle();
 

@@ -12,6 +12,9 @@ import java.util.EnumSet;
  */
 class InsuranceDataDecl extends GridDataDecl {
 
+	/**
+	 * <p>Constructor for InsuranceDataDecl.</p>
+	 */
 	public InsuranceDataDecl() {
 		super();
 		addMapping("regNum", "Номер полиса");

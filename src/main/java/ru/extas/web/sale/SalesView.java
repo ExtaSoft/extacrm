@@ -19,16 +19,21 @@ import static com.google.common.collect.Lists.newArrayList;
  * Реализует раздел продаж
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class SalesView extends AbstractTabView {
 
     private static final long serialVersionUID = -1272779672761523416L;
 
+    /**
+     * <p>Constructor for SalesView.</p>
+     */
     public SalesView() {
         super("Продажи");
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected List<TabInfo> getTabComponentsInfo() {
         final ArrayList<TabInfo> ret = newArrayList();

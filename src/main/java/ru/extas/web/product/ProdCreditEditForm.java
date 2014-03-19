@@ -18,6 +18,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 20.01.14
  *         Time: 18:27
+ * @version $Id: $Id
  */
 public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
 
@@ -67,10 +68,17 @@ public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
+	/**
+	 * <p>Constructor for ProdCreditEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
+	 */
 	public ProdCreditEditForm(final String caption, final BeanItem<ProdCredit> obj) {
 		super(caption, obj);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdCredit obj) {
 		if (obj.getId() == null) {
@@ -78,17 +86,20 @@ public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(ProdCredit obj) {
 		ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
 		Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final ProdCredit obj) {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdCredit obj) {
 		final FormLayout form = new FormLayout();

@@ -27,6 +27,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Форма ввода/редактирования юридического лица
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @SuppressWarnings("FieldCanBeLocal")
 public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
@@ -69,24 +70,31 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
 	private LegalEntity legalEntity;
 
 	/**
-	 * @param caption
-	 * @param obj
+	 * <p>Constructor for LegalEntityEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
 	 */
 	public LegalEntityEditForm(final String caption, final BeanItem<LegalEntity> obj) {
 		super(caption, obj);
 		legalEntity = obj.getBean();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void attach() {
 		super.attach();
 
-		if (legalEntity.getCompany() == null)
-			companyField.setReadOnly(false);
-		else {
-			companyField.setVisible(false);
+		if (legalEntity.getCompany() == null) {
+            companyField.setReadOnly(false);
+            companyField.setVisible(true);
+            companyField.setRequired(true);
+        } else {
+            companyField.setReadOnly(true);
+            companyField.getPropertyDataSource().setReadOnly(true);
 			if (legalEntity.getCompany().getId() == null) {
-				companyField.setRequired(false);
+                companyField.setVisible(false);
+                companyField.setRequired(false);
 			}
 		}
 	}
@@ -97,6 +105,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
 		 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
 		 * AbstractExtaObject)
 		 */
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final LegalEntity obj) {
 		if (obj.getId() == null) {
@@ -113,6 +122,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
 	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final LegalEntity obj) {
 		if (obj.getCompany().getId() != null) {
@@ -130,6 +140,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
 	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
 	 * AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final LegalEntity obj) {
 	}
@@ -141,6 +152,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
 	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
 	 * .AbstractExtaObject)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final LegalEntity obj) {
 		TabSheet tabsheet = new TabSheet();

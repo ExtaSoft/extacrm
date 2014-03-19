@@ -21,6 +21,7 @@ import static com.google.common.collect.Sets.newHashSet;
  * Реализация калькулятора страховых премий
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 @Service
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -77,6 +78,7 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
      * ru.extas.server.InsuranceCalculator#calcPropInsPremium(ru.extas.model
      * .Insurance)
      */
+	/** {@inheritDoc} */
 	@Override
 	public BigDecimal calcPropInsPremium(Insurance ins) {
 		checkArgument(ins != null, "Can't calculate premium. No insurance paramenets.");
@@ -92,6 +94,7 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
 		return ins.getRiskSum().multiply(tarif);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime, boolean isUsed) {
 		checkArgument(motorBrand != null, "Can't calculate premium. No insurance motor brand.");

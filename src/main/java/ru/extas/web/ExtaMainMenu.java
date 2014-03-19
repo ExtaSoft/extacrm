@@ -30,6 +30,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Класс создает и управляей основным меню разделов
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedListener {
 
@@ -38,8 +39,10 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
     private final Map<String, Button> fragmentToButton;
 
     /**
-     * @param ui
-     * @param content
+     * <p>Constructor for ExtaMainMenu.</p>
+     *
+     * @param ui a {@link com.vaadin.ui.UI} object.
+     * @param content a {@link com.vaadin.ui.ComponentContainer} object.
      */
     public ExtaMainMenu(UI ui, ComponentContainer content) {
 
@@ -124,7 +127,9 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
     }
 
     /**
-     * @param uriFragment
+     * <p>processURI.</p>
+     *
+     * @param uriFragment a {@link java.lang.String} object.
      */
     public void processURI(String uriFragment) {
         if (uriFragment == null || uriFragment.equals(""))

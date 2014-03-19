@@ -16,6 +16,7 @@ import java.io.Serializable;
  * @author Valery Orlov
  *         Date: 19.08.13
  *         Time: 17:17
+ * @version $Id: $Id
  */
 public class GetValueWindowLong extends AbstractEditForm<GetValueWindowLong.ValueContainer> {
 
@@ -24,31 +25,51 @@ public class GetValueWindowLong extends AbstractEditForm<GetValueWindowLong.Valu
     @PropertyId("value")
     private TextField valueField;
 
+    /**
+     * <p>Constructor for GetValueWindowLong.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param defaultValue a {@link java.lang.Long} object.
+     */
     public GetValueWindowLong(final String caption, Long defaultValue) {
         super(caption, new BeanItem<>(new ValueContainer(defaultValue)));
     }
 
+    /**
+     * <p>Constructor for GetValueWindowLong.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public GetValueWindowLong(final String caption) {
         this(caption, 0L);
     }
 
+    /**
+     * <p>Constructor for GetValueWindowLong.</p>
+     *
+     * @param defaultValue a {@link java.lang.Long} object.
+     */
     public GetValueWindowLong(final Long defaultValue) {
         this("Введите целое число", defaultValue);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void initObject(final ValueContainer obj) {
         this.valueContainer = obj;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void saveObject(final ValueContainer obj) {
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void checkBeforeSave(final ValueContainer obj) {
     }
 
+    /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final ValueContainer obj) {
         final FormLayout form = new FormLayout();
@@ -63,6 +84,11 @@ public class GetValueWindowLong extends AbstractEditForm<GetValueWindowLong.Valu
         return form;
     }
 
+    /**
+     * <p>getValue.</p>
+     *
+     * @return a {@link java.lang.Long} object.
+     */
     public Long getValue() {
         return valueContainer.getValue();
     }

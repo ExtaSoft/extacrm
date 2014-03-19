@@ -15,21 +15,27 @@ import java.util.Collection;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
+ * <p>PolicySelect class.</p>
+ *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class PolicySelect extends ComboBox {
 
 private static final long serialVersionUID = 6004206917183679455L;
 
+/** {@inheritDoc} */
 @Override
 public Class<Policy> getType() {
 	return Policy.class;
 }
 
 /**
- * @param caption
- * @param description
- * @param forceNum
+ * <p>Constructor for PolicySelect.</p>
+ *
+ * @param caption a {@link java.lang.String} object.
+ * @param description a {@link java.lang.String} object.
+ * @param forceNum a {@link java.lang.String} object.
  */
 public PolicySelect(final String caption, final String description, final String forceNum) {
 	super(caption);

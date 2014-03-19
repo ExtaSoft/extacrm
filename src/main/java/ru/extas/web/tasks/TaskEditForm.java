@@ -42,6 +42,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Форма ввода/редактирования лида
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class TaskEditForm extends AbstractEditForm<Task> {
 
@@ -66,6 +67,12 @@ public class TaskEditForm extends AbstractEditForm<Task> {
 	private VerticalLayout formsContainer;
 	private final boolean canAssigne;
 
+	/**
+	 * <p>Constructor for TaskEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
+	 */
 	public TaskEditForm(final String caption, final BeanItem<Task> obj) {
 		super(caption);
 
@@ -83,6 +90,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
      * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
      * .AbstractExtaObject)
      */
+    /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Task obj) {
 	    formsContainer = new VerticalLayout();
@@ -298,6 +306,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
 		statusForm.showModal();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void attach() {
 		super.attach();
@@ -312,6 +321,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
          * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
          * AbstractExtaObject)
          */
+    /** {@inheritDoc} */
     @Override
     protected void initObject(final Task obj) {
     }
@@ -322,6 +332,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
      * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
      * AbstractExtaObject)
      */
+    /** {@inheritDoc} */
     @Override
     protected void saveObject(final Task obj) {
         TaskService taskService = lookup(TaskService.class);
@@ -344,10 +355,16 @@ public class TaskEditForm extends AbstractEditForm<Task> {
      * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
      * AbstractExtaObject)
      */
+    /** {@inheritDoc} */
     @Override
     protected void checkBeforeSave(final Task obj) {
     }
 
+    /**
+     * <p>isTaskCompleted.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isTaskCompleted() {
         return taskCompleted;
     }

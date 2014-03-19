@@ -9,12 +9,24 @@ import ru.extas.model.Contact;
  * Time: 12:14
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class ContactSelect extends AbstractContactSelect<Contact> {
+    /**
+     * <p>Constructor for ContactSelect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public ContactSelect(final String caption) {
         super(caption, Contact.class);
     }
 
+    /**
+     * <p>Constructor for ContactSelect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param description a {@link java.lang.String} object.
+     */
     public ContactSelect(final String caption, final String description) {
         super(caption, description, Contact.class);
     }

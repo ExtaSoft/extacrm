@@ -12,6 +12,9 @@ import java.util.EnumSet;
  *         Time: 18:08
  */
 class TaskDataDecl extends GridDataDecl {
+    /**
+     * <p>Constructor for TaskDataDecl.</p>
+     */
     public TaskDataDecl() {
         addMapping("name", "Название");
         addMapping("description", "Описание", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));

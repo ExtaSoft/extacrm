@@ -14,6 +14,7 @@ import java.util.Locale;
  * @author Valery Orlov
  *         Date: 05.02.14
  *         Time: 20:52
+ * @version $Id: $Id
  */
 @Component
 public class LoginToUserProfileConverter implements Converter<UserProfile, String> {
@@ -21,6 +22,7 @@ public class LoginToUserProfileConverter implements Converter<UserProfile, Strin
 	@Inject
 	private UserManagementService userService;
 
+	/** {@inheritDoc} */
 	@Override
 	public String convertToModel(final UserProfile value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
 
@@ -31,6 +33,7 @@ public class LoginToUserProfileConverter implements Converter<UserProfile, Strin
 		//throw new UnsupportedOperationException("Convert from user name to login is unsupported");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public UserProfile convertToPresentation(final String value, final Class<? extends UserProfile> targetType, final Locale locale) throws ConversionException {
 		if (value == null)
@@ -39,11 +42,13 @@ public class LoginToUserProfileConverter implements Converter<UserProfile, Strin
 		return userService.findUserByLogin(value);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<String> getModelType() {
 		return String.class;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<UserProfile> getPresentationType() {
 		return UserProfile.class;

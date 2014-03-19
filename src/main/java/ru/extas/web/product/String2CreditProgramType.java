@@ -12,14 +12,19 @@ import ru.extas.web.commons.converters.String2EnumConverter;
  * @author Valery Orlov
  *         Date: 07.02.14
  *         Time: 20:01
+ * @version $Id: $Id
  */
 @Component
 public class String2CreditProgramType extends String2EnumConverter {
 
+	/**
+	 * <p>Constructor for String2CreditProgramType.</p>
+	 */
 	public String2CreditProgramType() {
 		super(ProdCredit.ProgramType.class);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected BiMap<ProdCredit.ProgramType, String> createEnum2StringMap() {
 		BiMap<ProdCredit.ProgramType, String> map = HashBiMap.create();

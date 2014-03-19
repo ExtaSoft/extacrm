@@ -10,19 +10,29 @@ import ru.extas.model.Lead;
  * @author Valery Orlov
  *         Date: 05.02.14
  *         Time: 10:59
+ * @version $Id: $Id
  */
 public class LeadField extends CustomField<Lead> {
 
 	private BeanItem<Lead> leadItem;
 
+	/**
+	 * <p>Constructor for LeadField.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public LeadField(String caption) {
 		setCaption(caption);
 	}
 
+	/**
+	 * <p>Constructor for LeadField.</p>
+	 */
 	public LeadField() {
 		this("Лид");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 		VerticalLayout container = new VerticalLayout();
@@ -67,6 +77,7 @@ public class LeadField extends CustomField<Lead> {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends Lead> getType() {
 		return Lead.class;

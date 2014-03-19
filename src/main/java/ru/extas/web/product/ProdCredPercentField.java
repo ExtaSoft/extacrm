@@ -22,6 +22,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 07.02.14
  *         Time: 15:28
+ * @version $Id: $Id
  */
 public class ProdCredPercentField extends CustomField<List> {
 
@@ -29,12 +30,20 @@ public class ProdCredPercentField extends CustomField<List> {
 	private Table procentTable;
 	private BeanItemContainer<ProdCreditPercent> container;
 
+	/**
+	 * <p>Constructor for ProdCredPercentField.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param description a {@link java.lang.String} object.
+	 * @param product a {@link ru.extas.model.ProdCredit} object.
+	 */
 	public ProdCredPercentField(String caption, final String description, ProdCredit product) {
 		this.product = product;
 		setCaption(caption);
 		setDescription(description);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 		final VerticalLayout fieldLayout = new VerticalLayout();
@@ -131,6 +140,7 @@ public class ProdCredPercentField extends CustomField<List> {
 		return fieldLayout;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void commit() throws SourceException, Validator.InvalidValueException {
 		super.commit();
@@ -139,6 +149,7 @@ public class ProdCredPercentField extends CustomField<List> {
 			dataSource.setValue(container.getItemIds());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Class<? extends List> getType() {
 		return List.class;

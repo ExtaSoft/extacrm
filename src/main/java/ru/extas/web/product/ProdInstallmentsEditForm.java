@@ -18,6 +18,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 20.01.14
  *         Time: 18:27
+ * @version $Id: $Id
  */
 public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments> {
 
@@ -35,10 +36,17 @@ public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments>
 	@PropertyId("comment")
 	private TextArea commentField;
 
+	/**
+	 * <p>Constructor for ProdInstallmentsEditForm.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
+	 */
 	public ProdInstallmentsEditForm(final String caption, final BeanItem<ProdInstallments> obj) {
 		super(caption, obj);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdInstallments obj) {
 		if (obj.getId() == null) {
@@ -46,17 +54,20 @@ public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments>
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final ProdInstallments obj) {
 		lookup(ProdInstallmentsRepository.class).save(obj);
 		Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void checkBeforeSave(final ProdInstallments obj) {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdInstallments obj) {
 		final FormLayout form = new FormLayout();

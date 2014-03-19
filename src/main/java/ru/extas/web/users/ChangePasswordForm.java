@@ -22,6 +22,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Форма смены пароля пользователя.
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 
@@ -34,7 +35,9 @@ private PasswordField passField;
 private PasswordField passConfField;
 
 /**
- * @param obj
+ * <p>Constructor for ChangePasswordForm.</p>
+ *
+ * @param obj a {@link com.vaadin.data.util.BeanItem} object.
  */
 public ChangePasswordForm(final BeanItem<UserProfile> obj) {
 	super("Смена пароля", obj);
@@ -46,6 +49,7 @@ public ChangePasswordForm(final BeanItem<UserProfile> obj) {
  * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
  * AbstractExtaObject)
  */
+/** {@inheritDoc} */
 @Override
 protected void initObject(final UserProfile obj) {
 }
@@ -56,6 +60,7 @@ protected void initObject(final UserProfile obj) {
  * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
  * AbstractExtaObject)
  */
+/** {@inheritDoc} */
 @Override
 protected void saveObject(final UserProfile obj) {
 	logger.debug("Saving changed password...");
@@ -76,6 +81,7 @@ protected void saveObject(final UserProfile obj) {
  * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
  * AbstractExtaObject)
  */
+/** {@inheritDoc} */
 @Override
 protected void checkBeforeSave(final UserProfile obj) {
 }
@@ -87,6 +93,7 @@ protected void checkBeforeSave(final UserProfile obj) {
  * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
  * .AbstractExtaObject)
  */
+/** {@inheritDoc} */
 @Override
 protected ComponentContainer createEditFields(final UserProfile obj) {
 	final FormLayout form = new FormLayout();

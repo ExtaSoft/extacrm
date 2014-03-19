@@ -12,6 +12,7 @@ import ru.extas.web.commons.ExtaAbstractView;
  * Реализует экран настроек CRM
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class ConfigView extends ExtaAbstractView {
 
@@ -24,6 +25,7 @@ private final static Logger logger = LoggerFactory.getLogger(ConfigView.class);
  *
  * @see ru.extas.web.ExtaAbstractView#getContent()
  */
+/** {@inheritDoc} */
 @Override
 protected Component getContent() {
 	logger.debug("Creating view content...");
@@ -60,6 +62,7 @@ private void updateDataBase() {
  *
  * @see ru.extas.web.ExtaAbstractView#getTitle()
  */
+/** {@inheritDoc} */
 @Override
 protected Component getTitle() {
 	final Component title = new Label("Настройки");

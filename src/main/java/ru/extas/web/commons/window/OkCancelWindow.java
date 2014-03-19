@@ -7,6 +7,7 @@ import com.vaadin.ui.Button.ClickEvent;
  * Стандартное окошко OK/Отмена
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class OkCancelWindow extends Window {
 
@@ -16,12 +17,23 @@ public class OkCancelWindow extends Window {
 	protected Button cancelBtn;
 	protected Button okBtn;
 
+	/**
+	 * <p>Constructor for OkCancelWindow.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param content a {@link com.vaadin.ui.Component} object.
+	 */
 	public OkCancelWindow(final String caption, final Component content) {
 		super(caption);
 		initInputWindow();
 		setContent(content);
 	}
 
+	/**
+	 * <p>Constructor for OkCancelWindow.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 */
 	public OkCancelWindow(final String caption) {
 		super(caption);
 		initInputWindow();
@@ -62,6 +74,7 @@ public class OkCancelWindow extends Window {
 	 * com.vaadin.ui.AbstractSingleComponentContainer#setContent(com.vaadin.
 	 * ui.Component)
 	 */
+	/** {@inheritDoc} */
 	@Override
 	public void setContent(Component content) {
 		if (content != null) {
@@ -74,6 +87,9 @@ public class OkCancelWindow extends Window {
 		super.setContent(content);
 	}
 
+	/**
+	 * <p>showModal.</p>
+	 */
 	public void showModal() {
 		setClosable(true);
 		setModal(true);
@@ -81,6 +97,11 @@ public class OkCancelWindow extends Window {
 		UI.getCurrent().addWindow(this);
 	}
 
+	/**
+	 * <p>isOkPressed.</p>
+	 *
+	 * @return a boolean.
+	 */
 	public boolean isOkPressed() {
 		return this.okPressed;
 	}

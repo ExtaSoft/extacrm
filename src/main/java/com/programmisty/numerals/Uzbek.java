@@ -5,6 +5,12 @@ import java.math.RoundingMode;
 
 import static com.programmisty.numerals.Util.toUpperCaseFirstLetter;
 
+/**
+ * <p>Uzbek class.</p>
+ *
+ * @author Valery_2
+ * @version $Id: $Id
+ */
 public class Uzbek extends AbstractNumeral {
 	private static final String EDINICHI[] = { "nol", "bir", "ikki", "uch",
 			"to'rt", "besh", "olti", "etti", "sakkiz", "tuqqiz" };
@@ -17,6 +23,7 @@ public class Uzbek extends AbstractNumeral {
 			"trillion", "kvadrillion", "kvintillion", "sekstillion",
 			"septillion", "oktillion", "nonillion", "detsillion" };
 
+	/** {@inheritDoc} */
 	@Override
 	public String format(Number number) {
 		// check number type
@@ -78,10 +85,9 @@ public class Uzbek extends AbstractNumeral {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * Сумма прописью: Семьсот семьдесят семь рублей 77 копеек
-	 * 
-	 * @param bi
-	 * @return
 	 */
 	@Override
 	public String amount(BigDecimal bi) {

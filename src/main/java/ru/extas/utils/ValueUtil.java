@@ -3,9 +3,12 @@ package ru.extas.utils;
 import java.text.MessageFormat;
 
 /**
+ * <p>ValueUtil class.</p>
+ *
  * @author Valery Orlov
  *         Date: 29.08.13
  *         Time: 16:45
+ * @version $Id: $Id
  */
 public class ValueUtil {
 
@@ -131,15 +134,33 @@ public class ValueUtil {
         return result;
     }
 
+    /**
+     * <p>spellOutInteger.</p>
+     *
+     * @param num a int.
+     * @return a {@link java.lang.String} object.
+     */
     public static String spellOutInteger(int num) {
         return intToString(num);
     }
 
+    /**
+     * <p>spellOutRubles.</p>
+     *
+     * @param num a double.
+     * @return a {@link java.lang.String} object.
+     */
     public static String spellOutRubles(double num) {
         String[][] curRubKop = {{"рубль", "рубля", "рублей"}, {"копейка", "копейки", "копеек"}};
         return doubleToString(num, curRubKop);
     }
 
+    /**
+     * <p>spellOutThing.</p>
+     *
+     * @param num a int.
+     * @return a {@link java.lang.String} object.
+     */
     public static String spellOutThing(int num) {
         String[] curs = {"штука", "штуки", "штук"};
         return String.format("%s %s", intToString(num), declOfNum(num, curs));

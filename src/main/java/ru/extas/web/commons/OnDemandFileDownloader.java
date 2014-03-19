@@ -10,9 +10,12 @@ import java.io.IOException;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * This specializes {@link FileDownloader} in a way, such that both the file
+ * This specializes {@link com.vaadin.server.FileDownloader} in a way, such that both the file
  * name and content can be determined on-demand, i.e. when the user has clicked
  * the component.
+ *
+ * @author Valery_2
+ * @version $Id: $Id
  */
 public class OnDemandFileDownloader extends FileDownloader {
 
@@ -27,6 +30,11 @@ public class OnDemandFileDownloader extends FileDownloader {
     private static final long serialVersionUID = 1L;
     private final OnDemandStreamResource onDemandStreamResource;
 
+    /**
+     * <p>Constructor for OnDemandFileDownloader.</p>
+     *
+     * @param onDemandStreamResource a {@link ru.extas.web.commons.OnDemandFileDownloader.OnDemandStreamResource} object.
+     */
     public OnDemandFileDownloader(OnDemandStreamResource onDemandStreamResource) {
         super(new StreamResource(onDemandStreamResource, "some.file.ext"));
         this.onDemandStreamResource = checkNotNull(onDemandStreamResource, "The given on-demand stream resource may never be null!");
@@ -41,6 +49,7 @@ public class OnDemandFileDownloader extends FileDownloader {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean handleConnectorRequest(VaadinRequest request, VaadinResponse response, String path) throws IOException {
         getResource().setFilename(onDemandStreamResource.getFilename());

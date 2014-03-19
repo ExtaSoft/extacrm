@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
  * Преднастроенный компонент ввода даты
  *
  * @author Valery Orlov
+ * @version $Id: $Id
  */
 public class DateTimeField extends PopupDateField {
 

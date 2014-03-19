@@ -74,6 +74,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="sass-stdlib" level="application" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-server:7.1.11" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-shared:7.1.11" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-theme-compiler:7.1.11" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-client-compiled:7.1.11" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.vaadin:vaadin-client:7.1.11" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-themes:7.1.11" level="project" />
     <orderEntry type="library" name="Maven: net.sf.jasperreports:jasperreports:5.5.1" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.0" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.1.1" level="project" />
