@@ -518,6 +518,7 @@
                     <pushReleases>false</pushReleases>
                     <pushHotfixes>false</pushHotfixes>
                     <noDeploy>true</noDeploy>
+                    <goals>package</goals>
                 </configuration>
             </plugin>
 
