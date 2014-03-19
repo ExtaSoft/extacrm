@@ -4,6 +4,7 @@
 package ru.extas.web.contacts;
 
 import com.vaadin.ui.Component;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.AbstractTabView;
 import ru.extas.web.commons.component.AbstractTabInfo;
 import ru.extas.web.commons.component.TabInfo;
@@ -29,7 +30,7 @@ public class ContactsView extends AbstractTabView {
 	@Override
 	protected List<TabInfo> getTabComponentsInfo() {
 		final ArrayList<TabInfo> ret = newArrayList();
-		ret.add(new AbstractTabInfo("Физические лица") {
+		ret.add(new AbstractTabInfo("Физические лица", ExtaDomain.PERSON) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -37,7 +38,7 @@ public class ContactsView extends AbstractTabView {
 				return new PersonsGrid();
 			}
 		});
-		ret.add(new AbstractTabInfo("Компании") {
+		ret.add(new AbstractTabInfo("Компании", ExtaDomain.COMPANY) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -45,7 +46,7 @@ public class ContactsView extends AbstractTabView {
 				return new CompaniesGrid();
 			}
 		});
-		ret.add(new AbstractTabInfo("Юридические лица") {
+		ret.add(new AbstractTabInfo("Юридические лица", ExtaDomain.LEGAL_ENTITY) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -53,7 +54,7 @@ public class ContactsView extends AbstractTabView {
 				return new LegalEntitiesGrid(null);
 			}
 		});
-		ret.add(new AbstractTabInfo("Торговые точки") {
+		ret.add(new AbstractTabInfo("Торговые точки", ExtaDomain.SALE_POINT) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

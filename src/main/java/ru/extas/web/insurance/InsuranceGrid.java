@@ -4,10 +4,8 @@
 package ru.extas.web.insurance;
 
 import com.google.common.base.Throwables;
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import net.sf.jasperreports.engine.*;
@@ -15,9 +13,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.Insurance;
-import ru.extas.model.UserRole;
 import ru.extas.server.InsuranceCalculator;
-import ru.extas.server.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
@@ -61,16 +57,11 @@ public class InsuranceGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final JPAContainer<Insurance> container = new ExtaDataContainer<>(Insurance.class);
+		final ExtaDataContainer<Insurance> container = new ExtaDataContainer<>(Insurance.class);
 		container.addNestedContainerProperty("client.name");
 		container.addNestedContainerProperty("client.birthday");
 		container.addNestedContainerProperty("client.phone");
 		container.addNestedContainerProperty("dealer.name");
-		UserManagementService userService = lookup(UserManagementService.class);
-		// пользователю доступны только собственные записи
-		if (userService.isCurUserHasRole(UserRole.USER)) {
-			container.addContainerFilter(new Compare.Equal("createdBy", userService.getCurrentUserLogin()));
-		}
 		return container;
 	}
 

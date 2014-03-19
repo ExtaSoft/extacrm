@@ -3,7 +3,6 @@
  */
 package ru.extas.web.contacts;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
@@ -19,7 +18,7 @@ public class AbstractContactSelect<TContactType extends Contact> extends ComboBo
 
 	private static final long serialVersionUID = -8005905898383483037L;
 	private final Class<TContactType> contactType;
-	protected JPAContainer<TContactType> container;
+	protected ExtaDataContainer<TContactType> container;
 
 	protected AbstractContactSelect(final String caption, final Class<TContactType> contactType) {
 		this(caption, "Выберете существующий контакт или введите новый", contactType);

@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import ru.extas.model.*;
 import ru.extas.model.Person.Sex;
+import ru.extas.security.UserRole;
 import ru.extas.web.commons.converters.*;
 import ru.extas.web.contacts.StringToPersonPosition;
 import ru.extas.web.contacts.StringToPersonSex;

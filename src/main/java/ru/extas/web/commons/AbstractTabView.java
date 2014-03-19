@@ -1,9 +1,6 @@
 package ru.extas.web.commons;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.web.commons.component.TabInfo;
@@ -56,15 +53,23 @@ public abstract class AbstractTabView extends ExtaAbstractView {
                 tab.addComponent(tabContent);
                 // } else
                 // tab.getComponent(0).markAsDirtyRecursive();
+	            //UI.getCurrent().getNavigator().navigateTo(info.getDomain().getName());
+	            UI.getCurrent().getPage().setUriFragment("!" + info.getDomain().getName(), false);
             }
         });
 
+	    String uriFragment = UI.getCurrent().getPage().getUriFragment();
+	    if (uriFragment.startsWith("!"))
+		    uriFragment = uriFragment.substring(1);
         // Создаем закладки в соответствии с описанием
         for (final TabInfo info : getTabComponentsInfo()) {
             final VerticalLayout viewTab = new VerticalLayout();
             viewTab.setSizeFull();
             viewTab.setData(info);
-            tabsheet.addTab(viewTab, info.getCaption());
+	        TabSheet.Tab tab = tabsheet.addTab(viewTab, info.getCaption());
+	        if (info.getDomain().getName().equals(uriFragment)) {
+		        tabsheet.setSelectedTab(tab);
+	        }
         }
 
         return tabsheet;

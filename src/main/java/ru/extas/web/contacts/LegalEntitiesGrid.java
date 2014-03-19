@@ -3,7 +3,6 @@
  */
 package ru.extas.web.contacts;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
@@ -41,7 +40,7 @@ public class LegalEntitiesGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final JPAContainer<LegalEntity> container = new ExtaDataContainer<>(LegalEntity.class);
+		final ExtaDataContainer<LegalEntity> container = new ExtaDataContainer<>(LegalEntity.class);
 		if (company != null)
 			container.addContainerFilter(new Compare.Equal("company", company));
 		container.addNestedContainerProperty("actualAddress.region");

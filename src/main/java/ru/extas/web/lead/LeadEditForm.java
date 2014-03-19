@@ -1,7 +1,6 @@
 package ru.extas.web.lead;
 
 import com.google.common.base.Strings;
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -78,7 +77,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 
 	private boolean qualifyForm;
 	private ExtaDataContainer<SalePoint> vendorsContainer;
-	private JPAContainer<Person> clientsContainer;
+	private ExtaDataContainer<Person> clientsContainer;
 
 	public LeadEditForm(final String caption, final BeanItem<Lead> obj, boolean qualifyForm) {
 		super(caption);

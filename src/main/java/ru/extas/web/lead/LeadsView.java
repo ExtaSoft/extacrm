@@ -5,6 +5,7 @@ package ru.extas.web.lead;
 
 import com.vaadin.ui.Component;
 import ru.extas.model.Lead;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.AbstractTabView;
 import ru.extas.web.commons.component.AbstractTabInfo;
 import ru.extas.web.commons.component.TabInfo;
@@ -31,24 +32,21 @@ public class LeadsView extends AbstractTabView {
     @Override
     protected List<TabInfo> getTabComponentsInfo() {
         final ArrayList<TabInfo> ret = newArrayList();
-        ret.add(new AbstractTabInfo("Новые") {
-            private static final long serialVersionUID = 1L;
+        ret.add(new AbstractTabInfo("Новые", ExtaDomain.LEADS_NEW) {
 
             @Override
             public Component createComponent() {
                 return new LeadsGrid(Lead.Status.NEW);
             }
         });
-        ret.add(new AbstractTabInfo("Квалифицированные") {
-            private static final long serialVersionUID = 1L;
+        ret.add(new AbstractTabInfo("Квалифицированные", ExtaDomain.LEADS_QUAL) {
 
             @Override
             public Component createComponent() {
                 return new LeadsGrid(Lead.Status.QUALIFIED);
             }
         });
-        ret.add(new AbstractTabInfo("Закрытые") {
-            private static final long serialVersionUID = 1L;
+        ret.add(new AbstractTabInfo("Закрытые", ExtaDomain.LEADS_CLOSED) {
 
             @Override
             public Component createComponent() {

@@ -3,7 +3,6 @@
  */
 package ru.extas.web.users;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window.CloseEvent;
@@ -43,7 +42,7 @@ public class UsersGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final JPAContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
+		final ExtaDataContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
 		container.addNestedContainerProperty("contact.name");
 		return container;
 	}

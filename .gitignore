@@ -6,6 +6,8 @@ src/main/webapp/VAADIN/gwt-unitCache/
 hotspot.log
 target/
 classes/
+/var
+pom.xml.versionsBackup
 test-output/
 *~
 /pom.xml.save

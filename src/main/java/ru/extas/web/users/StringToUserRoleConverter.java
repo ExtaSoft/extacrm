@@ -6,7 +6,7 @@ package ru.extas.web.users;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
-import ru.extas.model.UserRole;
+import ru.extas.security.UserRole;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**

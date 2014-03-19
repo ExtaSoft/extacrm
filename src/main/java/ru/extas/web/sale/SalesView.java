@@ -5,6 +5,7 @@ package ru.extas.web.sale;
 
 import com.vaadin.ui.Component;
 import ru.extas.model.Sale;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.AbstractTabView;
 import ru.extas.web.commons.component.AbstractTabInfo;
 import ru.extas.web.commons.component.TabInfo;
@@ -31,19 +32,19 @@ public class SalesView extends AbstractTabView {
     @Override
     protected List<TabInfo> getTabComponentsInfo() {
         final ArrayList<TabInfo> ret = newArrayList();
-        ret.add(new AbstractTabInfo("Открытые") {
+        ret.add(new AbstractTabInfo("Открытые", ExtaDomain.SALES_OPENED) {
             @Override
             public Component createComponent() {
                 return new SalesGrid(Sale.Status.NEW);
             }
         });
-        ret.add(new AbstractTabInfo("Завершенные") {
+        ret.add(new AbstractTabInfo("Завершенные", ExtaDomain.SALES_SUCCESSFUL) {
             @Override
             public Component createComponent() {
                 return new SalesGrid(Sale.Status.FINISHED);
             }
         });
-        ret.add(new AbstractTabInfo("Отмененные") {
+        ret.add(new AbstractTabInfo("Отмененные", ExtaDomain.SALES_CANCELED) {
             @Override
             public Component createComponent() {
                 return new SalesGrid(Sale.Status.CANCELED);

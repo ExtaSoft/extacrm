@@ -4,6 +4,7 @@
 package ru.extas.web.product;
 
 import com.vaadin.ui.Component;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.AbstractTabView;
 import ru.extas.web.commons.component.AbstractTabInfo;
 import ru.extas.web.commons.component.TabInfo;
@@ -30,24 +31,21 @@ public class ProductView extends AbstractTabView {
 	@Override
 	protected List<TabInfo> getTabComponentsInfo() {
 		final ArrayList<TabInfo> ret = newArrayList();
-		ret.add(new AbstractTabInfo("Кредитные продукты") {
-			private static final long serialVersionUID = 1L;
+		ret.add(new AbstractTabInfo("Кредитные продукты", ExtaDomain.PROD_CREDIT) {
 
 			@Override
 			public Component createComponent() {
 				return new ProdCreditGrid();
 			}
 		});
-		ret.add(new AbstractTabInfo("Страховые продукты") {
-			private static final long serialVersionUID = 1L;
+		ret.add(new AbstractTabInfo("Страховые продукты", ExtaDomain.PROD_INSURANCE) {
 
 			@Override
 			public Component createComponent() {
 				return new ProdInsuranceGrid();
 			}
 		});
-		ret.add(new AbstractTabInfo("Рассрочка") {
-			private static final long serialVersionUID = 1L;
+		ret.add(new AbstractTabInfo("Рассрочка", ExtaDomain.PROD_INSTALL) {
 
 			@Override
 			public Component createComponent() {

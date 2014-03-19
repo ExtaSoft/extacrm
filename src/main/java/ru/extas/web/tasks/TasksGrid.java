@@ -11,8 +11,6 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.joda.time.LocalDate;
 import ru.extas.model.Lead;
-import ru.extas.model.UserRole;
-import ru.extas.server.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 
@@ -113,11 +111,6 @@ public class TasksGrid extends ExtaGrid {
 				break;
 			case ALL:
 				break;
-		}
-		final UserManagementService userService = lookup(UserManagementService.class);
-		if (userService.isCurUserHasRole(UserRole.USER)) {
-			String currentUser = userService.getCurrentUserLogin();
-			query.taskAssignee(currentUser);
 		}
 		query.orderByTaskPriority().desc().orderByDueDate().asc();
 		return query.list();

@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.extas.model.UserProfile;
-import ru.extas.model.UserRole;
+import ru.extas.security.ExtaDomain;
 import ru.extas.server.UserManagementService;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
@@ -42,6 +42,7 @@ import ru.extas.web.users.UsersView;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
+import java.util.EnumSet;
 import java.util.Locale;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -389,17 +390,24 @@ public class ExtaCrmUI extends UI {
 
 		// -------------------------------------------------------------
 		// Создаем кнопки основного меню
-		// TODO: Add permission rules
-		mainMenu.addChapter("", "Начало", "Начальный экран приложения", "icon-home", HomeView.class, null);
-		mainMenu.addChapter("tasks", "Задачи", "Мои задачи", "icon-check", TasksView.class, null);
-		mainMenu.addChapter("contacts", "Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts", ContactsView.class, null);
-		mainMenu.addChapter("leads", "Лиды", "Входящие лиды", "icon-inbox-alt", LeadsView.class, null);
-		mainMenu.addChapter("sales", "Продажи", "Раздел управления продажами", "icon-dollar", SalesView.class, null);
-		mainMenu.addChapter("insurance", "Страхование", "Раздел посвященный страхованию", "icon-umbrella-1", InsuranceView.class, null);
-		mainMenu.addChapter("product", "Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", "icon-basket", ProductView.class, null);
-		if (lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN))
-			mainMenu.addChapter("users", "Пользователи", "Управление ползователями и правами доступа", "icon-users-3", UsersView.class, null);
-		mainMenu.addChapter("config", "Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt", ConfigView.class, null);
+		mainMenu.addChapter("Начало", "Начальный экран приложения", "icon-home",
+				HomeView.class, ExtaDomain.DASHBOARD);
+		mainMenu.addChapter("Задачи", "Мои задачи", "icon-check",
+				TasksView.class, EnumSet.of(ExtaDomain.TASKS_TODAY, ExtaDomain.TASKS_WEEK, ExtaDomain.TASKS_MONTH, ExtaDomain.TASKS_ALL));
+		mainMenu.addChapter("Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts",
+				ContactsView.class, EnumSet.of(ExtaDomain.PERSON, ExtaDomain.COMPANY, ExtaDomain.LEGAL_ENTITY, ExtaDomain.SALE_POINT));
+		mainMenu.addChapter("Лиды", "Входящие лиды", "icon-inbox-alt",
+				LeadsView.class, EnumSet.of(ExtaDomain.LEADS_NEW, ExtaDomain.LEADS_QUAL, ExtaDomain.LEADS_CLOSED));
+		mainMenu.addChapter("Продажи", "Раздел управления продажами", "icon-dollar",
+				SalesView.class, EnumSet.of(ExtaDomain.SALES_OPENED, ExtaDomain.SALES_SUCCESSFUL, ExtaDomain.SALES_CANCELED));
+		mainMenu.addChapter("Страхование", "Раздел посвященный страхованию", "icon-umbrella-1",
+				InsuranceView.class, EnumSet.of(ExtaDomain.INSURANCE_PROP, ExtaDomain.INSURANCE_BSO, ExtaDomain.INSURANCE_A_7, ExtaDomain.INSURANCE_TRANSFER));
+		mainMenu.addChapter("Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", "icon-basket",
+				ProductView.class, EnumSet.of(ExtaDomain.PROD_CREDIT, ExtaDomain.PROD_INSURANCE, ExtaDomain.PROD_INSTALL));
+		mainMenu.addChapter("Пользователи", "Управление ползователями и правами доступа", "icon-users-3",
+				UsersView.class, ExtaDomain.USERS);
+		mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt",
+				ConfigView.class, ExtaDomain.SETTINGS);
 
 		mainMenu.processURI(Page.getCurrent().getUriFragment());
 

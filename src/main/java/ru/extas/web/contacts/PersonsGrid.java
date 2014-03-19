@@ -3,7 +3,6 @@
  */
 package ru.extas.web.contacts;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window.CloseEvent;
@@ -33,7 +32,7 @@ public class PersonsGrid extends ExtaGrid {
 
 	@Override
 	protected Container createContainer() {
-		final JPAContainer<Person> container = new ExtaDataContainer<>(Person.class);
+		final ExtaDataContainer<Person> container = new ExtaDataContainer<>(Person.class);
 		container.addNestedContainerProperty("actualAddress.region");
 		return container;
 	}
