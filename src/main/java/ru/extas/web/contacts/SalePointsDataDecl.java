@@ -13,6 +13,7 @@ import java.util.EnumSet;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class SalePointsDataDecl extends GridDataDecl {
 

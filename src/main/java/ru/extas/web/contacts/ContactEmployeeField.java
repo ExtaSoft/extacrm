@@ -18,6 +18,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  *         Date: 17.02.14
  *         Time: 13:04
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ContactEmployeeField extends CustomField<List> {
 

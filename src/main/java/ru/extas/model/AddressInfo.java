@@ -11,6 +11,7 @@ import java.io.Serializable;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Embeddable
 public class AddressInfo implements Cloneable, Serializable {

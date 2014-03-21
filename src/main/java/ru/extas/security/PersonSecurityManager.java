@@ -12,14 +12,19 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
+ * <p>PersonSecurityManager class.</p>
+ *
  * @author Valery Orlov
  *         Date: 05.03.14
  *         Time: 22:31
+ * @version $Id: $Id
+ * @since 0.3
  */
 @Component("PersonSecurityManager")
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class PersonSecurityManager extends AbstractSecurityManager {
 
+	/** {@inheritDoc} */
 	@Override
 	public Predicate createPredicateByOwners(final List<String> userList, final CriteriaBuilder cb, final CriteriaQuery<?> cq) {
 		// Созданные или измененные мной физ. лица. Плюс клиенты из моих страховок, лидов, продаж.

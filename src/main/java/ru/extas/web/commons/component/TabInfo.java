@@ -4,10 +4,12 @@
  *
  * @author Valery_2
  * @version $Id: $Id
+ * @since 0.3
  */
 package ru.extas.web.commons.component;
 
 import com.vaadin.ui.Component;
+import ru.extas.security.ExtaDomain;
 
 import java.io.Serializable;
 public interface TabInfo extends Serializable {
@@ -25,4 +27,11 @@ public interface TabInfo extends Serializable {
      * @return a {@link com.vaadin.ui.Component} object.
      */
     public Component createComponent();
+
+	/**
+	 * <p>getDomain.</p>
+	 *
+	 * @return a {@link ru.extas.security.ExtaDomain} object.
+	 */
+	ExtaDomain getDomain();
 }

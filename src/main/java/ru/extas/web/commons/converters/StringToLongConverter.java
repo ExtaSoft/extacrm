@@ -12,6 +12,7 @@ import java.util.Locale;
  *         Date: 19.08.13
  *         Time: 20:07
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 public class StringToLongConverter extends AbstractStringToNumberConverter<Long> {

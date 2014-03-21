@@ -12,6 +12,7 @@ import ru.extas.model.Sale;
  *         Date: 05.02.14
  *         Time: 11:42
  * @version $Id: $Id
+ * @since 0.3
  */
 public class SaleField extends CustomField<Sale> {
 

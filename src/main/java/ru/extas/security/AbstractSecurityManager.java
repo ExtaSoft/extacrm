@@ -16,12 +16,15 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  *         Date: 06.03.14
  *         Time: 19:00
+ * @version $Id: $Id
+ * @since 0.3
  */
 public abstract class AbstractSecurityManager implements EntitySecurityManager {
 
 	@Inject
 	protected UserManagementService userService;
 
+	/** {@inheritDoc} */
 	@Override
 	public void secureJpaQuery(final CriteriaBuilder cb, final CriteriaQuery<?> cq, final List<Predicate> predicates) {
 

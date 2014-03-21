@@ -15,6 +15,7 @@ import java.util.Locale;
  *         Date: 05.02.14
  *         Time: 20:52
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 public class LoginToUserProfileConverter implements Converter<UserProfile, String> {

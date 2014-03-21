@@ -20,6 +20,7 @@ import static com.google.common.collect.Lists.newArrayList;
  *         Date: 21.01.14
  *         Time: 15:28
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ProductInSaleGrid extends CustomField<List> {
 

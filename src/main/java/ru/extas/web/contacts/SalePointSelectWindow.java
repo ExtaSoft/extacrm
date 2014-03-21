@@ -18,6 +18,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  *         Date: 21.02.14
  *         Time: 13:40
  * @version $Id: $Id
+ * @since 0.3
  */
 public class SalePointSelectWindow extends CloseOnlylWindow {
 	private SalePoint selected;

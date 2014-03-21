@@ -20,6 +20,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  *         Date: 13.02.14
  *         Time: 16:26
  * @version $Id: $Id
+ * @since 0.3
  */
 public class LegalEntitySelectWindow extends CloseOnlylWindow {
 

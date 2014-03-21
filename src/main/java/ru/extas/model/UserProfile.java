@@ -12,6 +12,7 @@ import java.util.Set;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @Table(name = "USER_PROFILE")

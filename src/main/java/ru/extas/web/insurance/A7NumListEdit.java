@@ -23,6 +23,7 @@ import static com.google.common.collect.Lists.newArrayList;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @SuppressWarnings("rawtypes")
 public class A7NumListEdit extends CustomField<List> {
@@ -39,11 +40,6 @@ public class A7NumListEdit extends CustomField<List> {
         this.setCaption(caption);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.vaadin.ui.CustomField#initContent()
-     */
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
@@ -144,22 +140,12 @@ public class A7NumListEdit extends CustomField<List> {
         formNums.addItem(new Object[]{num, delItemBtn}, num);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.vaadin.ui.AbstractField#getType()
-     */
     /** {@inheritDoc} */
     @Override
     public Class<? extends List> getType() {
         return List.class;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.vaadin.ui.AbstractField#commit()
-     */
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override

@@ -20,6 +20,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  *         Date: 17.02.14
  *         Time: 16:40
  * @version $Id: $Id
+ * @since 0.3
  */
 public class LegalProductsField extends CustomField<List> {
 

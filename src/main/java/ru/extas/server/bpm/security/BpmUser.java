@@ -10,6 +10,7 @@ import ru.extas.model.UserProfile;
  *         Date: 14.11.13
  *         Time: 19:28
  * @version $Id: $Id
+ * @since 0.3
  */
 public class BpmUser implements User {
 

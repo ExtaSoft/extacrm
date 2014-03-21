@@ -10,6 +10,7 @@ import ru.extas.model.Contact;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ContactSelect extends AbstractContactSelect<Contact> {
     /**

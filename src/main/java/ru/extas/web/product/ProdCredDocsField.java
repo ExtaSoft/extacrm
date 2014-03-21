@@ -21,6 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
  *         Date: 07.02.14
  *         Time: 15:30
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ProdCredDocsField extends CustomField<List> {
 

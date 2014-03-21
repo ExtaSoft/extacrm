@@ -25,6 +25,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 14.11.13
  *         Time: 18:58
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ExtaUserEntityManager extends UserEntityManager {
 

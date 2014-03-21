@@ -1,4 +1,4 @@
-package ru.extas.model.converter;
+package ru.extas.model.common;
 
 
 import ru.extas.security.UserRole;
@@ -14,6 +14,7 @@ import javax.persistence.Converter;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Converter(autoApply = true)
 public class UserRoleConverter implements AttributeConverter<UserRole, String> {

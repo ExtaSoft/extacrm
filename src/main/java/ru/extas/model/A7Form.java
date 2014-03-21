@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @Table(name = "A7_FORM",

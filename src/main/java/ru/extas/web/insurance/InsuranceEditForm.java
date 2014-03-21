@@ -31,128 +31,122 @@ import static ru.extas.server.ServiceLocator.lookup;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
-	private static final long serialVersionUID = 9510268415882116L;
-	// Компоненты редактирования
-	@PropertyId("regNum")
-	private PolicySelect regNumField;
-	@PropertyId("a7Num")
-	private A7Select a7FormNumField;
-	@PropertyId("date")
-	private PopupDateField dateField;
-	@PropertyId("client")
-	private PersonSelect clientNameField;
+    private static final long serialVersionUID = 9510268415882116L;
+    // Компоненты редактирования
+    @PropertyId("regNum")
+    private PolicySelect regNumField;
+    @PropertyId("a7Num")
+    private A7Select a7FormNumField;
+    @PropertyId("date")
+    private PopupDateField dateField;
+    @PropertyId("client")
+    private PersonSelect clientNameField;
     @PropertyId("beneficiary")
     private EditField beneficiaryField;
     @PropertyId("usedMotor")
     private CheckBox usedMotorField;
-	@PropertyId("motorType")
-	private MotorTypeSelect motorTypeField;
-	@PropertyId("motorBrand")
-	private MotorBrandSelect motorBrandField;
-	@PropertyId("motorModel")
-	private TextField motorModelField;
+    @PropertyId("motorType")
+    private MotorTypeSelect motorTypeField;
+    @PropertyId("motorBrand")
+    private MotorBrandSelect motorBrandField;
+    @PropertyId("motorModel")
+    private TextField motorModelField;
     @PropertyId("motorVin")
     private EditField motorVinField;
-	@PropertyId("saleNum")
-	private EditField saleNumField;
-	@PropertyId("saleDate")
-	private LocalDateField saleDateField;
-	@PropertyId("riskSum")
-	private TextField riskSumField;
-	@PropertyId("coverTime")
-	private OptionGroup coverTimeField;
-	@PropertyId("premium")
-	private TextField premiumField;
-	@PropertyId("paymentDate")
-	private PopupDateField paymentDateField;
-	@PropertyId("startDate")
-	private PopupDateField startDateField;
-	@PropertyId("endDate")
-	private PopupDateField endDateField;
-	@PropertyId("dealer")
-	private SalePointSelect dealerField;
-	private Label tarifField;
-	private ObjectProperty<BigDecimal> tarifDataSource;
+    @PropertyId("saleNum")
+    private EditField saleNumField;
+    @PropertyId("saleDate")
+    private LocalDateField saleDateField;
+    @PropertyId("riskSum")
+    private TextField riskSumField;
+    @PropertyId("coverTime")
+    private OptionGroup coverTimeField;
+    @PropertyId("premium")
+    private TextField premiumField;
+    @PropertyId("paymentDate")
+    private PopupDateField paymentDateField;
+    @PropertyId("startDate")
+    private PopupDateField startDateField;
+    @PropertyId("endDate")
+    private PopupDateField endDateField;
+    @PropertyId("dealer")
+    private SalePointSelect dealerField;
+    private Label tarifField;
+    private ObjectProperty<BigDecimal> tarifDataSource;
 
-	/**
-	 * <p>Constructor for InsuranceEditForm.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-	 */
-	public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
-		super(caption, obj);
-	}
+    /**
+     * <p>Constructor for InsuranceEditForm.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
+     */
+    public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
+        super(caption, obj);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
-	 * .AbstractExtaObject)
-	 */
-	/** {@inheritDoc} */
-	@Override
-	protected ComponentContainer createEditFields(final Insurance obj) {
-		final FormLayout form = new FormLayout();
+    /** {@inheritDoc} */
+    @Override
+    protected ComponentContainer createEditFields(final Insurance obj) {
+        final FormLayout form = new FormLayout();
 
-		regNumField = new PolicySelect("Номер полиса",
-				"Введите номер полиса страхования. Выбирается из справочника БСО.", obj.getRegNum());
-		regNumField.setRequired(true);
-		// regNumField.setConverter(String.class);
-		regNumField.addValueChangeListener(new ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+        regNumField = new PolicySelect("Номер полиса",
+                "Введите номер полиса страхования. Выбирается из справочника БСО.", obj.getRegNum());
+        regNumField.setRequired(true);
+        // regNumField.setConverter(String.class);
+        regNumField.addValueChangeListener(new ValueChangeListener() {
+            private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("unchecked")
-			@Override
-			public void valueChange(final ValueChangeEvent event) {
-				if (event.getProperty().getType() == Policy.class) {
-					final Object selItemId = event.getProperty().getValue();
-					if (selItemId != null) {
-						final BeanItem<Policy> policy = (BeanItem<Policy>) regNumField.getItem(selItemId);
-						// Зарезервировать полис в БСО
-						lookup(PolicyService.class).bookPolicy(policy.getBean());
-					}
+            @SuppressWarnings("unchecked")
+            @Override
+            public void valueChange(final ValueChangeEvent event) {
+                if (event.getProperty().getType() == Policy.class) {
+                    final Object selItemId = event.getProperty().getValue();
+                    if (selItemId != null) {
+                        final BeanItem<Policy> policy = (BeanItem<Policy>) regNumField.getItem(selItemId);
+                        // Зарезервировать полис в БСО
+                        lookup(PolicyService.class).bookPolicy(policy.getBean());
+                    }
 
-				}
-			}
-		});
-		form.addComponent(regNumField);
+                }
+            }
+        });
+        form.addComponent(regNumField);
 
-		a7FormNumField = new A7Select("Номер квитанции А-7",
-				"Введите номер квитанции А-7. Выбирается из справочника БСО.", obj.getA7Num());
-		// TODO a7FormNumField.setRequired(true);
-		form.addComponent(a7FormNumField);
+        a7FormNumField = new A7Select("Номер квитанции А-7",
+                "Введите номер квитанции А-7. Выбирается из справочника БСО.", obj.getA7Num());
+        // TODO a7FormNumField.setRequired(true);
+        form.addComponent(a7FormNumField);
 
-		dateField = new LocalDateField("Дата договора", "Введите дату оформления договора страхования");
-		dateField.setRequired(true);
-		dateField.addValueChangeListener(new ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+        dateField = new LocalDateField("Дата договора", "Введите дату оформления договора страхования");
+        dateField.setRequired(true);
+        dateField.addValueChangeListener(new ValueChangeListener() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void valueChange(final ValueChangeEvent event) {
-				// пересчитать дату оплаты страховки
-				final LocalDate newDate = (LocalDate) dateField.getConvertedValue();
-				if (newDate != null && paymentDateField.getPropertyDataSource() != null)
-					paymentDateField.setConvertedValue(newDate);
-			}
-		});
-		form.addComponent(dateField);
+            @Override
+            public void valueChange(final ValueChangeEvent event) {
+                // пересчитать дату оплаты страховки
+                final LocalDate newDate = (LocalDate) dateField.getConvertedValue();
+                if (newDate != null && paymentDateField.getPropertyDataSource() != null)
+                    paymentDateField.setConvertedValue(newDate);
+            }
+        });
+        form.addComponent(dateField);
 
-		// FIXME Ограничить выбор контакта только клиентами
-		clientNameField = new PersonSelect("Страхователь");
-		clientNameField.setRequired(true);
+        // FIXME Ограничить выбор контакта только клиентами
+        clientNameField = new PersonSelect("Страхователь");
+        clientNameField.setRequired(true);
         clientNameField.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void valueChange(ValueChangeEvent event) {
-                if(beneficiaryField.getPropertyDataSource() != null)
+                if (beneficiaryField.getPropertyDataSource() != null)
                     beneficiaryField.setValue(clientNameField.getValue().getName());
             }
         });
-		form.addComponent(clientNameField);
+        form.addComponent(clientNameField);
 
         beneficiaryField = new EditField("Выгодопреобретатель", "Введите имя выгодопреобретателя по данному договору страхования");
         beneficiaryField.setRequired(true);
@@ -171,210 +165,192 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         form.addComponent(usedMotorField);
 
         motorTypeField = new MotorTypeSelect();
-		motorTypeField.setRequired(true);
-		form.addComponent(motorTypeField);
+        motorTypeField.setRequired(true);
+        form.addComponent(motorTypeField);
 
-		motorBrandField = new MotorBrandSelect();
-		motorBrandField.setRequired(true);
-		motorBrandField.addValueChangeListener(new ValueChangeListener() {
-			@Override
-			public void valueChange(final ValueChangeEvent event) {
-				calculatePremium();
-				updateTarifField();
-			}
-		});
-		form.addComponent(motorBrandField);
+        motorBrandField = new MotorBrandSelect();
+        motorBrandField.setRequired(true);
+        motorBrandField.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(final ValueChangeEvent event) {
+                calculatePremium();
+                updateTarifField();
+            }
+        });
+        form.addComponent(motorBrandField);
 
-		tarifDataSource = new ObjectProperty<>(new BigDecimal(0));
-		tarifField = new Label(tarifDataSource);
-		tarifField.setCaption("Тариф");
-		tarifField.setConverter(lookup(StringToPercentConverter.class));
-		form.addComponent(tarifField);
+        tarifDataSource = new ObjectProperty<>(new BigDecimal(0));
+        tarifField = new Label(tarifDataSource);
+        tarifField.setCaption("Тариф");
+        tarifField.setConverter(lookup(StringToPercentConverter.class));
+        form.addComponent(tarifField);
 
-		motorModelField = new EditField("Модель техники", "Введите модель техники");
-		motorModelField.setRequired(true);
-		motorModelField.setColumns(25);
-		form.addComponent(motorModelField);
+        motorModelField = new EditField("Модель техники", "Введите модель техники");
+        motorModelField.setRequired(true);
+        motorModelField.setColumns(25);
+        form.addComponent(motorModelField);
 
         motorVinField = new EditField("VIN", "Введите Идентификационный номер транспортного средства");
         motorVinField.setRequired(true);
         motorVinField.setColumns(20);
         form.addComponent(motorVinField);
 
-		saleNumField = new EditField("Номер договора купли-продажи", "Введите номер договора купли-продажи");
-		saleNumField.setRequired(true);
-		saleNumField.setColumns(20);
-		form.addComponent(saleNumField);
+        saleNumField = new EditField("Номер договора купли-продажи", "Введите номер договора купли-продажи");
+        saleNumField.setRequired(true);
+        saleNumField.setColumns(20);
+        form.addComponent(saleNumField);
 
-		saleDateField = new LocalDateField("Дата договора купли-продажи", "Введите дату договора купли-продажи");
-		saleDateField.setRequired(true);
-		form.addComponent(saleDateField);
+        saleDateField = new LocalDateField("Дата договора купли-продажи", "Введите дату договора купли-продажи");
+        saleDateField.setRequired(true);
+        form.addComponent(saleDateField);
 
-		riskSumField = new EditField("Страховая сумма", "Введите сумму возмещения в рублях");
-		riskSumField.addValueChangeListener(new ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+        riskSumField = new EditField("Страховая сумма", "Введите сумму возмещения в рублях");
+        riskSumField.addValueChangeListener(new ValueChangeListener() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void valueChange(final ValueChangeEvent event) {
-				calculatePremium();
-			}
-		});
-		riskSumField.setRequired(true);
-		form.addComponent(riskSumField);
+            @Override
+            public void valueChange(final ValueChangeEvent event) {
+                calculatePremium();
+            }
+        });
+        riskSumField.setRequired(true);
+        form.addComponent(riskSumField);
 
-		// По умолчанию страховка на год.
-		if (obj.getCoverTime() == null)
-			obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
-		coverTimeField = new OptionGroup("Срок страхования");
-		coverTimeField.setDescription("Укажите требуемый срок действия страхового полиса");
-		coverTimeField.setRequired(true);
-		coverTimeField.setNullSelectionAllowed(false);
-		coverTimeField.setNewItemsAllowed(false);
-		coverTimeField.setImmediate(true);
-		ComponentUtil.fillSelectByEnum(coverTimeField, Insurance.PeriodOfCover.class);
-		coverTimeField.addValueChangeListener(new ValueChangeListener() {
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				calculatePremium();
-				calcEndDate();
-				updateTarifField();
-			}
-		});
-		form.addComponent(coverTimeField);
+        // По умолчанию страховка на год.
+        if (obj.getCoverTime() == null)
+            obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
+        coverTimeField = new OptionGroup("Срок страхования");
+        coverTimeField.setDescription("Укажите требуемый срок действия страхового полиса");
+        coverTimeField.setRequired(true);
+        coverTimeField.setNullSelectionAllowed(false);
+        coverTimeField.setNewItemsAllowed(false);
+        coverTimeField.setImmediate(true);
+        ComponentUtil.fillSelectByEnum(coverTimeField, Insurance.PeriodOfCover.class);
+        coverTimeField.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(ValueChangeEvent event) {
+                calculatePremium();
+                calcEndDate();
+                updateTarifField();
+            }
+        });
+        form.addComponent(coverTimeField);
 
-		premiumField = new EditField("Страховая премия", "Введите стоимость страховки в рублях");
-		premiumField.setRequired(true);
-		form.addComponent(premiumField);
+        premiumField = new EditField("Страховая премия", "Введите стоимость страховки в рублях");
+        premiumField.setRequired(true);
+        form.addComponent(premiumField);
 
-		paymentDateField = new LocalDateField("Дата оплаты", "Введите дату оплаты страховой премии");
-		paymentDateField.setRequired(true);
-		paymentDateField.addValueChangeListener(new ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+        paymentDateField = new LocalDateField("Дата оплаты", "Введите дату оплаты страховой премии");
+        paymentDateField.setRequired(true);
+        paymentDateField.addValueChangeListener(new ValueChangeListener() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void valueChange(final ValueChangeEvent event) {
-				// пересчитать дату начала действия договора
-				final LocalDate newDate = (LocalDate) paymentDateField.getConvertedValue();
-				final LocalDate startDate = ((LocalDate) startDateField.getConvertedValue());
-				if (newDate != null && startDate != null && newDate.isAfter(startDate))
-					startDateField.setConvertedValue(newDate.plusDays(1));
-			}
-		});
-		form.addComponent(paymentDateField);
+            @Override
+            public void valueChange(final ValueChangeEvent event) {
+                // пересчитать дату начала действия договора
+                final LocalDate newDate = (LocalDate) paymentDateField.getConvertedValue();
+                final LocalDate startDate = ((LocalDate) startDateField.getConvertedValue());
+                if (newDate != null && startDate != null && newDate.isAfter(startDate))
+                    startDateField.setConvertedValue(newDate.plusDays(1));
+            }
+        });
+        form.addComponent(paymentDateField);
 
-		startDateField = new LocalDateField("Дата начала договора", "Введите дату начала действия страхового договора");
-		startDateField.setRequired(true);
-		startDateField.addValueChangeListener(new ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+        startDateField = new LocalDateField("Дата начала договора", "Введите дату начала действия страхового договора");
+        startDateField.setRequired(true);
+        startDateField.addValueChangeListener(new ValueChangeListener() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void valueChange(final ValueChangeEvent event) {
-				calcEndDate();
+            @Override
+            public void valueChange(final ValueChangeEvent event) {
+                calcEndDate();
 
-			}
-		});
-		form.addComponent(startDateField);
+            }
+        });
+        form.addComponent(startDateField);
 
-		endDateField = new LocalDateField("Дата окончания договора", "Введите дату окончания ");
-		endDateField.setRequired(true);
-		form.addComponent(endDateField);
+        endDateField = new LocalDateField("Дата окончания договора", "Введите дату окончания ");
+        endDateField.setRequired(true);
+        form.addComponent(endDateField);
 
-		dealerField = new SalePointSelect("Точка продажи", "Название автосоалона где продана страховка", null);
-		// dealerField.setRequired(true);
-		form.addComponent(dealerField);
+        dealerField = new SalePointSelect("Точка продажи", "Название автосоалона где продана страховка", null);
+        // dealerField.setRequired(true);
+        form.addComponent(dealerField);
 
-		return form;
-	}
+        return form;
+    }
 
-	private void updateTarifField() {
-		if (motorBrandField.getPropertyDataSource() != null &&
-				coverTimeField.getContainerDataSource() != null &&
+    private void updateTarifField() {
+        if (motorBrandField.getPropertyDataSource() != null &&
+                coverTimeField.getContainerDataSource() != null &&
                 usedMotorField.getPropertyDataSource() != null) {
-			final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
-			final String motorBrand = (String) motorBrandField.getValue();
+            final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
+            final String motorBrand = (String) motorBrandField.getValue();
             Boolean isUsed = usedMotorField.getValue();
             if (coverPeriod != null && motorBrand != null && isUsed != null) {
                 final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
                 final BigDecimal premium = calc.findTarif(motorBrand, coverPeriod, isUsed);
-				tarifDataSource.setValue(premium);
-			}
-		}
-	}
+                tarifDataSource.setValue(premium);
+            }
+        }
+    }
 
-	private void calcEndDate() {
-		// пересчитать дату окончания договора
-		final LocalDate newDate = (LocalDate) startDateField.getConvertedValue();
-		if (newDate != null && endDateField.getPropertyDataSource() != null) {
-			final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
-			if (coverPeriod == Insurance.PeriodOfCover.YEAR)
-				endDateField.setConvertedValue(newDate.plusYears(1).minusDays(1));
-			else
-				endDateField.setConvertedValue(newDate.plusMonths(6).minusDays(1));
-		}
-	}
+    private void calcEndDate() {
+        // пересчитать дату окончания договора
+        final LocalDate newDate = (LocalDate) startDateField.getConvertedValue();
+        if (newDate != null && endDateField.getPropertyDataSource() != null) {
+            final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
+            if (coverPeriod == Insurance.PeriodOfCover.YEAR)
+                endDateField.setConvertedValue(newDate.plusYears(1).minusDays(1));
+            else
+                endDateField.setConvertedValue(newDate.plusMonths(6).minusDays(1));
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
-	 * AbstractExtaObject)
-	 */
-	/** {@inheritDoc} */
-	@Override
-	protected void initObject(final Insurance obj) {
-		if (obj.getId() == null) {
-			final LocalDate now = LocalDate.now();
-			obj.setDate(now);
-			obj.setPaymentDate(now);
-			obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
-			obj.setStartDate(obj.getPaymentDate().plusDays(1));
-			obj.setEndDate(obj.getStartDate().plusYears(1).minusDays(1));
-		}
-	}
+    /** {@inheritDoc} */
+    @Override
+    protected void initObject(final Insurance obj) {
+        if (obj.getId() == null) {
+            final LocalDate now = LocalDate.now();
+            obj.setDate(now);
+            obj.setPaymentDate(now);
+            obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
+            obj.setStartDate(obj.getPaymentDate().plusDays(1));
+            obj.setEndDate(obj.getStartDate().plusYears(1).minusDays(1));
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
-	 * AbstractExtaObject)
-	 */
-	/** {@inheritDoc} */
-	@Override
-	protected void saveObject(final Insurance obj) {
-		lookup(InsuranceService.class).saveAndIssue(obj);
-		Notification.show("Полис сохранен", Notification.Type.TRAY_NOTIFICATION);
-	}
+    /** {@inheritDoc} */
+    @Override
+    protected void saveObject(final Insurance obj) {
+        lookup(InsuranceService.class).saveAndIssue(obj);
+        Notification.show("Полис сохранен", Notification.Type.TRAY_NOTIFICATION);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
-	 * AbstractExtaObject)
-	 */
-	/** {@inheritDoc} */
-	@Override
-	protected void checkBeforeSave(final Insurance obj) {
-	}
 
-	/**
-	 *
-	 */
-	private void calculatePremium() {
-		if (motorBrandField.getPropertyDataSource() != null &&
-				premiumField.getPropertyDataSource() != null &&
-				coverTimeField.getContainerDataSource() != null &&
+    /** {@inheritDoc} */
+    @Override
+    protected void checkBeforeSave(final Insurance obj) {
+    }
+
+    /**
+     *
+     */
+    private void calculatePremium() {
+        if (motorBrandField.getPropertyDataSource() != null &&
+                premiumField.getPropertyDataSource() != null &&
+                coverTimeField.getContainerDataSource() != null &&
                 usedMotorField.getPropertyDataSource() != null) {
-			final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
-			final BigDecimal riskSum = (BigDecimal) riskSumField.getConvertedValue();
-			final String motorBrand = (String) motorBrandField.getValue();
+            final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
+            final BigDecimal riskSum = (BigDecimal) riskSumField.getConvertedValue();
+            final String motorBrand = (String) motorBrandField.getValue();
             boolean isUsedMotor = usedMotorField.getValue();
             if (riskSum != null && motorBrand != null) {
                 final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
                 final BigDecimal premium = calc.calcPropInsPremium(new Insurance(motorBrand, riskSum, coverPeriod, isUsedMotor));
-				premiumField.setConvertedValue(premium);
-			}
-		}
-	}
+                premiumField.setConvertedValue(premium);
+            }
+        }
+    }
 
 }

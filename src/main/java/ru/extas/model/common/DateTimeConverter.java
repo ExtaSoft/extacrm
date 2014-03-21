@@ -1,4 +1,4 @@
-package ru.extas.model.converter;
+package ru.extas.model.common;
 
 import org.joda.time.DateTime;
 
@@ -11,6 +11,7 @@ import java.sql.Timestamp;
  *
  * @author Valery_2
  * @version $Id: $Id
+ * @since 0.3
  */
 @Converter(autoApply = true)
 public class DateTimeConverter implements AttributeConverter<DateTime, Timestamp> {

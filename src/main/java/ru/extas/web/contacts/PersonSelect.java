@@ -14,6 +14,7 @@ import ru.extas.model.Person;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class PersonSelect extends CustomField<Person> {
 

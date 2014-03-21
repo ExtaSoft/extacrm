@@ -11,6 +11,7 @@ import java.util.Set;
  *         Date: 10.02.14
  *         Time: 16:44
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @DiscriminatorValue("LEGAL_ENTITY")

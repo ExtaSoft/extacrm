@@ -8,6 +8,7 @@ import com.vaadin.ui.Button.ClickEvent;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class YesNoWindow extends Window {
 
@@ -65,13 +66,6 @@ public class YesNoWindow extends Window {
         this.buttonsPanel.setSpacing(true);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.ui.AbstractSingleComponentContainer#setContent(com.vaadin.
-     * ui.Component)
-     */
     /** {@inheritDoc} */
     @Override
     public void setContent(Component content) {

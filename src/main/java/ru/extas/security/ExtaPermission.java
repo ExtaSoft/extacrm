@@ -15,6 +15,8 @@ import static com.google.common.collect.Sets.newHashSet;
  * @author Valery Orlov
  *         Date: 03.03.14
  *         Time: 18:13
+ * @version $Id: $Id
+ * @since 0.3
  */
 public class ExtaPermission extends DomainPermission {
 

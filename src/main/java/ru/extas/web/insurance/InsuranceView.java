@@ -28,6 +28,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class InsuranceView extends AbstractTabView {
 

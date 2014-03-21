@@ -27,13 +27,19 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Поставщик пользователей из базы данных
  *
  * @author Valery Orlov
+ * @version $Id: $Id
+ * @since 0.3
  */
 public class UserRealm extends AuthorizingRealm {
 
+	/** Constant <code>HASH_ITERATIONS=1024</code> */
 	public static final int HASH_ITERATIONS = 1024;
 
 	private final static Logger logger = LoggerFactory.getLogger(UserRealm.class);
 
+	/**
+	 * <p>Constructor for UserRealm.</p>
+	 */
 	public UserRealm() {
 		HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher(Sha256Hash.ALGORITHM_NAME);
 		credentialsMatcher.setHashIterations(1024);
@@ -41,6 +47,7 @@ public class UserRealm extends AuthorizingRealm {
 		this.setCredentialsMatcher(credentialsMatcher);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
@@ -95,6 +102,7 @@ public class UserRealm extends AuthorizingRealm {
 		authorizationInfo.addObjectPermissions(permissions);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
 

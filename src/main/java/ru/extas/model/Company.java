@@ -8,6 +8,7 @@ import java.util.List;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @DiscriminatorValue("COMPANY")

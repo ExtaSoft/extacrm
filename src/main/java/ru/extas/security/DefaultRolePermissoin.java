@@ -9,11 +9,20 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
+ * <p>DefaultRolePermissoin class.</p>
+ *
  * @author Valery Orlov
  *         Date: 04.03.14
  *         Time: 0:22
+ * @version $Id: $Id
+ * @since 0.3
  */
 public class DefaultRolePermissoin {
+	/**
+	 * <p>createAdminPermissions.</p>
+	 *
+	 * @return a {@link java.util.List} object.
+	 */
 	public static List<Permission> createAdminPermissions() {
 		final List<Permission> permissions;
 		permissions = newArrayList();
@@ -21,6 +30,11 @@ public class DefaultRolePermissoin {
 		return permissions;
 	}
 
+	/**
+	 * <p>createDistributorPermissions.</p>
+	 *
+	 * @return a {@link java.util.List} object.
+	 */
 	public static List<Permission> createDistributorPermissions() {
 		final List<Permission> permissions;
 		permissions = newArrayList();
@@ -45,6 +59,11 @@ public class DefaultRolePermissoin {
 		return permissions;
 	}
 
+	/**
+	 * <p>createDealerPermissions.</p>
+	 *
+	 * @return a {@link java.util.List} object.
+	 */
 	public static List<Permission> createDealerPermissions() {
 		final List<Permission> permissions;
 		permissions = newArrayList();
@@ -76,6 +95,11 @@ public class DefaultRolePermissoin {
 		return permissions;
 	}
 
+	/**
+	 * <p>createManagerPermissions.</p>
+	 *
+	 * @return a {@link java.util.List} object.
+	 */
 	public static List<Permission> createManagerPermissions() {
 		final List<Permission> permissions;
 		permissions = newArrayList();
@@ -119,6 +143,11 @@ public class DefaultRolePermissoin {
 		return permissions;
 	}
 
+	/**
+	 * <p>createUserPermissions.</p>
+	 *
+	 * @return a {@link java.util.List} object.
+	 */
 	public static List<Permission> createUserPermissions() {
 		final List<Permission> permissions;
 		permissions = newArrayList();

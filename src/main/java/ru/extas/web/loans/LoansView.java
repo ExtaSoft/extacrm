@@ -16,17 +16,13 @@ import ru.extas.web.commons.ExtaAbstractView;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class LoansView extends ExtaAbstractView {
 
     private static final long serialVersionUID = -1272779672761523416L;
     private final static Logger logger = LoggerFactory.getLogger(LoansView.class);
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see ru.extas.web.ExtaAbstractView#getContent()
-     */
     /** {@inheritDoc} */
     @Override
     protected Component getContent() {
@@ -41,11 +37,6 @@ public class LoansView extends ExtaAbstractView {
         return l;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see ru.extas.web.ExtaAbstractView#getTitle()
-     */
     /** {@inheritDoc} */
     @Override
     protected Component getTitle() {

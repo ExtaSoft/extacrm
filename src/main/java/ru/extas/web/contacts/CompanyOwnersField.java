@@ -18,6 +18,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  *         Date: 13.02.14
  *         Time: 15:10
  * @version $Id: $Id
+ * @since 0.3
  */
 public class CompanyOwnersField extends CustomField<List> {
 

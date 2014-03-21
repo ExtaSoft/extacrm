@@ -32,9 +32,9 @@
         <class>ru.extas.model.ProdInsurance</class>
         <class>ru.extas.model.ProdInstallments</class>
         <class>ru.extas.model.ProductInSale</class>
-        <class>ru.extas.model.converter.DateTimeConverter</class>
-        <class>ru.extas.model.converter.LocalDateConverter</class>
-        <class>ru.extas.model.converter.UserRoleConverter</class>
+        <class>ru.extas.model.common.DateTimeConverter</class>
+        <class>ru.extas.model.common.LocalDateConverter</class>
+        <class>ru.extas.model.common.UserRoleConverter</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

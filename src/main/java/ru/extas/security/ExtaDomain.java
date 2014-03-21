@@ -2,6 +2,10 @@ package ru.extas.security;
 
 /**
  * Раздел/подраздел системы доступ к которому предоставляется
+ *
+ * @author Valery_2
+ * @version $Id: $Id
+ * @since 0.3
  */
 public enum ExtaDomain {
 
@@ -102,14 +106,30 @@ public enum ExtaDomain {
 	 */
 	SETTINGS("settings");
 
+	/**
+	 * <p>Constructor for ExtaDomain.</p>
+	 *
+	 * @param name a {@link java.lang.String} object.
+	 */
 	ExtaDomain(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * <p>Getter for the field <code>name</code>.</p>
+	 *
+	 * @return a {@link java.lang.String} object.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * <p>getByName.</p>
+	 *
+	 * @param name a {@link java.lang.String} object.
+	 * @return a {@link ru.extas.security.ExtaDomain} object.
+	 */
 	public static ExtaDomain getByName(String name) {
 		for (ExtaDomain item : ExtaDomain.values())
 			if (item.getName().equals(name))

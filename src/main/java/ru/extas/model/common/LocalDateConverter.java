@@ -1,4 +1,4 @@
-package ru.extas.model.converter;
+package ru.extas.model.common;
 
 
 import org.joda.time.LocalDate;
@@ -12,6 +12,7 @@ import java.sql.Date;
  *
  * @author Valery_2
  * @version $Id: $Id
+ * @since 0.3
  */
 @Converter(autoApply = true)
 public class LocalDateConverter implements AttributeConverter<LocalDate, Date> {

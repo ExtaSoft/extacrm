@@ -26,6 +26,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  *         Date: 15.10.13
  *         Time: 17:48
  * @version $Id: $Id
+ * @since 0.3
  */
 public abstract class ExtaGrid extends CustomComponent {
 	private static final long serialVersionUID = 2299363623807745654L;

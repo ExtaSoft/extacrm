@@ -11,6 +11,7 @@ import ru.extas.model.Person;
  *         Date: 04.02.14
  *         Time: 19:09
  * @version $Id: $Id
+ * @since 0.3
  */
 public class PersonField extends CustomField<Person> {
 

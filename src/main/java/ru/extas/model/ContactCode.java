@@ -10,6 +10,7 @@ import javax.validation.constraints.Max;
  *         Date: 26.08.13
  *         Time: 12:53
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @Table(name = "CONTACT_CODE", indexes = {

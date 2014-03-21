@@ -12,6 +12,7 @@ import java.util.Locale;
  *         Date: 08.02.14
  *         Time: 10:35
  * @version $Id: $Id
+ * @since 0.3
  */
 public abstract class String2EnumConverter<TEnum> implements Converter<String, TEnum> {
 	protected final BiMap<TEnum, String> enum2StringMap;

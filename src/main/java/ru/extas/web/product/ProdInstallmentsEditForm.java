@@ -19,6 +19,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 20.01.14
  *         Time: 18:27
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments> {
 

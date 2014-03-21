@@ -22,6 +22,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 14.11.13
  *         Time: 11:55
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component("cancelSaleTaskDelegate")
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)

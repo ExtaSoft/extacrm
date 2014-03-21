@@ -3,10 +3,17 @@ package ru.extas.web.commons;
 import com.vaadin.addon.jpacontainer.EntityManagerProvider;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.addon.jpacontainer.provider.CachingLocalEntityProvider;
+import com.vaadin.addon.jpacontainer.util.DefaultQueryModifierDelegate;
+import ru.extas.security.EntitySecurityManager;
+import ru.extas.security.SecurityUtils;
 import ru.extas.server.SpringEntityManagerProvider;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
+import java.util.List;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -18,6 +25,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ExtaDataContainer<TEntityType> extends JPAContainer<TEntityType> {
 
@@ -45,12 +53,33 @@ public class ExtaDataContainer<TEntityType> extends JPAContainer<TEntityType> {
         entityProvider.setEntityManagerProvider(new InjectEntityManagerProvider());
 
         setEntityProvider(entityProvider);
+
+		// Установить фильтр в соответствии с правами доступа пользователя
+		setSecurityFilter();
+	}
+
+	/**
+	 * <p>setSecurityFilter.</p>
+	 */
+	public void setSecurityFilter() {
+
+		getEntityProvider().setQueryModifierDelegate(
+				new DefaultQueryModifierDelegate() {
+					@Override
+					public void filtersWillBeAdded(CriteriaBuilder criteriaBuilder, CriteriaQuery<?> query, List<Predicate> predicates) {
+						// Найти ссылку на соответствующий менеджер
+						EntitySecurityManager securityManager = SecurityUtils.getSecurityManagerByClass(getEntityClass());
+						securityManager.secureJpaQuery(criteriaBuilder, query, predicates);
+					}
+				});
+
+
     }
 
-    private static class InjectEntityManagerProvider implements EntityManagerProvider, Serializable {
-        @Override
-        public EntityManager getEntityManager() {
-            return lookup(SpringEntityManagerProvider.class).getEntityManager();
-        }
-    }
+	private static class InjectEntityManagerProvider implements EntityManagerProvider, Serializable {
+		@Override
+		public EntityManager getEntityManager() {
+			return lookup(SpringEntityManagerProvider.class).getEntityManager();
+		}
+	}
 }

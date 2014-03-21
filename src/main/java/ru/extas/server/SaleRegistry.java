@@ -13,6 +13,7 @@ import ru.extas.model.Sale;
  *         Date: 24.10.13
  *         Time: 0:31
  * @version $Id: $Id
+ * @since 0.3
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)

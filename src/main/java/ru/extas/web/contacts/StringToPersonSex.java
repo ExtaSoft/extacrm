@@ -15,6 +15,7 @@ import ru.extas.web.commons.converters.String2EnumConverter;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 public class StringToPersonSex extends String2EnumConverter<Person.Sex> {

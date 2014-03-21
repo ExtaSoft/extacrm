@@ -10,6 +10,7 @@ import static com.programmisty.numerals.Util.toUpperCaseFirstLetter;
  *
  * @author Valery_2
  * @version $Id: $Id
+ * @since 0.3
  */
 public class Uzbek extends AbstractNumeral {
 	private static final String EDINICHI[] = { "nol", "bir", "ikki", "uch",

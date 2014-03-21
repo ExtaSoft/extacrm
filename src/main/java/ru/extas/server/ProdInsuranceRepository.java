@@ -15,6 +15,7 @@ import java.util.List;
  *         Date: 16.01.14
  *         Time: 18:22
  * @version $Id: $Id
+ * @since 0.3
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)

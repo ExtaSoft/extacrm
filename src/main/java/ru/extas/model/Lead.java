@@ -10,6 +10,7 @@ import java.math.BigDecimal;
  *         Date: 03.10.13
  *         Time: 10:09
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @Table(name = "LEAD")

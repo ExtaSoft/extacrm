@@ -13,6 +13,7 @@ import java.util.Locale;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 public class StringToJodaLDConverter implements Converter<String, LocalDate> {
@@ -45,35 +46,18 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
         this.pattern = pattern;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.vaadin.data.util.converter.Converter#getModelType()
-     */
     /** {@inheritDoc} */
     @Override
     public Class<LocalDate> getModelType() {
         return LocalDate.class;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.vaadin.data.util.converter.Converter#getPresentationType()
-     */
     /** {@inheritDoc} */
     @Override
     public Class<String> getPresentationType() {
         return String.class;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
-     * java.lang.Class, java.util.Locale)
-     */
     /** {@inheritDoc} */
     @Override
     public LocalDate convertToModel(final String value, final Class<? extends LocalDate> targetType, Locale locale)
@@ -85,13 +69,6 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
         return getFormatter().withLocale(locale).parseLocalDate(value);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
-     * .Object, java.lang.Class, java.util.Locale)
-     */
     /** {@inheritDoc} */
     @Override
     public String convertToPresentation(final LocalDate value, final Class<? extends String> targetType, Locale locale)
@@ -104,40 +81,32 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
         return getFormatter().withLocale(locale).print(value);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.data.util.converter.Converter#convertToModel(java.lang.Object,
-     * java.util.Locale)
-     */
     /**
      * <p>convertToModel.</p>
      *
      * @param value a {@link java.lang.String} object.
      * @param locale a {@link java.util.Locale} object.
      * @return a {@link org.joda.time.LocalDate} object.
-     * @throws com.vaadin.data.util.converter.Converter$ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      */
     public LocalDate convertToModel(final String value, final Locale locale)
             throws com.vaadin.data.util.converter.Converter.ConversionException {
         return convertToModel(value, null, locale);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.vaadin.data.util.converter.Converter#convertToPresentation(java.lang
-     * .Object, java.util.Locale)
-     */
     /**
      * <p>convertToPresentation.</p>
      *
      * @param value a {@link org.joda.time.LocalDate} object.
      * @param locale a {@link java.util.Locale} object.
      * @return a {@link java.lang.String} object.
-     * @throws com.vaadin.data.util.converter.Converter$ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      */
     public String convertToPresentation(final LocalDate value, final Locale locale)
             throws com.vaadin.data.util.converter.Converter.ConversionException {

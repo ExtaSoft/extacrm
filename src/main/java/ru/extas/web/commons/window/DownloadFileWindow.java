@@ -19,6 +19,7 @@ import java.net.URLEncoder;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class DownloadFileWindow extends Window {
 
@@ -29,6 +30,11 @@ public class DownloadFileWindow extends Window {
 	 * <p>Constructor for DownloadFileWindow.</p>
 	 *
 	 * @param file an array of byte.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
 	 * @param fileName a {@link java.lang.String} object.
 	 */
 	public DownloadFileWindow(final byte[] file, String fileName) {

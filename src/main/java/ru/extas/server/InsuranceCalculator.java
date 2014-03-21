@@ -12,6 +12,7 @@ import java.math.BigDecimal;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public interface InsuranceCalculator {
 

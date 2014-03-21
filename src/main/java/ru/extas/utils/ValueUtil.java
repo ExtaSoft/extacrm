@@ -9,6 +9,7 @@ import java.text.MessageFormat;
  *         Date: 29.08.13
  *         Time: 16:45
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ValueUtil {
 

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
  *         Date: 06.02.14
  *         Time: 12:55
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @Table(name = "PROD_CREDIT_PERCENT")

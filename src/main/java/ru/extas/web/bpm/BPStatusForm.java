@@ -28,6 +28,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 29.01.14
  *         Time: 14:01
  * @version $Id: $Id
+ * @since 0.3
  */
 public class BPStatusForm extends CloseOnlylWindow {
 

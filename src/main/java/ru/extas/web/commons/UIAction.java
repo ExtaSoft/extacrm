@@ -9,6 +9,7 @@ import java.io.Serializable;
  *         Date: 15.10.13
  *         Time: 16:16
  * @version $Id: $Id
+ * @since 0.3
  */
 public abstract class UIAction implements Serializable {
 

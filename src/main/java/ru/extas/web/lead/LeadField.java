@@ -11,6 +11,7 @@ import ru.extas.model.Lead;
  *         Date: 05.02.14
  *         Time: 10:59
  * @version $Id: $Id
+ * @since 0.3
  */
 public class LeadField extends CustomField<Lead> {
 

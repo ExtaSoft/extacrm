@@ -20,6 +20,7 @@ import java.util.Iterator;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public abstract class AbstractEditForm<TEditObject> extends Window {
 

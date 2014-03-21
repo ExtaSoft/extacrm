@@ -24,6 +24,7 @@ import java.math.BigInteger;
  *
  * @author Valery_2
  * @version $Id: $Id
+ * @since 0.3
  */
 public abstract class AbstractNumeral {
 

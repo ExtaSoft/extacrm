@@ -22,6 +22,7 @@ import static com.google.common.base.Preconditions.checkState;
  *         Date: 23.10.13
  *         Time: 22:55
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)

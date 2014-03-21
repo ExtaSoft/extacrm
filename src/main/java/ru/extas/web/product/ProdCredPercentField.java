@@ -23,6 +23,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 07.02.14
  *         Time: 15:28
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ProdCredPercentField extends CustomField<List> {
 

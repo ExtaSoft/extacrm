@@ -14,6 +14,7 @@ import ru.extas.web.commons.ExtaDataContainer;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class AbstractContactSelect<TContactType extends Contact> extends ComboBox {
 

@@ -13,6 +13,7 @@ import ru.extas.model.Company;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class CompanySelect extends AbstractContactSelect<Company> {
 

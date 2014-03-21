@@ -9,6 +9,7 @@ import ru.extas.web.commons.GridDataDecl;
  *         Date: 17.02.14
  *         Time: 17:05
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ProductDataDecl extends GridDataDecl {
 

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
  *         Date: 16.01.14
  *         Time: 17:38
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @DiscriminatorValue("INSURANCE_PROP")

@@ -14,6 +14,7 @@ import ru.extas.model.Contact;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)

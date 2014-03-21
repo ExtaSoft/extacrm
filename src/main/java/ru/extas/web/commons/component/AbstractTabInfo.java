@@ -1,23 +1,31 @@
+package ru.extas.web.commons.component;
+
+import ru.extas.security.ExtaDomain;
+
+
 
 /**
  * <p>Abstract AbstractTabInfo class.</p>
  *
  * @author Valery_2
  * @version $Id: $Id
+ * @since 0.3
  */
-package ru.extas.web.commons.component;
 public abstract class AbstractTabInfo implements TabInfo {
     private static final long serialVersionUID = -4891758708180700074L;
     private final String caption;
+	private final ExtaDomain domain;
 
-    /**
-     * <p>Constructor for AbstractTabInfo.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     */
-    public AbstractTabInfo(String caption) {
-        this.caption = caption;
-    }
+	/**
+	 * <p>Constructor for AbstractTabInfo.</p>
+	 *
+	 * @param caption a {@link java.lang.String} object.
+	 * @param domain a {@link ru.extas.security.ExtaDomain} object.
+	 */
+	public AbstractTabInfo(final String caption, final ExtaDomain domain) {
+		this.caption = caption;
+		this.domain = domain;
+	}
 
     /** {@inheritDoc} */
     @Override
@@ -25,4 +33,9 @@ public abstract class AbstractTabInfo implements TabInfo {
         return caption;
     }
 
+	/** {@inheritDoc} */
+	@Override
+	public ExtaDomain getDomain() {
+		return domain;
+	}
 }

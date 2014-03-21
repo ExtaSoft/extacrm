@@ -14,6 +14,7 @@ import ru.extas.web.commons.converters.String2EnumConverter;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 public class StringToA7StatusConverter extends String2EnumConverter<A7Form.Status> {

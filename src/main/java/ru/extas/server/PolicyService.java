@@ -11,6 +11,7 @@ import java.util.List;
  *         Date: 19.12.13
  *         Time: 12:13
  * @version $Id: $Id
+ * @since 0.3
  */
 public interface PolicyService {
 /**

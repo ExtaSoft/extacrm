@@ -21,84 +21,70 @@ import java.util.List;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class A7FormServiceImpl implements A7FormService {
 
-private final static Logger logger = LoggerFactory.getLogger(A7FormServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(A7FormServiceImpl.class);
 
-@Inject
-private A7FormRepository formRepository;
-@Inject
-private UserManagementService userService;
+    @Inject
+    private A7FormRepository formRepository;
+    @Inject
+    private UserManagementService userService;
 
-/*
- * (non-Javadoc)
- *
- * @see ru.extas.server.A7FormRepository#spendForm(java.lang.String)
- */
-/** {@inheritDoc} */
-@Transactional
-@Override
-public void spendForm(final String formNum) {
-	final A7Form form = formRepository.findByRegNum(formNum);
-	if (form != null && form.getStatus() != Status.SPENT) {
-		form.setStatus(Status.SPENT);
-		formRepository.save(form);
-	}
-}
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public void spendForm(final String formNum) {
+        final A7Form form = formRepository.findByRegNum(formNum);
+        if (form != null && form.getStatus() != Status.SPENT) {
+            form.setStatus(Status.SPENT);
+            formRepository.save(form);
+        }
+    }
 
-/*
- * (non-Javadoc)
- *
- * @see ru.extas.server.A7FormRepository#changeOwner(java.util.List)
- */
-/** {@inheritDoc} */
-@Transactional
-@Override
-public void changeOwner(final List<String> formNums, final Contact owner) {
-	for (String num : formNums) {
-		A7Form form = formRepository.findByRegNum(num);
-		if (form != null) {
-			form.setOwner(owner);
-			formRepository.save(form);
-		} else {
-			// НовыЙ бланки
-			form = new A7Form(num, owner);
-			formRepository.save(form);
-		}
-	}
-}
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public void changeOwner(final List<String> formNums, final Contact owner) {
+        for (String num : formNums) {
+            A7Form form = formRepository.findByRegNum(num);
+            if (form != null) {
+                form.setOwner(owner);
+                formRepository.save(form);
+            } else {
+                // НовыЙ бланки
+                form = new A7Form(num, owner);
+                formRepository.save(form);
+            }
+        }
+    }
 
-/*
- * (non-Javadoc)
- *
- * @see ru.extas.server.A7FormRepository#changeStatus(java.util.List, ru.extas.model.A7Form.Status)
- */
-/** {@inheritDoc} */
-@Transactional
-@Override
-public void changeStatus(final A7Form form, final Status newStatus) {
-	if (form != null) {
-		form.setStatus(newStatus);
-		formRepository.save(form);
-	}
-}
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public void changeStatus(final A7Form form, final Status newStatus) {
+        if (form != null) {
+            form.setStatus(newStatus);
+            formRepository.save(form);
+        }
+    }
 
-/** {@inheritDoc} */
-@Transactional
-@Override
-public List<A7Form> loadAvailable() {
-	logger.debug("Requesting available A-7 forms...");
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public List<A7Form> loadAvailable() {
+        logger.debug("Requesting available A-7 forms...");
 
-	// Поиск контакта пользователя
-	final Contact owner = userService.getCurrentUserContact();
+        // Поиск контакта пользователя
+        final Contact owner = userService.getCurrentUserContact();
 
-	Status status = Status.NEW;
-	final List<A7Form> forms = formRepository.findByOwnerAndStatus(owner, status);
+        Status status = Status.NEW;
+        final List<A7Form> forms = formRepository.findByOwnerAndStatus(owner, status);
 
-	logger.debug("Retrieved {} available A-7 forms", forms.size());
-	return forms;
-}
+        logger.debug("Retrieved {} available A-7 forms", forms.size());
+        return forms;
+    }
 }

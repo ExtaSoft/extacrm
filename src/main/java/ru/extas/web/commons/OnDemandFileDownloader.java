@@ -16,6 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author Valery_2
  * @version $Id: $Id
+ * @since 0.3
  */
 public class OnDemandFileDownloader extends FileDownloader {
 

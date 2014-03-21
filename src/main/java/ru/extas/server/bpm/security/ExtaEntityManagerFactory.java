@@ -11,6 +11,7 @@ import org.activiti.engine.impl.persistence.entity.UserIdentityManager;
  *         Date: 14.11.13
  *         Time: 18:51
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ExtaEntityManagerFactory implements SessionFactory {
     /** {@inheritDoc} */

@@ -31,6 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedListener {
 
@@ -57,6 +58,15 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 	    ui.getPage().addUriFragmentChangedListener(this);
     }
 
+	/**
+	 * <p>addChapter.</p>
+	 *
+	 * @param name a {@link java.lang.String} object.
+	 * @param desc a {@link java.lang.String} object.
+	 * @param btnStyle a {@link java.lang.String} object.
+	 * @param viewCls a {@link java.lang.Class} object.
+	 * @param domain a {@link ru.extas.security.ExtaDomain} object.
+	 */
 	public void addChapter(String name, // Имя раздела
 	                       String desc, // Описание раздела
 	                       String btnStyle, // Стиль кнопки раздела
@@ -146,6 +156,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 
     }
 
+	/** {@inheritDoc} */
 	@Override
 	public void uriFragmentChanged(final Page.UriFragmentChangedEvent event) {
 

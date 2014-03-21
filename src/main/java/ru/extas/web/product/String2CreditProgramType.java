@@ -13,6 +13,7 @@ import ru.extas.web.commons.converters.String2EnumConverter;
  *         Date: 07.02.14
  *         Time: 20:01
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 public class String2CreditProgramType extends String2EnumConverter {

@@ -10,6 +10,7 @@ import java.util.List;
  *         Date: 10.02.14
  *         Time: 15:24
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @DiscriminatorValue("SALEPOINT")

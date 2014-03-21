@@ -17,6 +17,7 @@ import ru.extas.web.product.ProductSelect;
  *         Date: 20.01.14
  *         Time: 18:27
  * @version $Id: $Id
+ * @since 0.3
  */
 public class ProdInSaleEditForm extends AbstractEditForm<ProductInSale> {
 

@@ -25,6 +25,7 @@ import static com.google.common.collect.Lists.newArrayList;
  *         Date: 18.03.14
  *         Time: 18:48
  * @version $Id: $Id
+ * @since 0.3
  */
 @Controller
 @RequestMapping("/service/salepoint")

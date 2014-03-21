@@ -11,6 +11,7 @@ import java.util.List;
  *         Date: 24.10.13
  *         Time: 0:12
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @Table(name = "SALE")

@@ -24,6 +24,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  *         Date: 15.10.13
  *         Time: 12:24
  * @version $Id: $Id
+ * @since 0.3
  */
 public class SalesGrid extends ExtaGrid {
 	private static final long serialVersionUID = 4876073256421755574L;

@@ -10,6 +10,7 @@ import javax.persistence.*;
  *         Date: 16.01.14
  *         Time: 17:03
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

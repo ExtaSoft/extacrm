@@ -17,6 +17,7 @@ import javax.validation.constraints.Max;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @Table(name = "POLICY",

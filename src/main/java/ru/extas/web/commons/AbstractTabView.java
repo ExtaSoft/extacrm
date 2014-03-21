@@ -14,6 +14,7 @@ import java.util.List;
  *         Date: 15.10.13
  *         Time: 12:00
  * @version $Id: $Id
+ * @since 0.3
  */
 public abstract class AbstractTabView extends ExtaAbstractView {
     private final static Logger logger = LoggerFactory.getLogger(AbstractTabView.class);
@@ -29,11 +30,6 @@ public abstract class AbstractTabView extends ExtaAbstractView {
 
     private String titleCaption;
 
-    /*
-         * (non-Javadoc)
-         *
-         * @see ru.extas.web.ExtaAbstractView#getContent()
-         */
     /** {@inheritDoc} */
     @Override
     protected Component getContent() {
@@ -62,23 +58,23 @@ public abstract class AbstractTabView extends ExtaAbstractView {
                 tab.addComponent(tabContent);
                 // } else
                 // tab.getComponent(0).markAsDirtyRecursive();
-	            //UI.getCurrent().getNavigator().navigateTo(info.getDomain().getName());
-	            UI.getCurrent().getPage().setUriFragment("!" + info.getDomain().getName(), false);
+                //UI.getCurrent().getNavigator().navigateTo(info.getDomain().getName());
+                UI.getCurrent().getPage().setUriFragment("!" + info.getDomain().getName(), false);
             }
         });
 
-	    String uriFragment = UI.getCurrent().getPage().getUriFragment();
-	    if (uriFragment.startsWith("!"))
-		    uriFragment = uriFragment.substring(1);
+        String uriFragment = UI.getCurrent().getPage().getUriFragment();
+        if (uriFragment.startsWith("!"))
+            uriFragment = uriFragment.substring(1);
         // Создаем закладки в соответствии с описанием
         for (final TabInfo info : getTabComponentsInfo()) {
             final VerticalLayout viewTab = new VerticalLayout();
             viewTab.setSizeFull();
             viewTab.setData(info);
-	        TabSheet.Tab tab = tabsheet.addTab(viewTab, info.getCaption());
-	        if (info.getDomain().getName().equals(uriFragment)) {
-		        tabsheet.setSelectedTab(tab);
-	        }
+            TabSheet.Tab tab = tabsheet.addTab(viewTab, info.getCaption());
+            if (info.getDomain().getName().equals(uriFragment)) {
+                tabsheet.setSelectedTab(tab);
+            }
         }
 
         return tabsheet;
@@ -91,11 +87,6 @@ public abstract class AbstractTabView extends ExtaAbstractView {
      */
     abstract protected List<TabInfo> getTabComponentsInfo();
 
-    /*
-         * (non-Javadoc)
-         *
-         * @see ru.extas.web.ExtaAbstractView#getTitle()
-         */
     /** {@inheritDoc} */
     @Override
     protected Component getTitle() {

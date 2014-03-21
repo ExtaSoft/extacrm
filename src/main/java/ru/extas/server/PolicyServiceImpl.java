@@ -20,81 +20,59 @@ import java.util.List;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class PolicyServiceImpl implements PolicyService {
 
-	private final static Logger logger = LoggerFactory.getLogger(PolicyServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(PolicyServiceImpl.class);
 
-	@Inject
-	private PolicyRegistry policyRegistry;
+    @Inject
+    private PolicyRegistry policyRegistry;
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ru.extas.server.PolicyRegistry#loadAvailable()
-	 */
-	/** {@inheritDoc} */
-	@Transactional
-	@Override
-	public List<Policy> loadAvailable() {
-		logger.debug("Requesting available policies...");
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public List<Policy> loadAvailable() {
+        logger.debug("Requesting available policies...");
 
-		final List<Policy> policies = policyRegistry.findAvailableAtTime(DateTime.now().minusHours(1));
+        final List<Policy> policies = policyRegistry.findAvailableAtTime(DateTime.now().minusHours(1));
 
-		logger.debug("Retrieved {} available policies", policies.size());
-		return policies;
-	}
+        logger.debug("Retrieved {} available policies", policies.size());
+        return policies;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ru.extas.server.PolicyRegistry#bookPolicy(ru.extas.model.Policy)
-	 */
-	/** {@inheritDoc} */
-	@Transactional
-	@Override
-	public void bookPolicy(final Policy policy) {
-		policy.setBookTime(DateTime.now());
-		policyRegistry.save(policy);
-	}
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public void bookPolicy(final Policy policy) {
+        policy.setBookTime(DateTime.now());
+        policyRegistry.save(policy);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ru.extas.server.PolicyRegistry#issuePolicy(ru.extas.model.Policy)
-	 */
-	/** {@inheritDoc} */
-	@Transactional
-	@Override
-	public void issuePolicy(final Policy policy) {
-		policy.setIssueDate(DateTime.now());
-		policyRegistry.save(policy);
-	}
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public void issuePolicy(final Policy policy) {
+        policy.setIssueDate(DateTime.now());
+        policyRegistry.save(policy);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ru.extas.server.PolicyRegistry#bookPolicy(java.lang.String)
-	 */
-	/** {@inheritDoc} */
-	@Transactional
-	@Override
-	public void bookPolicy(final String regNum) {
-		bookPolicy(policyRegistry.findByRegNum(regNum));
-	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ru.extas.server.PolicyRegistry#issuePolicy(java.lang.String)
-	 */
-	/** {@inheritDoc} */
-	@Transactional
-	@Override
-	public void issuePolicy(final String regNum) {
-		issuePolicy(policyRegistry.findByRegNum(regNum));
-	}
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public void bookPolicy(final String regNum) {
+        bookPolicy(policyRegistry.findByRegNum(regNum));
+    }
+
+
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public void issuePolicy(final String regNum) {
+        issuePolicy(policyRegistry.findByRegNum(regNum));
+    }
 
 }

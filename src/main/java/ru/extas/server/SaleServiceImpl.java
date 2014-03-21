@@ -18,6 +18,7 @@ import javax.inject.Inject;
  *         Date: 24.10.13
  *         Time: 0:33
  * @version $Id: $Id
+ * @since 0.3
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)

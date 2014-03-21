@@ -7,6 +7,7 @@ package ru.extas.web.commons;
  *         Date: 15.10.13
  *         Time: 22:37
  * @version $Id: $Id
+ * @since 0.3
  */
 public abstract class DefaultAction extends ItemAction {
     /**

@@ -11,6 +11,7 @@ import com.vaadin.data.util.BeanItem;
  *         Date: 19.02.14
  *         Time: 21:52
  * @version $Id: $Id
+ * @since 0.3
  */
 public class GridItem<BT> extends BeanItem<BT> {
 

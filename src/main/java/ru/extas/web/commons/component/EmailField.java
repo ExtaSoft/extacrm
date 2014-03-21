@@ -9,6 +9,7 @@ import com.vaadin.data.validator.EmailValidator;
  *         Date: 23.10.13
  *         Time: 13:15
  * @version $Id: $Id
+ * @since 0.3
  */
 public class EmailField extends EditField {
     /**

@@ -13,6 +13,7 @@ import ru.extas.web.commons.ExtaDataContainer;
  *         Date: 05.02.14
  *         Time: 22:19
  * @version $Id: $Id
+ * @since 0.3
  */
 public class UserProfileSelect extends ComboBox {
 

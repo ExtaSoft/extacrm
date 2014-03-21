@@ -11,6 +11,7 @@ import java.util.List;
  *         Date: 16.01.14
  *         Time: 17:37
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @DiscriminatorValue("CREDIT")

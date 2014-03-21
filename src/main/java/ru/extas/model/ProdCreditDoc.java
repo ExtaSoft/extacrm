@@ -13,6 +13,7 @@ import javax.persistence.Table;
  *         Date: 07.02.14
  *         Time: 14:43
  * @version $Id: $Id
+ * @since 0.3
  */
 @Entity
 @Table(name = "PROD_CREDIT_DOC")

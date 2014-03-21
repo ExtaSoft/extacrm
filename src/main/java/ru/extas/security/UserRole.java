@@ -1,13 +1,14 @@
 /**
  *
  */
-package ru.extas.model;
+package ru.extas.security;
 
 /**
  * Перечислитель ролей пользователей
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 public enum UserRole {
 
@@ -24,7 +25,18 @@ public enum UserRole {
     /**
      * Рядовой пользователь
      */
-    USER("user");
+    USER("user"),
+
+    /**
+	 * Дилер
+	 */
+	DEALER("dealer"),
+
+	/**
+	 *  Дистрибьютор
+	 */
+	DISTRIBUTOR("distributor");
+
 
     /**
      * Возвращает строковое представление роли
@@ -39,7 +51,7 @@ public enum UserRole {
      * <p>getRoleByName.</p>
      *
      * @param name a {@link java.lang.String} object.
-     * @return a {@link ru.extas.model.UserRole} object.
+     * @return a {@link ru.extas.security.UserRole} object.
      */
     public static UserRole getRoleByName(String name) {
         for (UserRole role : UserRole.values())

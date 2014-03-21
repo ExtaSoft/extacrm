@@ -9,6 +9,7 @@ import ru.extas.model.FormTransfer;
  *         Date: 18.12.13
  *         Time: 13:11
  * @version $Id: $Id
+ * @since 0.3
  */
 public interface FormTransferService {
 /**

@@ -27,270 +27,248 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 19.02.14
  *         Time: 13:08
  * @version $Id: $Id
+ * @since 0.3
  */
 public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 
-	private static final long serialVersionUID = -7787385620289376599L;
-	private final static Logger logger = LoggerFactory.getLogger(LegalEntityEditForm.class);
+    private static final long serialVersionUID = -7787385620289376599L;
+    private final static Logger logger = LoggerFactory.getLogger(LegalEntityEditForm.class);
 
-	// Компоненты редактирования
+    // Компоненты редактирования
 
-	// Вкладка - "Общая информация"
-	@PropertyId("company")
-	private CompanySelect companyField;
-	@PropertyId("name")
-	private EditField nameField;
-	@PropertyId("phone")
-	private PhoneField phoneField;
-	@PropertyId("email")
-	private EditField emailField;
-	@PropertyId("www")
-	private EditField wwwField;
-	@PropertyId("actualAddress.region")
-	private ComboBox regionField;
-	@PropertyId("actualAddress.city")
-	private ComboBox cityField;
-	@PropertyId("actualAddress.postIndex")
-	private EditField postIndexField;
-	@PropertyId("actualAddress.streetBld")
-	private TextArea streetBldField;
-	@PropertyId("legalEntities")
-	private LegalEntitiesSelectField legalsField;
-	@PropertyId("employes")
-	private ContactEmployeeField employeeField;
+    // Вкладка - "Общая информация"
+    @PropertyId("company")
+    private CompanySelect companyField;
+    @PropertyId("name")
+    private EditField nameField;
+    @PropertyId("phone")
+    private PhoneField phoneField;
+    @PropertyId("email")
+    private EditField emailField;
+    @PropertyId("www")
+    private EditField wwwField;
+    @PropertyId("actualAddress.region")
+    private ComboBox regionField;
+    @PropertyId("actualAddress.city")
+    private ComboBox cityField;
+    @PropertyId("actualAddress.postIndex")
+    private EditField postIndexField;
+    @PropertyId("actualAddress.streetBld")
+    private TextArea streetBldField;
+    @PropertyId("legalEntities")
+    private LegalEntitiesSelectField legalsField;
+    @PropertyId("employes")
+    private ContactEmployeeField employeeField;
 
-	@PropertyId("alphaCode")
-	private EditField alphaCodeField;
-	@PropertyId("homeCode")
-	private EditField homeCodeField;
-	@PropertyId("setelemCode")
-	private EditField setelemCodeField;
-	@PropertyId("extaCode")
-	private EditField extaCodeField;
+    @PropertyId("alphaCode")
+    private EditField alphaCodeField;
+    @PropertyId("homeCode")
+    private EditField homeCodeField;
+    @PropertyId("setelemCode")
+    private EditField setelemCodeField;
+    @PropertyId("extaCode")
+    private EditField extaCodeField;
 
-	private SalePoint salePoint;
+    private SalePoint salePoint;
 
-	/**
-	 * <p>Constructor for SalePointEditForm.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-	 */
-	public SalePointEditForm(final String caption, final BeanItem<SalePoint> obj) {
-		super(caption, obj);
-		salePoint = obj.getBean();
-	}
+    /**
+     * <p>Constructor for SalePointEditForm.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
+     */
+    public SalePointEditForm(final String caption, final BeanItem<SalePoint> obj) {
+        super(caption, obj);
+        salePoint = obj.getBean();
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void attach() {
-		super.attach();
+    /** {@inheritDoc} */
+    @Override
+    public void attach() {
+        super.attach();
 
-		if (salePoint.getCompany() == null) {
+        if (salePoint.getCompany() == null) {
             companyField.setReadOnly(false);
             companyField.setVisible(true);
             companyField.setRequired(true);
         } else {
-			companyField.setReadOnly(true);
+            companyField.setReadOnly(true);
             companyField.getPropertyDataSource().setReadOnly(true);
-			if (salePoint.getCompany().getId() == null) {
+            if (salePoint.getCompany().getId() == null) {
                 companyField.setVisible(false);
                 companyField.setRequired(false);
-			}
-		}
-	}
+            }
+        }
+    }
 
-	/*
-		 * (non-Javadoc)
-		 *
-		 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
-		 * AbstractExtaObject)
-		 */
-	/** {@inheritDoc} */
-	@Override
-	protected void initObject(final SalePoint obj) {
-		if (obj.getId() == null) {
-			// Инициализируем новый объект
-			// TODO: Инициализировать клиента в соответствии с локацией текущего
-		}
-		if (obj.getActualAddress() == null)
-			obj.setActualAddress(new AddressInfo());
-	}
+    /** {@inheritDoc} */
+    @Override
+    protected void initObject(final SalePoint obj) {
+        if (obj.getId() == null) {
+            // Инициализируем новый объект
+            // TODO: Инициализировать клиента в соответствии с локацией текущего
+        }
+        if (obj.getActualAddress() == null)
+            obj.setActualAddress(new AddressInfo());
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
-	 * AbstractExtaObject)
-	 */
-	/** {@inheritDoc} */
-	@Override
-	protected void saveObject(final SalePoint obj) {
-		if (obj.getCompany().getId() != null) {
-			logger.debug("Saving contact data...");
-			final ContactRepository contactRepository = lookup(ContactRepository.class);
-			contactRepository.save(obj);
-			Notification.show("Юр. лицо сохранено", Notification.Type.TRAY_NOTIFICATION);
-		}
-	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
-	 * AbstractExtaObject)
-	 */
-	/** {@inheritDoc} */
-	@Override
-	protected void checkBeforeSave(final SalePoint obj) {
-	}
+    /** {@inheritDoc} */
+    @Override
+    protected void saveObject(final SalePoint obj) {
+        if (obj.getCompany().getId() != null) {
+            logger.debug("Saving contact data...");
+            final ContactRepository contactRepository = lookup(ContactRepository.class);
+            contactRepository.save(obj);
+            Notification.show("Юр. лицо сохранено", Notification.Type.TRAY_NOTIFICATION);
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
-	 * .AbstractExtaObject)
-	 */
-	/** {@inheritDoc} */
-	@Override
-	protected ComponentContainer createEditFields(final SalePoint obj) {
-		TabSheet tabsheet = new TabSheet();
-		tabsheet.setSizeUndefined();
 
-		// Вкладка - "Общая информация"
-		final FormLayout mainForm = createMainForm(obj);
-		tabsheet.addTab(mainForm).setCaption("Общие данные");
+    /** {@inheritDoc} */
+    @Override
+    protected void checkBeforeSave(final SalePoint obj) {
+    }
 
-		// Вкладка - "Сотрудники"
-		final FormLayout employesForm = createEmployesForm();
-		tabsheet.addTab(employesForm).setCaption("Сотрудники");
 
-		// Вкладка - "Юр.лица"
-		final Component legalsForm = createLegalsForm(obj.getCompany());
-		tabsheet.addTab(legalsForm).setCaption("Юридические лица");
+    /** {@inheritDoc} */
+    @Override
+    protected ComponentContainer createEditFields(final SalePoint obj) {
+        TabSheet tabsheet = new TabSheet();
+        tabsheet.setSizeUndefined();
 
-		// Вкладка - "Идентификация"
-		final Component identityForm = createIdentityForm();
-		tabsheet.addTab(identityForm).setCaption("Идентификация");
+        // Вкладка - "Общая информация"
+        final FormLayout mainForm = createMainForm(obj);
+        tabsheet.addTab(mainForm).setCaption("Общие данные");
 
-		return tabsheet;
-	}
+        // Вкладка - "Сотрудники"
+        final FormLayout employesForm = createEmployesForm();
+        tabsheet.addTab(employesForm).setCaption("Сотрудники");
 
-	private Component createIdentityForm() {
-		final FormLayout formLayout = new FormLayout();
-		formLayout.setMargin(true);
+        // Вкладка - "Юр.лица"
+        final Component legalsForm = createLegalsForm(obj.getCompany());
+        tabsheet.addTab(legalsForm).setCaption("Юридические лица");
 
-		extaCodeField = new EditField("Код Экстрим Ассистанс", "Введите идентификационный Код Экстрим Ассистанс");
-		extaCodeField.setColumns(20);
-		formLayout.addComponent(extaCodeField);
+        // Вкладка - "Идентификация"
+        final Component identityForm = createIdentityForm();
+        tabsheet.addTab(identityForm).setCaption("Идентификация");
 
-		alphaCodeField = new EditField("Код Альфа Банка", "Введите идентификационный Код Альфа Банка");
-		alphaCodeField.setColumns(20);
-		formLayout.addComponent(alphaCodeField);
+        return tabsheet;
+    }
 
-		homeCodeField = new EditField("Код HomeCredit Банка", "Введите идентификационный Код HomeCredit Банка");
-		homeCodeField.setColumns(20);
-		formLayout.addComponent(homeCodeField);
+    private Component createIdentityForm() {
+        final FormLayout formLayout = new FormLayout();
+        formLayout.setMargin(true);
 
-		setelemCodeField = new EditField("Код Банка СЕТЕЛЕМ", "Введите идентификационный Код Банка СЕТЕЛЕМ");
-		setelemCodeField.setColumns(20);
-		formLayout.addComponent(setelemCodeField);
+        extaCodeField = new EditField("Код Экстрим Ассистанс", "Введите идентификационный Код Экстрим Ассистанс");
+        extaCodeField.setColumns(20);
+        formLayout.addComponent(extaCodeField);
 
-		return formLayout;
-	}
+        alphaCodeField = new EditField("Код Альфа Банка", "Введите идентификационный Код Альфа Банка");
+        alphaCodeField.setColumns(20);
+        formLayout.addComponent(alphaCodeField);
 
-	private Component createLegalsForm(final Company obj) {
-		legalsField = new LegalEntitiesSelectField(obj);
+        homeCodeField = new EditField("Код HomeCredit Банка", "Введите идентификационный Код HomeCredit Банка");
+        homeCodeField.setColumns(20);
+        formLayout.addComponent(homeCodeField);
 
-		return legalsField;
-	}
+        setelemCodeField = new EditField("Код Банка СЕТЕЛЕМ", "Введите идентификационный Код Банка СЕТЕЛЕМ");
+        setelemCodeField.setColumns(20);
+        formLayout.addComponent(setelemCodeField);
 
-	private FormLayout createEmployesForm() {
-		final FormLayout formLayout = new FormLayout();
-		formLayout.setMargin(true);
+        return formLayout;
+    }
 
-		employeeField = new ContactEmployeeField();
-		formLayout.addComponent(employeeField);
+    private Component createLegalsForm(final Company obj) {
+        legalsField = new LegalEntitiesSelectField(obj);
 
-		return formLayout;
-	}
+        return legalsField;
+    }
 
-	private FormLayout createMainForm(final SalePoint obj) {
-		final FormLayout formLayout = new FormLayout();
-		formLayout.setMargin(true);
+    private FormLayout createEmployesForm() {
+        final FormLayout formLayout = new FormLayout();
+        formLayout.setMargin(true);
 
-		nameField = new EditField("Название");
-		nameField.setRequired(true);
-		nameField.setImmediate(true);
-		nameField.setColumns(30);
-		nameField.setDescription("Введите Название торговой точки");
-		nameField.setInputPrompt("Рога и Копыта - Север");
-		nameField.setRequiredError("Название торговой точки не может быть пустым.");
-		nameField.setNullRepresentation("");
-		formLayout.addComponent(nameField);
+        employeeField = new ContactEmployeeField();
+        formLayout.addComponent(employeeField);
 
-		companyField = new CompanySelect("Компания", "Введите или выберете компанию которой принадлежит торговая точка");
-		companyField.setRequired(true);
-		formLayout.addComponent(companyField);
+        return formLayout;
+    }
 
-		phoneField = new PhoneField("Телефон");
-		formLayout.addComponent(phoneField);
+    private FormLayout createMainForm(final SalePoint obj) {
+        final FormLayout formLayout = new FormLayout();
+        formLayout.setMargin(true);
 
-		emailField = new EmailField("E-Mail");
-		formLayout.addComponent(emailField);
+        nameField = new EditField("Название");
+        nameField.setRequired(true);
+        nameField.setImmediate(true);
+        nameField.setColumns(30);
+        nameField.setDescription("Введите Название торговой точки");
+        nameField.setInputPrompt("Рога и Копыта - Север");
+        nameField.setRequiredError("Название торговой точки не может быть пустым.");
+        nameField.setNullRepresentation("");
+        formLayout.addComponent(nameField);
 
-		wwwField = new EditField("WWW", "Введите адрес сайта торговой точки");
-		wwwField.setColumns(20);
-		formLayout.addComponent(wwwField);
+        companyField = new CompanySelect("Компания", "Введите или выберете компанию которой принадлежит торговая точка");
+        companyField.setRequired(true);
+        formLayout.addComponent(companyField);
 
-		regionField = new RegionSelect();
-		regionField.setDescription("Укажите регион");
-		regionField.addValueChangeListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+        phoneField = new PhoneField("Телефон");
+        formLayout.addComponent(phoneField);
 
-			@Override
-			public void valueChange(final Property.ValueChangeEvent event) {
-				final String newRegion = (String) event.getProperty().getValue();
-				final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
-				if (city != null)
-					cityField.setValue(city);
-			}
-		});
-		formLayout.addComponent(regionField);
+        emailField = new EmailField("E-Mail");
+        formLayout.addComponent(emailField);
 
-		cityField = new CitySelect();
-		cityField.setDescription("Введите город регистрации");
-		if (obj.getActualAddress().getCity() != null) cityField.addItem(obj.getActualAddress().getCity());
-		cityField.addValueChangeListener(new Property.ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
+        wwwField = new EditField("WWW", "Введите адрес сайта торговой точки");
+        wwwField.setColumns(20);
+        formLayout.addComponent(wwwField);
 
-			@Override
-			public void valueChange(final Property.ValueChangeEvent event) {
-				final String newCity = (String) event.getProperty().getValue();
-				final String region = lookup(SupplementService.class).findRegionByCity(newCity);
-				if (region != null)
-					regionField.setValue(region);
-			}
-		});
-		formLayout.addComponent(cityField);
+        regionField = new RegionSelect();
+        regionField.setDescription("Укажите регион");
+        regionField.addValueChangeListener(new Property.ValueChangeListener() {
+            private static final long serialVersionUID = 1L;
 
-		postIndexField = new EditField("Почтовый индекс");
-		postIndexField.setColumns(8);
-		postIndexField.setInputPrompt("Индекс");
-		postIndexField.setNullRepresentation("");
-		formLayout.addComponent(postIndexField);
+            @Override
+            public void valueChange(final Property.ValueChangeEvent event) {
+                final String newRegion = (String) event.getProperty().getValue();
+                final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+                if (city != null)
+                    cityField.setValue(city);
+            }
+        });
+        formLayout.addComponent(regionField);
 
-		streetBldField = new TextArea("Адрес");
-		streetBldField.setColumns(30);
-		streetBldField.setRows(5);
-		streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
-		streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
-		streetBldField.setNullRepresentation("");
-		formLayout.addComponent(streetBldField);
+        cityField = new CitySelect();
+        cityField.setDescription("Введите город регистрации");
+        if (obj.getActualAddress().getCity() != null) cityField.addItem(obj.getActualAddress().getCity());
+        cityField.addValueChangeListener(new Property.ValueChangeListener() {
+            private static final long serialVersionUID = 1L;
 
-		return formLayout;
-	}
+            @Override
+            public void valueChange(final Property.ValueChangeEvent event) {
+                final String newCity = (String) event.getProperty().getValue();
+                final String region = lookup(SupplementService.class).findRegionByCity(newCity);
+                if (region != null)
+                    regionField.setValue(region);
+            }
+        });
+        formLayout.addComponent(cityField);
+
+        postIndexField = new EditField("Почтовый индекс");
+        postIndexField.setColumns(8);
+        postIndexField.setInputPrompt("Индекс");
+        postIndexField.setNullRepresentation("");
+        formLayout.addComponent(postIndexField);
+
+        streetBldField = new TextArea("Адрес");
+        streetBldField.setColumns(30);
+        streetBldField.setRows(5);
+        streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
+        streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
+        streetBldField.setNullRepresentation("");
+        formLayout.addComponent(streetBldField);
+
+        return formLayout;
+    }
 
 }

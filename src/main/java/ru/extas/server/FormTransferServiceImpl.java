@@ -18,30 +18,26 @@ import javax.inject.Inject;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class FormTransferServiceImpl implements FormTransferService {
 
-private final static Logger logger = LoggerFactory.getLogger(FormTransferServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(FormTransferServiceImpl.class);
 
-@Inject
-private FormTransferRepository transferRepository;
-@Inject
-private A7FormService a7FormService;
+    @Inject
+    private FormTransferRepository transferRepository;
+    @Inject
+    private A7FormService a7FormService;
 
-/*
- * (non-Javadoc)
- *
- * @see ru.extas.server.FormTransferRepository#saveAndChangeOwner(ru.extas.model.FormTransfer)
- */
-/** {@inheritDoc} */
-@Transactional
-@Override
-public void saveAndChangeOwner(final FormTransfer tf) {
-	logger.debug("Persisting FormTransfer");
-	a7FormService.changeOwner(tf.getFormNums(), tf.getToContact());
-	transferRepository.save(tf);
-}
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public void saveAndChangeOwner(final FormTransfer tf) {
+        logger.debug("Persisting FormTransfer");
+        a7FormService.changeOwner(tf.getFormNums(), tf.getToContact());
+        transferRepository.save(tf);
+    }
 
 }

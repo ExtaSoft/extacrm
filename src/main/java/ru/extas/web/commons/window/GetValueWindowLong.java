@@ -17,6 +17,7 @@ import java.io.Serializable;
  *         Date: 19.08.13
  *         Time: 17:17
  * @version $Id: $Id
+ * @since 0.3
  */
 public class GetValueWindowLong extends AbstractEditForm<GetValueWindowLong.ValueContainer> {
 

@@ -9,6 +9,7 @@ import ru.extas.model.Lead;
  *         Date: 19.12.13
  *         Time: 12:09
  * @version $Id: $Id
+ * @since 0.3
  */
 public interface LeadService {
 /**
