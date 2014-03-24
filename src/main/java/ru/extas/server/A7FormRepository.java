@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.extas.model.A7Form;
-import ru.extas.model.Contact;
+import ru.extas.model.contacts.Contact;
+import ru.extas.model.insurance.A7Form;
 
 import java.util.List;
 
@@ -34,8 +34,8 @@ A7Form findByRegNum(String regNum);
 /**
  * <p>findByOwnerAndStatus.</p>
  *
- * @param owner a {@link ru.extas.model.Contact} object.
- * @param status a {@link ru.extas.model.A7Form.Status} object.
+ * @param owner a {@link ru.extas.model.contacts.Contact} object.
+ * @param status a {@link ru.extas.model.insurance.A7Form.Status} object.
  * @return a {@link java.util.List} object.
  */
 List<A7Form> findByOwnerAndStatus(Contact owner, A7Form.Status status);

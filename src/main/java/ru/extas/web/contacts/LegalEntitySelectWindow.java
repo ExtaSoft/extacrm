@@ -2,8 +2,8 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
-import ru.extas.model.Company;
-import ru.extas.model.LegalEntity;
+import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
@@ -32,7 +32,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 	 * <p>Constructor for LegalEntitySelectWindow.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
-	 * @param company a {@link ru.extas.model.Company} object.
+	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public LegalEntitySelectWindow(final String caption, final Company company) {
 		super(caption);
@@ -92,7 +92,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 	/**
 	 * <p>Getter for the field <code>selected</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.LegalEntity} object.
+	 * @return a {@link ru.extas.model.contacts.LegalEntity} object.
 	 */
 	public LegalEntity getSelected() {
 		return selected;

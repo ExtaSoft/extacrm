@@ -4,7 +4,7 @@
 package ru.extas.web.lead;
 
 import com.vaadin.ui.Component;
-import ru.extas.model.Lead;
+import ru.extas.model.lead.Lead;
 import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.AbstractTabView;
 import ru.extas.web.commons.component.AbstractTabInfo;

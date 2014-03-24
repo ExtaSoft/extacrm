@@ -1,6 +1,6 @@
 package ru.extas.server;
 
-import ru.extas.model.Policy;
+import ru.extas.model.insurance.Policy;
 
 import java.util.List;
 

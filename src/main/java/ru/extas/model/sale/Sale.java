@@ -1,4 +1,8 @@
-package ru.extas.model;
+package ru.extas.model.sale;
+
+import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -15,7 +19,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "SALE")
-public class Sale extends AbstractExtaObject {
+public class Sale extends ChangeMarkedObject {
 
 	/**
 	 * Статусы продажи
@@ -90,7 +94,7 @@ public class Sale extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>result</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Sale.Result} object.
+	 * @return a {@link Sale.Result} object.
 	 */
 	public Result getResult() {
 		return result;
@@ -99,7 +103,7 @@ public class Sale extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>result</code>.</p>
 	 *
-	 * @param result a {@link ru.extas.model.Sale.Result} object.
+	 * @param result a {@link Sale.Result} object.
 	 */
 	public void setResult(Result result) {
 		this.result = result;
@@ -126,7 +130,7 @@ public class Sale extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>dealer</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.SalePoint} object.
+	 * @return a {@link ru.extas.model.contacts.SalePoint} object.
 	 */
 	public SalePoint getDealer() {
 		return dealer;
@@ -135,7 +139,7 @@ public class Sale extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>dealer</code>.</p>
 	 *
-	 * @param dealer a {@link ru.extas.model.SalePoint} object.
+	 * @param dealer a {@link ru.extas.model.contacts.SalePoint} object.
 	 */
 	public void setDealer(SalePoint dealer) {
 		this.dealer = dealer;
@@ -144,7 +148,7 @@ public class Sale extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>client</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Person} object.
+	 * @return a {@link ru.extas.model.contacts.Person} object.
 	 */
 	public Person getClient() {
 		return client;
@@ -153,7 +157,7 @@ public class Sale extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>client</code>.</p>
 	 *
-	 * @param client a {@link ru.extas.model.Person} object.
+	 * @param client a {@link ru.extas.model.contacts.Person} object.
 	 */
 	public void setClient(Person client) {
 		this.client = client;
@@ -162,7 +166,7 @@ public class Sale extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>status</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Sale.Status} object.
+	 * @return a {@link Sale.Status} object.
 	 */
 	public Status getStatus() {
 		return status;
@@ -171,7 +175,7 @@ public class Sale extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>status</code>.</p>
 	 *
-	 * @param status a {@link ru.extas.model.Sale.Status} object.
+	 * @param status a {@link Sale.Status} object.
 	 */
 	public void setStatus(Status status) {
 		this.status = status;

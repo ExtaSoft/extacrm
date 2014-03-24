@@ -1,7 +1,7 @@
 package ru.extas.server;
 
-import ru.extas.model.Person;
-import ru.extas.model.UserProfile;
+import ru.extas.model.contacts.Person;
+import ru.extas.model.users.UserProfile;
 import ru.extas.security.ExtaDomain;
 import ru.extas.security.SecureTarget;
 import ru.extas.security.UserRole;

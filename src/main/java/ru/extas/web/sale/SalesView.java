@@ -4,7 +4,7 @@
 package ru.extas.web.sale;
 
 import com.vaadin.ui.Component;
-import ru.extas.model.Sale;
+import ru.extas.model.sale.Sale;
 import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.AbstractTabView;
 import ru.extas.web.commons.component.AbstractTabInfo;

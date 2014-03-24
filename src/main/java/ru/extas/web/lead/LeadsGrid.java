@@ -9,7 +9,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.Lead;
+import ru.extas.model.lead.Lead;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 
@@ -36,7 +36,7 @@ public class LeadsGrid extends ExtaGrid {
 	/**
 	 * <p>Constructor for LeadsGrid.</p>
 	 *
-	 * @param status a {@link ru.extas.model.Lead.Status} object.
+	 * @param status a {@link ru.extas.model.lead.Lead.Status} object.
 	 */
 	public LeadsGrid(Lead.Status status) {
 		super(false);

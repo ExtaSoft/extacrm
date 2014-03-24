@@ -1,7 +1,7 @@
 package ru.extas.web.contacts;
 
-import ru.extas.model.Company;
-import ru.extas.model.SalePoint;
+import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
@@ -28,7 +28,7 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 	 * <p>Constructor for SalePointSelectWindow.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
-	 * @param company a {@link ru.extas.model.Company} object.
+	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public SalePointSelectWindow(final String caption, final Company company) {
 		super(caption);
@@ -73,7 +73,7 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 	/**
 	 * <p>Getter for the field <code>selected</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.SalePoint} object.
+	 * @return a {@link ru.extas.model.contacts.SalePoint} object.
 	 */
 	public SalePoint getSelected() {
 		return selected;

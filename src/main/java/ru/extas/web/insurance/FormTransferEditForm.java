@@ -7,7 +7,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupDateField;
 import org.joda.time.LocalDate;
-import ru.extas.model.FormTransfer;
+import ru.extas.model.insurance.FormTransfer;
 import ru.extas.server.FormTransferService;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.window.AbstractEditForm;

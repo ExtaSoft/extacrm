@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.Policy;
+import ru.extas.model.insurance.Policy;
 
 import javax.inject.Inject;
 import java.util.List;

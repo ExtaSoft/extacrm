@@ -6,8 +6,8 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
-import ru.extas.model.ProdCredit;
-import ru.extas.model.ProdCreditDoc;
+import ru.extas.model.sale.ProdCredit;
+import ru.extas.model.sale.ProdCreditDoc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class ProdCredDocsField extends CustomField<List> {
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 * @param description a {@link java.lang.String} object.
-	 * @param product a {@link ru.extas.model.ProdCredit} object.
+	 * @param product a {@link ru.extas.model.sale.ProdCredit} object.
 	 */
 	public ProdCredDocsField(String caption, final String description, ProdCredit product) {
 		this.product = product;

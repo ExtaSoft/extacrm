@@ -8,7 +8,7 @@ import com.google.common.collect.Table;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
-import ru.extas.model.Insurance;
+import ru.extas.model.insurance.Insurance;
 
 import java.math.BigDecimal;
 import java.util.HashSet;

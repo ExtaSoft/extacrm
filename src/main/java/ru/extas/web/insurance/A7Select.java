@@ -6,7 +6,7 @@ package ru.extas.web.insurance;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.model.A7Form;
+import ru.extas.model.insurance.A7Form;
 import ru.extas.server.A7FormRepository;
 import ru.extas.server.A7FormService;
 

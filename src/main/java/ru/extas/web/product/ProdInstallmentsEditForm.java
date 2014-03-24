@@ -3,7 +3,7 @@ package ru.extas.web.product;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import ru.extas.model.ProdInstallments;
+import ru.extas.model.sale.ProdInstallments;
 import ru.extas.server.ProdInstallmentsRepository;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.converters.StringToPercentConverter;

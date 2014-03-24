@@ -10,8 +10,8 @@ import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.FormTransfer;
-import ru.extas.model.Person;
+import ru.extas.model.contacts.Person;
+import ru.extas.model.insurance.FormTransfer;
 import ru.extas.web.commons.*;
 
 import java.text.MessageFormat;

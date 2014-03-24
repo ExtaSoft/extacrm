@@ -7,7 +7,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
-import ru.extas.model.Sale;
+import ru.extas.model.sale.Sale;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 
@@ -33,7 +33,7 @@ public class SalesGrid extends ExtaGrid {
 	/**
 	 * <p>Constructor for SalesGrid.</p>
 	 *
-	 * @param status a {@link ru.extas.model.Sale.Status} object.
+	 * @param status a {@link ru.extas.model.sale.Sale.Status} object.
 	 */
 	public SalesGrid(Sale.Status status) {
 		super(false);

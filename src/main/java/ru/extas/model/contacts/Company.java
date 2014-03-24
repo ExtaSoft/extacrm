@@ -1,4 +1,4 @@
-package ru.extas.model;
+package ru.extas.model.contacts;
 
 import javax.persistence.*;
 import java.util.List;

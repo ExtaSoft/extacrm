@@ -1,6 +1,6 @@
 package ru.extas.web.contacts;
 
-import ru.extas.model.Contact;
+import ru.extas.model.contacts.Contact;
 
 /**
  * Выбор из общего списка контактов (юрики и физики)

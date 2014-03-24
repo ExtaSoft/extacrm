@@ -1,7 +1,7 @@
 package ru.extas.server;
 
-import ru.extas.model.Lead;
-import ru.extas.model.Sale;
+import ru.extas.model.lead.Lead;
+import ru.extas.model.sale.Sale;
 
 /**
  * <p>SaleService interface.</p>

@@ -10,7 +10,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.joda.time.LocalDate;
-import ru.extas.model.Lead;
+import ru.extas.model.lead.Lead;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 

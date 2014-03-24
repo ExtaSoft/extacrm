@@ -6,7 +6,7 @@ package ru.extas.web.insurance;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import ru.extas.model.Policy;
+import ru.extas.model.insurance.Policy;
 import ru.extas.server.PolicyRegistry;
 import ru.extas.web.commons.component.DateTimeField;
 import ru.extas.web.commons.component.EditField;

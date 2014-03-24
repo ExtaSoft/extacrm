@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.Lead;
-import ru.extas.model.Sale;
+import ru.extas.model.lead.Lead;
+import ru.extas.model.sale.Sale;
 import ru.extas.server.SaleService;
 
 import java.util.Map;

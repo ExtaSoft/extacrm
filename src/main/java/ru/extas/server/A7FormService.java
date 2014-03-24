@@ -1,7 +1,7 @@
 package ru.extas.server;
 
-import ru.extas.model.A7Form;
-import ru.extas.model.Contact;
+import ru.extas.model.contacts.Contact;
+import ru.extas.model.insurance.A7Form;
 
 import java.util.List;
 

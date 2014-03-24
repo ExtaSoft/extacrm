@@ -12,7 +12,7 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.Insurance;
+import ru.extas.model.insurance.Insurance;
 import ru.extas.server.InsuranceCalculator;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.DownloadFileWindow;

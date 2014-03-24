@@ -10,7 +10,7 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.UserProfile;
+import ru.extas.model.users.UserProfile;
 import ru.extas.security.UserRealm;
 import ru.extas.security.UserRole;
 import ru.extas.server.UserRegistry;

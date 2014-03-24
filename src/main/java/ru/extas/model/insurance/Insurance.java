@@ -1,6 +1,10 @@
-package ru.extas.model;
+package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
+import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.contacts.Contact;
+import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -20,7 +24,7 @@ import java.math.BigDecimal;
 				@Index(columnList = "A7_NUM"),
 				@Index(columnList = "\"DATE\"")
 		})
-public class Insurance extends AbstractExtaObject {
+public class Insurance extends ChangeMarkedObject {
 
 	private static final long serialVersionUID = -1289533183659860816L;
 
@@ -120,7 +124,7 @@ public class Insurance extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>coverTime</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Insurance.PeriodOfCover} object.
+	 * @return a {@link Insurance.PeriodOfCover} object.
 	 */
 	public PeriodOfCover getCoverTime() {
 		return coverTime;
@@ -129,7 +133,7 @@ public class Insurance extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>coverTime</code>.</p>
 	 *
-	 * @param coverTime a {@link ru.extas.model.Insurance.PeriodOfCover} object.
+	 * @param coverTime a {@link Insurance.PeriodOfCover} object.
 	 */
 	public void setCoverTime(PeriodOfCover coverTime) {
 		this.coverTime = coverTime;
@@ -140,7 +144,7 @@ public class Insurance extends AbstractExtaObject {
 	 *
 	 * @param motorBrand a {@link java.lang.String} object.
 	 * @param riskSum a {@link java.math.BigDecimal} object.
-	 * @param coverPeriod a {@link ru.extas.model.Insurance.PeriodOfCover} object.
+	 * @param coverPeriod a {@link Insurance.PeriodOfCover} object.
 	 * @param usedMotor a boolean.
 	 */
 	public Insurance(String motorBrand, BigDecimal riskSum, PeriodOfCover coverPeriod, boolean usedMotor) {
@@ -369,7 +373,7 @@ public class Insurance extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>dealer</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.SalePoint} object.
+	 * @return a {@link ru.extas.model.contacts.SalePoint} object.
 	 */
 	public SalePoint getDealer() {
 		return dealer;
@@ -378,7 +382,7 @@ public class Insurance extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>dealer</code>.</p>
 	 *
-	 * @param dealer a {@link ru.extas.model.SalePoint} object.
+	 * @param dealer a {@link ru.extas.model.contacts.SalePoint} object.
 	 */
 	public void setDealer(SalePoint dealer) {
 		this.dealer = dealer;

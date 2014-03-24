@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.extas.model.AddressInfo;
-import ru.extas.model.SalePoint;
+import ru.extas.model.contacts.AddressInfo;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.server.SalePointRepository;
 
 import javax.inject.Inject;

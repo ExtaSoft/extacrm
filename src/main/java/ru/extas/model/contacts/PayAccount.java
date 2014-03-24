@@ -1,5 +1,7 @@
-package ru.extas.model;
+package ru.extas.model.contacts;
 
+
+import ru.extas.model.common.ChangeMarkedObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +20,7 @@ import javax.validation.constraints.Max;
  */
 @Entity
 @Table(name = "PAY_ACCOUNT")
-public class PayAccount extends AbstractExtaObject {
+public class PayAccount extends ChangeMarkedObject {
 
     private static final long serialVersionUID = -7891940552175752858L;
 
@@ -121,7 +123,7 @@ public class PayAccount extends AbstractExtaObject {
     /**
      * <p>Getter for the field <code>contact</code>.</p>
      *
-     * @return a {@link ru.extas.model.Company} object.
+     * @return a {@link ru.extas.model.contacts.Company} object.
      */
     public Company getContact() {
         return contact;
@@ -130,7 +132,7 @@ public class PayAccount extends AbstractExtaObject {
     /**
      * <p>Setter for the field <code>contact</code>.</p>
      *
-     * @param contact a {@link ru.extas.model.Company} object.
+     * @param contact a {@link ru.extas.model.contacts.Company} object.
      */
     public void setContact(final Company contact) {
         this.contact = contact;

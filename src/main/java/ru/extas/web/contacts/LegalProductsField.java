@@ -3,7 +3,7 @@ package ru.extas.web.contacts;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
-import ru.extas.model.Product;
+import ru.extas.model.sale.Product;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.product.ProductDataDecl;
 import ru.extas.web.product.ProductSelectWindow;

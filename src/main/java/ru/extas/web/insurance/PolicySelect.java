@@ -6,7 +6,7 @@ package ru.extas.web.insurance;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.model.Policy;
+import ru.extas.model.insurance.Policy;
 import ru.extas.server.PolicyRegistry;
 import ru.extas.server.PolicyService;
 

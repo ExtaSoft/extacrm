@@ -2,7 +2,7 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window;
-import ru.extas.model.Company;
+import ru.extas.model.contacts.Company;
 
 /**
  * Выбор контакта - юр. лица
@@ -23,7 +23,7 @@ public class CompanySelect extends AbstractContactSelect<Company> {
 	 * <p>Constructor for CompanySelect.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
-	 * @param defNewObj a {@link ru.extas.model.Company} object.
+	 * @param defNewObj a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public CompanySelect(final String caption, Company defNewObj) {
 		super(caption, Company.class);
@@ -45,7 +45,7 @@ public class CompanySelect extends AbstractContactSelect<Company> {
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 * @param description a {@link java.lang.String} object.
-	 * @param defNewObj a {@link ru.extas.model.Company} object.
+	 * @param defNewObj a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public CompanySelect(final String caption, final String description, Company defNewObj) {
 		super(caption, description, Company.class);

@@ -3,7 +3,7 @@ package ru.extas.web.contacts;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import ru.extas.model.Person;
+import ru.extas.model.contacts.Person;
 
 /**
  * Выбор контакта - физ. лица
@@ -38,7 +38,7 @@ public class PersonSelect extends CustomField<Person> {
 	 * <p>Constructor for PersonSelect.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
-	 * @param defNewObj a {@link ru.extas.model.Person} object.
+	 * @param defNewObj a {@link ru.extas.model.contacts.Person} object.
 	 */
 	public PersonSelect(final String caption, Person defNewObj) {
 		this(caption, "", defNewObj);
@@ -59,7 +59,7 @@ public class PersonSelect extends CustomField<Person> {
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 * @param description a {@link java.lang.String} object.
-	 * @param defNewObj a {@link ru.extas.model.Person} object.
+	 * @param defNewObj a {@link ru.extas.model.contacts.Person} object.
 	 */
 	public PersonSelect(final String caption, final String description, Person defNewObj) {
 		this.defNewObj = defNewObj;

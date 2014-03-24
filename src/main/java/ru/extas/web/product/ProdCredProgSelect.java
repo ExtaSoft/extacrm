@@ -1,7 +1,7 @@
 package ru.extas.web.product;
 
 import com.vaadin.ui.ComboBox;
-import ru.extas.model.ProdCredit;
+import ru.extas.model.sale.ProdCredit;
 import ru.extas.web.util.ComponentUtil;
 
 /**

@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.extas.model.Lead;
+import ru.extas.model.lead.Lead;
 
 /**
  * Служба управления лидами

@@ -8,8 +8,8 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
-import ru.extas.model.Company;
-import ru.extas.model.SalePoint;
+import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class SalePointsGrid extends ExtaGrid {
 	/**
 	 * <p>Constructor for SalePointsGrid.</p>
 	 *
-	 * @param company a {@link ru.extas.model.Company} object.
+	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public SalePointsGrid(final Company company) {
 		super(false);

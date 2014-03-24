@@ -6,7 +6,7 @@ package ru.extas.web.product;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.model.Product;
+import ru.extas.model.sale.Product;
 import ru.extas.server.ProductRepository;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class ProductSelect extends ComboBox {
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 * @param description a {@link java.lang.String} object.
-	 * @param product a {@link ru.extas.model.Product} object.
+	 * @param product a {@link ru.extas.model.sale.Product} object.
 	 */
 	public ProductSelect(final String caption, final String description, final Product product) {
 		super(caption);

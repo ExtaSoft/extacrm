@@ -2,7 +2,7 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import ru.extas.model.Person;
+import ru.extas.model.contacts.Person;
 
 /**
  * Поле для расширенного отображения физ. лица.

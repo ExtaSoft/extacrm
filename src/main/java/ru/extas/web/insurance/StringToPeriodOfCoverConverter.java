@@ -6,7 +6,7 @@ package ru.extas.web.insurance;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
-import ru.extas.model.Insurance;
+import ru.extas.model.insurance.Insurance;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**

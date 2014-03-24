@@ -1,4 +1,4 @@
-package ru.extas.model;
+package ru.extas.model.contacts;
 
 import javax.persistence.*;
 import java.util.List;
@@ -166,7 +166,7 @@ public class SalePoint extends Contact implements Cloneable {
 	/**
 	 * <p>Getter for the field <code>company</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Company} object.
+	 * @return a {@link Company} object.
 	 */
 	public Company getCompany() {
 		return company;
@@ -175,7 +175,7 @@ public class SalePoint extends Contact implements Cloneable {
 	/**
 	 * <p>Setter for the field <code>company</code>.</p>
 	 *
-	 * @param company a {@link ru.extas.model.Company} object.
+	 * @param company a {@link Company} object.
 	 */
 	public void setCompany(final Company company) {
 		this.company = company;

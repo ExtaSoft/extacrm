@@ -1,0 +1,101 @@
+package ru.extas.model.common;
+
+import org.eclipse.persistence.annotations.UuidGenerator;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+/**
+ * Объект с идентификатором и контролем версий
+ *
+ * @author Valery Orlov
+ *         Date: 22.03.2014
+ *         Time: 17:16
+ */
+@MappedSuperclass
+@Access(AccessType.FIELD)
+@UuidGenerator(name = "system-uuid")
+public class IdentifiedObject implements Serializable {
+
+    private static final long serialVersionUID = 9098736299506726746L;
+
+    @Id
+    @GeneratedValue(generator = "system-uuid")
+    @Column(name = "ID", length = 50)
+    protected String id;
+
+    @Version
+    protected int version;
+
+    public IdentifiedObject() {
+        super();
+    }
+
+    /**
+     * <p>Getter for the field <code>version</code>.</p>
+     *
+     * @return a int.
+     */
+    public int getVersion() {
+        return version;
+    }
+
+    /**
+     * <p>Setter for the field <code>version</code>.</p>
+     *
+     * @param version a int.
+     */
+    public void setVersion(final int version) {
+        this.version = version;
+    }
+
+    /**
+     * Получить ID объекта (uuid.encoded-pk)
+     *
+     * @return ID объекта
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Установить ID объекта. <b> Не устанавливать для новых (вставляемых)
+     * объектов!!!</b>
+     *
+     * @param key ID объекта
+     */
+    public void setId(String key) {
+        this.id = key;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        int result;
+        if (id != null) {
+            result = 1;
+            final int prime = 31;
+            result = prime * result + id.hashCode();
+        } else {
+            result = super.hashCode();
+        }
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ChangeMarkedObject other = (ChangeMarkedObject) obj;
+        if (id == null || other.id == null) {
+            return super.equals(other);
+        } else
+            return id.equals(other.id);
+    }
+
+}

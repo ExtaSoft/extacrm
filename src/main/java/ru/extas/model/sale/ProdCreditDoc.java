@@ -1,4 +1,6 @@
-package ru.extas.model;
+package ru.extas.model.sale;
+
+import ru.extas.model.common.ChangeMarkedObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "PROD_CREDIT_DOC")
-public class ProdCreditDoc extends AbstractExtaObject {
+public class ProdCreditDoc extends ChangeMarkedObject {
 
 	// Вид документа:
 	// Паспорт
@@ -47,7 +49,7 @@ public class ProdCreditDoc extends AbstractExtaObject {
 	/**
 	 * <p>Constructor for ProdCreditDoc.</p>
 	 *
-	 * @param product a {@link ru.extas.model.ProdCredit} object.
+	 * @param product a {@link ProdCredit} object.
 	 */
 	public ProdCreditDoc(final ProdCredit product) {
 		this.product = product;
@@ -92,7 +94,7 @@ public class ProdCreditDoc extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>product</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.ProdCredit} object.
+	 * @return a {@link ProdCredit} object.
 	 */
 	public ProdCredit getProduct() {
 		return product;
@@ -101,7 +103,7 @@ public class ProdCreditDoc extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>product</code>.</p>
 	 *
-	 * @param product a {@link ru.extas.model.ProdCredit} object.
+	 * @param product a {@link ProdCredit} object.
 	 */
 	public void setProduct(final ProdCredit product) {
 		this.product = product;

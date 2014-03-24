@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.extas.model.FormTransfer;
+import ru.extas.model.insurance.FormTransfer;
 
 import java.util.List;
 

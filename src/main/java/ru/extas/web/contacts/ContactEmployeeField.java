@@ -3,7 +3,7 @@ package ru.extas.web.contacts;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
-import ru.extas.model.Person;
+import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.GridDataDecl;
 
 import java.util.ArrayList;

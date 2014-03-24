@@ -3,7 +3,7 @@ package ru.extas.web.sale;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import ru.extas.model.Sale;
+import ru.extas.model.sale.Sale;
 import ru.extas.server.SaleRegistry;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;

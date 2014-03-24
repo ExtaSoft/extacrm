@@ -6,8 +6,8 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
-import ru.extas.model.ProductInSale;
-import ru.extas.model.Sale;
+import ru.extas.model.sale.ProductInSale;
+import ru.extas.model.sale.Sale;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 	/**
 	 * <p>Constructor for ProductInSaleGrid.</p>
 	 *
-	 * @param sale a {@link ru.extas.model.Sale} object.
+	 * @param sale a {@link ru.extas.model.sale.Sale} object.
 	 */
 	public ProductInSaleGrid(final Sale sale) {
 		this("Продукты в продаже", sale);
@@ -41,7 +41,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 	 * <p>Constructor for ProductInSaleGrid.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
-	 * @param sale a {@link ru.extas.model.Sale} object.
+	 * @param sale a {@link ru.extas.model.sale.Sale} object.
 	 */
 	public ProductInSaleGrid(final String caption, final Sale sale) {
 		this.sale = sale;

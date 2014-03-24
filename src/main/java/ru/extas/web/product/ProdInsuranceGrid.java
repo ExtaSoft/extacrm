@@ -3,7 +3,7 @@ package ru.extas.web.product;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window;
-import ru.extas.model.ProdInsurance;
+import ru.extas.model.sale.ProdInsurance;
 import ru.extas.web.commons.*;
 
 import java.util.List;

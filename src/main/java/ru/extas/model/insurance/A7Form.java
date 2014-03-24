@@ -1,8 +1,11 @@
 /**
  *
  */
-package ru.extas.model;
+package ru.extas.model.insurance;
 
+
+import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.contacts.Contact;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -20,7 +23,7 @@ import javax.validation.constraints.NotNull;
         indexes = {
                 @Index(columnList = "OWNER_ID, STATUS, REG_NUM")
         })
-public class A7Form extends AbstractExtaObject {
+public class A7Form extends ChangeMarkedObject {
 
     private static final long serialVersionUID = -4643812782207400426L;
     /** Constant <code>REG_NUM_LENGTH=20</code> */

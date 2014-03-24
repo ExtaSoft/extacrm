@@ -1,4 +1,4 @@
-package ru.extas.model;
+package ru.extas.model.contacts;
 
 import org.joda.time.LocalDate;
 
@@ -90,7 +90,7 @@ public class Person extends Contact {
 	/**
 	 * <p>copyTo.</p>
 	 *
-	 * @param toObj a {@link ru.extas.model.Person} object.
+	 * @param toObj a {@link Person} object.
 	 */
 	protected void copyTo(Person toObj) {
 		super.copyTo(toObj);
@@ -145,7 +145,7 @@ public class Person extends Contact {
 	/**
 	 * <p>Getter for the field <code>jobPosition</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Person.Position} object.
+	 * @return a {@link Person.Position} object.
 	 */
 	public Position getJobPosition() {
 		return jobPosition;
@@ -154,7 +154,7 @@ public class Person extends Contact {
 	/**
 	 * <p>Setter for the field <code>jobPosition</code>.</p>
 	 *
-	 * @param jobPosition a {@link ru.extas.model.Person.Position} object.
+	 * @param jobPosition a {@link Person.Position} object.
 	 */
 	public void setJobPosition(final Position jobPosition) {
 		this.jobPosition = jobPosition;
@@ -271,7 +271,7 @@ public class Person extends Contact {
 	/**
 	 * <p>Getter for the field <code>sex</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Person.Sex} object.
+	 * @return a {@link Person.Sex} object.
 	 */
 	public Sex getSex() {
 		return sex;
@@ -280,7 +280,7 @@ public class Person extends Contact {
 	/**
 	 * <p>Setter for the field <code>sex</code>.</p>
 	 *
-	 * @param sex a {@link ru.extas.model.Person.Sex} object.
+	 * @param sex a {@link Person.Sex} object.
 	 */
 	public void setSex(final Sex sex) {
 		this.sex = sex;

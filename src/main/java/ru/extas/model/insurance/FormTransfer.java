@@ -1,9 +1,11 @@
 /**
  *
  */
-package ru.extas.model;
+package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
+import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.contacts.Person;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,7 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 @Entity
 @Table(name = "FORM_TRANSFER")
-public class FormTransfer extends AbstractExtaObject {
+public class FormTransfer extends ChangeMarkedObject {
 
     private static final long serialVersionUID = -3750723587703870668L;
 

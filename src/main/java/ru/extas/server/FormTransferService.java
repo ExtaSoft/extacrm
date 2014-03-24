@@ -1,6 +1,6 @@
 package ru.extas.server;
 
-import ru.extas.model.FormTransfer;
+import ru.extas.model.insurance.FormTransfer;
 
 /**
  * <p>FormTransferService interface.</p>

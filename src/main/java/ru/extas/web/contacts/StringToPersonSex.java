@@ -6,8 +6,8 @@ package ru.extas.web.contacts;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
-import ru.extas.model.Person;
-import ru.extas.model.Person.Sex;
+import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Person.Sex;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**

@@ -1,6 +1,6 @@
 package ru.extas.server;
 
-import ru.extas.model.Lead;
+import ru.extas.model.lead.Lead;
 
 /**
  * <p>LeadService interface.</p>

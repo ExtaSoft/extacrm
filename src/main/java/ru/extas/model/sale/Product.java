@@ -1,4 +1,7 @@
-package ru.extas.model;
+package ru.extas.model.sale;
+
+import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.contacts.Company;
 
 import javax.persistence.*;
 
@@ -16,7 +19,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE")
 @Table(name = "PRODUCT")
-public abstract class Product extends AbstractExtaObject {
+public abstract class Product extends ChangeMarkedObject {
 
 	/**
 	 * <p>Constructor for Product.</p>
@@ -71,7 +74,7 @@ public abstract class Product extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>vendor</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Company} object.
+	 * @return a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public Company getVendor() {
 		return vendor;
@@ -80,7 +83,7 @@ public abstract class Product extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>vendor</code>.</p>
 	 *
-	 * @param vendor a {@link ru.extas.model.Company} object.
+	 * @param vendor a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public void setVendor(final Company vendor) {
 		this.vendor = vendor;

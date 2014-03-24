@@ -5,7 +5,7 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.extas.model.A7Form;
+import ru.extas.model.insurance.A7Form;
 import ru.extas.server.A7FormRepository;
 
 import java.util.Locale;
@@ -60,7 +60,7 @@ public class StringToA7FormConverter implements Converter<String, A7Form> {
      *
      * @param value  a {@link java.lang.String} object.
      * @param locale a {@link java.util.Locale} object.
-     * @return a {@link ru.extas.model.A7Form} object.
+     * @return a {@link ru.extas.model.insurance.A7Form} object.
      * @throws ConversionException if any.
      */
     public A7Form convertToModel(final String value, final Locale locale)
@@ -71,7 +71,7 @@ public class StringToA7FormConverter implements Converter<String, A7Form> {
     /**
      * <p>convertToPresentation.</p>
      *
-     * @param value  a {@link ru.extas.model.A7Form} object.
+     * @param value  a {@link ru.extas.model.insurance.A7Form} object.
      * @param locale a {@link java.util.Locale} object.
      * @return a {@link java.lang.String} object.
      * @throws ConversionException if any.

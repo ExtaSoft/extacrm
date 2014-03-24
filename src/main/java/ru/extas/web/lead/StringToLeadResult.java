@@ -6,7 +6,7 @@ package ru.extas.web.lead;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
-import ru.extas.model.Lead;
+import ru.extas.model.lead.Lead;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**

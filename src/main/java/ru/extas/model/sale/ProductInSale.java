@@ -1,4 +1,6 @@
-package ru.extas.model;
+package ru.extas.model.sale;
+
+import ru.extas.model.common.ChangeMarkedObject;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,7 +16,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "PRODUCT_IN_SALE")
-public class ProductInSale extends AbstractExtaObject {
+public class ProductInSale extends ChangeMarkedObject {
 
 	// Продажа
 	@ManyToOne(optional = false)
@@ -45,7 +47,7 @@ public class ProductInSale extends AbstractExtaObject {
 	/**
 	 * <p>Constructor for ProductInSale.</p>
 	 *
-	 * @param sale a {@link ru.extas.model.Sale} object.
+	 * @param sale a {@link Sale} object.
 	 */
 	public ProductInSale(final Sale sale) {
 		this.sale = sale;
@@ -72,7 +74,7 @@ public class ProductInSale extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>sale</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Sale} object.
+	 * @return a {@link Sale} object.
 	 */
 	public Sale getSale() {
 		return sale;
@@ -81,7 +83,7 @@ public class ProductInSale extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>sale</code>.</p>
 	 *
-	 * @param sale a {@link ru.extas.model.Sale} object.
+	 * @param sale a {@link Sale} object.
 	 */
 	public void setSale(final Sale sale) {
 		this.sale = sale;
@@ -90,7 +92,7 @@ public class ProductInSale extends AbstractExtaObject {
 	/**
 	 * <p>Getter for the field <code>product</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Product} object.
+	 * @return a {@link Product} object.
 	 */
 	public Product getProduct() {
 		return product;
@@ -99,7 +101,7 @@ public class ProductInSale extends AbstractExtaObject {
 	/**
 	 * <p>Setter for the field <code>product</code>.</p>
 	 *
-	 * @param product a {@link ru.extas.model.Product} object.
+	 * @param product a {@link Product} object.
 	 */
 	public void setProduct(final Product product) {
 		this.product = product;

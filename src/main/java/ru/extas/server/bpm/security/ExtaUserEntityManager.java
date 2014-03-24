@@ -10,7 +10,7 @@ import org.activiti.engine.impl.persistence.entity.UserEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.UserProfile;
+import ru.extas.model.users.UserProfile;
 import ru.extas.server.UserManagementService;
 
 import java.util.List;

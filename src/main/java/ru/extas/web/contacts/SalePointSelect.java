@@ -3,8 +3,8 @@ package ru.extas.web.contacts;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import ru.extas.model.Company;
-import ru.extas.model.SalePoint;
+import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.SalePoint;
 
 /**
  * Компонент выбора торговой точки
@@ -29,7 +29,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 * @param description a {@link java.lang.String} object.
-	 * @param company a {@link ru.extas.model.Company} object.
+	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public SalePointSelect(final String caption, final String description, final Company company) {
 		this.company = company;

@@ -3,7 +3,15 @@ package ru.extas.security;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import ru.extas.model.*;
+import ru.extas.model.Insurance_;
+import ru.extas.model.Lead_;
+import ru.extas.model.Person_;
+import ru.extas.model.Sale_;
+import ru.extas.model.common.SecuredObject;
+import ru.extas.model.contacts.Person;
+import ru.extas.model.insurance.Insurance;
+import ru.extas.model.lead.Lead;
+import ru.extas.model.sale.Sale;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -55,5 +63,11 @@ public class PersonSecurityManager extends AbstractSecurityManager {
 
 		return cb.or(ownPersons, ownInsPersons, ownLeadsPersons, ownSalesPersons);
 	}
+
+    /** {@inheritDoc} */
+    @Override
+    public void addOwnerPrivileges(SecuredObject securedObject) {
+
+    }
 
 }

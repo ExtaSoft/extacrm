@@ -6,8 +6,8 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
-import ru.extas.model.ProdCredit;
-import ru.extas.model.ProdCreditPercent;
+import ru.extas.model.sale.ProdCredit;
+import ru.extas.model.sale.ProdCreditPercent;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class ProdCredPercentField extends CustomField<List> {
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 * @param description a {@link java.lang.String} object.
-	 * @param product a {@link ru.extas.model.ProdCredit} object.
+	 * @param product a {@link ru.extas.model.sale.ProdCredit} object.
 	 */
 	public ProdCredPercentField(String caption, final String description, ProdCredit product) {
 		this.product = product;

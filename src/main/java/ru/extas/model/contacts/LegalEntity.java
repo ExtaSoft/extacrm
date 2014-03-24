@@ -1,4 +1,6 @@
-package ru.extas.model;
+package ru.extas.model.contacts;
+
+import ru.extas.model.sale.ProdCredit;
 
 import javax.persistence.*;
 import java.util.List;
@@ -86,7 +88,7 @@ public class LegalEntity extends Contact implements Cloneable {
 	/**
 	 * <p>Getter for the field <code>director</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Person} object.
+	 * @return a {@link Person} object.
 	 */
 	public Person getDirector() {
 		return director;
@@ -95,7 +97,7 @@ public class LegalEntity extends Contact implements Cloneable {
 	/**
 	 * <p>Setter for the field <code>director</code>.</p>
 	 *
-	 * @param director a {@link ru.extas.model.Person} object.
+	 * @param director a {@link Person} object.
 	 */
 	public void setDirector(final Person director) {
 		this.director = director;
@@ -141,7 +143,7 @@ public class LegalEntity extends Contact implements Cloneable {
 	/**
 	 * <p>Getter for the field <code>company</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Company} object.
+	 * @return a {@link Company} object.
 	 */
 	public Company getCompany() {
 		return company;
@@ -150,7 +152,7 @@ public class LegalEntity extends Contact implements Cloneable {
 	/**
 	 * <p>Setter for the field <code>company</code>.</p>
 	 *
-	 * @param company a {@link ru.extas.model.Company} object.
+	 * @param company a {@link Company} object.
 	 */
 	public void setCompany(final Company company) {
 		this.company = company;

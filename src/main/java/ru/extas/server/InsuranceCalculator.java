@@ -3,7 +3,7 @@
  */
 package ru.extas.server;
 
-import ru.extas.model.Insurance;
+import ru.extas.model.insurance.Insurance;
 
 import java.math.BigDecimal;
 

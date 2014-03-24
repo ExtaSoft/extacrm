@@ -1,7 +1,7 @@
 package ru.extas.server.bpm.security;
 
 import org.activiti.engine.identity.User;
-import ru.extas.model.UserProfile;
+import ru.extas.model.users.UserProfile;
 
 /**
  * <p>BpmUser class.</p>
@@ -19,7 +19,7 @@ public class BpmUser implements User {
     /**
      * <p>Constructor for BpmUser.</p>
      *
-     * @param userProfile a {@link ru.extas.model.UserProfile} object.
+     * @param userProfile a {@link ru.extas.model.users.UserProfile} object.
      */
     public BpmUser(UserProfile userProfile) {
         this.userProfile = userProfile;

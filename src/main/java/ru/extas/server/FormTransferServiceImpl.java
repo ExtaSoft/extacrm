@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.FormTransfer;
+import ru.extas.model.insurance.FormTransfer;
 
 import javax.inject.Inject;
 

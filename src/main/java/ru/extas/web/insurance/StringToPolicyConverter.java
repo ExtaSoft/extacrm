@@ -5,7 +5,7 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.extas.model.Policy;
+import ru.extas.model.insurance.Policy;
 import ru.extas.server.PolicyRegistry;
 
 import java.util.Locale;
@@ -60,7 +60,7 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
      *
      * @param value  a {@link java.lang.String} object.
      * @param locale a {@link java.util.Locale} object.
-     * @return a {@link ru.extas.model.Policy} object.
+     * @return a {@link ru.extas.model.insurance.Policy} object.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
@@ -74,7 +74,7 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
     /**
      * <p>convertToPresentation.</p>
      *
-     * @param value  a {@link ru.extas.model.Policy} object.
+     * @param value  a {@link ru.extas.model.insurance.Policy} object.
      * @param locale a {@link java.util.Locale} object.
      * @return a {@link java.lang.String} object.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.

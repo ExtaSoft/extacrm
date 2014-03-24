@@ -1,6 +1,6 @@
 package ru.extas.web.contacts;
 
-import ru.extas.model.Person;
+import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
@@ -68,7 +68,7 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 	/**
 	 * <p>Getter for the field <code>selected</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.Person} object.
+	 * @return a {@link ru.extas.model.contacts.Person} object.
 	 */
 	public Person getSelected() {
 		return selected;

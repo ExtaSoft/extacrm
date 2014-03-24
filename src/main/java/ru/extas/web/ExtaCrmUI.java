@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import ru.extas.model.UserProfile;
+import ru.extas.model.users.UserProfile;
 import ru.extas.security.ExtaDomain;
 import ru.extas.server.UserManagementService;
 import ru.extas.web.config.ConfigView;

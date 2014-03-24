@@ -1,4 +1,6 @@
-package ru.extas.model;
+package ru.extas.model.contacts;
+
+import ru.extas.model.common.ChangeMarkedObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -16,7 +18,7 @@ import javax.validation.constraints.Max;
 @Table(name = "CONTACT_CODE", indexes = {
         @Index(columnList = "TYPE, CODE", unique = true)
 })
-public class ContactCode extends AbstractExtaObject {
+public class ContactCode extends ChangeMarkedObject {
 
     private static final long serialVersionUID = -7891940552175752834L;
 
@@ -38,7 +40,7 @@ public class ContactCode extends AbstractExtaObject {
     /**
      * <p>Getter for the field <code>contact</code>.</p>
      *
-     * @return a {@link ru.extas.model.Company} object.
+     * @return a {@link Company} object.
      */
     public Company getContact() {
         return contact;
@@ -47,7 +49,7 @@ public class ContactCode extends AbstractExtaObject {
     /**
      * <p>Setter for the field <code>contact</code>.</p>
      *
-     * @param contact a {@link ru.extas.model.Company} object.
+     * @param contact a {@link Company} object.
      */
     public void setContact(final Company contact) {
         this.contact = contact;

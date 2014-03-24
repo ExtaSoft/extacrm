@@ -2,7 +2,7 @@ package ru.extas.web.lead;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import ru.extas.model.Lead;
+import ru.extas.model.lead.Lead;
 
 /**
  * Поле расширенного просмотра лида.

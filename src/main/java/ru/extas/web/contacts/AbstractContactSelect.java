@@ -6,7 +6,7 @@ package ru.extas.web.contacts;
 import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.model.Contact;
+import ru.extas.model.contacts.Contact;
 import ru.extas.web.commons.ExtaDataContainer;
 
 /**

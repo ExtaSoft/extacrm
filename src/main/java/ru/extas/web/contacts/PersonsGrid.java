@@ -7,7 +7,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
-import ru.extas.model.Person;
+import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.*;
 
 import java.util.List;

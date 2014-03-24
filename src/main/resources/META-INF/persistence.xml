@@ -8,30 +8,30 @@
 
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
-        <class>ru.extas.model.A7Form</class>
-        <class>ru.extas.model.AbstractExtaObject</class>
-        <class>ru.extas.model.AddressInfo</class>
-        <class>ru.extas.model.Company</class>
-        <class>ru.extas.model.Contact</class>
-        <class>ru.extas.model.SalePoint</class>
-        <class>ru.extas.model.LegalEntity</class>
-        <class>ru.extas.model.ContactCode</class>
-        <class>ru.extas.model.FormTransfer</class>
-        <class>ru.extas.model.Insurance</class>
-        <class>ru.extas.model.Lead</class>
-        <class>ru.extas.model.Sale</class>
-        <class>ru.extas.model.PayAccount</class>
-        <class>ru.extas.model.Person</class>
-        <class>ru.extas.model.Policy</class>
-        <class>ru.extas.model.UserGroup</class>
-        <class>ru.extas.model.UserProfile</class>
-        <class>ru.extas.model.Product</class>
-        <class>ru.extas.model.ProdCredit</class>
-        <class>ru.extas.model.ProdCreditPercent</class>
-        <class>ru.extas.model.ProdCreditDoc</class>
-        <class>ru.extas.model.ProdInsurance</class>
-        <class>ru.extas.model.ProdInstallments</class>
-        <class>ru.extas.model.ProductInSale</class>
+        <class>ru.extas.model.insurance.A7Form</class>
+        <class>ru.extas.model.common.ChangeMarkedObject</class>
+        <class>ru.extas.model.contacts.AddressInfo</class>
+        <class>ru.extas.model.contacts.Company</class>
+        <class>ru.extas.model.contacts.Contact</class>
+        <class>ru.extas.model.contacts.SalePoint</class>
+        <class>ru.extas.model.contacts.LegalEntity</class>
+        <class>ru.extas.model.contacts.ContactCode</class>
+        <class>ru.extas.model.insurance.FormTransfer</class>
+        <class>ru.extas.model.insurance.Insurance</class>
+        <class>ru.extas.model.lead.Lead</class>
+        <class>ru.extas.model.sale.Sale</class>
+        <class>ru.extas.model.contacts.PayAccount</class>
+        <class>ru.extas.model.contacts.Person</class>
+        <class>ru.extas.model.insurance.Policy</class>
+        <class>ru.extas.model.users.UserGroup</class>
+        <class>ru.extas.model.users.UserProfile</class>
+        <class>ru.extas.model.sale.Product</class>
+        <class>ru.extas.model.sale.ProdCredit</class>
+        <class>ru.extas.model.sale.ProdCreditPercent</class>
+        <class>ru.extas.model.sale.ProdCreditDoc</class>
+        <class>ru.extas.model.sale.ProdInsurance</class>
+        <class>ru.extas.model.sale.ProdInstallments</class>
+        <class>ru.extas.model.sale.ProductInSale</class>
         <class>ru.extas.model.common.DateTimeConverter</class>
         <class>ru.extas.model.common.LocalDateConverter</class>
         <class>ru.extas.model.common.UserRoleConverter</class>

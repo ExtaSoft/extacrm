@@ -6,8 +6,8 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
-import ru.extas.model.Company;
-import ru.extas.model.LegalEntity;
+import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.ItemAction;
@@ -34,7 +34,7 @@ public class LegalEntitiesField extends CustomField<List> {
 	/**
 	 * <p>Constructor for LegalEntitiesField.</p>
 	 *
-	 * @param company a {@link ru.extas.model.Company} object.
+	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public LegalEntitiesField(Company company) {
 		this.company = company;

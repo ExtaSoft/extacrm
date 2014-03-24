@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.A7Form;
-import ru.extas.model.A7Form.Status;
-import ru.extas.model.Contact;
+import ru.extas.model.contacts.Contact;
+import ru.extas.model.insurance.A7Form;
+import ru.extas.model.insurance.A7Form.Status;
 
 import javax.inject.Inject;
 import java.util.List;

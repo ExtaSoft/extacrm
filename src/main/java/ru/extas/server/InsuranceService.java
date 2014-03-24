@@ -1,6 +1,6 @@
 package ru.extas.server;
 
-import ru.extas.model.Insurance;
+import ru.extas.model.insurance.Insurance;
 
 /**
  * <p>InsuranceService interface.</p>

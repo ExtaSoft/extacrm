@@ -8,8 +8,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
-import ru.extas.model.Company;
-import ru.extas.model.LegalEntity;
+import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.ItemAction;
@@ -36,7 +36,7 @@ public class LegalEntitiesSelectField extends CustomField<List> {
 	/**
 	 * <p>Constructor for LegalEntitiesSelectField.</p>
 	 *
-	 * @param company a {@link ru.extas.model.Company} object.
+	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public LegalEntitiesSelectField(Company company) {
 		this.company = company;
