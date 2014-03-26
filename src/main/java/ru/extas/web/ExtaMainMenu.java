@@ -15,7 +15,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import ru.extas.security.ExtaDomain;
-import ru.extas.server.UserManagementService;
+import ru.extas.server.users.UserManagementService;
 
 import java.util.EnumSet;
 import java.util.HashMap;

@@ -6,7 +6,7 @@ package ru.extas.web.insurance;
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.extas.model.insurance.A7Form;
-import ru.extas.server.A7FormRepository;
+import ru.extas.server.insurance.A7FormRepository;
 
 import java.util.Locale;
 

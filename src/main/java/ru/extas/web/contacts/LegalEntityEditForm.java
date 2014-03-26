@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.LegalEntity;
-import ru.extas.server.ContactRepository;
-import ru.extas.server.SupplementService;
+import ru.extas.server.contacts.LegalEntityRepository;
+import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
@@ -117,7 +117,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
     protected void saveObject(final LegalEntity obj) {
         if (obj.getCompany().getId() != null) {
             logger.debug("Saving contact data...");
-            final ContactRepository contactRepository = lookup(ContactRepository.class);
+            final LegalEntityRepository contactRepository = lookup(LegalEntityRepository.class);
             contactRepository.save(obj);
             Notification.show("Юр. лицо сохранено", Notification.Type.TRAY_NOTIFICATION);
         }

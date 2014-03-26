@@ -8,7 +8,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupDateField;
 import org.joda.time.LocalDate;
 import ru.extas.model.insurance.FormTransfer;
-import ru.extas.server.FormTransferService;
+import ru.extas.server.insurance.FormTransferService;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;

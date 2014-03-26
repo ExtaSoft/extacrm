@@ -3,7 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PropertyInsuranceTemplate" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" isSummaryNewPage="true" uuid="986df7ce-c89b-43fa-a244-5c098911f17a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<import value="ru.extas.model.Person"/>
+	<import value="ru.extas.model.contacts.Person"/>
 	<style name="SimpleText" isDefault="true" hAlign="Left" vAlign="Middle" pattern="" fontName="DejaVu Sans" fontSize="7" isBold="false" pdfEncoding="CP1251 (Cyrillic)" isPdfEmbedded="true"/>
 	<style name="Title" style="SimpleText" hAlign="Right" fontName="DejaVu Sans" fontSize="10" isBold="true" pdfEncoding="CP1251 (Cyrillic)" isPdfEmbedded="true"/>
 	<style name="TableContent" style="SimpleText" hAlign="Left" vAlign="Middle"/>
@@ -16,8 +16,8 @@
 			<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 		</box>
 	</style>
-	<parameter name="ins" class="ru.extas.model.Insurance" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new ru.extas.model.Insurance()]]></defaultValueExpression>
+	<parameter name="ins" class="ru.extas.model.insurance.Insurance" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new ru.extas.model.insurance.Insurance()]]></defaultValueExpression>
 	</parameter>
 	<parameter name="periodOfCover" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="withMat" class="java.lang.Boolean" isForPrompting="false">

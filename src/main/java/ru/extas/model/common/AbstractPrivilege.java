@@ -3,12 +3,13 @@
  */
 package ru.extas.model.common;
 
-import org.eclipse.persistence.annotations.UuidGenerator;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Max;
 
 /**
@@ -20,8 +21,6 @@ import javax.validation.constraints.Max;
  * @since 0.3
  */
 @MappedSuperclass
-@Access(AccessType.FIELD)
-@UuidGenerator(name = "system-uuid")
 public abstract class AbstractPrivilege extends ChangeMarkedObject {
 
     // Id объекта определяется в дочерних классах. Делая выборку из журнала по этому полю мы можем получить список

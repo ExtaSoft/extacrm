@@ -12,7 +12,7 @@ package ru.extas.web.insurance;
 
 import com.vaadin.ui.Component;
 import ru.extas.security.ExtaDomain;
-import ru.extas.server.UserManagementService;
+import ru.extas.server.users.UserManagementService;
 import ru.extas.web.commons.AbstractTabView;
 import ru.extas.web.commons.component.AbstractTabInfo;
 import ru.extas.web.commons.component.TabInfo;

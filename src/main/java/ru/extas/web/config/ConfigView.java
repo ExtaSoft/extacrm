@@ -43,14 +43,6 @@ public class ConfigView extends ExtaAbstractView {
     }
 
     private void updateDataBase() {
-//        try {
-//            ContactRepository service = lookup(ContactRepository.class);
-//            service.updateMissingType();
-//            Notification.show("База данных обновлена", Notification.Type.TRAY_NOTIFICATION);
-//        } catch (Exception e) {
-//            logger.error("База данных не обновлена", e);
-//            Notification.show("Ошибки при обновлении базы данных", e.getMessage(), Notification.Type.ERROR_MESSAGE);
-//        }
     }
 
     /** {@inheritDoc} */

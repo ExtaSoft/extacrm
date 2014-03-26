@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.extas.model.users.UserProfile;
 import ru.extas.security.ExtaDomain;
-import ru.extas.server.UserManagementService;
+import ru.extas.server.users.UserManagementService;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;

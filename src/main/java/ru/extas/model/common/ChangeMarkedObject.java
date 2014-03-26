@@ -4,7 +4,7 @@
 package ru.extas.model.common;
 
 import org.joda.time.DateTime;
-import ru.extas.server.UserManagementService;
+import ru.extas.server.users.UserManagementService;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

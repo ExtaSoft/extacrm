@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.server.ContactRepository;
-import ru.extas.server.SupplementService;
+import ru.extas.server.contacts.SalePointRepository;
+import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
@@ -118,7 +118,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     protected void saveObject(final SalePoint obj) {
         if (obj.getCompany().getId() != null) {
             logger.debug("Saving contact data...");
-            final ContactRepository contactRepository = lookup(ContactRepository.class);
+            final SalePointRepository contactRepository = lookup(SalePointRepository.class);
             contactRepository.save(obj);
             Notification.show("Юр. лицо сохранено", Notification.Type.TRAY_NOTIFICATION);
         }

@@ -4,7 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.TwinColSelect;
-import ru.extas.server.SupplementService;
+import ru.extas.server.references.SupplementService;
 
 import java.util.Set;
 

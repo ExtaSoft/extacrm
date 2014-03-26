@@ -7,7 +7,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.sale.Product;
-import ru.extas.server.ProductRepository;
+import ru.extas.server.sale.ProductRepository;
 
 import java.util.List;
 

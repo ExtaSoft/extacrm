@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Contact;
-import ru.extas.server.ContactRepository;
-import ru.extas.server.SupplementService;
+import ru.extas.server.contacts.CompanyRepository;
+import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
@@ -99,7 +99,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     @Override
     protected void saveObject(final Company obj) {
         logger.debug("Saving contact data...");
-        final ContactRepository contactRepository = lookup(ContactRepository.class);
+        final CompanyRepository contactRepository = lookup(CompanyRepository.class);
         contactRepository.save(obj);
         Notification.show("Компания сохранена", Notification.Type.TRAY_NOTIFICATION);
     }

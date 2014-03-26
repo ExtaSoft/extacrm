@@ -1,6 +1,6 @@
 package ru.extas.security;
 
-import ru.extas.server.UserManagementService;
+import ru.extas.server.users.UserManagementService;
 
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;

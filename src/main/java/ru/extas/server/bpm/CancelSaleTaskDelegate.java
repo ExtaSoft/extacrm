@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
-import ru.extas.server.LeadRepository;
-import ru.extas.server.SaleRegistry;
+import ru.extas.server.lead.LeadRepository;
+import ru.extas.server.sale.SaleRegistry;
 
 import java.util.Map;
 

@@ -5,7 +5,7 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.Container;
 import ru.extas.model.insurance.A7Form;
-import ru.extas.server.A7FormService;
+import ru.extas.server.insurance.A7FormService;
 import ru.extas.web.commons.*;
 
 import java.util.List;

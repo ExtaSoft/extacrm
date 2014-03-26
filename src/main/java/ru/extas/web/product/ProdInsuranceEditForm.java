@@ -4,7 +4,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdInsurance;
-import ru.extas.server.ProdInsuranceRepository;
+import ru.extas.server.sale.ProdInsuranceRepository;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.commons.window.AbstractEditForm;

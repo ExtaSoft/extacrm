@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.Person.Sex;
-import ru.extas.server.ContactRepository;
-import ru.extas.server.SupplementService;
+import ru.extas.server.contacts.PersonRepository;
+import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.LocalDateField;
@@ -106,7 +106,7 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     @Override
     protected void saveObject(final Person obj) {
         logger.debug("Saving contact data...");
-        final ContactRepository contactRepository = lookup(ContactRepository.class);
+        final PersonRepository contactRepository = lookup(PersonRepository.class);
         contactRepository.save(obj);
         Notification.show("Контакт сохранен", Notification.Type.TRAY_NOTIFICATION);
     }

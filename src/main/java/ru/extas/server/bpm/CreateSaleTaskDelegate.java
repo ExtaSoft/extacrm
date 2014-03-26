@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
-import ru.extas.server.SaleService;
+import ru.extas.server.sale.SaleService;
 
 import java.util.Map;
 

@@ -2,7 +2,7 @@ package ru.extas.web.product;
 
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.server.SupplementService;
+import ru.extas.server.references.SupplementService;
 
 import static ru.extas.server.ServiceLocator.lookup;
 

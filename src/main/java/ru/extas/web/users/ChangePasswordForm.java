@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.users.UserProfile;
 import ru.extas.security.UserRealm;
-import ru.extas.server.UserRegistry;
+import ru.extas.server.users.UserRegistry;
 import ru.extas.web.commons.window.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;

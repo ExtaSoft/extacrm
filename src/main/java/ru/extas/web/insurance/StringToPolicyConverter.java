@@ -6,7 +6,7 @@ package ru.extas.web.insurance;
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.extas.model.insurance.Policy;
-import ru.extas.server.PolicyRegistry;
+import ru.extas.server.insurance.PolicyRegistry;
 
 import java.util.Locale;
 

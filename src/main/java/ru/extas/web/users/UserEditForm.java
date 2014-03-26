@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.users.UserProfile;
 import ru.extas.security.UserRealm;
 import ru.extas.security.UserRole;
-import ru.extas.server.UserRegistry;
+import ru.extas.server.users.UserRegistry;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.util.ComponentUtil;

@@ -16,7 +16,7 @@ import org.apache.shiro.util.SimpleByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.users.UserProfile;
-import ru.extas.server.UserManagementService;
+import ru.extas.server.users.UserManagementService;
 
 import java.util.List;
 

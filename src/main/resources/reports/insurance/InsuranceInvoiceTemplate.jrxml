@@ -15,8 +15,8 @@
 		</box>
 	</style>
 	<parameter name="moneyFormatter" class="java.text.NumberFormat" isForPrompting="false"/>
-	<parameter name="ins" class="ru.extas.model.Insurance" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new ru.extas.model.Insurance()]]></defaultValueExpression>
+	<parameter name="ins" class="ru.extas.model.insurance.Insurance" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new ru.extas.model.insurance.Insurance()]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[]]>

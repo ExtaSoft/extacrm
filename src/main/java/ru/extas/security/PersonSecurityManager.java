@@ -3,21 +3,27 @@ package ru.extas.security;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import ru.extas.model.Insurance_;
-import ru.extas.model.Lead_;
-import ru.extas.model.Person_;
-import ru.extas.model.Sale_;
 import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.PersonPrivilege;
+import ru.extas.model.contacts.Person_;
 import ru.extas.model.insurance.Insurance;
+import ru.extas.model.insurance.Insurance_;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.Lead_;
 import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.Sale_;
+import ru.extas.server.users.UserManagementService;
 
+import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * <p>PersonSecurityManager class.</p>
@@ -31,6 +37,9 @@ import java.util.List;
 @Component("PersonSecurityManager")
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class PersonSecurityManager extends AbstractSecurityManager {
+
+    @Inject
+    private UserManagementService userService;
 
 	/** {@inheritDoc} */
 	@Override
@@ -68,6 +77,21 @@ public class PersonSecurityManager extends AbstractSecurityManager {
     @Override
     public void addOwnerPrivileges(SecuredObject securedObject) {
 
+        checkNotNull(securedObject);
+        checkState(securedObject instanceof Person);
+
+        // Получить контакт текущего пользователя
+        Person user = userService.getCurrentUserContact();
+
+        // Получить компании пользователя
+
+        // Получить торговые точки пользователя
+
+        // Уровень доступа
+
+        Person person = (Person) securedObject;
+        PersonPrivilege privilege = new PersonPrivilege();
+        privilege.setPerson(person);
     }
 
 }
