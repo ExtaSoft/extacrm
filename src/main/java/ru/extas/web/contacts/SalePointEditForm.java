@@ -57,7 +57,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     private TextArea streetBldField;
     @PropertyId("legalEntities")
     private LegalEntitiesSelectField legalsField;
-    @PropertyId("employes")
+    @PropertyId("employees")
     private ContactEmployeeField employeeField;
 
     @PropertyId("alphaCode")

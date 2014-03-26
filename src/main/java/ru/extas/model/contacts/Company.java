@@ -31,7 +31,7 @@ public class Company extends Contact implements Cloneable {
 			name = "CONTACT_EMPLOYEE",
 			joinColumns = {@JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")})
-	private List<Person> employeeList;
+	private List<Person> employees;
 
 	// Юридические лица компании
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -96,8 +96,8 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<Person> getEmployeeList() {
-		return employeeList;
+	public List<Person> getEmployees() {
+		return employees;
 	}
 
 	/**
@@ -105,8 +105,8 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @param employeeList a {@link java.util.List} object.
 	 */
-	public void setEmployeeList(final List<Person> employeeList) {
-		this.employeeList = employeeList;
+	public void setEmployees(final List<Person> employeeList) {
+		this.employees = employeeList;
 	}
 
 	/**

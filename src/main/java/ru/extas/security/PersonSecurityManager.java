@@ -4,15 +4,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import ru.extas.model.common.SecuredObject;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.PersonPrivilege;
-import ru.extas.model.contacts.Person_;
+import ru.extas.model.contacts.*;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.insurance.Insurance_;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.lead.Lead_;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.Sale_;
+import ru.extas.server.contacts.CompanyRepository;
+import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.users.UserManagementService;
 
 import javax.inject.Inject;
@@ -40,6 +40,10 @@ public class PersonSecurityManager extends AbstractSecurityManager {
 
     @Inject
     private UserManagementService userService;
+    @Inject
+    private CompanyRepository companyRepository;
+    @Inject
+    private SalePointRepository salePointRepository;
 
 	/** {@inheritDoc} */
 	@Override
@@ -84,8 +88,10 @@ public class PersonSecurityManager extends AbstractSecurityManager {
         Person user = userService.getCurrentUserContact();
 
         // Получить компании пользователя
+        List<Company> companies = companyRepository.findByEmployee(user);
 
         // Получить торговые точки пользователя
+        List<SalePoint> salePoints = salePointRepository.findByEmployee(user);
 
         // Уровень доступа
 

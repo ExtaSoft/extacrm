@@ -70,7 +70,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     private SalePointsField salePointsField;
 
     // Вкладка - "Сотрудники"
-    @PropertyId("employeeList")
+    @PropertyId("employees")
     private ContactEmployeeField employeeField;
 
 
