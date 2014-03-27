@@ -49,7 +49,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     @PropertyId("client")
     private AbstractField<? extends Contact> clientNameField;
     @PropertyId("beneficiary")
-    private EditField beneficiaryField;
+    private ComboBox beneficiaryField;
     @PropertyId("usedMotor")
     private CheckBox usedMotorField;
     @PropertyId("motorType")
@@ -163,9 +163,12 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
         createAndBindClientNameField(isLegalEntity, form);
 
-        beneficiaryField = new EditField("Выгодопреобретатель", "Введите имя выгодопреобретателя по данному договору страхования");
+        beneficiaryField = new ComboBox("Выгодопреобретатель");
+        beneficiaryField.setDescription("Введите имя выгодопреобретателя по данному договору страхования");
+        beneficiaryField.setNewItemsAllowed(true);
         beneficiaryField.setRequired(true);
-        beneficiaryField.setColumns(25);
+        beneficiaryField.setWidth(25, Unit.EM);
+        fillBeneficiariesChoice(clientNameField.getPropertyDataSource() != null ? clientNameField.getValue() : obj.getClient());
         form.addComponent(beneficiaryField);
 
         usedMotorField = new CheckBox("Б/у техника");
@@ -295,6 +298,16 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         return form;
     }
 
+    private void fillBeneficiariesChoice(Contact client) {
+        // Очищаем все
+        beneficiaryField.removeAllItems();
+        if(client != null)
+            beneficiaryField.addItem(client.getName());
+        // Добавляем заданных выгодопреобретателей
+        beneficiaryField.addItem("ВТБ24 (ЗАО)");
+        beneficiaryField.addItem("ООО «Финпрайд»");
+    }
+
     protected void createAndBindClientNameField(Boolean isLegalEntity, FormLayout form) {
         AbstractField<? extends Contact> select;
         String caption = "Страхователь";
@@ -310,6 +323,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
             public void valueChange(ValueChangeEvent event) {
                 Contact contact = clientNameField.getValue();
                 if (beneficiaryField.getPropertyDataSource() != null && contact != null) {
+                    fillBeneficiariesChoice(contact);
                     beneficiaryField.setValue(contact.getName());
                 }
             }
