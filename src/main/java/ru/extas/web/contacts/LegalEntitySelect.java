@@ -3,7 +3,7 @@ package ru.extas.web.contacts;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import ru.extas.model.LegalEntity;
+import ru.extas.model.contacts.LegalEntity;
 
 /**
  * Выбор контакта - юр. лица
@@ -21,7 +21,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
     private Label phoneField;
     private Button viewBtn;
 
-    public LegalEntitySelect(final String caption){
+    public LegalEntitySelect(final String caption) {
         this(caption, "");
     }
 

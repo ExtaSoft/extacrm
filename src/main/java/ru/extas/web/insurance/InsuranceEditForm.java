@@ -7,13 +7,13 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
 import org.joda.time.LocalDate;
-import ru.extas.model.Contact;
-import ru.extas.model.Insurance;
-import ru.extas.model.LegalEntity;
-import ru.extas.model.Policy;
-import ru.extas.server.InsuranceCalculator;
-import ru.extas.server.InsuranceService;
-import ru.extas.server.PolicyService;
+import ru.extas.model.contacts.Contact;
+import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.insurance.Insurance;
+import ru.extas.model.insurance.Policy;
+import ru.extas.server.insurance.InsuranceCalculator;
+import ru.extas.server.insurance.InsuranceService;
+import ru.extas.server.insurance.PolicyService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
@@ -90,14 +90,6 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
         super(caption, obj);
     }
-
-	/*
-     * (non-Javadoc)
-	 *
-	 * @see
-	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
-	 * .AbstractExtaObject)
-	 */
 
     /**
      * {@inheritDoc}
@@ -301,7 +293,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     private void fillBeneficiariesChoice(Contact client) {
         // Очищаем все
         beneficiaryField.removeAllItems();
-        if(client != null)
+        if (client != null)
             beneficiaryField.addItem(client.getName());
         // Добавляем заданных выгодопреобретателей
         beneficiaryField.addItem("ВТБ24 (ЗАО)");
@@ -368,12 +360,6 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         }
     }
 
-	/*
-     * (non-Javadoc)
-	 *
-	 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
-	 * AbstractExtaObject)
-	 */
 
     /**
      * {@inheritDoc}
@@ -390,13 +376,6 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         }
     }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
-	 * AbstractExtaObject)
-	 */
-
     /**
      * {@inheritDoc}
      */
@@ -405,14 +384,6 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         lookup(InsuranceService.class).saveAndIssue(obj);
         Notification.show("Полис сохранен", Notification.Type.TRAY_NOTIFICATION);
     }
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
-	 * AbstractExtaObject)
-	 */
 
     /**
      * {@inheritDoc}
