@@ -7,15 +7,18 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
 import org.joda.time.LocalDate;
-import ru.extas.model.insurance.Insurance;
-import ru.extas.model.insurance.Policy;
-import ru.extas.server.insurance.InsuranceCalculator;
-import ru.extas.server.insurance.InsuranceService;
-import ru.extas.server.insurance.PolicyService;
+import ru.extas.model.Contact;
+import ru.extas.model.Insurance;
+import ru.extas.model.LegalEntity;
+import ru.extas.model.Policy;
+import ru.extas.server.InsuranceCalculator;
+import ru.extas.server.InsuranceService;
+import ru.extas.server.PolicyService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.contacts.LegalEntitySelect;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
 import ru.extas.web.reference.MotorBrandSelect;
@@ -31,7 +34,6 @@ import static ru.extas.server.ServiceLocator.lookup;
  *
  * @author Valery Orlov
  * @version $Id: $Id
- * @since 0.3
  */
 public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
@@ -43,10 +45,11 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     private A7Select a7FormNumField;
     @PropertyId("date")
     private PopupDateField dateField;
+    private CheckBox isLegalEntityField;
     @PropertyId("client")
-    private PersonSelect clientNameField;
+    private AbstractField<? extends Contact> clientNameField;
     @PropertyId("beneficiary")
-    private EditField beneficiaryField;
+    private ComboBox beneficiaryField;
     @PropertyId("usedMotor")
     private CheckBox usedMotorField;
     @PropertyId("motorType")
@@ -88,7 +91,17 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         super(caption, obj);
     }
 
-    /** {@inheritDoc} */
+	/*
+     * (non-Javadoc)
+	 *
+	 * @see
+	 * ru.extas.web.commons.window.AbstractEditForm#createEditFields(ru.extas.model
+	 * .AbstractExtaObject)
+	 */
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields(final Insurance obj) {
         final FormLayout form = new FormLayout();
@@ -136,21 +149,26 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         });
         form.addComponent(dateField);
 
-        // FIXME Ограничить выбор контакта только клиентами
-        clientNameField = new PersonSelect("Страхователь");
-        clientNameField.setRequired(true);
-        clientNameField.addValueChangeListener(new ValueChangeListener() {
+        boolean isLegalEntity = obj.getClient() != null && obj.getClient() instanceof LegalEntity;
+        isLegalEntityField = new CheckBox("Страхователь Юр.лицо", isLegalEntity);
+        isLegalEntityField.setDescription("Отметте флаг, если страхователь является юр.лицом");
+        isLegalEntityField.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void valueChange(ValueChangeEvent event) {
-                if (beneficiaryField.getPropertyDataSource() != null)
-                    beneficiaryField.setValue(clientNameField.getValue().getName());
+                Boolean isLegalEntity1 = isLegalEntityField.getValue();
+                createAndBindClientNameField(isLegalEntity1, form);
             }
         });
-        form.addComponent(clientNameField);
+        form.addComponent(isLegalEntityField);
 
-        beneficiaryField = new EditField("Выгодопреобретатель", "Введите имя выгодопреобретателя по данному договору страхования");
+        createAndBindClientNameField(isLegalEntity, form);
+
+        beneficiaryField = new ComboBox("Выгодопреобретатель");
+        beneficiaryField.setDescription("Введите имя выгодопреобретателя по данному договору страхования");
+        beneficiaryField.setNewItemsAllowed(true);
         beneficiaryField.setRequired(true);
-        beneficiaryField.setColumns(25);
+        beneficiaryField.setWidth(25, Unit.EM);
+        fillBeneficiariesChoice(clientNameField.getPropertyDataSource() != null ? clientNameField.getValue() : obj.getClient());
         form.addComponent(beneficiaryField);
 
         usedMotorField = new CheckBox("Б/у техника");
@@ -280,6 +298,49 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         return form;
     }
 
+    private void fillBeneficiariesChoice(Contact client) {
+        // Очищаем все
+        beneficiaryField.removeAllItems();
+        if(client != null)
+            beneficiaryField.addItem(client.getName());
+        // Добавляем заданных выгодопреобретателей
+        beneficiaryField.addItem("ВТБ24 (ЗАО)");
+        beneficiaryField.addItem("ООО «Финпрайд»");
+    }
+
+    protected void createAndBindClientNameField(Boolean isLegalEntity, FormLayout form) {
+        AbstractField<? extends Contact> select;
+        String caption = "Страхователь";
+        // FIXME Ограничить выбор контакта только клиентами
+        if (isLegalEntity) {
+            select = new LegalEntitySelect(caption);
+        } else {
+            select = new PersonSelect(caption);
+        }
+        select.setRequired(true);
+        select.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(ValueChangeEvent event) {
+                Contact contact = clientNameField.getValue();
+                if (beneficiaryField.getPropertyDataSource() != null && contact != null) {
+                    fillBeneficiariesChoice(contact);
+                    beneficiaryField.setValue(contact.getName());
+                }
+            }
+        });
+
+        if (clientNameField != null) {
+            clientNameField.getPropertyDataSource().setValue(null);
+            getFieldGroup().unbind(clientNameField);
+            getFieldGroup().bind(select, "client");
+            form.replaceComponent(clientNameField, select);
+        } else {
+            form.addComponent(select);
+        }
+
+        clientNameField = select;
+    }
+
     private void updateTarifField() {
         if (motorBrandField.getPropertyDataSource() != null &&
                 coverTimeField.getContainerDataSource() != null &&
@@ -307,7 +368,16 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         }
     }
 
-    /** {@inheritDoc} */
+	/*
+     * (non-Javadoc)
+	 *
+	 * @see ru.extas.web.commons.window.AbstractEditForm#initObject(ru.extas.model.
+	 * AbstractExtaObject)
+	 */
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initObject(final Insurance obj) {
         if (obj.getId() == null) {
@@ -320,15 +390,33 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         }
     }
 
-    /** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see ru.extas.web.commons.window.AbstractEditForm#saveObject(ru.extas.model.
+	 * AbstractExtaObject)
+	 */
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void saveObject(final Insurance obj) {
         lookup(InsuranceService.class).saveAndIssue(obj);
         Notification.show("Полис сохранен", Notification.Type.TRAY_NOTIFICATION);
     }
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * ru.extas.web.commons.window.AbstractEditForm#checkBeforeSave(ru.extas.model.
+	 * AbstractExtaObject)
+	 */
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void checkBeforeSave(final Insurance obj) {
     }

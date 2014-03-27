@@ -200,6 +200,10 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         UI.getCurrent().addWindow(this);
     }
 
+    protected FieldGroup getFieldGroup() {
+        return fieldGroup;
+    }
+
     /**
      * <p>initObject.</p>
      *

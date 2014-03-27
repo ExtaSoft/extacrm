@@ -21,7 +21,6 @@ class InsuranceDataDecl extends GridDataDecl {
 		addMapping("a7Num", "Квитанция А-7", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("date", "Дата договора");
 		addMapping("client.name", "Клиент");
-		addMapping("client.birthday", "Дата рождения", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("client.phone", "Телефон", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("beneficiary", "Выгодопреобретатель", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("usedMotor", "Б/у", EnumSet.of(PresentFlag.COLLAPSED));
