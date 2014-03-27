@@ -57,17 +57,21 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 
 		@Override
 		protected Container createContainer() {
-			final List<LegalEntity> list = company.getLegalEntities();
-			BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
-			if (list != null) {
-				for (final LegalEntity item : list) {
-					itemContainer.addBean(item);
-				}
-			}
-			itemContainer.addNestedContainerProperty("actualAddress.region");
-            itemContainer.addNestedContainerProperty("company.name");
-			return itemContainer;
-		}
+            if (company != null) {
+                final List<LegalEntity> list = company.getLegalEntities();
+                BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
+                if (list != null) {
+                    for (final LegalEntity item : list) {
+                        itemContainer.addBean(item);
+                    }
+                }
+                itemContainer.addNestedContainerProperty("actualAddress.region");
+                itemContainer.addNestedContainerProperty("company.name");
+                return itemContainer;
+            } else {
+                return super.createContainer();
+            }
+        }
 
 		@Override
 		protected List<UIAction> createActions() {
