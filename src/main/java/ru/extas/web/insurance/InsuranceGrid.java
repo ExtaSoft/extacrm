@@ -71,7 +71,6 @@ public class InsuranceGrid extends ExtaGrid {
 		// Запрос данных
 		final JPAContainer<Insurance> container = new ExtaDataContainer<>(Insurance.class);
 		container.addNestedContainerProperty("client.name");
-		container.addNestedContainerProperty("client.birthday");
 		container.addNestedContainerProperty("client.phone");
 		container.addNestedContainerProperty("dealer.name");
 		UserManagementService userService = lookup(UserManagementService.class);

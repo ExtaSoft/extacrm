@@ -41,9 +41,9 @@ public class Insurance extends AbstractExtaObject {
 	@Column(name = "\"DATE\"")
 	private LocalDate date;
 
-	// Клиент
+	// Клиент может быть физ. или юр. лицом
 	@OneToOne
-	private Person client;
+	private Contact client;
 
     @Column(name = "BENEFICIARY", length = Contact.NAME_LENGTH)
     @Max(Contact.NAME_LENGTH)
@@ -280,7 +280,7 @@ public class Insurance extends AbstractExtaObject {
 	 *
 	 * @return the client
 	 */
-	public Person getClient() {
+	public Contact getClient() {
 		return client;
 	}
 
@@ -289,7 +289,7 @@ public class Insurance extends AbstractExtaObject {
 	 *
 	 * @param client the client to set
 	 */
-	public void setClient(Person client) {
+	public void setClient(Contact client) {
 		this.client = client;
 	}
 
