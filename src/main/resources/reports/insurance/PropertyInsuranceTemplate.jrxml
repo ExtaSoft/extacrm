@@ -625,7 +625,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$P{periodOfCover} + " с даты вступления Полиса в силу. " + 
 (($P{ins}.isUsedMotor() == true) ? ("Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем оплаты Страхователем полной суммы страховой премии.")
-: ("Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем подписания Страхователем акта приема-передачи по договору купли-продажи № " + $P{ins}.getSaleNum() + " от "+ new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getSaleDate().toDate()) + "г. застрахованного имущества, но в любом случае не ранее даты оплаты страховой премии."))]]></textFieldExpression>
+: ("Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем подписания Страхователем акта приема-передачи по договору купли-продажи (договора лизинга) № " + $P{ins}.getSaleNum() + " от "+ new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getSaleDate().toDate()) + "г. застрахованного имущества, но в любом случае не ранее даты оплаты страховой премии."))]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement positionType="Float" x="0" y="657" width="525" height="20" uuid="aa13249b-f593-4769-ade9-5d3510435c17">

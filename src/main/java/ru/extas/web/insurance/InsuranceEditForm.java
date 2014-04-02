@@ -305,7 +305,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
             beneficiaryField.addItem(client.getName());
         // Добавляем заданных выгодопреобретателей
         beneficiaryField.addItem("ВТБ24 (ЗАО)");
-        beneficiaryField.addItem("ООО «Финпрайд»");
+        beneficiaryField.addItem("ООО \"Финпрайд\"");
     }
 
     protected void createAndBindClientNameField(Boolean isLegalEntity, FormLayout form) {
