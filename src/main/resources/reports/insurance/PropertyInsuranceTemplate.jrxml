@@ -216,7 +216,7 @@
 						<textElement verticalAlignment="Middle">
 							<font size="8"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$P{ins}.getBeneficiary() == $P{ins}.getClient().getName() ? $P{ins}.getBeneficiary() : "При гибели или утрате застрахованного имущества - в размере неисполненных обязательств Заемщика, Выгодоприобретатель - " + $P{ins}.getBeneficiary() + ", в оставшейся части – Собственник. При частичном повреждении застрахованного имущества  - Собственник"]]></textFieldExpression>
+						<textFieldExpression><![CDATA[$P{ins}.getBeneficiary() == $P{ins}.getClient().getName() ? $P{ins}.getBeneficiary() : "При гибели или утрате застрахованного имущества - в размере неисполненных обязательств Заемщика (Лизингополучателя), Выгодоприобретатель - " + $P{ins}.getBeneficiary() + ", в оставшейся части – Страхователь. При частичном повреждении застрахованного имущества - Страхователь"]]></textFieldExpression>
 					</textField>
 					<textField>
 						<reportElement positionType="Float" x="313" y="52" width="105" height="19" uuid="94c724e3-4085-45cf-a5d4-26710d981da7">
