@@ -9,6 +9,7 @@ import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.web.commons.GridItem.extractBean;
@@ -58,7 +59,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 		@Override
 		protected Container createContainer() {
             if (company != null) {
-                final List<LegalEntity> list = company.getLegalEntities();
+                final Set<LegalEntity> list = company.getLegalEntities();
                 BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
                 if (list != null) {
                     for (final LegalEntity item : list) {

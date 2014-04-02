@@ -1,7 +1,13 @@
 package ru.extas.model.contacts;
 
+import ru.extas.server.contacts.PersonRepository;
+import ru.extas.server.users.UserManagementService;
+
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
+
+import static com.google.common.collect.Sets.newHashSet;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Данные контакта - физ. лица
@@ -23,7 +29,7 @@ public class Company extends Contact implements Cloneable {
 			name = "COMPANY_OWNER",
 			joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = {@JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")})
-	private List<Person> owners;
+	private Set<Person> owners = newHashSet();
 
 	// Сотрудники компании
 	@ManyToMany(targetEntity = Person.class)
@@ -31,15 +37,15 @@ public class Company extends Contact implements Cloneable {
 			name = "CONTACT_EMPLOYEE",
 			joinColumns = {@JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")})
-	private List<Person> employees;
+	private Set<Person> employees = newHashSet();
 
 	// Юридические лица компании
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<LegalEntity> legalEntities;
+	private Set<LegalEntity> legalEntities = newHashSet();
 
 	// Торговые точки компании
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<SalePoint> salePoints;
+	private Set<SalePoint> salePoints = newHashSet();
 
 	/**
 	 * <p>Constructor for Company.</p>
@@ -47,7 +53,33 @@ public class Company extends Contact implements Cloneable {
 	public Company() {
 	}
 
-	/** {@inheritDoc} */
+    @Override
+    protected void logSecurePrivileges() {
+        super.logSecurePrivileges();
+        // При этом необходимо сделать “видимыми” все связанные объекты компании:
+        Person userContact = lookup(UserManagementService.class).getCurrentUserContact();
+        // Собственник(и) Компании
+        PersonRepository personRepository = lookup(PersonRepository.class);
+        for(Person owner :getOwners()) {
+            owner.getAssociateUsers().add(userContact);
+            personRepository.save(owner);
+        }
+        // Сотрудники компании
+        for(Person employee : getEmployees()){
+            employee.getAssociateUsers().add(userContact);
+            personRepository.save(employee);
+        }
+        // Юридические лица компании
+        for(LegalEntity legalEntity : getLegalEntities()) {
+            legalEntity.getAssociateUsers().add(userContact);
+        }
+        // Торговые точки компании
+        for(SalePoint salePoint : getSalePoints()) {
+            salePoint.getAssociateUsers().add(userContact);
+        }
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	public Company clone() {
 		Company newObj = new Company();
@@ -60,7 +92,7 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<Person> getOwners() {
+	public Set<Person> getOwners() {
 		return owners;
 	}
 
@@ -69,7 +101,7 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @param ownerList a {@link java.util.List} object.
 	 */
-	public void setOwners(final List<Person> ownerList) {
+	public void setOwners(final Set<Person> ownerList) {
 		this.owners = ownerList;
 	}
 
@@ -78,7 +110,7 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<SalePoint> getSalePoints() {
+	public Set<SalePoint> getSalePoints() {
 		return salePoints;
 	}
 
@@ -87,7 +119,7 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @param salePointList a {@link java.util.List} object.
 	 */
-	public void setSalePoints(final List<SalePoint> salePointList) {
+	public void setSalePoints(final Set<SalePoint> salePointList) {
 		this.salePoints = salePointList;
 	}
 
@@ -96,7 +128,7 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<Person> getEmployees() {
+	public Set<Person> getEmployees() {
 		return employees;
 	}
 
@@ -105,7 +137,7 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @param employeeList a {@link java.util.List} object.
 	 */
-	public void setEmployees(final List<Person> employeeList) {
+	public void setEmployees(final Set<Person> employeeList) {
 		this.employees = employeeList;
 	}
 
@@ -114,7 +146,7 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<LegalEntity> getLegalEntities() {
+	public Set<LegalEntity> getLegalEntities() {
 		return legalEntities;
 	}
 
@@ -123,7 +155,7 @@ public class Company extends Contact implements Cloneable {
 	 *
 	 * @param legalEntities a {@link java.util.List} object.
 	 */
-	public void setLegalEntities(final List<LegalEntity> legalEntities) {
+	public void setLegalEntities(final Set<LegalEntity> legalEntities) {
 		this.legalEntities = legalEntities;
 	}
 }

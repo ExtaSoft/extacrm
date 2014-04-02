@@ -1,6 +1,6 @@
 package ru.extas.model.lead;
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "LEAD")
-public class Lead extends ChangeMarkedObject {
+public class Lead extends SecuredObject {
 
 	/**
 	 * Статусы лида

@@ -1,6 +1,6 @@
 package ru.extas.model.sale;
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "SALE")
-public class Sale extends ChangeMarkedObject {
+public class Sale extends SecuredObject {
 
 	/**
 	 * Статусы продажи

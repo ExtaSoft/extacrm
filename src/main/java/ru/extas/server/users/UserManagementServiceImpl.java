@@ -18,7 +18,6 @@ import ru.extas.security.SecureTarget;
 import ru.extas.security.UserRole;
 
 import javax.inject.Inject;
-import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -176,20 +175,4 @@ public class UserManagementServiceImpl implements UserManagementService {
         return subject.isPermitted(new ExtaPermission(domain, target));
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public List<String> findCorporateUsers() {
-        UserProfile user = getCurrentUser();
-        // Найти компанию пользователя
-        // Найти всех сотрудников компании
-        // Выбрать тех кто является пользователем
-        return null;   // FIXME: implement
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<String> findSalePointUsers() {
-        String user = getCurrentUserLogin();
-        return null; // FIXME: implement
-    }
 }

@@ -8,6 +8,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import ru.extas.model.contacts.Company;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class CompaniesGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<Company> container = new ExtaDataContainer<>(Company.class);
+		final ExtaDataContainer<Company> container = new SecuredDataContainer<>(Company.class, ExtaDomain.COMPANY);
 		container.addNestedContainerProperty("actualAddress.region");
 		return container;
 	}

@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import java.util.Set;
 
 /**
  * Данные контакта - физ. лица
@@ -72,6 +73,12 @@ public class Person extends Contact {
 	@Column(name = "PASS_REG_ADRESS", length = 255)
 	@Max(255)
 	private String passRegAdress;
+
+    @ManyToMany(mappedBy = "employees")
+    private Set<Company> employers;
+
+    @ManyToMany(mappedBy = "employees")
+    private Set<SalePoint> workPlaces;
 
 	/**
 	 * <p>Constructor for Person.</p>
@@ -311,4 +318,20 @@ public class Person extends Contact {
 	public void setPassRegAdress(final String passRegAdress) {
 		this.passRegAdress = passRegAdress;
 	}
+
+    public Set<Company> getEmployers() {
+        return employers;
+    }
+
+    public void setEmployers(Set<Company> employers) {
+        this.employers = employers;
+    }
+
+    public Set<SalePoint> getWorkPlaces() {
+        return workPlaces;
+    }
+
+    public void setWorkPlaces(Set<SalePoint> workPlaces) {
+        this.workPlaces = workPlaces;
+    }
 }

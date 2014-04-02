@@ -8,6 +8,7 @@ import com.vaadin.ui.Window;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import ru.extas.model.sale.Sale;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 
@@ -28,16 +29,16 @@ import static ru.extas.web.commons.GridItem.extractBean;
  */
 public class SalesGrid extends ExtaGrid {
 	private static final long serialVersionUID = 4876073256421755574L;
-	private final Sale.Status status;
+	private final ExtaDomain domain;
 
 	/**
 	 * <p>Constructor for SalesGrid.</p>
 	 *
 	 * @param status a {@link ru.extas.model.sale.Sale.Status} object.
 	 */
-	public SalesGrid(Sale.Status status) {
+	public SalesGrid(ExtaDomain domain) {
 		super(false);
-		this.status = status;
+		this.domain = domain;
 		initialize();
 	}
 
@@ -51,7 +52,7 @@ public class SalesGrid extends ExtaGrid {
 	@Override
 	protected void initTable(Mode mode) {
 		super.initTable(mode);
-		if (status == Sale.Status.CANCELED)
+		if (domain == ExtaDomain.SALES_CANCELED)
 			table.setColumnCollapsed("result", false);
 	}
 
@@ -59,10 +60,12 @@ public class SalesGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<Sale> container = new ExtaDataContainer<>(Sale.class);
+		final ExtaDataContainer<Sale> container = new SecuredDataContainer<>(Sale.class, domain);
 		container.addNestedContainerProperty("client.name");
 		container.addNestedContainerProperty("dealer.name");
-		container.addContainerFilter(new Compare.Equal("status", status));
+		container.addContainerFilter(new Compare.Equal("status",
+                domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
+                domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
 		return container;
 	}
 

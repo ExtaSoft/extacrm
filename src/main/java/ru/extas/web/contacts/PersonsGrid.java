@@ -8,6 +8,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import ru.extas.model.contacts.Person;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class PersonsGrid extends ExtaGrid {
 	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
-		final ExtaDataContainer<Person> container = new ExtaDataContainer<>(Person.class);
+		final ExtaDataContainer<Person> container = new SecuredDataContainer<>(Person.class, ExtaDomain.PERSON);
 		container.addNestedContainerProperty("actualAddress.region");
 		return container;
 	}

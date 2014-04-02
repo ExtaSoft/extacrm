@@ -6,7 +6,6 @@ import ru.extas.security.ExtaDomain;
 import ru.extas.security.SecureTarget;
 import ru.extas.security.UserRole;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -108,17 +107,4 @@ public interface UserManagementService {
      */
     boolean isPermittedTarget(ExtaDomain domain, SecureTarget target);
 
-    /**
-     * Ищет пользователей относящихся к той же компании, что и текущий
-     *
-     * @return список логинов пользователей
-     */
-    List<String> findCorporateUsers();
-
-    /**
-     * Ищет пользователей относящихся к той же торговой точке, что и текущий
-     *
-     * @return список логинов пользователей
-     */
-    List<String> findSalePointUsers();
 }

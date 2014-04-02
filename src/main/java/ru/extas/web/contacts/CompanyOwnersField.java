@@ -8,7 +8,9 @@ import ru.extas.web.commons.GridDataDecl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.web.commons.TableUtils.fullInitTable;
 
 /**
@@ -20,7 +22,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  * @version $Id: $Id
  * @since 0.3
  */
-public class CompanyOwnersField extends CustomField<List> {
+public class CompanyOwnersField extends CustomField<Set> {
 
 	private Table table;
 	private BeanItemContainer<Person> container;
@@ -57,7 +59,7 @@ public class CompanyOwnersField extends CustomField<List> {
 						public void windowClose(final Window.CloseEvent e) {
 							if (selectWindow.isSelectPressed()) {
 								container.addBean(selectWindow.getSelected());
-								setValue(container.getItemIds());
+								setValue(newHashSet(container.getItemIds()));
 								Notification.show("Владелец добавлен", Notification.Type.TRAY_NOTIFICATION);
 							}
 						}
@@ -74,7 +76,7 @@ public class CompanyOwnersField extends CustomField<List> {
 				public void buttonClick(final Button.ClickEvent event) {
 					if (table.getValue() != null) {
 						container.removeItem(table.getValue());
-						setValue(container.getItemIds());
+						setValue(newHashSet(container.getItemIds()));
 					}
 				}
 			});
@@ -112,8 +114,8 @@ public class CompanyOwnersField extends CustomField<List> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Class<? extends List> getType() {
-		return List.class;
+	public Class<? extends Set> getType() {
+		return Set.class;
 	}
 
 }

@@ -10,6 +10,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.lead.Lead;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 
@@ -63,7 +64,10 @@ public class LeadsGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<Lead> container = new ExtaDataContainer<>(Lead.class);
+		final ExtaDataContainer<Lead> container = new SecuredDataContainer<>(Lead.class,
+                status == Lead.Status.NEW ? ExtaDomain.LEADS_NEW :
+                        status == Lead.Status.QUALIFIED ? ExtaDomain.LEADS_QUAL :
+                                ExtaDomain.LEADS_CLOSED);
 		container.addContainerFilter(new Compare.Equal("status", status));
 		container.sort(new Object[]{"createdAt"}, new boolean[]{false});
 		return container;

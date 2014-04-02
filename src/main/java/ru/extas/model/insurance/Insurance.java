@@ -1,9 +1,8 @@
 package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Contact;
-import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
@@ -24,7 +23,7 @@ import java.math.BigDecimal;
 				@Index(columnList = "A7_NUM"),
 				@Index(columnList = "\"DATE\"")
 		})
-public class Insurance extends ChangeMarkedObject {
+public class Insurance extends SecuredObject {
 
 	private static final long serialVersionUID = -1289533183659860816L;
 

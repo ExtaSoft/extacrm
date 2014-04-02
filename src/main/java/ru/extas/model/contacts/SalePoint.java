@@ -1,7 +1,9 @@
 package ru.extas.model.contacts;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
+
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Модель данных "Точка продаж"
@@ -27,7 +29,7 @@ public class SalePoint extends Contact implements Cloneable {
 			name = "SALEPOINT_LEGALENTITY",
 			joinColumns = {@JoinColumn(name = "SALEPOINT_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = {@JoinColumn(name = "LEGALENTITY_ID", referencedColumnName = "ID")})
-	private List<LegalEntity> legalEntities;
+	private Set<LegalEntity> legalEntities = newHashSet();
 
 	// Сотрудники
 	@ManyToMany(targetEntity = Person.class)
@@ -35,7 +37,7 @@ public class SalePoint extends Contact implements Cloneable {
 			name = "CONTACT_EMPLOYEE",
 			joinColumns = {@JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")})
-	private List<Person> employees;
+	private Set<Person> employees = newHashSet();
 
 	// Идентификация:
 
@@ -55,12 +57,21 @@ public class SalePoint extends Contact implements Cloneable {
 	@Column(name = "SETELEM_CODE", length = 15)
 	private String setelemCode;
 
-	/**
+    @Override
+    protected void logSecurePrivileges() {
+        super.logSecurePrivileges();
+        // При этом необходимо сделать “видимыми” все связанные объекты торговой точки:
+        // Юр. лица работающие на торговой точке
+        // Сотрудники торговой точки
+
+    }
+
+    /**
 	 * <p>Getter for the field <code>legalEntities</code>.</p>
 	 *
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<LegalEntity> getLegalEntities() {
+	public Set<LegalEntity> getLegalEntities() {
 		return legalEntities;
 	}
 
@@ -69,7 +80,7 @@ public class SalePoint extends Contact implements Cloneable {
 	 *
 	 * @param legalEntities a {@link java.util.List} object.
 	 */
-	public void setLegalEntities(final List<LegalEntity> legalEntities) {
+	public void setLegalEntities(final Set<LegalEntity> legalEntities) {
 		this.legalEntities = legalEntities;
 	}
 
@@ -78,7 +89,7 @@ public class SalePoint extends Contact implements Cloneable {
 	 *
 	 * @return a {@link java.util.List} object.
 	 */
-	public List<Person> getEmployees() {
+	public Set<Person> getEmployees() {
 		return employees;
 	}
 
@@ -87,7 +98,7 @@ public class SalePoint extends Contact implements Cloneable {
 	 *
 	 * @param employes a {@link java.util.List} object.
 	 */
-	public void setEmployees(final List<Person> employes) {
+	public void setEmployees(final Set<Person> employes) {
 		this.employees = employes;
 	}
 

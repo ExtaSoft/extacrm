@@ -10,6 +10,7 @@ import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class LegalEntitiesGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<LegalEntity> container = new ExtaDataContainer<>(LegalEntity.class);
+		final ExtaDataContainer<LegalEntity> container = new SecuredDataContainer<>(LegalEntity.class, ExtaDomain.LEGAL_ENTITY);
 		if (company != null)
 			container.addContainerFilter(new Compare.Equal("company", company));
 		container.addNestedContainerProperty("actualAddress.region");

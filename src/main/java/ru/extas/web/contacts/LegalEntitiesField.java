@@ -15,8 +15,10 @@ import ru.extas.web.commons.UIAction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Реализует ввод/редактирование списка юридических лиц (из владельца)
@@ -27,7 +29,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class LegalEntitiesField extends CustomField<List> {
+public class LegalEntitiesField extends CustomField<Set> {
 
 	private final Company company;
 
@@ -79,7 +81,7 @@ public class LegalEntitiesField extends CustomField<List> {
 							@Override
 							protected void saveObject(final LegalEntity obj) {
 								((BeanItemContainer<LegalEntity>) container).addBean(obj);
-								setValue(((BeanItemContainer<LegalEntity>) container).getItemIds());
+								setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
 							}
 						};
 						editWin.showModal();
@@ -94,7 +96,7 @@ public class LegalEntitiesField extends CustomField<List> {
 						final LegalEntityEditForm editWin = new LegalEntityEditForm("Редактирование контактных данных", beanItem) {
 							@Override
 							protected void saveObject(final LegalEntity obj) {
-								setValue(((BeanItemContainer<LegalEntity>) container).getItemIds());
+								setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
 							}
 						};
 						editWin.showModal();
@@ -104,7 +106,7 @@ public class LegalEntitiesField extends CustomField<List> {
 					@Override
 					public void fire(final Object itemId) {
 						container.removeItem(itemId);
-						setValue(((BeanItemContainer<LegalEntity>) container).getItemIds());
+						setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
 					}
 				});
 				return actions;
@@ -117,7 +119,7 @@ public class LegalEntitiesField extends CustomField<List> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Class<? extends List> getType() {
-		return List.class;
+	public Class<? extends Set> getType() {
+		return Set.class;
 	}
 }

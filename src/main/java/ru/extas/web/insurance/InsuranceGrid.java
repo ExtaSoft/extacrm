@@ -13,6 +13,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.insurance.Insurance;
+import ru.extas.security.ExtaDomain;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.DownloadFileWindow;
@@ -66,7 +67,7 @@ public class InsuranceGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<Insurance> container = new ExtaDataContainer<>(Insurance.class);
+		final ExtaDataContainer<Insurance> container = new SecuredDataContainer<>(Insurance.class, ExtaDomain.INSURANCE_PROP);
 		container.addNestedContainerProperty("client.name");
 		container.addNestedContainerProperty("client.phone");
 		container.addNestedContainerProperty("dealer.name");

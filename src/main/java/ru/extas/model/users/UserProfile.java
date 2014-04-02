@@ -9,6 +9,8 @@ import javax.validation.constraints.Max;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
+
 /**
  * Совокупная информация о пользователе
  *
@@ -52,6 +54,12 @@ public class UserProfile extends ChangeMarkedObject {
 
     // Пользователь заблокирован
     private boolean blocked;
+
+    @ElementCollection
+    private Set<String> permitRegions = newHashSet();
+
+    @ElementCollection
+    private Set<String> permitBrands = newHashSet();
 
     /**
      * <p>Getter for the field <code>groupList</code>.</p>
@@ -119,7 +127,7 @@ public class UserProfile extends ChangeMarkedObject {
     /**
      * <p>Getter for the field <code>role</code>.</p>
      *
-     * @return a {@link ru.extas.model.UserRole} object.
+     * @return a {@link ru.extas.security.UserRole} object.
      */
     public UserRole getRole() {
         return role;
@@ -197,4 +205,19 @@ public class UserProfile extends ChangeMarkedObject {
         this.passwordSalt = passwordSalt;
     }
 
+    public Set<String> getPermitRegions() {
+        return permitRegions;
+    }
+
+    public void setPermitRegions(Set<String> permitRegions) {
+        this.permitRegions = permitRegions;
+    }
+
+    public Set<String> getPermitBrands() {
+        return permitBrands;
+    }
+
+    public void setPermitBrands(Set<String> permitBrands) {
+        this.permitBrands = permitBrands;
+    }
 }

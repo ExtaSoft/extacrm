@@ -10,6 +10,7 @@ import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.security.ExtaDomain;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class SalePointsGrid extends ExtaGrid {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<SalePoint> container = new ExtaDataContainer<>(SalePoint.class);
+		final ExtaDataContainer<SalePoint> container = new SecuredDataContainer<>(SalePoint.class, ExtaDomain.SALE_POINT);
 		container.addNestedContainerProperty("actualAddress.region");
 		container.addNestedContainerProperty("company.name");
 		if (company != null)

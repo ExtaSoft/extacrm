@@ -3,7 +3,7 @@ package ru.extas.security;
 /**
  * Раздел/подраздел системы доступ к которому предоставляется
  *
- * @author Valery_2
+ * @author Valery Orlov
  * @version $Id: $Id
  * @since 0.3
  */

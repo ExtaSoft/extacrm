@@ -1,12 +1,13 @@
 package ru.extas.model.common;
 
-import ru.extas.security.EntitySecurityManager;
+import ru.extas.model.contacts.Person;
+import ru.extas.server.users.UserManagementService;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
+import javax.persistence.*;
+import java.util.Set;
 
-import static ru.extas.security.SecurityUtils.getSecurityManagerByClass;
+import static com.google.common.collect.Sets.newHashSet;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Базовый класс для всех сущностей.
@@ -19,10 +20,43 @@ import static ru.extas.security.SecurityUtils.getSecurityManagerByClass;
 @MappedSuperclass
 public class SecuredObject extends ChangeMarkedObject {
 
+    @ManyToMany
+    private Set<Person> associateUsers = newHashSet();
+
+    @ElementCollection
+    private Set<String> associateRegions = newHashSet();
+
+    @ElementCollection
+    private Set<String> associateBrands = newHashSet();
+
     @PostPersist
     @PostUpdate
-    private void logOwnerPrivileges() {
-        EntitySecurityManager securityManager = getSecurityManagerByClass(this.getClass());
-        securityManager.addOwnerPrivileges(this);
+    protected void logSecurePrivileges() {
+        UserManagementService userService = lookup(UserManagementService.class);
+        getAssociateUsers().add(userService.getCurrentUserContact());
+    }
+
+    public Set<Person> getAssociateUsers() {
+        return associateUsers;
+    }
+
+    public void setAssociateUsers(Set<Person> associateUsers) {
+        this.associateUsers = associateUsers;
+    }
+
+    public Set<String> getAssociateRegions() {
+        return associateRegions;
+    }
+
+    public void setAssociateRegions(Set<String> associateRegions) {
+        this.associateRegions = associateRegions;
+    }
+
+    public Set<String> getAssociateBrands() {
+        return associateBrands;
+    }
+
+    public void setAssociateBrands(Set<String> associateBrands) {
+        this.associateBrands = associateBrands;
     }
 }
