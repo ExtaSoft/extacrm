@@ -1,6 +1,7 @@
 package ru.extas.server.insurance;
 
 import ru.extas.model.insurance.Insurance;
+import ru.extas.security.SecuredRepository;
 
 /**
  * <p>InsuranceService interface.</p>
@@ -11,7 +12,7 @@ import ru.extas.model.insurance.Insurance;
  * @version $Id: $Id
  * @since 0.3
  */
-public interface InsuranceService {
+public interface InsuranceService extends SecuredRepository<Insurance> {
 
 /**
  * Сохраняет и выпускает полис страхования

@@ -1,15 +1,10 @@
 package ru.extas.model.contacts;
 
 import ru.extas.model.sale.ProdCredit;
-import ru.extas.server.contacts.CompanyRepository;
-import ru.extas.server.contacts.PersonRepository;
-import ru.extas.server.users.UserManagementService;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
-
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Модель данных для юридического лица
@@ -53,25 +48,6 @@ public class LegalEntity extends Contact implements Cloneable {
     @ElementCollection
     @CollectionTable(name = "LEGAL_ENTITY_MOTOR_BRAND")
     private Set<String> motorBrands;
-
-    @Override
-    protected void logSecurePrivileges() {
-        super.logSecurePrivileges();
-        // При этом необходимо сделать “видимыми” все связанные объекты юр.лица:
-        Person userContact = lookup(UserManagementService.class).getCurrentUserContact();
-        // Компания
-        Company comp = getCompany();
-        if (comp != null) {
-            comp.getAssociateUsers().add(userContact);
-            lookup(CompanyRepository.class).save(comp);
-        }
-        // Директор
-        Person dir = getDirector();
-        if (dir != null) {
-            dir.getAssociateUsers().add(userContact);
-            lookup(PersonRepository.class).save(dir);
-        }
-    }
 
     /**
      * <p>Getter for the field <code>ogrnOgrip</code>.</p>

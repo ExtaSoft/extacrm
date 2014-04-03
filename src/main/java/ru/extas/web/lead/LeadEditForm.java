@@ -14,7 +14,6 @@ import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.server.lead.LeadRepository;
-import ru.extas.server.lead.LeadService;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.component.EditField;
@@ -48,7 +47,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
 
     private static final long serialVersionUID = 9510268415882116L;
     // Компоненты редактирования
-// Имя контакта
+    // Имя контакта
     @PropertyId("contactName")
     private EditField contactNameField;
     @PropertyId("contactPhone")
@@ -94,7 +93,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         initForm(obj);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void attach() {
         super.attach();
@@ -132,7 +133,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields(final Lead obj) {
         final FormLayout form = new FormLayout();
@@ -390,7 +393,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initObject(final Lead obj) {
         if (obj.getId() == null) {
@@ -399,20 +404,25 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void saveObject(final Lead obj) {
+        LeadRepository leadRepository = lookup(LeadRepository.class);
         if (qualifyForm) {
-            lookup(LeadService.class).qualify(obj);
+            leadRepository.qualify(obj);
             Notification.show("Лид квалифицирован", Notification.Type.TRAY_NOTIFICATION);
         } else {
-            lookup(LeadRepository.class).save(obj);
+            leadRepository.secureSave(obj);
             Notification.show("Лид сохранен", Notification.Type.TRAY_NOTIFICATION);
         }
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void checkBeforeSave(final Lead obj) {
     }

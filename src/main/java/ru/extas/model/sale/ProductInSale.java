@@ -1,6 +1,6 @@
 package ru.extas.model.sale;
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "PRODUCT_IN_SALE")
-public class ProductInSale extends ChangeMarkedObject {
+public class ProductInSale extends AuditedObject {
 
 	// Продажа
 	@ManyToOne(optional = false)

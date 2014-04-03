@@ -12,8 +12,8 @@ import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.InsuranceCalculator;
-import ru.extas.server.insurance.InsuranceService;
-import ru.extas.server.insurance.PolicyService;
+import ru.extas.server.insurance.InsuranceRepository;
+import ru.extas.server.insurance.PolicyRepository;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
@@ -113,7 +113,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
                     if (selItemId != null) {
                         final BeanItem<Policy> policy = (BeanItem<Policy>) regNumField.getItem(selItemId);
                         // Зарезервировать полис в БСО
-                        lookup(PolicyService.class).bookPolicy(policy.getBean());
+                        lookup(PolicyRepository.class).bookPolicy(policy.getBean());
                     }
 
                 }
@@ -381,7 +381,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
      */
     @Override
     protected void saveObject(final Insurance obj) {
-        lookup(InsuranceService.class).saveAndIssue(obj);
+        lookup(InsuranceRepository.class).saveAndIssue(obj);
         Notification.show("Полис сохранен", Notification.Type.TRAY_NOTIFICATION);
     }
 

@@ -1,0 +1,24 @@
+package ru.extas.model.common;
+
+import org.springframework.data.domain.AuditorAware;
+import ru.extas.server.users.UserManagementService;
+
+import javax.inject.Inject;
+
+/**
+ * Поставляет текущего пользователя для аудита Spring Data
+ *
+ * @author Valery Orlov
+ *         Date: 03.04.2014
+ *         Time: 9:47
+ */
+public class ExtaAuditorAware implements AuditorAware<String> {
+
+    @Inject
+    private UserManagementService userManagementService;
+
+    @Override
+    public String getCurrentAuditor() {
+        return userManagementService.getCurrentUserLogin();
+    }
+}

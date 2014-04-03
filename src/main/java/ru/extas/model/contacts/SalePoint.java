@@ -57,15 +57,6 @@ public class SalePoint extends Contact implements Cloneable {
 	@Column(name = "SETELEM_CODE", length = 15)
 	private String setelemCode;
 
-    @Override
-    protected void logSecurePrivileges() {
-        super.logSecurePrivileges();
-        // При этом необходимо сделать “видимыми” все связанные объекты торговой точки:
-        // Юр. лица работающие на торговой точке
-        // Сотрудники торговой точки
-
-    }
-
     /**
 	 * <p>Getter for the field <code>legalEntities</code>.</p>
 	 *

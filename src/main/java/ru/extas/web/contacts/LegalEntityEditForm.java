@@ -18,6 +18,7 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.reference.BrandsField;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -118,7 +119,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
         if (obj.getCompany().getId() != null) {
             logger.debug("Saving contact data...");
             final LegalEntityRepository contactRepository = lookup(LegalEntityRepository.class);
-            contactRepository.save(obj);
+            contactRepository.secureSave(obj);
             Notification.show("Юр. лицо сохранено", Notification.Type.TRAY_NOTIFICATION);
         }
     }

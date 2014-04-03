@@ -5,7 +5,7 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.Container;
 import ru.extas.model.insurance.A7Form;
-import ru.extas.server.insurance.A7FormService;
+import ru.extas.server.insurance.A7FormRepository;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -23,57 +23,63 @@ import static ru.extas.web.commons.GridItem.extractBean;
  */
 public class A7FormGrid extends ExtaGrid {
 
-	private static final long serialVersionUID = 6290106109723378415L;
+    private static final long serialVersionUID = 6290106109723378415L;
 
-	/**
-	 * <p>Constructor for A7FormGrid.</p>
-	 */
-	public A7FormGrid() {
-	}
+    /**
+     * <p>Constructor for A7FormGrid.</p>
+     */
+    public A7FormGrid() {
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected GridDataDecl createDataDecl() {
-		return new A7FormDataDecl();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected GridDataDecl createDataDecl() {
+        return new A7FormDataDecl();
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected Container createContainer() {
-		ExtaDataContainer<A7Form> cnt = new ExtaDataContainer<>(A7Form.class);
-		cnt.addNestedContainerProperty("owner.name");
-		return cnt;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Container createContainer() {
+        ExtaDataContainer<A7Form> cnt = new ExtaDataContainer<>(A7Form.class);
+        cnt.addNestedContainerProperty("owner.name");
+        return cnt;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected List<UIAction> createActions() {
+        List<UIAction> actions = newArrayList();
 
-		actions.add(new ItemAction("Утрачен", "Перевести выделенный в списке бланк в \"Утраченные\"", "") {
-			@Override
-			public void fire(Object itemId) {
-				final A7Form.Status status = A7Form.Status.LOST;
-				changeStatus(itemId, status);
-			}
-		});
+        actions.add(new ItemAction("Утрачен", "Перевести выделенный в списке бланк в \"Утраченные\"", "") {
+            @Override
+            public void fire(Object itemId) {
+                final A7Form.Status status = A7Form.Status.LOST;
+                changeStatus(itemId, status);
+            }
+        });
 
-		actions.add(new ItemAction("Испорчен", "Перевести выделенный в списке бланк в \"Испорченные\"", "") {
-			@Override
-			public void fire(Object itemId) {
-				final A7Form.Status status = A7Form.Status.BROKEN;
-				changeStatus(itemId, status);
-			}
-		});
+        actions.add(new ItemAction("Испорчен", "Перевести выделенный в списке бланк в \"Испорченные\"", "") {
+            @Override
+            public void fire(Object itemId) {
+                final A7Form.Status status = A7Form.Status.BROKEN;
+                changeStatus(itemId, status);
+            }
+        });
 
-		return actions;
-	}
+        return actions;
+    }
 
-	private void changeStatus(Object itemId, A7Form.Status status) {
-		final A7Form curObj = extractBean(table.getItem(itemId));
+    private void changeStatus(Object itemId, A7Form.Status status) {
+        final A7Form curObj = extractBean(table.getItem(itemId));
 
-		A7FormService formService = lookup(A7FormService.class);
-		formService.changeStatus(curObj, status);
-		refreshContainerItem(itemId);
-	}
+        A7FormRepository formService = lookup(A7FormRepository.class);
+        formService.changeStatus(curObj, status);
+        refreshContainerItem(itemId);
+    }
 }

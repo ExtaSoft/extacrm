@@ -1,6 +1,6 @@
 package ru.extas.model.users;
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Person;
 import ru.extas.security.UserRole;
 
@@ -20,7 +20,7 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 @Entity
 @Table(name = "USER_PROFILE")
-public class UserProfile extends ChangeMarkedObject {
+public class UserProfile extends AuditedObject {
 
     private static final long serialVersionUID = 6937423190833815234L;
 
@@ -55,7 +55,7 @@ public class UserProfile extends ChangeMarkedObject {
     // Пользователь заблокирован
     private boolean blocked;
 
-    @ElementCollection
+    @ElementCollection()
     private Set<String> permitRegions = newHashSet();
 
     @ElementCollection

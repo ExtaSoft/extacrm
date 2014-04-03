@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
-import ru.extas.server.sale.SaleService;
+import ru.extas.server.sale.SaleRepository;
 
 import java.util.Map;
 
@@ -39,8 +39,8 @@ public void execute(DelegateExecution execution) throws Exception {
 	Map<String, Object> processVariables = execution.getVariables();
 	if (processVariables.containsKey("lead")) {
 		Lead lead = (Lead) processVariables.get("lead");
-		SaleService saleRegistry = lookup(SaleService.class);
-		Sale sale = saleRegistry.ctreateSaleByLead(lead);
+        SaleRepository saleRepository = lookup(SaleRepository.class);
+		Sale sale = saleRepository.ctreateSaleByLead(lead);
 		execution.setVariable("sale", sale);
 	}
 }

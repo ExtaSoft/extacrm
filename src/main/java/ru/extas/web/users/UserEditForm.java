@@ -16,6 +16,8 @@ import ru.extas.security.UserRole;
 import ru.extas.server.users.UserRegistry;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
+import ru.extas.web.reference.MotorBrandMultiselect;
+import ru.extas.web.reference.RegionMultiselect;
 import ru.extas.web.util.ComponentUtil;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -46,6 +48,11 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     @PropertyId("password")
     private PasswordField passField;
     private PasswordField passConfField;
+
+    @PropertyId("permitRegions")
+    private RegionMultiselect regionsField;
+    @PropertyId("permitBrands")
+    private MotorBrandMultiselect brandsField;
 
     /**
      * <p>Constructor for UserEditForm.</p>
@@ -103,7 +110,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         // FIXME Ограничить выбор контакта только сотрудниками
         nameField = new PersonSelect("Имя");
         nameField.setImmediate(true);
-        nameField.setWidth(50, Unit.EX);
+        //nameField.setWidth(50, Unit.EX);
         nameField.setDescription("Введите имя (ФИО) пользователя");
         nameField.setRequired(true);
         nameField.setRequiredError("Имя пользователя не может быть пустым. Пожалуйста введите ФИО пользователя.");
@@ -153,13 +160,19 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         form.addComponent(passConfField);
 
         roleField = new ComboBox("Роль");
-        roleField
-                .setDescription("Роль пользователя в системе. Определяет основные права доступа к разделам и объектам системы.");
+        roleField.setDescription(
+                "Роль пользователя в системе. Определяет основные права доступа к разделам и объектам системы.");
         roleField.setRequired(true);
         roleField.setNullSelectionAllowed(false);
         roleField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(roleField, UserRole.class);
         form.addComponent(roleField);
+
+        brandsField = new MotorBrandMultiselect("Доступные бренды");
+        form.addComponent(brandsField);
+
+        regionsField = new RegionMultiselect("Доступные регионы");
+        form.addComponent(regionsField);
 
         blockedField = new CheckBox("Блокировать");
         blockedField.setDescription("Установите, чтобы блокировать вход пользователя в систему.");

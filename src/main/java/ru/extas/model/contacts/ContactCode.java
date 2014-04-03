@@ -1,6 +1,6 @@
 package ru.extas.model.contacts;
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -18,7 +18,7 @@ import javax.validation.constraints.Max;
 @Table(name = "CONTACT_CODE", indexes = {
         @Index(columnList = "TYPE, CODE", unique = true)
 })
-public class ContactCode extends ChangeMarkedObject {
+public class ContactCode extends AuditedObject {
 
     private static final long serialVersionUID = -7891940552175752834L;
 

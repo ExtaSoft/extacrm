@@ -4,14 +4,13 @@
 package ru.extas.model.common;
 
 import org.joda.time.DateTime;
-import ru.extas.server.users.UserManagementService;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Базовый класс для всех сущностей.
@@ -22,29 +21,33 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @since 0.3
  */
 @MappedSuperclass
-public abstract class ChangeMarkedObject extends IdentifiedObject {
+public abstract class AuditedObject extends IdentifiedObject {
 
     /**
      * Constant <code>LOGIN_LENGTH=50</code>
      */
     public static final int LOGIN_LENGTH = 50;
 
+    @CreatedBy
     @Column(name = "CREATED_BY", length = LOGIN_LENGTH)
     protected String createdBy;
 
+    @CreatedDate
     @Column(name = "CREATED_AT")
     protected DateTime createdAt;
 
+    @LastModifiedBy
     @Column(name = "MODIFIED_BY", length = LOGIN_LENGTH)
     protected String modifiedBy;
 
+    @LastModifiedDate
     @Column(name = "MODIFIED_AT")
     protected DateTime modifiedAt;
 
     /**
      *
      */
-    protected ChangeMarkedObject() {
+    protected AuditedObject() {
         super();
     }
 
@@ -120,28 +123,4 @@ public abstract class ChangeMarkedObject extends IdentifiedObject {
         this.modifiedAt = modifiedAt;
     }
 
-    @PrePersist
-    private void markCreating() {
-        // Ставим маркеры создания/модификации
-        if (createdAt == null && createdBy == null) {
-            UserManagementService userManagementService = lookup(UserManagementService.class);
-            String login = userManagementService.getCurrentUserLogin();
-            DateTime dt = DateTime.now();
-            createdAt = dt;
-            createdBy = login;
-        }
-        if (modifiedAt == null && modifiedBy == null) {
-            modifiedAt = createdAt;
-            modifiedBy = createdBy;
-        }
-    }
-
-    @PreUpdate
-    private void markUpdating() {
-        // Ставим маркеры создания/модификации
-        UserManagementService userManagementService = lookup(UserManagementService.class);
-        String login = userManagementService.getCurrentUserLogin();
-        modifiedAt = DateTime.now();
-        modifiedBy = login;
-    }
 }

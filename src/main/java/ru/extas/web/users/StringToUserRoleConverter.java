@@ -33,6 +33,8 @@ public class StringToUserRoleConverter extends String2EnumConverter<UserRole> {
 		map.put(UserRole.USER, "Пользователь");
 		map.put(UserRole.MANAGER, "Руководитель");
 		map.put(UserRole.ADMIN, "Администратор");
+		map.put(UserRole.DEALER, "Дилер");
+		map.put(UserRole.DISTRIBUTOR, "Дистрибьютор");
 		return map;
 	}
 }

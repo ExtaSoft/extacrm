@@ -1,6 +1,6 @@
 package ru.extas.model.sale;
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "PROD_CREDIT_DOC")
-public class ProdCreditDoc extends ChangeMarkedObject {
+public class ProdCreditDoc extends AuditedObject {
 
 	// Вид документа:
 	// Паспорт

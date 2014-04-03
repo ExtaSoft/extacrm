@@ -7,7 +7,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.insurance.Policy;
-import ru.extas.server.insurance.PolicyRegistry;
+import ru.extas.server.insurance.PolicyRepository;
 import ru.extas.web.commons.component.DateTimeField;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
@@ -52,7 +52,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
     /** {@inheritDoc} */
     @Override
     protected void saveObject(final Policy obj) {
-        final PolicyRegistry policyRepository = lookup(PolicyRegistry.class);
+        final PolicyRepository policyRepository = lookup(PolicyRepository.class);
         policyRepository.save(obj);
         Notification.show("Бланк сохранен", Notification.Type.TRAY_NOTIFICATION);
     }

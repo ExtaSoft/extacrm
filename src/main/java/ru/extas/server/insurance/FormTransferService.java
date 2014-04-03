@@ -12,10 +12,10 @@ import ru.extas.model.insurance.FormTransfer;
  * @since 0.3
  */
 public interface FormTransferService {
-/**
- * Вставить/обновить акт приема передачи
- *
- * @param tf акт приема передачи
- */
-void saveAndChangeOwner(FormTransfer tf);
+    /**
+     * Вставить/обновить акт приема передачи
+     *
+     * @param tf акт приема передачи
+     */
+    void saveAndChangeOwner(FormTransfer tf);
 }

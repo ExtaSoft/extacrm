@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
 import ru.extas.server.lead.LeadRepository;
-import ru.extas.server.sale.SaleRegistry;
+import ru.extas.server.sale.SaleRepository;
 
 import java.util.Map;
 
@@ -39,14 +39,14 @@ public void execute(DelegateExecution execution) throws Exception {
 		lead.setStatus(Lead.Status.CLOSED);
 		lead.setResult(Lead.Result.SUCCESSFUL);
 		LeadRepository leadRepository = lookup(LeadRepository.class);
-		leadRepository.save(lead);
+		leadRepository.secureSave(lead);
 	}
 	if (processVariables.containsKey("sale")) {
 		Sale sale = (Sale) processVariables.get("sale");
 		sale.setStatus(Sale.Status.FINISHED);
 		sale.setResult(Sale.Result.SUCCESSFUL);
-		SaleRegistry saleRegistry = lookup(SaleRegistry.class);
-		saleRegistry.save(sale);
+		SaleRepository saleRepository = lookup(SaleRepository.class);
+		saleRepository.secureSave(sale);
 	}
 
 }

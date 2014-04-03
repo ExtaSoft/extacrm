@@ -24,12 +24,12 @@ import java.util.List;
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public class PolicyServiceImpl implements PolicyService {
+public class PolicyRepositoryImpl implements PolicyService {
 
-    private final static Logger logger = LoggerFactory.getLogger(PolicyServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(PolicyRepositoryImpl.class);
 
     @Inject
-    private PolicyRegistry policyRegistry;
+    private PolicyRepository policyRepository;
 
     /** {@inheritDoc} */
     @Transactional
@@ -37,7 +37,7 @@ public class PolicyServiceImpl implements PolicyService {
     public List<Policy> loadAvailable() {
         logger.debug("Requesting available policies...");
 
-        final List<Policy> policies = policyRegistry.findAvailableAtTime(DateTime.now().minusHours(1));
+        final List<Policy> policies = policyRepository.findAvailableAtTime(DateTime.now().minusHours(1));
 
         logger.debug("Retrieved {} available policies", policies.size());
         return policies;
@@ -48,7 +48,7 @@ public class PolicyServiceImpl implements PolicyService {
     @Override
     public void bookPolicy(final Policy policy) {
         policy.setBookTime(DateTime.now());
-        policyRegistry.save(policy);
+        policyRepository.save(policy);
     }
 
     /** {@inheritDoc} */
@@ -56,7 +56,7 @@ public class PolicyServiceImpl implements PolicyService {
     @Override
     public void issuePolicy(final Policy policy) {
         policy.setIssueDate(DateTime.now());
-        policyRegistry.save(policy);
+        policyRepository.save(policy);
     }
 
 
@@ -64,7 +64,7 @@ public class PolicyServiceImpl implements PolicyService {
     @Transactional
     @Override
     public void bookPolicy(final String regNum) {
-        bookPolicy(policyRegistry.findByRegNum(regNum));
+        bookPolicy(policyRepository.findByRegNum(regNum));
     }
 
 
@@ -72,7 +72,7 @@ public class PolicyServiceImpl implements PolicyService {
     @Transactional
     @Override
     public void issuePolicy(final String regNum) {
-        issuePolicy(policyRegistry.findByRegNum(regNum));
+        issuePolicy(policyRepository.findByRegNum(regNum));
     }
 
 }

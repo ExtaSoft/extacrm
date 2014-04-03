@@ -4,7 +4,7 @@
 package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Person;
 
 import javax.persistence.*;
@@ -21,7 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 @Entity
 @Table(name = "FORM_TRANSFER")
-public class FormTransfer extends ChangeMarkedObject {
+public class FormTransfer extends AuditedObject {
 
     private static final long serialVersionUID = -3750723587703870668L;
 

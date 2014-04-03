@@ -1,6 +1,6 @@
 package ru.extas.model.sale;
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "PROD_CREDIT_PERCENT")
-public class ProdCreditPercent extends ChangeMarkedObject {
+public class ProdCreditPercent extends AuditedObject {
 
 	// процент ;
 	@Column(name = "PERCENT", precision = 32, scale = 4)

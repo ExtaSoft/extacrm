@@ -26,9 +26,9 @@ import java.util.List;
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public class A7FormServiceImpl implements A7FormService {
+public class A7FormRepositoryImpl implements A7FormService {
 
-    private final static Logger logger = LoggerFactory.getLogger(A7FormServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(A7FormRepositoryImpl.class);
 
     @Inject
     private A7FormRepository formRepository;

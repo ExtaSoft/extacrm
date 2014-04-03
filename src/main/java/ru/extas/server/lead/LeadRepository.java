@@ -2,7 +2,7 @@ package ru.extas.server.lead;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.lead.Lead;
 
@@ -17,6 +17,6 @@ import ru.extas.model.lead.Lead;
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public interface LeadRepository extends CrudRepository<Lead, String> {
+public interface LeadRepository extends JpaRepository<Lead, String>, LeadService {
 
 }

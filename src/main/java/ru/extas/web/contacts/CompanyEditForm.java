@@ -100,7 +100,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     protected void saveObject(final Company obj) {
         logger.debug("Saving contact data...");
         final CompanyRepository contactRepository = lookup(CompanyRepository.class);
-        contactRepository.save(obj);
+        contactRepository.secureSave(obj);
         Notification.show("Компания сохранена", Notification.Type.TRAY_NOTIFICATION);
     }
 

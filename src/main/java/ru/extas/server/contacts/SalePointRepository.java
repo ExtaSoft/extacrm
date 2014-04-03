@@ -2,8 +2,8 @@ package ru.extas.server.contacts;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.contacts.Person;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public interface SalePointRepository extends CrudRepository<SalePoint, String> {
+public interface SalePointRepository extends JpaRepository<SalePoint, String>, SalePointService {
 
     /**
      * Ищет торговые точки сотрудником которых является контакт

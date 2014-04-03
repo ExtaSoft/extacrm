@@ -14,38 +14,38 @@ import java.util.List;
  * @since 0.3
  */
 public interface PolicyService {
-/**
- * Возвращает список всех доступных полисов
- *
- * @return список полисов
- */
-List<Policy> loadAvailable();
+    /**
+     * Возвращает список всех доступных полисов
+     *
+     * @return список полисов
+     */
+    List<Policy> loadAvailable();
 
-/**
- * Забронировать полис
- *
- * @param policy бронируемый полис
- */
-void bookPolicy(Policy policy);
+    /**
+     * Забронировать полис
+     *
+     * @param policy бронируемый полис
+     */
+    void bookPolicy(Policy policy);
 
-/**
- * Реализовать полис
- *
- * @param policy реализуемый полис
- */
-void issuePolicy(Policy policy);
+    /**
+     * Реализовать полис
+     *
+     * @param policy реализуемый полис
+     */
+    void issuePolicy(Policy policy);
 
-/**
- * Забронировать полис
- *
- * @param regNum номер резервируемого полиса
- */
-void bookPolicy(String regNum);
+    /**
+     * Забронировать полис
+     *
+     * @param regNum номер резервируемого полиса
+     */
+    void bookPolicy(String regNum);
 
-/**
- * Реализовать полис
- *
- * @param regNum номер реализуемого полиса
- */
-void issuePolicy(String regNum);
+    /**
+     * Реализовать полис
+     *
+     * @param regNum номер реализуемого полиса
+     */
+    void issuePolicy(String regNum);
 }

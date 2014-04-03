@@ -107,7 +107,7 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     protected void saveObject(final Person obj) {
         logger.debug("Saving contact data...");
         final PersonRepository contactRepository = lookup(PersonRepository.class);
-        contactRepository.save(obj);
+        contactRepository.secureSave(obj);
         Notification.show("Контакт сохранен", Notification.Type.TRAY_NOTIFICATION);
     }
 

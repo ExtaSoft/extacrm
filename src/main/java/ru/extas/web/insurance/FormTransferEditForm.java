@@ -8,7 +8,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupDateField;
 import org.joda.time.LocalDate;
 import ru.extas.model.insurance.FormTransfer;
-import ru.extas.server.insurance.FormTransferService;
+import ru.extas.server.insurance.FormTransferRepository;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
@@ -46,7 +46,9 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields(final FormTransfer obj) {
         final FormLayout form = new FormLayout();
@@ -72,7 +74,9 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
         return form;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initObject(final FormTransfer obj) {
         if (obj.getId() == null) {
@@ -82,14 +86,18 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void saveObject(final FormTransfer obj) {
-        lookup(FormTransferService.class).saveAndChangeOwner(obj);
+        lookup(FormTransferRepository.class).saveAndChangeOwner(obj);
         Notification.show("Акт приема/передачи сохранен", Notification.Type.TRAY_NOTIFICATION);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void checkBeforeSave(final FormTransfer obj) {
     }

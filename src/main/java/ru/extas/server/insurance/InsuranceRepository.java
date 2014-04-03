@@ -2,7 +2,7 @@ package ru.extas.server.insurance;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.insurance.Insurance;
 
@@ -15,7 +15,7 @@ import ru.extas.model.insurance.Insurance;
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public interface InsuranceRepository extends CrudRepository<Insurance, String> {
+public interface InsuranceRepository extends JpaRepository<Insurance, String>, InsuranceService {
 
 /**
  * <p>findByCreatedBy.</p>

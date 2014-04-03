@@ -9,9 +9,8 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>ru.extas.model.common.IdentifiedObject</class>
-        <class>ru.extas.model.common.ChangeMarkedObject</class>
+        <class>ru.extas.model.common.AuditedObject</class>
         <class>ru.extas.model.common.SecuredObject</class>
-        <class>ru.extas.model.common.AbstractPrivilege</class>
         <class>ru.extas.model.common.DateTimeConverter</class>
         <class>ru.extas.model.common.LocalDateConverter</class>
         <class>ru.extas.model.common.UserRoleConverter</class>
@@ -23,7 +22,6 @@
         <class>ru.extas.model.contacts.ContactCode</class>
         <class>ru.extas.model.contacts.PayAccount</class>
         <class>ru.extas.model.contacts.Person</class>
-        <class>ru.extas.model.contacts.PersonPrivilege</class>
         <class>ru.extas.model.insurance.A7Form</class>
         <class>ru.extas.model.insurance.FormTransfer</class>
         <class>ru.extas.model.insurance.Insurance</class>

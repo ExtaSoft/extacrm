@@ -22,14 +22,14 @@ import javax.inject.Inject;
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public class FormTransferServiceImpl implements FormTransferService {
+public class FormTransferRepositoryImpl implements FormTransferService {
 
-    private final static Logger logger = LoggerFactory.getLogger(FormTransferServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(FormTransferRepositoryImpl.class);
 
     @Inject
     private FormTransferRepository transferRepository;
     @Inject
-    private A7FormService a7FormService;
+    private A7FormRepository a7FormService;
 
     /** {@inheritDoc} */
     @Transactional

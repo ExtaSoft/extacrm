@@ -91,7 +91,7 @@ public class IdentifiedObject implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ChangeMarkedObject other = (ChangeMarkedObject) obj;
+        AuditedObject other = (AuditedObject) obj;
         if (id == null || other.id == null) {
             return super.equals(other);
         } else

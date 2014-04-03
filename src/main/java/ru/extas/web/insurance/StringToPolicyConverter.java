@@ -6,7 +6,7 @@ package ru.extas.web.insurance;
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.extas.model.insurance.Policy;
-import ru.extas.server.insurance.PolicyRegistry;
+import ru.extas.server.insurance.PolicyRepository;
 
 import java.util.Locale;
 
@@ -30,7 +30,7 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
             throws com.vaadin.data.util.converter.Converter.ConversionException {
         if (value == null)
             return null;
-        return lookup(PolicyRegistry.class).findByRegNum(value);
+        return lookup(PolicyRepository.class).findByRegNum(value);
     }
 
     /** {@inheritDoc} */

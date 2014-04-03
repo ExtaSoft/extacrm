@@ -2,7 +2,7 @@ package ru.extas.server.sale;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.sale.ProdInstallments;
 
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public interface ProdInstallmentsRepository extends CrudRepository<ProdInstallments, String> {
+public interface ProdInstallmentsRepository extends JpaRepository<ProdInstallments, String> {
 
 	/**
 	 * <p>findByActive.</p>

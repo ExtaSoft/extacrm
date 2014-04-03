@@ -1,13 +1,9 @@
 package ru.extas.model.contacts;
 
-import ru.extas.server.contacts.PersonRepository;
-import ru.extas.server.users.UserManagementService;
-
 import javax.persistence.*;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Данные контакта - физ. лица
@@ -52,32 +48,6 @@ public class Company extends Contact implements Cloneable {
 	 */
 	public Company() {
 	}
-
-    @Override
-    protected void logSecurePrivileges() {
-        super.logSecurePrivileges();
-        // При этом необходимо сделать “видимыми” все связанные объекты компании:
-        Person userContact = lookup(UserManagementService.class).getCurrentUserContact();
-        // Собственник(и) Компании
-        PersonRepository personRepository = lookup(PersonRepository.class);
-        for(Person owner :getOwners()) {
-            owner.getAssociateUsers().add(userContact);
-            personRepository.save(owner);
-        }
-        // Сотрудники компании
-        for(Person employee : getEmployees()){
-            employee.getAssociateUsers().add(userContact);
-            personRepository.save(employee);
-        }
-        // Юридические лица компании
-        for(LegalEntity legalEntity : getLegalEntities()) {
-            legalEntity.getAssociateUsers().add(userContact);
-        }
-        // Торговые точки компании
-        for(SalePoint salePoint : getSalePoints()) {
-            salePoint.getAssociateUsers().add(userContact);
-        }
-    }
 
     /** {@inheritDoc} */
 	@Override

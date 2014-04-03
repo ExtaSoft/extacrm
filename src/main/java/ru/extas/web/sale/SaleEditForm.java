@@ -4,7 +4,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.Sale;
-import ru.extas.server.sale.SaleRegistry;
+import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
@@ -116,8 +116,8 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     /** {@inheritDoc} */
     @Override
     protected void saveObject(final Sale obj) {
-        final SaleRegistry leadService = lookup(SaleRegistry.class);
-        leadService.save(obj);
+        final SaleRepository leadService = lookup(SaleRepository.class);
+        leadService.secureSave(obj);
         Notification.show("Продажа сохранена", Notification.Type.TRAY_NOTIFICATION);
     }
 

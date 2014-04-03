@@ -1,6 +1,6 @@
 package ru.extas.model.sale;
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Company;
 
 import javax.persistence.*;
@@ -19,7 +19,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE")
 @Table(name = "PRODUCT")
-public abstract class Product extends ChangeMarkedObject {
+public abstract class Product extends AuditedObject {
 
 	/**
 	 * <p>Constructor for Product.</p>

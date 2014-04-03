@@ -5,20 +5,36 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Common Configuration -->
     <context:component-scan base-package="ru.extas"/>
     <jpa:repositories base-package="ru.extas.server" entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>
-
+    <bean id="extaAuditorAwareBean" class="ru.extas.model.common.ExtaAuditorAware"/>
+    <jpa:auditing auditor-aware-ref="extaAuditorAwareBean" />
     <!-- Exception translation bean post processor -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+    <!--//////////////////////////////////////////////////////////////////////////////////////-->
+    <!--Cache Configuration-->
+    <cache:annotation-driven cache-manager="cacheManager"/>
+    <!-- generic cache manager -->
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="userByLogin"/>
+            </set>
+        </property>
+    </bean>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Default UI locale -->
@@ -144,12 +160,14 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
     </bean>
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <!-- Single realm app.  If you have multiple realms, use the 'realms' property instead. -->
         <property name="realm" ref="myRealm"/>
         <!-- By default the servlet container sessions will be used.  Uncomment this line
              to use security's native sessions (see the JavaDoc for more): -->
         <!-- <property name="sessionMode" value="native"/> -->
+        <property name="cacheManager" ref="shiroCacheManager"/>
     </bean>
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 

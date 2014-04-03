@@ -58,11 +58,12 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
 				new DefaultQueryModifierDelegate() {
 					@Override
 					public void filtersWillBeAdded(CriteriaBuilder cb, CriteriaQuery<?> cq, List<Predicate> predicates) {
-
-                        UserManagementService userService = lookup(UserManagementService.class);
-                        Person curUserContact = userService.getCurrentUserContact();
+                        if(cb == null || cq == null || predicates == null)
+                            return;
 
                         Root<TEntityType> objectRoot = (Root<TEntityType>) cq.getRoots().iterator().next();
+                        UserManagementService userService = lookup(UserManagementService.class);
+                        Person curUserContact = userService.getCurrentUserContact();
 
                         // Определить область видимости и Наложить фильтр в соответствии с областью видимости
                         if(userService.isPermittedTarget(domain, SecureTarget.ALL)) {

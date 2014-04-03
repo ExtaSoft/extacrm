@@ -1,6 +1,6 @@
 package ru.extas.model.users;
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "USER_GROUP")
-public class UserGroup extends ChangeMarkedObject {
+public class UserGroup extends AuditedObject {
 
     private static final long serialVersionUID = 4149728748291041330L;
 

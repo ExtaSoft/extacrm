@@ -1,4 +1,4 @@
-package ru.extas.web.contacts;
+package ru.extas.web.reference;
 
 import com.vaadin.data.Property;
 import com.vaadin.ui.Component;

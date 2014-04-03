@@ -15,33 +15,33 @@ import java.util.List;
  * @since 0.3
  */
 public interface A7FormService {
-/**
- * Использовать квитанцию
- *
- * @param formNum номер квитанции
- */
-void spendForm(String formNum);
+    /**
+     * Использовать квитанцию
+     *
+     * @param formNum номер квитанции
+     */
+    void spendForm(String formNum);
 
-/**
- * Сменить владельца для набора квитанций
- *
- * @param formNums Список номеров квитанций
- * @param owner    Новый владелец
- */
-void changeOwner(List<String> formNums, Contact owner);
+    /**
+     * Сменить владельца для набора квитанций
+     *
+     * @param formNums Список номеров квитанций
+     * @param owner    Новый владелец
+     */
+    void changeOwner(List<String> formNums, Contact owner);
 
-/**
- * Сменить статус для набора квитанций
- *
- * @param form      Список номеров квитанций
- * @param newStatus Новый статус
- */
-void changeStatus(A7Form form, A7Form.Status newStatus);
+    /**
+     * Сменить статус для набора квитанций
+     *
+     * @param form      Список номеров квитанций
+     * @param newStatus Новый статус
+     */
+    void changeStatus(A7Form form, A7Form.Status newStatus);
 
-/**
- * Загружает доступные пользователю квитанции А-7
- *
- * @return доступные пользователю квитанции А-7
- */
-List<A7Form> loadAvailable();
+    /**
+     * Загружает доступные пользователю квитанции А-7
+     *
+     * @return доступные пользователю квитанции А-7
+     */
+    List<A7Form> loadAvailable();
 }

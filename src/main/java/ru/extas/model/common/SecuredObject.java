@@ -1,13 +1,13 @@
 package ru.extas.model.common;
 
 import ru.extas.model.contacts.Person;
-import ru.extas.server.users.UserManagementService;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Базовый класс для всех сущностей.
@@ -18,7 +18,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Time: 17:40
  */
 @MappedSuperclass
-public class SecuredObject extends ChangeMarkedObject {
+public class SecuredObject extends AuditedObject {
 
     @ManyToMany
     private Set<Person> associateUsers = newHashSet();
@@ -28,13 +28,6 @@ public class SecuredObject extends ChangeMarkedObject {
 
     @ElementCollection
     private Set<String> associateBrands = newHashSet();
-
-    @PostPersist
-    @PostUpdate
-    protected void logSecurePrivileges() {
-        UserManagementService userService = lookup(UserManagementService.class);
-        getAssociateUsers().add(userService.getCurrentUserContact());
-    }
 
     public Set<Person> getAssociateUsers() {
         return associateUsers;

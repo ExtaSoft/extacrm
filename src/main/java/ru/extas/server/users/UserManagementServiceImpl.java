@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.users.UserProfile;
 import ru.extas.security.ExtaDomain;
@@ -41,7 +40,6 @@ public class UserManagementServiceImpl implements UserManagementService {
     private UserRegistry userRegistry;
 
     /** {@inheritDoc} */
-    @Transactional
     @Override
     public UserProfile findUserByLogin(String login) {
         logger.debug("Finding user by login: {}...", login);
@@ -61,7 +59,6 @@ public class UserManagementServiceImpl implements UserManagementService {
     }
 
     /** {@inheritDoc} */
-    @Transactional
     @Override
     public Person findUserContactByLogin(final String login) {
         final UserProfile currentUser = findUserByLogin(login);
@@ -69,7 +66,6 @@ public class UserManagementServiceImpl implements UserManagementService {
     }
 
     /** {@inheritDoc} */
-    @Transactional
     @Override
     public UserProfile getSuperuser() {
         UserProfile user = new UserProfile();
@@ -91,7 +87,6 @@ public class UserManagementServiceImpl implements UserManagementService {
     }
 
     /** {@inheritDoc} */
-    @Transactional
     @Override
     public UserProfile getCurrentUser() {
         return findUserByLogin(getCurrentUserLogin());
@@ -110,7 +105,6 @@ public class UserManagementServiceImpl implements UserManagementService {
      * <p>
      * Получить контакт текущего пользователя
      */
-    @Transactional
     @Override
     public Person getCurrentUserContact() {
         final UserProfile currentUser = getCurrentUser();

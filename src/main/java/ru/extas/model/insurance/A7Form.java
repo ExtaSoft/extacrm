@@ -4,7 +4,7 @@
 package ru.extas.model.insurance;
 
 
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Contact;
 
 import javax.persistence.*;
@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
         indexes = {
                 @Index(columnList = "OWNER_ID, STATUS, REG_NUM")
         })
-public class A7Form extends ChangeMarkedObject {
+public class A7Form extends AuditedObject {
 
     private static final long serialVersionUID = -4643812782207400426L;
     /** Constant <code>REG_NUM_LENGTH=20</code> */

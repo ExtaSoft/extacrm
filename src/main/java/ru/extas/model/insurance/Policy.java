@@ -4,7 +4,7 @@
 package ru.extas.model.insurance;
 
 import org.joda.time.DateTime;
-import ru.extas.model.common.ChangeMarkedObject;
+import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +25,7 @@ import javax.validation.constraints.Max;
         indexes = {
                 @Index(columnList = "ISSUE_DATE, BOOK_TIME, REG_NUM")
         })
-public class Policy extends ChangeMarkedObject {
+public class Policy extends AuditedObject {
 
     private static final long serialVersionUID = 3160576591591414719L;
     /** Constant <code>REG_NUM_LENGTH=20</code> */

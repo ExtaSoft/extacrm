@@ -2,7 +2,7 @@ package ru.extas.server.contacts;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.contacts.LegalEntity;
 
@@ -17,5 +17,5 @@ import ru.extas.model.contacts.LegalEntity;
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public interface LegalEntityRepository extends CrudRepository<LegalEntity, String> {
+public interface LegalEntityRepository extends JpaRepository<LegalEntity, String>, LegalEntityService {
 }
