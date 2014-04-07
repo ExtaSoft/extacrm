@@ -19,7 +19,6 @@ import ru.extas.model.contacts.Person;
 public class PersonSelect extends CustomField<Person> {
 
 	private PersonSelectField personSelectField;
-	private Person defNewObj;
 	private Label emailField;
 	private Label birthdayField;
 	private Label phoneField;
@@ -31,17 +30,7 @@ public class PersonSelect extends CustomField<Person> {
 	 * @param caption a {@link java.lang.String} object.
 	 */
 	public PersonSelect(final String caption) {
-		this(caption, new Person());
-	}
-
-	/**
-	 * <p>Constructor for PersonSelect.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param defNewObj a {@link ru.extas.model.contacts.Person} object.
-	 */
-	public PersonSelect(final String caption, Person defNewObj) {
-		this(caption, "", defNewObj);
+		this(caption, "");
 	}
 
 	/**
@@ -51,18 +40,6 @@ public class PersonSelect extends CustomField<Person> {
 	 * @param description a {@link java.lang.String} object.
 	 */
 	public PersonSelect(final String caption, final String description) {
-		this(caption, description, new Person());
-	}
-
-	/**
-	 * <p>Constructor for PersonSelect.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param description a {@link java.lang.String} object.
-	 * @param defNewObj a {@link ru.extas.model.contacts.Person} object.
-	 */
-	public PersonSelect(final String caption, final String description, Person defNewObj) {
-		this.defNewObj = defNewObj;
 		setCaption(caption);
 		setDescription(description);
 		setBuffered(true);
@@ -89,9 +66,8 @@ public class PersonSelect extends CustomField<Person> {
 			@Override
 			public void addNewItem(final String newItemCaption) {
 				final BeanItem<Person> newObj;
-				newObj = new BeanItem<>(defNewObj.clone());
-				if (defNewObj.getName() == null)
-					newObj.getBean().setName(newItemCaption);
+				newObj = new BeanItem<>(new Person());
+				newObj.getBean().setName(newItemCaption);
 				newObj.expandProperty("actualAddress");
 
 				final String edFormCaption = "Ввод нового контакта в систему";

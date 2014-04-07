@@ -28,7 +28,7 @@ public class SalePointsGrid extends ExtaGrid {
 
 	private static final long serialVersionUID = 2299363623807745654L;
 
-	private final Company company;
+	protected final Company company;
 
 	/**
 	 * <p>Constructor for SalePointsGrid.</p>

@@ -7,11 +7,11 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.security.AbstractSecuredRepository;
-import ru.extas.server.contacts.CompanyRepository;
+import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.users.UserManagementServiceImpl;
@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Set;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -39,7 +40,7 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
     @Inject private PolicyRepository policyService;
     @Inject private A7FormRepository formService;
     @Inject private PersonRepository personRepository;
-    @Inject private CompanyRepository companyRepository;
+    @Inject private LegalEntityRepository legalEntityRepository;
     @Inject private SalePointRepository salePointRepository;
 
 
@@ -60,15 +61,21 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
 
     @Override
     protected Collection<String> getObjectBrands(Insurance insurance) {
-        return newHashSet(insurance.getMotorBrand());
+        if(!isNullOrEmpty(insurance.getMotorBrand()))
+            return newHashSet(insurance.getMotorBrand());
+        return null;
     }
 
     @Override
     protected Collection<String> getObjectRegions(Insurance insurance) {
         Set<String> regions = newHashSet();
-        if(insurance.getClient() != null && insurance.getClient().getActualAddress() != null)
+        if(insurance.getClient() != null
+                && insurance.getClient().getActualAddress() != null
+                && !isNullOrEmpty(insurance.getClient().getActualAddress().getRegion()))
             regions.add(insurance.getClient().getActualAddress().getRegion());
-        if(insurance.getDealer() != null && insurance.getDealer().getActualAddress() != null)
+        if(insurance.getDealer() != null
+                && insurance.getDealer().getActualAddress() != null
+                && !isNullOrEmpty(insurance.getDealer().getActualAddress().getRegion()))
             regions.add(insurance.getDealer().getActualAddress().getRegion());
         return regions;
     }
@@ -83,7 +90,7 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
             if(insurance.getClient() instanceof Person)
                 personRepository.permitAndSave((Person) insurance.getClient(), userContact, regions, brands);
             else
-                companyRepository.permitAndSave((Company) insurance.getClient(), userContact, regions, brands);
+                legalEntityRepository.permitAndSave((LegalEntity) insurance.getClient(), userContact, regions, brands);
             // Продавец (торговая точка или компания)
             salePointRepository.permitAndSave(insurance.getDealer(), userContact, regions, brands);
         }

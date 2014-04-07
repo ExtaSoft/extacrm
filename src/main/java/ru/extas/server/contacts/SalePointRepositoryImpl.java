@@ -12,6 +12,7 @@ import ru.extas.security.AbstractSecuredRepository;
 import javax.inject.Inject;
 import java.util.Collection;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -41,7 +42,7 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
 
     @Override
     protected Collection<String> getObjectRegions(SalePoint salePoint) {
-        if(salePoint.getActualAddress() != null)
+        if(salePoint.getActualAddress() != null && !isNullOrEmpty(salePoint.getActualAddress().getRegion()))
             return newHashSet(salePoint.getActualAddress().getRegion());
         return null;
     }

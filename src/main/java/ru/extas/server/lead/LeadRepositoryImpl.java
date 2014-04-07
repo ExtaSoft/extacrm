@@ -21,6 +21,7 @@ import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -75,18 +76,22 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
 
     @Override
     protected Collection<String> getObjectBrands(Lead lead) {
-        Set<String> brands = newHashSet();
-        brands.add(lead.getMotorBrand());
+        if(!isNullOrEmpty(lead.getMotorBrand()))
+            newHashSet(lead.getMotorBrand());
 
-        return brands;
+        return null;
     }
 
     @Override
     protected Collection<String> getObjectRegions(Lead lead) {
         Set<String> regions = newHashSet();
-        if(lead.getClient() != null && lead.getClient().getActualAddress() != null)
+        if(lead.getClient() != null
+                && lead.getClient().getActualAddress() != null
+                && !isNullOrEmpty(lead.getClient().getActualAddress().getRegion()))
             regions.add(lead.getClient().getActualAddress().getRegion());
-        if(lead.getVendor() != null && lead.getVendor().getActualAddress() != null)
+        if(lead.getVendor() != null
+                && lead.getVendor().getActualAddress() != null
+                && !isNullOrEmpty(lead.getVendor().getActualAddress().getRegion()))
             regions.add(lead.getVendor().getActualAddress().getRegion());
         return regions;
     }

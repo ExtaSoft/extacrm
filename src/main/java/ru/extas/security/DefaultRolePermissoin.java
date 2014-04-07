@@ -1,7 +1,6 @@
 package ru.extas.security;
 
 import org.apache.shiro.authz.Permission;
-import org.apache.shiro.authz.permission.WildcardPermission;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -26,7 +25,8 @@ public class DefaultRolePermissoin {
 	public static List<Permission> createAdminPermissions() {
 		final List<Permission> permissions;
 		permissions = newArrayList();
-		permissions.add(new WildcardPermission("*"));
+        for(ExtaDomain domain : EnumSet.allOf(ExtaDomain.class))
+		    permissions.add(new ExtaPermission(domain, SecureAction.ALL, SecureTarget.ALL));
 		return permissions;
 	}
 
@@ -38,24 +38,30 @@ public class DefaultRolePermissoin {
 	public static List<Permission> createDistributorPermissions() {
 		final List<Permission> permissions;
 		permissions = newArrayList();
-		// Начало (dashboard)	Все объекты	Полный доступ
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.ALL, SecureTarget.ALL));
-		// Физические лица	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.OWNONLY));
-		// Компании	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.OWNONLY));
-		// Юридические лица	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.OWNONLY));
-		// Торговые точки	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.OWNONLY));
-		// Лиды	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.OWNONLY));
-		// Продажи	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.ALL));
-		// Кредитные продукты	Все объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.ALL));
-		// Страховые продукты	Все объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.ALL));
+        // Начало (dashboard)	Все объекты	Полный доступ
+        permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.ALL, SecureTarget.ALL));
+        // Физические лица	Собственные объекты	Чтение, Ввод, Редактирование
+        permissions.add(new ExtaPermission(ExtaDomain.PERSON, SecureAction.VIEW, SecureTarget.ALL));
+        // Компании	Собственные объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.COMPANY, SecureAction.VIEW, SecureTarget.ALL));
+        // Юридические лица	Собственные объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.LEGAL_ENTITY, SecureAction.VIEW, SecureTarget.ALL));
+        // Торговые точки	Собственные объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.SALE_POINT, SecureAction.VIEW, SecureTarget.ALL));
+        // Лиды	Собственные объекты	Чтение, Ввод, Редактирование
+        permissions.add(new ExtaPermission(ExtaDomain.LEADS_NEW, SecureAction.VIEW, SecureTarget.ALL));
+        permissions.add(new ExtaPermission(ExtaDomain.LEADS_QUAL, SecureAction.VIEW, SecureTarget.ALL));
+        permissions.add(new ExtaPermission(ExtaDomain.LEADS_CLOSED, SecureAction.VIEW, SecureTarget.ALL));
+        // Продажи	Собственные объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.SALES_OPENED, SecureAction.VIEW, SecureTarget.ALL));
+        permissions.add(new ExtaPermission(ExtaDomain.SALES_SUCCESSFUL, SecureAction.VIEW, SecureTarget.ALL));
+        permissions.add(new ExtaPermission(ExtaDomain.SALES_CANCELED, SecureAction.VIEW, SecureTarget.ALL));
+        // Кредитные продукты	Все объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.PROD_CREDIT, SecureAction.VIEW, SecureTarget.ALL));
+        // Рассрочка	Все объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.PROD_INSTALL, SecureAction.VIEW, SecureTarget.ALL));
+        // Страховые продукты	Все объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.PROD_INSURANCE, SecureAction.VIEW, SecureTarget.ALL));
 		return permissions;
 	}
 
@@ -75,23 +81,27 @@ public class DefaultRolePermissoin {
 		permissions.add(new ExtaPermission(ExtaDomain.TASKS_MONTH, SecureAction.ALL, SecureTarget.OWNONLY));
 		permissions.add(new ExtaPermission(ExtaDomain.TASKS_ALL, SecureAction.ALL, SecureTarget.OWNONLY));
 		// Физические лица	Собственные объекты	Чтение, Ввод, Редактирование
-		permissions.add(new ExtaPermission(ExtaDomain.PERSON, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.ALL));
+		permissions.add(new ExtaPermission(ExtaDomain.PERSON, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.SALE_POINT));
 		// Компании	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.COMPANY, SecureAction.VIEW, SecureTarget.OWNONLY));
+		permissions.add(new ExtaPermission(ExtaDomain.COMPANY, SecureAction.VIEW, SecureTarget.SALE_POINT));
 		// Юридические лица	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.LEGAL_ENTITY, SecureAction.ALL, SecureTarget.OWNONLY));
+		permissions.add(new ExtaPermission(ExtaDomain.LEGAL_ENTITY, SecureAction.ALL, SecureTarget.SALE_POINT));
 		// Торговые точки	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.OWNONLY));
+		permissions.add(new ExtaPermission(ExtaDomain.SALE_POINT, SecureAction.VIEW, SecureTarget.SALE_POINT));
 		// Лиды	Собственные объекты	Чтение, Ввод, Редактирование
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.OWNONLY));
+		permissions.add(new ExtaPermission(ExtaDomain.LEADS_NEW, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.SALE_POINT));
+		permissions.add(new ExtaPermission(ExtaDomain.LEADS_QUAL, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.SALE_POINT));
+		permissions.add(new ExtaPermission(ExtaDomain.LEADS_CLOSED, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.SALE_POINT));
 		// Продажи	Собственные объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.OWNONLY));
+		permissions.add(new ExtaPermission(ExtaDomain.SALES_OPENED, SecureAction.VIEW, SecureTarget.SALE_POINT));
+		permissions.add(new ExtaPermission(ExtaDomain.SALES_SUCCESSFUL, SecureAction.VIEW, SecureTarget.SALE_POINT));
+		permissions.add(new ExtaPermission(ExtaDomain.SALES_CANCELED, SecureAction.VIEW, SecureTarget.SALE_POINT));
 		// Кредитные продукты	Все объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.ALL));
-		// Страховые продукты	Все объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.ALL));
-		// Рассрочка	Все объекты	Чтение
-		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.VIEW, SecureTarget.ALL));
+		permissions.add(new ExtaPermission(ExtaDomain.PROD_CREDIT, SecureAction.VIEW, SecureTarget.ALL));
+        // Рассрочка	Все объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.PROD_INSTALL, SecureAction.VIEW, SecureTarget.ALL));
+        // Страховые продукты	Все объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.PROD_INSURANCE, SecureAction.VIEW, SecureTarget.ALL));
 		return permissions;
 	}
 

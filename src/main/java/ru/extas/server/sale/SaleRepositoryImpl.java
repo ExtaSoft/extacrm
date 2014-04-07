@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Set;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -67,17 +68,22 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 
     @Override
     protected Collection<String> getObjectBrands(Sale sale) {
-        Set<String> brands = newHashSet();
-        brands.add(sale.getMotorBrand());
-        return brands;
+        if(!isNullOrEmpty(sale.getMotorBrand()))
+            newHashSet(sale.getMotorBrand());
+
+        return null;
     }
 
     @Override
     protected Collection<String> getObjectRegions(Sale sale) {
         Set<String> regions = newHashSet();
-        if(sale.getClient() != null && sale.getClient().getActualAddress() != null)
+        if(sale.getClient() != null
+                && sale.getClient().getActualAddress() != null
+                && !isNullOrEmpty(sale.getClient().getActualAddress().getRegion()))
             regions.add(sale.getClient().getActualAddress().getRegion());
-        if(sale.getDealer() != null && sale.getDealer().getActualAddress() != null)
+        if(sale.getDealer() != null
+                && sale.getDealer().getActualAddress() != null
+                && !isNullOrEmpty(sale.getDealer().getActualAddress().getRegion()))
             regions.add(sale.getDealer().getActualAddress().getRegion());
         return regions;
     }

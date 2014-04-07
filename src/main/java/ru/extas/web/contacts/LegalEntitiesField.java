@@ -13,7 +13,7 @@ import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.ItemAction;
 import ru.extas.web.commons.UIAction;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +53,7 @@ public class LegalEntitiesField extends CustomField<Set> {
 			@Override
 			protected Container createContainer() {
 				final Property dataSource = getPropertyDataSource();
-				final List<LegalEntity> list = dataSource != null ? (List<LegalEntity>) dataSource.getValue() : new ArrayList<LegalEntity>();
+				final Set<LegalEntity> list = dataSource != null ? (Set<LegalEntity>) dataSource.getValue() : new HashSet<LegalEntity>();
 				BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
 				if (list != null) {
 					for (final LegalEntity item : list) {

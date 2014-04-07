@@ -6,7 +6,11 @@ package ru.extas.web.config;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.server.users.PermissionService;
 import ru.extas.web.commons.ExtaAbstractView;
+
+import static ru.extas.server.ServiceLocator.lookup;
+
 
 /**
  * Реализует экран настроек CRM
@@ -25,7 +29,7 @@ public class ConfigView extends ExtaAbstractView {
     @Override
     protected Component getContent() {
         logger.debug("Creating view content...");
-        final Button updateBtn = new Button("Обновить базу", new Button.ClickListener() {
+        final Button updateBtn = new Button("Обновить права доступа", new Button.ClickListener() {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 updateDataBase();
@@ -36,13 +40,14 @@ public class ConfigView extends ExtaAbstractView {
         title.addStyleName("h1");
         title.addStyleName("icon-wrench-1");
         HorizontalLayout l = new HorizontalLayout(title);
-//        l.addComponent(updateBtn);
+        l.addComponent(updateBtn);
         l.setSizeFull();
         l.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         return l;
     }
 
     private void updateDataBase() {
+        lookup(PermissionService.class).permitAllOwnObjects();
     }
 
     /** {@inheritDoc} */

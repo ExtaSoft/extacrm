@@ -17,7 +17,7 @@ import static com.google.common.collect.Sets.newHashSet;
 @Entity
 @DiscriminatorValue("SALEPOINT")
 @Table(name = "SALE_POINT")
-public class SalePoint extends Contact implements Cloneable {
+public class SalePoint extends Contact {
 
 	// Компания
 	@ManyToOne(optional = false)

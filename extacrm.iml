@@ -157,7 +157,7 @@
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-themes:7.1.13" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin.addon:jpacontainer:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:popupbutton:2.3.0" level="project" />
-    <orderEntry type="library" name="Maven: org.vaadin.addons:filteringtable:0.9.6.v7" level="project" />
+    <orderEntry type="library" name="Maven: org.vaadin.addons:filteringtable:0.9.8.v7" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:tokenfield:7.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.persistence:eclipselink:2.5.1-RC3" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.persistence:javax.persistence:2.1.0" level="project" />

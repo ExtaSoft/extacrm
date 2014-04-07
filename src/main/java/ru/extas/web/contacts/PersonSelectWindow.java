@@ -1,7 +1,9 @@
 package ru.extas.web.contacts;
 
+import com.vaadin.data.Container;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.DefaultAction;
+import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
@@ -45,7 +47,14 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 	}
 
 	private class SelectGrid extends PersonsGrid {
-		@Override
+        @Override
+        protected Container createContainer() {
+            final ExtaDataContainer<Person> container = new ExtaDataContainer<>(Person.class);
+            container.addNestedContainerProperty("actualAddress.region");
+            return container;
+        }
+
+        @Override
 		protected List<UIAction> createActions() {
 			List<UIAction> actions = newArrayList();
 

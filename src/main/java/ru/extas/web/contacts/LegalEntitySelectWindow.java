@@ -2,9 +2,11 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.DefaultAction;
+import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
@@ -70,7 +72,12 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
                 itemContainer.addNestedContainerProperty("company.name");
                 return itemContainer;
             } else {
-                return super.createContainer();
+                final ExtaDataContainer<LegalEntity> container = new ExtaDataContainer<>(LegalEntity.class);
+                if (company != null)
+                    container.addContainerFilter(new Compare.Equal("company", company));
+                container.addNestedContainerProperty("actualAddress.region");
+                container.addNestedContainerProperty("company.name");
+                return container;
             }
         }
 

@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 		@Index(columnList = "NAME"),
 		@Index(columnList = "TYPE, NAME")
 })
-public abstract class Contact extends SecuredObject implements Cloneable {
+public abstract class Contact extends SecuredObject{
 
 	private static final long serialVersionUID = -2543373135823969745L;
 
@@ -61,22 +61,6 @@ public abstract class Contact extends SecuredObject implements Cloneable {
 	// Вышестоящая организация
 	@OneToOne
 	private Company affiliation;
-
-	/**
-	 * <p>copyTo.</p>
-	 *
-	 * @param toObj a {@link Contact} object.
-	 */
-	protected void copyTo(Contact toObj) {
-		if (actualAddress != null)
-			toObj.actualAddress = actualAddress.clone();
-		toObj.name = name;
-		toObj.phone = phone;
-		toObj.email = email;
-		toObj.www = www;
-		if (affiliation != null)
-			toObj.affiliation = affiliation.clone();
-	}
 
 	/**
 	 * <p>Getter for the field <code>affiliation</code>.</p>

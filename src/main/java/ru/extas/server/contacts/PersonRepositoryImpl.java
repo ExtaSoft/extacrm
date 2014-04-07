@@ -9,6 +9,7 @@ import ru.extas.security.AbstractSecuredRepository;
 import javax.inject.Inject;
 import java.util.Collection;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -37,7 +38,7 @@ public class PersonRepositoryImpl extends AbstractSecuredRepository<Person> {
 
     @Override
     protected Collection<String> getObjectRegions(Person person) {
-        if(person.getActualAddress() != null)
+        if(person.getActualAddress() != null && !isNullOrEmpty(person.getActualAddress().getRegion()))
             return newHashSet(person.getActualAddress().getRegion());
         return null;
     }

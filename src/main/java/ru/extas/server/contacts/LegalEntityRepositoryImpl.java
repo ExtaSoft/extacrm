@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Set;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -26,12 +27,9 @@ import static com.google.common.collect.Sets.newHashSet;
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEntity> {
 
-    @Inject
-    private LegalEntityRepository legalEntityRepository;
-    @Inject
-    private PersonRepository personRepository;
-    @Inject
-    private CompanyRepository companyRepository;
+    @Inject private LegalEntityRepository legalEntityRepository;
+    @Inject private PersonRepository personRepository;
+    //@Inject private CompanyRepository companyRepository;
 
     @Override
     public JpaRepository<LegalEntity, ?> getEntityRepository() {
@@ -39,15 +37,15 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
     }
 
     @Override
-    protected Collection<String> getObjectBrands(LegalEntity legalEntity) {
+    protected Collection<String> getObjectRegions(LegalEntity legalEntity) {
         Set<String> regions = newHashSet();
-        if(legalEntity.getActualAddress() != null)
+        if(legalEntity.getActualAddress() != null && !isNullOrEmpty(legalEntity.getActualAddress().getRegion()))
             regions.add(legalEntity.getActualAddress().getRegion());
         return regions;
     }
 
     @Override
-    protected Collection<String> getObjectRegions(LegalEntity legalEntity) {
+    protected Collection<String> getObjectBrands(LegalEntity legalEntity) {
         return null;
     }
 
@@ -58,7 +56,7 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
             super.permitObject(legalEntity, userContact, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты юр.лица:
             // Компания
-            companyRepository.permitAndSave(legalEntity.getCompany(), userContact, regions, brands);
+            //companyRepository.permitAndSave(legalEntity.getCompany(), userContact, regions, brands);
             // Директор
             personRepository.permitAndSave(legalEntity.getDirector(), userContact, regions, brands);
         }

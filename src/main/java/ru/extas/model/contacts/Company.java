@@ -15,7 +15,7 @@ import static com.google.common.collect.Sets.newHashSet;
 @Entity
 @DiscriminatorValue("COMPANY")
 @Table(name = "COMPANY")
-public class Company extends Contact implements Cloneable {
+public class Company extends Contact {
 
 	private static final long serialVersionUID = -5681940552175752858L;
 
@@ -47,14 +47,6 @@ public class Company extends Contact implements Cloneable {
 	 * <p>Constructor for Company.</p>
 	 */
 	public Company() {
-	}
-
-    /** {@inheritDoc} */
-	@Override
-	public Company clone() {
-		Company newObj = new Company();
-		super.copyTo(newObj);
-		return newObj;
 	}
 
 	/**

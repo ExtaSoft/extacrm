@@ -13,7 +13,7 @@ import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.ItemAction;
 import ru.extas.web.commons.UIAction;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +53,7 @@ public class SalePointsField extends CustomField<Set> {
 			@Override
 			protected Container createContainer() {
 				final Property dataSource = getPropertyDataSource();
-				final List<SalePoint> list = dataSource != null ? (List<SalePoint>) dataSource.getValue() : new ArrayList<SalePoint>();
+				final Set<SalePoint> list = dataSource != null ? (Set<SalePoint>) dataSource.getValue() : new HashSet<SalePoint>();
 				BeanItemContainer<SalePoint> itemContainer = new BeanItemContainer<>(SalePoint.class);
 				if (list != null) {
 					for (final SalePoint item : list) {

@@ -1,7 +1,5 @@
 package ru.extas.web.users;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.Person;
@@ -9,6 +7,9 @@ import ru.extas.server.users.UserManagementService;
 
 import javax.inject.Inject;
 import java.util.Locale;
+import java.util.Map;
+
+import static com.google.common.collect.Maps.newHashMap;
 
 /**
  * Конвертирует логин в имя пользователя с кешированием.
@@ -22,7 +23,7 @@ import java.util.Locale;
 @Component
 public class LoginToUserNameConverter implements Converter<String, String> {
 
-	private BiMap<String, String> nameCache = HashBiMap.create();
+	private Map<String, String> nameCache = newHashMap();
 
 	@Inject
 	private UserManagementService userService;
@@ -34,7 +35,12 @@ public class LoginToUserNameConverter implements Converter<String, String> {
 		if (value == null)
 			return null;
 
-		return nameCache.inverse().get(value);
+        for(Map.Entry<String,String> entry : nameCache.entrySet()) {
+            if(entry.getValue().equals(value))
+                return entry.getKey();
+        }
+
+		return null;// nameCache.inverse().get(value);
 		//throw new UnsupportedOperationException("Convert from user name to login is unsupported");
 	}
 

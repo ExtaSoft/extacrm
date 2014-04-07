@@ -6,8 +6,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.GridDataDecl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -94,7 +93,7 @@ public class CompanyOwnersField extends CustomField<Set> {
 		//table.setHeight(10, Unit.EM);
 		//table.setWidth(25, Unit.EM);
 		final Property dataSource = getPropertyDataSource();
-		final List<Person> list = dataSource != null ? (List<Person>) dataSource.getValue() : new ArrayList<Person>();
+		final Set<Person> list = dataSource != null ? (Set<Person>) dataSource.getValue() : new HashSet<Person>();
 		container = new BeanItemContainer<>(Person.class);
 		if (list != null) {
 			for (final Person item : list) {

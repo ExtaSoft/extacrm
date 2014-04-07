@@ -86,33 +86,6 @@ public class Person extends Contact {
 	public Person() {
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public Person clone() {
-		Person newObj = new Person();
-		copyTo(newObj);
-		return newObj;
-	}
-
-	/**
-	 * <p>copyTo.</p>
-	 *
-	 * @param toObj a {@link Person} object.
-	 */
-	protected void copyTo(Person toObj) {
-		super.copyTo(toObj);
-		if (birthday != null)
-			toObj.birthday = new LocalDate(birthday);
-		toObj.sex = sex;
-		toObj.jobPosition = jobPosition;
-		toObj.jobDepartment = jobDepartment;
-		toObj.passNum = passNum;
-		if (passIssueDate != null)
-			toObj.passIssueDate = new LocalDate(passIssueDate);
-		toObj.passIssuedBy = passIssuedBy;
-		toObj.passIssuedByNum = passIssuedByNum;
-	}
-
 	/**
 	 * <p>Getter for the field <code>homePhone</code>.</p>
 	 *

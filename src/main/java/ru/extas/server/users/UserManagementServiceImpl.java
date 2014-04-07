@@ -70,8 +70,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     public UserProfile getSuperuser() {
         UserProfile user = new UserProfile();
         user.setLogin(SUPERUSER_LOGIN);
-        Person contact = new Person();
-        contact.setName("Global Superuser");
+        Person contact = getSuperuserContact();
         user.setContact(contact);
         user.setLogin(SUPERUSER_LOGIN);
         String is_dev_env = System.getProperty("IS_DEV_ENV");
@@ -84,6 +83,15 @@ public class UserManagementServiceImpl implements UserManagementService {
         }
         user.setRole(UserRole.ADMIN);
         return user;
+    }
+
+    protected Person getSuperuserContact() {
+        Person contact = findUserContactByLogin("orlov@extremeassist.ru");
+        if(contact == null) {
+            contact = new Person();
+            contact.setName("Global Superuser");
+        }
+        return contact;
     }
 
     /** {@inheritDoc} */

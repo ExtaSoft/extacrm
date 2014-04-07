@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @DiscriminatorValue("LEGAL_ENTITY")
 @Table(name = "LEGAL_ENTITY")
-public class LegalEntity extends Contact implements Cloneable {
+public class LegalEntity extends Contact{
 
     // Компания
     @ManyToOne(optional = false)

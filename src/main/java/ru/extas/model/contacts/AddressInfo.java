@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @since 0.3
  */
 @Embeddable
-public class AddressInfo implements Cloneable, Serializable {
+public class AddressInfo implements Serializable {
 
     private static final long serialVersionUID = -7891940678175752858L;
 
@@ -58,13 +58,6 @@ public class AddressInfo implements Cloneable, Serializable {
         this.city = city;
         this.postIndex = postIndex;
         this.streetBld = streetBld;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AddressInfo clone() {
-        AddressInfo newObj = new AddressInfo(region, city, postIndex, streetBld);
-        return newObj;
     }
 
     /**

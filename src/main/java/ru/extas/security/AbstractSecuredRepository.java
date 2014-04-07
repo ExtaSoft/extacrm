@@ -54,6 +54,15 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
 
     @Transactional
     @Override
+    public void permitAndSave(Entity entity, Person userContact) {
+        if (entity != null) {
+            permitObject(entity, userContact, getObjectRegions(entity), getObjectBrands(entity));
+            getEntityRepository().save(entity);
+        }
+    }
+
+    @Transactional
+    @Override
     public void permitObject(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands) {
         if (entity != null) {
             // Доступ пользователя к объекту

@@ -45,6 +45,7 @@
             <property name="eclipselink.jdbc.batch-writing" value="jdbc"/>
 
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            <property name="eclipselink.ddl-generation.index-foreign-keys" value="true"/>
             <property name="eclipselink.target-database" value="MySQL" />
 
             <property name="eclipselink.logging.parameters" value="true"/>
@@ -53,6 +54,7 @@
             <property name="eclipselink.logging.thread" value="false"/>
 
             <property name="eclipselink.weaving" value="static"/>
+
         </properties>
 
     </persistence-unit>

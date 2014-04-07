@@ -12,6 +12,7 @@ import ru.extas.security.AbstractSecuredRepository;
 import javax.inject.Inject;
 import java.util.Collection;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -46,7 +47,7 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
 
     @Override
     protected Collection<String> getObjectRegions(Company company) {
-        if(company.getActualAddress() != null)
+        if(company.getActualAddress() != null && !isNullOrEmpty(company.getActualAddress().getRegion()))
             return newHashSet(company.getActualAddress().getRegion());
         return null;
     }

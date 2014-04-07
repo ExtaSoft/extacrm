@@ -17,39 +17,13 @@ import ru.extas.model.contacts.Company;
  */
 public class CompanySelect extends AbstractContactSelect<Company> {
 
-	private Company defNewObj;
-
-	/**
-	 * <p>Constructor for CompanySelect.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param defNewObj a {@link ru.extas.model.contacts.Company} object.
-	 */
-	public CompanySelect(final String caption, Company defNewObj) {
-		super(caption, Company.class);
-		this.defNewObj = defNewObj;
-		addNewItemFeature();
-	}
-
 	/**
 	 * <p>Constructor for CompanySelect.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 */
 	public CompanySelect(final String caption) {
-		this(caption, new Company());
-	}
-
-	/**
-	 * <p>Constructor for CompanySelect.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param description a {@link java.lang.String} object.
-	 * @param defNewObj a {@link ru.extas.model.contacts.Company} object.
-	 */
-	public CompanySelect(final String caption, final String description, Company defNewObj) {
-		super(caption, description, Company.class);
-		this.defNewObj = defNewObj;
+		super(caption, Company.class);
 		addNewItemFeature();
 	}
 
@@ -60,7 +34,8 @@ public class CompanySelect extends AbstractContactSelect<Company> {
 	 * @param description a {@link java.lang.String} object.
 	 */
 	public CompanySelect(final String caption, final String description) {
-		this(caption, description, new Company());
+		super(caption, description, Company.class);
+		addNewItemFeature();
 	}
 
 	private void addNewItemFeature() {
@@ -71,9 +46,8 @@ public class CompanySelect extends AbstractContactSelect<Company> {
 			@SuppressWarnings({"unchecked"})
 			@Override
 			public void addNewItem(final String newItemCaption) {
-				final BeanItem<Company> newObj = new BeanItem<>(defNewObj.clone());
-				if (defNewObj.getName() == null)
-					newObj.getBean().setName(newItemCaption);
+				final BeanItem<Company> newObj = new BeanItem<>(new Company());
+				newObj.getBean().setName(newItemCaption);
 				newObj.expandProperty("actualAddress");
 
 				final String edFormCaption = "Ввод нового контакта в систему";

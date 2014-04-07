@@ -1,6 +1,7 @@
 package ru.extas.security;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
 
@@ -17,13 +18,21 @@ public interface SecuredRepository<Entity extends SecuredObject> {
 
     JpaRepository<Entity, ?> getEntityRepository();
 
+    @Transactional
     Entity secureSave(Entity entity);
 
+    @Transactional
     void permitAndSave(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands);
 
+    @Transactional
     void permitAndSave(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands);
 
+    @Transactional
+    void permitAndSave(Entity entity, Person userContact);
+
+    @Transactional
     void permitObject(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands);
 
+    @Transactional
     void permitObject(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands);
 }

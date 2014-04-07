@@ -23,7 +23,7 @@
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
         <vaadin.popupbutton.version>2.3.0</vaadin.popupbutton.version>
-        <vaadin.filteringtable.version>0.9.6.v7</vaadin.filteringtable.version>
+        <vaadin.filteringtable.version>0.9.8.v7</vaadin.filteringtable.version>
 
         <servlet-api.version>2.5</servlet-api.version>
         <activiti-version>5.14</activiti-version>
