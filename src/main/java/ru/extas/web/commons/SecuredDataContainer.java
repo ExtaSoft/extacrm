@@ -10,6 +10,7 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.users.UserProfile;
 import ru.extas.security.ExtaDomain;
 import ru.extas.security.SecureTarget;
+import ru.extas.security.UserRole;
 import ru.extas.server.users.UserManagementService;
 
 import javax.persistence.criteria.*;
@@ -61,10 +62,13 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
                         if (cb == null || cq == null || predicates == null)
                             return;
 
-                        Root<TEntityType> objectRoot = (Root<TEntityType>) cq.getRoots().iterator().next();
-                        Predicate predicate = null;
                         UserManagementService userService = lookup(UserManagementService.class);
+                        if(userService.isCurUserHasRole(UserRole.ADMIN))
+                            return;
+
+                        Root<TEntityType> objectRoot = (Root<TEntityType>) cq.getRoots().iterator().next();
                         Person curUserContact = userService.getCurrentUserContact();
+                        Predicate predicate = null;
 
                         // Определить область видимости и Наложить фильтр в соответствии с областью видимости
                         if (userService.isPermittedTarget(domain, SecureTarget.ALL)) {

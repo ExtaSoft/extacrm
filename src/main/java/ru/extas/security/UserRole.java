@@ -32,6 +32,11 @@ public enum UserRole {
 	 */
 	DEALER("dealer"),
 
+    /**
+     * Дилер реководитель
+     */
+	DEALER_MANAGER("dealer-manager"),
+
 	/**
 	 *  Дистрибьютор
 	 */

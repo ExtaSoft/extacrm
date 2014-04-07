@@ -105,6 +105,41 @@ public class DefaultRolePermissoin {
 		return permissions;
 	}
 
+	public static List<Permission> createDealerManagerPermissions() {
+		final List<Permission> permissions;
+		permissions = newArrayList();
+		// Начало (dashboard)	Все объекты	Полный доступ
+		permissions.add(new ExtaPermission(ExtaDomain.DASHBOARD, SecureAction.ALL, SecureTarget.ALL));
+		// Задачи	Собственные объекты	Полный доступ
+		permissions.add(new ExtaPermission(ExtaDomain.TASKS_TODAY, SecureAction.ALL, SecureTarget.CORPORATE));
+		permissions.add(new ExtaPermission(ExtaDomain.TASKS_WEEK, SecureAction.ALL, SecureTarget.CORPORATE));
+		permissions.add(new ExtaPermission(ExtaDomain.TASKS_MONTH, SecureAction.ALL, SecureTarget.CORPORATE));
+		permissions.add(new ExtaPermission(ExtaDomain.TASKS_ALL, SecureAction.ALL, SecureTarget.CORPORATE));
+		// Физические лица	Собственные объекты	Чтение, Ввод, Редактирование
+		permissions.add(new ExtaPermission(ExtaDomain.PERSON, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.CORPORATE));
+		// Компании	Собственные объекты	Чтение
+		permissions.add(new ExtaPermission(ExtaDomain.COMPANY, SecureAction.VIEW, SecureTarget.CORPORATE));
+		// Юридические лица	Собственные объекты	Чтение
+		permissions.add(new ExtaPermission(ExtaDomain.LEGAL_ENTITY, SecureAction.ALL, SecureTarget.CORPORATE));
+		// Торговые точки	Собственные объекты	Чтение
+		permissions.add(new ExtaPermission(ExtaDomain.SALE_POINT, SecureAction.VIEW, SecureTarget.CORPORATE));
+		// Лиды	Собственные объекты	Чтение, Ввод, Редактирование
+		permissions.add(new ExtaPermission(ExtaDomain.LEADS_NEW, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.CORPORATE));
+		permissions.add(new ExtaPermission(ExtaDomain.LEADS_QUAL, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.CORPORATE));
+		permissions.add(new ExtaPermission(ExtaDomain.LEADS_CLOSED, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.CORPORATE));
+		// Продажи	Собственные объекты	Чтение
+		permissions.add(new ExtaPermission(ExtaDomain.SALES_OPENED, SecureAction.VIEW, SecureTarget.CORPORATE));
+		permissions.add(new ExtaPermission(ExtaDomain.SALES_SUCCESSFUL, SecureAction.VIEW, SecureTarget.CORPORATE));
+		permissions.add(new ExtaPermission(ExtaDomain.SALES_CANCELED, SecureAction.VIEW, SecureTarget.CORPORATE));
+		// Кредитные продукты	Все объекты	Чтение
+		permissions.add(new ExtaPermission(ExtaDomain.PROD_CREDIT, SecureAction.VIEW, SecureTarget.ALL));
+        // Рассрочка	Все объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.PROD_INSTALL, SecureAction.VIEW, SecureTarget.ALL));
+        // Страховые продукты	Все объекты	Чтение
+        permissions.add(new ExtaPermission(ExtaDomain.PROD_INSURANCE, SecureAction.VIEW, SecureTarget.ALL));
+		return permissions;
+	}
+
 	/**
 	 * <p>createManagerPermissions.</p>
 	 *

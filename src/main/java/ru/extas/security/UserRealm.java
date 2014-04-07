@@ -90,6 +90,9 @@ public class UserRealm extends AuthorizingRealm {
 			case DEALER:
 				permissions = DefaultRolePermissoin.createDealerPermissions();
 				break;
+			case DEALER_MANAGER:
+				permissions = DefaultRolePermissoin.createDealerManagerPermissions();
+				break;
 			case DISTRIBUTOR:
 				permissions = DefaultRolePermissoin.createDistributorPermissions();
 				break;

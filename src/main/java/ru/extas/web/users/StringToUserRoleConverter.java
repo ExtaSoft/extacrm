@@ -30,10 +30,11 @@ public class StringToUserRoleConverter extends String2EnumConverter<UserRole> {
 	@Override
 	protected BiMap<UserRole, String> createEnum2StringMap() {
 		final BiMap<UserRole, String> map = HashBiMap.create();
-		map.put(UserRole.USER, "Пользователь");
+		map.put(UserRole.USER, "Сотрудник");
 		map.put(UserRole.MANAGER, "Руководитель");
 		map.put(UserRole.ADMIN, "Администратор");
 		map.put(UserRole.DEALER, "Дилер");
+		map.put(UserRole.DEALER_MANAGER, "Дилер руководитель");
 		map.put(UserRole.DISTRIBUTOR, "Дистрибьютор");
 		return map;
 	}
