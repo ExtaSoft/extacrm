@@ -200,6 +200,11 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         UI.getCurrent().addWindow(this);
     }
 
+    /**
+     * <p>Getter for the field <code>fieldGroup</code>.</p>
+     *
+     * @return a {@link com.vaadin.data.fieldgroup.FieldGroup} object.
+     */
     protected FieldGroup getFieldGroup() {
         return fieldGroup;
     }

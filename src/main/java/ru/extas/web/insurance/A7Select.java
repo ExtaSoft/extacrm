@@ -24,9 +24,7 @@ public class A7Select extends ComboBox {
 
     private static final long serialVersionUID = 6004206917183679455L;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Class<A7Form> getType() {
         return A7Form.class;

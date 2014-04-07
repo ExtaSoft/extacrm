@@ -44,9 +44,7 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     @Inject private PersonRepository personRepository;
     @Inject private SalePointRepository salePointRepository;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void qualify(Lead obj) {
@@ -69,11 +67,13 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         logger.debug("Started \"saleCreditProcess\" business process instance (id = {})", processInstance.getId());
     }
 
+    /** {@inheritDoc} */
     @Override
     public JpaRepository<Lead, ?> getEntityRepository() {
         return leadRepository;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectBrands(Lead lead) {
         if(!isNullOrEmpty(lead.getMotorBrand()))
@@ -82,6 +82,7 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectRegions(Lead lead) {
         Set<String> regions = newHashSet();
@@ -96,6 +97,7 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         return regions;
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitObject(Lead lead, Person userContact, Collection<String> regions, Collection<String> brands) {

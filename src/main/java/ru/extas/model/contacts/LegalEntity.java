@@ -88,7 +88,7 @@ public class LegalEntity extends Contact{
     /**
      * <p>Getter for the field <code>director</code>.</p>
      *
-     * @return a {@link Person} object.
+     * @return a {@link ru.extas.model.contacts.Person} object.
      */
     public Person getDirector() {
         return director;
@@ -97,7 +97,7 @@ public class LegalEntity extends Contact{
     /**
      * <p>Setter for the field <code>director</code>.</p>
      *
-     * @param director a {@link Person} object.
+     * @param director a {@link ru.extas.model.contacts.Person} object.
      */
     public void setDirector(final Person director) {
         this.director = director;
@@ -143,7 +143,7 @@ public class LegalEntity extends Contact{
     /**
      * <p>Getter for the field <code>company</code>.</p>
      *
-     * @return a {@link Company} object.
+     * @return a {@link ru.extas.model.contacts.Company} object.
      */
     public Company getCompany() {
         return company;
@@ -152,7 +152,7 @@ public class LegalEntity extends Contact{
     /**
      * <p>Setter for the field <code>company</code>.</p>
      *
-     * @param company a {@link Company} object.
+     * @param company a {@link ru.extas.model.contacts.Company} object.
      */
     public void setCompany(final Company company) {
         this.company = company;

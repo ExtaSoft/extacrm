@@ -45,7 +45,7 @@ public abstract class AuditedObject extends IdentifiedObject {
     protected DateTime modifiedAt;
 
     /**
-     *
+     * <p>Constructor for AuditedObject.</p>
      */
     protected AuditedObject() {
         super();

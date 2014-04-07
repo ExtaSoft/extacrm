@@ -40,7 +40,7 @@ public class ContactCode extends AuditedObject {
     /**
      * <p>Getter for the field <code>contact</code>.</p>
      *
-     * @return a {@link Company} object.
+     * @return a {@link ru.extas.model.contacts.Company} object.
      */
     public Company getContact() {
         return contact;
@@ -49,7 +49,7 @@ public class ContactCode extends AuditedObject {
     /**
      * <p>Setter for the field <code>contact</code>.</p>
      *
-     * @param contact a {@link Company} object.
+     * @param contact a {@link ru.extas.model.contacts.Company} object.
      */
     public void setContact(final Company contact) {
         this.contact = contact;

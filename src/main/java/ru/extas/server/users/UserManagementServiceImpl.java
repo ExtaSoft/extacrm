@@ -85,6 +85,11 @@ public class UserManagementServiceImpl implements UserManagementService {
         return user;
     }
 
+    /**
+     * <p>getSuperuserContact.</p>
+     *
+     * @return a {@link ru.extas.model.contacts.Person} object.
+     */
     protected Person getSuperuserContact() {
         Person contact = findUserContactByLogin("orlov@extremeassist.ru");
         if(contact == null) {

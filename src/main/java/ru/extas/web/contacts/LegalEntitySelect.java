@@ -12,6 +12,8 @@ import ru.extas.model.contacts.LegalEntity;
  * @author Valery Orlov
  *         Date: 27.03.2014
  *         Time: 0:45
+ * @version $Id: $Id
+ * @since 0.3.0
  */
 public class LegalEntitySelect extends CustomField<LegalEntity> {
 
@@ -21,10 +23,21 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
     private Label phoneField;
     private Button viewBtn;
 
+    /**
+     * <p>Constructor for LegalEntitySelect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public LegalEntitySelect(final String caption) {
         this(caption, "");
     }
 
+    /**
+     * <p>Constructor for LegalEntitySelect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param description a {@link java.lang.String} object.
+     */
     public LegalEntitySelect(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
@@ -32,6 +45,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         addStyleName("bordered-component");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Component initContent() {
         VerticalLayout container = new VerticalLayout();
@@ -184,6 +198,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public Class<? extends LegalEntity> getType() {
         return LegalEntity.class;

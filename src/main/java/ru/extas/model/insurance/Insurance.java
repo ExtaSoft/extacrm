@@ -123,7 +123,7 @@ public class Insurance extends SecuredObject {
 	/**
 	 * <p>Getter for the field <code>coverTime</code>.</p>
 	 *
-	 * @return a {@link Insurance.PeriodOfCover} object.
+	 * @return a {@link ru.extas.model.insurance.Insurance.PeriodOfCover} object.
 	 */
 	public PeriodOfCover getCoverTime() {
 		return coverTime;
@@ -132,7 +132,7 @@ public class Insurance extends SecuredObject {
 	/**
 	 * <p>Setter for the field <code>coverTime</code>.</p>
 	 *
-	 * @param coverTime a {@link Insurance.PeriodOfCover} object.
+	 * @param coverTime a {@link ru.extas.model.insurance.Insurance.PeriodOfCover} object.
 	 */
 	public void setCoverTime(PeriodOfCover coverTime) {
 		this.coverTime = coverTime;
@@ -143,7 +143,7 @@ public class Insurance extends SecuredObject {
 	 *
 	 * @param motorBrand a {@link java.lang.String} object.
 	 * @param riskSum a {@link java.math.BigDecimal} object.
-	 * @param coverPeriod a {@link Insurance.PeriodOfCover} object.
+	 * @param coverPeriod a {@link ru.extas.model.insurance.Insurance.PeriodOfCover} object.
 	 * @param usedMotor a boolean.
 	 */
 	public Insurance(String motorBrand, BigDecimal riskSum, PeriodOfCover coverPeriod, boolean usedMotor) {

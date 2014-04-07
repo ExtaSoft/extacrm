@@ -24,6 +24,8 @@ import java.util.List;
  * @author Valery Orlov
  *         Date: 04.04.2014
  *         Time: 0:42
+ * @version $Id: $Id
+ * @since 0.3.0
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -38,6 +40,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Inject private InsuranceRepository insuranceRepository;
     @Inject private UserManagementService userService;
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitAllOwnObjects() {
@@ -57,6 +60,13 @@ public class PermissionServiceImpl implements PermissionService {
         permitObjects(insuranceRepository.findAll(), insuranceRepository);
     }
 
+    /**
+     * <p>permitObjects.</p>
+     *
+     * @param entities a {@link java.util.List} object.
+     * @param repository a {@link ru.extas.security.SecuredRepository} object.
+     * @param <Entity> a Entity object.
+     */
     protected <Entity extends SecuredObject> void permitObjects(List<Entity> entities, SecuredRepository<Entity> repository) {
         for(Entity entity : entities) {
             Person createdBy = userService.findUserContactByLogin(entity.getCreatedBy());

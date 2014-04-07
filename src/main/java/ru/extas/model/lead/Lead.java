@@ -111,7 +111,7 @@ public class Lead extends SecuredObject {
 	/**
 	 * <p>Getter for the field <code>result</code>.</p>
 	 *
-	 * @return a {@link Lead.Result} object.
+	 * @return a {@link ru.extas.model.lead.Lead.Result} object.
 	 */
 	public Result getResult() {
 		return result;
@@ -120,7 +120,7 @@ public class Lead extends SecuredObject {
 	/**
 	 * <p>Setter for the field <code>result</code>.</p>
 	 *
-	 * @param result a {@link Lead.Result} object.
+	 * @param result a {@link ru.extas.model.lead.Lead.Result} object.
 	 */
 	public void setResult(Result result) {
 		this.result = result;
@@ -363,7 +363,7 @@ public class Lead extends SecuredObject {
 	/**
 	 * <p>Getter for the field <code>status</code>.</p>
 	 *
-	 * @return a {@link Lead.Status} object.
+	 * @return a {@link ru.extas.model.lead.Lead.Status} object.
 	 */
 	public Status getStatus() {
 		return status;
@@ -372,7 +372,7 @@ public class Lead extends SecuredObject {
 	/**
 	 * <p>Setter for the field <code>status</code>.</p>
 	 *
-	 * @param status a {@link Lead.Status} object.
+	 * @param status a {@link ru.extas.model.lead.Lead.Status} object.
 	 */
 	public void setStatus(Status status) {
 		this.status = status;

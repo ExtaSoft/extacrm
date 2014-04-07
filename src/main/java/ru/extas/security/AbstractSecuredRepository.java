@@ -16,12 +16,15 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  * @author Valery Orlov
  *         Date: 03.04.2014
  *         Time: 13:08
+ * @version $Id: $Id
+ * @since 0.3.0
  */
 public abstract class AbstractSecuredRepository<Entity extends SecuredObject> implements SecuredRepository<Entity> {
 
     @Inject
     protected UserManagementService userService;
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public Entity secureSave(Entity entity) {
@@ -30,10 +33,23 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
         return getEntityRepository().save(entity);
     }
 
+    /**
+     * <p>getObjectBrands.</p>
+     *
+     * @param entity a Entity object.
+     * @return a {@link java.util.Collection} object.
+     */
     protected abstract Collection<String> getObjectBrands(Entity entity);
 
+    /**
+     * <p>getObjectRegions.</p>
+     *
+     * @param entity a Entity object.
+     * @return a {@link java.util.Collection} object.
+     */
     protected abstract Collection<String> getObjectRegions(Entity entity);
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitAndSave(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands) {
@@ -43,6 +59,7 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
         }
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitAndSave(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands) {
@@ -52,6 +69,7 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
         }
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitAndSave(Entity entity, Person userContact) {
@@ -61,6 +79,7 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
         }
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitObject(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands) {
@@ -76,6 +95,7 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
         }
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitObject(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands) {

@@ -54,11 +54,13 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
         formService.spendForm(insurance.getA7Num());
     }
 
+    /** {@inheritDoc} */
     @Override
     public JpaRepository<Insurance, ?> getEntityRepository() {
         return insuranceRepository;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectBrands(Insurance insurance) {
         if(!isNullOrEmpty(insurance.getMotorBrand()))
@@ -66,6 +68,7 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectRegions(Insurance insurance) {
         Set<String> regions = newHashSet();
@@ -80,6 +83,7 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
         return regions;
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitObject(Insurance insurance, Person userContact, Collection<String> regions, Collection<String> brands) {

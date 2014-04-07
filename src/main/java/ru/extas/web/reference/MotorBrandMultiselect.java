@@ -29,12 +29,17 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class MotorBrandMultiselect extends CustomField<Set> {
 
 
+    /**
+     * <p>Constructor for MotorBrandMultiselect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public MotorBrandMultiselect(String caption) {
         setBuffered(true);
         setCaption(caption);
     }
 
-    /** {@inheritDoc} */
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 

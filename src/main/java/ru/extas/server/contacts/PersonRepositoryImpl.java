@@ -18,6 +18,8 @@ import static com.google.common.collect.Sets.newHashSet;
  * @author Valery Orlov
  *         Date: 03.04.2014
  *         Time: 12:39
+ * @version $Id: $Id
+ * @since 0.3.0
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -26,16 +28,19 @@ public class PersonRepositoryImpl extends AbstractSecuredRepository<Person> {
     @Inject
     private PersonRepository entityRepository;
 
+    /** {@inheritDoc} */
     @Override
     public PersonRepository getEntityRepository() {
         return entityRepository;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectBrands(Person person) {
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectRegions(Person person) {
         if(person.getActualAddress() != null && !isNullOrEmpty(person.getActualAddress().getRegion()))

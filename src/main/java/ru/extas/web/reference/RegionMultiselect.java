@@ -29,12 +29,17 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class RegionMultiselect extends CustomField<Set> {
 
 
+    /**
+     * <p>Constructor for RegionMultiselect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public RegionMultiselect(String caption) {
         setBuffered(true);
         setCaption(caption);
     }
 
-    /** {@inheritDoc} */
+	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 

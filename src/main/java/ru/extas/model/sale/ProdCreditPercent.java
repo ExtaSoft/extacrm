@@ -43,7 +43,7 @@ public class ProdCreditPercent extends AuditedObject {
 	/**
 	 * <p>Constructor for ProdCreditPercent.</p>
 	 *
-	 * @param product a {@link ProdCredit} object.
+	 * @param product a {@link ru.extas.model.sale.ProdCredit} object.
 	 */
 	public ProdCreditPercent(final ProdCredit product) {
 		this.product = product;
@@ -106,7 +106,7 @@ public class ProdCreditPercent extends AuditedObject {
 	/**
 	 * <p>Getter for the field <code>product</code>.</p>
 	 *
-	 * @return a {@link ProdCredit} object.
+	 * @return a {@link ru.extas.model.sale.ProdCredit} object.
 	 */
 	public ProdCredit getProduct() {
 		return product;
@@ -115,7 +115,7 @@ public class ProdCreditPercent extends AuditedObject {
 	/**
 	 * <p>Setter for the field <code>product</code>.</p>
 	 *
-	 * @param product a {@link ProdCredit} object.
+	 * @param product a {@link ru.extas.model.sale.ProdCredit} object.
 	 */
 	public void setProduct(final ProdCredit product) {
 		this.product = product;

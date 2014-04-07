@@ -57,7 +57,7 @@ public class SalePoint extends Contact {
 	@Column(name = "SETELEM_CODE", length = 15)
 	private String setelemCode;
 
-    /**
+	/**
 	 * <p>Getter for the field <code>legalEntities</code>.</p>
 	 *
 	 * @return a {@link java.util.List} object.
@@ -168,7 +168,7 @@ public class SalePoint extends Contact {
 	/**
 	 * <p>Getter for the field <code>company</code>.</p>
 	 *
-	 * @return a {@link Company} object.
+	 * @return a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public Company getCompany() {
 		return company;
@@ -177,7 +177,7 @@ public class SalePoint extends Contact {
 	/**
 	 * <p>Setter for the field <code>company</code>.</p>
 	 *
-	 * @param company a {@link Company} object.
+	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public void setCompany(final Company company) {
 		this.company = company;

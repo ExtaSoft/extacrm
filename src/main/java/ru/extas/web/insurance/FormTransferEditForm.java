@@ -46,9 +46,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final FormTransfer obj) {
         final FormLayout form = new FormLayout();
@@ -74,9 +72,7 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
         return form;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void initObject(final FormTransfer obj) {
         if (obj.getId() == null) {
@@ -86,18 +82,14 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void saveObject(final FormTransfer obj) {
         lookup(FormTransferRepository.class).saveAndChangeOwner(obj);
         Notification.show("Акт приема/передачи сохранен", Notification.Type.TRAY_NOTIFICATION);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void checkBeforeSave(final FormTransfer obj) {
     }

@@ -105,7 +105,7 @@ public class SalePointRestService {
      * <p>greeting.</p>
      *
      * @param name a {@link java.lang.String} object.
-     * @return a {@link SalePointRestService.Greeting} object.
+     * @return a {@link ru.extas.server.contacts.SalePointRestService.Greeting} object.
      */
     @RequestMapping(value = "/greeting", method = RequestMethod.GET)
     public

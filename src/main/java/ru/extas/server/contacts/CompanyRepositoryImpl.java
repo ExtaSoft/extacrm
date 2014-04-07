@@ -21,6 +21,8 @@ import static com.google.common.collect.Sets.newHashSet;
  * @author Valery Orlov
  *         Date: 03.04.2014
  *         Time: 13:54
+ * @version $Id: $Id
+ * @since 0.3.0
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -35,16 +37,19 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
     @Inject
     private SalePointRepository salePointRepository;
 
+    /** {@inheritDoc} */
     @Override
     public JpaRepository<Company, ?> getEntityRepository() {
         return companyRepository;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectBrands(Company company) {
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectRegions(Company company) {
         if(company.getActualAddress() != null && !isNullOrEmpty(company.getActualAddress().getRegion()))
@@ -52,6 +57,7 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
         return null;
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitObject(Company company, Person userContact, Collection<String> regions, Collection<String> brands) {

@@ -65,7 +65,7 @@ public abstract class Contact extends SecuredObject{
 	/**
 	 * <p>Getter for the field <code>affiliation</code>.</p>
 	 *
-	 * @return a {@link Company} object.
+	 * @return a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public Company getAffiliation() {
 		return affiliation;
@@ -74,7 +74,7 @@ public abstract class Contact extends SecuredObject{
 	/**
 	 * <p>Setter for the field <code>affiliation</code>.</p>
 	 *
-	 * @param affiliation a {@link Company} object.
+	 * @param affiliation a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public void setAffiliation(final Company affiliation) {
 		this.affiliation = affiliation;
@@ -137,7 +137,7 @@ public abstract class Contact extends SecuredObject{
 	/**
 	 * <p>Setter for the field <code>actualAddress</code>.</p>
 	 *
-	 * @param actualAddress a {@link AddressInfo} object.
+	 * @param actualAddress a {@link ru.extas.model.contacts.AddressInfo} object.
 	 */
 	public void setActualAddress(final AddressInfo actualAddress) {
 		this.actualAddress = actualAddress;
@@ -146,7 +146,7 @@ public abstract class Contact extends SecuredObject{
 	/**
 	 * <p>Getter for the field <code>actualAddress</code>.</p>
 	 *
-	 * @return a {@link AddressInfo} object.
+	 * @return a {@link ru.extas.model.contacts.AddressInfo} object.
 	 */
 	public AddressInfo getActualAddress() {
 		return actualAddress;

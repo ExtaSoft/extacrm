@@ -205,18 +205,38 @@ public class UserProfile extends AuditedObject {
         this.passwordSalt = passwordSalt;
     }
 
+    /**
+     * <p>Getter for the field <code>permitRegions</code>.</p>
+     *
+     * @return a {@link java.util.Set} object.
+     */
     public Set<String> getPermitRegions() {
         return permitRegions;
     }
 
+    /**
+     * <p>Setter for the field <code>permitRegions</code>.</p>
+     *
+     * @param permitRegions a {@link java.util.Set} object.
+     */
     public void setPermitRegions(Set<String> permitRegions) {
         this.permitRegions = permitRegions;
     }
 
+    /**
+     * <p>Getter for the field <code>permitBrands</code>.</p>
+     *
+     * @return a {@link java.util.Set} object.
+     */
     public Set<String> getPermitBrands() {
         return permitBrands;
     }
 
+    /**
+     * <p>Setter for the field <code>permitBrands</code>.</p>
+     *
+     * @param permitBrands a {@link java.util.Set} object.
+     */
     public void setPermitBrands(Set<String> permitBrands) {
         this.permitBrands = permitBrands;
     }

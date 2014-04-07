@@ -47,7 +47,7 @@ public class ProductInSale extends AuditedObject {
 	/**
 	 * <p>Constructor for ProductInSale.</p>
 	 *
-	 * @param sale a {@link Sale} object.
+	 * @param sale a {@link ru.extas.model.sale.Sale} object.
 	 */
 	public ProductInSale(final Sale sale) {
 		this.sale = sale;
@@ -74,7 +74,7 @@ public class ProductInSale extends AuditedObject {
 	/**
 	 * <p>Getter for the field <code>sale</code>.</p>
 	 *
-	 * @return a {@link Sale} object.
+	 * @return a {@link ru.extas.model.sale.Sale} object.
 	 */
 	public Sale getSale() {
 		return sale;
@@ -83,7 +83,7 @@ public class ProductInSale extends AuditedObject {
 	/**
 	 * <p>Setter for the field <code>sale</code>.</p>
 	 *
-	 * @param sale a {@link Sale} object.
+	 * @param sale a {@link ru.extas.model.sale.Sale} object.
 	 */
 	public void setSale(final Sale sale) {
 		this.sale = sale;
@@ -92,7 +92,7 @@ public class ProductInSale extends AuditedObject {
 	/**
 	 * <p>Getter for the field <code>product</code>.</p>
 	 *
-	 * @return a {@link Product} object.
+	 * @return a {@link ru.extas.model.sale.Product} object.
 	 */
 	public Product getProduct() {
 		return product;
@@ -101,7 +101,7 @@ public class ProductInSale extends AuditedObject {
 	/**
 	 * <p>Setter for the field <code>product</code>.</p>
 	 *
-	 * @param product a {@link Product} object.
+	 * @param product a {@link ru.extas.model.sale.Product} object.
 	 */
 	public void setProduct(final Product product) {
 		this.product = product;

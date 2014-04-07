@@ -94,7 +94,7 @@ public class Sale extends SecuredObject {
 	/**
 	 * <p>Getter for the field <code>result</code>.</p>
 	 *
-	 * @return a {@link Sale.Result} object.
+	 * @return a {@link ru.extas.model.sale.Sale.Result} object.
 	 */
 	public Result getResult() {
 		return result;
@@ -103,7 +103,7 @@ public class Sale extends SecuredObject {
 	/**
 	 * <p>Setter for the field <code>result</code>.</p>
 	 *
-	 * @param result a {@link Sale.Result} object.
+	 * @param result a {@link ru.extas.model.sale.Sale.Result} object.
 	 */
 	public void setResult(Result result) {
 		this.result = result;
@@ -166,7 +166,7 @@ public class Sale extends SecuredObject {
 	/**
 	 * <p>Getter for the field <code>status</code>.</p>
 	 *
-	 * @return a {@link Sale.Status} object.
+	 * @return a {@link ru.extas.model.sale.Sale.Status} object.
 	 */
 	public Status getStatus() {
 		return status;
@@ -175,7 +175,7 @@ public class Sale extends SecuredObject {
 	/**
 	 * <p>Setter for the field <code>status</code>.</p>
 	 *
-	 * @param status a {@link Sale.Status} object.
+	 * @param status a {@link ru.extas.model.sale.Sale.Status} object.
 	 */
 	public void setStatus(Status status) {
 		this.status = status;

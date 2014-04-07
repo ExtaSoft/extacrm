@@ -31,17 +31,13 @@ public class A7FormGrid extends ExtaGrid {
     public A7FormGrid() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected GridDataDecl createDataDecl() {
         return new A7FormDataDecl();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected Container createContainer() {
         ExtaDataContainer<A7Form> cnt = new ExtaDataContainer<>(A7Form.class);
@@ -49,9 +45,7 @@ public class A7FormGrid extends ExtaGrid {
         return cnt;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();

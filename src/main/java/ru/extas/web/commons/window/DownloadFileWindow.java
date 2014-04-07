@@ -36,6 +36,42 @@ public class DownloadFileWindow extends Window {
 	 * @param fileName a {@link java.lang.String} object.
 	 * @param fileName a {@link java.lang.String} object.
 	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
+	 * @param fileName a {@link java.lang.String} object.
 	 */
 	public DownloadFileWindow(final byte[] file, String fileName) {
 		initWindow("Файл готов к загрузке...", file, fileName);

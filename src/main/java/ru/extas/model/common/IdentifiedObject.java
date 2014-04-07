@@ -11,6 +11,8 @@ import java.io.Serializable;
  * @author Valery Orlov
  *         Date: 22.03.2014
  *         Time: 17:16
+ * @version $Id: $Id
+ * @since 0.3.0
  */
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -27,6 +29,9 @@ public class IdentifiedObject implements Serializable {
     @Version
     protected int version;
 
+    /**
+     * <p>Constructor for IdentifiedObject.</p>
+     */
     public IdentifiedObject() {
         super();
     }

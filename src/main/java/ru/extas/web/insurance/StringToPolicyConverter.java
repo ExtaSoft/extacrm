@@ -65,6 +65,18 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      */
     public Policy convertToModel(final String value, final Locale locale)
             throws com.vaadin.data.util.converter.Converter.ConversionException {
@@ -77,6 +89,18 @@ public class StringToPolicyConverter implements Converter<String, Policy> {
      * @param value  a {@link ru.extas.model.insurance.Policy} object.
      * @param locale a {@link java.util.Locale} object.
      * @return a {@link java.lang.String} object.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.

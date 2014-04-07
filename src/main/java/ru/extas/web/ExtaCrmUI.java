@@ -71,9 +71,7 @@ public class ExtaCrmUI extends UI {
     private ExtaMainMenu mainMenu;
     private final CssLayout content = new CssLayout();
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void init(final VaadinRequest request) {
 

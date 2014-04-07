@@ -9,6 +9,8 @@ import ru.extas.security.SecuredRepository;
  * @author Valery Orlov
  *         Date: 03.04.2014
  *         Time: 14:47
+ * @version $Id: $Id
+ * @since 0.3.0
  */
 public interface SalePointService extends SecuredRepository<SalePoint> {
 }

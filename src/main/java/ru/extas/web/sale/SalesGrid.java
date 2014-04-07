@@ -34,7 +34,7 @@ public class SalesGrid extends ExtaGrid {
 	/**
 	 * <p>Constructor for SalesGrid.</p>
 	 *
-	 * @param status a {@link ru.extas.model.sale.Sale.Status} object.
+	 * @param domain a {@link ru.extas.security.ExtaDomain} object.
 	 */
 	public SalesGrid(ExtaDomain domain) {
 		super(false);

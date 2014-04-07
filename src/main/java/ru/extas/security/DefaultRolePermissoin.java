@@ -105,6 +105,11 @@ public class DefaultRolePermissoin {
 		return permissions;
 	}
 
+	/**
+	 * <p>createDealerManagerPermissions.</p>
+	 *
+	 * @return a {@link java.util.List} object.
+	 */
 	public static List<Permission> createDealerManagerPermissions() {
 		final List<Permission> permissions;
 		permissions = newArrayList();

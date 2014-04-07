@@ -61,11 +61,13 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 
 	}
 
+    /** {@inheritDoc} */
     @Override
     public JpaRepository<Sale, ?> getEntityRepository() {
         return saleRepository;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectBrands(Sale sale) {
         if(!isNullOrEmpty(sale.getMotorBrand()))
@@ -74,6 +76,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectRegions(Sale sale) {
         Set<String> regions = newHashSet();
@@ -88,6 +91,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         return regions;
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitObject(Sale sale, Person userContact, Collection<String> regions, Collection<String> brands) {

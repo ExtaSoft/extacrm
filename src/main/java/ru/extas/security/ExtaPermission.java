@@ -72,6 +72,7 @@ public class ExtaPermission implements Permission, Serializable {
         this(domain, (SecureAction) null, target);
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean implies(Permission p) {
         checkNotNull(p);
@@ -94,14 +95,29 @@ public class ExtaPermission implements Permission, Serializable {
         return false;
     }
 
+    /**
+     * <p>Getter for the field <code>domain</code>.</p>
+     *
+     * @return a {@link ru.extas.security.ExtaDomain} object.
+     */
     public ExtaDomain getDomain() {
         return domain;
     }
 
+    /**
+     * <p>Getter for the field <code>actions</code>.</p>
+     *
+     * @return a {@link java.util.Set} object.
+     */
     public Set<SecureAction> getActions() {
         return actions;
     }
 
+    /**
+     * <p>Getter for the field <code>target</code>.</p>
+     *
+     * @return a {@link ru.extas.security.SecureTarget} object.
+     */
     public SecureTarget getTarget() {
         return target;
     }

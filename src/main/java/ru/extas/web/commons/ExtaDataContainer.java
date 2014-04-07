@@ -22,14 +22,23 @@ import java.util.List;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
+ * <p>ExtaDataContainer class.</p>
+ *
  * @author Valery Orlov
  *         Date: 02.04.2014
  *         Time: 18:11
+ * @version $Id: $Id
+ * @since 0.3.0
  */
 public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPAContainer<TEntityType> {
 
     private static final long serialVersionUID = -7891940552175752858L;
 
+    /**
+     * <p>Constructor for ExtaDataContainer.</p>
+     *
+     * @param entityClass a {@link java.lang.Class} object.
+     */
     public ExtaDataContainer(Class<TEntityType> entityClass) {
         super(entityClass);
         // We need an entity provider to create a container

@@ -34,6 +34,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *
  * @author Valery Orlov
  * @version $Id: $Id
+ * @since 0.3.0
  */
 public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
@@ -91,9 +92,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         super(caption, obj);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Insurance obj) {
         final FormLayout form = new FormLayout();
@@ -300,6 +299,12 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         beneficiaryField.addItem("ООО \"Финпрайд\"");
     }
 
+    /**
+     * <p>createAndBindClientNameField.</p>
+     *
+     * @param isLegalEntity a {@link java.lang.Boolean} object.
+     * @param form a {@link com.vaadin.ui.FormLayout} object.
+     */
     protected void createAndBindClientNameField(Boolean isLegalEntity, FormLayout form) {
         AbstractField<? extends Contact> select;
         String caption = "Страхователь";
@@ -361,9 +366,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void initObject(final Insurance obj) {
         if (obj.getId() == null) {
@@ -376,18 +379,14 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void saveObject(final Insurance obj) {
         lookup(InsuranceRepository.class).saveAndIssue(obj);
         Notification.show("Полис сохранен", Notification.Type.TRAY_NOTIFICATION);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void checkBeforeSave(final Insurance obj) {
     }

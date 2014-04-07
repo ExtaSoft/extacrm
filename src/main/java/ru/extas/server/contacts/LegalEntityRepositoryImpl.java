@@ -22,6 +22,8 @@ import static com.google.common.collect.Sets.newHashSet;
  * @author Valery Orlov
  *         Date: 03.04.2014
  *         Time: 14:30
+ * @version $Id: $Id
+ * @since 0.3.0
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -31,11 +33,13 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
     @Inject private PersonRepository personRepository;
     //@Inject private CompanyRepository companyRepository;
 
+    /** {@inheritDoc} */
     @Override
     public JpaRepository<LegalEntity, ?> getEntityRepository() {
         return legalEntityRepository;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectRegions(LegalEntity legalEntity) {
         Set<String> regions = newHashSet();
@@ -44,11 +48,13 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
         return regions;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectBrands(LegalEntity legalEntity) {
         return null;
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
     public void permitObject(LegalEntity legalEntity, Person userContact, Collection<String> regions, Collection<String> brands) {

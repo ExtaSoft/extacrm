@@ -91,6 +91,18 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      */
     public LocalDate convertToModel(final String value, final Locale locale)
             throws com.vaadin.data.util.converter.Converter.ConversionException {
@@ -103,6 +115,18 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
      * @param value a {@link org.joda.time.LocalDate} object.
      * @param locale a {@link java.util.Locale} object.
      * @return a {@link java.lang.String} object.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
+     * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
      * @throws com.vaadin.data.util.converter.Converter.ConversionException if any.
