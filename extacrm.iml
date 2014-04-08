@@ -13,9 +13,9 @@
         <sourceRoots>
           <root url="file://$MODULE_DIR$/target/generated-sources/apt" />
           <root url="file://$MODULE_DIR$/target/generated-sources/meta-model" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/annotations" />
           <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/annotations" />
         </sourceRoots>
       </configuration>
     </facet>
@@ -64,13 +64,14 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/.generated" />
       <excludeFolder url="file://$MODULE_DIR$/target/antrun" />
+      <excludeFolder url="file://$MODULE_DIR$/target/apache-tomcat-maven-plugin" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/target/extacrm-0.3-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/target/extacrm-0.3.1" />
       <excludeFolder url="file://$MODULE_DIR$/target/extra" />
-      <excludeFolder url="file://$MODULE_DIR$/target/invoker" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
       <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target/tomcat" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

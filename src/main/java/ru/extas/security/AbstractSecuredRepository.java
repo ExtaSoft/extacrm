@@ -6,7 +6,9 @@ import ru.extas.model.contacts.Person;
 import ru.extas.server.users.UserManagementService;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 
@@ -29,8 +31,7 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
     @Override
     public Entity secureSave(Entity entity) {
         Person userContact = userService.getCurrentUserContact();
-        permitObject(entity, userContact, getObjectRegions(entity), getObjectBrands(entity));
-        return getEntityRepository().save(entity);
+        return permitAndSave(entity, userContact, getObjectRegions(entity), getObjectBrands(entity));
     }
 
     /**
@@ -52,37 +53,7 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void permitAndSave(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands) {
-        if (entity != null) {
-            permitObject(entity, userContact, regions, brands);
-            getEntityRepository().save(entity);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Transactional
-    @Override
-    public void permitAndSave(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands) {
-        if (!isEmpty(entities)) {
-            permitObject(entities, userContact, regions, brands);
-            getEntityRepository().save(entities);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Transactional
-    @Override
-    public void permitAndSave(Entity entity, Person userContact) {
-        if (entity != null) {
-            permitObject(entity, userContact, getObjectRegions(entity), getObjectBrands(entity));
-            getEntityRepository().save(entity);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Transactional
-    @Override
-    public void permitObject(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public Entity permitAndSave(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands) {
         if (entity != null) {
             // Доступ пользователя к объекту
             entity.getAssociateUsers().add(userContact);
@@ -92,16 +63,33 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
             // Видимость объекта в разрезе брендов
             if (!isEmpty(brands))
                 entity.getAssociateBrands().addAll(brands);
+            return getEntityRepository().save(entity);
         }
+        return entity;
     }
 
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void permitObject(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public List<Entity> permitAndSave(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands) {
+        List<Entity> result = new ArrayList<>();
         if (!isEmpty(entities)) {
-            for(Entity entity : entities)
-                permitObject(entity, userContact, regions, brands);
+            if (!isEmpty(entities)) {
+                for(Entity entity : entities)
+                    result.add(permitAndSave(entity, userContact, regions, brands));
+            }
         }
+        return result;
     }
+
+    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public Entity permitAndSave(Entity entity, Person userContact) {
+        if (entity != null) {
+            return permitAndSave(entity, userContact, getObjectRegions(entity), getObjectBrands(entity));
+        }
+        return entity;
+    }
+
 }

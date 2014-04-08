@@ -2,6 +2,7 @@ package ru.extas.model.common;
 
 import ru.extas.model.contacts.Person;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
@@ -22,7 +23,7 @@ import static com.google.common.collect.Sets.newHashSet;
 @MappedSuperclass
 public class SecuredObject extends AuditedObject {
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REFRESH)
     private Set<Person> associateUsers = newHashSet();
 
     @ElementCollection

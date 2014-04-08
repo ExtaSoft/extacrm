@@ -120,7 +120,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
             logger.debug("Saving contact data...");
             final SalePointRepository contactRepository = lookup(SalePointRepository.class);
             contactRepository.secureSave(obj);
-            Notification.show("Юр. лицо сохранено", Notification.Type.TRAY_NOTIFICATION);
+            Notification.show("Торговая точка сохранена", Notification.Type.TRAY_NOTIFICATION);
         }
     }
 

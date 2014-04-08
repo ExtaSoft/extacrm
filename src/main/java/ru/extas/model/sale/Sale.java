@@ -49,7 +49,7 @@ public class Sale extends SecuredObject {
 	}
 
 	// Клиент
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REFRESH)
 	private Person client;
 
 	@Enumerated(EnumType.STRING)
@@ -76,7 +76,7 @@ public class Sale extends SecuredObject {
 	private BigDecimal motorPrice;
 
 	// Мотосалон
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REFRESH)
 	private SalePoint dealer;
 
 	@Column(name = "COMMENT")

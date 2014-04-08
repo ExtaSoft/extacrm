@@ -20,7 +20,7 @@ public class Company extends Contact {
 	private static final long serialVersionUID = -5681940552175752858L;
 
 	// Собственник(и) Компании
-	@ManyToMany(targetEntity = Person.class)
+	@ManyToMany(targetEntity = Person.class, cascade = CascadeType.REFRESH)
 	@JoinTable(
 			name = "COMPANY_OWNER",
 			joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
@@ -28,7 +28,7 @@ public class Company extends Contact {
 	private Set<Person> owners = newHashSet();
 
 	// Сотрудники компании
-	@ManyToMany(targetEntity = Person.class)
+	@ManyToMany(targetEntity = Person.class, cascade = CascadeType.REFRESH)
 	@JoinTable(
 			name = "CONTACT_EMPLOYEE",
 			joinColumns = {@JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")},

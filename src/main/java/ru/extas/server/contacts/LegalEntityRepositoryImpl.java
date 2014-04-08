@@ -57,14 +57,15 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void permitObject(LegalEntity legalEntity, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public LegalEntity permitAndSave(LegalEntity legalEntity, Person userContact, Collection<String> regions, Collection<String> brands) {
         if (legalEntity != null) {
-            super.permitObject(legalEntity, userContact, regions, brands);
+            legalEntity = super.permitAndSave(legalEntity, userContact, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты юр.лица:
             // Компания
             //companyRepository.permitAndSave(legalEntity.getCompany(), userContact, regions, brands);
             // Директор
             personRepository.permitAndSave(legalEntity.getDirector(), userContact, regions, brands);
         }
+        return legalEntity;
     }
 }

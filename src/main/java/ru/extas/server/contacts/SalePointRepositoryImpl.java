@@ -55,14 +55,15 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void permitObject(SalePoint salePoint, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public SalePoint permitAndSave(SalePoint salePoint, Person userContact, Collection<String> regions, Collection<String> brands) {
         if (salePoint != null) {
-            super.permitObject(salePoint, userContact, regions, brands);
+            salePoint = super.permitAndSave(salePoint, userContact, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты торговой точки:
             // Юр. лица работающие на торговой точке
             legalEntityRepository.permitAndSave(salePoint.getLegalEntities(), userContact, regions, brands);
             // Сотрудники торговой точки
             personRepository.permitAndSave(salePoint.getEmployees(), userContact, regions, brands);
         }
+        return salePoint;
     }
 }

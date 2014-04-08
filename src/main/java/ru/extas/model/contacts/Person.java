@@ -74,10 +74,10 @@ public class Person extends Contact {
 	@Max(255)
 	private String passRegAdress;
 
-    @ManyToMany(mappedBy = "employees")
+    @ManyToMany(mappedBy = "employees", cascade = CascadeType.REFRESH)
     private Set<Company> employers;
 
-    @ManyToMany(mappedBy = "employees")
+    @ManyToMany(mappedBy = "employees", cascade = CascadeType.REFRESH)
     private Set<SalePoint> workPlaces;
 
 	/**

@@ -100,9 +100,9 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void permitObject(Lead lead, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public Lead permitAndSave(Lead lead, Person userContact, Collection<String> regions, Collection<String> brands) {
         if (lead != null) {
-            super.permitObject(lead, userContact, regions, brands);
+            lead = super.permitAndSave(lead, userContact, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты лида:
             // Клиент
 //            if(lead.getClient() instanceof Person)
@@ -112,5 +112,6 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
             // Продавец (торговая точка или компания)
             salePointRepository.permitAndSave(lead.getVendor(), userContact, regions, brands);
         }
+        return lead;
     }
 }
