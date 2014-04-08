@@ -45,7 +45,7 @@ public abstract class Contact extends SecuredObject{
 
 	// Телефон
 	@Column(name = "CELL_PHONE", length = PHONE_LINGHT)
-	@Max(20)
+	@Max(PHONE_LINGHT)
 	private String phone;
 
 	// Эл. почта

@@ -14,16 +14,14 @@ import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.server.lead.LeadRepository;
+import ru.extas.server.users.UserManagementService;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.contacts.ContactDataDecl;
-import ru.extas.web.contacts.PersonDataDecl;
-import ru.extas.web.contacts.PersonEditForm;
-import ru.extas.web.contacts.SalePointEditForm;
+import ru.extas.web.contacts.*;
 import ru.extas.web.reference.MotorBrandSelect;
 import ru.extas.web.reference.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
@@ -32,6 +30,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.GridItem.extractBean;
 import static ru.extas.web.commons.TableUtils.initTableColumns;
@@ -73,6 +72,8 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     // Мотосалон
     @PropertyId("pointOfSale")
     private EditField pointOfSaleField;
+    @PropertyId("vendor")
+    private SalePointSelect vendorField;
     @PropertyId("comment")
     private TextArea commentField;
 
@@ -93,7 +94,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         initForm(obj);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void attach() {
         super.attach();
@@ -131,7 +134,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields(final Lead obj) {
         final FormLayout form = new FormLayout();
@@ -187,7 +192,23 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
                     setVendorsFilter();
             }
         });
-        form.addComponent(pointOfSaleField);
+        vendorField = new SalePointSelect("Мотосалон", "Название мотосалона", null);
+        vendorField.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                Property property = event.getProperty();
+                if (property != null) {
+                    Object value = property.getValue();
+                    if (value != null)
+                        pointOfSaleField.setValue(((SalePoint) value).getName());
+                }
+            }
+        });
+        if (obj.getVendor() == null) {
+            form.addComponent(pointOfSaleField);
+        } else {
+            form.addComponent(vendorField);
+        }
 
 
         commentField = new TextArea("Комментарий");
@@ -389,16 +410,29 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initObject(final Lead obj) {
         if (obj.getId() == null) {
             obj.setStatus(Lead.Status.NEW);
+            UserManagementService userService = lookup(UserManagementService.class);
+            Person user = userService.getCurrentUserContact();
+            if (user != null) {
+                if (!isEmpty(user.getWorkPlaces())) {
+                    SalePoint salePoint = user.getWorkPlaces().iterator().next();
+                    obj.setVendor(salePoint);
+                    obj.setPointOfSale(salePoint.getName());
+                }
+            }
         }
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void saveObject(final Lead obj) {
         LeadRepository leadRepository = lookup(LeadRepository.class);
@@ -412,7 +446,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void checkBeforeSave(final Lead obj) {
     }

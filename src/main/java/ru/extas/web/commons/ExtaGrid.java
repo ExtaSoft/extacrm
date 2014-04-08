@@ -156,9 +156,11 @@ public abstract class ExtaGrid extends CustomComponent {
 			button.addClickListener(new Button.ClickListener() {
 				@Override
 				public void buttonClick(final Button.ClickEvent event) {
-					if (action instanceof ItemAction)
-						action.fire(checkNotNull(table.getValue(), "No selected row"));
-					else
+					if (action instanceof ItemAction) {
+                        Object item = table.getValue();
+                        refreshContainerItem(item);
+                        action.fire(checkNotNull(item, "No selected row"));
+                    } else
 						action.fire(null);
 				}
 			});
@@ -173,7 +175,7 @@ public abstract class ExtaGrid extends CustomComponent {
 		return commandBar;
 	}
 
-	/**
+    /**
 	 * Полноценная инициализация колонок таблицы
 	 *
 	 * @param mode a {@link ru.extas.web.commons.ExtaGrid.Mode} object.

@@ -60,18 +60,19 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void permitObject(Company company, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public Company permitAndSave(Company company, Person userContact, Collection<String> regions, Collection<String> brands) {
         if (company != null) {
-            super.permitObject(company, userContact, regions, brands);
+            company = super.permitAndSave(company, userContact, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты компании:
             // Собственник(и) Компании
             personRepository.permitAndSave(company.getOwners(), userContact, regions, brands);
             // Сотрудники компании
             personRepository.permitAndSave(company.getEmployees(), userContact, regions, brands);
             // Юридические лица компании
-            legEntRepository.permitObject(company.getLegalEntities(), userContact, regions, brands);
+            legEntRepository.permitAndSave(company.getLegalEntities(), userContact, regions, brands);
             // Торговые точки компании
-            salePointRepository.permitObject(company.getSalePoints(), userContact, regions, brands);
+            salePointRepository.permitAndSave(company.getSalePoints(), userContact, regions, brands);
         }
+        return company;
     }
 }

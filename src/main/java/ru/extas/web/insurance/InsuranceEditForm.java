@@ -9,11 +9,13 @@ import com.vaadin.ui.*;
 import org.joda.time.LocalDate;
 import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.server.insurance.InsuranceRepository;
 import ru.extas.server.insurance.PolicyRepository;
+import ru.extas.server.users.UserManagementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
@@ -27,6 +29,7 @@ import ru.extas.web.util.ComponentUtil;
 
 import java.math.BigDecimal;
 
+import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -278,11 +281,11 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         });
         form.addComponent(startDateField);
 
-        endDateField = new LocalDateField("Дата окончания договора", "Введите дату окончания ");
+        endDateField = new LocalDateField("Дата окончания договора", "Введите дату окончания");
         endDateField.setRequired(true);
         form.addComponent(endDateField);
 
-        dealerField = new SalePointSelect("Точка продажи", "Название автосоалона где продана страховка", null);
+        dealerField = new SalePointSelect("Точка продажи", "Название мотосалона где продана страховка", null);
         // dealerField.setRequired(true);
         form.addComponent(dealerField);
 
@@ -376,6 +379,12 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
             obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
             obj.setStartDate(obj.getPaymentDate().plusDays(1));
             obj.setEndDate(obj.getStartDate().plusYears(1).minusDays(1));
+            UserManagementService userService = lookup(UserManagementService.class);
+            Person user = userService.getCurrentUserContact();
+            if(user != null) {
+                if(!isEmpty(user.getWorkPlaces()))
+                    obj.setDealer(user.getWorkPlaces().iterator().next());
+            }
         }
     }
 
