@@ -86,9 +86,9 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void permitObject(Insurance insurance, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public Insurance permitAndSave(Insurance insurance, Person userContact, Collection<String> regions, Collection<String> brands) {
         if (insurance != null) {
-            super.permitObject(insurance, userContact, regions, brands);
+            insurance = super.permitAndSave(insurance, userContact, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты лида:
             // Клиент
             if(insurance.getClient() instanceof Person)
@@ -98,5 +98,6 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
             // Продавец (торговая точка или компания)
             salePointRepository.permitAndSave(insurance.getDealer(), userContact, regions, brands);
         }
+        return insurance;
     }
 }

@@ -21,7 +21,7 @@ import java.util.Set;
 public class LegalEntity extends Contact{
 
     // Компания
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     private Company company;
 
     // ОГРН/ОГРИП
@@ -33,11 +33,11 @@ public class LegalEntity extends Contact{
     private String inn;
 
     // Генеральный директор
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REFRESH)
     private Person director;
 
     // Банки и кредитные продукты
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(
             name = "LEGAL_ENTITY_PROD_CREDIT",
             joinColumns = {@JoinColumn(name = "LEGAL_ENTITY_ID", referencedColumnName = "ID")},

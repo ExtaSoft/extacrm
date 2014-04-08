@@ -6,6 +6,7 @@ import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Интерфейс распределения прав доступа на объект
@@ -36,54 +37,30 @@ public interface SecuredRepository<Entity extends SecuredObject> {
 
     /**
      * <p>permitAndSave.</p>
-     *
-     * @param entity a Entity object.
+     *  @param entity a Entity object.
      * @param userContact a {@link ru.extas.model.contacts.Person} object.
      * @param regions a {@link java.util.Collection} object.
      * @param brands a {@link java.util.Collection} object.
      */
     @Transactional
-    void permitAndSave(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands);
+    Entity permitAndSave(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands);
 
     /**
      * <p>permitAndSave.</p>
-     *
-     * @param entities a {@link java.util.Collection} object.
+     *  @param entities a {@link java.util.Collection} object.
      * @param userContact a {@link ru.extas.model.contacts.Person} object.
      * @param regions a {@link java.util.Collection} object.
      * @param brands a {@link java.util.Collection} object.
      */
     @Transactional
-    void permitAndSave(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands);
+    List<Entity> permitAndSave(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands);
 
     /**
      * <p>permitAndSave.</p>
-     *
-     * @param entity a Entity object.
+     *  @param entity a Entity object.
      * @param userContact a {@link ru.extas.model.contacts.Person} object.
      */
     @Transactional
-    void permitAndSave(Entity entity, Person userContact);
+    Entity permitAndSave(Entity entity, Person userContact);
 
-    /**
-     * <p>permitObject.</p>
-     *
-     * @param entity a Entity object.
-     * @param userContact a {@link ru.extas.model.contacts.Person} object.
-     * @param regions a {@link java.util.Collection} object.
-     * @param brands a {@link java.util.Collection} object.
-     */
-    @Transactional
-    void permitObject(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands);
-
-    /**
-     * <p>permitObject.</p>
-     *
-     * @param entities a {@link java.util.Collection} object.
-     * @param userContact a {@link ru.extas.model.contacts.Person} object.
-     * @param regions a {@link java.util.Collection} object.
-     * @param brands a {@link java.util.Collection} object.
-     */
-    @Transactional
-    void permitObject(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands);
 }

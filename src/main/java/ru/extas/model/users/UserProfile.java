@@ -30,7 +30,7 @@ public class UserProfile extends AuditedObject {
     private String login;
 
     // Ссылка на контакт
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REFRESH)
     private Person contact;
 
     // Password (hash)
@@ -48,7 +48,7 @@ public class UserProfile extends AuditedObject {
     private UserRole role;
 
     // Группы в которых состоит пользователь
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "USER_GROUP_LINK")
     private Set<UserGroup> groupList = new HashSet<>();
 

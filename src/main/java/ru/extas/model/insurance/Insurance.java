@@ -46,7 +46,7 @@ public class Insurance extends SecuredObject {
 	private LocalDate date;
 
 	// Клиент может быть физ. или юр. лицом
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REFRESH)
 	private Contact client;
 
     @Column(name = "BENEFICIARY", length = Contact.NAME_LENGTH)
@@ -106,7 +106,7 @@ public class Insurance extends SecuredObject {
 	@Column(name = "END_DATE")
 	private LocalDate endDate;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REFRESH)
 	private SalePoint dealer;
 
 	public enum PeriodOfCover {

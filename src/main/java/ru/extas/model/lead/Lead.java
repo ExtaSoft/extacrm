@@ -92,11 +92,11 @@ public class Lead extends SecuredObject {
 	// -----------------------------------
 
 	// Клиент
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REFRESH)
 	private Person client;
 
 	// Продавец (дилер, страх. компания)
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REFRESH)
 	private SalePoint vendor;
 
 	@Enumerated(EnumType.STRING)
