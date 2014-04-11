@@ -27,6 +27,6 @@ class ProdCreditDataDecl extends GridDataDecl {
 		addMapping("step", "Шаг кредита");
 		addMapping("dealerSubsidy", "Субсидия", StringToPercentConverter.class);
 		addMapping("active", "Активный продукт");
-		super.addCreateModifyMarkers();
+		super.addDefaultMappings();
 	}
 }

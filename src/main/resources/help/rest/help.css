@@ -1,0 +1,21 @@
+
+/* Стиль таблицы */
+.tableborders {
+    border-collapse: collapse;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+/* Стиль заголовка таблицы */
+.tableborders th {
+    border: 1px solid black;
+    padding: 5px;
+    background-color: lavender;
+}
+
+/* Стиль ячейки таблицы */
+.tableborders td {
+    border: 1px solid black;
+    padding: 5px;
+}
+

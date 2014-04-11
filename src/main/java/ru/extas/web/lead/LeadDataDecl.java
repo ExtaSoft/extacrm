@@ -24,6 +24,6 @@ class LeadDataDecl extends GridDataDecl {
         addMapping("region", "Регион");
         addMapping("status", "Статус");
         addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        super.addCreateModifyMarkers();
+        super.addDefaultMappings();
     }
 }

@@ -14,7 +14,7 @@
     <!-- Activate Spring annotation support -->
     <!--<context:annotation-config/>-->
     <mvc:annotation-driven />
-    <context:component-scan base-package="ru.extas.server.rest"/>
+    <context:component-scan base-package="ru.extas.server"/>
 
     <!-- Vaadin application controller -->
     <bean id="applicationServlet" class="org.springframework.web.servlet.mvc.ServletWrappingController"
@@ -41,5 +41,25 @@
             </map>
         </property>
     </bean>
+
+    <!--&lt;!&ndash; Configure to plugin JSON as request and response in method handler &ndash;&gt;-->
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
+        <!--<property name="messageConverters">-->
+            <!--<list>-->
+                <!--<ref bean="jsonMessageConverter"/>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="supportedMethods">-->
+            <!--<list value-type="java.lang.String">-->
+                <!--<value>GET</value>-->
+                <!--<value>POST</value>-->
+                <!--<value>HEAD</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; Configure bean to convert JSON to POJO and vice versa &ndash;&gt;-->
+    <!--<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+    <!--</bean>-->
 
 </beans>

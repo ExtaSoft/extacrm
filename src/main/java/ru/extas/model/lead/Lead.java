@@ -86,6 +86,9 @@ public class Lead extends SecuredObject {
 	// Эл. почта
 	@Column(name = "CONTACT_EMAIL")
 	private String contactEmail;
+    // Регион проживания.
+    @Column(name = "CONTACT_REGION")
+    private String contactRegion;
 
 
 	// Квалифицированные данные
@@ -377,4 +380,12 @@ public class Lead extends SecuredObject {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+    public String getContactRegion() {
+        return contactRegion;
+    }
+
+    public void setContactRegion(String contactRegion) {
+        this.contactRegion = contactRegion;
+    }
 }

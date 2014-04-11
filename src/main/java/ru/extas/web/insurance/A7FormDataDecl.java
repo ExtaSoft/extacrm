@@ -19,7 +19,7 @@ class A7FormDataDecl extends GridDataDecl {
         addMapping("regNum", "Номер квитанции");
         addMapping("owner.name", "Владелец");
         addMapping("status", "Статус");
-        super.addCreateModifyMarkers();
+        super.addDefaultMappings();
     }
 
 }

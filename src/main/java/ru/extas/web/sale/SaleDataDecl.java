@@ -23,6 +23,6 @@ class SaleDataDecl extends GridDataDecl {
 		addMapping("dealer.name", "Мотосалон");
 		addMapping("region", "Регион");
 		addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-		super.addCreateModifyMarkers();
+		super.addDefaultMappings();
 	}
 }

@@ -16,4 +16,4 @@ test-output/
 /build.log
 .bpmn
 *.jasper
-*.iml
+/extacrm.iml

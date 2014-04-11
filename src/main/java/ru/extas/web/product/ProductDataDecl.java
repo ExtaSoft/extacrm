@@ -20,6 +20,6 @@ public class ProductDataDecl extends GridDataDecl {
 		addMapping("name", "Название продукта");
 		addMapping("vendor.name", "Банк/СК");
 		addMapping("active", "Активный продукт");
-		super.addCreateModifyMarkers();
+		super.addDefaultMappings();
 	}
 }
