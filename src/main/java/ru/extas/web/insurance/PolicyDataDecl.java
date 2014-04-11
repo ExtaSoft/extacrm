@@ -19,7 +19,7 @@ class PolicyDataDecl extends GridDataDecl {
         addMapping("regNum", "Номер полиса");
         addMapping("bookTime", "Зарезервирован");
         addMapping("issueDate", "Реализован");
-        super.addCreateModifyMarkers();
+        super.addDefaultMappings();
     }
 
 }

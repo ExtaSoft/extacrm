@@ -1,0 +1,48 @@
+h1. Сервис ввода нового лида.
+
+h2. Позволяет вводить новые лиды в CRM.
+
+_Корневой адрес сервиса:_ *"/service/lead":/service/lead*
+_Авторизованный доступ:_ *нет*
+
+h3. Функции:
+
+h4. Ввести новый лид в систему.
+
+_URL:_ *"/service/lead/new":/service/lead/new*
+_Поддерживаемые запросы:_ *POST*
+_Возвращаемое значение:_ *нет*
+_Параметры:_ *lead* - json  объект для ввода. Свойства объекта в таблице:
+table(tableborders).
+|_.Свойство|_.Обязательное|_.Тип|_.Описание |
+|@name@|<>Да|@String@|Имя клиента|
+|@phone@|<>Да|@String@|Телефон клиента|
+|@email@|<>Нет|@String@|e-mail адрес|
+|@clientRegion@|<>Да|@String@|Регион проживания клиента. Список доступных регионов можно получить через сервис *"/service/ref/regions":/service/ref/*.|
+|@motorType@|<>Да|@String@|Тип техники. Список доступных типов техники можно получить через сервис *"/service/ref/motor-types":/service/ref/*.|
+|@motorBrand@|<>Да|@String@|Марка техники. Список доступных марок техники (брендов) можно получить через сервис *"/service/ref/motor-brands":/service/ref/*.|
+|@motorModel@|<>Да|@String@|Модельь техники|
+|@price@|<>Да|@Float@|Цена техники|
+|@delerRegion@|<>Да|@String@|Регион покупки техники. Список доступных регионов можно получить через сервис *"/service/ref/regions":/service/ref/*.|
+|@dealer@|<>Нет, если задано свойство @dealerId@|@String@|Название дилера. Информацию о диллере можно получить через сервис *"/service/salepoint":/service/salepoint*|
+|@dealerId@|<>Нет, если задано свойство @dealer@|@String@|Идентификатор дилера. Информацию о диллере (включая идентификатор) можно получить через сервис *"/service/salepoint":/service/salepoint*|
+|@comment@|<>Нет|@String@|Дополнительная информация о лиде|
+
+_Пример входных данных:_
+
+bc. 
+    {
+        "name":"Иванов Иван Иваныч",
+        "phone":"+76543219854",
+        "email":"ivanov@qwe.ru",
+        "clientRegion":"Москва",
+        "motorType":"Квадроцикл",
+        "motorBrand":"CFMOTO",
+        "motorModel":"X 600",
+        "price":"600000",
+        "delerRegion":"Москва",
+        "dealerId":"008B5A28-17C4-4AAC-9CDE-3B34BD2AB456",
+        "comment":null
+    }
+	
+_Copyright (C) 2012-2014 Extreme Assistance Ltd._

@@ -36,6 +36,7 @@ public class GridDataDecl implements Serializable {
      */
     protected GridDataDecl() {
         super();
+        addMapping("id", "Идентификатор", EnumSet.of(PresentFlag.COLLAPSED));
     }
 
     /**
@@ -85,7 +86,7 @@ public class GridDataDecl implements Serializable {
     /**
      * Добавляет маркеры создания/модификации записи
      */
-    protected void addCreateModifyMarkers() {
+    protected void addDefaultMappings() {
 	    addMapping("modifiedBy", "Кто изменил", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
 	    addMapping("modifiedAt", "Когда изменил", EnumSet.of(PresentFlag.COLLAPSED)/*
                                                                                      * ,

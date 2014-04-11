@@ -19,7 +19,7 @@ class FormTransferDataDecl extends GridDataDecl {
         addMapping("fromContact.name", "От кого");
         addMapping("toContact.name", "Кому");
         addMapping("transferDate", "Дата");
-        super.addCreateModifyMarkers();
+        super.addDefaultMappings();
     }
 
 }

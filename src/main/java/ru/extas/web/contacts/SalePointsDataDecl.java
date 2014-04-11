@@ -28,7 +28,7 @@ public class SalePointsDataDecl extends GridDataDecl {
 		addMapping("email", "E-Mail");
 		addMapping("www", "WWW");
 		addMapping("actualAddress.region", "Регион");
-		super.addCreateModifyMarkers();
+		super.addDefaultMappings();
 	}
 
 }

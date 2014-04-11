@@ -19,6 +19,6 @@ class ProdInsuranceDataDecl extends GridDataDecl {
 		addMapping("vendor.name", "Страховщик");
 		addMapping("percent", "Страх. премия", StringToPercentConverter.class);
 		addMapping("active", "Активный продукт");
-		super.addCreateModifyMarkers();
+		super.addDefaultMappings();
 	}
 }

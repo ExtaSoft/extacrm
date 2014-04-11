@@ -32,4 +32,10 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      */
     @Query("select s from SalePoint s, s.employees e where e = :employee")
     List<SalePoint> findByEmployee(@Param("employee") Person employee);
+
+    @Query("select count(s) from SalePoint s where s.actualAddress.region = :region")
+    long countByRegion(@Param("region") String region);
+
+    @Query("select s from SalePoint s where s.actualAddress.region = :region")
+    List<SalePoint> findByRegion(@Param("region") String region);
 }

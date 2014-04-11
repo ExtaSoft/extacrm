@@ -20,6 +20,6 @@ class ProdInstallmentsDataDecl extends GridDataDecl {
 		addMapping("maxPeroid", "Период рассрочки");
 		addMapping("minDownpayment", "Первоначальный взнос", StringToPercentConverter.class);
 		addMapping("active", "Активный продукт");
-		super.addCreateModifyMarkers();
+		super.addDefaultMappings();
 	}
 }
