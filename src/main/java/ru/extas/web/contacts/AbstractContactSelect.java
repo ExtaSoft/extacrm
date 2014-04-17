@@ -29,7 +29,7 @@ public class AbstractContactSelect<TContactType extends Contact> extends ComboBo
 	 * @param contactType a {@link java.lang.Class} object.
 	 */
 	protected AbstractContactSelect(final String caption, final Class<TContactType> contactType) {
-		this(caption, "Выберете существующий контакт или введите новый", contactType);
+		this(caption, "Выберите существующий контакт или введите новый", contactType);
 	}
 
 	/**

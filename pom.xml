@@ -122,6 +122,7 @@
         </repository>
 
     </repositories>
+
     <pluginRepositories>
 
         <pluginRepository>
@@ -138,6 +139,12 @@
     </pluginRepositories>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>6.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.eclipse.mylyn.docs</groupId>
@@ -620,13 +627,10 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <!-- if you don't specify any modules, the plugin will find them -->
-                            <!-- <modules> <module>com.vaadin.demo.mobilemail.gwt.ColorPickerWidgetSet</module>
-                                </modules> -->
                             <theme>extacrm</theme>
                         </configuration>
+                        <phase>compile</phase>
                         <goals>
-                            <goal>clean</goal>
                             <goal>resources</goal>
                             <goal>update-theme</goal>
                             <goal>update-widgetset</goal>

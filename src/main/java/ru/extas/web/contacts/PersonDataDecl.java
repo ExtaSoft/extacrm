@@ -4,6 +4,7 @@
 package ru.extas.web.contacts;
 
 import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.converters.PhoneConverter;
 
 /**
  * Опции отображения контактов в списке
@@ -22,7 +23,7 @@ public class PersonDataDecl extends GridDataDecl {
 		addMapping("name", "Имя");
 		addMapping("birthday", "Дата рождения"/* , StringToJodaLDConverter.class */);
 		addMapping("sex", "Пол");
-		addMapping("phone", "Мобильный телефон");
+		addMapping("phone", "Мобильный телефон", PhoneConverter.class);
 		addMapping("email", "E-Mail");
 		addMapping("actualAddress.region", "Регион");
 		super.addDefaultMappings();

@@ -1,5 +1,9 @@
 package ru.extas.web.commons.component;
 
+import ru.extas.web.commons.converters.PhoneConverter;
+
+import static ru.extas.server.ServiceLocator.lookup;
+
 /**
  * Поле редактирования номера телефона
  *
@@ -13,7 +17,7 @@ public class PhoneField extends EditField {
     /**
      * <p>Constructor for PhoneField.</p>
      *
-     * @param caption a {@link java.lang.String} object.
+     * @param caption     a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
      */
     public PhoneField(String caption, String description) {
@@ -23,10 +27,9 @@ public class PhoneField extends EditField {
 
     private void initField() {
         setColumns(20);
-        setDescription("Введите телефон в формате +7 XXX XXX XXXX");
-        setInputPrompt("+7 XXX XXX XXXX");
-        // TODO: Добавить проверку правильности ввода телефона
-
+        setDescription("Введите телефон в формате 8 XXX XXX-XX-XX");
+        setInputPrompt("8 XXX XXX-XX-XX");
+        setConverter(lookup(PhoneConverter.class));
     }
 
     /**
@@ -38,4 +41,6 @@ public class PhoneField extends EditField {
         super(caption);
         initField();
     }
+
+
 }

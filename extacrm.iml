@@ -58,22 +58,11 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/apt" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/meta-model" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-      <excludeFolder url="file://$MODULE_DIR$/target/.generated" />
-      <excludeFolder url="file://$MODULE_DIR$/target/antrun" />
-      <excludeFolder url="file://$MODULE_DIR$/target/apache-tomcat-maven-plugin" />
-      <excludeFolder url="file://$MODULE_DIR$/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/target/extacrm-0.3.1" />
-      <excludeFolder url="file://$MODULE_DIR$/target/extacrm-0.4-SNAPSHOT" />
-      <excludeFolder url="file://$MODULE_DIR$/target/extra" />
-      <excludeFolder url="file://$MODULE_DIR$/target/m2e-wtp" />
-      <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
-      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
-      <excludeFolder url="file://$MODULE_DIR$/target/tomcat" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -84,6 +73,7 @@
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-client-compiled:7.1.11" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.vaadin:vaadin-client:7.1.11" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-themes:7.1.11" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.libphonenumber:libphonenumber:6.0" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: org.eclipse.mylyn.docs:org.eclipse.mylyn.wikitext.core:2.1.0-SNAPSHOT">
         <CLASSES>

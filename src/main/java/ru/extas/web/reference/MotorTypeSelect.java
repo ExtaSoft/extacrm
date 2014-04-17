@@ -25,6 +25,7 @@ public class MotorTypeSelect extends ComboBox {
         super(caption);
         setDescription("Укажите тип техники");
         setInputPrompt("Выберите или начните ввод...");
+        setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setImmediate(true);
         setNullSelectionAllowed(false);
         setNewItemsAllowed(false);

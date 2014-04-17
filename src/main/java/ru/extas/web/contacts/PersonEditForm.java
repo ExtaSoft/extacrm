@@ -47,11 +47,11 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     @PropertyId("sex")
     private ComboBox sexField;
     @PropertyId("phone")
-    private EditField cellPhoneField;
+    private PhoneField cellPhoneField;
     @PropertyId("workPhone")
-    private EditField workPhoneField;
+    private PhoneField workPhoneField;
     @PropertyId("homePhone")
-    private EditField homePhoneField;
+    private PhoneField homePhoneField;
     @PropertyId("email")
     private EmailField emailField;
     @PropertyId("actualAddress.region")

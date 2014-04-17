@@ -26,7 +26,8 @@ public class RegionSelect extends ComboBox {
         super(caption);
 
         setDescription("Укажите регион проживания");
-        setInputPrompt("Выберите или начните ввод...");
+        setInputPrompt("Выберите регион...");
+        setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setImmediate(true);
         setNullSelectionAllowed(false);
         setNewItemsAllowed(false);

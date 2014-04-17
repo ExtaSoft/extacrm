@@ -48,8 +48,8 @@ public class RegionMultiselect extends CustomField<Set> {
         final TokenField tokenField = new TokenField(lo);
         tokenField.setStyleName(TokenField.STYLE_TOKENFIELD);
         tokenField.setFilteringMode(FilteringMode.CONTAINS); // suggest
-        tokenField.setInputPrompt("Введите или выберете регион...");
-        tokenField.setDescription("Введите или выберете регион...");
+        tokenField.setInputPrompt("Введите или выберите регион...");
+        tokenField.setDescription("Введите или выберите регион...");
         tokenField.setRememberNewTokens(false);
         tokenField.setNewTokensAllowed(false);
         tokenField.setInputSizeFull();

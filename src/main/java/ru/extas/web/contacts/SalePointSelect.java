@@ -35,6 +35,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
 		this.company = company;
 		setCaption(caption);
 		setDescription(description);
+        setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
 		setBuffered(true);
 		addStyleName("bordered-component");
 	}

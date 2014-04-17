@@ -17,39 +17,6 @@
         <param-value>300</param-value>
     </context-param>
 
-    <!--<servlet>-->
-        <!--<servlet-name>extaCrmUIServlet</servlet-name>-->
-        <!--<servlet-class>-->
-            <!--com.vaadin.server.VaadinServlet-->
-        <!--</servlet-class>-->
-
-        <!--<init-param>-->
-            <!--<param-name>UI</param-name>-->
-            <!--<param-value>ru.extas.web.ExtaCrmUI</param-value>-->
-        <!--</init-param>-->
-
-        <!--<init-param>-->
-            <!--<param-name>closeIdleSessions</param-name>-->
-            <!--<param-value>true</param-value>-->
-        <!--</init-param>-->
-
-        <!--<init-param>-->
-            <!--<description>Widget Set to Use</description>-->
-            <!--<param-name>widgetset</param-name>-->
-            <!--<param-value>ru.extas.web.AppWidgetSet</param-value>-->
-        <!--</init-param>-->
-        <!--<load-on-startup>1</load-on-startup>-->
-    <!--</servlet>-->
-
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>extaCrmUIServlet</servlet-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</servlet-mapping>-->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>extaCrmUIServlet</servlet-name>-->
-        <!--<url-pattern>/VAADIN/*</url-pattern>-->
-    <!--</servlet-mapping>-->
-
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
