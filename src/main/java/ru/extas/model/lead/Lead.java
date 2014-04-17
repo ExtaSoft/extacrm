@@ -103,7 +103,7 @@ public class Lead extends SecuredObject {
 	private SalePoint vendor;
 
 	@Enumerated(EnumType.STRING)
-	private Status status;
+	private Status status = Status.NEW;
 
 	@Column(name = "PROCESS_ID")
 	private String processId;

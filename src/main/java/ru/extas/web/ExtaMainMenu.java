@@ -49,6 +49,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 
         // URI навигатор
         navigator = new Navigator(ui, content);
+        navigator.setErrorView(ErrorView.class);
 
         fragmentToButton = new HashMap<>();
 
@@ -152,8 +153,9 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 	    String firstFragment = Iterables.getFirst(Splitter.on('/').split(uriFragment), uriFragment);
 
         navigator.navigateTo(uriFragment);
-        fragmentToButton.get(firstFragment).addStyleName("selected");
-
+        Button selButton = fragmentToButton.get(firstFragment);
+        if(selButton != null)
+            selButton.addStyleName("selected");
     }
 
 	/** {@inheritDoc} */
@@ -172,7 +174,9 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 		String firstFragment = Iterables.getFirst(Splitter.on('/').split(uriFragment), uriFragment);
 
 		clearMenuSelection();
-		fragmentToButton.get(firstFragment).addStyleName("selected");
+        Button selButton = fragmentToButton.get(firstFragment);
+        if(selButton != null)
+            selButton.addStyleName("selected");
 	}
 
 	private class DomainViewProvider implements ViewProvider {

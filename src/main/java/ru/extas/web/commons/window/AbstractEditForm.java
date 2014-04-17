@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 
+import static ru.extas.web.UiUtils.showValidationError;
+
 /**
  * <p>Abstract AbstractEditForm class.</p>
  *
@@ -98,14 +100,13 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
                             saved = true;
                             modified = false;
                         } catch (final CommitException e) {
-                            // TODO Correct error handling
                             logger.error("Can't apply form changes", e);
-                            Notification.show("Невозможно сохранить изменения!", Type.ERROR_MESSAGE);
+                            Notification.show("Невозможно сохранить изменения!", e.getLocalizedMessage(), Type.ERROR_MESSAGE);
                             return;
                         }
                         close();
                     } else
-                        Notification.show("Невозможно сохранить изменения! Неверные данные в форме", Type.WARNING_MESSAGE);
+                        showValidationError("Невозможно сохранить изменения!", fieldGroup);
                 }
             }
 

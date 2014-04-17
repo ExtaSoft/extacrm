@@ -13,15 +13,15 @@
 
     <!-- Activate Spring annotation support -->
     <!--<context:annotation-config/>-->
-    <mvc:annotation-driven />
-    <context:component-scan base-package="ru.extas.server"/>
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="ru.extas.server, ru.extas.web"/>
 
     <!-- Vaadin application controller -->
-    <bean id="applicationServlet" class="org.springframework.web.servlet.mvc.ServletWrappingController"
+    <bean id="mainCrmUiServlet" class="org.springframework.web.servlet.mvc.ServletWrappingController"
           p:servletClass="com.vaadin.server.VaadinServlet">
         <property name="initParameters">
             <props>
-                <prop key="UI">ru.extas.web.ExtaCrmUI</prop>
+                <prop key="UIProvider">ru.extas.web.MyUIProvider</prop>
                 <prop key="productionMode">true</prop>
                 <prop key="closeIdleSessions">true</prop>
                 <prop key="widgetset">ru.extas.web.AppWidgetSet</prop>
@@ -30,36 +30,21 @@
         </property>
     </bean>
 
-    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+    <bean id="handlerMapping"
+          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
 
     <!-- Map URIs to web controllers -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="defaultHandler" ref="handlerMapping"/>
         <property name="urlMap">
             <map>
-                <entry key="/*" value-ref="applicationServlet"/>
+                <entry key="/ui/**" value-ref="mainCrmUiServlet"/>
+                <entry key="/VAADIN/**" value-ref="mainCrmUiServlet"/>
+                <entry key="/UIDL/**" value-ref="mainCrmUiServlet"/>
+                <entry key="/APP/**" value-ref="mainCrmUiServlet"/>
+                <entry key="/HEARTBEAT/**" value-ref="mainCrmUiServlet"/>
             </map>
         </property>
     </bean>
-
-    <!--&lt;!&ndash; Configure to plugin JSON as request and response in method handler &ndash;&gt;-->
-    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
-        <!--<property name="messageConverters">-->
-            <!--<list>-->
-                <!--<ref bean="jsonMessageConverter"/>-->
-            <!--</list>-->
-        <!--</property>-->
-        <!--<property name="supportedMethods">-->
-            <!--<list value-type="java.lang.String">-->
-                <!--<value>GET</value>-->
-                <!--<value>POST</value>-->
-                <!--<value>HEAD</value>-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean>-->
-
-    <!--&lt;!&ndash; Configure bean to convert JSON to POJO and vice versa &ndash;&gt;-->
-    <!--<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
-    <!--</bean>-->
 
 </beans>

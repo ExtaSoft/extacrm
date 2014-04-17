@@ -186,7 +186,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
         nameField.setNullRepresentation("");
         formLayout.addComponent(nameField);
 
-        companyField = new CompanySelect("Компания", "Введите или выберете компанию которой принадлежит юридическое лицо");
+        companyField = new CompanySelect("Компания", "Введите или выберите компанию которой принадлежит юридическое лицо");
         companyField.setRequired(true);
         formLayout.addComponent(companyField);
 
