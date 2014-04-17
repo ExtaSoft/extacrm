@@ -147,20 +147,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.mylyn.docs</groupId>
-            <artifactId>org.eclipse.mylyn.wikitext.core</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/org.eclipse.mylyn.wikitext.core_2.1.0.N20140325-2210.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.mylyn.docs</groupId>
-            <artifactId>org.eclipse.mylyn.wikitext.textile.core</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/org.eclipse.mylyn.wikitext.textile.core_2.1.0.N20140325-2210.jar</systemPath>
+            <groupId>org.fusesource.wikitext</groupId>
+            <artifactId>textile-core</artifactId>
+            <version>1.4</version>
         </dependency>
 
         <dependency>

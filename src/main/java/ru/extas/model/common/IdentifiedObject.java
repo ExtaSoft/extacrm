@@ -20,10 +20,11 @@ import java.io.Serializable;
 public class IdentifiedObject implements Serializable {
 
     private static final long serialVersionUID = 9098736299506726746L;
+    public static final int ID_SIZE = 50;
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @Column(name = "ID", length = 50)
+    @Column(name = "ID", length = ID_SIZE)
     protected String id;
 
     @Version
