@@ -2,6 +2,7 @@ package ru.extas.web.insurance;
 
 import ru.extas.web.commons.DataDeclMapping.PresentFlag;
 import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.EnumSet;
 
@@ -21,7 +22,7 @@ class InsuranceDataDecl extends GridDataDecl {
 		addMapping("a7Num", "Квитанция А-7", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("date", "Дата договора");
 		addMapping("client.name", "Клиент");
-		addMapping("client.phone", "Телефон", EnumSet.of(PresentFlag.COLLAPSED));
+		addMapping("client.phone", "Телефон", EnumSet.of(PresentFlag.COLLAPSED), PhoneConverter.class);
 		addMapping("beneficiary", "Выгодопреобретатель", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("usedMotor", "Б/у", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("motorType", "Тип техники");

@@ -37,5 +37,5 @@
 
     <inherits name="org.vaadin.tokenfield.TokenfieldWidgetset" />
 
-    <inherits name="org.vaadin.addons.maskedtextfield.MaskedTextFieldWidgetset" />
+    
 </module>
