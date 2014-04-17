@@ -37,8 +37,8 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
 
     static {
         tarifTable = HashBasedTable.create();
-        fillBrandTarif(newHashSet("Kawasaki", "Arctic Cat", "Polaris", "CECTEK"), BigDecimal.valueOf(.045), BigDecimal.valueOf(.032));
-        fillBrandTarif(newHashSet("Kawasaki", "Arctic Cat", "Polaris", "CECTEK"), BigDecimal.valueOf(.05), BigDecimal.valueOf(.035), true);
+        fillBrandTarif(newHashSet("Kawasaki", "Arctic Cat", "Polaris", "CECTEK", "Русская Механика"), BigDecimal.valueOf(.045), BigDecimal.valueOf(.032));
+        fillBrandTarif(newHashSet("Kawasaki", "Arctic Cat", "Polaris", "CECTEK", "Русская Механика"), BigDecimal.valueOf(.05), BigDecimal.valueOf(.035), true);
 
         fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda", "Polar Fox"), BigDecimal.valueOf(.045), BigDecimal.valueOf(.032));
         fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda", "Polar Fox"), BigDecimal.valueOf(.05), BigDecimal.valueOf(.035), true);
