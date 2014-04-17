@@ -50,7 +50,7 @@ public class SupplementServiceImpl implements SupplementService {
             // "WindBoat", "Moto Guzzi", "Aprilia", "DERBI", "Piaggio", "Vespa",
             // "Gilera", "Русская механика", "Gamax");
             INSTANCE = newArrayList("CFMOTO", "Kawasaki", "Arctic Cat", "Polaris", "CECTEK", "Baltmotors",
-                    "Suzuki", "Honda", "Polar Fox", "BRP", "Тингер", "Yamaha", "STELS");
+                    "Suzuki", "Honda", "Polar Fox", "BRP", "Тингер", "Yamaha", "STELS", "Русская Механика");
             Collections.sort(INSTANCE);
         }
     }
