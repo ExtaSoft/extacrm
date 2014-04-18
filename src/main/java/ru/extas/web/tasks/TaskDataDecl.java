@@ -23,6 +23,5 @@ class TaskDataDecl extends GridDataDecl {
         addMapping("createTime", "Дата создания", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 	    addMapping("owner", "Владелец", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
 	    addMapping("assignee", "Ответственный", LoginToUserNameConverter.class);
-	    addMapping("id", "Идентификатор", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
     }
 }

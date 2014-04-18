@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.web.commons.HelpContent;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
@@ -33,7 +35,7 @@ public class SalePointRestService {
     @Inject
     private SalePointRepository repository;
 
-    public class RestSalePoint {
+    public static class RestSalePoint {
 
         private final String id;
         private final String name;
@@ -79,84 +81,61 @@ public class SalePointRestService {
         }
     }
 
-    public class Greeting {
-
-        private final long id;
-        private final String content;
-
-        public Greeting(long id, String content) {
-            this.id = id;
-            this.content = content;
-        }
-
-        public long getId() {
-            return id;
-        }
-
-        public String getContent() {
-            return content;
-        }
-    }
-
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
-
     /**
-     * <p>greeting.</p>
-     *
-     * @param name a {@link java.lang.String} object.
-     * @return a {@link ru.extas.server.contacts.SalePointRestService.Greeting} object.
-     */
-    @RequestMapping(value = "/greeting", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Greeting greeting(
-            @RequestParam(value = "name", required = false, defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(),
-                String.format(template, name));
-    }
-
-    // Общая информация о сервисе
-    /**
-     * <p>info.</p>
+     * <p>Общая информация о сервисе.</p>
      *
      * @return a {@link org.springframework.http.HttpEntity} object.
+     * @throws java.io.IOException if any.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public HttpEntity<String> info() {
+    public HttpEntity<String> info() throws IOException {
+
+        String help = HelpContent.loadMarkDown("/help/rest/salepoints.textile");
+
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "text/plain; charset=utf-8");
-        return new HttpEntity("Точка доступа к информации о торговых точках", headers);
+        headers.set("Content-Type", "text/html; charset=utf-8");
+        return new HttpEntity(help, headers);
     }
 
-    // количество объектов
     /**
-     * <p>count.</p>
+     * <p>Количество объектов</p>
      *
      * @return a {@link org.springframework.http.HttpEntity} object.
+     * @param region a {@link java.lang.String} object.
      */
     @RequestMapping(value = "/count", method = RequestMethod.GET)
-    public HttpEntity<String> count() {
+    public HttpEntity<String> count(@RequestParam(value = "region", required = false) String region) {
+        long count;
+        if (isNullOrEmpty(region))
+            count = repository.count();
+        else
+            count = repository.countByRegion(region);
+
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/plain; charset=utf-8");
-        return new HttpEntity(NumberFormat.getInstance().format(repository.count()), headers);
+        return new HttpEntity(NumberFormat.getInstance().format(count), headers);
     }
 
-    // количество объектов
     /**
-     * <p>list.</p>
+     * <p>Список объектов.</p>
      *
      * @return a {@link org.springframework.http.HttpEntity} object.
+     * @param region a {@link java.lang.String} object.
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public HttpEntity<Iterable> list() {
-        List<RestSalePoint> points = newArrayList();
-        for (SalePoint point : repository.findAll()) {
-            points.add(new RestSalePoint(point));
+    public
+    @ResponseBody
+    List<RestSalePoint> list(@RequestParam(value = "region", required = false) String region) {
+        List<RestSalePoint> result = newArrayList();
+        List<SalePoint> salePoints;
+        if (isNullOrEmpty(region))
+            salePoints = repository.findAll();
+        else
+            salePoints = repository.findByRegion(region);
+        for (SalePoint point : salePoints) {
+            result.add(new RestSalePoint(point));
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json; charset=utf-8");
-        return new HttpEntity<Iterable>(points, headers);
+        return result;
     }
 }

@@ -19,7 +19,7 @@ class UsersDataDecl extends GridDataDecl {
         addMapping("role", "Роль");
         addMapping("blocked", "Блокирован");
         addMapping("changePassword", "Сменить пароль");
-        super.addCreateModifyMarkers();
+        super.addDefaultMappings();
     }
 
 }

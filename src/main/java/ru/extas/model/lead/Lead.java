@@ -86,6 +86,9 @@ public class Lead extends SecuredObject {
 	// Эл. почта
 	@Column(name = "CONTACT_EMAIL")
 	private String contactEmail;
+    // Регион проживания.
+    @Column(name = "CONTACT_REGION")
+    private String contactRegion;
 
 
 	// Квалифицированные данные
@@ -100,7 +103,7 @@ public class Lead extends SecuredObject {
 	private SalePoint vendor;
 
 	@Enumerated(EnumType.STRING)
-	private Status status;
+	private Status status = Status.NEW;
 
 	@Column(name = "PROCESS_ID")
 	private String processId;
@@ -377,4 +380,22 @@ public class Lead extends SecuredObject {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+    /**
+     * <p>Getter for the field <code>contactRegion</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
+    public String getContactRegion() {
+        return contactRegion;
+    }
+
+    /**
+     * <p>Setter for the field <code>contactRegion</code>.</p>
+     *
+     * @param contactRegion a {@link java.lang.String} object.
+     */
+    public void setContactRegion(String contactRegion) {
+        this.contactRegion = contactRegion;
+    }
 }

@@ -1,5 +1,7 @@
 package ru.extas.web.commons;
 
+import com.vaadin.ui.Component;
+
 /**
  * <p>Abstract ItemAction class.</p>
  *
@@ -19,5 +21,13 @@ public abstract class ItemAction extends UIAction {
      */
     public ItemAction(String name, String description, String iconStyle) {
         super(name, description, iconStyle);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Component createButton() {
+        Component button = super.createButton();
+        button.addStyleName("item-action");
+        return button;
     }
 }

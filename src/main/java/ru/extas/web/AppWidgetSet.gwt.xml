@@ -36,4 +36,8 @@
     <inherits name="org.tepi.filtertable.gwt.FilterTableWidgetset"/>
 
     <inherits name="org.vaadin.tokenfield.TokenfieldWidgetset" />
+
+    
+
+    <inherits name="com.wcs.wcslib.vaadin.widget.multifileupload.MultiFileUploadWidgetSet" />
 </module>

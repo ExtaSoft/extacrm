@@ -6,8 +6,9 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.server.*;
-import com.vaadin.shared.Position;
+import com.vaadin.server.Page;
+import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
@@ -39,13 +40,11 @@ import ru.extas.web.users.ChangePasswordForm;
 import ru.extas.web.users.LoginToUserNameConverter;
 import ru.extas.web.users.UsersView;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.EnumSet;
-import java.util.Locale;
 
 import static ru.extas.server.ServiceLocator.lookup;
+import static ru.extas.web.UiUtils.initUi;
 
 /**
  * Основной класс приложения
@@ -58,11 +57,13 @@ import static ru.extas.server.ServiceLocator.lookup;
 @Scope("session")
 @Theme("extacrm")
 @Title("Extreme Assistance CRM")
+//@Push(PushMode.AUTOMATIC)
 public class ExtaCrmUI extends UI {
 
     private final static Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
 
     private static final long serialVersionUID = -6733655391417975375L;
+    private static final int POLLING_INTERVAL = 3000;
 
     private final CssLayout root = new CssLayout();
 
@@ -75,45 +76,13 @@ public class ExtaCrmUI extends UI {
     @Override
     protected void init(final VaadinRequest request) {
 
+        initUi(this);
 
-        // Регистрируем конверторы по умолчанию
-
-        VaadinSession.getCurrent().setConverterFactory(new ExtaConverterFactory());
-
-        // Устанавливаем локаль
-        Locale uiLocale = lookup(Locale.class);
-        VaadinSession.getCurrent().setLocale(uiLocale);
+        setPollInterval(POLLING_INTERVAL);
 
         setContent(root);
         root.addStyleName("root");
         root.setSizeFull();
-
-        // Configure the error handler for the UI
-        setErrorHandler(new DefaultErrorHandler() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void error(final com.vaadin.server.ErrorEvent event) {
-                // Протоколируем ошибку
-                logger.error("", event.getThrowable());
-
-                final StringWriter strWr = new StringWriter();
-                strWr.append("<div class='exceptionStackTraceBox'><pre>");
-                event.getThrowable().printStackTrace(new PrintWriter(strWr, true));
-                strWr.append("</pre></div>");
-
-                // Display the error message in a custom fashion
-                final Notification notif = new Notification("Непредусмотренная ошибка", strWr.toString(),
-                        Notification.Type.ERROR_MESSAGE);
-
-                // Customize it
-                notif.setPosition(Position.MIDDLE_CENTER);
-                notif.setHtmlContentAllowed(true);
-
-                // Show it in the page
-                notif.show(Page.getCurrent());
-            }
-        });
 
         if (lookup(UserManagementService.class).isUserAuthenticated())
             buildMainView();
@@ -374,12 +343,11 @@ public class ExtaCrmUI extends UI {
                                     @Override
                                     public void buttonClick(final ClickEvent event) {
                                         lookup(UserManagementService.class).logout();
-                                        // Redirect to avoid keeping the removed
-                                        // UI open in the browser
-                                        // getUI().getPage().setLocation("");
                                         // Close the VaadinServiceSession
                                         getUI().getSession().close();
-                                        // TODO: Исправить ошибку соединения после выхода
+                                        // Redirect to avoid keeping the removed
+                                        // UI open in the browser
+                                        getUI().getPage().setLocation("/");
                                     }
                                 });
                             }

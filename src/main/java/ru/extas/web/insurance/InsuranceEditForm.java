@@ -16,6 +16,7 @@ import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.server.insurance.InsuranceRepository;
 import ru.extas.server.insurance.PolicyRepository;
 import ru.extas.server.users.UserManagementService;
+import ru.extas.web.commons.DocFilesEditor;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
@@ -82,6 +83,11 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     private PopupDateField endDateField;
     @PropertyId("dealer")
     private SalePointSelect dealerField;
+    @PropertyId("files")
+    private DocFilesEditor docFilesEditor;
+    @PropertyId("docComplete")
+    private CheckBox docCompleteField;
+
     private Label tarifField;
     private ObjectProperty<BigDecimal> tarifDataSource;
 
@@ -98,6 +104,33 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Insurance obj) {
+        TabSheet tabsheet = new TabSheet();
+        tabsheet.setSizeUndefined();
+
+        final FormLayout polyceForm = createPolyceForm(obj);
+        tabsheet.addTab(polyceForm).setCaption("Данные полиса");
+
+        final Component docsForm = createDocsForm();
+        tabsheet.addTab(docsForm).setCaption("Документы");
+
+        return tabsheet;
+    }
+
+    private Component createDocsForm() {
+        VerticalLayout layout = new VerticalLayout();
+        layout.setSpacing(true);
+
+        docFilesEditor = new DocFilesEditor();
+        layout.addComponent(docFilesEditor);
+
+        docCompleteField = new CheckBox("Полный комплект документов");
+        docCompleteField.setDescription("Укажите когда все документы загружены");
+        layout.addComponent(docCompleteField);
+
+        return layout;
+    }
+
+    private FormLayout createPolyceForm(Insurance obj) {
         final FormLayout form = new FormLayout();
 
         regNumField = new PolicySelect("Номер полиса",
@@ -288,7 +321,6 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         dealerField = new SalePointSelect("Точка продажи", "Название мотосалона где продана страховка", null);
         // dealerField.setRequired(true);
         form.addComponent(dealerField);
-
         return form;
     }
 

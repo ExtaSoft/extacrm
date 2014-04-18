@@ -4,6 +4,9 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.converters.PhoneConverter;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Выбор контакта - физ. лица
@@ -161,7 +164,8 @@ public class PersonSelect extends CustomField<Person> {
 		// Телефон
 		phoneField = new Label();
 		phoneField.setCaption("Телефон");
-		fieldsContainer.addComponent(phoneField);
+        phoneField.setConverter(lookup(PhoneConverter.class));
+        fieldsContainer.addComponent(phoneField);
 		// Мыло
 		emailField = new Label();
 		emailField.setCaption("E-Mail");

@@ -209,7 +209,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
         nameField.setNullRepresentation("");
         formLayout.addComponent(nameField);
 
-        companyField = new CompanySelect("Компания", "Введите или выберете компанию которой принадлежит торговая точка");
+        companyField = new CompanySelect("Компания", "Введите или выберите компанию которой принадлежит торговая точка");
         companyField.setRequired(true);
         formLayout.addComponent(companyField);
 

@@ -94,9 +94,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         initForm(obj);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void attach() {
         super.attach();
@@ -134,9 +132,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Lead obj) {
         final FormLayout form = new FormLayout();
@@ -410,9 +406,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void initObject(final Lead obj) {
         if (obj.getId() == null) {
@@ -430,9 +424,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void saveObject(final Lead obj) {
         LeadRepository leadRepository = lookup(LeadRepository.class);
@@ -446,9 +438,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void checkBeforeSave(final Lead obj) {
     }

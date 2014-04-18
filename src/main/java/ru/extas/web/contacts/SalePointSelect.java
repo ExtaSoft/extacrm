@@ -5,6 +5,9 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.web.commons.converters.PhoneConverter;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Компонент выбора торговой точки
@@ -35,6 +38,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
 		this.company = company;
 		setCaption(caption);
 		setDescription(description);
+        setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
 		setBuffered(true);
 		addStyleName("bordered-component");
 	}
@@ -155,6 +159,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
 		// Телефон
 		phoneField = new Label();
 		phoneField.setCaption("Телефон");
+        phoneField.setConverter(lookup(PhoneConverter.class));
 		fieldsContainer.addComponent(phoneField);
 		// Адрес
 		adressField = new Label();

@@ -48,8 +48,8 @@ public class MotorBrandMultiselect extends CustomField<Set> {
         final TokenField tokenField = new TokenField(lo);
         tokenField.setStyleName(TokenField.STYLE_TOKENFIELD);
         tokenField.setFilteringMode(FilteringMode.CONTAINS); // suggest
-        tokenField.setInputPrompt("Введите или выберете бренд...");
-        tokenField.setDescription("Введите или выберете бренд...");
+        tokenField.setInputPrompt("Введите или выберите бренд...");
+        tokenField.setDescription("Введите или выберите бренд...");
         tokenField.setRememberNewTokens(false);
         tokenField.setNewTokensAllowed(false);
         tokenField.setInputSizeFull();
