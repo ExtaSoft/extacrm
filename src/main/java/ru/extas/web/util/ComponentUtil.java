@@ -23,6 +23,7 @@ public class ComponentUtil {
      *
      * @param component поле выбора
      * @param cls       тип перечисления
+     * @param <TEnum> a TEnum object.
      */
     public static <TEnum extends Enum<TEnum>> void fillSelectByEnum(final AbstractSelect component,
                                                                     final Class<TEnum> cls) {

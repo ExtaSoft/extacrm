@@ -20,7 +20,7 @@ public class SalePointSimpleSelect extends AbstractContactSelect<SalePoint> {
     /**
      * <p>Constructor for CompanySelect.</p>
      *
-     * @param caption a {@link String} object.
+     * @param caption a {@link java.lang.String} object.
      */
     public SalePointSimpleSelect(final String caption) {
         super(caption, SalePoint.class);
@@ -29,13 +29,19 @@ public class SalePointSimpleSelect extends AbstractContactSelect<SalePoint> {
     /**
      * <p>Constructor for CompanySelect.</p>
      *
-     * @param caption     a {@link String} object.
-     * @param description a {@link String} object.
+     * @param caption     a {@link java.lang.String} object.
+     * @param description a {@link java.lang.String} object.
      */
     public SalePointSimpleSelect(final String caption, final String description) {
         super(caption, description, SalePoint.class);
     }
 
+    /**
+     * <p>setContainerFilter.</p>
+     *
+     * @param company a {@link ru.extas.model.contacts.Company} object.
+     * @param region a {@link java.lang.String} object.
+     */
     public void setContainerFilter(Company company, String region) {
         container.removeAllContainerFilters();
         if (company != null)

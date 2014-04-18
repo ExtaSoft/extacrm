@@ -56,9 +56,7 @@ public class InsuranceGrid extends ExtaGrid {
     public InsuranceGrid() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected GridDataDecl createDataDecl() {
         if (dataDecl == null)
@@ -66,9 +64,7 @@ public class InsuranceGrid extends ExtaGrid {
         return dataDecl;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected Container createContainer() {
         // Запрос данных
@@ -79,9 +75,7 @@ public class InsuranceGrid extends ExtaGrid {
         return container;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();

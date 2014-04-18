@@ -27,9 +27,14 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @author Valery Orlov
  *         Date: 18.04.2014
  *         Time: 15:20
+ * @version $Id: $Id
+ * @since 0.4.2
  */
 public class DocFilesEditor extends CustomField<List>{
 
+    /**
+     * <p>Constructor for DocFilesEditor.</p>
+     */
     public DocFilesEditor() {
         setBuffered(true);
         addStyleName("base-view");
@@ -37,11 +42,13 @@ public class DocFilesEditor extends CustomField<List>{
         setWidth(700, Unit.PIXELS);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Component initContent() {
         return new DocFilesGrid();
     }
 
+    /** {@inheritDoc} */
     @Override
     public Class<? extends List> getType() {
         return List.class;

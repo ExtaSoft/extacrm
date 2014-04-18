@@ -19,6 +19,8 @@ import java.util.Collection;
  * @author Valery Orlov
  *         Date: 09.04.2014
  *         Time: 18:48
+ * @version $Id: $Id
+ * @since 0.4.2
  */
 @Controller
 @RequestMapping("/service/ref")
@@ -27,21 +29,42 @@ public class ReferenceRestService {
 
     @Inject private SupplementService supplementService;
 
+    /**
+     * <p>loadRegions.</p>
+     *
+     * @return a {@link java.util.Collection} object.
+     */
     @RequestMapping(value = "/regions", method = RequestMethod.GET)
     public @ResponseBody Collection<String> loadRegions() {
         return supplementService.loadRegions();
     }
 
+    /**
+     * <p>loadMotorBrands.</p>
+     *
+     * @return a {@link java.util.Collection} object.
+     */
     @RequestMapping(value = "/motor-brands", method = RequestMethod.GET)
     public @ResponseBody Collection<String> loadMotorBrands() {
         return supplementService.loadMotorBrands();
     }
 
+    /**
+     * <p>loadMotorTypes.</p>
+     *
+     * @return a {@link java.util.Collection} object.
+     */
     @RequestMapping(value = "/motor-types", method = RequestMethod.GET)
     public @ResponseBody Collection<String> loadMotorTypes() {
         return supplementService.loadMotorTypes();
     }
 
+    /**
+     * <p>info.</p>
+     *
+     * @return a {@link org.springframework.http.HttpEntity} object.
+     * @throws java.io.IOException if any.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public HttpEntity<String> info() throws IOException {
         String help = HelpContent.loadMarkDown("/help/rest/references.textile");
@@ -51,6 +74,12 @@ public class ReferenceRestService {
         return new HttpEntity(help, headers);
     }
 
+    /**
+     * <p>handleIOException.</p>
+     *
+     * @param ex a {@link java.lang.Throwable} object.
+     * @return a {@link java.lang.String} object.
+     */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ResponseBody

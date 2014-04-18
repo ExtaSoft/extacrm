@@ -37,28 +37,34 @@ public interface SecuredRepository<Entity extends SecuredObject> {
 
     /**
      * <p>permitAndSave.</p>
+     *
      *  @param entity a Entity object.
      * @param userContact a {@link ru.extas.model.contacts.Person} object.
      * @param regions a {@link java.util.Collection} object.
      * @param brands a {@link java.util.Collection} object.
+     * @return a Entity object.
      */
     @Transactional
     Entity permitAndSave(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands);
 
     /**
      * <p>permitAndSave.</p>
+     *
      *  @param entities a {@link java.util.Collection} object.
      * @param userContact a {@link ru.extas.model.contacts.Person} object.
      * @param regions a {@link java.util.Collection} object.
      * @param brands a {@link java.util.Collection} object.
+     * @return a {@link java.util.List} object.
      */
     @Transactional
     List<Entity> permitAndSave(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands);
 
     /**
      * <p>permitAndSave.</p>
+     *
      *  @param entity a Entity object.
      * @param userContact a {@link ru.extas.model.contacts.Person} object.
+     * @return a Entity object.
      */
     @Transactional
     Entity permitAndSave(Entity entity, Person userContact);

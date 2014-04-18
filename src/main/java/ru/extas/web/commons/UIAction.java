@@ -36,6 +36,11 @@ public abstract class UIAction implements Serializable {
         this.iconStyle = iconStyle;
     }
 
+    /**
+     * <p>createButton.</p>
+     *
+     * @return a {@link com.vaadin.ui.Component} object.
+     */
     public Component createButton() {
         final Button button = new Button(getName());
         button.setDescription(getDescription());
