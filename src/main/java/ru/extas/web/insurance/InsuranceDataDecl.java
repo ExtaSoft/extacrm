@@ -34,6 +34,7 @@ class InsuranceDataDecl extends GridDataDecl {
 		addMapping("riskSum", "Страховая сумма");
 		addMapping("coverTime", "Период страхования", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("premium", "Страховая премия");
+		addMapping("docComplete", "Комплект документов", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("paymentDate", "Дата оплаты страховой премии", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("startDate", "Дата начала срока действия договора", EnumSet.of(PresentFlag.COLLAPSED));
 		addMapping("endDate", "Дата окончания срока действия договора", EnumSet.of(PresentFlag.COLLAPSED));

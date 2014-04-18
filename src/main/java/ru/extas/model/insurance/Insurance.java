@@ -117,6 +117,9 @@ public class Insurance extends SecuredObject {
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
     private List<FileContainer> files = newArrayList();
 
+    @Column(name = "IS_DOC_COMPLETE")
+    private boolean docComplete;
+
     public enum PeriodOfCover {
         YEAR,
         HALF_A_YEAR;
@@ -491,5 +494,13 @@ public class Insurance extends SecuredObject {
 
     public void setFiles(List<FileContainer> files) {
         this.files = files;
+    }
+
+    public boolean isDocComplete() {
+        return docComplete;
+    }
+
+    public void setDocComplete(boolean docComplete) {
+        this.docComplete = docComplete;
     }
 }

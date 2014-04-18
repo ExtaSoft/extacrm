@@ -99,7 +99,7 @@ public class DocFilesEditor extends CustomField<List>{
                 }
             });
 
-            actions.add(new ItemAction("Скачать", "Скачать выделенный в списке документ", "icon-download") {
+            actions.add(new DefaultAction("Скачать", "Скачать выделенный в списке документ", "icon-download") {
                 @Override
                 public void fire(Object itemId) {
                     final FileContainer fileContainer = extractBean(table.getItem(itemId));

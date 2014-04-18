@@ -85,6 +85,8 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     private SalePointSelect dealerField;
     @PropertyId("files")
     private DocFilesEditor docFilesEditor;
+    @PropertyId("docComplete")
+    private CheckBox docCompleteField;
 
     private Label tarifField;
     private ObjectProperty<BigDecimal> tarifDataSource;
@@ -115,7 +117,17 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     }
 
     private Component createDocsForm() {
-        return docFilesEditor = new DocFilesEditor();
+        VerticalLayout layout = new VerticalLayout();
+        layout.setSpacing(true);
+
+        docFilesEditor = new DocFilesEditor();
+        layout.addComponent(docFilesEditor);
+
+        docCompleteField = new CheckBox("Полный комплект документов");
+        docCompleteField.setDescription("Укажите когда все документы загружены");
+        layout.addComponent(docCompleteField);
+
+        return layout;
     }
 
     private FormLayout createPolyceForm(Insurance obj) {

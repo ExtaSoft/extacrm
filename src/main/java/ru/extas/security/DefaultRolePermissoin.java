@@ -136,6 +136,10 @@ public class DefaultRolePermissoin {
 		permissions.add(new ExtaPermission(ExtaDomain.SALES_OPENED, SecureAction.VIEW, SecureTarget.CORPORATE));
 		permissions.add(new ExtaPermission(ExtaDomain.SALES_SUCCESSFUL, SecureAction.VIEW, SecureTarget.CORPORATE));
 		permissions.add(new ExtaPermission(ExtaDomain.SALES_CANCELED, SecureAction.VIEW, SecureTarget.CORPORATE));
+        // Имущ. страховки | Все объекты | Чтение, Ввод, Редактирование
+        permissions.add(new ExtaPermission(ExtaDomain.INSURANCE_PROP, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.ALL));
+        // Квитанции А-7 | Собственные объекты | Полный доступ
+        permissions.add(new ExtaPermission(ExtaDomain.INSURANCE_A_7, SecureAction.ALL, SecureTarget.OWNONLY));
 		// Кредитные продукты	Все объекты	Чтение
 		permissions.add(new ExtaPermission(ExtaDomain.PROD_CREDIT, SecureAction.VIEW, SecureTarget.ALL));
         // Рассрочка	Все объекты	Чтение
