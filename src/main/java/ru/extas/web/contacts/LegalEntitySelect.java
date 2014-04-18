@@ -4,6 +4,9 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.web.commons.converters.PhoneConverter;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Выбор контакта - юр. лица
@@ -153,6 +156,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         // Телефон
         phoneField = new Label();
         phoneField.setCaption("Телефон");
+        phoneField.setConverter(lookup(PhoneConverter.class));
         fieldsContainer.addComponent(phoneField);
         // Мыло
         emailField = new Label();

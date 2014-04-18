@@ -1,5 +1,8 @@
 package ru.extas.web.commons;
 
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+
 import java.io.Serializable;
 
 /**
@@ -33,6 +36,12 @@ public abstract class UIAction implements Serializable {
         this.iconStyle = iconStyle;
     }
 
+    public Component createButton() {
+        final Button button = new Button(getName());
+        button.setDescription(getDescription());
+        button.addStyleName(getIconStyle());
+        return button;
+    }
     // Функция
     /**
      * <p>fire.</p>

@@ -14,6 +14,7 @@
         <class>ru.extas.model.common.DateTimeConverter</class>
         <class>ru.extas.model.common.LocalDateConverter</class>
         <class>ru.extas.model.common.UserRoleConverter</class>
+        <class>ru.extas.model.common.FileContainer</class>
         <class>ru.extas.model.contacts.AddressInfo</class>
         <class>ru.extas.model.contacts.Company</class>
         <class>ru.extas.model.contacts.Contact</class>

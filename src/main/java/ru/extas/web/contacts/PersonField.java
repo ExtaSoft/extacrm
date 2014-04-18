@@ -3,6 +3,9 @@ package ru.extas.web.contacts;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.converters.PhoneConverter;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Поле для расширенного отображения физ. лица.
@@ -64,6 +67,7 @@ public class PersonField extends CustomField<Person> {
 		// Телефон
 		Label phoneField = new Label(personItem.getItemProperty("phone"));
 		phoneField.setCaption("Телефон");
+        phoneField.setConverter(lookup(PhoneConverter.class));
 		fieldsContainer.addComponent(phoneField);
 		// Мыло
 		Label emailField = new Label(personItem.getItemProperty("email"));

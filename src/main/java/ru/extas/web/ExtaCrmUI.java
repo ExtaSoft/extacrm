@@ -62,6 +62,7 @@ public class ExtaCrmUI extends UI {
     private final static Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
 
     private static final long serialVersionUID = -6733655391417975375L;
+    private static final int POLLING_INTERVAL = 1000;
 
     private final CssLayout root = new CssLayout();
 
@@ -75,6 +76,8 @@ public class ExtaCrmUI extends UI {
     protected void init(final VaadinRequest request) {
 
         initUi(this);
+
+        setPollInterval(POLLING_INTERVAL);
 
         setContent(root);
         root.addStyleName("root");
