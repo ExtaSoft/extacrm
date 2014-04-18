@@ -65,7 +65,6 @@ public class PermissionServiceImpl implements PermissionService {
      *
      * @param entities a {@link java.util.List} object.
      * @param repository a {@link ru.extas.security.SecuredRepository} object.
-     * @param <Entity> a Entity object.
      */
     protected <Entity extends SecuredObject> void permitObjects(List<Entity> entities, SecuredRepository<Entity> repository) {
         for(Entity entity : entities) {

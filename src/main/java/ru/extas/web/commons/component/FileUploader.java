@@ -12,9 +12,18 @@ import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadStateWindow;
  * @author Valery Orlov
  *         Date: 18.04.2014
  *         Time: 16:48
+ * @version $Id: $Id
+ * @since 0.4.2
  */
 public class FileUploader extends CustomComponent {
 
+    /**
+     * <p>Constructor for FileUploader.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param handler a {@link com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler} object.
+     * @param multiple a boolean.
+     */
     public FileUploader(String caption, UploadFinishedHandler handler, boolean multiple) {
         UploadStateWindow window = new UploadStateWindow();
         window.setUploadStatusCaption("Статус загрузки");
@@ -38,6 +47,12 @@ public class FileUploader extends CustomComponent {
         setCompositionRoot(multiFileUpload);
     }
 
+    /**
+     * <p>Constructor for FileUploader.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param handler a {@link com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler} object.
+     */
     public FileUploader(String caption, UploadFinishedHandler handler) {
         this(caption, handler, true);
     }

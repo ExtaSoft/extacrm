@@ -24,9 +24,16 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 14.04.2014
  *         Time: 17:04
+ * @version $Id: $Id
+ * @since 0.4.2
  */
 public class UiUtils {
 
+    /**
+     * <p>initUi.</p>
+     *
+     * @param ui a {@link com.vaadin.ui.UI} object.
+     */
     public static void initUi(UI ui) {
         // Регистрируем конверторы по умолчанию
         VaadinSession.getCurrent().setConverterFactory(new ExtaConverterFactory());
@@ -67,6 +74,12 @@ public class UiUtils {
         }
     }
 
+    /**
+     * <p>showValidationError.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param fieldGroup a {@link com.vaadin.data.fieldgroup.FieldGroup} object.
+     */
     public static void showValidationError(String caption, FieldGroup fieldGroup) {
         StringBuilder msg = new StringBuilder();
         msg.append("<ul>");

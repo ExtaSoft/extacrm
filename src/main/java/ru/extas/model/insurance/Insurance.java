@@ -488,18 +488,38 @@ public class Insurance extends SecuredObject {
         this.beneficiary = beneficiary;
     }
 
+    /**
+     * <p>Getter for the field <code>files</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<FileContainer> getFiles() {
         return files;
     }
 
+    /**
+     * <p>Setter for the field <code>files</code>.</p>
+     *
+     * @param files a {@link java.util.List} object.
+     */
     public void setFiles(List<FileContainer> files) {
         this.files = files;
     }
 
+    /**
+     * <p>isDocComplete.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isDocComplete() {
         return docComplete;
     }
 
+    /**
+     * <p>Setter for the field <code>docComplete</code>.</p>
+     *
+     * @param docComplete a boolean.
+     */
     public void setDocComplete(boolean docComplete) {
         this.docComplete = docComplete;
     }

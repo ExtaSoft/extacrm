@@ -381,10 +381,20 @@ public class Lead extends SecuredObject {
 		this.status = status;
 	}
 
+    /**
+     * <p>Getter for the field <code>contactRegion</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getContactRegion() {
         return contactRegion;
     }
 
+    /**
+     * <p>Setter for the field <code>contactRegion</code>.</p>
+     *
+     * @param contactRegion a {@link java.lang.String} object.
+     */
     public void setContactRegion(String contactRegion) {
         this.contactRegion = contactRegion;
     }

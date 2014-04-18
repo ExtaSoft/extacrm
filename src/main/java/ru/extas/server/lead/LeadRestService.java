@@ -187,6 +187,7 @@ public class LeadRestService {
      * <p>Общая информация о сервисе.</p>
      *
      * @return a {@link org.springframework.http.HttpEntity} object.
+     * @throws java.io.IOException if any.
      */
     @RequestMapping(method = RequestMethod.GET)
     public HttpEntity<String> info() throws IOException {
@@ -200,6 +201,7 @@ public class LeadRestService {
     /**
      * <p>Создает новый объект.</p>
      *
+     * @param lead a {@link ru.extas.server.lead.LeadRestService.RestLead} object.
      */
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public void newLead(@RequestBody RestLead lead) {
@@ -287,6 +289,12 @@ public class LeadRestService {
         leadRepository.permitAndSave(newLead, user);
     }
 
+    /**
+     * <p>handleIOException.</p>
+     *
+     * @param ex a {@link java.lang.Throwable} object.
+     * @return a {@link java.lang.String} object.
+     */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ResponseBody

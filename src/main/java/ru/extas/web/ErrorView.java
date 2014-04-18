@@ -10,8 +10,11 @@ import ru.extas.web.commons.ExtaAbstractView;
  * @author Valery Orlov
  *         Date: 14.04.2014
  *         Time: 13:56
+ * @version $Id: $Id
+ * @since 0.4.2
  */
 public class ErrorView extends ExtaAbstractView {
+    /** {@inheritDoc} */
     @Override
     protected Component getContent() {
         final Component msg = new Label("Пожалуйста выберите другой пункт главного меню!");
@@ -20,6 +23,7 @@ public class ErrorView extends ExtaAbstractView {
         return msg;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Component getTitle() {
         final Component title = new Label("Неверные данные в адресной строке!!!");

@@ -23,6 +23,7 @@ public abstract class ItemAction extends UIAction {
         super(name, description, iconStyle);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Component createButton() {
         Component button = super.createButton();

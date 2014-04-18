@@ -16,12 +16,17 @@ import java.util.List;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
+ * <p>V0_4_1__UpdatePhoneFormat class.</p>
+ *
  * @author Valery Orlov
  *         Date: 17.04.2014
  *         Time: 21:32
+ * @version $Id: $Id
+ * @since 0.4.2
  */
 public class V0_4_1__UpdatePhoneFormat implements SpringJdbcMigration {
 
+    /** {@inheritDoc} */
     @Override
     public void migrate(final JdbcTemplate jdbcTemplate) throws Exception {
 
@@ -41,6 +46,13 @@ public class V0_4_1__UpdatePhoneFormat implements SpringJdbcMigration {
         );
     }
 
+    /**
+     * <p>convertPhones.</p>
+     *
+     * @param phoneUtil a {@link com.google.i18n.phonenumbers.PhoneNumberUtil} object.
+     * @param country a {@link java.lang.String} object.
+     * @param contacts a {@link java.util.List} object.
+     */
     protected void convertPhones(PhoneNumberUtil phoneUtil, String country, List<Contact> contacts) {
         for (Contact contact : contacts) {
             if (!isNullOrEmpty(contact.getPhone())) {

@@ -44,6 +44,8 @@ import static ru.extas.web.UiUtils.showValidationError;
  * @author Valery Orlov
  *         Date: 14.04.2014
  *         Time: 16:43
+ * @version $Id: $Id
+ * @since 0.4.2
  */
 @Component
 @Scope("session")
@@ -90,6 +92,7 @@ public class LeadInputFormUI extends UI {
 
     private FieldGroup fieldGroup;
 
+    /** {@inheritDoc} */
     @Override
     protected void init(VaadinRequest request) {
 

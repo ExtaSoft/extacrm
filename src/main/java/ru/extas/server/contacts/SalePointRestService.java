@@ -85,6 +85,7 @@ public class SalePointRestService {
      * <p>Общая информация о сервисе.</p>
      *
      * @return a {@link org.springframework.http.HttpEntity} object.
+     * @throws java.io.IOException if any.
      */
     @RequestMapping(method = RequestMethod.GET)
     public HttpEntity<String> info() throws IOException {
@@ -100,6 +101,7 @@ public class SalePointRestService {
      * <p>Количество объектов</p>
      *
      * @return a {@link org.springframework.http.HttpEntity} object.
+     * @param region a {@link java.lang.String} object.
      */
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public HttpEntity<String> count(@RequestParam(value = "region", required = false) String region) {
@@ -118,6 +120,7 @@ public class SalePointRestService {
      * <p>Список объектов.</p>
      *
      * @return a {@link org.springframework.http.HttpEntity} object.
+     * @param region a {@link java.lang.String} object.
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public

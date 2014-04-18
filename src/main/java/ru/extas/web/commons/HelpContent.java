@@ -18,6 +18,8 @@ import java.io.StringReader;
  * @author Valery Orlov
  *         Date: 11.04.2014
  *         Time: 9:27
+ * @version $Id: $Id
+ * @since 0.4.2
  */
 public class HelpContent {
 
@@ -26,7 +28,7 @@ public class HelpContent {
      *
      * @param resource путь к документу в classpath
      * @return Подготовленный html документ
-     * @throws IOException
+     * @throws java.io.IOException if any.
      */
     public static String loadMarkDown(String resource) throws IOException {
         // Читаем файл помоци
