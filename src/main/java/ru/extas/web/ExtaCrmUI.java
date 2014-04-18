@@ -57,12 +57,13 @@ import static ru.extas.web.UiUtils.initUi;
 @Scope("session")
 @Theme("extacrm")
 @Title("Extreme Assistance CRM")
+//@Push(PushMode.AUTOMATIC)
 public class ExtaCrmUI extends UI {
 
     private final static Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
 
     private static final long serialVersionUID = -6733655391417975375L;
-    private static final int POLLING_INTERVAL = 1000;
+    private static final int POLLING_INTERVAL = 3000;
 
     private final CssLayout root = new CssLayout();
 

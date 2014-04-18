@@ -26,6 +26,7 @@
                 <prop key="closeIdleSessions">true</prop>
                 <prop key="widgetset">ru.extas.web.AppWidgetSet</prop>
                 <prop key="heartbeatInterval">300</prop>
+                <!--<prop key="pushmode">automatic</prop>-->
             </props>
         </property>
     </bean>
@@ -43,6 +44,7 @@
                 <entry key="/UIDL/**" value-ref="mainCrmUiServlet"/>
                 <entry key="/APP/**" value-ref="mainCrmUiServlet"/>
                 <entry key="/HEARTBEAT/**" value-ref="mainCrmUiServlet"/>
+                <!--<entry key="/PUSH/**" value-ref="mainCrmUiServlet"/>-->
             </map>
         </property>
     </bean>
