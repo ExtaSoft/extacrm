@@ -97,7 +97,7 @@ public class DefaultRolePermissoin {
 		permissions.add(new ExtaPermission(ExtaDomain.SALES_SUCCESSFUL, SecureAction.VIEW, SecureTarget.SALE_POINT));
 		permissions.add(new ExtaPermission(ExtaDomain.SALES_CANCELED, SecureAction.VIEW, SecureTarget.SALE_POINT));
         // Имущ. страховки | Все объекты | Чтение, Ввод, Редактирование
-        permissions.add(new ExtaPermission(ExtaDomain.INSURANCE_PROP, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.OWNONLY));
+        permissions.add(new ExtaPermission(ExtaDomain.INSURANCE_PROP, EnumSet.of(SecureAction.VIEW, SecureAction.EDIT, SecureAction.INSERT), SecureTarget.SALE_POINT));
         // Квитанции А-7 | Собственные объекты | Полный доступ
         permissions.add(new ExtaPermission(ExtaDomain.INSURANCE_A_7, SecureAction.ALL, SecureTarget.OWNONLY));
 		// Кредитные продукты	Все объекты	Чтение
