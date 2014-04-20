@@ -17,6 +17,7 @@ import javax.persistence.criteria.*;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -82,22 +83,14 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
 
                             if (userService.isPermittedTarget(domain, SecureTarget.CORPORATE)) {
                                 Set<Company> companies = curUserContact.getEmployers();
-                                if (companies.isEmpty()) {
-                                    Company company = new Company();
-                                    company.setId("00-00");
-                                    companies.add(company);
+                                Set<SalePoint> workPlaces = newHashSet();
+                                for (Company company : companies) {
+                                    workPlaces.addAll(company.getSalePoints());
                                 }
-                                SetJoin<Person, Company> companiesRoot = associatesUsersRoot.join(Person_.employers, JoinType.LEFT);
-                                predicate = cb.or(predicate, composeWithAreaFilter(cb, objectRoot, userService, companiesRoot.in(companies)));
+                                predicate = createSatePointPredicate(cb, userService, objectRoot, predicate, associatesUsersRoot, workPlaces);
                             } else if (userService.isPermittedTarget(domain, SecureTarget.SALE_POINT)) {
                                 Set<SalePoint> workPlaces = curUserContact.getWorkPlaces();
-                                if (workPlaces.isEmpty()) {
-                                    SalePoint salePoint = new SalePoint();
-                                    salePoint.setId("00-00");
-                                    workPlaces.add(salePoint);
-                                }
-                                SetJoin<Person, SalePoint> workPlaceRoot = associatesUsersRoot.join(Person_.workPlaces, JoinType.LEFT);
-                                predicate = cb.or(predicate, composeWithAreaFilter(cb, objectRoot, userService, workPlaceRoot.in(workPlaces)));
+                                predicate = createSatePointPredicate(cb, userService, objectRoot, predicate, associatesUsersRoot, workPlaces);
                             }
                         }
                         if (predicate != null) {
@@ -105,6 +98,17 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
                             cq.distinct(true);
                         }
 
+                    }
+
+                    protected Predicate createSatePointPredicate(CriteriaBuilder cb, UserManagementService userService, Root<TEntityType> objectRoot, Predicate predicate, SetJoin<TEntityType, Person> associatesUsersRoot, Set<SalePoint> workPlaces) {
+                        if (workPlaces.isEmpty()) {
+                            SalePoint salePoint = new SalePoint();
+                            salePoint.setId("00-00");
+                            workPlaces.add(salePoint);
+                        }
+                        SetJoin<Person, SalePoint> workPlaceRoot = associatesUsersRoot.join(Person_.workPlaces, JoinType.LEFT);
+                        predicate = cb.or(predicate, composeWithAreaFilter(cb, objectRoot, userService, workPlaceRoot.in(workPlaces)));
+                        return predicate;
                     }
 
                     protected Predicate composeWithAreaFilter(CriteriaBuilder cb, Root<TEntityType> objectRoot, UserManagementService userService, Predicate predicate) {
