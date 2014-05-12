@@ -18,6 +18,11 @@ public class DataDeclMapping implements Serializable {
     private final String caption;
     private final EnumSet<PresentFlag> presentFlags;
     private final Converter<String, ?> converter;
+    private final GridDataDecl.GridColumnGenerator generator;
+
+    public DataDeclMapping(String propName, String caption, GridDataDecl.GridColumnGenerator generator, EnumSet<PresentFlag> presentFlags) {
+        this(propName, caption, presentFlags, null, generator);
+    }
 
     /**
      * Параметры отображения
@@ -49,7 +54,7 @@ public class DataDeclMapping implements Serializable {
      * @param presentFlags a {@link java.util.EnumSet} object.
      */
     public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags) {
-        this(propName, caption, presentFlags, null);
+        this(propName, caption, presentFlags, null, null);
     }
 
     /**
@@ -60,7 +65,7 @@ public class DataDeclMapping implements Serializable {
      * @param converter a {@link com.vaadin.data.util.converter.Converter} object.
      */
     public DataDeclMapping(String propName, String caption, Converter<String, ?> converter) {
-        this(propName, caption, null, converter);
+        this(propName, caption, null, converter, null);
     }
 
     /**
@@ -71,7 +76,7 @@ public class DataDeclMapping implements Serializable {
      * @param presentFlags a {@link java.util.EnumSet} object.
      * @param converter a {@link com.vaadin.data.util.converter.Converter} object.
      */
-    public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags, Converter<String, ?> converter) {
+    public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags, Converter<String, ?> converter, GridDataDecl.GridColumnGenerator generator) {
         super();
         this.propName = propName;
         this.caption = caption;
@@ -80,6 +85,11 @@ public class DataDeclMapping implements Serializable {
         else
             this.presentFlags = presentFlags;
         this.converter = converter;
+        this.generator = generator;
+    }
+
+    public GridDataDecl.GridColumnGenerator getGenerator() {
+        return generator;
     }
 
     /**

@@ -3,6 +3,8 @@
  */
 package ru.extas.web.commons;
 
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.data.util.converter.Converter;
 import ru.extas.web.commons.DataDeclMapping.PresentFlag;
 import ru.extas.web.users.LoginToUserNameConverter;
@@ -29,6 +31,14 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class GridDataDecl implements Serializable {
 
+    public interface GridColumnGenerator {
+        Object generateCell(Object columnId, Item item);
+
+        Property getCellProperty(Object columnId, Item item);
+
+        Class<?> getType();
+    }
+
     private final List<DataDeclMapping> mappings = new ArrayList<>();
 
     /**
@@ -48,6 +58,10 @@ public class GridDataDecl implements Serializable {
      */
     protected void addMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags) {
         mappings.add(new DataDeclMapping(propName, caption, presentFlags));
+    }
+
+    protected void addMapping(String propName, String caption, GridColumnGenerator generator, EnumSet<PresentFlag> presentFlags) {
+        mappings.add(new DataDeclMapping(propName, caption, generator, presentFlags));
     }
 
     /**
@@ -80,7 +94,7 @@ public class GridDataDecl implements Serializable {
      * @param converterCls - конвертер значения
      */
     public void addMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags, Class<? extends Converter<String, ?>> converterCls) {
-        mappings.add(new DataDeclMapping(propName, caption, presentFlags, lookup(converterCls)));
+        mappings.add(new DataDeclMapping(propName, caption, presentFlags, lookup(converterCls), null));
     }
 
     /**
