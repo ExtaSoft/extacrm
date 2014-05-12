@@ -196,7 +196,9 @@ public class InsuranceGrid extends ExtaGrid {
     }
 
     private void exportTableData() {
-        ExcelExport excelExport = new ExcelExport(new CustomTableHolder(table));
+        CustomTableHolder tableHolder = new CustomTableHolder(table);
+        ExcelExport excelExport = new MyExcelExport(tableHolder);
+        //excelExport.setExcelFormatOfProperty("date", "yyyy-MM-dd");
         excelExport.excludeCollapsedColumns();
         excelExport.setReportTitle("Имущественные страховки");
         final String fileName = MessageFormat.format("PropertyInsurances {0}.xls", new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
@@ -275,4 +277,5 @@ public class InsuranceGrid extends ExtaGrid {
             throw Throwables.propagate(e);
         }
     }
+
 }
