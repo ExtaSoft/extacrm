@@ -34,13 +34,13 @@ public class HelpContent {
         // Читаем файл помоци
         InputStream contentStream = HelpContent.class.getResourceAsStream(resource);
         String content = CharStreams.toString(new InputStreamReader(contentStream, Charsets.UTF_8));
-        Closeables.closeQuietly(contentStream);
+        Closeables.close(contentStream, true);
 
         // Читаем файл стилей
         InputStream cssStream = HelpContent.class.getResourceAsStream("/help/rest/help.css");
         String cssContent = CharStreams.toString(new InputStreamReader(cssStream, Charsets.UTF_8))
                 .replaceAll(System.getProperty("line.separator"), "");
-        Closeables.closeQuietly(contentStream);
+        Closeables.close(contentStream, true);
 
         // Преобразуем в html
         StringBuilder out = new StringBuilder();

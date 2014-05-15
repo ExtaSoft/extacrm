@@ -65,7 +65,7 @@ public class ExtaUserEntityManager extends UserEntityManager {
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(UserEntity updatedUser) {
+    public void updateUser(User updatedUser) {
         throw new UnsupportedOperationException();
     }
 
