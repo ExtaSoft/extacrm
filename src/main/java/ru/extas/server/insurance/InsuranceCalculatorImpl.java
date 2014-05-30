@@ -37,23 +37,19 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
 
     static {
         tarifTable = HashBasedTable.create();
-        fillBrandTarif(newHashSet("Kawasaki", "Arctic Cat", "Polaris", "CECTEK", "Русская Механика"), BigDecimal.valueOf(.045), BigDecimal.valueOf(.032));
-        fillBrandTarif(newHashSet("Kawasaki", "Arctic Cat", "Polaris", "CECTEK", "Русская Механика"), BigDecimal.valueOf(.05), BigDecimal.valueOf(.035), true);
+        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda","Kawasaki", "Polaris", "Русская Механика", "Тингер"),
+                BigDecimal.valueOf(.053), BigDecimal.valueOf(.037));
+        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda","Kawasaki", "Polaris", "Русская Механика", "Тингер"),
+                BigDecimal.valueOf(.057), BigDecimal.valueOf(.039), true);
 
-        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda", "Polar Fox"), BigDecimal.valueOf(.045), BigDecimal.valueOf(.032));
-        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda", "Polar Fox"), BigDecimal.valueOf(.05), BigDecimal.valueOf(.035), true);
+        fillBrandTarif(newHashSet("STELS"), BigDecimal.valueOf(.068), BigDecimal.valueOf(.048));
+        fillBrandTarif(newHashSet("STELS"), BigDecimal.valueOf(.073), BigDecimal.valueOf(.052), true);
 
-        fillBrandTarif(newHashSet("STELS"), BigDecimal.valueOf(.06), BigDecimal.valueOf(.042));
-        fillBrandTarif(newHashSet("STELS"), BigDecimal.valueOf(.065), BigDecimal.valueOf(.046), true);
+        fillBrandTarif(newHashSet("CECTEK", "BRP", "Yamaha", "Arctic Cat"), BigDecimal.valueOf(.062), BigDecimal.valueOf(.044));
+        fillBrandTarif(newHashSet("CECTEK", "BRP", "Yamaha", "Arctic Cat"), BigDecimal.valueOf(.068), BigDecimal.valueOf(.048), true);
 
-        fillBrandTarif(newHashSet("BRP", "Yamaha"), BigDecimal.valueOf(.055), BigDecimal.valueOf(.039));
-        fillBrandTarif(newHashSet("BRP", "Yamaha"), BigDecimal.valueOf(.06), BigDecimal.valueOf(.043), true);
-
-        fillBrandTarif(newHashSet("Тингер"), BigDecimal.valueOf(.035), BigDecimal.valueOf(.025));
-        fillBrandTarif(newHashSet("Тингер"), BigDecimal.valueOf(.04), BigDecimal.valueOf(.029), true);
-
-        fillBrandTarif(newHashSet("CFMOTO"), BigDecimal.valueOf(.035), BigDecimal.valueOf(.025));
-        fillBrandTarif(newHashSet("CFMOTO"), BigDecimal.valueOf(.04), BigDecimal.valueOf(.029), true);
+        fillBrandTarif(newHashSet("CFMOTO"), BigDecimal.valueOf(.035), BigDecimal.valueOf(.028));
+        fillBrandTarif(newHashSet("CFMOTO"), BigDecimal.valueOf(.045), BigDecimal.valueOf(.032), true);
     }
 
     private static void fillBrandTarif(HashSet<String> brands, BigDecimal yearTarif, BigDecimal halfTarif) {
