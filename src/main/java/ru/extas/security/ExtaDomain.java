@@ -104,7 +104,19 @@ public enum ExtaDomain {
 	/**
 	 * Настройки
 	 */
-	SETTINGS("settings");
+	SETTINGS("settings"),
+    /**
+     * Модель техники
+     */
+    MOTOR_MODEL("motor/models"),
+    /**
+     * Бренд
+     */
+    MOTOR_BRAND("motor/brands"),
+    /**
+     * Тип техники
+     */
+    MOTOR_TYPE("motor/types");
 
 	/**
 	 * <p>Constructor for ExtaDomain.</p>

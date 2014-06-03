@@ -33,6 +33,7 @@ import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
 import ru.extas.web.insurance.InsuranceView;
 import ru.extas.web.lead.LeadsView;
+import ru.extas.web.motor.MotorView;
 import ru.extas.web.product.ProductView;
 import ru.extas.web.sale.SalesView;
 import ru.extas.web.tasks.TasksView;
@@ -379,6 +380,8 @@ public class ExtaCrmUI extends UI {
                 InsuranceView.class, EnumSet.of(ExtaDomain.INSURANCE_PROP, ExtaDomain.INSURANCE_BSO, ExtaDomain.INSURANCE_A_7, ExtaDomain.INSURANCE_TRANSFER));
         mainMenu.addChapter("Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", "icon-basket",
                 ProductView.class, EnumSet.of(ExtaDomain.PROD_CREDIT, ExtaDomain.PROD_INSURANCE, ExtaDomain.PROD_INSTALL));
+        mainMenu.addChapter("Техника", "Раздел посвященный информации о технике", "icon-cog",
+                MotorView.class, EnumSet.of(ExtaDomain.MOTOR_MODEL, ExtaDomain.MOTOR_BRAND, ExtaDomain.MOTOR_TYPE));
         mainMenu.addChapter("Пользователи", "Управление ползователями и правами доступа", "icon-users-3",
                 UsersView.class, ExtaDomain.USERS);
         mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt",

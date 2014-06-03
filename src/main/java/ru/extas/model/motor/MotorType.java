@@ -2,9 +2,10 @@ package ru.extas.model.motor;
 
 import ru.extas.model.common.AuditedObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
+
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Тип техники
@@ -17,8 +18,11 @@ import javax.persistence.Table;
 @Table(name = "MOTOR_TYPE")
 public class MotorType  extends AuditedObject {
 
-    @Column
+    @Column(nullable = false)
     private String name;
+
+    @ManyToMany(mappedBy = "brandTypes", cascade = CascadeType.REFRESH)
+    private Set<MotorBrand> brands = newHashSet();
 
     public String getName() {
         return name;
@@ -26,5 +30,13 @@ public class MotorType  extends AuditedObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<MotorBrand> getBrands() {
+        return brands;
+    }
+
+    public void setBrands(Set<MotorBrand> brands) {
+        this.brands = brands;
     }
 }

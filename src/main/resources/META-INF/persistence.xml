@@ -38,6 +38,9 @@
         <class>ru.extas.model.sale.ProdInsurance</class>
         <class>ru.extas.model.sale.ProdInstallments</class>
         <class>ru.extas.model.sale.ProductInSale</class>
+        <class>ru.extas.model.motor.MotorType</class>
+        <class>ru.extas.model.motor.MotorBrand</class>
+        <class>ru.extas.model.motor.MotorModel</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
