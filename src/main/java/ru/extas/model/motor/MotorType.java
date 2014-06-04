@@ -21,7 +21,7 @@ public class MotorType  extends AuditedObject {
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "brandTypes", cascade = CascadeType.REFRESH)
+    @ManyToMany(mappedBy = "brandTypes", cascade = CascadeType.REFRESH, targetEntity = MotorBrand.class)
     private Set<MotorBrand> brands = newHashSet();
 
     public String getName() {

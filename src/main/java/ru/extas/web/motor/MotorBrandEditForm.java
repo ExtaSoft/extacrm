@@ -9,6 +9,7 @@ import ru.extas.model.motor.MotorBrand;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.reference.MotorTypeObjMultiselect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -19,6 +20,9 @@ public class MotorBrandEditForm extends AbstractEditForm<MotorBrand> {
     @PropertyId("name")
     private EditField nameField;
 
+    @PropertyId("brandTypes")
+    private MotorTypeObjMultiselect typesField;
+
     public MotorBrandEditForm(String caption, BeanItem<MotorBrand> newObj) {
         super(caption, newObj);
     }
@@ -27,14 +31,12 @@ public class MotorBrandEditForm extends AbstractEditForm<MotorBrand> {
 
     @Override
     protected void initObject(MotorBrand obj) {
-
     }
 
     @Override
     protected void saveObject(MotorBrand obj) {
         MotorBrand loc = lookup(MotorBrandRepository.class).save(obj);
         Notification.show("Марка сохранена", Notification.Type.TRAY_NOTIFICATION);
-
     }
 
     @Override
@@ -47,9 +49,13 @@ public class MotorBrandEditForm extends AbstractEditForm<MotorBrand> {
         final FormLayout form = new FormLayout();
 
         nameField = new EditField("Название марки техники", "Введите название марки техники");
-        nameField.setColumns(30);
+        nameField.setColumns(20);
         nameField.setRequired(true);
         form.addComponent(nameField);
+
+        typesField = new MotorTypeObjMultiselect("Выпускаемая техника");
+        form.addComponent(typesField);
+
         return form;
     }
 }
