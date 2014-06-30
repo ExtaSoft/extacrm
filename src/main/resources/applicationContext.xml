@@ -64,7 +64,7 @@
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Проверяет версию БД и выполняет миграцию если необходимо -->
-    <bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="entityManagerFactory" lazy-init="false">
+    <bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="processEngineConfiguration" lazy-init="false">
         <property name="dataSource" ref="dataSource"/>
         <property name="initOnMigrate" value="true"/>
         <property name="validateOnMigrate" value="false"/>
