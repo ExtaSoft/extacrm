@@ -11,8 +11,8 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
-import ru.extas.web.reference.MotorBrandSelect;
-import ru.extas.web.reference.MotorTypeSelect;
+import ru.extas.web.motor.MotorBrandSelect;
+import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
 
 import static org.springframework.util.CollectionUtils.isEmpty;

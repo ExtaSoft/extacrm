@@ -12,6 +12,8 @@ import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.server.contacts.SalePointRepository;
+import ru.extas.server.motor.MotorBrandRepository;
+import ru.extas.server.motor.MotorTypeRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.HelpContent;
@@ -43,6 +45,8 @@ public class LeadRestService {
     @Inject private SalePointRepository salePointRepository;
     @Inject private UserManagementService userService;
     @Inject private SupplementService supplementService;
+    @Inject private MotorBrandRepository motorBrandRepository;
+    @Inject private MotorTypeRepository motorTypeRepository;
 
     @JsonAutoDetect
     public static class RestLead {
@@ -232,14 +236,14 @@ public class LeadRestService {
         // Тип техники.
         if(isNullOrEmpty(lead.getMotorType()))
             throw new IllegalArgumentException("Тип техники не может быть пустым");
-        else if(!supplementService.loadMotorTypes().contains(lead.getMotorType()))
+        else if(!motorTypeRepository.loadAllNames().contains(lead.getMotorType()))
             throw new IllegalArgumentException("Неверный тип техники");
         newLead.setMotorType(lead.getMotorType());
 
         // Марка техники.
         if(isNullOrEmpty(lead.getMotorBrand()))
             throw new IllegalArgumentException("Марка техники не может быть пустой");
-        else if(!supplementService.loadMotorBrands().contains(lead.getMotorBrand()))
+        else if(!motorBrandRepository.loadAllNames().contains(lead.getMotorBrand()))
             throw new IllegalArgumentException("Неверная марка техники");
         newLead.setMotorBrand(lead.getMotorBrand());
 

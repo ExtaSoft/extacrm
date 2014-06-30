@@ -73,7 +73,7 @@
 
                 <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
                 <jpa.logging.level>WARNING</jpa.logging.level>
-                <jpa.ddl-generation>none</jpa.ddl-generation>
+                <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
                 <jpa.generation.output-mode>database</jpa.generation.output-mode>
             </properties>
         </profile>

@@ -1,10 +1,10 @@
-package ru.extas.web.reference;
+package ru.extas.web.motor;
 
 import com.vaadin.data.Property;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.vaadin.tokenfield.TokenField;
-import ru.extas.model.motor.MotorBrand;
+import ru.extas.model.motor.MotorType;
 import ru.extas.web.commons.ExtaDataContainer;
 
 import java.util.Set;
@@ -12,11 +12,11 @@ import java.util.Set;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
- * Реализует редактирование списка брендов
+ * Реализует редактирование списка тип техники
  *
  * @author Valery Orlov
  */
-public class MotorBrandObjMultiselect extends CustomField<Set> {
+public class MotorTypeObjMultiselect extends CustomField<Set> {
 
 
     /**
@@ -24,7 +24,7 @@ public class MotorBrandObjMultiselect extends CustomField<Set> {
      *
      * @param caption a {@link String} object.
      */
-    public MotorBrandObjMultiselect(String caption) {
+    public MotorTypeObjMultiselect(String caption) {
         setBuffered(true);
         setCaption(caption);
     }
@@ -38,15 +38,15 @@ public class MotorBrandObjMultiselect extends CustomField<Set> {
         final TokenField tokenField = new TokenField(lo);
         tokenField.setStyleName(TokenField.STYLE_TOKENFIELD);
         tokenField.setFilteringMode(FilteringMode.CONTAINS); // suggest
-        tokenField.setInputPrompt("Введите или выберите бренд...");
-        tokenField.setDescription("Введите или выберите бренд...");
+        tokenField.setInputPrompt("Введите или выберите тип техники...");
+        tokenField.setDescription("Введите или выберите тип техники...");
         tokenField.setRememberNewTokens(false);
         tokenField.setNewTokensAllowed(false);
         tokenField.setInputSizeFull();
         //tokenField.setInputWidth(13, Unit.EX);
         //tokenField.setTokenInsertPosition(TokenField.InsertPosition.BEFORE);
 
-        final ExtaDataContainer<MotorBrand> container = new ExtaDataContainer<>(MotorBrand.class);
+        final ExtaDataContainer<MotorType> container = new ExtaDataContainer<>(MotorType.class);
         container.sort(new Object[]{"name"}, new boolean[]{true});
         tokenField.setContainerDataSource(container);
         tokenField.setTokenCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
@@ -62,10 +62,10 @@ public class MotorBrandObjMultiselect extends CustomField<Set> {
             }
         });
         final Property dataSource = getPropertyDataSource();
-        final Set<MotorBrand> set = dataSource != null ? (Set<MotorBrand>) dataSource.getValue() : null;
+        final Set<MotorType> set = dataSource != null ? (Set<MotorType>) dataSource.getValue() : null;
         if (set != null) {
             Set idValue = newHashSet();
-            for(MotorBrand obj : set)
+            for(MotorType obj : set)
                 idValue.add(obj.getId());
             tokenField.setValue(idValue);
         }

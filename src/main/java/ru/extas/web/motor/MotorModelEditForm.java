@@ -6,11 +6,9 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import ru.extas.model.motor.MotorModel;
-import ru.extas.model.motor.MotorType;
 import ru.extas.server.motor.MotorModelRepository;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.reference.MotorBrandSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -19,13 +17,12 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class MotorModelEditForm extends AbstractEditForm<MotorModel> {
 
-    private MotorType type;
-
-    private MotorBrandSelect brand;
-
+    @PropertyId("type")
+    private MotorTypeSelect typeField;
+    @PropertyId("brand")
+    private MotorBrandSelect brandField;
     @PropertyId("name")
     private EditField nameField;
-
     @PropertyId("code")
     private EditField codeField;
 
@@ -53,6 +50,15 @@ public class MotorModelEditForm extends AbstractEditForm<MotorModel> {
     @Override
     protected ComponentContainer createEditFields(MotorModel obj) {
         final FormLayout form = new FormLayout();
+
+        typeField = new MotorTypeSelect();
+        typeField.setRequired(true);
+        form.addComponent(typeField);
+
+        brandField = new MotorBrandSelect();
+        brandField.setRequired(true);
+        brandField.linkToType(typeField);
+        form.addComponent(brandField);
 
         nameField = new EditField("Название модели", "Введите название модели техники");
         nameField.setColumns(30);

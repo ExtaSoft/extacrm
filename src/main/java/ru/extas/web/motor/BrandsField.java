@@ -1,10 +1,10 @@
-package ru.extas.web.reference;
+package ru.extas.web.motor;
 
 import com.vaadin.data.Property;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.TwinColSelect;
-import ru.extas.server.references.SupplementService;
+import ru.extas.server.motor.MotorBrandRepository;
 
 import java.util.Set;
 
@@ -53,7 +53,7 @@ public class BrandsField extends CustomField<Set> {
 		if (set != null) {
 			twin.setValue(newHashSet(set));
 		}
-		for (final String item : lookup(SupplementService.class).loadMotorBrands()) {
+		for (final String item : lookup(MotorBrandRepository.class).loadAllNames()) {
 			twin.addItem(item);
 		}
 

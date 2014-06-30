@@ -9,7 +9,6 @@ import ru.extas.model.motor.MotorType;
 import ru.extas.server.motor.MotorTypeRepository;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.reference.MotorBrandObjMultiselect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 

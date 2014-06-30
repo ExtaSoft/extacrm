@@ -2,7 +2,9 @@ package ru.extas.model.motor;
 
 import ru.extas.model.common.AuditedObject;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Определяет модель техники
@@ -21,11 +23,11 @@ public class MotorModel  extends AuditedObject {
     @Column(nullable = false)
     private String code;
 
-    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
-    private MotorType type;
+    @Column(nullable = false)
+    private String type;
 
-    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
-    private MotorBrand brand;
+    @Column(nullable = false)
+    private String brand;
 
     public String getName() {
         return name;
@@ -43,19 +45,19 @@ public class MotorModel  extends AuditedObject {
         this.code = code;
     }
 
-    public MotorType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(MotorType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public MotorBrand getBrand() {
+    public String getBrand() {
         return brand;
     }
 
-    public void setBrand(MotorBrand brand) {
+    public void setBrand(String brand) {
         this.brand = brand;
     }
 }

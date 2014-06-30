@@ -1,4 +1,4 @@
-package ru.extas.web.reference;
+package ru.extas.web.motor;
 
 import com.vaadin.data.Property;
 import com.vaadin.shared.ui.MarginInfo;
@@ -9,7 +9,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
 import org.vaadin.tokenfield.TokenField;
-import ru.extas.server.references.SupplementService;
+import ru.extas.server.motor.MotorBrandRepository;
 
 import java.util.Collection;
 import java.util.Set;
@@ -68,7 +68,7 @@ public class MotorBrandMultiselect extends CustomField<Set> {
 		if (set != null) {
 			tokenField.setValue(newHashSet(set));
 		}
-        Collection<String> brands = lookup(SupplementService.class).loadMotorBrands();
+        Collection<String> brands = lookup(MotorBrandRepository.class).loadAllNames();
         tokenField.setContainerDataSource(CollectionContainer.fromBeans(brands));
 
         HorizontalLayout layout = new HorizontalLayout(tokenField);

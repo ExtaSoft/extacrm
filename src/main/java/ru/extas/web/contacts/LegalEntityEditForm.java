@@ -18,7 +18,7 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
-import ru.extas.web.reference.BrandsField;
+import ru.extas.web.motor.BrandsField;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 

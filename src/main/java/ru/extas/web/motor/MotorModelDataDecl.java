@@ -7,8 +7,8 @@ import ru.extas.web.commons.GridDataDecl;
  */
 public class MotorModelDataDecl extends GridDataDecl {
     public MotorModelDataDecl() {
-        addMapping("brand.name", "Марка");
-        addMapping("type.name", "Тип техники");
+        addMapping("brand", "Марка");
+        addMapping("type", "Тип техники");
         addMapping("name", "Название модели");
         addMapping("code", "Код модели");
         super.addDefaultMappings();

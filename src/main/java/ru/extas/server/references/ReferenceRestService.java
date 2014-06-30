@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ru.extas.server.motor.MotorBrandRepository;
+import ru.extas.server.motor.MotorTypeRepository;
 import ru.extas.web.commons.HelpContent;
 
 import javax.inject.Inject;
@@ -28,6 +30,8 @@ public class ReferenceRestService {
     private Logger logger = LoggerFactory.getLogger(ReferenceRestService.class);
 
     @Inject private SupplementService supplementService;
+    @Inject private MotorBrandRepository motorBrandRepository;
+    @Inject private MotorTypeRepository motorTypeRepository;
 
     /**
      * <p>loadRegions.</p>
@@ -46,7 +50,7 @@ public class ReferenceRestService {
      */
     @RequestMapping(value = "/motor-brands", method = RequestMethod.GET)
     public @ResponseBody Collection<String> loadMotorBrands() {
-        return supplementService.loadMotorBrands();
+        return motorBrandRepository.loadAllNames();
     }
 
     /**
@@ -56,7 +60,7 @@ public class ReferenceRestService {
      */
     @RequestMapping(value = "/motor-types", method = RequestMethod.GET)
     public @ResponseBody Collection<String> loadMotorTypes() {
-        return supplementService.loadMotorTypes();
+        return motorTypeRepository.loadAllNames();
     }
 
     /**

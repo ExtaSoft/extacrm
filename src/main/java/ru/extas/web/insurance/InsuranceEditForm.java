@@ -24,8 +24,8 @@ import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.LegalEntitySelect;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
-import ru.extas.web.reference.MotorBrandSelect;
-import ru.extas.web.reference.MotorTypeSelect;
+import ru.extas.web.motor.MotorBrandSelect;
+import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.util.ComponentUtil;
 
 import java.math.BigDecimal;
@@ -222,6 +222,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
                 updateTarifField();
             }
         });
+        motorBrandField.linkToType(motorTypeField);
         form.addComponent(motorBrandField);
 
         tarifDataSource = new ObjectProperty<>(new BigDecimal(0));

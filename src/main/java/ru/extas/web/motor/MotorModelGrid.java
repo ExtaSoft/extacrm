@@ -33,8 +33,6 @@ public class MotorModelGrid extends ExtaGrid {
 		// Запрос данных
 		final ExtaDataContainer<MotorModel> container = new ExtaDataContainer<>(MotorModel.class);
 		container.sort(new Object[]{"name"}, new boolean[]{true});
-		container.addNestedContainerProperty("type.name");
-		container.addNestedContainerProperty("brand.name");
 		return container;
 	}
 

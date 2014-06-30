@@ -16,7 +16,7 @@ import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
-import ru.extas.web.reference.MotorBrandMultiselect;
+import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 import ru.extas.web.util.ComponentUtil;
 
