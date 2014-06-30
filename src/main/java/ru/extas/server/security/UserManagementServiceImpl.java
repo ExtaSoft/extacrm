@@ -1,4 +1,4 @@
-package ru.extas.server.users;
+package ru.extas.server.security;
 
 import org.activiti.engine.impl.identity.Authentication;
 import org.apache.shiro.SecurityUtils;
@@ -10,11 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.Person;
-import ru.extas.model.users.UserProfile;
-import ru.extas.security.ExtaDomain;
-import ru.extas.security.ExtaPermission;
-import ru.extas.security.SecureTarget;
-import ru.extas.security.UserRole;
+import ru.extas.model.security.*;
 
 import javax.inject.Inject;
 import java.util.Set;

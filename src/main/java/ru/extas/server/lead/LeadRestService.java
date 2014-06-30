@@ -13,7 +13,7 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.references.SupplementService;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.HelpContent;
 
 import javax.inject.Inject;

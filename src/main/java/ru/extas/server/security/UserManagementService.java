@@ -1,10 +1,10 @@
-package ru.extas.server.users;
+package ru.extas.server.security;
 
 import ru.extas.model.contacts.Person;
-import ru.extas.model.users.UserProfile;
-import ru.extas.security.ExtaDomain;
-import ru.extas.security.SecureTarget;
-import ru.extas.security.UserRole;
+import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.SecureTarget;
+import ru.extas.model.security.UserProfile;
+import ru.extas.model.security.UserRole;
 
 import java.util.Set;
 

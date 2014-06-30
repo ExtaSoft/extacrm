@@ -8,6 +8,7 @@ import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.security.ExtaDomain;
 
 /**
  * Вспомогательные методы при работе с правами доступа
@@ -53,7 +54,7 @@ public class SecurityUtils {
      * <p>findDomainByClass.</p>
      *
      * @param entityClass a {@link java.lang.Class} object.
-     * @return a {@link ru.extas.security.ExtaDomain} object.
+     * @return a {@link ru.extas.model.security.ExtaDomain} object.
      */
     public static ExtaDomain findDomainByClass(final Class entityClass) {
         // FIXME: To Implement

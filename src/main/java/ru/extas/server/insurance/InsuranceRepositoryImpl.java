@@ -14,7 +14,7 @@ import ru.extas.security.AbstractSecuredRepository;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.contacts.SalePointRepository;
-import ru.extas.server.users.UserManagementServiceImpl;
+import ru.extas.server.security.UserManagementServiceImpl;
 
 import javax.inject.Inject;
 import java.util.Collection;

@@ -1,7 +1,7 @@
 package ru.extas.web.bpm;
 
 import org.activiti.engine.impl.identity.Authentication;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 
 import javax.inject.Inject;
 import javax.servlet.*;

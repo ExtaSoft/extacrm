@@ -1,7 +1,7 @@
 package ru.extas.model.common;
 
 
-import ru.extas.security.UserRole;
+import ru.extas.model.security.UserRole;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

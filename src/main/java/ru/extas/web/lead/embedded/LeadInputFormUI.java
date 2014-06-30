@@ -20,7 +20,7 @@ import ru.extas.model.lead.Lead;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.lead.LeadRepository;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;

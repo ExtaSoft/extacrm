@@ -1,4 +1,4 @@
-package ru.extas.model.users;
+package ru.extas.model.security;
 
 import ru.extas.model.common.AuditedObject;
 
@@ -26,10 +26,16 @@ public class UserGroup extends AuditedObject {
     @Max(50)
     private String name;
 
-    // Список разрешений группы
-    @ElementCollection
-    @CollectionTable(name = "USER_GROUP_PERMISSION")
-    private Set<String> permissionList;
+    private String description;
+
+    /**
+     * Список разрешений группы
+     */
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ExtaPermission> permissions;
+
+    @ManyToMany(mappedBy = "groupList")
+    private Set<UserProfile> users;
 
     /**
      * <p>Getter for the field <code>name</code>.</p>
@@ -49,22 +55,27 @@ public class UserGroup extends AuditedObject {
         this.name = name;
     }
 
-    /**
-     * <p>Getter for the field <code>permissionList</code>.</p>
-     *
-     * @return the permissionList
-     */
-    public Set<String> getPermissionList() {
-        return permissionList;
+    public Set<ExtaPermission> getPermissions() {
+        return permissions;
     }
 
-    /**
-     * <p>Setter for the field <code>permissionList</code>.</p>
-     *
-     * @param permissionList the permissionList to set
-     */
-    public void setPermissionList(Set<String> permissionList) {
-        this.permissionList = permissionList;
+    public void setPermissions(Set<ExtaPermission> permissions) {
+        this.permissions = permissions;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<UserProfile> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserProfile> users) {
+        this.users = users;
+    }
 }

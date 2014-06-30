@@ -6,7 +6,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.sale.Sale;
 import ru.extas.server.sale.SaleRepository;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;

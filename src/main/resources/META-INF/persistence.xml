@@ -28,8 +28,9 @@
         <class>ru.extas.model.insurance.Insurance</class>
         <class>ru.extas.model.insurance.Policy</class>
         <class>ru.extas.model.lead.Lead</class>
-        <class>ru.extas.model.users.UserGroup</class>
-        <class>ru.extas.model.users.UserProfile</class>
+        <class>ru.extas.model.security.ExtaPermission</class>
+        <class>ru.extas.model.security.UserGroup</class>
+        <class>ru.extas.model.security.UserProfile</class>
         <class>ru.extas.model.sale.Sale</class>
         <class>ru.extas.model.sale.Product</class>
         <class>ru.extas.model.sale.ProdCredit</class>

@@ -1,4 +1,4 @@
-package ru.extas.security;
+package ru.extas.model.security;
 
 /**
  * Действие разрешаемое пользователю
@@ -52,7 +52,7 @@ public enum SecureAction {
 	 * <p>getByName.</p>
 	 *
 	 * @param name a {@link java.lang.String} object.
-	 * @return a {@link ru.extas.security.SecureAction} object.
+	 * @return a {@link SecureAction} object.
 	 */
 	public static SecureAction getByName(String name) {
 		for (SecureAction item : SecureAction.values())

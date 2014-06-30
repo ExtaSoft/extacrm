@@ -65,7 +65,7 @@ public class MotorModelGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенную в списке модельтехники", "icon-edit-3") {
+		actions.add(new DefaultAction("Изменить", "Редактировать выделенную в списке модель техники", "icon-edit-3") {
 			@Override
 			public void fire(final Object itemId) {
 				final BeanItem<MotorModel> curObj = new GridItem<>(table.getItem(itemId));

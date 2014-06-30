@@ -2,9 +2,9 @@ package ru.extas.server.bpm.security;
 
 import org.activiti.engine.identity.User;
 import org.activiti.engine.identity.UserQuery;
-import ru.extas.model.users.UserProfile;
-import ru.extas.server.users.UserManagementService;
-import ru.extas.server.users.UserRegistry;
+import ru.extas.model.security.UserProfile;
+import ru.extas.server.security.UserManagementService;
+import ru.extas.server.security.UserRegistry;
 
 import java.util.List;
 

@@ -124,4 +124,17 @@
 
   }
 
+  .inline-base-view {
+    @extend .base-view;
+
+    .v-csslayout {
+      padding-left: 0;
+    }
+
+    .grid-toolbar {
+      padding-left: 0;
+    }
+
+
+  }
 }

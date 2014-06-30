@@ -1,8 +1,9 @@
-package ru.extas.security;
+package ru.extas.model.security;
 
 import org.apache.shiro.authz.Permission;
+import ru.extas.model.common.AuditedObject;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -10,7 +11,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
- * Правао доступа к обхектам CRM
+ * Права доступа к обхектам CRM
  *
  * @author Valery Orlov
  *         Date: 03.03.14
@@ -18,11 +19,26 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ExtaPermission implements Permission, Serializable {
+@Entity
+@Table(name = "ACCESS_PERMISSION")
+public class ExtaPermission extends AuditedObject implements Permission {
 
-    private final ExtaDomain domain;
-    private final Set<SecureAction> actions;
-    private final SecureTarget target;
+    @Column(name = "DOMAIN")
+    private ExtaDomain domain;
+
+    @ElementCollection
+    @CollectionTable(name = "ACCESS_PERMISSION_ACTION")
+    private Set<SecureAction> actions;
+
+    @Column(name = "TARGET")
+    private SecureTarget target;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private UserProfile user;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private UserGroup group;
+
 
     /**
      * Создает право доступа.
@@ -72,6 +88,9 @@ public class ExtaPermission implements Permission, Serializable {
         this(domain, (SecureAction) null, target);
     }
 
+    public ExtaPermission() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public boolean implies(Permission p) {
@@ -98,7 +117,7 @@ public class ExtaPermission implements Permission, Serializable {
     /**
      * <p>Getter for the field <code>domain</code>.</p>
      *
-     * @return a {@link ru.extas.security.ExtaDomain} object.
+     * @return a {@link ExtaDomain} object.
      */
     public ExtaDomain getDomain() {
         return domain;
@@ -116,9 +135,38 @@ public class ExtaPermission implements Permission, Serializable {
     /**
      * <p>Getter for the field <code>target</code>.</p>
      *
-     * @return a {@link ru.extas.security.SecureTarget} object.
+     * @return a {@link SecureTarget} object.
      */
     public SecureTarget getTarget() {
         return target;
     }
+
+    public void setDomain(ExtaDomain domain) {
+        this.domain = domain;
+    }
+
+    public void setActions(Set<SecureAction> actions) {
+        this.actions = actions;
+    }
+
+    public void setTarget(SecureTarget target) {
+        this.target = target;
+    }
+
+    public UserProfile getUser() {
+        return user;
+    }
+
+    public void setUser(UserProfile user) {
+        this.user = user;
+    }
+
+    public UserGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(UserGroup group) {
+        this.group = group;
+    }
 }
+

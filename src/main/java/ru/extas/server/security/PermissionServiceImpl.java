@@ -1,4 +1,4 @@
-package ru.extas.server.users;
+package ru.extas.server.security;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

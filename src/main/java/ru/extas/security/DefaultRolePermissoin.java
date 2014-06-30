@@ -1,6 +1,10 @@
 package ru.extas.security;
 
 import org.apache.shiro.authz.Permission;
+import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.ExtaPermission;
+import ru.extas.model.security.SecureAction;
+import ru.extas.model.security.SecureTarget;
 
 import java.util.EnumSet;
 import java.util.List;

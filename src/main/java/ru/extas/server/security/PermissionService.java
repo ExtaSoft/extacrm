@@ -1,4 +1,4 @@
-package ru.extas.server.users;
+package ru.extas.server.security;
 
 /**
  * Службы для работы с системой распределения прав доступа

@@ -4,7 +4,7 @@
 package ru.extas.web.users;
 
 import com.vaadin.ui.Component;
-import ru.extas.security.ExtaDomain;
+import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.AbstractTabView;
 import ru.extas.web.commons.component.AbstractTabInfo;
 import ru.extas.web.commons.component.TabInfo;
@@ -37,11 +37,15 @@ public class UsersView extends AbstractTabView {
     protected List<TabInfo> getTabComponentsInfo() {
         final ArrayList<TabInfo> ret = newArrayList();
         ret.add(new AbstractTabInfo("Пользователи", ExtaDomain.USERS) {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public Component createComponent() {
                 return new UsersGrid();
+            }
+        });
+        ret.add(new AbstractTabInfo("Группы", ExtaDomain.USER_GROUPS) {
+            @Override
+            public Component createComponent() {
+                return new UserGroupGrid();
             }
         });
         return ret;

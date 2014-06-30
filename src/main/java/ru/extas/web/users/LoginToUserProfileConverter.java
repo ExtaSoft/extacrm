@@ -2,8 +2,8 @@ package ru.extas.web.users;
 
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.extas.model.users.UserProfile;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.model.security.UserProfile;
+import ru.extas.server.security.UserManagementService;
 
 import javax.inject.Inject;
 import java.util.Locale;

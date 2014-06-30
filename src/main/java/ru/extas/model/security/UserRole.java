@@ -1,7 +1,7 @@
 /**
  *
  */
-package ru.extas.security;
+package ru.extas.model.security;
 
 /**
  * Перечислитель ролей пользователей
@@ -56,7 +56,7 @@ public enum UserRole {
      * <p>getRoleByName.</p>
      *
      * @param name a {@link java.lang.String} object.
-     * @return a {@link ru.extas.security.UserRole} object.
+     * @return a {@link UserRole} object.
      */
     public static UserRole getRoleByName(String name) {
         for (UserRole role : UserRole.values())

@@ -4,7 +4,7 @@
 package ru.extas.web.contacts;
 
 import com.vaadin.ui.Component;
-import ru.extas.security.ExtaDomain;
+import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.AbstractTabView;
 import ru.extas.web.commons.component.AbstractTabInfo;
 import ru.extas.web.commons.component.TabInfo;

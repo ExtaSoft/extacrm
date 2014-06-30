@@ -7,11 +7,11 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.Person_;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.users.UserProfile;
-import ru.extas.security.ExtaDomain;
-import ru.extas.security.SecureTarget;
-import ru.extas.security.UserRole;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.SecureTarget;
+import ru.extas.model.security.UserProfile;
+import ru.extas.model.security.UserRole;
+import ru.extas.server.security.UserManagementService;
 
 import javax.persistence.criteria.*;
 import java.util.List;
@@ -42,7 +42,7 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
      *
      * @param entityClass the class of the entities that will reside in this container
      *                    (must not be null).
-     * @param domain a {@link ru.extas.security.ExtaDomain} object.
+     * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
      */
     public SecuredDataContainer(final Class<TEntityType> entityClass, ExtaDomain domain) {
         super(entityClass);

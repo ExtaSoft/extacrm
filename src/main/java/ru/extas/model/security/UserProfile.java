@@ -1,8 +1,7 @@
-package ru.extas.model.users;
+package ru.extas.model.security;
 
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Person;
-import ru.extas.security.UserRole;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -49,7 +48,9 @@ public class UserProfile extends AuditedObject {
 
     // Группы в которых состоит пользователь
     @ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "USER_GROUP_LINK")
+    @JoinTable(name = "USER_GROUP_LINK",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")})
     private Set<UserGroup> groupList = new HashSet<>();
 
     // Пользователь заблокирован
@@ -60,6 +61,10 @@ public class UserProfile extends AuditedObject {
 
     @ElementCollection
     private Set<String> permitBrands = newHashSet();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<ExtaPermission> permissions;
+
 
     /**
      * <p>Getter for the field <code>groupList</code>.</p>
@@ -127,7 +132,7 @@ public class UserProfile extends AuditedObject {
     /**
      * <p>Getter for the field <code>role</code>.</p>
      *
-     * @return a {@link ru.extas.security.UserRole} object.
+     * @return a {@link UserRole} object.
      */
     public UserRole getRole() {
         return role;
@@ -239,5 +244,13 @@ public class UserProfile extends AuditedObject {
      */
     public void setPermitBrands(Set<String> permitBrands) {
         this.permitBrands = permitBrands;
+    }
+
+    public Set<ExtaPermission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<ExtaPermission> permissions) {
+        this.permissions = permissions;
     }
 }

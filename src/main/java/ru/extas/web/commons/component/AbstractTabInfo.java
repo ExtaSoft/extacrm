@@ -1,6 +1,6 @@
 package ru.extas.web.commons.component;
 
-import ru.extas.security.ExtaDomain;
+import ru.extas.model.security.ExtaDomain;
 
 
 
@@ -20,7 +20,7 @@ public abstract class AbstractTabInfo implements TabInfo {
 	 * <p>Constructor for AbstractTabInfo.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
-	 * @param domain a {@link ru.extas.security.ExtaDomain} object.
+	 * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
 	public AbstractTabInfo(final String caption, final ExtaDomain domain) {
 		this.caption = caption;

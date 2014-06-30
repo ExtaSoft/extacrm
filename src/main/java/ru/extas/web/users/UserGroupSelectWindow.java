@@ -1,0 +1,73 @@
+package ru.extas.web.users;
+
+import ru.extas.model.security.UserGroup;
+import ru.extas.web.commons.DefaultAction;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.window.CloseOnlylWindow;
+
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static ru.extas.web.commons.GridItem.extractBean;
+
+/**
+ * Окно выбора группы пользователей
+ *
+ * @author Valery Orlov
+ *         Date: 27.06.2014
+ *         Time: 12:35
+ */
+public class UserGroupSelectWindow extends CloseOnlylWindow {
+
+    private UserGroup selected;
+    private boolean selectPressed;
+
+    public UserGroupSelectWindow(String caption) {
+        super(caption);
+        addStyleName("base-view");
+        setContent(new UserGroupGrid() {
+
+//            @Override
+//            protected Container createContainer() {
+//                final ExtaDataContainer<UserGroup> container = new ExtaDataContainer<>(UserGroup.class);
+//                return container;
+//            }
+
+            @Override
+            protected List<UIAction> createActions() {
+                List<UIAction> actions = newArrayList();
+
+                actions.add(new DefaultAction("Выбрать", "Выбрать выделенную в списке группу и закрыть окно", "icon-check") {
+                    @Override
+                    public void fire(final Object itemId) {
+
+                        selected = extractBean(table.getItem(itemId));
+                        selectPressed = true;
+                        close();
+                    }
+                });
+
+//                actions.addAll(super.createActions());
+
+                return actions;
+            }
+
+        });
+    }
+
+    public UserGroup getSelected() {
+        return selected;
+    }
+
+    public void setSelected(UserGroup selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelectPressed() {
+        return selectPressed;
+    }
+
+    public void setSelectPressed(boolean selectPressed) {
+        this.selectPressed = selectPressed;
+    }
+}

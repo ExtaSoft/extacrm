@@ -1,4 +1,4 @@
-package ru.extas.security;
+package ru.extas.model.security;
 
 /**
  * Целевые объекты системы к которым предоставляется доступ
@@ -48,7 +48,7 @@ public enum SecureTarget {
 	 * <p>getByName.</p>
 	 *
 	 * @param name a {@link java.lang.String} object.
-	 * @return a {@link ru.extas.security.SecureTarget} object.
+	 * @return a {@link SecureTarget} object.
 	 */
 	public static SecureTarget getByName(String name) {
 		for (SecureTarget item : SecureTarget.values())

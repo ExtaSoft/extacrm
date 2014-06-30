@@ -1,4 +1,4 @@
-package ru.extas.security;
+package ru.extas.model.security;
 
 /**
  * Раздел/подраздел системы доступ к которому предоставляется
@@ -100,8 +100,12 @@ public enum ExtaDomain {
 	/**
 	 * Пользователи
 	 */
-	USERS("users"),
-	/**
+	USERS("security/users"),
+    /**
+     * Группы пользователей
+     */
+    USER_GROUPS("security/groups"),
+    /**
 	 * Настройки
 	 */
 	SETTINGS("settings"),
@@ -140,7 +144,7 @@ public enum ExtaDomain {
 	 * <p>getByName.</p>
 	 *
 	 * @param name a {@link java.lang.String} object.
-	 * @return a {@link ru.extas.security.ExtaDomain} object.
+	 * @return a {@link ExtaDomain} object.
 	 */
 	public static ExtaDomain getByName(String name) {
 		for (ExtaDomain item : ExtaDomain.values())

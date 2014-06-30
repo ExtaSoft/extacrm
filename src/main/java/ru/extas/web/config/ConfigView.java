@@ -6,7 +6,7 @@ package ru.extas.web.config;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.server.users.PermissionService;
+import ru.extas.server.security.PermissionService;
 import ru.extas.web.commons.ExtaAbstractView;
 
 import static ru.extas.server.ServiceLocator.lookup;

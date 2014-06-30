@@ -25,9 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import ru.extas.model.users.UserProfile;
-import ru.extas.security.ExtaDomain;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.UserProfile;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
@@ -383,7 +383,7 @@ public class ExtaCrmUI extends UI {
         mainMenu.addChapter("Техника", "Раздел посвященный информации о технике", "icon-cog",
                 MotorView.class, EnumSet.of(ExtaDomain.MOTOR_MODEL, ExtaDomain.MOTOR_BRAND, ExtaDomain.MOTOR_TYPE));
         mainMenu.addChapter("Пользователи", "Управление ползователями и правами доступа", "icon-users-3",
-                UsersView.class, ExtaDomain.USERS);
+                UsersView.class, EnumSet.of(ExtaDomain.USERS, ExtaDomain.USER_GROUPS));
         mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt",
                 ConfigView.class, ExtaDomain.SETTINGS);
 
