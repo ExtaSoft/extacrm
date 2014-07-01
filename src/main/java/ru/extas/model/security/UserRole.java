@@ -18,30 +18,9 @@ public enum UserRole {
     ADMIN("admin"),
 
     /**
-     * Руководитель
-     */
-    MANAGER("manager"),
-
-    /**
      * Рядовой пользователь
      */
-    USER("user"),
-
-    /**
-	 * Дилер
-	 */
-	DEALER("dealer"),
-
-    /**
-     * Дилер реководитель
-     */
-	DEALER_MANAGER("dealer-manager"),
-
-	/**
-	 *  Дистрибьютор
-	 */
-	DISTRIBUTOR("distributor");
-
+    USER("user");
 
     /**
      * Возвращает строковое представление роли

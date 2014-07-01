@@ -20,7 +20,6 @@ public class MotorModel  extends AuditedObject {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String code;
 
     @Column(nullable = false)

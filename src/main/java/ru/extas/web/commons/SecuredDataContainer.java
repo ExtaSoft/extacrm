@@ -7,10 +7,7 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.Person_;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.security.ExtaDomain;
-import ru.extas.model.security.SecureTarget;
-import ru.extas.model.security.UserProfile;
-import ru.extas.model.security.UserRole;
+import ru.extas.model.security.*;
 import ru.extas.server.security.UserManagementService;
 
 import javax.persistence.criteria.*;
@@ -113,8 +110,15 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
 
                     protected Predicate composeWithAreaFilter(CriteriaBuilder cb, Root<TEntityType> objectRoot, UserManagementService userService, Predicate predicate) {
                         UserProfile curUserProfile = userService.getCurrentUser();
-                        Set<String> permitRegions = curUserProfile.getPermitRegions();
-                        Set<String> permitBrands = curUserProfile.getPermitBrands();
+                        Set<String> permitRegions = newHashSet(curUserProfile.getPermitRegions());
+                        Set<String> permitBrands = newHashSet(curUserProfile.getPermitBrands());
+                        Set<UserGroup> groups = curUserProfile.getGroupList();
+                        if(groups != null) {
+                            for(UserGroup group : groups) {
+                                permitBrands.addAll(group.getPermitBrands());
+                                permitRegions.addAll(group.getPermitRegions());
+                            }
+                        }
                         if (!permitRegions.isEmpty()) {
                             Predicate regPredicate = objectRoot.join(SecuredObject_.associateRegions, JoinType.LEFT).in(permitRegions);
                             predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);

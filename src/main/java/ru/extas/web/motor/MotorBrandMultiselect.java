@@ -1,12 +1,10 @@
 package ru.extas.web.motor;
 
 import com.vaadin.data.Property;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
 import org.vaadin.tokenfield.TokenField;
 import ru.extas.server.motor.MotorBrandRepository;
@@ -43,16 +41,14 @@ public class MotorBrandMultiselect extends CustomField<Set> {
 	@Override
 	protected Component initContent() {
 
-        VerticalLayout lo = new VerticalLayout();
-        lo.setSpacing(true);
-        final TokenField tokenField = new TokenField(lo);
+        final TokenField tokenField = new TokenField();
         tokenField.setStyleName(TokenField.STYLE_TOKENFIELD);
         tokenField.setFilteringMode(FilteringMode.CONTAINS); // suggest
         tokenField.setInputPrompt("Введите или выберите бренд...");
         tokenField.setDescription("Введите или выберите бренд...");
         tokenField.setRememberNewTokens(false);
         tokenField.setNewTokensAllowed(false);
-        tokenField.setInputSizeFull();
+        //tokenField.setInputSizeFull();
         //tokenField.setInputWidth(13, Unit.EX);
         //tokenField.setTokenInsertPosition(TokenField.InsertPosition.BEFORE);
         tokenField.addValueChangeListener(new ValueChangeListener() {
@@ -72,7 +68,7 @@ public class MotorBrandMultiselect extends CustomField<Set> {
         tokenField.setContainerDataSource(CollectionContainer.fromBeans(brands));
 
         HorizontalLayout layout = new HorizontalLayout(tokenField);
-        layout.setMargin(new MarginInfo(true, false,false,false));
+        //layout.setMargin(new MarginInfo(true, false,false,false));
         return layout;
 	}
 

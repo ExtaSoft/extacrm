@@ -1,12 +1,10 @@
 package ru.extas.web.reference;
 
 import com.vaadin.data.Property;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
 import org.vaadin.tokenfield.TokenField;
 import ru.extas.server.references.SupplementService;
@@ -43,9 +41,7 @@ public class RegionMultiselect extends CustomField<Set> {
 	@Override
 	protected Component initContent() {
 
-        VerticalLayout lo = new VerticalLayout();
-        lo.setSpacing(true);
-        final TokenField tokenField = new TokenField(lo);
+        final TokenField tokenField = new TokenField();
         tokenField.setStyleName(TokenField.STYLE_TOKENFIELD);
         tokenField.setFilteringMode(FilteringMode.CONTAINS); // suggest
         tokenField.setInputPrompt("Введите или выберите регион...");
@@ -72,8 +68,8 @@ public class RegionMultiselect extends CustomField<Set> {
         tokenField.setContainerDataSource(CollectionContainer.fromBeans(regions));
 
         HorizontalLayout layout = new HorizontalLayout(tokenField);
-        layout.setSizeFull();
-        layout.setMargin(new MarginInfo(true, false,false,false));
+        //layout.setSizeFull();
+        //layout.setMargin(new MarginInfo(true, false,false,false));
         return layout;
 	}
 

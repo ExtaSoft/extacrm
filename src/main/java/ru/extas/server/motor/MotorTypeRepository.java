@@ -16,7 +16,7 @@ import java.util.List;
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public interface MotorTypeRepository  extends JpaRepository<MotorType, String> {
 
-    @Query("SELECT t.name FROM MotorType t")
+    @Query("SELECT t.name FROM MotorType t ORDER BY t.name ASC")
     List<String> loadAllNames();
 
 }

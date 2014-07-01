@@ -40,7 +40,7 @@ public class HomeView extends ExtaAbstractView {
     /** {@inheritDoc} */
     @Override
     protected Component getTitle() {
-        final Component title = new Label("Домашний экран");
+        final Component title = new Label("Рабочий стол");
         title.setSizeUndefined();
         title.addStyleName("h1");
         return title;

@@ -4,6 +4,7 @@ import org.apache.shiro.authz.Permission;
 import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.*;
+import java.util.EnumSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -21,14 +22,14 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  */
 @Entity
 @Table(name = "ACCESS_PERMISSION")
-public class ExtaPermission extends AuditedObject implements Permission {
+public class ExtaPermission extends AuditedObject implements Permission, Cloneable {
 
     @Column(name = "DOMAIN")
     private ExtaDomain domain;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ACCESS_PERMISSION_ACTION")
-    private Set<SecureAction> actions;
+    private Set<SecureAction> actions = newHashSet();
 
     @Column(name = "TARGET")
     private SecureTarget target;
@@ -89,6 +90,17 @@ public class ExtaPermission extends AuditedObject implements Permission {
     }
 
     public ExtaPermission() {
+    }
+
+    @Override
+    public ExtaPermission clone() {
+        ExtaPermission clone = new ExtaPermission();
+
+        clone.setDomain(getDomain());
+        clone.setActions(EnumSet.copyOf(actions));
+        clone.setTarget(getTarget());
+
+        return clone;
     }
 
     /** {@inheritDoc} */

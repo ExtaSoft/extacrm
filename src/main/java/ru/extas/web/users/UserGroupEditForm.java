@@ -10,6 +10,8 @@ import ru.extas.model.security.UserGroup;
 import ru.extas.server.security.UserGroupRegistry;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.motor.MotorBrandMultiselect;
+import ru.extas.web.reference.RegionMultiselect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -27,6 +29,11 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
 
     @PropertyId("description")
     private TextArea descriptionField;
+
+    @PropertyId("permitRegions")
+    private RegionMultiselect regionsField;
+    @PropertyId("permitBrands")
+    private MotorBrandMultiselect brandsField;
 
     @PropertyId("permissions")
     private ExtaPermissionField permissionsField;
@@ -73,6 +80,12 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
         descriptionField.setColumns(30);
         descriptionField.setRows(3);
         form.addComponent(descriptionField);
+
+        brandsField = new MotorBrandMultiselect("Доступные бренды");
+        form.addComponent(brandsField);
+
+        regionsField = new RegionMultiselect("Доступные регионы");
+        form.addComponent(regionsField);
 
         permissionsField = new ExtaPermissionField(obj);
         permissionsField.setCaption("Правила доступа группы");

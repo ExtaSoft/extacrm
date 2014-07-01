@@ -77,6 +77,30 @@ public class UserGroupGrid extends ExtaGrid {
                 editWin.showModal();
             }
         });
+
+        actions.add(new ItemAction("Копировать", "Копировать текущую группу в новую запись", "icon-copycard") {
+            @Override
+            public void fire(final Object itemId) {
+                final UserGroup curObj = GridItem.extractBean(table.getItem(itemId));
+
+                UserGroup copy = curObj.clone();
+                copy.setName("Копия - " + curObj.getName());
+                final UserGroupEditForm editWin = new UserGroupEditForm("Редактирование копируемой группы", new BeanItem<>(copy));
+                editWin.addCloseListener(new Window.CloseListener() {
+
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void windowClose(final Window.CloseEvent e) {
+                        if (editWin.isSaved()) {
+                            refreshContainerItem(itemId);
+                        }
+                    }
+                });
+                editWin.setModified(true);
+                editWin.showModal();
+            }
+        });
         return actions;
     }
 }

@@ -44,7 +44,7 @@ public class ComponentUtil {
      * @param cls       тип перечисления
      * @param <TEnum> a TEnum object.
      */
-    public static <TEnum extends Enum<TEnum>> void fillTokenByEnum(final TokenField component, final Class<TEnum> cls) {
+    public static <TEnum extends Enum<TEnum>> void fillSelectByEnum(final TokenField component, final Class<TEnum> cls) {
         final Converter<String, TEnum> converter = VaadinSession.getCurrent().getConverterFactory()
                 .createConverter(String.class, cls);
         EnumSet<TEnum> enums = EnumSet.allOf(cls);

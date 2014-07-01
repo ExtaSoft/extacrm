@@ -133,8 +133,19 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     }
 
     private Component createPermissionTab(UserProfile obj) {
+        final FormLayout form = new FormLayout();
+
+        brandsField = new MotorBrandMultiselect("Доступные бренды");
+        form.addComponent(brandsField);
+
+        regionsField = new RegionMultiselect("Доступные регионы");
+        form.addComponent(regionsField);
+
         permissionsField = new ExtaPermissionField(obj);
-        return permissionsField;
+        permissionsField.setCaption("Правила доступа пользователя");
+        form.addComponent(permissionsField);
+
+        return form;
     }
 
     private FormLayout getMainTab(UserProfile obj) {
@@ -200,12 +211,6 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         roleField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(roleField, UserRole.class);
         form.addComponent(roleField);
-
-        brandsField = new MotorBrandMultiselect("Доступные бренды");
-        form.addComponent(brandsField);
-
-        regionsField = new RegionMultiselect("Доступные регионы");
-        form.addComponent(regionsField);
 
         blockedField = new CheckBox("Блокировать");
         blockedField.setDescription("Установите, чтобы блокировать вход пользователя в систему.");

@@ -79,7 +79,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
 
         // Может ли пользователь менять ответственного
         UserManagementService userService = lookup(UserManagementService.class);
-        canAssigne = userService.isCurUserHasRole(UserRole.ADMIN) || userService.isCurUserHasRole(UserRole.MANAGER);
+        canAssigne = userService.isCurUserHasRole(UserRole.ADMIN)/* || userService.isCurUserHasRole(UserRole.MANAGER)*/;
 
         initForm(obj);
     }

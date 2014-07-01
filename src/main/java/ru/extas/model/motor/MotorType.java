@@ -22,6 +22,7 @@ public class MotorType  extends AuditedObject {
     private String name;
 
     @ManyToMany(mappedBy = "brandTypes", cascade = CascadeType.REFRESH, targetEntity = MotorBrand.class)
+    @OrderBy("name ASC")
     private Set<MotorBrand> brands = newHashSet();
 
     public String getName() {

@@ -366,7 +366,7 @@ public class ExtaCrmUI extends UI {
 
         // -------------------------------------------------------------
         // Создаем кнопки основного меню
-        mainMenu.addChapter("Начало", "Начальный экран приложения", "icon-home",
+        mainMenu.addChapter("Рабочий стол", "Начальный экран приложения", "icon-home",
                 HomeView.class, ExtaDomain.DASHBOARD);
         mainMenu.addChapter("Задачи", "Мои задачи", "icon-check",
                 TasksView.class, EnumSet.of(ExtaDomain.TASKS_TODAY, ExtaDomain.TASKS_WEEK, ExtaDomain.TASKS_MONTH, ExtaDomain.TASKS_ALL));

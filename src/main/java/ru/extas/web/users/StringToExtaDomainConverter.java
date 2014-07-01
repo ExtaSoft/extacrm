@@ -32,7 +32,7 @@ public class StringToExtaDomainConverter extends String2EnumConverter<ExtaDomain
     @Override
     protected BiMap<ExtaDomain, String> createEnum2StringMap() {
         final BiMap<ExtaDomain, String> map = HashBiMap.create();
-        map.put(ExtaDomain.DASHBOARD, "НАЧАЛО");
+        map.put(ExtaDomain.DASHBOARD, "РАБОЧИЙ СТОЛ");
         map.put(ExtaDomain.TASKS_TODAY, "ЗАДАЧИ/НА СЕГОДНЯ");
         map.put(ExtaDomain.TASKS_WEEK, "ЗАДАЧИ/НА НЕДЕЛЮ");
         map.put(ExtaDomain.TASKS_MONTH, "ЗАДАЧИ/НА МЕСЯЦ");

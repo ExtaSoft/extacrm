@@ -56,10 +56,14 @@ public class UserProfile extends AuditedObject {
     // Пользователь заблокирован
     private boolean blocked;
 
-    @ElementCollection()
+    @ElementCollection
+    @CollectionTable(name = "USER_PROFILE_REGION",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
     private Set<String> permitRegions = newHashSet();
 
     @ElementCollection
+    @CollectionTable(name = "USER_PROFILE_BRAND",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
     private Set<String> permitBrands = newHashSet();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
