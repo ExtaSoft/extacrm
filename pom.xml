@@ -19,7 +19,7 @@
         <joda-time.version>2.3</joda-time.version>
         <gson.version>2.2.4</gson.version>
 
-        <vaadin.version>7.2.3</vaadin.version>
+        <vaadin.version>7.2.4</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
         <vaadin.popupbutton.version>2.3.0</vaadin.popupbutton.version>

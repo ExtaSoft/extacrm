@@ -13,8 +13,10 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.Person.Sex;
+import ru.extas.model.contacts.PersonFileContainer;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.DocFilesEditor;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.LocalDateField;
@@ -75,6 +77,9 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     @PropertyId("passRegAdress")
     private TextArea passRegAdressField;
 
+    @PropertyId("files")
+    private DocFilesEditor docFilesEditor;
+
 
     /**
      * <p>Constructor for PersonEditForm.</p>
@@ -134,6 +139,9 @@ public class PersonEditForm extends AbstractEditForm<Person> {
         // Форма просмотра истории продаж
         final FormLayout salesForm = createSalesForm();
         tabsheet.addTab(salesForm).setCaption("История продаж");
+
+        final Component docsForm = createDocsForm();
+        tabsheet.addTab(docsForm).setCaption("Документы");
 
         return tabsheet;
     }
@@ -264,5 +272,11 @@ public class PersonEditForm extends AbstractEditForm<Person> {
         streetBldField.setNullRepresentation("");
         personForm.addComponent(streetBldField);
         return personForm;
+    }
+
+    private Component createDocsForm() {
+        docFilesEditor = new DocFilesEditor(PersonFileContainer.class);
+
+        return docFilesEditor;
     }
 }

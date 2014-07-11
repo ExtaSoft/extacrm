@@ -12,8 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.LegalEntityFile;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.DocFilesEditor;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
@@ -68,6 +70,8 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
     private LegalProductsField productsField;
     @PropertyId("motorBrands")
     private BrandsField brandsField;
+    @PropertyId("files")
+    private DocFilesEditor docFilesEditor;
 
     private LegalEntity legalEntity;
 
@@ -148,6 +152,9 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
         // Вкладка - "Бренды"
         final FormLayout salePointsForm = createBrendsForm();
         tabsheet.addTab(salePointsForm).setCaption("Бренды");
+
+        final Component docsForm = createDocsForm();
+        tabsheet.addTab(docsForm).setCaption("Документы");
 
         return tabsheet;
     }
@@ -255,5 +262,11 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
         formLayout.addComponent(directorField);
 
         return formLayout;
+    }
+
+    private Component createDocsForm() {
+        docFilesEditor = new DocFilesEditor(LegalEntityFile.class);
+
+        return docFilesEditor;
     }
 }

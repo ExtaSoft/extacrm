@@ -23,12 +23,15 @@
         <class>ru.extas.model.contacts.Contact</class>
         <class>ru.extas.model.contacts.SalePoint</class>
         <class>ru.extas.model.contacts.LegalEntity</class>
+        <class>ru.extas.model.contacts.LegalEntityFile</class>
         <class>ru.extas.model.contacts.ContactCode</class>
         <class>ru.extas.model.contacts.PayAccount</class>
         <class>ru.extas.model.contacts.Person</class>
+        <class>ru.extas.model.contacts.PersonFileContainer</class>
         <class>ru.extas.model.insurance.A7Form</class>
         <class>ru.extas.model.insurance.FormTransfer</class>
         <class>ru.extas.model.insurance.Insurance</class>
+        <class>ru.extas.model.insurance.InsuranceFileContainer</class>
         <class>ru.extas.model.insurance.Policy</class>
         <class>ru.extas.model.lead.Lead</class>
         <class>ru.extas.model.security.ExtaPermission</class>

@@ -12,12 +12,8 @@ import javax.persistence.*;
  * @since 0.4.2
  */
 @Entity
-@Table(name = "FILE_CONTAINER",
-        indexes = {
-                @Index(columnList = FileContainer.OWNER_ID_COLUMN),
-                @Index(columnList = "NAME")
-        })
-public class FileContainer extends AuditedObject {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class FileContainer extends AuditedObject {
 
     /** Constant <code>OWNER_ID_COLUMN="OWNER_ID"</code> */
     public static final String OWNER_ID_COLUMN = "OWNER_ID";

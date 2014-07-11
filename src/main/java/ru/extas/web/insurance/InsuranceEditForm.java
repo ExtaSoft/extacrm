@@ -11,6 +11,7 @@ import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.Insurance;
+import ru.extas.model.insurance.InsuranceFileContainer;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.server.insurance.InsuranceRepository;
@@ -120,7 +121,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         VerticalLayout layout = new VerticalLayout();
         layout.setSpacing(true);
 
-        docFilesEditor = new DocFilesEditor();
+        docFilesEditor = new DocFilesEditor(InsuranceFileContainer.class);
         layout.addComponent(docFilesEditor);
 
         docCompleteField = new CheckBox("Полный комплект документов");
