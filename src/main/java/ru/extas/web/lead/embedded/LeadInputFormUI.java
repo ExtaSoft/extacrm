@@ -1,5 +1,8 @@
 package ru.extas.web.lead.embedded;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.Property;
@@ -9,6 +12,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -20,6 +24,9 @@ import ru.extas.model.lead.Lead;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.lead.LeadRepository;
+import ru.extas.server.motor.MotorBrandRepository;
+import ru.extas.server.motor.MotorTypeRepository;
+import ru.extas.server.references.SupplementService;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
@@ -29,8 +36,11 @@ import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
 
-import java.util.Map;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
+import java.util.*;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -91,6 +101,7 @@ public class LeadInputFormUI extends UI {
     private TextArea commentField;
 
     private FieldGroup fieldGroup;
+    private Company company;
 
     /** {@inheritDoc} */
     @Override
@@ -102,48 +113,8 @@ public class LeadInputFormUI extends UI {
         lead.setStatus(Lead.Status.NEW);
 
         // Прочитать параметры адресной строки
-        Company company = null;
         Map<String, String[]> params = request.getParameterMap();
-        String[] companyPrm = params.get("company");
-        if (companyPrm != null && companyPrm.length > 0) {
-            String companyId = companyPrm[0];
-            if (!isNullOrEmpty(companyId)) {
-                CompanyRepository companyRepository = lookup(CompanyRepository.class);
-                company = companyRepository.findOne(companyId);
-                if (company == null) {
-                    Notification.show("Неверные параметры формы!",
-                            "Неверно задан идентификатор компании в параметре 'company'.",
-                            Notification.Type.ERROR_MESSAGE);
-                    return;
-                }
-            } else {
-                Notification.show("Неверные параметры формы!",
-                        "Неверно задан идентификатор компании в параметре 'company'.",
-                        Notification.Type.ERROR_MESSAGE);
-                return;
-            }
-        } else {
-            String[] salePointPrm = params.get("salepoint");
-            if (salePointPrm != null && salePointPrm.length > 0) {
-                String salePointId = salePointPrm[0];
-                if (!isNullOrEmpty(salePointId)) {
-                    SalePointRepository salePointRepository = lookup(SalePointRepository.class);
-                    SalePoint salePoint = salePointRepository.findOne(salePointId);
-                    if (salePoint == null) {
-                        Notification.show("Неверные параметры формы!",
-                                "Неверно задан идентификатор торговой точки в параметре 'salepoint'.",
-                                Notification.Type.ERROR_MESSAGE);
-                        return;
-                    } else
-                        lead.setVendor(salePoint);
-                } else {
-                    Notification.show("Неверные параметры формы!",
-                            "Неверно задан идентификатор торговой точки в параметре 'salepoint'.",
-                            Notification.Type.ERROR_MESSAGE);
-                    return;
-                }
-            }
-        }
+        if (initLead(lead, params)) return;
 
         FormLayout form = new FormLayout();
 
@@ -278,6 +249,154 @@ public class LeadInputFormUI extends UI {
 
         setContent(panel);
 
+    }
+
+    private boolean initLead(Lead lead, Map<String, String[]> params) {
+        // Компания
+        String[] companyPrm = params.get("company");
+        if (companyPrm != null && companyPrm.length > 0) {
+            String companyId = companyPrm[0];
+            if (!isNullOrEmpty(companyId)) {
+                CompanyRepository companyRepository = lookup(CompanyRepository.class);
+                company = companyRepository.findOne(companyId);
+                if (company == null) {
+                    Notification.show("Неверные параметры формы!",
+                            "Неверно задан идентификатор компании в параметре 'company'.",
+                            Notification.Type.ERROR_MESSAGE);
+                    return true;
+                }
+            } else {
+                Notification.show("Неверные параметры формы!",
+                        "Неверно задан идентификатор компании в параметре 'company'.",
+                        Notification.Type.ERROR_MESSAGE);
+                return true;
+            }
+        } else { // или торговая точка
+            String[] salePointPrm = params.get("salepoint");
+            if (salePointPrm != null && salePointPrm.length > 0) {
+                String salePointId = salePointPrm[0];
+                if (!isNullOrEmpty(salePointId)) {
+                    SalePointRepository salePointRepository = lookup(SalePointRepository.class);
+                    SalePoint salePoint = salePointRepository.findOne(salePointId);
+                    if (salePoint == null) {
+                        Notification.show("Неверные параметры формы!",
+                                "Неверно задан идентификатор торговой точки в параметре 'salepoint'.",
+                                Notification.Type.ERROR_MESSAGE);
+                        return true;
+                    } else
+                        lead.setVendor(salePoint);
+                } else {
+                    Notification.show("Неверные параметры формы!",
+                            "Неверно задан идентификатор торговой точки в параметре 'salepoint'.",
+                            Notification.Type.ERROR_MESSAGE);
+                    return true;
+                }
+            }
+        }
+
+        // Имя клиента
+        String contactName = getParamValue("contactName", params);
+        if (!isNullOrEmpty(contactName))
+            lead.setContactName(contactName);
+        // Телефон клиента
+        String contactPhone = getParamValue("contactPhone", params);
+        if (!isNullOrEmpty(contactPhone))
+            lead.setContactPhone(contactPhone);
+        // Эл. почта
+        String contactEmail = getParamValue("contactEmail", params);
+        if (!isNullOrEmpty(contactEmail))
+            lead.setContactEmail(contactEmail);
+        // Регион проживания клиента
+        String contactRegion = getParamValue("contactRegion", params);
+        if (!isNullOrEmpty(contactRegion)) {
+            contactRegion = contactRegion.trim();
+            SupplementService service = lookup(SupplementService.class);
+            Collection<String> regions = service.loadRegions();
+            final String finalContactRegion = contactRegion;
+            Optional<String> trueRegion = Iterables.tryFind(regions, new Predicate<String>() {
+                @Override
+                public boolean apply(String input) {
+                    return StringUtils.containsIgnoreCase(input, finalContactRegion);
+                }
+            });
+            lead.setContactRegion(trueRegion.orNull());
+        }
+        // Тип техники
+        String motorType = getParamValue("motorType", params);
+        if (!isNullOrEmpty(motorType)) {
+            motorType = motorType.trim();
+            MotorTypeRepository repository = lookup(MotorTypeRepository.class);
+            List<String> types = repository.loadAllNames();
+            final String finalMotorType = motorType;
+            Optional<String> trueType = Iterables.tryFind(types, new Predicate<String>() {
+                @Override
+                public boolean apply(String input) {
+                    return StringUtils.containsIgnoreCase(input, finalMotorType);
+                }
+            });
+            lead.setMotorType(trueType.orNull());
+        }
+        // Марка техники
+        String motorBrand = getParamValue("motorBrand", params);
+        if (!isNullOrEmpty(motorBrand)) {
+            motorBrand = motorBrand.trim();
+            MotorBrandRepository repository = lookup(MotorBrandRepository.class);
+            List<String> brands = repository.loadAllNames();
+            final String finalMotorBrand = motorBrand;
+            Optional<String> trueMotorBrand = Iterables.tryFind(brands, new Predicate<String>() {
+                @Override
+                public boolean apply(String input) {
+                    return StringUtils.containsIgnoreCase(input, finalMotorBrand);
+                }
+            });
+            lead.setMotorBrand(trueMotorBrand.orNull());
+        }
+        // Модель техники
+        String motorModel = getParamValue("motorModel", params);
+        if (!isNullOrEmpty(motorModel))
+            lead.setMotorModel(motorModel);
+        // Стоимость техники
+        String motorPrice = getParamValue("motorPrice", params);
+        if (!isNullOrEmpty(motorPrice)) {
+            DecimalFormat format = (DecimalFormat) NumberFormat.getNumberInstance(lookup(Locale.class));
+            format.setParseBigDecimal(true);
+            BigDecimal price = (BigDecimal) format.parse(motorPrice, new ParsePosition(0));
+            if (price == null) {
+                Notification.show("Неверные параметры формы!",
+                        "Неверно задана сумма в параметре 'motorPrice'.",
+                        Notification.Type.ERROR_MESSAGE);
+                return true;
+            }
+            lead.setMotorPrice(price);
+        }
+        // Регион покупки техники
+        String region = getParamValue("region", params);
+        if (!isNullOrEmpty(region)) {
+            region = region.trim();
+            SupplementService service = lookup(SupplementService.class);
+            Collection<String> regions = service.loadRegions();
+            final String finalregion = region;
+            Optional<String> trueRegion = Iterables.tryFind(regions, new Predicate<String>() {
+                @Override
+                public boolean apply(String input) {
+                    return StringUtils.containsIgnoreCase(input, finalregion);
+                }
+            });
+            lead.setRegion(trueRegion.orNull());
+        }
+        // Комментарий
+        String comment = getParamValue("comment", params);
+        if (!isNullOrEmpty(comment))
+            lead.setComment(comment);
+
+        return false;
+    }
+
+    private String getParamValue(String prmName, Map<String, String[]> params) {
+        String[] contactNamePrm = params.get(prmName);
+        if (contactNamePrm != null && contactNamePrm.length > 0)
+            return contactNamePrm[0];
+        return null;
     }
 
     private void saveObject(Lead lead) {
