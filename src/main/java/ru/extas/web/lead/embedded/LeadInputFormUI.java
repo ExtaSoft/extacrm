@@ -10,6 +10,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import org.apache.commons.lang3.StringUtils;
@@ -114,6 +115,10 @@ public class LeadInputFormUI extends UI {
 
         // Прочитать параметры адресной строки
         Map<String, String[]> params = request.getParameterMap();
+        // Пользовательский стиль
+        String customCss = getParamValue("custom_css", params);
+        if (!isNullOrEmpty(customCss))
+            getPage().getStyles().add(new ExternalResource(customCss));
         if (initLead(lead, params)) return;
 
         FormLayout form = new FormLayout();
