@@ -52,7 +52,7 @@ public enum SecureAction {
 	 * <p>getByName.</p>
 	 *
 	 * @param name a {@link java.lang.String} object.
-	 * @return a {@link SecureAction} object.
+	 * @return a {@link ru.extas.model.security.SecureAction} object.
 	 */
 	public static SecureAction getByName(String name) {
 		for (SecureAction item : SecureAction.values())

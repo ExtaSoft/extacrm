@@ -46,6 +46,11 @@ public class MotorBrandSelect extends ComboBox {
         fillItems(null);
     }
 
+    /**
+     * <p>fillItems.</p>
+     *
+     * @param type a {@link java.lang.String} object.
+     */
     protected void fillItems(String type) {
         MotorBrandRepository brandRepository = lookup(MotorBrandRepository.class);
         List<String> brands;
@@ -68,6 +73,11 @@ public class MotorBrandSelect extends ComboBox {
 
     }
 
+    /**
+     * <p>linkToType.</p>
+     *
+     * @param typeField a {@link ru.extas.web.motor.MotorTypeSelect} object.
+     */
     public void linkToType(MotorTypeSelect typeField) {
         typeField.addValueChangeListener(new ValueChangeListener() {
             @Override

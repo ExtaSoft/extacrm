@@ -36,6 +36,8 @@ public class DocFilesEditor<TFileContainer extends FileContainer> extends Custom
 
     /**
      * <p>Constructor for DocFilesEditor.</p>
+     *
+     * @param containerClass a {@link java.lang.Class} object.
      */
     public DocFilesEditor(Class<TFileContainer> containerClass) {
         this.containerClass = containerClass;

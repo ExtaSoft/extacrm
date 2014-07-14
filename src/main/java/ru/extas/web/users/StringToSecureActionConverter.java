@@ -26,9 +26,7 @@ public class StringToSecureActionConverter extends String2EnumConverter<SecureAc
         super(SecureAction.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected BiMap<SecureAction, String> createEnum2StringMap() {
         final BiMap<SecureAction, String> map = HashBiMap.create();

@@ -14,6 +14,10 @@ import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Created by Valery on 04.06.2014.
+ *
+ * @author Valery_2
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class MotorModelEditForm extends AbstractEditForm<MotorModel> {
 
@@ -26,15 +30,23 @@ public class MotorModelEditForm extends AbstractEditForm<MotorModel> {
     @PropertyId("code")
     private EditField codeField;
 
+    /**
+     * <p>Constructor for MotorModelEditForm.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param newObj a {@link com.vaadin.data.util.BeanItem} object.
+     */
     public MotorModelEditForm(String caption, BeanItem<MotorModel> newObj) {
         super(caption, newObj);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void initObject(MotorModel obj) {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void saveObject(MotorModel obj) {
         MotorModel loc = lookup(MotorModelRepository.class).save(obj);
@@ -42,11 +54,13 @@ public class MotorModelEditForm extends AbstractEditForm<MotorModel> {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void checkBeforeSave(MotorModel obj) {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(MotorModel obj) {
         final FormLayout form = new FormLayout();

@@ -51,9 +51,7 @@ public class UserRealm extends AuthorizingRealm {
         this.setCredentialsMatcher(credentialsMatcher);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
@@ -100,9 +98,7 @@ public class UserRealm extends AuthorizingRealm {
         authorizationInfo.addObjectPermissions(permissions);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
 

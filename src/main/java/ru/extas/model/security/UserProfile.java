@@ -136,7 +136,7 @@ public class UserProfile extends AuditedObject {
     /**
      * <p>Getter for the field <code>role</code>.</p>
      *
-     * @return a {@link UserRole} object.
+     * @return a {@link ru.extas.model.security.UserRole} object.
      */
     public UserRole getRole() {
         return role;
@@ -250,10 +250,20 @@ public class UserProfile extends AuditedObject {
         this.permitBrands = permitBrands;
     }
 
+    /**
+     * <p>Getter for the field <code>permissions</code>.</p>
+     *
+     * @return a {@link java.util.Set} object.
+     */
     public Set<ExtaPermission> getPermissions() {
         return permissions;
     }
 
+    /**
+     * <p>Setter for the field <code>permissions</code>.</p>
+     *
+     * @param permissions a {@link java.util.Set} object.
+     */
     public void setPermissions(Set<ExtaPermission> permissions) {
         this.permissions = permissions;
     }

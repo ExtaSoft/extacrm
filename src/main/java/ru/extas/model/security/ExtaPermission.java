@@ -89,9 +89,13 @@ public class ExtaPermission extends AuditedObject implements Permission, Cloneab
         this(domain, (SecureAction) null, target);
     }
 
+    /**
+     * <p>Constructor for ExtaPermission.</p>
+     */
     public ExtaPermission() {
     }
 
+    /** {@inheritDoc} */
     @Override
     public ExtaPermission clone() {
         ExtaPermission clone = new ExtaPermission();
@@ -129,7 +133,7 @@ public class ExtaPermission extends AuditedObject implements Permission, Cloneab
     /**
      * <p>Getter for the field <code>domain</code>.</p>
      *
-     * @return a {@link ExtaDomain} object.
+     * @return a {@link ru.extas.model.security.ExtaDomain} object.
      */
     public ExtaDomain getDomain() {
         return domain;
@@ -147,36 +151,71 @@ public class ExtaPermission extends AuditedObject implements Permission, Cloneab
     /**
      * <p>Getter for the field <code>target</code>.</p>
      *
-     * @return a {@link SecureTarget} object.
+     * @return a {@link ru.extas.model.security.SecureTarget} object.
      */
     public SecureTarget getTarget() {
         return target;
     }
 
+    /**
+     * <p>Setter for the field <code>domain</code>.</p>
+     *
+     * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
+     */
     public void setDomain(ExtaDomain domain) {
         this.domain = domain;
     }
 
+    /**
+     * <p>Setter for the field <code>actions</code>.</p>
+     *
+     * @param actions a {@link java.util.Set} object.
+     */
     public void setActions(Set<SecureAction> actions) {
         this.actions = actions;
     }
 
+    /**
+     * <p>Setter for the field <code>target</code>.</p>
+     *
+     * @param target a {@link ru.extas.model.security.SecureTarget} object.
+     */
     public void setTarget(SecureTarget target) {
         this.target = target;
     }
 
+    /**
+     * <p>Getter for the field <code>user</code>.</p>
+     *
+     * @return a {@link ru.extas.model.security.UserProfile} object.
+     */
     public UserProfile getUser() {
         return user;
     }
 
+    /**
+     * <p>Setter for the field <code>user</code>.</p>
+     *
+     * @param user a {@link ru.extas.model.security.UserProfile} object.
+     */
     public void setUser(UserProfile user) {
         this.user = user;
     }
 
+    /**
+     * <p>Getter for the field <code>group</code>.</p>
+     *
+     * @return a {@link ru.extas.model.security.UserGroup} object.
+     */
     public UserGroup getGroup() {
         return group;
     }
 
+    /**
+     * <p>Setter for the field <code>group</code>.</p>
+     *
+     * @param group a {@link ru.extas.model.security.UserGroup} object.
+     */
     public void setGroup(UserGroup group) {
         this.group = group;
     }

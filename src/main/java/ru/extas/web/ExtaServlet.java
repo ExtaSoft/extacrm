@@ -5,12 +5,17 @@ import com.vaadin.server.*;
 import javax.servlet.ServletException;
 
 /**
+ * <p>ExtaServlet class.</p>
+ *
  * @author Valery Orlov
  *         Date: 14.07.2014
  *         Time: 10:47
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class ExtaServlet extends VaadinServlet {
 
+    /** {@inheritDoc} */
     @Override
     protected void servletInitialized() throws ServletException {
         super.servletInitialized();

@@ -144,7 +144,7 @@ public enum ExtaDomain {
 	 * <p>getByName.</p>
 	 *
 	 * @param name a {@link java.lang.String} object.
-	 * @return a {@link ExtaDomain} object.
+	 * @return a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
 	public static ExtaDomain getByName(String name) {
 		for (ExtaDomain item : ExtaDomain.values())

@@ -48,7 +48,7 @@ public enum SecureTarget {
 	 * <p>getByName.</p>
 	 *
 	 * @param name a {@link java.lang.String} object.
-	 * @return a {@link SecureTarget} object.
+	 * @return a {@link ru.extas.model.security.SecureTarget} object.
 	 */
 	public static SecureTarget getByName(String name) {
 		for (SecureTarget item : SecureTarget.values())

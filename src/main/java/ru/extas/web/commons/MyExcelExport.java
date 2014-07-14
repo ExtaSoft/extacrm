@@ -16,16 +16,26 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * <p>MyExcelExport class.</p>
+ *
  * @author Valery Orlov
  *         Date: 12.05.2014
  *         Time: 16:22
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class MyExcelExport extends ExcelExport {
 
+    /**
+     * <p>Constructor for MyExcelExport.</p>
+     *
+     * @param tableHolder a {@link com.vaadin.addon.tableexport.CustomTableHolder} object.
+     */
     public MyExcelExport(CustomTableHolder tableHolder) {
         super(tableHolder);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected CellStyle getCellStyle(final Object rootItemId, final int row, final int col, final boolean totalsRow) {
         final Object propId = getPropIds().get(col);
@@ -82,6 +92,7 @@ public class MyExcelExport extends ExcelExport {
         return dataFormatCellStylesMap.get(doubleDataFormat);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void addDataRow(final Sheet sheetToAddTo, final Object rootItemId, final int row) {
         final Row sheetRow = sheetToAddTo.createRow(row);

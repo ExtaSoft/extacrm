@@ -166,10 +166,20 @@ public class LegalEntity extends Contact{
         this.company = company;
     }
 
+    /**
+     * <p>Getter for the field <code>files</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<LegalEntityFile> getFiles() {
         return files;
     }
 
+    /**
+     * <p>Setter for the field <code>files</code>.</p>
+     *
+     * @param files a {@link java.util.List} object.
+     */
     public void setFiles(List<LegalEntityFile> files) {
         this.files = files;
     }

@@ -15,6 +15,8 @@ import static com.google.common.collect.Sets.newHashSet;
  * Реализует редактирование списка тип техники
  *
  * @author Valery Orlov
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class MotorTypeObjMultiselect extends CustomField<Set> {
 
@@ -22,7 +24,7 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
     /**
      * <p>Constructor for MotorBrandMultiselect.</p>
      *
-     * @param caption a {@link String} object.
+     * @param caption a {@link java.lang.String} object.
      */
     public MotorTypeObjMultiselect(String caption) {
         setBuffered(true);

@@ -16,13 +16,17 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  *         Date: 20.06.2014
  *         Time: 10:48
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class UserGroupGrid extends ExtaGrid {
+    /** {@inheritDoc} */
     @Override
     protected GridDataDecl createDataDecl() {
         return new UserGroupDataDecl();
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Container createContainer() {
         // Запрос данных
@@ -31,6 +35,7 @@ public class UserGroupGrid extends ExtaGrid {
         return container;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
