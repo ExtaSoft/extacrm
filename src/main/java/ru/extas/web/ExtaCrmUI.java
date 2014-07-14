@@ -25,14 +25,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import ru.extas.model.users.UserProfile;
-import ru.extas.security.ExtaDomain;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.UserProfile;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
 import ru.extas.web.insurance.InsuranceView;
 import ru.extas.web.lead.LeadsView;
+import ru.extas.web.motor.MotorView;
 import ru.extas.web.product.ProductView;
 import ru.extas.web.sale.SalesView;
 import ru.extas.web.tasks.TasksView;
@@ -365,7 +366,7 @@ public class ExtaCrmUI extends UI {
 
         // -------------------------------------------------------------
         // Создаем кнопки основного меню
-        mainMenu.addChapter("Начало", "Начальный экран приложения", "icon-home",
+        mainMenu.addChapter("Рабочий стол", "Начальный экран приложения", "icon-home",
                 HomeView.class, ExtaDomain.DASHBOARD);
         mainMenu.addChapter("Задачи", "Мои задачи", "icon-check",
                 TasksView.class, EnumSet.of(ExtaDomain.TASKS_TODAY, ExtaDomain.TASKS_WEEK, ExtaDomain.TASKS_MONTH, ExtaDomain.TASKS_ALL));
@@ -379,8 +380,10 @@ public class ExtaCrmUI extends UI {
                 InsuranceView.class, EnumSet.of(ExtaDomain.INSURANCE_PROP, ExtaDomain.INSURANCE_BSO, ExtaDomain.INSURANCE_A_7, ExtaDomain.INSURANCE_TRANSFER));
         mainMenu.addChapter("Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", "icon-basket",
                 ProductView.class, EnumSet.of(ExtaDomain.PROD_CREDIT, ExtaDomain.PROD_INSURANCE, ExtaDomain.PROD_INSTALL));
+        mainMenu.addChapter("Техника", "Раздел посвященный информации о технике", "icon-cog",
+                MotorView.class, EnumSet.of(ExtaDomain.MOTOR_MODEL, ExtaDomain.MOTOR_BRAND, ExtaDomain.MOTOR_TYPE));
         mainMenu.addChapter("Пользователи", "Управление ползователями и правами доступа", "icon-users-3",
-                UsersView.class, ExtaDomain.USERS);
+                UsersView.class, EnumSet.of(ExtaDomain.USERS, ExtaDomain.USER_GROUPS));
         mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt",
                 ConfigView.class, ExtaDomain.SETTINGS);
 

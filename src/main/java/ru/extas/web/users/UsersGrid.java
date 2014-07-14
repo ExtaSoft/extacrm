@@ -9,7 +9,7 @@ import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.users.UserProfile;
+import ru.extas.model.security.UserProfile;
 import ru.extas.web.commons.*;
 
 import java.util.List;

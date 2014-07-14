@@ -10,8 +10,8 @@ import org.activiti.engine.impl.persistence.entity.UserEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.users.UserProfile;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.model.security.UserProfile;
+import ru.extas.server.security.UserManagementService;
 
 import java.util.List;
 import java.util.Map;
@@ -65,7 +65,7 @@ public class ExtaUserEntityManager extends UserEntityManager {
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(UserEntity updatedUser) {
+    public void updateUser(User updatedUser) {
         throw new UnsupportedOperationException();
     }
 

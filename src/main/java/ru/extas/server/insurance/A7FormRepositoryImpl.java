@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Contact;
 import ru.extas.model.insurance.A7Form;
 import ru.extas.model.insurance.A7Form.Status;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 
 import javax.inject.Inject;
 import java.util.List;

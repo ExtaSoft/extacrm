@@ -8,7 +8,7 @@ import com.vaadin.ui.Window;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import ru.extas.model.sale.Sale;
-import ru.extas.security.ExtaDomain;
+import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 
@@ -34,7 +34,7 @@ public class SalesGrid extends ExtaGrid {
 	/**
 	 * <p>Constructor for SalesGrid.</p>
 	 *
-	 * @param domain a {@link ru.extas.security.ExtaDomain} object.
+	 * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
 	public SalesGrid(ExtaDomain domain) {
 		super(false);

@@ -1,7 +1,7 @@
 package ru.extas.model.common;
 
 import org.springframework.data.domain.AuditorAware;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 
 import javax.inject.Inject;
 

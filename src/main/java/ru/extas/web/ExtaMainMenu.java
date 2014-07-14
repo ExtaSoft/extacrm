@@ -14,8 +14,8 @@ import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import ru.extas.security.ExtaDomain;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.model.security.ExtaDomain;
+import ru.extas.server.security.UserManagementService;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -66,7 +66,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 	 * @param desc a {@link java.lang.String} object.
 	 * @param btnStyle a {@link java.lang.String} object.
 	 * @param viewCls a {@link java.lang.Class} object.
-	 * @param domain a {@link ru.extas.security.ExtaDomain} object.
+	 * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
 	public void addChapter(String name, // Имя раздела
 	                       String desc, // Описание раздела

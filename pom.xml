@@ -7,7 +7,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>0.4.6</version>
+    <version>0.5.0</version>
 
     <properties>
         <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
@@ -15,27 +15,33 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <shiro.version>1.2.3</shiro.version>
-        <slf4j.version>1.7.6</slf4j.version>
+        <slf4j.version>1.7.7</slf4j.version>
         <joda-time.version>2.3</joda-time.version>
         <gson.version>2.2.4</gson.version>
 
-        <vaadin.version>7.1.13</vaadin.version>
+        <vaadin.version>7.2.4</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
         <vaadin.popupbutton.version>2.3.0</vaadin.popupbutton.version>
-        <vaadin.filteringtable.version>0.9.8.v7</vaadin.filteringtable.version>
+        <vaadin.filteringtable.version>0.9.9.v7</vaadin.filteringtable.version>
+        <vaadin-tokenfield.version>7.0.1</vaadin-tokenfield.version>
+        <vaadin-multifileupload.version>1.8</vaadin-multifileupload.version>
+        <vaadin-tableexport.version>1.5.1.3</vaadin-tableexport.version>
 
         <servlet-api.version>2.5</servlet-api.version>
-        <activiti-version>5.14</activiti-version>
+        <activiti-version>5.15.1</activiti-version>
 
         <junit.version>4.11</junit.version>
         <mockito.version>1.9.5</mockito.version>
 
-        <spring.version>4.0.3.RELEASE</spring.version>
-        <spring-data.version>1.5.1.RELEASE</spring-data.version>
+        <spring.version>4.0.4.RELEASE</spring.version>
+        <spring-data.version>1.5.2.RELEASE</spring-data.version>
         <eclipselink.version>2.5.1-RC3</eclipselink.version>
-        <jasperreports.version>5.5.1</jasperreports.version>
-        <groovy.version>2.2.1</groovy.version>
+        <jasperreports.version>5.6.0</jasperreports.version>
+        <groovy.version>2.3.0</groovy.version>
+        <guava.version>17.0</guava.version>
+        <mysql.connector.version>5.1.26</mysql.connector.version>
+        <commons-lang3.version>3.3.2</commons-lang3.version>
     </properties>
 
     <profiles>
@@ -67,7 +73,7 @@
 
                 <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
                 <jpa.logging.level>WARNING</jpa.logging.level>
-                <jpa.ddl-generation>none</jpa.ddl-generation>
+                <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
                 <jpa.generation.output-mode>database</jpa.generation.output-mode>
             </properties>
         </profile>
@@ -216,13 +222,13 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>16.0.1</version>
+            <version>${guava.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.googlecode.flyway</groupId>
+            <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>2.3</version>
+            <version>3.0</version>
         </dependency>
 
         <dependency>
@@ -295,17 +301,17 @@
         <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>tokenfield</artifactId>
-            <version>7.0.1</version>
+            <version>${vaadin-tokenfield.version}</version>
         </dependency>
         <dependency>
             <groupId>com.wcs.wcslib</groupId>
             <artifactId>wcslib-vaadin-widget-multifileupload</artifactId>
-            <version>1.7</version>
+            <version>${vaadin-multifileupload.version}</version>
         </dependency>
         <dependency>
             <groupId>groupId</groupId>
             <artifactId>tableexport-for-vaadin</artifactId>
-            <version>1.5.1.3</version>
+            <version>${vaadin-tableexport.version}</version>
         </dependency>
 
         <dependency>
@@ -329,7 +335,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.26</version>
+            <version>${mysql.connector.version}</version>
         </dependency>
 
         <dependency>
@@ -360,14 +366,9 @@
         </dependency>
 
         <dependency>
-            <groupId>net.sf.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>2.3</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.1</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
@@ -498,14 +499,6 @@
                     <context>ROOT</context>
                     <comment>${project.name} ${project.version} built at ${maven.build.timestamp}</comment>
                     <api_hoster>app.jelastic.regruhosting.ru</api_hoster>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.googlecode.flyway</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
                 </configuration>
             </plugin>
 
@@ -647,82 +640,6 @@
             </plugin>
 
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>com.vaadin</groupId>
-                                        <artifactId>
-                                            vaadin-maven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [7.1.7,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>compile-theme</goal>
-                                            <goal>resources</goal>
-                                            <goal>
-                                                update-widgetset
-                                            </goal>
-                                            <goal>update-theme</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            au.com.alderaan
-                                        </groupId>
-                                        <artifactId>
-                                            eclipselink-staticweave-maven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [1.0.4,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>weave</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.apache.maven.plugins
-                                        </groupId>
-                                        <artifactId>
-                                            maven-antrun-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [1.7,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>run</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 
 </project>

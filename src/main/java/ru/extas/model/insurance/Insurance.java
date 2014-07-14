@@ -115,7 +115,7 @@ public class Insurance extends SecuredObject {
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
-    private List<FileContainer> files = newArrayList();
+    private List<InsuranceFileContainer> files = newArrayList();
 
     @Column(name = "IS_DOC_COMPLETE")
     private boolean docComplete;
@@ -493,7 +493,7 @@ public class Insurance extends SecuredObject {
      *
      * @return a {@link java.util.List} object.
      */
-    public List<FileContainer> getFiles() {
+    public List<InsuranceFileContainer> getFiles() {
         return files;
     }
 
@@ -502,7 +502,7 @@ public class Insurance extends SecuredObject {
      *
      * @param files a {@link java.util.List} object.
      */
-    public void setFiles(List<FileContainer> files) {
+    public void setFiles(List<InsuranceFileContainer> files) {
         this.files = files;
     }
 

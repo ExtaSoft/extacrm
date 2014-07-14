@@ -14,22 +14,29 @@
         <class>ru.extas.model.common.DateTimeConverter</class>
         <class>ru.extas.model.common.LocalDateConverter</class>
         <class>ru.extas.model.common.UserRoleConverter</class>
+        <class>ru.extas.model.common.SecureTargetConverter</class>
+        <class>ru.extas.model.common.SecureActionConverter</class>
+        <class>ru.extas.model.common.ExtaDomainConverter</class>
         <class>ru.extas.model.common.FileContainer</class>
         <class>ru.extas.model.contacts.AddressInfo</class>
         <class>ru.extas.model.contacts.Company</class>
         <class>ru.extas.model.contacts.Contact</class>
         <class>ru.extas.model.contacts.SalePoint</class>
         <class>ru.extas.model.contacts.LegalEntity</class>
+        <class>ru.extas.model.contacts.LegalEntityFile</class>
         <class>ru.extas.model.contacts.ContactCode</class>
         <class>ru.extas.model.contacts.PayAccount</class>
         <class>ru.extas.model.contacts.Person</class>
+        <class>ru.extas.model.contacts.PersonFileContainer</class>
         <class>ru.extas.model.insurance.A7Form</class>
         <class>ru.extas.model.insurance.FormTransfer</class>
         <class>ru.extas.model.insurance.Insurance</class>
+        <class>ru.extas.model.insurance.InsuranceFileContainer</class>
         <class>ru.extas.model.insurance.Policy</class>
         <class>ru.extas.model.lead.Lead</class>
-        <class>ru.extas.model.users.UserGroup</class>
-        <class>ru.extas.model.users.UserProfile</class>
+        <class>ru.extas.model.security.ExtaPermission</class>
+        <class>ru.extas.model.security.UserGroup</class>
+        <class>ru.extas.model.security.UserProfile</class>
         <class>ru.extas.model.sale.Sale</class>
         <class>ru.extas.model.sale.Product</class>
         <class>ru.extas.model.sale.ProdCredit</class>
@@ -38,6 +45,9 @@
         <class>ru.extas.model.sale.ProdInsurance</class>
         <class>ru.extas.model.sale.ProdInstallments</class>
         <class>ru.extas.model.sale.ProductInSale</class>
+        <class>ru.extas.model.motor.MotorType</class>
+        <class>ru.extas.model.motor.MotorBrand</class>
+        <class>ru.extas.model.motor.MotorModel</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

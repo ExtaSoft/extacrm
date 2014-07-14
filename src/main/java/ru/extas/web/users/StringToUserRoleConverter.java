@@ -6,7 +6,7 @@ package ru.extas.web.users;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
-import ru.extas.security.UserRole;
+import ru.extas.model.security.UserRole;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**
@@ -30,12 +30,8 @@ public class StringToUserRoleConverter extends String2EnumConverter<UserRole> {
 	@Override
 	protected BiMap<UserRole, String> createEnum2StringMap() {
 		final BiMap<UserRole, String> map = HashBiMap.create();
-		map.put(UserRole.USER, "Сотрудник");
-		map.put(UserRole.MANAGER, "Руководитель");
+		map.put(UserRole.USER, "Пользователь");
 		map.put(UserRole.ADMIN, "Администратор");
-		map.put(UserRole.DEALER, "Дилер");
-		map.put(UserRole.DEALER_MANAGER, "Дилер руководитель");
-		map.put(UserRole.DISTRIBUTOR, "Дистрибьютор");
 		return map;
 	}
 }

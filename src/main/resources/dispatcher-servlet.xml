@@ -18,7 +18,7 @@
 
     <!-- Vaadin application controller -->
     <bean id="mainCrmUiServlet" class="org.springframework.web.servlet.mvc.ServletWrappingController"
-          p:servletClass="com.vaadin.server.VaadinServlet">
+          p:servletClass="ru.extas.web.ExtaServlet">
         <property name="initParameters">
             <props>
                 <prop key="UIProvider">ru.extas.web.MyUIProvider</prop>

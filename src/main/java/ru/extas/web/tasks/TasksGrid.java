@@ -11,8 +11,8 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.joda.time.LocalDate;
 import ru.extas.model.lead.Lead;
-import ru.extas.security.UserRole;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.model.security.UserRole;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 

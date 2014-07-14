@@ -3,7 +3,7 @@ package ru.extas.web.users;
 import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.model.users.UserProfile;
+import ru.extas.model.security.UserProfile;
 import ru.extas.web.commons.ExtaDataContainer;
 
 /**

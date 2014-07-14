@@ -45,20 +45,6 @@ public interface SupplementService {
 	String findRegionByCity(String city);
 
 	/**
-	 * Запрашивает список видов техники
-	 *
-	 * @return список видов техники
-	 */
-	Collection<String> loadMotorTypes();
-
-	/**
-	 * Запрашивает производителей техники
-	 *
-	 * @return список производителей техники
-	 */
-	Collection<String> loadMotorBrands();
-
-	/**
 	 * Запрашивает виды документов
 	 *
 	 * @return список видов документов

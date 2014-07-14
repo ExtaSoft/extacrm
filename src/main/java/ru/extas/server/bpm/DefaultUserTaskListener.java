@@ -1,7 +1,7 @@
 package ru.extas.server.bpm;
 
 import org.activiti.engine.delegate.DelegateTask;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 
 import javax.inject.Inject;
 

@@ -7,11 +7,8 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.Person_;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.users.UserProfile;
-import ru.extas.security.ExtaDomain;
-import ru.extas.security.SecureTarget;
-import ru.extas.security.UserRole;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.model.security.*;
+import ru.extas.server.security.UserManagementService;
 
 import javax.persistence.criteria.*;
 import java.util.List;
@@ -42,7 +39,7 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
      *
      * @param entityClass the class of the entities that will reside in this container
      *                    (must not be null).
-     * @param domain a {@link ru.extas.security.ExtaDomain} object.
+     * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
      */
     public SecuredDataContainer(final Class<TEntityType> entityClass, ExtaDomain domain) {
         super(entityClass);
@@ -113,8 +110,15 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
 
                     protected Predicate composeWithAreaFilter(CriteriaBuilder cb, Root<TEntityType> objectRoot, UserManagementService userService, Predicate predicate) {
                         UserProfile curUserProfile = userService.getCurrentUser();
-                        Set<String> permitRegions = curUserProfile.getPermitRegions();
-                        Set<String> permitBrands = curUserProfile.getPermitBrands();
+                        Set<String> permitRegions = newHashSet(curUserProfile.getPermitRegions());
+                        Set<String> permitBrands = newHashSet(curUserProfile.getPermitBrands());
+                        Set<UserGroup> groups = curUserProfile.getGroupList();
+                        if(groups != null) {
+                            for(UserGroup group : groups) {
+                                permitBrands.addAll(group.getPermitBrands());
+                                permitRegions.addAll(group.getPermitRegions());
+                            }
+                        }
                         if (!permitRegions.isEmpty()) {
                             Predicate regPredicate = objectRoot.join(SecuredObject_.associateRegions, JoinType.LEFT).in(permitRegions);
                             predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);

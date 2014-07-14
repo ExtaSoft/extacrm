@@ -30,12 +30,17 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.4.2
  */
-public class DocFilesEditor extends CustomField<List>{
+public class DocFilesEditor<TFileContainer extends FileContainer> extends CustomField<List>{
+
+    private final Class<TFileContainer> containerClass;
 
     /**
      * <p>Constructor for DocFilesEditor.</p>
+     *
+     * @param containerClass a {@link java.lang.Class} object.
      */
-    public DocFilesEditor() {
+    public DocFilesEditor(Class<TFileContainer> containerClass) {
+        this.containerClass = containerClass;
         setBuffered(true);
         addStyleName("base-view");
         setSizeUndefined();
@@ -87,7 +92,14 @@ public class DocFilesEditor extends CustomField<List>{
                     UploadFinishedHandler handler = new UploadFinishedHandler() {
                         @Override
                         public void handleFile(InputStream inputStream, String filename, String mimeType, long length) {
-                            FileContainer fileContainer = new FileContainer();
+                            FileContainer fileContainer = null;
+                            try {
+                                fileContainer = containerClass.newInstance();
+                            } catch (InstantiationException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
                             fileContainer.setName(filename);
                             fileContainer.setMimeType(mimeType);
                             fileContainer.setFileSize(length);

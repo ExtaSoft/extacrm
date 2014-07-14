@@ -19,9 +19,9 @@ import org.activiti.engine.task.Task;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
-import ru.extas.model.users.UserProfile;
-import ru.extas.security.UserRole;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.model.security.UserProfile;
+import ru.extas.model.security.UserRole;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
@@ -79,7 +79,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
 
         // Может ли пользователь менять ответственного
         UserManagementService userService = lookup(UserManagementService.class);
-        canAssigne = userService.isCurUserHasRole(UserRole.ADMIN) || userService.isCurUserHasRole(UserRole.MANAGER);
+        canAssigne = userService.isCurUserHasRole(UserRole.ADMIN)/* || userService.isCurUserHasRole(UserRole.MANAGER)*/;
 
         initForm(obj);
     }

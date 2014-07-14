@@ -10,7 +10,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.lead.Lead;
-import ru.extas.security.ExtaDomain;
+import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 

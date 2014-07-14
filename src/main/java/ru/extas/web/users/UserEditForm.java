@@ -10,13 +10,13 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.users.UserProfile;
+import ru.extas.model.security.UserProfile;
+import ru.extas.model.security.UserRole;
 import ru.extas.security.UserRealm;
-import ru.extas.security.UserRole;
-import ru.extas.server.users.UserRegistry;
+import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
-import ru.extas.web.reference.MotorBrandMultiselect;
+import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 import ru.extas.web.util.ComponentUtil;
 
@@ -53,6 +53,11 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     private RegionMultiselect regionsField;
     @PropertyId("permitBrands")
     private MotorBrandMultiselect brandsField;
+
+    @PropertyId("groupList")
+    private UserGroupField groupField;
+    @PropertyId("permissions")
+    private ExtaPermissionField permissionsField;
 
     /**
      * <p>Constructor for UserEditForm.</p>
@@ -104,7 +109,46 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final UserProfile obj) {
-        // Have some layout
+        TabSheet tabsheet = new TabSheet();
+        tabsheet.setSizeUndefined();
+
+        // Вкладка - "Общая информация"
+        final FormLayout mainTab = getMainTab(obj);
+        tabsheet.addTab(mainTab).setCaption("Общие данные");
+
+        // Вкладка - "Группы"
+        final Component groupTab = createGroupTab();
+        tabsheet.addTab(groupTab).setCaption("Группы");
+
+        // Вкладка - "Права доступа"
+        final Component permissionTab = createPermissionTab(obj);
+        tabsheet.addTab(permissionTab).setCaption("Права доступа");
+
+        return tabsheet;
+    }
+
+    private Component createGroupTab() {
+        groupField = new UserGroupField();
+        return groupField;
+    }
+
+    private Component createPermissionTab(UserProfile obj) {
+        final FormLayout form = new FormLayout();
+
+        brandsField = new MotorBrandMultiselect("Доступные бренды");
+        form.addComponent(brandsField);
+
+        regionsField = new RegionMultiselect("Доступные регионы");
+        form.addComponent(regionsField);
+
+        permissionsField = new ExtaPermissionField(obj);
+        permissionsField.setCaption("Правила доступа пользователя");
+        form.addComponent(permissionsField);
+
+        return form;
+    }
+
+    private FormLayout getMainTab(UserProfile obj) {
         final FormLayout form = new FormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками
@@ -168,12 +212,6 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         ComponentUtil.fillSelectByEnum(roleField, UserRole.class);
         form.addComponent(roleField);
 
-        brandsField = new MotorBrandMultiselect("Доступные бренды");
-        form.addComponent(brandsField);
-
-        regionsField = new RegionMultiselect("Доступные регионы");
-        form.addComponent(regionsField);
-
         blockedField = new CheckBox("Блокировать");
         blockedField.setDescription("Установите, чтобы блокировать вход пользователя в систему.");
         form.addComponent(blockedField);
@@ -182,7 +220,6 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         changePasswordField
                 .setDescription("Установите, чтобы потребовать у пользователя смены пароля при следующем входе с систему.");
         form.addComponent(changePasswordField);
-
         return form;
     }
 }

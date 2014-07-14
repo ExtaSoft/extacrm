@@ -9,7 +9,7 @@
 package ru.extas.web.commons.component;
 
 import com.vaadin.ui.Component;
-import ru.extas.security.ExtaDomain;
+import ru.extas.model.security.ExtaDomain;
 
 import java.io.Serializable;
 public interface TabInfo extends Serializable {
@@ -31,7 +31,7 @@ public interface TabInfo extends Serializable {
 	/**
 	 * <p>getDomain.</p>
 	 *
-	 * @return a {@link ru.extas.security.ExtaDomain} object.
+	 * @return a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
 	ExtaDomain getDomain();
 }

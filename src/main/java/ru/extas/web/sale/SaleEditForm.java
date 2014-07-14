@@ -6,13 +6,13 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.sale.Sale;
 import ru.extas.server.sale.SaleRepository;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
-import ru.extas.web.reference.MotorBrandSelect;
-import ru.extas.web.reference.MotorTypeSelect;
+import ru.extas.web.motor.MotorBrandSelect;
+import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
 
 import static org.springframework.util.CollectionUtils.isEmpty;

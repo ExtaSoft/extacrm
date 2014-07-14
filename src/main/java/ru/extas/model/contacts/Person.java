@@ -1,10 +1,14 @@
 package ru.extas.model.contacts;
 
 import org.joda.time.LocalDate;
+import ru.extas.model.common.FileContainer;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import java.util.List;
 import java.util.Set;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Данные контакта - физ. лица
@@ -18,7 +22,7 @@ import java.util.Set;
 @Table(name = "PERSON")
 public class Person extends Contact {
 
-	private static final long serialVersionUID = -7891940552175345858L;
+    private static final long serialVersionUID = -7891940552175345858L;
 
 	// Дата рождения
 	private LocalDate birthday;
@@ -79,6 +83,10 @@ public class Person extends Contact {
 
     @ManyToMany(mappedBy = "employees", cascade = CascadeType.REFRESH)
     private Set<SalePoint> workPlaces;
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    private List<PersonFileContainer> files = newArrayList();
 
 	/**
 	 * <p>Constructor for Person.</p>
@@ -326,5 +334,23 @@ public class Person extends Contact {
      */
     public void setWorkPlaces(Set<SalePoint> workPlaces) {
         this.workPlaces = workPlaces;
+    }
+
+    /**
+     * <p>Getter for the field <code>files</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
+    public List<PersonFileContainer> getFiles() {
+        return files;
+    }
+
+    /**
+     * <p>Setter for the field <code>files</code>.</p>
+     *
+     * @param files a {@link java.util.List} object.
+     */
+    public void setFiles(List<PersonFileContainer> files) {
+        this.files = files;
     }
 }

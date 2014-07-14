@@ -367,6 +367,8 @@ public abstract class ExtaGrid extends CustomComponent {
     protected void refreshContainer() {
         if (container instanceof ExtaDataContainer)
             ((ExtaDataContainer) container).refresh();
+        else if (container instanceof RefreshBeanContainer)
+            ((RefreshBeanContainer) container).refreshItems();
     }
 
     /**
@@ -377,6 +379,8 @@ public abstract class ExtaGrid extends CustomComponent {
     protected void refreshContainerItem(final Object itemId) {
         if (container instanceof ExtaDataContainer)
             ((ExtaDataContainer) container).refreshItem(itemId);
+        else if (container instanceof RefreshBeanContainer)
+            ((RefreshBeanContainer) container).refreshItems();
     }
 
     /**

@@ -1,10 +1,13 @@
 package ru.extas.model.contacts;
 
+import ru.extas.model.common.FileContainer;
 import ru.extas.model.sale.ProdCredit;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Модель данных для юридического лица
@@ -48,6 +51,11 @@ public class LegalEntity extends Contact{
     @ElementCollection
     @CollectionTable(name = "LEGAL_ENTITY_MOTOR_BRAND")
     private Set<String> motorBrands;
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    private List<LegalEntityFile> files = newArrayList();
+
 
     /**
      * <p>Getter for the field <code>ogrnOgrip</code>.</p>
@@ -156,5 +164,23 @@ public class LegalEntity extends Contact{
      */
     public void setCompany(final Company company) {
         this.company = company;
+    }
+
+    /**
+     * <p>Getter for the field <code>files</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
+    public List<LegalEntityFile> getFiles() {
+        return files;
+    }
+
+    /**
+     * <p>Setter for the field <code>files</code>.</p>
+     *
+     * @param files a {@link java.util.List} object.
+     */
+    public void setFiles(List<LegalEntityFile> files) {
+        this.files = files;
     }
 }

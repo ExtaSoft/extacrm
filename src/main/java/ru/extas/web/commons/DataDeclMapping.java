@@ -20,6 +20,14 @@ public class DataDeclMapping implements Serializable {
     private final Converter<String, ?> converter;
     private final GridDataDecl.GridColumnGenerator generator;
 
+    /**
+     * <p>Constructor for DataDeclMapping.</p>
+     *
+     * @param propName a {@link java.lang.String} object.
+     * @param caption a {@link java.lang.String} object.
+     * @param generator a {@link ru.extas.web.commons.GridDataDecl.GridColumnGenerator} object.
+     * @param presentFlags a {@link java.util.EnumSet} object.
+     */
     public DataDeclMapping(String propName, String caption, GridDataDecl.GridColumnGenerator generator, EnumSet<PresentFlag> presentFlags) {
         this(propName, caption, presentFlags, null, generator);
     }
@@ -75,6 +83,7 @@ public class DataDeclMapping implements Serializable {
      * @param caption a {@link java.lang.String} object.
      * @param presentFlags a {@link java.util.EnumSet} object.
      * @param converter a {@link com.vaadin.data.util.converter.Converter} object.
+     * @param generator a {@link ru.extas.web.commons.GridDataDecl.GridColumnGenerator} object.
      */
     public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags, Converter<String, ?> converter, GridDataDecl.GridColumnGenerator generator) {
         super();
@@ -88,6 +97,11 @@ public class DataDeclMapping implements Serializable {
         this.generator = generator;
     }
 
+    /**
+     * <p>Getter for the field <code>generator</code>.</p>
+     *
+     * @return a {@link ru.extas.web.commons.GridDataDecl.GridColumnGenerator} object.
+     */
     public GridDataDecl.GridColumnGenerator getGenerator() {
         return generator;
     }

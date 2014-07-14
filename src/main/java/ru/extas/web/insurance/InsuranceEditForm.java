@@ -11,11 +11,12 @@ import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.Insurance;
+import ru.extas.model.insurance.InsuranceFileContainer;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.server.insurance.InsuranceRepository;
 import ru.extas.server.insurance.PolicyRepository;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.DocFilesEditor;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
@@ -24,8 +25,8 @@ import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.LegalEntitySelect;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
-import ru.extas.web.reference.MotorBrandSelect;
-import ru.extas.web.reference.MotorTypeSelect;
+import ru.extas.web.motor.MotorBrandSelect;
+import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.util.ComponentUtil;
 
 import java.math.BigDecimal;
@@ -120,7 +121,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         VerticalLayout layout = new VerticalLayout();
         layout.setSpacing(true);
 
-        docFilesEditor = new DocFilesEditor();
+        docFilesEditor = new DocFilesEditor(InsuranceFileContainer.class);
         layout.addComponent(docFilesEditor);
 
         docCompleteField = new CheckBox("Полный комплект документов");
@@ -222,6 +223,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
                 updateTarifField();
             }
         });
+        motorBrandField.linkToType(motorTypeField);
         form.addComponent(motorBrandField);
 
         tarifDataSource = new ObjectProperty<>(new BigDecimal(0));

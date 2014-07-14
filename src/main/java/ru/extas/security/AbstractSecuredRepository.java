@@ -3,7 +3,7 @@ package ru.extas.security;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
-import ru.extas.server.users.UserManagementService;
+import ru.extas.server.security.UserManagementService;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

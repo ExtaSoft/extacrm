@@ -12,7 +12,10 @@ import ru.extas.model.insurance.Policy;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.Sale;
-import ru.extas.security.UserRole;
+import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.SecureAction;
+import ru.extas.model.security.SecureTarget;
+import ru.extas.model.security.UserRole;
 import ru.extas.web.commons.converters.*;
 import ru.extas.web.contacts.StringToPersonPosition;
 import ru.extas.web.contacts.StringToPersonSex;
@@ -24,6 +27,9 @@ import ru.extas.web.lead.StringToLeadResult;
 import ru.extas.web.lead.StringToLeadStatus;
 import ru.extas.web.product.String2CreditProgramType;
 import ru.extas.web.sale.StringToSaleResult;
+import ru.extas.web.users.StringToExtaDomainConverter;
+import ru.extas.web.users.StringToSecureActionConverter;
+import ru.extas.web.users.StringToSecureTargetConverter;
 import ru.extas.web.users.StringToUserRoleConverter;
 
 import java.math.BigDecimal;
@@ -111,6 +117,18 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 		// Конвертер типов кредитных программ
 		if (presentationType == String.class && modelType == ProdCredit.ProgramType.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(String2CreditProgramType.class);
+
+		// Конвертер разделов системы
+		if (presentationType == String.class && modelType == ExtaDomain.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToExtaDomainConverter.class);
+
+		// Конвертер разрешенных действий в рамках правила доступа
+		if (presentationType == String.class && modelType == SecureAction.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToSecureActionConverter.class);
+
+		// Конвертер целевых объектов правила доступа
+		if (presentationType == String.class && modelType == SecureTarget.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToSecureTargetConverter.class);
 
 		// Let default factory handle the rest
 		return super.findConverter(presentationType, modelType);

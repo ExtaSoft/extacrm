@@ -46,6 +46,7 @@
     margin-left: .3em;
   }
 
+  @include icon(copycard, '\e8c3');
   @include icon(sitemap, '\e82e');
   @include icon(clock, '\e8d4');
   @include icon(article-alt, '\e8dc');
