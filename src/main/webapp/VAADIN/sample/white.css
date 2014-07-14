@@ -1,0 +1,18 @@
+* {
+    font-family: "Segoe UI", Helvetica, sans-serif;
+    color: #000
+}
+
+.extacrm.v-app {
+    background-color: #fff
+}
+
+.v-slot-icon-ok {
+    text-align: center
+}
+
+.extacrm .v-textarea-error, .extacrm .v-textfield-error, .extacrm .v-filterselect-error, .extacrm .v-richtextarea-error {
+    background-color: #fff;
+    color: #900;
+    border: #900 dotted 1px
+}
