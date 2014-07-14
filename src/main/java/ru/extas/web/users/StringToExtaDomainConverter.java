@@ -26,9 +26,7 @@ public class StringToExtaDomainConverter extends String2EnumConverter<ExtaDomain
         super(ExtaDomain.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected BiMap<ExtaDomain, String> createEnum2StringMap() {
         final BiMap<ExtaDomain, String> map = HashBiMap.create();

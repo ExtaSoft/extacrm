@@ -21,6 +21,8 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @author Valery Orlov
  *         Date: 21.06.2014
  *         Time: 15:36
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
 
@@ -38,10 +40,17 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
     @PropertyId("permissions")
     private ExtaPermissionField permissionsField;
 
+    /**
+     * <p>Constructor for UserGroupEditForm.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param obj a {@link com.vaadin.data.util.BeanItem} object.
+     */
     public UserGroupEditForm(String caption, BeanItem<UserGroup> obj) {
         super(caption, obj);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void initObject(UserGroup obj) {
         if (obj.getId() == null) {
@@ -49,6 +58,7 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void saveObject(UserGroup obj) {
         final UserGroupRegistry groupRegistry = lookup(UserGroupRegistry.class);
@@ -56,11 +66,13 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
         Notification.show("Группа сохранена", Notification.Type.TRAY_NOTIFICATION);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void checkBeforeSave(UserGroup obj) {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(UserGroup obj) {
         final FormLayout form = new FormLayout();

@@ -21,6 +21,7 @@ import java.util.EnumSet;
  */
 class InsuranceDataDecl extends GridDataDecl {
 
+    /** Constant <code>CLIENT_BIRTHDAY="client_birthday"</code> */
     public static final String CLIENT_BIRTHDAY = "client_birthday";
 
     /**

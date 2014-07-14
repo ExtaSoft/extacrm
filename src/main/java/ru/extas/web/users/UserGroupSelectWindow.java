@@ -16,12 +16,19 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @author Valery Orlov
  *         Date: 27.06.2014
  *         Time: 12:35
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class UserGroupSelectWindow extends CloseOnlylWindow {
 
     private UserGroup selected;
     private boolean selectPressed;
 
+    /**
+     * <p>Constructor for UserGroupSelectWindow.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
     public UserGroupSelectWindow(String caption) {
         super(caption);
         addStyleName("base-view");
@@ -55,18 +62,38 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
         });
     }
 
+    /**
+     * <p>Getter for the field <code>selected</code>.</p>
+     *
+     * @return a {@link ru.extas.model.security.UserGroup} object.
+     */
     public UserGroup getSelected() {
         return selected;
     }
 
+    /**
+     * <p>Setter for the field <code>selected</code>.</p>
+     *
+     * @param selected a {@link ru.extas.model.security.UserGroup} object.
+     */
     public void setSelected(UserGroup selected) {
         this.selected = selected;
     }
 
+    /**
+     * <p>isSelectPressed.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isSelectPressed() {
         return selectPressed;
     }
 
+    /**
+     * <p>Setter for the field <code>selectPressed</code>.</p>
+     *
+     * @param selectPressed a boolean.
+     */
     public void setSelectPressed(boolean selectPressed) {
         this.selectPressed = selectPressed;
     }

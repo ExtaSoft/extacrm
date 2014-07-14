@@ -88,7 +88,7 @@ public class Person extends Contact {
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
     private List<PersonFileContainer> files = newArrayList();
 
-    /**
+	/**
 	 * <p>Constructor for Person.</p>
 	 */
 	public Person() {
@@ -336,10 +336,20 @@ public class Person extends Contact {
         this.workPlaces = workPlaces;
     }
 
+    /**
+     * <p>Getter for the field <code>files</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<PersonFileContainer> getFiles() {
         return files;
     }
 
+    /**
+     * <p>Setter for the field <code>files</code>.</p>
+     *
+     * @param files a {@link java.util.List} object.
+     */
     public void setFiles(List<PersonFileContainer> files) {
         this.files = files;
     }

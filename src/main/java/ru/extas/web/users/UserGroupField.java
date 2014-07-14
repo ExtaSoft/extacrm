@@ -24,11 +24,16 @@ import static com.google.common.collect.Sets.newHashSet;
  * @author Valery Orlov
  *         Date: 24.06.2014
  *         Time: 23:30
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class UserGroupField extends CustomField<Set> {
 
     private BeanItemContainer<UserGroup> itemContainer;
 
+    /**
+     * <p>Constructor for UserGroupField.</p>
+     */
     public UserGroupField() {
         setBuffered(true);
         addStyleName("base-view");
@@ -36,6 +41,7 @@ public class UserGroupField extends CustomField<Set> {
         setWidth(600, Unit.PIXELS);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Component initContent() {
         UserGroupGrid grid = new UserGroupGrid(){
@@ -88,6 +94,7 @@ public class UserGroupField extends CustomField<Set> {
         return grid;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Class<? extends Set> getType() {
         return Set.class;

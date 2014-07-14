@@ -50,6 +50,7 @@ public class UserGroup extends AuditedObject implements Cloneable{
     @ManyToMany(mappedBy = "groupList")
     private Set<UserProfile> users;
 
+    /** {@inheritDoc} */
     @Override
     public UserGroup clone() {
         UserGroup clone = new UserGroup();
@@ -87,42 +88,92 @@ public class UserGroup extends AuditedObject implements Cloneable{
         this.name = name;
     }
 
+    /**
+     * <p>Getter for the field <code>permissions</code>.</p>
+     *
+     * @return a {@link java.util.Set} object.
+     */
     public Set<ExtaPermission> getPermissions() {
         return permissions;
     }
 
+    /**
+     * <p>Setter for the field <code>permissions</code>.</p>
+     *
+     * @param permissions a {@link java.util.Set} object.
+     */
     public void setPermissions(Set<ExtaPermission> permissions) {
         this.permissions = permissions;
     }
 
+    /**
+     * <p>Getter for the field <code>description</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * <p>Setter for the field <code>description</code>.</p>
+     *
+     * @param description a {@link java.lang.String} object.
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * <p>Getter for the field <code>users</code>.</p>
+     *
+     * @return a {@link java.util.Set} object.
+     */
     public Set<UserProfile> getUsers() {
         return users;
     }
 
+    /**
+     * <p>Setter for the field <code>users</code>.</p>
+     *
+     * @param users a {@link java.util.Set} object.
+     */
     public void setUsers(Set<UserProfile> users) {
         this.users = users;
     }
 
+    /**
+     * <p>Getter for the field <code>permitRegions</code>.</p>
+     *
+     * @return a {@link java.util.Set} object.
+     */
     public Set<String> getPermitRegions() {
         return permitRegions;
     }
 
+    /**
+     * <p>Setter for the field <code>permitRegions</code>.</p>
+     *
+     * @param permitRegions a {@link java.util.Set} object.
+     */
     public void setPermitRegions(Set<String> permitRegions) {
         this.permitRegions = permitRegions;
     }
 
+    /**
+     * <p>Getter for the field <code>permitBrands</code>.</p>
+     *
+     * @return a {@link java.util.Set} object.
+     */
     public Set<String> getPermitBrands() {
         return permitBrands;
     }
 
+    /**
+     * <p>Setter for the field <code>permitBrands</code>.</p>
+     *
+     * @param permitBrands a {@link java.util.Set} object.
+     */
     public void setPermitBrands(Set<String> permitBrands) {
         this.permitBrands = permitBrands;
     }

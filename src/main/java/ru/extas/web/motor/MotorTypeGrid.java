@@ -16,6 +16,8 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Valery Orlov
  *         Date: 16.01.14
  *         Time: 20:32
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class MotorTypeGrid extends ExtaGrid {
 

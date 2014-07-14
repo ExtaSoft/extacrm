@@ -25,7 +25,6 @@ public class ComponentUtil {
      *
      * @param component поле выбора
      * @param cls       тип перечисления
-     * @param <TEnum> a TEnum object.
      */
     public static <TEnum extends Enum<TEnum>> void fillSelectByEnum(final AbstractSelect component,
                                                                     final Class<TEnum> cls) {
@@ -42,7 +41,6 @@ public class ComponentUtil {
      *
      * @param component поле выбора
      * @param cls       тип перечисления
-     * @param <TEnum> a TEnum object.
      */
     public static <TEnum extends Enum<TEnum>> void fillSelectByEnum(final TokenField component, final Class<TEnum> cls) {
         final Converter<String, TEnum> converter = VaadinSession.getCurrent().getConverterFactory()

@@ -60,6 +60,14 @@ public class GridDataDecl implements Serializable {
         mappings.add(new DataDeclMapping(propName, caption, presentFlags));
     }
 
+    /**
+     * <p>addMapping.</p>
+     *
+     * @param propName a {@link java.lang.String} object.
+     * @param caption a {@link java.lang.String} object.
+     * @param generator a {@link ru.extas.web.commons.GridDataDecl.GridColumnGenerator} object.
+     * @param presentFlags a {@link java.util.EnumSet} object.
+     */
     protected void addMapping(String propName, String caption, GridColumnGenerator generator, EnumSet<PresentFlag> presentFlags) {
         mappings.add(new DataDeclMapping(propName, caption, generator, presentFlags));
     }

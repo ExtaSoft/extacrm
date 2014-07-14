@@ -14,6 +14,10 @@ import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Created by Valery on 04.06.2014.
+ *
+ * @author Valery_2
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class MotorBrandEditForm extends AbstractEditForm<MotorBrand> {
     @PropertyId("name")
@@ -22,27 +26,37 @@ public class MotorBrandEditForm extends AbstractEditForm<MotorBrand> {
     @PropertyId("brandTypes")
     private MotorTypeObjMultiselect typesField;
 
+    /**
+     * <p>Constructor for MotorBrandEditForm.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     * @param newObj a {@link com.vaadin.data.util.BeanItem} object.
+     */
     public MotorBrandEditForm(String caption, BeanItem<MotorBrand> newObj) {
         super(caption, newObj);
     }
 
 
 
+    /** {@inheritDoc} */
     @Override
     protected void initObject(MotorBrand obj) {
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void saveObject(MotorBrand obj) {
         MotorBrand loc = lookup(MotorBrandRepository.class).save(obj);
         Notification.show("Марка сохранена", Notification.Type.TRAY_NOTIFICATION);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void checkBeforeSave(MotorBrand obj) {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(MotorBrand obj) {
         final FormLayout form = new FormLayout();

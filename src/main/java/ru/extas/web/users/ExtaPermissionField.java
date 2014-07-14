@@ -21,6 +21,8 @@ import static com.google.common.collect.Sets.newHashSet;
  * @author Valery Orlov
  *         Date: 22.06.2014
  *         Time: 13:19
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 public class ExtaPermissionField extends CustomField<Set> {
 
@@ -34,16 +36,27 @@ public class ExtaPermissionField extends CustomField<Set> {
         setWidth(600, Unit.PIXELS);
     }
 
+    /**
+     * <p>Constructor for ExtaPermissionField.</p>
+     *
+     * @param group a {@link ru.extas.model.security.UserGroup} object.
+     */
     public ExtaPermissionField(UserGroup group) {
         this();
         this.group = group;
     }
 
+    /**
+     * <p>Constructor for ExtaPermissionField.</p>
+     *
+     * @param profile a {@link ru.extas.model.security.UserProfile} object.
+     */
     public ExtaPermissionField(UserProfile profile) {
         this();
         this.profile = profile;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Component initContent() {
 
@@ -129,6 +142,7 @@ public class ExtaPermissionField extends CustomField<Set> {
         return grid;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Class<? extends Set> getType() {
         return Set.class;

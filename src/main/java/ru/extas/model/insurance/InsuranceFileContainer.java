@@ -11,6 +11,8 @@ import javax.persistence.Table;
  * @author Valery Orlov
  *         Date: 11.07.2014
  *         Time: 12:44
+ * @version $Id: $Id
+ * @since 0.5.0
  */
 @Entity
 @Table(name = "INSURANCE_FILE")
