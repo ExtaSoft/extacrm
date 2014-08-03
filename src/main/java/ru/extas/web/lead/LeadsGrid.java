@@ -79,7 +79,7 @@ public class LeadsGrid extends ExtaGrid {
 		List<UIAction> actions = newArrayList();
 
 		if (status == Lead.Status.NEW || status == Lead.Status.QUALIFIED) {
-			actions.add(new UIAction("Новый", "Ввод нового лида", "icon-doc-new") {
+			actions.add(new UIAction("Новый", "Ввод нового лида", Fontello.DOC_NEW) {
 				@Override
 				public void fire(Object itemId) {
 					final BeanItem<Lead> newObj = new BeanItem<>(new Lead());
@@ -101,7 +101,7 @@ public class LeadsGrid extends ExtaGrid {
 			});
 		}
 
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке лид", "icon-edit-3") {
+		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке лид", Fontello.EDIT_3) {
 			@Override
 			public void fire(final Object itemId) {
 				final BeanItem<Lead> curObj = new GridItem<>(table.getItem(itemId));
@@ -123,7 +123,7 @@ public class LeadsGrid extends ExtaGrid {
 		});
 
 		if (status == Lead.Status.NEW) {
-			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", "icon-doc-new") {
+			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.DOC_NEW) {
 				@Override
 				public void fire(final Object itemId) {
 					final BeanItem<Lead> curObj = new GridItem<>(table.getItem(itemId));
@@ -145,7 +145,7 @@ public class LeadsGrid extends ExtaGrid {
 			});
 		}
 
-		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязан текущий Лид", "icon-sitemap") {
+		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязан текущий Лид", Fontello.SITEMAP) {
 			@Override
 			public void fire(Object itemId) {
 				final Lead curObj = extractBean(table.getItem(itemId));

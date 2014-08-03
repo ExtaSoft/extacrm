@@ -113,6 +113,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     @Override
     protected ComponentContainer createEditFields(final Company obj) {
         TabSheet tabsheet = new TabSheet();
+        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

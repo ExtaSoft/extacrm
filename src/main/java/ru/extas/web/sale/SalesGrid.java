@@ -74,7 +74,7 @@ public class SalesGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод новой продажи", "icon-doc-new") {
+		actions.add(new UIAction("Новый", "Ввод новой продажи", Fontello.DOC_NEW) {
 			@Override
 			public void fire(Object itemId) {
 				final BeanItem<Sale> newObj = new BeanItem<>(new Sale());
@@ -95,7 +95,7 @@ public class SalesGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенную в списке продажу", "icon-edit-3") {
+		actions.add(new DefaultAction("Изменить", "Редактировать выделенную в списке продажу", Fontello.EDIT_3) {
 			@Override
 			public void fire(final Object itemId) {
 				final BeanItem<Sale> curObj = new GridItem<>(table.getItem(itemId));
@@ -116,7 +116,7 @@ public class SalesGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязана текущая продажа", "icon-sitemap") {
+		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязана текущая продажа", Fontello.SITEMAP) {
 			@Override
 			public void fire(Object itemId) {
 				final Sale curObj = extractBean(table.getItem(itemId));

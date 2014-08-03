@@ -106,6 +106,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     @Override
     protected ComponentContainer createEditFields(final Insurance obj) {
         TabSheet tabsheet = new TabSheet();
+        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         final FormLayout polyceForm = createPolyceForm(obj);

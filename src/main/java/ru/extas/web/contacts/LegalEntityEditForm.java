@@ -139,6 +139,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
     @Override
     protected ComponentContainer createEditFields(final LegalEntity obj) {
         TabSheet tabsheet = new TabSheet();
+        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

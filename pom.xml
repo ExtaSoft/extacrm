@@ -19,10 +19,9 @@
         <joda-time.version>2.3</joda-time.version>
         <gson.version>2.2.4</gson.version>
 
-        <vaadin.version>7.2.4</vaadin.version>
+        <vaadin.version>7.3.0.beta1</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
-        <vaadin.popupbutton.version>2.3.0</vaadin.popupbutton.version>
         <vaadin.filteringtable.version>0.9.9.v7</vaadin.filteringtable.version>
         <vaadin-tokenfield.version>7.0.1</vaadin-tokenfield.version>
         <vaadin-multifileupload.version>1.8</vaadin-multifileupload.version>
@@ -52,6 +51,7 @@
             </activation>
 
             <properties>
+                <vaadin.productionMode>false</vaadin.productionMode>
                 <jelastic.environment>extacrm-dev</jelastic.environment>
                 <extacrm.ssl.pattern>NONE</extacrm.ssl.pattern>
 
@@ -68,6 +68,7 @@
             <id>prod</id>
 
             <properties>
+                <vaadin.productionMode>true</vaadin.productionMode>
                 <jelastic.environment>extacrm-prod</jelastic.environment>
                 <extacrm.ssl.pattern>CONFIDENTIAL</extacrm.ssl.pattern>
 
@@ -82,6 +83,7 @@
             <id>uat</id>
 
             <properties>
+                <vaadin.productionMode>true</vaadin.productionMode>
                 <jelastic.environment>extacrm-uat</jelastic.environment>
                 <extacrm.ssl.pattern>CONFIDENTIAL</extacrm.ssl.pattern>
 
@@ -287,11 +289,6 @@
             <groupId>com.vaadin.addon</groupId>
             <artifactId>jpacontainer</artifactId>
             <version>${vaadin.jpacontainer.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>popupbutton</artifactId>
-            <version>${vaadin.popupbutton.version}</version>
         </dependency>
         <dependency>
             <groupId>org.vaadin.addons</groupId>
@@ -610,10 +607,8 @@
                     <!-- <runTarget>mobilemail</runTarget> -->
                     <!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This
                         way compatible with Vaadin eclipse plugin. -->
-                    <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets
-                    </webappDirectory>
-                    <hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets
-                    </hostedWebapp>
+                    <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
+                    <hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
                     <noServer>true</noServer>
                     <!-- Remove draftCompile when project is ready -->
                     <draftCompile>false</draftCompile>
@@ -621,11 +616,13 @@
                     <style>OBF</style>
                     <strict>true</strict>
                     <runTarget>http://localhost:8080/</runTarget>
+                    <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
                     <execution>
                         <configuration>
-                            <theme>extacrm</theme>
+                            <!--<theme>extacrm</theme>-->
+                            <theme>exta-valo</theme>
                         </configuration>
                         <phase>compile</phase>
                         <goals>

@@ -56,7 +56,7 @@ public class UsersGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового пользователя в систему", "icon-user-add") {
+		actions.add(new UIAction("Новый", "Ввод нового пользователя в систему", Fontello.USER_ADD) {
 			@Override
 			public void fire(Object itemId) {
 				logger.debug("New User...");
@@ -79,7 +79,7 @@ public class UsersGrid extends ExtaGrid {
 		});
 
 
-		actions.add(new DefaultAction("Изменить", "Редактирование данных пользователя", "icon-user-1") {
+		actions.add(new DefaultAction("Изменить", "Редактирование данных пользователя", Fontello.USER_1) {
 			@Override
 			public void fire(final Object itemId) {
 				logger.debug("Edit User...");

@@ -11,6 +11,7 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 import com.vaadin.server.Page;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -53,41 +54,36 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 
         fragmentToButton = new HashMap<>();
 
-        addStyleName("menu");
-        setHeight("100%");
-
 	    ui.getPage().addUriFragmentChangedListener(this);
     }
 
 	/**
 	 * <p>addChapter.</p>
-	 *
-	 * @param name a {@link java.lang.String} object.
-	 * @param desc a {@link java.lang.String} object.
-	 * @param btnStyle a {@link java.lang.String} object.
-	 * @param viewCls a {@link java.lang.Class} object.
-	 * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
-	 */
+	 *  @param name a {@link String} object.
+	 * @param desc a {@link String} object.
+     * @param btnIcon a {@link String} object.
+     * @param viewCls a {@link Class} object.
+     * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
+     */
 	public void addChapter(String name, // Имя раздела
 	                       String desc, // Описание раздела
-	                       String btnStyle, // Стиль кнопки раздела
+                           Resource btnIcon, // Стиль кнопки раздела
 	                       Class<? extends View> viewCls, // Класс раздела
 	                       ExtaDomain domain // Раздел
 	) {
-		addChapter(name, desc, btnStyle, viewCls, EnumSet.of(domain));
+		addChapter(name, desc, btnIcon, viewCls, EnumSet.of(domain));
 	}
     /**
      * Создает раздел основного меню
-     *
-     * @param name     Имя раздела
+     *  @param name     Имя раздела
      * @param desc     Описание раздела
-     * @param btnStyle Стиль кнопки раздела
+     * @param btnIcon Стиль кнопки раздела
      * @param viewCls  Класс раздела
      * @param domains  Раздел или подразделы системы
      */
     public void addChapter(String name, // Имя раздела
                            String desc, // Описание раздела
-                           String btnStyle, // Стиль кнопки раздела
+                           Resource btnIcon, // Стиль кнопки раздела
                            Class<? extends View> viewCls, // Класс раздела
                            Set<ExtaDomain> domains // Раздел или подразделы
     ) {
@@ -108,9 +104,10 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 		    //navigator.addProvider(new DomainViewProvider(domains, viewCls));
 
 		    // Кнопка раздела
-		    Button b = new NativeButton(name);
-		    b.addStyleName(btnStyle);
+		    Button b = new Button(name);
+		    b.setIcon(btnIcon);
 		    b.setDescription(desc);
+            b.setPrimaryStyleName("valo-menu-item");
 		    b.addClickListener(new ClickListener() {
 			    private static final long serialVersionUID = 1L;
 
@@ -131,7 +128,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 
     private void clearMenuSelection() {
         for (Component next : this) {
-            if (next instanceof NativeButton) {
+            if (next instanceof Button) {
                 next.removeStyleName("selected");
             }
         }

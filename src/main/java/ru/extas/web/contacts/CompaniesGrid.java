@@ -53,7 +53,7 @@ public class CompaniesGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод новой компании в систему", "icon-doc-new") {
+		actions.add(new UIAction("Новый", "Ввод новой компании в систему", Fontello.DOC_NEW) {
 			@Override
 			public void fire(Object itemId) {
 				final BeanItem<Company> newObj = new BeanItem<>(new Company());
@@ -75,7 +75,7 @@ public class CompaniesGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", "icon-edit-3") {
+		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.EDIT_3) {
 			@Override
 			public void fire(final Object itemId) {
 				final BeanItem<Company> beanItem = new GridItem<>(table.getItem(itemId));

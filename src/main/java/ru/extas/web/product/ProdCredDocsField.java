@@ -8,6 +8,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditDoc;
+import ru.extas.web.commons.Fontello;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,7 @@ public class ProdCredDocsField extends CustomField<List> {
 				}
 			});
 			addProdBtn.setDescription("Добавить процентную стаквку в продукт");
-			addProdBtn.addStyleName("icon-doc-new");
+			addProdBtn.setIcon(Fontello.DOC_NEW);
 			commandBar.addComponent(addProdBtn);
 
 //			final Button edtProdBtn = new Button("Изменить", new Button.ClickListener() {
@@ -100,7 +101,7 @@ public class ProdCredDocsField extends CustomField<List> {
 //				}
 //			});
 //			edtProdBtn.setDescription("Изменить выделенную в списке процентную ставку");
-//			edtProdBtn.addStyleName("icon-edit-3");
+//			edtProdBtn.addStyleName(Fontello.EDIT_3);
 //			commandBar.addComponent(edtProdBtn);
 
 			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
@@ -112,7 +113,7 @@ public class ProdCredDocsField extends CustomField<List> {
 				}
 			});
 			delProdBtn.setDescription("Удалить процентную ставку из продукта");
-			delProdBtn.addStyleName("icon-trash");
+			delProdBtn.setIcon(Fontello.TRASH);
 			commandBar.addComponent(delProdBtn);
 
 			fieldLayout.addComponent(commandBar);

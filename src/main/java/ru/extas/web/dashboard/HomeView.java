@@ -10,6 +10,7 @@ import com.vaadin.ui.Label;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.web.commons.ExtaAbstractView;
+import ru.extas.web.commons.Fontello;
 
 /**
  * Реализует домашний экран CRM
@@ -30,7 +31,7 @@ public class HomeView extends ExtaAbstractView {
         final Component title = new Label("Скоро будет реализовано...");
         title.setSizeUndefined();
         title.addStyleName("h1");
-        title.addStyleName("icon-wrench-1");
+        title.setIcon(Fontello.WRENCH_1);
         HorizontalLayout l = new HorizontalLayout(title);
         l.setSizeFull();
         l.setComponentAlignment(title, Alignment.MIDDLE_CENTER);

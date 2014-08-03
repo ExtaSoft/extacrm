@@ -6,6 +6,7 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
@@ -67,7 +68,7 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 		protected List<UIAction> createActions() {
 			List<UIAction> actions = newArrayList();
 
-			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", "icon-check") {
+			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
 				@Override
 				public void fire(final Object itemId) {
 

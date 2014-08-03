@@ -1,0 +1,60 @@
+//@import "default";
+// @import "flat";
+// @import "flat-dark";
+// @import "facebook";
+@import "metro";
+// @import "dark";
+// @import "blueprint";
+@import "layout/menu";
+@import "layout/base";
+
+@include v-font(fontello, '../../../../exta-valo/fonts/fontello/fontello');
+
+.exta-valo {
+  @include valo;
+
+  @include exta-menu;
+  @include exta-base-view;
+
+  $bg-lightness: if(color-luminance($v-app-background-color) < 10, 15%, -70%);
+  $bg: $valo-menu-background-color or scale-color($v-app-background-color, $lightness: $bg-lightness);
+  $font-color: valo-font-color($bg, 0.5);
+
+  .login-view {
+    @include background(radial-gradient(circle at 50% 50%, $v-app-background-color, $bg));
+
+    @include valo-anim-fade-in;
+
+    .v-panel-caption {
+      color: $font-color;
+      font-size: round($v-font-size * 1.2);
+    }
+  }
+
+  // Контейнер, элементы которого заключены в рамку
+  .bordered-items {
+    .v-label {
+      border-radius: 3px;
+
+      border: 2px solid rgba(51, 50, 49, 0.07);
+      //box-shadow: 0 0 0 2px rgba(51, 50, 49, 0.07);
+
+      padding: 2px;
+    }
+  }
+  .v-customcomponent-bordered-component {
+    border-radius: 6px;
+    border: 2px solid rgba(51, 50, 49, 0.07);
+    padding: 4px;
+  }
+
+  .exceptionStackTraceBox {
+    //font-size: 14px;
+    //line-height: 18px;
+    height: 400px;
+    //width: 600px;
+    //padding: 10px;
+    overflow: scroll;
+  }
+
+}

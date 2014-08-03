@@ -5,6 +5,7 @@ package ru.extas.web.commons;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -45,7 +46,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
         addStyleName("base-view");
 
         HorizontalLayout top = new HorizontalLayout();
-        top.setWidth("100%");
+        top.setWidth(100, Unit.PERCENTAGE);
         top.setSpacing(true);
         top.addStyleName("toolbar");
         addComponent(top);
@@ -54,12 +55,10 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
         top.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
         top.setExpandRatio(title, 1);
 
-        Button helpBtn = new Button();
+        Button helpBtn = new Button(Fontello.HELP_1);
         helpBtn.setDescription("Контекстная справка");
         // notify.addStyleName("borderless");
-        helpBtn.addStyleName("notifications");
         helpBtn.addStyleName("icon-only");
-        helpBtn.addStyleName("icon-help-1");
         helpBtn.addClickListener(new ClickListener() {
             private static final long serialVersionUID = 1L;
 
@@ -77,7 +76,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
         content.setSizeFull();
         content.setSpacing(true);
         addComponent(content);
-        setExpandRatio(content, 2);
+        setExpandRatio(content, 5);
 
         content.addComponent(getContent());
 

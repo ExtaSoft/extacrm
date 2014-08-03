@@ -35,6 +35,7 @@ public abstract class AbstractTabView extends ExtaAbstractView {
     protected Component getContent() {
         logger.debug("Creating view content...");
         final TabSheet tabsheet = new TabSheet();
+        tabsheet.addStyleName("framed");
         tabsheet.setSizeFull();
 
         // Create tab content dynamically when tab is selected
@@ -92,7 +93,7 @@ public abstract class AbstractTabView extends ExtaAbstractView {
     protected Component getTitle() {
         final Component title = new Label(titleCaption);
         title.setSizeUndefined();
-        title.addStyleName("h1");
+        title.addStyleName("h2");
         return title;
     }
 }

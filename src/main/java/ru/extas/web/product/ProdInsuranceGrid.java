@@ -42,7 +42,7 @@ public class ProdInsuranceGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового страхового продукта", "icon-doc-new") {
+		actions.add(new UIAction("Новый", "Ввод нового страхового продукта", Fontello.DOC_NEW) {
 
 			@Override
 			public void fire(Object itemId) {
@@ -64,7 +64,7 @@ public class ProdInsuranceGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке страховой продукт", "icon-edit-3") {
+		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке страховой продукт", Fontello.EDIT_3) {
 			@Override
 			public void fire(final Object itemId) {
 				final BeanItem<ProdInsurance> curObj = new GridItem<>(table.getItem(itemId));

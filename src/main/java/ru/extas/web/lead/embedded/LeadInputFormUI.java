@@ -29,6 +29,7 @@ import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorTypeRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.PhoneField;
@@ -247,8 +248,8 @@ public class LeadInputFormUI extends UI {
 
         });
 
-        submitBtn.setStyleName("icon-ok");
-        submitBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
+        submitBtn.setIcon(Fontello.OK);
+                submitBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
 
         panel.addComponent(submitBtn);
 

@@ -110,6 +110,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     @Override
     protected ComponentContainer createEditFields(final UserProfile obj) {
         TabSheet tabsheet = new TabSheet();
+        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

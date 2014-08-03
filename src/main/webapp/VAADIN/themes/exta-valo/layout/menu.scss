@@ -1,0 +1,61 @@
+@mixin exta-menu {
+
+  $bg-lightness: if(color-luminance($v-app-background-color) < 10, 15%, -70%);
+  $bg: $valo-menu-background-color or scale-color($v-app-background-color, $lightness: $bg-lightness);
+  $font-color: valo-font-color($bg, 0.5);
+  $menu-bottom-height: 80px;
+
+  .valo-menu {
+
+    .valo-menu-item {
+
+      .v-icon {
+        font-size: 22px;
+      }
+
+    }
+
+    .valo-menu-part {
+      padding-bottom: $menu-bottom-height;
+    }
+
+    .valo-menu-bottom {
+
+//      line-height: 1.2;
+//      @include valo-gradient($color: $v-selection-color);
+//      $font-color: valo-font-color($v-selection-color, 1);
+//      color: $font-color;
+//      text-shadow: valo-text-shadow($font-color: $font-color, $background-color: $v-selection-color);
+//      padding: round($v-unit-size/3) round($v-unit-size/2);
+//      font-size: round($v-font-size * 0.9);
+//      border-bottom: valo-border($color: $v-selection-color);
+//      @include box-shadow(valo-bevel-and-shadow($shadow: $v-shadow));
+
+      border-left: valo-border($color: $bg, $strength: 0.6);
+      height: $menu-bottom-height;
+      //overflow: auto;
+
+      width: inherit;
+      position:absolute;
+      bottom:0;
+      left:0;
+
+      display: block;
+      vertical-align: bottom;
+
+      .v-icon {
+        font-size: 20px;
+      }
+
+      .avatar {
+        .v-icon {
+          font-size: 36px;
+        }
+      }
+
+    }
+
+
+  }
+
+}

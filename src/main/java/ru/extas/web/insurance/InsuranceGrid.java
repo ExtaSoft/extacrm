@@ -80,7 +80,7 @@ public class InsuranceGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new UIAction("Новый", "Ввод нового полиса страхования", "icon-doc-new") {
+        actions.add(new UIAction("Новый", "Ввод нового полиса страхования", Fontello.DOC_NEW) {
 
             @Override
             public void fire(Object itemId) {
@@ -102,7 +102,7 @@ public class InsuranceGrid extends ExtaGrid {
             }
         });
 
-        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке полис страхования", "icon-edit-3") {
+        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке полис страхования", Fontello.EDIT_3) {
             @Override
             public void fire(final Object itemId) {
                 final BeanItem<Insurance> curObj = new GridItem<>(table.getItem(itemId));
@@ -123,7 +123,7 @@ public class InsuranceGrid extends ExtaGrid {
             }
         });
 
-        actions.add(new ItemAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", "icon-clock") {
+        actions.add(new ItemAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", Fontello.CLOCK) {
             @Override
             public void fire(Object itemId) {
                 final BeanItem<Insurance> curItem = new GridItem<>(table.getItem(itemId));
@@ -164,28 +164,35 @@ public class InsuranceGrid extends ExtaGrid {
             }
         });
 
-        actions.add(new ItemAction("Печать", "Создать печатное представление полиса страхования", "icon-print-2") {
+        actions.add(new UIActionGroup("Печать", "Создать печатное представление полиса страхования", Fontello.PRINT_2) {
             @Override
-            public void fire(Object itemId) {
-                printPolicy(itemId, true);
+            protected List<UIAction> makeActionsGroup() {
+                List<UIAction> group = newArrayList();
+                group.add(new ItemAction("Печать", "Создать печатное представление полиса страхования", Fontello.PRINT_2) {
+                    @Override
+                    public void fire(Object itemId) {
+                        printPolicy(itemId, true);
+                    }
+                });
+
+                group.add(new ItemAction("Печать без подложки", "Создать печатное представление полиса страхования без подложки", Fontello.PRINT_2) {
+                    @Override
+                    public void fire(Object itemId) {
+                        printPolicy(itemId, false);
+                    }
+                });
+
+                group.add(new ItemAction("Печать счета", "Создать печатную форму счета на оплату страховки", Fontello.PRINT_2) {
+                    @Override
+                    public void fire(Object itemId) {
+                        printInvoice(itemId);
+                    }
+                });
+                return group;
             }
         });
 
-        actions.add(new ItemAction("Печать без подложки", "Создать печатное представление полиса страхования без подложки", "icon-print-2") {
-            @Override
-            public void fire(Object itemId) {
-                printPolicy(itemId, false);
-            }
-        });
-
-        actions.add(new ItemAction("Печать счета", "Создать печатную форму счета на оплату страховки", "icon-print-2") {
-            @Override
-            public void fire(Object itemId) {
-                printInvoice(itemId);
-            }
-        });
-
-        actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в Excel файл", "icon-grid") {
+        actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в Excel файл", Fontello.GRID) {
             @Override
             public void fire(Object itemId) {
                 exportTableData();

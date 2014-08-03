@@ -50,7 +50,7 @@ public class A7FormGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new ItemAction("Утрачен", "Перевести выделенный в списке бланк в \"Утраченные\"", "") {
+        actions.add(new ItemAction("Утрачен", "Перевести выделенный в списке бланк в \"Утраченные\"", null) {
             @Override
             public void fire(Object itemId) {
                 final A7Form.Status status = A7Form.Status.LOST;
@@ -58,7 +58,7 @@ public class A7FormGrid extends ExtaGrid {
             }
         });
 
-        actions.add(new ItemAction("Испорчен", "Перевести выделенный в списке бланк в \"Испорченные\"", "") {
+        actions.add(new ItemAction("Испорчен", "Перевести выделенный в списке бланк в \"Испорченные\"", null) {
             @Override
             public void fire(Object itemId) {
                 final A7Form.Status status = A7Form.Status.BROKEN;

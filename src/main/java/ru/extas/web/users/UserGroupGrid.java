@@ -40,7 +40,7 @@ public class UserGroupGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new UIAction("Новая", "Ввод новой группы пользователей в систему", "icon-user-add") {
+        actions.add(new UIAction("Новая", "Ввод новой группы пользователей в систему", Fontello.USER_ADD) {
             @Override
             public void fire(Object itemId) {
                 final BeanItem<UserGroup> newObj = new BeanItem<>(new UserGroup());
@@ -62,7 +62,7 @@ public class UserGroupGrid extends ExtaGrid {
         });
 
 
-        actions.add(new DefaultAction("Изменить", "Редактирование группы", "icon-user-1") {
+        actions.add(new DefaultAction("Изменить", "Редактирование группы", Fontello.USER_1) {
             @Override
             public void fire(final Object itemId) {
                 final BeanItem<UserGroup> curObj = new GridItem<>(table.getItem(itemId));
@@ -83,7 +83,7 @@ public class UserGroupGrid extends ExtaGrid {
             }
         });
 
-        actions.add(new ItemAction("Копировать", "Копировать текущую группу в новую запись", "icon-copycard") {
+        actions.add(new ItemAction("Копировать", "Копировать текущую группу в новую запись", Fontello.COPYCARD) {
             @Override
             public void fire(final Object itemId) {
                 final UserGroup curObj = GridItem.extractBean(table.getItem(itemId));

@@ -2,6 +2,7 @@ package ru.extas.web.commons.window;
 
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import ru.extas.web.commons.Fontello;
 
 /**
  * Стандартное окошко OK/Отмена
@@ -49,7 +50,7 @@ public class CloseOnlylWindow extends Window {
                 close();
             }
         });
-        closeBtn.setStyleName("icon-ok");
+        closeBtn.setIcon(Fontello.OK);
         this.buttonsPanel.addComponent(closeBtn);
         this.buttonsPanel.setComponentAlignment(closeBtn, Alignment.MIDDLE_RIGHT);
         this.buttonsPanel.setSpacing(true);

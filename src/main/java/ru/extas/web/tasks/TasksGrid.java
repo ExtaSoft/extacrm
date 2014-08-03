@@ -140,7 +140,7 @@ public class TasksGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-//        actions.add(new UIAction("Новый", "Ввод новой задачи", "icon-doc-new") {
+//        actions.add(new UIAction("Новый", "Ввод новой задачи", Fontello.DOC_NEW) {
 //            @Override
 //            public void fire(Object itemId) {
 //                TaskService taskService = lookup(TaskService.class);
@@ -163,7 +163,7 @@ public class TasksGrid extends ExtaGrid {
 //            }
 //        });
 
-		actions.add(new DefaultAction("Открыть", "Открыть выделенную в списке задачу", "icon-edit-3") {
+		actions.add(new DefaultAction("Открыть", "Открыть выделенную в списке задачу", Fontello.EDIT_3) {
 			@Override
 			public void fire(final Object itemId) {
 				final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
@@ -187,7 +187,7 @@ public class TasksGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", "icon-sitemap") {
+		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", Fontello.SITEMAP) {
 			@Override
 			public void fire(Object itemId) {
 				final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);

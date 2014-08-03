@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.GridDataDecl;
 
 import java.util.HashSet;
@@ -67,8 +68,8 @@ public class ContactEmployeeField extends CustomField<Set> {
 				}
 			});
 			addProdBtn.setDescription("Добавить физ. лицо в список сотрудников");
-			addProdBtn.addStyleName("icon-doc-new");
-			commandBar.addComponent(addProdBtn);
+			addProdBtn.setIcon(Fontello.DOC_NEW);
+                    commandBar.addComponent(addProdBtn);
 
 			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
 				@Override
@@ -80,7 +81,7 @@ public class ContactEmployeeField extends CustomField<Set> {
 				}
 			});
 			delProdBtn.setDescription("Удалить физ. лицо из списка сотрудников");
-			delProdBtn.addStyleName("icon-trash");
+			delProdBtn.setIcon(Fontello.TRASH);
 			commandBar.addComponent(delProdBtn);
 
 			fieldLayout.addComponent(commandBar);

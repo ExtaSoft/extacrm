@@ -1,5 +1,7 @@
 package ru.extas.web.commons;
 
+import com.vaadin.server.Resource;
+
 /**
  * <p>Abstract DefaultAction class.</p>
  *
@@ -12,12 +14,11 @@ package ru.extas.web.commons;
 public abstract class DefaultAction extends ItemAction {
     /**
      * <p>Constructor for DefaultAction.</p>
-     *
-     * @param name a {@link java.lang.String} object.
-     * @param description a {@link java.lang.String} object.
-     * @param iconStyle a {@link java.lang.String} object.
+     *  @param name a {@link String} object.
+     * @param description a {@link String} object.
+     * @param icon a {@link String} object.
      */
-    public DefaultAction(String name, String description, String iconStyle) {
-        super(name, description, iconStyle);
+    public DefaultAction(String name, String description, Resource icon) {
+        super(name, description, icon);
     }
 }

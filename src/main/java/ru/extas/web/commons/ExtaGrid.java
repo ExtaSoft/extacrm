@@ -41,7 +41,9 @@ public abstract class ExtaGrid extends CustomComponent {
     private List<UIAction> actions;
     private GridDataDecl dataDecl;
     private Mode currentMode;
-    private List<Component> needCurrentBtns;
+    private List<MenuBar.MenuItem> needCurrentBtns;
+    private MenuBar.MenuItem tableModeBtn;
+    private MenuBar.MenuItem detailModeBtn;
 
     public enum Mode {
         TABLE,
@@ -86,55 +88,52 @@ public abstract class ExtaGrid extends CustomComponent {
         panel.setSizeFull();
 
         // Формируем тулбар
-        final HorizontalLayout commandBar = createGridToolbar(mode);
+        final MenuBar commandBar = createGridToolbar(mode);
         panel.addComponent(commandBar);
 
         // Переключение режима таблицы
-        final HorizontalLayout modeSwitchBar = new HorizontalLayout();
-        modeSwitchBar.addStyleName("mode-switch-bar segment");
-        final Button tableFilterBtn = new Button("Фильтр");
-        tableFilterBtn.setDescription("Показать строку фильтра таблицы");
-        tableFilterBtn.addStyleName("first icon-filter0 icon-only");
-        tableFilterBtn.addClickListener(new Button.ClickListener() {
+        final MenuBar modeSwitchBar = new MenuBar();
+        modeSwitchBar.addStyleName("borderless");
+        modeSwitchBar.addStyleName("mode-switch-bar");
+        final MenuBar.MenuItem tableFilterBtn = modeSwitchBar.addItem("", Fontello.FILTER0, new MenuBar.Command() {
             @Override
-            public void buttonClick(Button.ClickEvent event) {
-                boolean isFilterVisible = table.isFilterBarVisible();
-                table.setFilterBarVisible(!isFilterVisible);
-                if (isFilterVisible)
-                    tableFilterBtn.removeStyleName("down");
-                else
-                    tableFilterBtn.addStyleName("down");
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                table.setFilterBarVisible(selectedItem.isChecked());
             }
         });
-        final Button tableModeBtn = new Button("Таблица");
-        tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
-        tableModeBtn.addStyleName("icon-table icon-only");
-        final Button detailModeBtn = new Button("Детали");
-        detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
-        detailModeBtn.addStyleName("last icon-list-alt icon-only");
-        if (currentMode == Mode.TABLE)
-            tableModeBtn.addStyleName("down");
-        else
-            detailModeBtn.addStyleName("down");
-        final Button.ClickListener switchListener = new Button.ClickListener() {
+        tableFilterBtn.setDescription("Показать строку фильтра таблицы");
+        tableFilterBtn.setStyleName("icon-only");
+        tableFilterBtn.setCheckable(true);
+
+        MenuBar.Command modeCommand = new MenuBar.Command() {
             @Override
-            public void buttonClick(Button.ClickEvent event) {
-                if (event.getButton() == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                if (selectedItem == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
                     initContent(Mode.TABLE);
-                    tableModeBtn.addStyleName("down");
-                    detailModeBtn.removeStyleName("down");
+                    detailModeBtn.setChecked(false);
                 } else if (currentMode == Mode.TABLE) {
                     initContent(Mode.DETAIL_LIST);
-                    tableModeBtn.removeStyleName("down");
-                    detailModeBtn.addStyleName("down");
+                    tableModeBtn.setChecked(false);
                 }
             }
         };
-        tableModeBtn.addClickListener(switchListener);
-        detailModeBtn.addClickListener(switchListener);
-        modeSwitchBar.addComponent(tableFilterBtn);
-        modeSwitchBar.addComponent(tableModeBtn);
-        modeSwitchBar.addComponent(detailModeBtn);
+        tableModeBtn = modeSwitchBar.addItem("", Fontello.TABLE, modeCommand);
+        tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
+        tableModeBtn.setStyleName("icon-only");
+        tableModeBtn.setCheckable(true);
+
+        detailModeBtn = modeSwitchBar.addItem("", Fontello.LIST_ALT, modeCommand);
+        detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
+        detailModeBtn.setStyleName("icon-only");
+        detailModeBtn.setCheckable(true);
+
+        if (currentMode == Mode.TABLE) {
+            tableModeBtn.setChecked(true);
+            detailModeBtn.setChecked(false);
+        } else {
+            detailModeBtn.setChecked(true);
+            tableModeBtn.setChecked(false);
+        }
         panel.addComponent(modeSwitchBar);
 
         // Таблица
@@ -144,38 +143,46 @@ public abstract class ExtaGrid extends CustomComponent {
         setCompositionRoot(panel);
     }
 
-    private HorizontalLayout createGridToolbar(Mode mode) {
-        final HorizontalLayout commandBar = new HorizontalLayout();
+    private MenuBar createGridToolbar(Mode mode) {
+        final MenuBar commandBar = new MenuBar();
         commandBar.addStyleName("grid-toolbar");
-        commandBar.setSpacing(true);
+        commandBar.addStyleName("borderless");
+        commandBar.focus();
 
         needCurrentBtns = newArrayList();
         for (final UIAction action : actions) {
-            final Component button = action.createButton();
-
-
-            if (button instanceof Button) {
-                ((Button) button).addClickListener(new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(final Button.ClickEvent event) {
-                        if (action instanceof ItemAction) {
-                            Object item = table.getValue();
-                            refreshContainerItem(item);
-                            action.fire(checkNotNull(item, "No selected row"));
-                        } else
-                            action.fire(null);
-                    }
-                });
-                if (commandBar.getComponentCount() == 0)
-                    ((Button) button).focus(); // фокус на первую кнопку
-            }
-            commandBar.addComponent(button);
-            if (action instanceof ItemAction) {
-                needCurrentBtns.add(button);
-                button.setEnabled(false);
-            }
+            final MenuBar.MenuItem menuItem = commandBar.addItem(action.getName(), action.getIcon(), null);
+            fillGridTollbarItem(action, menuItem);
         }
         return commandBar;
+    }
+
+    private void fillGridTollbarItem(final UIAction action, MenuBar.MenuItem menuItem) {
+        menuItem.setDescription(action.getDescription());
+
+        if(action instanceof UIActionGroup) {
+            for (final UIAction subAction : (((UIActionGroup) action).getActionsGroup())) {
+                fillGridTollbarItem(subAction, menuItem.addItem(subAction.getName(), subAction.getIcon(), null));
+            }
+        } else {
+            MenuBar.Command command = new MenuBar.Command() {
+                @Override
+                public void menuSelected(MenuBar.MenuItem selectedItem) {
+                    if (action instanceof ItemAction) {
+                        Object item = table.getValue();
+                        refreshContainerItem(item);
+                        action.fire(checkNotNull(item, "No selected row"));
+                    } else
+                        action.fire(null);
+
+                }
+            };
+            menuItem.setCommand(command);
+        }
+        if (action instanceof ItemAction) {
+            needCurrentBtns.add(menuItem);
+            menuItem.setEnabled(false);
+        }
     }
 
     /**
@@ -300,7 +307,7 @@ public abstract class ExtaGrid extends CustomComponent {
             });
             table.setColumnHeader(OVERALL_COLUMN, "Общая информация");
             table.setVisibleColumns(OVERALL_COLUMN);
-            for (Component btn : needCurrentBtns)
+            for (MenuBar.MenuItem btn : needCurrentBtns)
                 btn.setVisible(false);
         } else { // Classic table
             // Настройка столбцов таблицы
@@ -314,7 +321,7 @@ public abstract class ExtaGrid extends CustomComponent {
                         defAction.fire(event.getItemId());
                 }
             });
-            for (Component btn : needCurrentBtns)
+            for (MenuBar.MenuItem btn : needCurrentBtns)
                 btn.setVisible(true);
             // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
             table.addValueChangeListener(new Property.ValueChangeListener() {
@@ -322,7 +329,7 @@ public abstract class ExtaGrid extends CustomComponent {
                 @Override
                 public void valueChange(final Property.ValueChangeEvent event) {
                     final boolean enableBtb = event.getProperty().getValue() != null;
-                    for (Component btn : needCurrentBtns)
+                    for (MenuBar.MenuItem btn : needCurrentBtns)
                         btn.setEnabled(enableBtb);
                 }
             });

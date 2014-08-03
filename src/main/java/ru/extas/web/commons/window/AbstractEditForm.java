@@ -12,6 +12,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.web.commons.Fontello;
 
 import java.util.Iterator;
 
@@ -30,7 +31,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
 
     private static final long serialVersionUID = -5592353839008000742L;
     protected boolean saved = false;
-    private final HorizontalLayout buttonsPanel = new HorizontalLayout();
+    private HorizontalLayout buttonsPanel;
     private Button cancelBtn;
     private Button okBtn;
     private FieldGroup fieldGroup;
@@ -82,7 +83,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
                 close();
             }
         });
-        cancelBtn.setStyleName("icon-cancel");
+        cancelBtn.setIcon(Fontello.CANCEL);
         cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 
         okBtn = new Button("OK", new Button.ClickListener() {
@@ -111,14 +112,18 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
             }
 
         });
-
-        okBtn.setStyleName("icon-ok");
+        okBtn.addStyleName("primary");
+        okBtn.setIcon(Fontello.OK);
         okBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
-        this.buttonsPanel.addComponent(okBtn);
-        this.buttonsPanel.setComponentAlignment(okBtn, Alignment.MIDDLE_RIGHT);
-        this.buttonsPanel.addComponent(cancelBtn);
-        this.buttonsPanel.setComponentAlignment(cancelBtn, Alignment.MIDDLE_RIGHT);
-        this.buttonsPanel.setSpacing(true);
+
+        Label footerText = new Label("");
+        footerText.setSizeUndefined();
+
+        buttonsPanel = new HorizontalLayout(footerText, okBtn, cancelBtn);
+        buttonsPanel.setExpandRatio(footerText, 1);
+        buttonsPanel.addStyleName("v-window-bottom-toolbar");
+        buttonsPanel.setWidth("100%");
+        buttonsPanel.setSpacing(true);
 
         setDefaultFocus(form);
         setContent(form);
@@ -173,10 +178,15 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
     @Override
     public void setContent(Component content) {
         if (content != null) {
+//            Panel contentPanel = new Panel();
+//            contentPanel.setSizeFull();
+//            contentPanel.addStyleName("borderless");
+//            contentPanel.addStyleName("scroll-divider");
+//            contentPanel.setContent(content);
+
             final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
             contentContainer.setMargin(true);
             contentContainer.setSpacing(true);
-            contentContainer.setComponentAlignment(this.buttonsPanel, Alignment.MIDDLE_RIGHT);
             content = contentContainer;
         }
         super.setContent(content);

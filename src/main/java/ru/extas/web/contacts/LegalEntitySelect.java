@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -117,7 +118,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
 
             }
         });
-        searchBtn.addStyleName("icon-search-outline");
+        searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
         searchBtn.addStyleName("icon-only");
         nameLay.addComponent(searchBtn);
         nameLay.setComponentAlignment(searchBtn, Alignment.BOTTOM_LEFT);
@@ -145,7 +146,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
                 editWin.showModal();
             }
         });
-        viewBtn.addStyleName("icon-edit-3");
+        viewBtn.setIcon(Fontello.EDIT_3);
         viewBtn.addStyleName("icon-only");
         nameLay.addComponent(viewBtn);
         nameLay.setComponentAlignment(viewBtn, Alignment.BOTTOM_LEFT);

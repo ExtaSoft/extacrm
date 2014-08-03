@@ -60,7 +60,7 @@ public class FormTransferGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new UIAction("Новый", "Ввод нового акта приема/передачи", "icon-doc-new") {
+        actions.add(new UIAction("Новый", "Ввод нового акта приема/передачи", Fontello.DOC_NEW) {
             @Override
             public void fire(Object itemId) {
                 final BeanItem<FormTransfer> newObj = new BeanItem<>(new FormTransfer());
@@ -81,7 +81,7 @@ public class FormTransferGrid extends ExtaGrid {
             }
         });
 
-        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке акта приема/передачи", "icon-edit-3") {
+        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке акта приема/передачи", Fontello.EDIT_3) {
             @Override
             public void fire(final Object itemId) {
                 final BeanItem<FormTransfer> curObj = new GridItem<>(table.getItem(itemId));
@@ -103,7 +103,7 @@ public class FormTransferGrid extends ExtaGrid {
             }
         });
 
-        actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", "icon-print-2") {
+        actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", Fontello.PRINT_2) {
             @Override
             public void fire(Object itemId) {
                 printFormTransfer(itemId);
