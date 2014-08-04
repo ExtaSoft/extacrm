@@ -2,9 +2,10 @@
 // @import "flat";
 // @import "flat-dark";
 // @import "facebook";
-@import "metro";
+//@import "metro";
 // @import "dark";
 // @import "blueprint";
+@import "extremeassist";
 @import "layout/menu";
 @import "layout/base";
 
@@ -26,7 +27,7 @@
     @include valo-anim-fade-in;
 
     .v-panel-caption {
-      color: $font-color;
+      color: $v-selection-color;
       font-size: round($v-font-size * 1.2);
     }
   }
