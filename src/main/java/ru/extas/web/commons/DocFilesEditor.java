@@ -83,7 +83,7 @@ public class DocFilesEditor<TFileContainer extends FileContainer> extends Custom
         protected List<UIAction> createActions() {
             List<UIAction> actions = newArrayList();
 
-            actions.add(new UIAction("Добавить файлы", "Загрузить новые файлы в систему", "icon-doc-new") {
+            actions.add(new UIAction("Добавить файлы", "Загрузить новые файлы в систему", Fontello.DOC_NEW) {
                 @Override
                 public void fire(Object itemId) { }
 
@@ -113,12 +113,12 @@ public class DocFilesEditor<TFileContainer extends FileContainer> extends Custom
                         }
                     };
                     FileUploader fileUploader = new FileUploader("Добавить файлы", handler);
-                    fileUploader.setStyleName("icon-download");
+                    fileUploader.setIcon(Fontello.DOWNLOAD);
                     return fileUploader;
                 }
             });
 
-            actions.add(new DefaultAction("Скачать", "Скачать выделенный в списке документ", "icon-download") {
+            actions.add(new DefaultAction("Скачать", "Скачать выделенный в списке документ", Fontello.DOWNLOAD) {
                 @Override
                 public void fire(Object itemId) {
                     final FileContainer fileContainer = extractBean(table.getItem(itemId));
@@ -127,7 +127,7 @@ public class DocFilesEditor<TFileContainer extends FileContainer> extends Custom
                 }
             });
 
-            actions.add(new ItemAction("Удалить", "Удалить файл из списка", "icon-trash") {
+            actions.add(new ItemAction("Удалить", "Удалить файл из списка", Fontello.TRASH) {
                 @Override
                 public void fire(final Object itemId) {
                     container.removeItem(itemId);

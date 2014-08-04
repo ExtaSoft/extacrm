@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.Product;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.product.ProductDataDecl;
 import ru.extas.web.product.ProductSelectWindow;
@@ -69,7 +70,7 @@ public class LegalProductsField extends CustomField<List> {
 				}
 			});
 			addProdBtn.setDescription("Добавить продукт в список доступных данному юридическому лицу");
-			addProdBtn.addStyleName("icon-doc-new");
+			addProdBtn.setIcon(Fontello.DOC_NEW);
 			commandBar.addComponent(addProdBtn);
 
 			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
@@ -82,7 +83,7 @@ public class LegalProductsField extends CustomField<List> {
 				}
 			});
 			delProdBtn.setDescription("Удалить продукт из списка доступных данному юридическому лицу");
-			delProdBtn.addStyleName("icon-trash");
+			delProdBtn.setIcon(Fontello.TRASH);
 			commandBar.addComponent(delProdBtn);
 
 			fieldLayout.addComponent(commandBar);

@@ -48,7 +48,7 @@ public class PolicyGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового бланка", "icon-doc-new") {
+		actions.add(new UIAction("Новый", "Ввод нового бланка", Fontello.DOC_NEW) {
 
 			@Override
 			public void fire(Object itemId) {
@@ -70,7 +70,7 @@ public class PolicyGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке бланк", "icon-edit-3") {
+		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке бланк", Fontello.EDIT_3) {
 			@Override
 			public void fire(final Object itemId) {
 				final BeanItem<Policy> curObj = new GridItem<>(table.getItem(itemId));

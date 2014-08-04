@@ -1,5 +1,6 @@
 package ru.extas.web.commons;
 
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 
@@ -21,19 +22,18 @@ public abstract class UIAction implements Serializable {
     // Описание действия
     protected String description;
     // Стиль иконки
-    protected String iconStyle;
+    protected Resource icon;
 
     /**
      * <p>Constructor for UIAction.</p>
-     *
-     * @param name a {@link java.lang.String} object.
-     * @param description a {@link java.lang.String} object.
-     * @param iconStyle a {@link java.lang.String} object.
+     *  @param name a {@link String} object.
+     * @param description a {@link String} object.
+     * @param icon a {@link String} object.
      */
-    public UIAction(String name, String description, String iconStyle) {
+    public UIAction(String name, String description, Resource icon) {
         this.description = description;
         this.name = name;
-        this.iconStyle = iconStyle;
+        this.icon = icon;
     }
 
     /**
@@ -44,11 +44,11 @@ public abstract class UIAction implements Serializable {
     public Component createButton() {
         final Button button = new Button(getName());
         button.setDescription(getDescription());
-        button.addStyleName(getIconStyle());
+        button.setIcon(getIcon());
         return button;
     }
-    // Функция
     /**
+     * Функция
      * <p>fire.</p>
      *
      * @param itemId a {@link java.lang.Object} object.
@@ -92,20 +92,20 @@ public abstract class UIAction implements Serializable {
     }
 
     /**
-     * <p>Getter for the field <code>iconStyle</code>.</p>
+     * <p>Getter for the field <code>icon</code>.</p>
      *
      * @return a {@link java.lang.String} object.
      */
-    public String getIconStyle() {
-        return iconStyle;
+    public Resource getIcon() {
+        return icon;
     }
 
     /**
-     * <p>Setter for the field <code>iconStyle</code>.</p>
+     * <p>Setter for the field <code>icon</code>.</p>
      *
-     * @param iconStyle a {@link java.lang.String} object.
+     * @param icon a {@link String} object.
      */
-    public void setIconStyle(String iconStyle) {
-        this.iconStyle = iconStyle;
+    public void setIcon(Resource icon) {
+        this.icon = icon;
     }
 }

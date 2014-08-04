@@ -16,6 +16,7 @@ import ru.extas.model.lead.Lead;
 import ru.extas.server.lead.LeadRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
@@ -243,7 +244,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         setVendorsFilter();
 
         Button newBtn = new Button("Новый");
-        newBtn.addStyleName("icon-doc-new");
+        newBtn.setIcon(Fontello.DOC_NEW);
         newBtn.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -320,7 +321,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         setClientsFilter(lead.getContactName());
 
         Button newBtn = new Button("Новый");
-        newBtn.addStyleName("icon-doc-new");
+        newBtn.setIcon(Fontello.DOC_NEW);
         newBtn.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {

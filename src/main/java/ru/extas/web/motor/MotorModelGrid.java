@@ -42,7 +42,7 @@ public class MotorModelGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод новой модели техники", "icon-doc-new") {
+		actions.add(new UIAction("Новый", "Ввод новой модели техники", Fontello.DOC_NEW) {
 
 			@Override
 			public void fire(Object itemId) {
@@ -64,7 +64,7 @@ public class MotorModelGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенную в списке модель техники", "icon-edit-3") {
+		actions.add(new DefaultAction("Изменить", "Редактировать выделенную в списке модель техники", Fontello.EDIT_3) {
 			@Override
 			public void fire(final Object itemId) {
 				final BeanItem<MotorModel> curObj = new GridItem<>(table.getItem(itemId));

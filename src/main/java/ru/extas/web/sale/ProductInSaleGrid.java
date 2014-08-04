@@ -8,6 +8,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
+import ru.extas.web.commons.Fontello;
 
 import java.util.List;
 
@@ -83,7 +84,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 				}
 			});
 			addProdBtn.setDescription("Добавить продукт в продажу");
-			addProdBtn.addStyleName("icon-doc-new");
+			addProdBtn.setIcon(Fontello.DOC_NEW);
 			commandBar.addComponent(addProdBtn);
 
 			final Button edtProdBtn = new Button("Изменить", new Button.ClickListener() {
@@ -97,7 +98,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 				}
 			});
 			edtProdBtn.setDescription("Изменить выделенный в списке продукт");
-			edtProdBtn.addStyleName("icon-edit-3");
+			edtProdBtn.setIcon(Fontello.EDIT_3);
 			commandBar.addComponent(edtProdBtn);
 
 			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
@@ -109,7 +110,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 				}
 			});
 			delProdBtn.setDescription("Удалить продукт из продажи");
-			delProdBtn.addStyleName("icon-trash");
+			delProdBtn.setIcon(Fontello.TRASH);
 			commandBar.addComponent(delProdBtn);
 
 			fieldLayout.addComponent(commandBar);

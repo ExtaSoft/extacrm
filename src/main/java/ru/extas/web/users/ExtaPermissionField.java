@@ -90,7 +90,7 @@ public class ExtaPermissionField extends CustomField<Set> {
             protected List<UIAction> createActions() {
                 List<UIAction> actions = newArrayList();
 
-                actions.add(new UIAction("Новое", "Ввод нового правила доступа в систему", "icon-doc-new") {
+                actions.add(new UIAction("Новое", "Ввод нового правила доступа в систему", Fontello.DOC_NEW) {
                     @Override
                     public void fire(Object itemId) {
                         final ExtaPermission entity = new ExtaPermission();
@@ -111,7 +111,7 @@ public class ExtaPermissionField extends CustomField<Set> {
                     }
                 });
 
-                actions.add(new DefaultAction("Изменить", "Редактирование правила доступа", "icon-edit-3") {
+                actions.add(new DefaultAction("Изменить", "Редактирование правила доступа", Fontello.EDIT_3) {
                     @Override
                     public void fire(final Object itemId) {
                         final BeanItem<ExtaPermission> beanItem = new GridItem<>(table.getItem(itemId));
@@ -127,7 +127,7 @@ public class ExtaPermissionField extends CustomField<Set> {
                         editWin.showModal();
                     }
                 });
-                actions.add(new ItemAction("Удалить", "Удалить правило доступа", "icon-trash") {
+                actions.add(new ItemAction("Удалить", "Удалить правило доступа", Fontello.TRASH) {
                     @Override
                     public void fire(final Object itemId) {
                         container.removeItem(itemId);

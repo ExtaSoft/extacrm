@@ -7,6 +7,7 @@ import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.OnDemandFileDownloader;
 
 import java.io.ByteArrayInputStream;
@@ -55,13 +56,11 @@ public class DownloadFileWindow extends Window {
 		final HorizontalLayout toolbar = new HorizontalLayout();
 		toolbar.setSpacing(true);
 
-		final Button downloadBtn = new Button("Скачать");
-		downloadBtn.setStyleName("icon-download");
+		final Button downloadBtn = new Button("Скачать", Fontello.DOWNLOAD);
 		createDownloader(file, fileName).extend(downloadBtn);
 		toolbar.addComponent(downloadBtn);
 
-		final Button viewBtn = new Button("Посмотреть");
-		viewBtn.setStyleName("icon-search-1");
+		final Button viewBtn = new Button("Посмотреть", Fontello.SEARCH_1);
 		BrowserWindowOpener opener =
 				new BrowserWindowOpener(new StreamResource(
 						new StreamResource.StreamSource() {

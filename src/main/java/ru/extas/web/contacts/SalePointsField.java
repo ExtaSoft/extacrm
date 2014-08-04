@@ -8,10 +8,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.GridItem;
-import ru.extas.web.commons.ItemAction;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -69,7 +66,7 @@ public class SalePointsField extends CustomField<Set> {
 			protected List<UIAction> createActions() {
 				List<UIAction> actions = newArrayList();
 
-				actions.add(new UIAction("Новый", "Ввод новой торговой точки в систему", "icon-doc-new") {
+				actions.add(new UIAction("Новый", "Ввод новой торговой точки в систему", Fontello.DOC_NEW) {
 					@Override
 					public void fire(Object itemId) {
 						final SalePoint entity = new SalePoint();
@@ -88,7 +85,7 @@ public class SalePointsField extends CustomField<Set> {
 					}
 				});
 
-				actions.add(new DefaultAction("Изменить", "Редактирование торговой точки", "icon-edit-3") {
+				actions.add(new DefaultAction("Изменить", "Редактирование торговой точки", Fontello.EDIT_3) {
 					@Override
 					public void fire(final Object itemId) {
 						final BeanItem<SalePoint> beanItem = new GridItem<>(table.getItem(itemId));
@@ -102,7 +99,7 @@ public class SalePointsField extends CustomField<Set> {
 						editWin.showModal();
 					}
 				});
-				actions.add(new ItemAction("Удалить", "Удалить торговую точку", "icon-trash") {
+				actions.add(new ItemAction("Удалить", "Удалить торговую точку", Fontello.TRASH) {
 					@Override
 					public void fire(final Object itemId) {
 						container.removeItem(itemId);

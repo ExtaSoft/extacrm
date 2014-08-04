@@ -8,6 +8,7 @@ import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import ru.extas.model.security.UserGroup;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.ItemAction;
 import ru.extas.web.commons.UIAction;
 
@@ -62,7 +63,7 @@ public class UserGroupField extends CustomField<Set> {
             protected List<UIAction> createActions() {
                 List<UIAction> actions = newArrayList();
 
-                actions.add(new UIAction("Добавить", "Добавить пользователя в группу", "icon-user-add") {
+                actions.add(new UIAction("Добавить", "Добавить пользователя в группу", Fontello.USER_ADD) {
                     @Override
                     public void fire(Object itemId) {
                         final UserGroupSelectWindow selectWindow = new UserGroupSelectWindow("Выберите группу");
@@ -81,7 +82,7 @@ public class UserGroupField extends CustomField<Set> {
                     }
                 });
 
-                actions.add(new ItemAction("Удалить", "Удалить принадлежность к группе", "icon-trash") {
+                actions.add(new ItemAction("Удалить", "Удалить принадлежность к группе", Fontello.TRASH) {
                     @Override
                     public void fire(final Object itemId) {
                         container.removeItem(itemId);

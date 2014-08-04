@@ -5,6 +5,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -114,7 +115,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
 
 			}
 		});
-		searchBtn.addStyleName("icon-search-outline");
+		searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
 		searchBtn.addStyleName("icon-only");
 		nameLay.addComponent(searchBtn);
 		nameLay.setComponentAlignment(searchBtn, Alignment.BOTTOM_LEFT);
@@ -142,7 +143,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
 				editWin.showModal();
 			}
 		});
-		viewBtn.addStyleName("icon-edit-3");
+		viewBtn.setIcon(Fontello.EDIT_3);
 		viewBtn.addStyleName("icon-only");
 		nameLay.addComponent(viewBtn);
 		nameLay.setComponentAlignment(viewBtn, Alignment.BOTTOM_LEFT);

@@ -2,6 +2,7 @@ package ru.extas.web.commons.window;
 
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import ru.extas.web.commons.Fontello;
 
 /**
  * Стандартное окошко OK/Отмена
@@ -50,7 +51,7 @@ public class OkCancelWindow extends Window {
                 close();
             }
         });
-        cancelBtn.setStyleName("icon-cancel");
+        cancelBtn.setIcon(Fontello.CANCEL);
         okBtn = new Button("OK", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
@@ -60,7 +61,7 @@ public class OkCancelWindow extends Window {
                 close();
             }
         });
-        okBtn.setStyleName("icon-ok");
+        okBtn.setIcon(Fontello.OK);
         this.buttonsPanel.addComponent(okBtn);
         this.buttonsPanel.setComponentAlignment(okBtn, Alignment.MIDDLE_RIGHT);
         this.buttonsPanel.addComponent(cancelBtn);

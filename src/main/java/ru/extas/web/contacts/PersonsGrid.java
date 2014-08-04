@@ -50,7 +50,7 @@ public class PersonsGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового Контакта в систему", "icon-user-add-1") {
+		actions.add(new UIAction("Новый", "Ввод нового Контакта в систему", Fontello.USER_ADD_1) {
 			@Override
 			public void fire(Object itemId) {
 				final BeanItem<Person> newObj = new BeanItem<>(new Person());
@@ -70,7 +70,7 @@ public class PersonsGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", "icon-user-2") {
+		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.USER_2) {
 			@Override
 			public void fire(final Object itemId) {
 

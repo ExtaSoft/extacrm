@@ -63,7 +63,7 @@ public class LegalEntitiesGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового Юридического лица в систему", "icon-doc-new") {
+		actions.add(new UIAction("Новый", "Ввод нового Юридического лица в систему", Fontello.DOC_NEW) {
 			@Override
 			public void fire(Object itemId) {
 				final LegalEntity entity = new LegalEntity();
@@ -87,7 +87,7 @@ public class LegalEntitiesGrid extends ExtaGrid {
 			}
 		});
 
-		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", "icon-edit-3") {
+		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.EDIT_3) {
 			@Override
 			public void fire(final Object itemId) {
 				final BeanItem<LegalEntity> beanItem = new GridItem<>(table.getItem(itemId));

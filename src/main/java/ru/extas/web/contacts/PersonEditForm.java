@@ -126,6 +126,7 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     @Override
     protected ComponentContainer createEditFields(final Person obj) {
         TabSheet tabsheet = new TabSheet();
+        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Форма редактирования персональных данных

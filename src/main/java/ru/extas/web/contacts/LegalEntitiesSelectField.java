@@ -10,10 +10,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
-import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.GridItem;
-import ru.extas.web.commons.ItemAction;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -71,7 +68,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 			protected List<UIAction> createActions() {
 				List<UIAction> actions = newArrayList();
 
-				actions.add(new UIAction("Добавить", "Выбрать юридическое лицо осуществляющуе деятельность на торговой точке", "icon-doc-new") {
+				actions.add(new UIAction("Добавить", "Выбрать юридическое лицо осуществляющуе деятельность на торговой точке", Fontello.DOC_NEW) {
 					@Override
 					public void fire(Object itemId) {
 						final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите юридическое лицо", company);
@@ -90,7 +87,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 					}
 				});
 
-				actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", "icon-edit-3") {
+				actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.EDIT_3) {
 					@Override
 					public void fire(final Object itemId) {
 						final BeanItem<LegalEntity> beanItem = new GridItem<>(table.getItem(itemId));
@@ -104,7 +101,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 						editWin.showModal();
 					}
 				});
-				actions.add(new ItemAction("Удалить", "Удалить юр.лицо из компании", "icon-trash") {
+				actions.add(new ItemAction("Удалить", "Удалить юр.лицо из компании", Fontello.TRASH) {
 					@Override
 					public void fire(final Object itemId) {
 						container.removeItem(itemId);

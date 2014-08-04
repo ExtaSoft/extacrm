@@ -11,6 +11,7 @@ import com.vaadin.data.Container.ItemSetChangeListener;
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.window.GetValueWindowLong;
 import ru.extas.web.commons.window.GetValueWindowLongRange;
 
@@ -124,7 +125,7 @@ public class A7NumListEdit extends CustomField<List> {
     private void addNumber(final String num) {
         final Button delItemBtn = new Button("Удалить");
         delItemBtn.setDescription("Удалить квитанцию из акта");
-        delItemBtn.addStyleName("icon-trash");
+        delItemBtn.setIcon(Fontello.TRASH);
         delItemBtn.addStyleName("icon-only");
         delItemBtn.addClickListener(new Button.ClickListener() {
 
