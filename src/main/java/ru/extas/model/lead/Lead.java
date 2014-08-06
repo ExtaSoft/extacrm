@@ -47,6 +47,9 @@ public class Lead extends SecuredObject {
 		CLIENT_REJECTED
 	}
 
+    @Column(unique = true, columnDefinition = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE")
+    private Long num;
+
 	// Регион покупки техники
 	@Column(name = "REGION")
 	private String region;
@@ -111,7 +114,16 @@ public class Lead extends SecuredObject {
 	@Enumerated(EnumType.STRING)
 	private Result result;
 
-	/**
+
+    public Long getNum() {
+        return num;
+    }
+
+    public void setNum(Long num) {
+        this.num = num;
+    }
+
+    /**
 	 * <p>Getter for the field <code>result</code>.</p>
 	 *
 	 * @return a {@link ru.extas.model.lead.Lead.Result} object.

@@ -58,4 +58,15 @@
     overflow: scroll;
   }
 
+  .v-table-table {
+
+    font-size: round($v-font-size * 0.86);
+
+    .v-button-link {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+  }
+
 }
