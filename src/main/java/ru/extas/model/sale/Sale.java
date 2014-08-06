@@ -48,7 +48,10 @@ public class Sale extends SecuredObject {
 		CLIENT_REJECTED
 	}
 
-	// Клиент
+    @Column(unique = true, columnDefinition = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE")
+    private Long num;
+
+    // Клиент
 	@OneToOne(cascade = CascadeType.REFRESH)
 	private Person client;
 
@@ -91,7 +94,16 @@ public class Sale extends SecuredObject {
 	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<ProductInSale> productInSales;
 
-	/**
+
+    public Long getNum() {
+        return num;
+    }
+
+    public void setNum(Long num) {
+        this.num = num;
+    }
+
+    /**
 	 * <p>Getter for the field <code>result</code>.</p>
 	 *
 	 * @return a {@link ru.extas.model.sale.Sale.Result} object.

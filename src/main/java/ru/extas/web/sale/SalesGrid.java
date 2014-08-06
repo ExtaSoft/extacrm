@@ -62,6 +62,7 @@ public class SalesGrid extends ExtaGrid {
 		// Запрос данных
 		final ExtaDataContainer<Sale> container = new SecuredDataContainer<>(Sale.class, domain);
 		container.addNestedContainerProperty("client.name");
+		container.addNestedContainerProperty("client.phone");
 		container.addNestedContainerProperty("dealer.name");
 		container.addContainerFilter(new Compare.Equal("status",
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :

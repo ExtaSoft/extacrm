@@ -39,7 +39,7 @@ public class GridDataDecl implements Serializable {
         Class<?> getType();
     }
 
-    public abstract class ComponentColumnGenerator implements GridColumnGenerator {
+    public static abstract class ComponentColumnGenerator implements GridColumnGenerator {
         @Override
         public Property getCellProperty(Object columnId, Item item) {
             return null;
