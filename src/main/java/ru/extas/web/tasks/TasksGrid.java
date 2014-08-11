@@ -1,10 +1,12 @@
 package ru.extas.web.tasks;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.CustomTable;
-import com.vaadin.ui.Window;
+import com.vaadin.data.util.converter.StringToDateConverter;
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.ui.*;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
@@ -15,6 +17,7 @@ import ru.extas.model.security.UserRole;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.converters.StringToDateTimeConverter;
 
 import java.util.List;
 import java.util.Map;
@@ -57,42 +60,6 @@ public class TasksGrid extends ExtaGrid {
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new TaskDataDecl();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void initTable(Mode mode) {
-		super.initTable(mode);
-		table.addGeneratedColumn("clientName", new CustomTable.ColumnGenerator() {
-			@Override
-			public Object generateCell(CustomTable source, Object itemId, Object columnId) {
-				String clientName = null;
-				Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
-				RuntimeService runtimeService = lookup(RuntimeService.class);
-				Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
-				if (processVariables.containsKey("lead")) {
-					Lead lead = (Lead) processVariables.get("lead");
-					clientName = lead.getContactName();
-				}
-				return clientName;
-			}
-		});
-		table.setColumnHeader("clientName", "Клиент");
-		table.addGeneratedColumn("dealerName", new CustomTable.ColumnGenerator() {
-			@Override
-			public Object generateCell(CustomTable source, Object itemId, Object columnId) {
-				String clientName = null;
-				Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
-				RuntimeService runtimeService = lookup(RuntimeService.class);
-				Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
-				if (processVariables.containsKey("lead")) {
-					Lead lead = (Lead) processVariables.get("lead");
-					clientName = lead.getPointOfSale();
-				}
-				return clientName;
-			}
-		});
-		table.setColumnHeader("dealerName", "Мотосалон");
 	}
 
 	/** {@inheritDoc} */
@@ -205,5 +172,43 @@ public class TasksGrid extends ExtaGrid {
 	protected void refreshContainer() {
 		fillDataContainer((BeanItemContainer<Task>) container);
 	}
+
+    @Override
+    protected CustomTable.ColumnGenerator createDetailColumnGenerator(final UIAction defAction) {
+        return new CustomTable.ColumnGenerator() {
+
+            private StringToDateConverter dtConverter = new StringToDateTimeConverter("EEE, dd MMM, HH:mm");
+
+            @Override
+            public Object generateCell(CustomTable source, final Object itemId, Object columnId) {
+                Item item = source.getItem(itemId);
+                Task task = GridItem.extractBean(item);
+
+                Button titleLink = new Button();
+                titleLink.addStyleName("link");
+                titleLink.setCaption(task.getName());
+                titleLink.setDescription(defAction.getDescription());
+                titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+                titleLink.addClickListener(new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        defAction.fire(itemId);
+                    }
+                });
+
+                VerticalLayout panel = new VerticalLayout();
+                panel.addComponent(titleLink);
+
+                Label desc = new Label(task.getDescription());
+                panel.addComponent(desc);
+
+                Label dueTime = new Label(item.getItemProperty("dueDate"));
+                dueTime.setConverter(dtConverter);
+                panel.addComponent(dueTime);
+
+                return panel;
+            }
+        };
+    }
 
 }

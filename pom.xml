@@ -19,6 +19,7 @@
         <gson.version>2.2.4</gson.version>
 
         <vaadin.version>7.3.0.beta1</vaadin.version>
+        <vaadin-charts.version>1.1.6</vaadin-charts.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
         <vaadin.filteringtable.version>0.9.9.v7</vaadin.filteringtable.version>
@@ -146,6 +147,12 @@
     </pluginRepositories>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.vaadin.addon</groupId>
+            <artifactId>vaadin-charts</artifactId>
+            <version>${vaadin-charts.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.tika</groupId>

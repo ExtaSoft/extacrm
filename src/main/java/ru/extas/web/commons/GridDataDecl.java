@@ -84,6 +84,10 @@ public class GridDataDecl implements Serializable {
         mappings.add(new DataDeclMapping(propName, caption, generator, presentFlags));
     }
 
+    protected void addMapping(String propName, String caption, GridColumnGenerator generator) {
+        addMapping(propName, caption, generator, null);
+    }
+
     /**
      * Задает параметры отображения для свойства объекта
      *
