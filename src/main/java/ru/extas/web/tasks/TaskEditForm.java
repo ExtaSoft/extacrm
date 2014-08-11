@@ -23,7 +23,9 @@ import ru.extas.model.security.UserProfile;
 import ru.extas.model.security.UserRole;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonField;
 import ru.extas.web.lead.LeadField;
@@ -130,7 +132,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         }
         formsContainer.addComponent(new Panel("Завершить задачу", finishToolBar));
 
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         nameField = new EditField("Название", "Название задачи");
         nameField.setRequired(true);
@@ -293,7 +295,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         }
         // Закрыть окно
         taskCompleted = true;
-        Notification.show("Задача выполнена", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Задача выполнена");
         close();
         // Показать статус выполнения процесса
         BPStatusForm statusForm = new BPStatusForm(obj.getProcessInstanceId());
@@ -327,7 +329,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         task.setAssignee(obj.getAssignee());
 
         taskService.saveTask(task);
-        Notification.show("Задача сохранена", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Задача сохранена");
     }
 
     /** {@inheritDoc} */

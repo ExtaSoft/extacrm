@@ -38,7 +38,7 @@ public class ConfigView extends ExtaAbstractView {
         });
         final Component title = new Label("Скоро будет реализовано...");
         title.setSizeUndefined();
-        title.addStyleName("h1");
+        title.addStyleName("view-title");
         title.setIcon(Fontello.WRENCH_1);
         HorizontalLayout l = new HorizontalLayout(title);
         //l.addComponent(updateBtn);
@@ -56,7 +56,7 @@ public class ConfigView extends ExtaAbstractView {
     protected Component getTitle() {
         final Component title = new Label("Настройки");
         title.setSizeUndefined();
-        title.addStyleName("h1");
+        title.addStyleName("view-title");
         return title;
     }
 

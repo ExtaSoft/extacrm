@@ -32,9 +32,50 @@ public class NotificationUtil {
         Joiner.on("</li><li>").appendTo(content, messages);
         content.append("</li></ul>");
 
-        final Notification notify = new Notification(caption, content.toString(), Notification.Type.WARNING_MESSAGE);
+        final String description = content.toString();
+        showError(caption, description);
+    }
+
+    public static void showError(String caption, String description) {
+        final Notification notify = new Notification(caption, description, Notification.Type.ERROR_MESSAGE);
+        notify.setStyleName("error failure closable");
         notify.setPosition(Position.MIDDLE_CENTER);
         notify.setHtmlContentAllowed(true);
         notify.show(Page.getCurrent());
+    }
+
+    public static void showWarning(String caption, String description) {
+        final Notification notify = new Notification(caption, description, Notification.Type.WARNING_MESSAGE);
+        notify.setStyleName("warning closable");
+        notify.setPosition(Position.MIDDLE_CENTER);
+        notify.setHtmlContentAllowed(true);
+        notify.show(Page.getCurrent());
+    }
+
+    public static void showSuccess(String caption) {
+        showSuccess(caption, null);
+
+    }
+
+    public static void showSuccess(String caption, String description) {
+        final Notification notify = new Notification(caption, description, Notification.Type.TRAY_NOTIFICATION);
+        notify.setStyleName("tray success closable");
+        notify.setHtmlContentAllowed(true);
+        notify.show(Page.getCurrent());
+    }
+
+    public static void showWarning(String caption) {
+        showWarning(caption, null);
+    }
+
+    public static void show(String caption, String description) {
+        final Notification notify = new Notification(caption, description, Notification.Type.HUMANIZED_MESSAGE);
+        notify.setStyleName("closable");
+        notify.setHtmlContentAllowed(true);
+        notify.show(Page.getCurrent());
+    }
+
+    public static void show(String caption) {
+        show(caption, null);
     }
 }

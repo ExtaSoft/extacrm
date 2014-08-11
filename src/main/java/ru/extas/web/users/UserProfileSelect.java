@@ -36,7 +36,7 @@ public class UserProfileSelect extends ComboBox {
 		super(caption);
 		// Преконфигурация
 		setDescription(description);
-		setInputPrompt("Выберите пользователя или начните ввод...");
+		setInputPrompt("Выберите...");
 		setWidth(25, Unit.EM);
 		setImmediate(true);
 		setScrollToSelectedItem(true);

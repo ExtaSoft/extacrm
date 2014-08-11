@@ -55,7 +55,8 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         VerticalLayout container = new VerticalLayout();
         container.setSpacing(true);
 
-        HorizontalLayout nameLay = new HorizontalLayout();
+        CssLayout nameLay = new CssLayout();
+        nameLay.addStyleName("v-component-group");
 
         selectField = new LESelectField("Название", "Введите или выберите название юридического лица");
         selectField.setInputPrompt("ООО \"Рога и Копыта\"");
@@ -121,7 +122,6 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
         searchBtn.addStyleName("icon-only");
         nameLay.addComponent(searchBtn);
-        nameLay.setComponentAlignment(searchBtn, Alignment.BOTTOM_LEFT);
 
         viewBtn = new Button("Просмотр", new Button.ClickListener() {
             @Override
@@ -147,9 +147,9 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
             }
         });
         viewBtn.setIcon(Fontello.EDIT_3);
+        viewBtn.addStyleName("last");
         viewBtn.addStyleName("icon-only");
         nameLay.addComponent(viewBtn);
-        nameLay.setComponentAlignment(viewBtn, Alignment.BOTTOM_LEFT);
         container.addComponent(nameLay);
 
         HorizontalLayout fieldsContainer = new HorizontalLayout();

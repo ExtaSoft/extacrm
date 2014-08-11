@@ -17,10 +17,8 @@ import ru.extas.model.contacts.PersonFileContainer;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.DocFilesEditor;
-import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.component.EmailField;
-import ru.extas.web.commons.component.LocalDateField;
-import ru.extas.web.commons.component.PhoneField;
+import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
@@ -113,7 +111,7 @@ public class PersonEditForm extends AbstractEditForm<Person> {
         logger.debug("Saving contact data...");
         final PersonRepository contactRepository = lookup(PersonRepository.class);
         contactRepository.secureSave(obj);
-        Notification.show("Контакт сохранен", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Контакт сохранен");
     }
 
     /** {@inheritDoc} */
@@ -148,14 +146,14 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     }
 
     private FormLayout createSalesForm() {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
         form.setMargin(true);
 
         return form;
     }
 
     private FormLayout createPassForm() {
-        final FormLayout passForm = new FormLayout();
+        final FormLayout passForm = new ExtaFormLayout();
         passForm.setMargin(true);
 
         passNumField = new EditField("Номер паспорта");
@@ -188,7 +186,7 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     }
 
     private FormLayout createMainForm(final Person obj) {
-        final FormLayout personForm = new FormLayout();
+        final FormLayout personForm = new ExtaFormLayout();
         personForm.setMargin(true);
 
         nameField = new EditField("Имя");

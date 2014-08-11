@@ -36,7 +36,7 @@ public class MotorBrandSelect extends ComboBox {
         super(caption);
 
         setDescription("Укажите марку техники");
-        setInputPrompt("Выберите или начните ввод...");
+        setInputPrompt("Выберите...");
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setImmediate(true);
         setNullSelectionAllowed(false);

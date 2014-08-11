@@ -46,7 +46,7 @@ public class AbstractContactSelect<TContactType extends Contact> extends ComboBo
 
 		// Преконфигурация
 		setDescription(description);
-		setInputPrompt("Существующий или новый контакт");
+		setInputPrompt("контакт...");
 		setWidth(25, Unit.EM);
 		setImmediate(true);
 

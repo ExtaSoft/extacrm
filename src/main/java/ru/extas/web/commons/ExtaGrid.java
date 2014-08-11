@@ -83,6 +83,8 @@ public abstract class ExtaGrid extends CustomComponent {
 
     private void initContent(Mode mode) {
         currentMode = mode;
+        setSizeFull();
+
         final CssLayout panel = new CssLayout();
         panel.addStyleName("layout-panel");
         panel.setSizeFull();
@@ -145,6 +147,7 @@ public abstract class ExtaGrid extends CustomComponent {
 
     private MenuBar createGridToolbar(Mode mode) {
         final MenuBar commandBar = new MenuBar();
+        commandBar.setAutoOpen(true);
         commandBar.addStyleName("grid-toolbar");
         commandBar.addStyleName("borderless");
         commandBar.focus();

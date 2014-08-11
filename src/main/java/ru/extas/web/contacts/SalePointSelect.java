@@ -51,7 +51,8 @@ public class SalePointSelect extends CustomField<SalePoint> {
 		VerticalLayout container = new VerticalLayout();
 		container.setSpacing(true);
 
-		HorizontalLayout nameLay = new HorizontalLayout();
+        CssLayout nameLay = new CssLayout();
+        nameLay.addStyleName("v-component-group");
 
 		contactSelect = new AbstractContactSelect("Имя", "Введите или выберите имя контакта", SalePoint.class);
 		contactSelect.setPropertyDataSource(getPropertyDataSource());
@@ -118,7 +119,6 @@ public class SalePointSelect extends CustomField<SalePoint> {
 		searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
 		searchBtn.addStyleName("icon-only");
 		nameLay.addComponent(searchBtn);
-		nameLay.setComponentAlignment(searchBtn, Alignment.BOTTOM_LEFT);
 
 		viewBtn = new Button("Просмотр", new Button.ClickListener() {
 			@Override
@@ -144,9 +144,9 @@ public class SalePointSelect extends CustomField<SalePoint> {
 			}
 		});
 		viewBtn.setIcon(Fontello.EDIT_3);
+        viewBtn.addStyleName("last");
 		viewBtn.addStyleName("icon-only");
 		nameLay.addComponent(viewBtn);
-		nameLay.setComponentAlignment(viewBtn, Alignment.BOTTOM_LEFT);
 
 		container.addComponent(nameLay);
 

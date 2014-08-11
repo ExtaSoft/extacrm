@@ -57,7 +57,8 @@ public class PersonSelect extends CustomField<Person> {
 		VerticalLayout container = new VerticalLayout();
 		container.setSpacing(true);
 
-		HorizontalLayout nameLay = new HorizontalLayout();
+		CssLayout nameLay = new CssLayout();
+        nameLay.addStyleName("v-component-group");
 
 		personSelectField = new PersonSelectField("Имя", "Введите или выберите имя контакта");
 		personSelectField.setInputPrompt("Фамилия Имя Отчество");
@@ -123,7 +124,6 @@ public class PersonSelect extends CustomField<Person> {
 		searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
                 searchBtn.addStyleName("icon-only");
 		nameLay.addComponent(searchBtn);
-		nameLay.setComponentAlignment(searchBtn, Alignment.BOTTOM_LEFT);
 
 		viewBtn = new Button("Просмотр", new Button.ClickListener() {
 			@Override
@@ -149,9 +149,9 @@ public class PersonSelect extends CustomField<Person> {
 			}
 		});
 		viewBtn.setIcon(Fontello.EDIT_3);
+        viewBtn.addStyleName("last");
 		viewBtn.addStyleName("icon-only");
 		nameLay.addComponent(viewBtn);
-		nameLay.setComponentAlignment(viewBtn, Alignment.BOTTOM_LEFT);
 
 		container.addComponent(nameLay);
 

@@ -1,5 +1,6 @@
 package ru.extas.web.commons;
 
+import com.google.common.base.Strings;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
@@ -36,7 +37,7 @@ public abstract class NumColumnGenerator extends ComponentColumnGenerator {
     public Object generateCell(Object columnId, final Item item) {
         Property numProp = item.getItemProperty(numProperty);
         VerticalLayout cell = new VerticalLayout();
-        Button link = new Button(numProp.getValue().toString());
+        Button link = new Button(String.valueOf(numProp.getValue()));
         link.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {

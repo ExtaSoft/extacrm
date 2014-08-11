@@ -8,8 +8,10 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.PolicyRepository;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.DateTimeField;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.window.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -54,7 +56,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
     protected void saveObject(final Policy obj) {
         final PolicyRepository policyRepository = lookup(PolicyRepository.class);
         policyRepository.save(obj);
-        Notification.show("Бланк сохранен", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Бланк сохранен");
     }
 
 
@@ -66,7 +68,7 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Policy obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         regNumField = new EditField("Номер полиса", "Введите номер полиса.");
         regNumField.setColumns(20);

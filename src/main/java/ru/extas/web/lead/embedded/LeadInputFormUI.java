@@ -30,8 +30,10 @@ import ru.extas.server.motor.MotorTypeRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.contacts.SalePointSimpleSelect;
 import ru.extas.web.motor.MotorBrandSelect;
@@ -122,7 +124,8 @@ public class LeadInputFormUI extends UI {
             getPage().getStyles().add(new ExternalResource(customCss));
         if (initLead(lead, params)) return;
 
-        FormLayout form = new FormLayout();
+        FormLayout form = new ExtaFormLayout();
+        form.setSizeUndefined();
 
         contactNameField = new EditField("Имя", "Введите фамилию имя отчество");
         contactNameField.setInputPrompt("Фамилия Имя Отчество");
@@ -228,15 +231,14 @@ public class LeadInputFormUI extends UI {
                     try {
                         fieldGroup.commit();
                         saveObject(lead);
-                        Notification.show(
+                        NotificationUtil.show(
                                 "Заявка отправлена!",
-                                "В ближайшее время наш менеджер свяжется с вами для уточнения деталей.",
-                                Notification.Type.HUMANIZED_MESSAGE);
+                                "В ближайшее время наш менеджер свяжется с вами для уточнения деталей.");
                         LeadInputFormUI.this.setContent(new HorizontalLayout());
                     } catch (final FieldGroup.CommitException e) {
                         // TODO Correct error handling
                         logger.error("Can't apply form changes", e);
-                        Notification.show("Невозможно отправить данные!", e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+                        NotificationUtil.showError("Невозможно отправить данные!", e.getLocalizedMessage());
                         return;
                     }
                     close();
@@ -266,15 +268,13 @@ public class LeadInputFormUI extends UI {
                 CompanyRepository companyRepository = lookup(CompanyRepository.class);
                 company = companyRepository.findOne(companyId);
                 if (company == null) {
-                    Notification.show("Неверные параметры формы!",
-                            "Неверно задан идентификатор компании в параметре 'company'.",
-                            Notification.Type.ERROR_MESSAGE);
+                    NotificationUtil.showError("Неверные параметры формы!",
+                            "Неверно задан идентификатор компании в параметре 'company'.");
                     return true;
                 }
             } else {
-                Notification.show("Неверные параметры формы!",
-                        "Неверно задан идентификатор компании в параметре 'company'.",
-                        Notification.Type.ERROR_MESSAGE);
+                NotificationUtil.showError("Неверные параметры формы!",
+                        "Неверно задан идентификатор компании в параметре 'company'.");
                 return true;
             }
         } else { // или торговая точка
@@ -285,16 +285,14 @@ public class LeadInputFormUI extends UI {
                     SalePointRepository salePointRepository = lookup(SalePointRepository.class);
                     SalePoint salePoint = salePointRepository.findOne(salePointId);
                     if (salePoint == null) {
-                        Notification.show("Неверные параметры формы!",
-                                "Неверно задан идентификатор торговой точки в параметре 'salepoint'.",
-                                Notification.Type.ERROR_MESSAGE);
+                        NotificationUtil.showError("Неверные параметры формы!",
+                                "Неверно задан идентификатор торговой точки в параметре 'salepoint'.");
                         return true;
                     } else
                         lead.setVendor(salePoint);
                 } else {
-                    Notification.show("Неверные параметры формы!",
-                            "Неверно задан идентификатор торговой точки в параметре 'salepoint'.",
-                            Notification.Type.ERROR_MESSAGE);
+                    NotificationUtil.showError("Неверные параметры формы!",
+                            "Неверно задан идентификатор торговой точки в параметре 'salepoint'.");
                     return true;
                 }
             }
@@ -368,9 +366,8 @@ public class LeadInputFormUI extends UI {
             format.setParseBigDecimal(true);
             BigDecimal price = (BigDecimal) format.parse(motorPrice, new ParsePosition(0));
             if (price == null) {
-                Notification.show("Неверные параметры формы!",
-                        "Неверно задана сумма в параметре 'motorPrice'.",
-                        Notification.Type.ERROR_MESSAGE);
+                NotificationUtil.showError("Неверные параметры формы!",
+                        "Неверно задана сумма в параметре 'motorPrice'.");
                 return true;
             }
             lead.setMotorPrice(price);

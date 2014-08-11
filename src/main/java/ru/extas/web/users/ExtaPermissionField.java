@@ -7,6 +7,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.security.*;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.util.ComponentUtil;
 
@@ -175,7 +176,7 @@ public class ExtaPermissionField extends CustomField<Set> {
 
         @Override
         protected ComponentContainer createEditFields(ExtaPermission obj) {
-            final FormLayout form = new FormLayout();
+            final FormLayout form = new ExtaFormLayout();
 
             domainField = new ComboBox("Раздел системы");
             domainField.setDescription("Выберете раздел системы к которой предоставляется доступ");

@@ -7,7 +7,9 @@ import ru.extas.model.contacts.Person;
 import ru.extas.model.sale.Sale;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
@@ -68,7 +70,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Sale obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         clientField = new PersonSelect("Клиент", "Введите имя клиента");
         clientField.setRequired(true);
@@ -127,7 +129,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     protected void saveObject(final Sale obj) {
         final SaleRepository leadService = lookup(SaleRepository.class);
         leadService.secureSave(obj);
-        Notification.show("Продажа сохранена", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Продажа сохранена");
     }
 
 

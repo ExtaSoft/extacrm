@@ -7,7 +7,9 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import ru.extas.model.motor.MotorModel;
 import ru.extas.server.motor.MotorModelRepository;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.window.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -50,7 +52,7 @@ public class MotorModelEditForm extends AbstractEditForm<MotorModel> {
     @Override
     protected void saveObject(MotorModel obj) {
         MotorModel loc = lookup(MotorModelRepository.class).save(obj);
-        Notification.show("Модель техники сохранена", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Модель техники сохранена");
 
     }
 
@@ -63,7 +65,7 @@ public class MotorModelEditForm extends AbstractEditForm<MotorModel> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(MotorModel obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         typeField = new MotorTypeSelect();
         typeField.setRequired(true);

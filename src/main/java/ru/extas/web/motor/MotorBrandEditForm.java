@@ -7,7 +7,9 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.server.motor.MotorBrandRepository;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.window.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -47,7 +49,7 @@ public class MotorBrandEditForm extends AbstractEditForm<MotorBrand> {
     @Override
     protected void saveObject(MotorBrand obj) {
         MotorBrand loc = lookup(MotorBrandRepository.class).save(obj);
-        Notification.show("Марка сохранена", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Марка сохранена");
     }
 
     /** {@inheritDoc} */
@@ -59,7 +61,7 @@ public class MotorBrandEditForm extends AbstractEditForm<MotorBrand> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(MotorBrand obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         nameField = new EditField("Название марки техники", "Введите название марки техники");
         nameField.setColumns(20);

@@ -6,7 +6,9 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import ru.extas.model.sale.ProdCreditPercent;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.commons.window.AbstractEditForm;
 
@@ -49,7 +51,7 @@ public class ProdCreditPercentForm extends AbstractEditForm<ProdCreditPercent> {
 	/** {@inheritDoc} */
 	@Override
 	protected void saveObject(final ProdCreditPercent obj) {
-		Notification.show("Процентная ставка сохранена", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Процентная ставка сохранена");
 	}
 
 	/** {@inheritDoc} */
@@ -61,7 +63,7 @@ public class ProdCreditPercentForm extends AbstractEditForm<ProdCreditPercent> {
 	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdCreditPercent obj) {
-		final FormLayout form = new FormLayout();
+		final FormLayout form = new ExtaFormLayout();
 
 		percentField = new EditField("Процентная ставка", "Введите процентную ставку");
 		percentField.setConverter(lookup(StringToPercentConverter.class));

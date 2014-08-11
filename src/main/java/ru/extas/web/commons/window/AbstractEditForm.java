@@ -9,10 +9,10 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Notification.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.NotificationUtil;
 
 import java.util.Iterator;
 
@@ -102,7 +102,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
                             modified = false;
                         } catch (final CommitException e) {
                             logger.error("Can't apply form changes", e);
-                            Notification.show("Невозможно сохранить изменения!", e.getLocalizedMessage(), Type.ERROR_MESSAGE);
+                            NotificationUtil.showError("Невозможно сохранить изменения!", e.getLocalizedMessage());
                             return;
                         }
                         close();
@@ -122,7 +122,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         buttonsPanel = new HorizontalLayout(footerText, okBtn, cancelBtn);
         buttonsPanel.setExpandRatio(footerText, 1);
         buttonsPanel.addStyleName("v-window-bottom-toolbar");
-        buttonsPanel.setWidth("100%");
+        buttonsPanel.setWidth(100, Unit.PERCENTAGE);
         buttonsPanel.setSpacing(true);
 
         setDefaultFocus(form);
@@ -185,6 +185,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
 //            contentPanel.setContent(content);
 
             final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
+            contentContainer.setSizeUndefined();
             contentContainer.setMargin(true);
             contentContainer.setSpacing(true);
             content = contentContainer;

@@ -6,6 +6,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.sale.Product;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.product.ProductDataDecl;
 import ru.extas.web.product.ProductSelectWindow;
 
@@ -62,7 +63,7 @@ public class LegalProductsField extends CustomField<List> {
 							if (selectWindow.isSelectPressed()) {
 								container.addBean(selectWindow.getSelected());
 								setValue(container.getItemIds());
-								Notification.show("Продукт добавлен", Notification.Type.TRAY_NOTIFICATION);
+                                NotificationUtil.showSuccess("Продукт добавлен");
 							}
 						}
 					});

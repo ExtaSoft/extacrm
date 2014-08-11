@@ -79,7 +79,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 								if (selectWindow.isSelectPressed()) {
 									((BeanItemContainer<LegalEntity>) container).addBean(selectWindow.getSelected());
 									setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
-									Notification.show("Юридическое лицо добавлено", Notification.Type.TRAY_NOTIFICATION);
+                                    NotificationUtil.showSuccess("Юридическое лицо добавлено");
 								}
 							}
 						});

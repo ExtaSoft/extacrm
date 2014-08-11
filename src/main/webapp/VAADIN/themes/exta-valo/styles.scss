@@ -49,6 +49,12 @@
     padding: 4px;
   }
 
+  .light {
+    .v-customcomponent-bordered-component {
+      border: 0;
+    }
+  }
+
   .exceptionStackTraceBox {
     //font-size: 14px;
     //line-height: 18px;
@@ -67,6 +73,17 @@
       padding-right: 0;
     }
 
+  }
+
+  .view-title {
+    @extend .h2;
+    font-size: round($v-font-size * 1.125);
+  }
+
+  .v-component-group {
+    .v-caption {
+      padding-right: 5px;
+    }
   }
 
 }

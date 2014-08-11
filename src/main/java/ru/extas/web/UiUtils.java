@@ -11,12 +11,14 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.web.commons.NotificationUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Locale;
 
 import static ru.extas.server.ServiceLocator.lookup;
+import static ru.extas.web.commons.NotificationUtil.showWarning;
 
 /**
  * Всякие вспомогательные методы для Vaadin UI
@@ -62,15 +64,7 @@ public class UiUtils {
             strWr.append("</pre></div>");
 
             // Display the error message in a custom fashion
-            final Notification notif = new Notification("Непредусмотренная ошибка", strWr.toString(),
-                    Notification.Type.ERROR_MESSAGE);
-
-            // Customize it
-            notif.setPosition(Position.MIDDLE_CENTER);
-            notif.setHtmlContentAllowed(true);
-
-            // Show it in the page
-            notif.show(Page.getCurrent());
+            NotificationUtil.showError("Непредусмотренная ошибка", strWr.toString());
         }
     }
 
@@ -94,8 +88,7 @@ public class UiUtils {
         }
         msg.append("</ul>");
 
-        new Notification(caption, msg.toString(), Notification.Type.WARNING_MESSAGE, true)
-                .show(Page.getCurrent());
+        showWarning(caption, msg.toString());
     }
 
 

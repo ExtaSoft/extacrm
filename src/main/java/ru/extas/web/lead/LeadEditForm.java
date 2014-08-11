@@ -18,8 +18,10 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.*;
@@ -136,7 +138,7 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Lead obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         contactNameField = new EditField("Клиент", "Введите имя клиента");
         contactNameField.setColumns(25);
@@ -431,10 +433,10 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         LeadRepository leadRepository = lookup(LeadRepository.class);
         if (qualifyForm) {
             leadRepository.qualify(obj);
-            Notification.show("Лид квалифицирован", Notification.Type.TRAY_NOTIFICATION);
+            NotificationUtil.showSuccess("Лид квалифицирован");
         } else {
             leadRepository.secureSave(obj);
-            Notification.show("Лид сохранен", Notification.Type.TRAY_NOTIFICATION);
+            NotificationUtil.showSuccess("Лид сохранен");
         }
     }
 

@@ -16,8 +16,10 @@ import ru.extas.model.contacts.LegalEntityFile;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.DocFilesEditor;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.motor.BrandsField;
@@ -124,7 +126,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
             logger.debug("Saving contact data...");
             final LegalEntityRepository contactRepository = lookup(LegalEntityRepository.class);
             contactRepository.secureSave(obj);
-            Notification.show("Юр. лицо сохранено", Notification.Type.TRAY_NOTIFICATION);
+            NotificationUtil.showSuccess("Юр. лицо сохранено");
         }
     }
 
@@ -161,7 +163,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
     }
 
     private FormLayout createBrendsForm() {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         brandsField = new BrandsField();
@@ -171,7 +173,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
     }
 
     private FormLayout createProductsForm() {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         productsField = new LegalProductsField();
@@ -181,7 +183,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
     }
 
     private FormLayout createMainForm(final LegalEntity obj) {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         nameField = new EditField("Название");

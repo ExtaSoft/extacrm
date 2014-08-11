@@ -1,0 +1,25 @@
+package ru.extas.web.commons.component;
+
+import com.vaadin.ui.Component;
+import com.vaadin.ui.FormLayout;
+
+/**
+ * @author Valery Orlov
+ *         Date: 08.08.2014
+ *         Time: 16:35
+ */
+public class ExtaFormLayout extends FormLayout {
+
+    public ExtaFormLayout() {
+        init();
+    }
+
+    protected void init() {
+        addStyleName("light");
+        setSizeUndefined();
+    }
+
+    public ExtaFormLayout(Component... children) {
+        super(children);
+    }
+}

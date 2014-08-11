@@ -19,7 +19,7 @@ public class ErrorView extends ExtaAbstractView {
     protected Component getContent() {
         final Component msg = new Label("Пожалуйста выберите другой пункт главного меню!");
         msg.setSizeUndefined();
-        msg.addStyleName("h2");
+        msg.addStyleName("view-title");
         return msg;
     }
 
@@ -28,7 +28,7 @@ public class ErrorView extends ExtaAbstractView {
     protected Component getTitle() {
         final Component title = new Label("Неверные данные в адресной строке!!!");
         title.setSizeUndefined();
-        title.addStyleName("h1");
+        title.addStyleName("view-title");
         return title;
     }
 }

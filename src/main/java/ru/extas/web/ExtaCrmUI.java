@@ -30,6 +30,7 @@ import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
@@ -107,6 +108,7 @@ public class ExtaCrmUI extends UI {
         signin.addStyleName("primary");
 
         FormLayout loginForm = new FormLayout(username, password, signin);
+        loginForm.setSizeUndefined();
         loginForm.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
         //fields.addComponent(loginForm);
 
@@ -185,9 +187,7 @@ public class ExtaCrmUI extends UI {
                     // Show new error message
                     String message = MessageFormat.format(
                             "{0} <br/><span>Проверьте правильность пары пользователь/пароль или обратитесь к администратору</span>", errMessage);
-                    Notification n =
-                            new Notification("Ошибка при проверке пользователя", message, Notification.Type.ERROR_MESSAGE, true);
-                    n.show(Page.getCurrent());
+                    NotificationUtil.showError("Ошибка при проверке пользователя", message);
                     username.focus();
                 }
             }
@@ -239,9 +239,10 @@ public class ExtaCrmUI extends UI {
         profilePic.addStyleName("avatar");
         String login = lookup(UserManagementService.class).getCurrentUserLogin();
         final Label userName = new Label(new ObjectProperty(login));
+        userName.setSizeUndefined();
         userName.setConverter(lookup(LoginToUserNameConverter.class));
         final HorizontalLayout userData = new HorizontalLayout(profilePic, userName);
-        userData.setSizeUndefined();
+        //userData.setSizeUndefined();
         userMenu.addComponent(userData);
 
         Button exit = new Button("Выход", FontAwesome.SIGN_OUT);

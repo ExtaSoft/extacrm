@@ -135,7 +135,7 @@ public class SalesGrid extends ExtaGrid {
 					BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
 					statusForm.showModal();
 				} else {
-					Notification.show("Нет бизнес процесса с которым связана текущая продажа.");
+                    NotificationUtil.showWarning("Нет бизнес процесса с которым связана текущая продажа.");
 				}
 			}
 		});

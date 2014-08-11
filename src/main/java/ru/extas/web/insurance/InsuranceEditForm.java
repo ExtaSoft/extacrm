@@ -18,7 +18,9 @@ import ru.extas.server.insurance.InsuranceRepository;
 import ru.extas.server.insurance.PolicyRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.DocFilesEditor;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.commons.window.AbstractEditForm;
@@ -133,7 +135,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     }
 
     private FormLayout createPolyceForm(Insurance obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         regNumField = new PolicySelect("Номер полиса",
                 "Введите номер полиса страхования. Выбирается из справочника БСО.", obj.getRegNum());
@@ -427,7 +429,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     @Override
     protected void saveObject(final Insurance obj) {
         lookup(InsuranceRepository.class).saveAndIssue(obj);
-        Notification.show("Полис сохранен", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Полис сохранен");
     }
 
     /** {@inheritDoc} */

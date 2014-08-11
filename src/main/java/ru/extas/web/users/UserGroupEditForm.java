@@ -8,7 +8,9 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.security.UserGroup;
 import ru.extas.server.security.UserGroupRegistry;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
@@ -63,7 +65,7 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
     protected void saveObject(UserGroup obj) {
         final UserGroupRegistry groupRegistry = lookup(UserGroupRegistry.class);
         groupRegistry.save(obj);
-        Notification.show("Группа сохранена", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Группа сохранена");
     }
 
     /** {@inheritDoc} */
@@ -75,7 +77,7 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(UserGroup obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         nameField = new EditField("Название");
         nameField.setImmediate(true);

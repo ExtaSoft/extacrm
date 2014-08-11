@@ -14,6 +14,8 @@ import ru.extas.model.security.UserProfile;
 import ru.extas.model.security.UserRole;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
+import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.motor.MotorBrandMultiselect;
@@ -88,7 +90,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         securePassword(obj);
         final UserRegistry userService = lookup(UserRegistry.class);
         userService.save(obj);
-        Notification.show("Пользователь сохранен", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Пользователь сохранен");
     }
 
     /**
@@ -134,7 +136,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     }
 
     private Component createPermissionTab(UserProfile obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         brandsField = new MotorBrandMultiselect("Доступные бренды");
         form.addComponent(brandsField);
@@ -150,7 +152,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     }
 
     private FormLayout getMainTab(UserProfile obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками
         nameField = new PersonSelect("Имя");

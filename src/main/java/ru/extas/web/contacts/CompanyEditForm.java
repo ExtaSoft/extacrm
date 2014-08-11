@@ -15,8 +15,10 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Contact;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.reference.CitySelect;
@@ -101,7 +103,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
         logger.debug("Saving contact data...");
         final CompanyRepository contactRepository = lookup(CompanyRepository.class);
         contactRepository.secureSave(obj);
-        Notification.show("Компания сохранена", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Компания сохранена");
     }
 
     /** {@inheritDoc} */
@@ -154,7 +156,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     }
 
     private FormLayout createEmployesForm() {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         employeeField = new ContactEmployeeField();
@@ -170,7 +172,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     }
 
     private FormLayout createOwnerForm() {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         ownersField = new CompanyOwnersField();
@@ -180,7 +182,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     }
 
     private FormLayout createMainForm(final Contact obj) {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         nameField = new EditField("Название");

@@ -5,7 +5,9 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.server.sale.ProdCreditRepository;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.CompanySelect;
@@ -91,7 +93,7 @@ public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
 	@Override
 	protected void saveObject(ProdCredit obj) {
 		ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
-		Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Продукт сохранен");
 	}
 
 	/** {@inheritDoc} */
@@ -103,7 +105,7 @@ public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
 	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdCredit obj) {
-		final FormLayout form = new FormLayout();
+		final FormLayout form = new ExtaFormLayout();
 
 		activeField = new CheckBox("Активный продукт");
 		activeField.setDescription("Укажите участвует ли продукт в продажах (учавствует если активен)");

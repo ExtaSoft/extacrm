@@ -10,6 +10,7 @@ import com.vaadin.ui.Window;
 import ru.extas.model.security.UserGroup;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.ItemAction;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.UIAction;
 
 import java.util.HashSet;
@@ -74,7 +75,7 @@ public class UserGroupField extends CustomField<Set> {
                                 if (selectWindow.isSelectPressed()) {
                                     itemContainer.addBean(selectWindow.getSelected());
                                     setValue(newHashSet(itemContainer.getItemIds()));
-                                    Notification.show("Группа добавлена", Notification.Type.TRAY_NOTIFICATION);
+                                    NotificationUtil.showSuccess("Группа добавлена");
                                 }
                             }
                         });

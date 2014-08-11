@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.window.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -71,7 +72,7 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final UserProfile obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         passField = new PasswordField("Пароль");
         passField.setImmediate(true);

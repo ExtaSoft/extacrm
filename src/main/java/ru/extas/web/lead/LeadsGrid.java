@@ -163,7 +163,7 @@ public class LeadsGrid extends ExtaGrid {
 					BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
 					statusForm.showModal();
 				} else {
-					Notification.show("Нет бизнес процесса с которым связан текущий Лид.");
+                    NotificationUtil.showWarning("Нет бизнес процесса с которым связан текущий Лид.");
 				}
 			}
 		});

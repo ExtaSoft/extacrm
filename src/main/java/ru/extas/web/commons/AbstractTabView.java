@@ -93,7 +93,7 @@ public abstract class AbstractTabView extends ExtaAbstractView {
     protected Component getTitle() {
         final Component title = new Label(titleCaption);
         title.setSizeUndefined();
-        title.addStyleName("h2");
+        title.addStyleName("view-title");
         return title;
     }
 }

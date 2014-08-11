@@ -44,7 +44,7 @@ public class OnDemandFileDownloader extends FileDownloader {
 
             @Override
             public void error(com.vaadin.server.ErrorEvent event) {
-                Notification.show("Ошибка печати файла", event.getThrowable().getMessage(), Type.ERROR_MESSAGE);
+                NotificationUtil.showError("Ошибка печати файла", event.getThrowable().getMessage());
             }
         });
 

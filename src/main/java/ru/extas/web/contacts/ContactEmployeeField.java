@@ -6,6 +6,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.NotificationUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -60,7 +61,7 @@ public class ContactEmployeeField extends CustomField<Set> {
 							if (selectWindow.isSelectPressed()) {
 								container.addBean(selectWindow.getSelected());
 								setValue(newHashSet(container.getItemIds()));
-								Notification.show("Сотрудник добавлен", Notification.Type.TRAY_NOTIFICATION);
+                                NotificationUtil.showSuccess("Сотрудник добавлен");
 							}
 						}
 					});

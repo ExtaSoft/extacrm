@@ -5,7 +5,9 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdInstallments;
 import ru.extas.server.sale.ProdInstallmentsRepository;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.CompanySelect;
@@ -59,7 +61,7 @@ public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments>
 	@Override
 	protected void saveObject(final ProdInstallments obj) {
 		lookup(ProdInstallmentsRepository.class).save(obj);
-		Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Продукт сохранен");
 	}
 
 	/** {@inheritDoc} */
@@ -71,7 +73,7 @@ public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments>
 	/** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdInstallments obj) {
-		final FormLayout form = new FormLayout();
+		final FormLayout form = new ExtaFormLayout();
 
 		nameField = new EditField("Название продукта", "Введите название продукта");
 		nameField.setColumns(30);

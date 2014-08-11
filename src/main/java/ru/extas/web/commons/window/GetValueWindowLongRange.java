@@ -7,6 +7,7 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 
 import java.io.Serializable;
 
@@ -78,7 +79,7 @@ public class GetValueWindowLongRange extends AbstractEditForm<GetValueWindowLong
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final ValueContainer obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         startValueField = new EditField("Начальное значение", "Введите целое число.");
         startValueField.setColumns(15);

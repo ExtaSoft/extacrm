@@ -11,8 +11,10 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.reference.CitySelect;
@@ -120,7 +122,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
             logger.debug("Saving contact data...");
             final SalePointRepository contactRepository = lookup(SalePointRepository.class);
             contactRepository.secureSave(obj);
-            Notification.show("Торговая точка сохранена", Notification.Type.TRAY_NOTIFICATION);
+            NotificationUtil.showSuccess("Торговая точка сохранена");
         }
     }
 
@@ -158,7 +160,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     }
 
     private Component createIdentityForm() {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         extaCodeField = new EditField("Код Экстрим Ассистанс", "Введите идентификационный Код Экстрим Ассистанс");
@@ -187,7 +189,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     }
 
     private FormLayout createEmployesForm() {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         employeeField = new ContactEmployeeField();
@@ -197,7 +199,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     }
 
     private FormLayout createMainForm(final SalePoint obj) {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         nameField = new EditField("Название");

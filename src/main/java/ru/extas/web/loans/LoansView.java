@@ -30,7 +30,7 @@ public class LoansView extends ExtaAbstractView {
         logger.info("Creating view content...");
         final Component title = new Label("Скоро будет реализовано...");
         title.setSizeUndefined();
-        title.addStyleName("h1");
+        title.addStyleName("view-title");
         title.setIcon(Fontello.WRENCH_1);
                 HorizontalLayout l = new HorizontalLayout(title);
         l.setSizeFull();
@@ -43,7 +43,7 @@ public class LoansView extends ExtaAbstractView {
     protected Component getTitle() {
         final Component title = new Label("Кредитование");
         title.setSizeUndefined();
-        title.addStyleName("h1");
+        title.addStyleName("view-title");
         return title;
     }
 
