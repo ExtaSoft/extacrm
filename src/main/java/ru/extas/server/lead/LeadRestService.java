@@ -41,12 +41,18 @@ public class LeadRestService {
 
     private Logger logger = LoggerFactory.getLogger(LeadRestService.class);
 
-    @Inject private LeadRepository leadRepository;
-    @Inject private SalePointRepository salePointRepository;
-    @Inject private UserManagementService userService;
-    @Inject private SupplementService supplementService;
-    @Inject private MotorBrandRepository motorBrandRepository;
-    @Inject private MotorTypeRepository motorTypeRepository;
+    @Inject
+    private LeadRepository leadRepository;
+    @Inject
+    private SalePointRepository salePointRepository;
+    @Inject
+    private UserManagementService userService;
+    @Inject
+    private SupplementService supplementService;
+    @Inject
+    private MotorBrandRepository motorBrandRepository;
+    @Inject
+    private MotorTypeRepository motorTypeRepository;
 
     @JsonAutoDetect
     public static class RestLead {
@@ -208,18 +214,19 @@ public class LeadRestService {
      * @param lead a {@link ru.extas.server.lead.LeadRestService.RestLead} object.
      */
     @RequestMapping(value = "/new", method = RequestMethod.POST)
+    @ResponseBody
     public void newLead(@RequestBody RestLead lead) {
         Lead newLead = new Lead();
         newLead.setStatus(Lead.Status.NEW);
 
         // Проверяем входные данные и копируем их в лид:
         // Имя клиента.
-        if(isNullOrEmpty(lead.getName()))
+        if (isNullOrEmpty(lead.getName()))
             throw new IllegalArgumentException("Имя клиента не может быть пустым");
         newLead.setContactName(lead.getName());
 
         // Телефон
-        if(isNullOrEmpty(lead.getPhone()))
+        if (isNullOrEmpty(lead.getPhone()))
             throw new IllegalArgumentException("Телефон клиента не может быть пустым");
         newLead.setContactPhone(lead.getPhone());
 
@@ -227,83 +234,76 @@ public class LeadRestService {
         newLead.setContactEmail(lead.getEmail());
 
         // Регион проживания.
-        if(isNullOrEmpty(lead.getClientRegion()))
-            throw new IllegalArgumentException("Регион проживания клиента не может быть пустым");
-        else if(!supplementService.loadRegions().contains(lead.getClientRegion()))
-            throw new IllegalArgumentException("Неверный регион проживания клиента");
+        if (!isNullOrEmpty(lead.getClientRegion()))
+            if (!supplementService.loadRegions().contains(lead.getClientRegion()))
+                throw new IllegalArgumentException("Неверный регион проживания клиента");
         newLead.setContactRegion(lead.getClientRegion());
 
         // Тип техники.
-        if(isNullOrEmpty(lead.getMotorType()))
-            throw new IllegalArgumentException("Тип техники не может быть пустым");
-        else if(!motorTypeRepository.loadAllNames().contains(lead.getMotorType()))
-            throw new IllegalArgumentException("Неверный тип техники");
+        if (!isNullOrEmpty(lead.getMotorType()))
+            if (!motorTypeRepository.loadAllNames().contains(lead.getMotorType()))
+                throw new IllegalArgumentException("Неверный тип техники");
         newLead.setMotorType(lead.getMotorType());
 
         // Марка техники.
-        if(isNullOrEmpty(lead.getMotorBrand()))
-            throw new IllegalArgumentException("Марка техники не может быть пустой");
-        else if(!motorBrandRepository.loadAllNames().contains(lead.getMotorBrand()))
-            throw new IllegalArgumentException("Неверная марка техники");
+        if (!isNullOrEmpty(lead.getMotorBrand()))
+            if (!motorBrandRepository.loadAllNames().contains(lead.getMotorBrand()))
+                throw new IllegalArgumentException("Неверная марка техники");
         newLead.setMotorBrand(lead.getMotorBrand());
 
         // Модель техники.
-        if(isNullOrEmpty(lead.getMotorModel()))
-            throw new IllegalArgumentException("Модель техники не может быть пустой");
         newLead.setMotorModel(lead.getMotorModel());
 
         // Цена техники.
-        if(lead.getPrice() == null)
-            throw new IllegalArgumentException("Цена техники не может быть пустой");
         newLead.setMotorPrice(lead.getPrice());
 
         // Регион покупки.
-        if(isNullOrEmpty(lead.getDelerRegion()))
-            throw new IllegalArgumentException("Регион покупки не может быть пустым");
-        else if(!supplementService.loadRegions().contains(lead.getDelerRegion()))
-            throw new IllegalArgumentException("Неверный регион покупки");
+        if (!isNullOrEmpty(lead.getDelerRegion()))
+            if (!supplementService.loadRegions().contains(lead.getDelerRegion()))
+                throw new IllegalArgumentException("Неверный регион покупки");
         newLead.setRegion(lead.getDelerRegion());
 
         // Мотосалон (название или id).
-        if(!isNullOrEmpty(lead.getDealerId())) {
+        if (!isNullOrEmpty(lead.getDealerId())) {
             // Найти точку продаж по Id
             SalePoint salePoint = salePointRepository.findOne(lead.getDealerId());
-            if(salePoint == null)
+            if (salePoint == null)
                 throw new IllegalArgumentException("Id торговой точки не действителен (не найден)");
             else
                 newLead.setVendor(salePoint);
         }
         newLead.setPointOfSale(lead.getDealer());
-        if(newLead.getPointOfSale() == null && newLead.getVendor() == null)
-            throw new IllegalArgumentException("Id торговой точки или ее название должно быть задано");
 
         // Комментарий.
         newLead.setComment(lead.getComment());
 
         // Определить потенциального пользователя
         Person user = null;
-        if(newLead.getVendor() != null) {
+        if (newLead.getVendor() != null) {
             Set<Person> employees = newLead.getVendor().getEmployees();
-            if(!isEmpty(employees))
+            if (!isEmpty(employees))
                 user = employees.iterator().next();
         }
-        if(user == null)
+        if (user == null)
             user = userService.findUserContactByLogin("admin");
 
         leadRepository.permitAndSave(newLead, user);
+
     }
 
     /**
      * <p>handleIOException.</p>
      *
-     * @param ex a {@link java.lang.Throwable} object.
+     * @param ex a {@link Throwable} object.
      * @return a {@link java.lang.String} object.
      */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ResponseBody
-    public String handleIOException(Throwable ex) {
+    public HttpEntity<String> handleIOException(Throwable ex) {
         logger.error("Ошибка обработки запроса", ex);
-        return ex.getMessage();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "text/html; charset=utf-8");
+        return new HttpEntity(ex.getMessage(), headers);
     }
 }

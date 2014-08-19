@@ -81,14 +81,16 @@ public class ReferenceRestService {
     /**
      * <p>handleIOException.</p>
      *
-     * @param ex a {@link java.lang.Throwable} object.
+     * @param ex a {@link Throwable} object.
      * @return a {@link java.lang.String} object.
      */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ResponseBody
-    public String handleIOException(Throwable ex) {
+    public HttpEntity<String> handleIOException(Throwable ex) {
         logger.error("Ошибка обработки запроса", ex);
-        return ex.getMessage();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "text/html; charset=utf-8");
+        return new HttpEntity(ex.getMessage(), headers);
     }
 }
