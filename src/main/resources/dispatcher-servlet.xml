@@ -31,12 +31,15 @@
         </property>
     </bean>
 
-    <bean id="handlerMapping"
-          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+    <bean id="annotationMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="order" value="0" />
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
 
     <!-- Map URIs to web controllers -->
-    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="defaultHandler" ref="handlerMapping"/>
+    <bean id="uiMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="order" value="1"/>
+        <property name="defaultHandler" ref="annotationMapping"/>
         <property name="urlMap">
             <map>
                 <entry key="/ui/**" value-ref="mainCrmUiServlet"/>
@@ -48,5 +51,6 @@
             </map>
         </property>
     </bean>
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
 
 </beans>
