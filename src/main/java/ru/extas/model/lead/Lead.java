@@ -1,5 +1,6 @@
 package ru.extas.model.lead;
 
+import org.eclipse.persistence.annotations.ReturnInsert;
 import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
@@ -47,7 +48,10 @@ public class Lead extends SecuredObject {
 		CLIENT_REJECTED
 	}
 
-    @Column(unique = true, columnDefinition = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE")
+    @Column(unique = true,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE")
     private Long num;
 
 	// Регион покупки техники

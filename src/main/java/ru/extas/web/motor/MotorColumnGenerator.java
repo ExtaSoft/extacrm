@@ -18,12 +18,25 @@ import static ru.extas.web.commons.GridItem.extractBean;
 public class MotorColumnGenerator extends GridDataDecl.ComponentColumnGenerator {
     @Override
     public Object generateCell(Object columnId, Item item) {
-        return new Label(
-                MessageFormat.format("<strong>{0}</strong><br/>{1} | {2}",
-                        item.getItemProperty("motorType").getValue(),
-                        item.getItemProperty("motorBrand").getValue(),
-                        item.getItemProperty("motorModel").getValue()),
-                ContentMode.HTML);
+        StringBuilder content = new StringBuilder();
+        final Object motorType = item.getItemProperty("motorType").getValue();
+        final Object motorBrand = item.getItemProperty("motorBrand").getValue();
+        final Object motorModel = item.getItemProperty("motorModel").getValue();
+        if(motorType != null)
+            content.append("<strong>").append(motorType).append("</strong>");
+        if(motorBrand != null) {
+            if(motorType != null)
+                content.append("<br/>");
+            content.append(motorBrand);
+        }
+        if(motorModel != null) {
+            if(motorType != null && motorBrand == null)
+                content.append("<br/>");
+            else if(motorBrand != null)
+                content.append(" | ");
+            content.append(motorModel);
+        }
+        return new Label(content.toString(), ContentMode.HTML);
     }
 
 }
