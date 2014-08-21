@@ -37,4 +37,7 @@ public interface MotorBrandRepository extends JpaRepository<MotorBrand, String> 
      */
     @Query("SELECT b.name FROM MotorBrand b, b.brandTypes t WHERE t.name = :type ORDER BY b.name ASC")
     List<String> loadNamesByType(@Param("type") String type);
+
+    @Query("SELECT b.name FROM MotorBrand b WHERE UPPER(b.name) LIKE CONCAT('%', UPPER(TRIM(:dirtyBrand)), '%')")
+    String clarifyBrand(@Param("dirtyBrand") String dirtyBrand);
 }

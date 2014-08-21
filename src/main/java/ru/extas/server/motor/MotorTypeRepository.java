@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.motor.MotorType;
 
@@ -28,4 +29,6 @@ public interface MotorTypeRepository  extends JpaRepository<MotorType, String> {
     @Query("SELECT t.name FROM MotorType t ORDER BY t.name ASC")
     List<String> loadAllNames();
 
+    @Query("SELECT t.name FROM MotorType t WHERE UPPER(t.name) LIKE CONCAT('%', UPPER(TRIM(:dirtyMotorType)), '%')")
+    String clarifyType(@Param("dirtyMotorType") String dirtyMotorType);
 }

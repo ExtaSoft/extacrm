@@ -1,5 +1,8 @@
 package ru.extas.server.lead;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +24,13 @@ import ru.extas.web.commons.HelpContent;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.util.Set;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.lang.System.lineSeparator;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
@@ -79,7 +86,7 @@ public class LeadRestService {
         private String motorModel;
 
         // Цена техники.
-        private BigDecimal price;
+        private String price;
 
         // Регион покупки.
         private String delerRegion;
@@ -152,11 +159,11 @@ public class LeadRestService {
             this.motorModel = motorModel;
         }
 
-        public BigDecimal getPrice() {
+        public String getPrice() {
             return price;
         }
 
-        public void setPrice(BigDecimal price) {
+        public void setPrice(String price) {
             this.price = price;
         }
 
@@ -219,6 +226,8 @@ public class LeadRestService {
         Lead newLead = new Lead();
         newLead.setStatus(Lead.Status.NEW);
 
+        StringBuilder dirtyData = new StringBuilder();
+
         // Проверяем входные данные и копируем их в лид:
         // Имя клиента.
         if (isNullOrEmpty(lead.getName()))
@@ -228,40 +237,86 @@ public class LeadRestService {
         // Телефон
         if (isNullOrEmpty(lead.getPhone()))
             throw new IllegalArgumentException("Телефон клиента не может быть пустым");
-        newLead.setContactPhone(lead.getPhone());
+        String dirtyPhone = lead.getPhone();
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        Phonenumber.PhoneNumber phone = null;
+        try {
+            phone = phoneUtil.parse(dirtyPhone, "RU");
+        } catch (NumberParseException e) {
+        }
+        if (phone != null) {
+            String clearPhone = phoneUtil.format(phone, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            newLead.setContactPhone(clearPhone);
+        } else {
+            dirtyData.append("Телефон: ").append(dirtyPhone).append(lineSeparator());
+        }
 
         // E-mail
         newLead.setContactEmail(lead.getEmail());
 
         // Регион проживания.
-        if (!isNullOrEmpty(lead.getClientRegion()))
-            if (!supplementService.loadRegions().contains(lead.getClientRegion()))
-                throw new IllegalArgumentException("Неверный регион проживания клиента");
-        newLead.setContactRegion(lead.getClientRegion());
+        final String dirtyClientRegion = lead.getClientRegion();
+        if (!isNullOrEmpty(dirtyClientRegion)) {
+            String clearClientRegion = supplementService.clarifyRegion(dirtyClientRegion);
+            if (isNullOrEmpty(clearClientRegion))
+                dirtyData.append("Регион проживания: ").append(dirtyClientRegion).append(lineSeparator());
+            else
+                newLead.setContactRegion(clearClientRegion);
+        }
 
         // Тип техники.
-        if (!isNullOrEmpty(lead.getMotorType()))
-            if (!motorTypeRepository.loadAllNames().contains(lead.getMotorType()))
-                throw new IllegalArgumentException("Неверный тип техники");
-        newLead.setMotorType(lead.getMotorType());
+        final String dirtyMotorType = lead.getMotorType();
+        if (!isNullOrEmpty(dirtyMotorType)) {
+            final String clearMotorType = motorTypeRepository.clarifyType(dirtyMotorType);
+            if (isNullOrEmpty(clearMotorType))
+                dirtyData.append("Тип техники: ").append(dirtyMotorType).append(lineSeparator());
+            else
+                newLead.setMotorType(clearMotorType);
+        }
 
         // Марка техники.
-        if (!isNullOrEmpty(lead.getMotorBrand()))
-            if (!motorBrandRepository.loadAllNames().contains(lead.getMotorBrand()))
-                throw new IllegalArgumentException("Неверная марка техники");
-        newLead.setMotorBrand(lead.getMotorBrand());
+        final String dirtyBrand = lead.getMotorBrand();
+        if (!isNullOrEmpty(dirtyBrand)) {
+            final String clearBrand = motorBrandRepository.clarifyBrand(dirtyBrand);
+            if (isNullOrEmpty(clearBrand))
+                dirtyData.append("Марка техники: ").append(dirtyMotorType).append(lineSeparator());
+            else
+                newLead.setMotorBrand(clearBrand);
+        }
 
         // Модель техники.
         newLead.setMotorModel(lead.getMotorModel());
 
         // Цена техники.
-        newLead.setMotorPrice(lead.getPrice());
+        if (!isNullOrEmpty(lead.getPrice())) {
+            final String dirtyPrice = lead.getPrice().trim().replace(" ", "").replace("'", "");
+            DecimalFormat format = new DecimalFormat();
+            format.setParseBigDecimal(true);
+            format.setDecimalFormatSymbols(new DecimalFormatSymbols(){
+                {
+                    setDecimalSeparator(dirtyPrice.contains(".") ? '.' : ',');
+                }
+            });
+            BigDecimal clearPrice = null;
+            try {
+                clearPrice = (BigDecimal) format.parse(dirtyPrice);
+            } catch (ParseException e) {
+            }
+            if(clearPrice == null)
+                dirtyData.append("Цена техники: ").append(dirtyPrice).append(lineSeparator());
+            else
+                newLead.setMotorPrice(clearPrice);
+        }
 
         // Регион покупки.
-        if (!isNullOrEmpty(lead.getDelerRegion()))
-            if (!supplementService.loadRegions().contains(lead.getDelerRegion()))
-                throw new IllegalArgumentException("Неверный регион покупки");
-        newLead.setRegion(lead.getDelerRegion());
+        final String dirtyDealRegion = lead.getDelerRegion();
+        if (!isNullOrEmpty(dirtyDealRegion)) {
+            String clearDealRegion = supplementService.clarifyRegion(dirtyDealRegion);
+            if (isNullOrEmpty(clearDealRegion))
+                dirtyData.append("Регион покупки: ").append(dirtyDealRegion).append(lineSeparator());
+            else
+                newLead.setRegion(clearDealRegion);
+        }
 
         // Мотосалон (название или id).
         if (!isNullOrEmpty(lead.getDealerId())) {
@@ -275,7 +330,9 @@ public class LeadRestService {
         newLead.setPointOfSale(lead.getDealer());
 
         // Комментарий.
-        newLead.setComment(lead.getComment());
+        if(!isNullOrEmpty(lead.getComment()))
+            dirtyData.append(lead.getComment());
+        newLead.setComment(dirtyData.toString());
 
         // Определить потенциального пользователя
         Person user = null;
