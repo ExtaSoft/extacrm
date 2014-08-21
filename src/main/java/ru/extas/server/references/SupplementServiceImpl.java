@@ -3,6 +3,9 @@
  */
 package ru.extas.server.references;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.context.annotation.Scope;
@@ -13,7 +16,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static com.google.common.collect.Iterables.find;
+import static com.google.common.collect.Iterables.tryFind;
 import static com.google.common.collect.Lists.newArrayList;
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 /**
  * Заполнение простых справочников
@@ -164,5 +170,19 @@ public class SupplementServiceImpl implements SupplementService {
     @Override
     public Collection<String> loadDocumentTypes() {
         return DocumentTypesFactory.INSTANCE;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String clarifyRegion(String dirtyClientRegion) {
+        dirtyClientRegion = dirtyClientRegion.trim();
+        Collection<String> regions = loadRegions();
+        final String finalDirtyClientRegion = dirtyClientRegion;
+        return tryFind(regions, new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return containsIgnoreCase(input, finalDirtyClientRegion);
+            }
+        }).orNull();
     }
 }
