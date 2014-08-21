@@ -9,6 +9,7 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.contacts.SalePointEditForm;
 
+import static com.google.common.base.Strings.nullToEmpty;
 import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
@@ -48,8 +49,8 @@ public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenera
             });
             region = salePoint.getActualAddress().getRegion();
         } else if (salePointNamePropId != null) {
-            region = (String) item.getItemProperty(regionPropId).getValue();
-            link.setCaption((String) item.getItemProperty(salePointNamePropId).getValue());
+            region = nullToEmpty((String) item.getItemProperty(regionPropId).getValue());
+            link.setCaption(nullToEmpty((String) item.getItemProperty(salePointNamePropId).getValue()));
             link.setEnabled(false);
         }
         VerticalLayout cell = new VerticalLayout();

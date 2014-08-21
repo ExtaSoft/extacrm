@@ -29,6 +29,7 @@ import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
 
+import javax.persistence.EntityManager;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -97,7 +98,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         initForm(obj);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void attach() {
         super.attach();
@@ -135,7 +138,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields(final Lead obj) {
         final FormLayout form = new ExtaFormLayout();
@@ -409,7 +414,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initObject(final Lead obj) {
         if (obj.getId() == null) {
@@ -427,7 +434,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void saveObject(final Lead obj) {
         LeadRepository leadRepository = lookup(LeadRepository.class);
@@ -435,13 +444,17 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
             leadRepository.qualify(obj);
             NotificationUtil.showSuccess("Лид квалифицирован");
         } else {
-            leadRepository.secureSave(obj);
+            Lead lead = leadRepository.secureSave(obj);
+            if (obj.getId() == null)
+                lookup(EntityManager.class).getEntityManagerFactory().getCache().evict(lead.getClass(), lead.getId());
             NotificationUtil.showSuccess("Лид сохранен");
         }
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void checkBeforeSave(final Lead obj) {
     }

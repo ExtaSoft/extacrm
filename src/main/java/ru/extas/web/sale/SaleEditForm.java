@@ -17,6 +17,8 @@ import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
 
+import javax.persistence.EntityManager;
+
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -128,7 +130,9 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     @Override
     protected void saveObject(final Sale obj) {
         final SaleRepository leadService = lookup(SaleRepository.class);
-        leadService.secureSave(obj);
+        Sale sale = leadService.secureSave(obj);
+        if (obj.getId() == null)
+            lookup(EntityManager.class).getEntityManagerFactory().getCache().evict(sale.getClass(), sale.getId());
         NotificationUtil.showSuccess("Продажа сохранена");
     }
 

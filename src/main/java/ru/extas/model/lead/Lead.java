@@ -51,6 +51,7 @@ public class Lead extends SecuredObject {
     @Column(unique = true,
             insertable = false,
             updatable = false,
+            nullable = false,
             columnDefinition = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE")
     private Long num;
 

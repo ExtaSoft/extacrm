@@ -22,6 +22,7 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.HelpContent;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -60,6 +61,8 @@ public class LeadRestService {
     private MotorBrandRepository motorBrandRepository;
     @Inject
     private MotorTypeRepository motorTypeRepository;
+    @Inject
+    private EntityManager entityManager;
 
     @JsonAutoDetect
     public static class RestLead {
@@ -344,8 +347,8 @@ public class LeadRestService {
         if (user == null)
             user = userService.findUserContactByLogin("admin");
 
-        leadRepository.permitAndSave(newLead, user);
-
+        newLead = leadRepository.permitAndSave(newLead, user);
+        entityManager.getEntityManagerFactory().getCache().evict(newLead.getClass(), newLead.getId());
     }
 
     /**
