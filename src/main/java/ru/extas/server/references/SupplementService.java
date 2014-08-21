@@ -50,4 +50,11 @@ public interface SupplementService {
 	 * @return список видов документов
 	 */
 	Collection<String> loadDocumentTypes();
+
+    /**
+     * Поучить "чистое" (соответствующее справочнику) название региона.
+     * @param dirtyRegion черновое имя региона
+     * @return "чистое" имя региона или null если регион не удалось квалифицировать.
+     */
+    String clarifyRegion(String dirtyRegion);
 }
