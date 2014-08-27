@@ -5,9 +5,10 @@ package ru.extas.web.sale;
 
 import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.web.commons.AbstractTabView;
-import ru.extas.web.commons.component.AbstractTabInfo;
-import ru.extas.web.commons.component.TabInfo;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainView;
+import ru.extas.web.commons.component.AbstractSubdomainInfo;
+import ru.extas.web.commons.component.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SalesView extends AbstractTabView {
+public class SalesView extends SubdomainView {
 
     private static final long serialVersionUID = -1272779672761523416L;
 
@@ -35,23 +36,23 @@ public class SalesView extends AbstractTabView {
 
     /** {@inheritDoc} */
     @Override
-    protected List<TabInfo> getTabComponentsInfo() {
-        final ArrayList<TabInfo> ret = newArrayList();
-        ret.add(new AbstractTabInfo("Открытые", ExtaDomain.SALES_OPENED) {
+    protected List<SubdomainInfo> getSubdomainInfo() {
+        final ArrayList<SubdomainInfo> ret = newArrayList();
+        ret.add(new AbstractSubdomainInfo("Открытые", ExtaDomain.SALES_OPENED) {
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new SalesGrid(ExtaDomain.SALES_OPENED);
             }
         });
-        ret.add(new AbstractTabInfo("Завершенные", ExtaDomain.SALES_SUCCESSFUL) {
+        ret.add(new AbstractSubdomainInfo("Завершенные", ExtaDomain.SALES_SUCCESSFUL) {
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new SalesGrid(ExtaDomain.SALES_SUCCESSFUL);
             }
         });
-        ret.add(new AbstractTabInfo("Отмененные", ExtaDomain.SALES_CANCELED) {
+        ret.add(new AbstractSubdomainInfo("Отмененные", ExtaDomain.SALES_CANCELED) {
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new SalesGrid(ExtaDomain.SALES_CANCELED);
             }
         });

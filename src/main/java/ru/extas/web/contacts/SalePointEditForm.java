@@ -16,7 +16,7 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -73,15 +73,12 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 
     private SalePoint salePoint;
 
-    /**
-     * <p>Constructor for SalePointEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public SalePointEditForm(final String caption, final BeanItem<SalePoint> obj) {
-        super(caption, obj);
-        salePoint = obj.getBean();
+    public SalePointEditForm(SalePoint salePoint) {
+        super(salePoint.isNew() ? "Ввод новой торговой точки в систему" : "Редактирование данных торговой точки");
+        final BeanItem beanItem = new BeanItem<>(salePoint);
+        beanItem.expandProperty("actualAddress");
+
+        initForm(beanItem);
     }
 
     /** {@inheritDoc} */
@@ -137,7 +134,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     @Override
     protected ComponentContainer createEditFields(final SalePoint obj) {
         TabSheet tabsheet = new TabSheet();
-        tabsheet.addStyleName("framed");
+//        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

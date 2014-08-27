@@ -6,13 +6,12 @@ package ru.extas.web.insurance;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.FormTransfer;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -26,7 +25,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class FormTransferGrid extends ExtaGrid {
+public class FormTransferGrid extends ExtaGrid<FormTransfer> {
 
     private static final long serialVersionUID = 1170175803163742829L;
     private final static Logger logger = LoggerFactory.getLogger(FormTransferGrid.class);
@@ -35,7 +34,12 @@ public class FormTransferGrid extends ExtaGrid {
      * <p>Constructor for FormTransferGrid.</p>
      */
     public FormTransferGrid() {
+        super(FormTransfer.class);
+    }
 
+    @Override
+    public AbstractEditForm<FormTransfer> createEditForm(FormTransfer formTransfer) {
+        return new FormTransferEditForm(formTransfer);
     }
 
     /** {@inheritDoc} */
@@ -60,48 +64,8 @@ public class FormTransferGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new UIAction("Новый", "Ввод нового акта приема/передачи", Fontello.DOC_NEW) {
-            @Override
-            public void fire(Object itemId) {
-                final BeanItem<FormTransfer> newObj = new BeanItem<>(new FormTransfer());
-
-                final FormTransferEditForm editWin = new FormTransferEditForm("Новый акт приема/передачи", newObj);
-                editWin.addCloseListener(new CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainer();
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
-
-        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке акта приема/передачи", Fontello.EDIT_3) {
-            @Override
-            public void fire(final Object itemId) {
-                final BeanItem<FormTransfer> curObj = new GridItem<>(table.getItem(itemId));
-
-                final FormTransferEditForm editWin = new FormTransferEditForm("Редактировать акт приема/передачи",
-                        curObj);
-                editWin.addCloseListener(new CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainerItem(itemId);
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
+        actions.add(new NewObjectAction("Новый", "Ввод нового акта приема/передачи"));
+        actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке акта приема/передачи"));
 
         actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", Fontello.PRINT_2) {
             @Override

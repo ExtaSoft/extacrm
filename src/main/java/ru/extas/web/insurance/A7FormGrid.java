@@ -21,7 +21,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.3
  */
-public class A7FormGrid extends ExtaGrid {
+public class A7FormGrid extends ExtaGrid<A7Form> {
 
     private static final long serialVersionUID = 6290106109723378415L;
 
@@ -29,6 +29,12 @@ public class A7FormGrid extends ExtaGrid {
      * <p>Constructor for A7FormGrid.</p>
      */
     public A7FormGrid() {
+        super(A7Form.class);
+    }
+
+    @Override
+    public AbstractEditForm<A7Form> createEditForm(A7Form a7Form) {
+        return null;
     }
 
     /** {@inheritDoc} */

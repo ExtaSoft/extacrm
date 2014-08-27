@@ -5,9 +5,10 @@ package ru.extas.web.tasks;
 
 import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.web.commons.AbstractTabView;
-import ru.extas.web.commons.component.AbstractTabInfo;
-import ru.extas.web.commons.component.TabInfo;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainView;
+import ru.extas.web.commons.component.AbstractSubdomainInfo;
+import ru.extas.web.commons.component.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class TasksView extends AbstractTabView {
+public class TasksView extends SubdomainView {
 
     private static final long serialVersionUID = -1272779672761523416L;
 
@@ -35,29 +36,29 @@ public class TasksView extends AbstractTabView {
 
     /** {@inheritDoc} */
     @Override
-    protected List<TabInfo> getTabComponentsInfo() {
-        final ArrayList<TabInfo> ret = newArrayList();
-        ret.add(new AbstractTabInfo("На сегодня", ExtaDomain.TASKS_TODAY) {
+    protected List<SubdomainInfo> getSubdomainInfo() {
+        final ArrayList<SubdomainInfo> ret = newArrayList();
+        ret.add(new AbstractSubdomainInfo("На сегодня", ExtaDomain.TASKS_TODAY) {
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new TasksGrid(TasksGrid.Period.TODAY);
             }
         });
-        ret.add(new AbstractTabInfo("На неделю", ExtaDomain.TASKS_WEEK) {
+        ret.add(new AbstractSubdomainInfo("На неделю", ExtaDomain.TASKS_WEEK) {
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new TasksGrid(TasksGrid.Period.WEEK);
             }
         });
-        ret.add(new AbstractTabInfo("На месяц", ExtaDomain.TASKS_MONTH) {
+        ret.add(new AbstractSubdomainInfo("На месяц", ExtaDomain.TASKS_MONTH) {
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new TasksGrid(TasksGrid.Period.MONTH);
             }
         });
-        ret.add(new AbstractTabInfo("Все", ExtaDomain.TASKS_ALL) {
+        ret.add(new AbstractSubdomainInfo("Все", ExtaDomain.TASKS_ALL) {
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new TasksGrid(TasksGrid.Period.ALL);
             }
         });

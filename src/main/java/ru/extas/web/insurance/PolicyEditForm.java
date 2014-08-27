@@ -12,8 +12,9 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.DateTimeField;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -35,14 +36,10 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
     @PropertyId("issueDate")
     private PopupDateField issueDateField;
 
-    /**
-     * <p>Constructor for PolicyEditForm.</p>
-     *
-     * @param caption   a {@link java.lang.String} object.
-     * @param editedObj a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public PolicyEditForm(final String caption, final BeanItem<Policy> editedObj) {
-        super(caption, editedObj);
+    public PolicyEditForm(Policy policy) {
+        super(isNullOrEmpty(policy.getId()) ?
+                "Новый бланк" :
+                "Редактировать бланк", new BeanItem(policy));
     }
 
     /** {@inheritDoc} */

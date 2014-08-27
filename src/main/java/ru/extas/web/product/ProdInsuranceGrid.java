@@ -2,9 +2,9 @@ package ru.extas.web.product;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window;
 import ru.extas.model.sale.ProdInsurance;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -19,9 +19,18 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdInsuranceGrid extends ExtaGrid {
+public class ProdInsuranceGrid extends ExtaGrid<ProdInsurance> {
 
-	/** {@inheritDoc} */
+    public ProdInsuranceGrid() {
+        super(ProdInsurance.class);
+    }
+
+    @Override
+    public AbstractEditForm<ProdInsurance> createEditForm(ProdInsurance prodInsurance) {
+        return new ProdInsuranceEditForm(prodInsurance);
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new ProdInsuranceDataDecl();
@@ -42,48 +51,8 @@ public class ProdInsuranceGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового страхового продукта", Fontello.DOC_NEW) {
-
-			@Override
-			public void fire(Object itemId) {
-				final BeanItem<ProdInsurance> newObj = new BeanItem<>(new ProdInsurance());
-
-				final ProdInsuranceEditForm editWin = new ProdInsuranceEditForm("Новая страховая программа", newObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainer();
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке страховой продукт", Fontello.EDIT_3) {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<ProdInsurance> curObj = new GridItem<>(table.getItem(itemId));
-
-				final ProdInsuranceEditForm editWin = new ProdInsuranceEditForm("Редактировать страховую программу", curObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainerItem(itemId);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
+		actions.add(new NewObjectAction("Новый", "Ввод нового страхового продукта"));
+		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке страховой продукт"));
 
 		return actions;
 	}

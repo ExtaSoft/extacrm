@@ -15,15 +15,12 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.server.lead.LeadRepository;
 import ru.extas.server.security.UserManagementService;
-import ru.extas.web.commons.ExtaDataContainer;
-import ru.extas.web.commons.Fontello;
-import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.*;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
@@ -85,17 +82,10 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
     private ExtaDataContainer<SalePoint> vendorsContainer;
     private ExtaDataContainer<Person> clientsContainer;
 
-    /**
-     * <p>Constructor for LeadEditForm.</p>
-     *
-     * @param caption     a {@link java.lang.String} object.
-     * @param obj         a {@link com.vaadin.data.util.BeanItem} object.
-     * @param qualifyForm a boolean.
-     */
-    public LeadEditForm(final String caption, final BeanItem<Lead> obj, boolean qualifyForm) {
-        super(caption);
+    public LeadEditForm(Lead lead, boolean qualifyForm) {
+        super(lead.isNew() ? "Ввод нового лида в систему" : "Редактирование лида");
         this.qualifyForm = qualifyForm;
-        initForm(obj);
+        initForm(new BeanItem<>(lead));
     }
 
     /**
@@ -255,26 +245,21 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         newBtn.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                final BeanItem<SalePoint> newObj = new BeanItem<>(createCompanyFromLead(lead));
-                newObj.expandProperty("actualAddress");
+                final SalePoint newObj = createCompanyFromLead(lead);
 
-                final String edFormCaption = "Ввод нового контакта в систему";
-                final SalePointEditForm editWin = new SalePointEditForm(edFormCaption, newObj);
+                final SalePointEditForm editWin = new SalePointEditForm(newObj);
                 editWin.setModified(true);
 
-                editWin.addCloseListener(new Window.CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
+                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
                     @Override
-                    public void windowClose(final Window.CloseEvent e) {
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             vendorsContainer.refresh();
-                            table.setValue(newObj.getBean().getId());
+                            table.setValue(newObj.getId());
                         }
                     }
                 });
-                editWin.showModal();
+                FormUtils.showModalWin(editWin);
             }
         });
         panel.addComponent(newBtn);
@@ -332,27 +317,21 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
         newBtn.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                final BeanItem<Person> newObj = new BeanItem<>(createPersonFromLead(lead));
-                newObj.expandProperty("actualAddress");
+                final Person newObj = createPersonFromLead(lead);
 
-                final String edFormCaption = "Ввод нового контакта в систему";
-                final PersonEditForm editWin = new PersonEditForm(edFormCaption, newObj);
+                final PersonEditForm editWin = new PersonEditForm(newObj);
                 editWin.setModified(true);
 
-                editWin.addCloseListener(new Window.CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
+                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
                     @Override
-                    public void windowClose(final Window.CloseEvent e) {
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             clientsContainer.refresh();
-                            table.setValue(newObj.getBean().getId());
+                            table.setValue(newObj.getId());
                         }
                     }
                 });
-                editWin.showModal();
-
+                FormUtils.showModalWin(editWin);
             }
         });
         panel.addComponent(newBtn);

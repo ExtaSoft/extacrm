@@ -17,6 +17,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.ExtaUri;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -101,7 +103,6 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 
 		    // Регистрируем в навигаторе
 		    navigator.addView(fragment, viewCls);
-		    //navigator.addProvider(new DomainViewProvider(domains, viewCls));
 
 		    // Кнопка раздела
 		    Button b = new Button(name);
@@ -137,44 +138,23 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
     /**
      * <p>processURI.</p>
      *
-     * @param uriFragment a {@link java.lang.String} object.
+     * @param uriStr a {@link java.lang.String} object.
      */
-    public void processURI(String uriFragment) {
-        if (uriFragment == null || uriFragment.equals(""))
-            uriFragment = ExtaDomain.DASHBOARD.getName();
-
-        if (uriFragment.startsWith("!"))
-            uriFragment = uriFragment.substring(1);
-
-	    // Берем только первую часть фрагмента
-	    String firstFragment = Iterables.getFirst(Splitter.on('/').split(uriFragment), uriFragment);
+    public void processURI(String uriStr) {
+        ExtaUri uri = new ExtaUri(uriStr);
+        String uriFragment = isNullOrEmpty(uri.getDomainPrefix()) ? ExtaDomain.DASHBOARD.getName() : uri.getUri();
 
         navigator.navigateTo(uriFragment);
-        Button selButton = fragmentToButton.get(firstFragment);
-        if(selButton != null)
+        Button selButton = fragmentToButton.get(uri.getDomainPrefix());
+        if (selButton != null)
             selButton.addStyleName("selected");
     }
 
 	/** {@inheritDoc} */
 	@Override
 	public void uriFragmentChanged(final Page.UriFragmentChangedEvent event) {
-
-		String uriFragment = event.getUriFragment();
-
-		if (uriFragment == null || uriFragment.equals(""))
-			uriFragment = ExtaDomain.DASHBOARD.getName();
-
-		if (uriFragment.startsWith("!"))
-			uriFragment = uriFragment.substring(1);
-
-		// Берем только первую часть фрагмента
-		String firstFragment = Iterables.getFirst(Splitter.on('/').split(uriFragment), uriFragment);
-
-		clearMenuSelection();
-        Button selButton = fragmentToButton.get(firstFragment);
-        if(selButton != null)
-            selButton.addStyleName("selected");
-	}
+        processURI(event.getUriFragment());
+    }
 
 	private class DomainViewProvider implements ViewProvider {
 

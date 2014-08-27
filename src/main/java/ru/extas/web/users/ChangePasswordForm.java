@@ -15,7 +15,7 @@ import ru.extas.model.security.UserProfile;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 

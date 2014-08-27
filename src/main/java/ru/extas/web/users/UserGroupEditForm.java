@@ -4,17 +4,17 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.security.UserGroup;
 import ru.extas.server.security.UserGroupRegistry;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -42,14 +42,10 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
     @PropertyId("permissions")
     private ExtaPermissionField permissionsField;
 
-    /**
-     * <p>Constructor for UserGroupEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public UserGroupEditForm(String caption, BeanItem<UserGroup> obj) {
-        super(caption, obj);
+    public UserGroupEditForm(UserGroup userGroup) {
+        super(isNullOrEmpty(userGroup.getId()) ?
+        "Ввод новой группы пользователей" :
+        "Редактирование группы", new BeanItem<>(userGroup));
     }
 
     /** {@inheritDoc} */

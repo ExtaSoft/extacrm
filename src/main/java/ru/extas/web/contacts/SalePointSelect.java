@@ -6,7 +6,9 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
+import ru.extas.web.commons.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -68,26 +70,20 @@ public class SalePointSelect extends CustomField<SalePoint> {
 					defNewObj.setName(newItemCaption);
 				}
 				defNewObj.setCompany(company);
-				final BeanItem<SalePoint> newObj = new BeanItem<>(defNewObj);
-				newObj.expandProperty("actualAddress");
 
-				final String edFormCaption = "Ввод нового контакта в систему";
-				final SalePointEditForm editWin = new SalePointEditForm(edFormCaption, newObj);
+				final SalePointEditForm editWin = new SalePointEditForm(defNewObj);
 				editWin.setModified(true);
 
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							contactSelect.refreshContainer();
-							contactSelect.setValue(newObj.getBean().getId());
-						}
-					}
-				});
-				editWin.showModal();
+                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                    @Override
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                        if (editWin.isSaved()) {
+                            contactSelect.refreshContainer();
+                            contactSelect.setValue(defNewObj.getId());
+                        }
+                    }
+                });
+                FormUtils.showModalWin(editWin);
 			}
 		});
 		contactSelect.addValueChangeListener(new ValueChangeListener() {
@@ -123,24 +119,20 @@ public class SalePointSelect extends CustomField<SalePoint> {
 		viewBtn = new Button("Просмотр", new Button.ClickListener() {
 			@Override
 			public void buttonClick(final Button.ClickEvent event) {
-				final BeanItem<SalePoint> beanItem;
-				beanItem = new BeanItem<>((SalePoint) contactSelect.getConvertedValue());
-				beanItem.expandProperty("actualAddress");
+				final SalePoint salePoint = (SalePoint) contactSelect.getConvertedValue();
 
-				final String edFormCaption = "Просмотр/Редактирование торговой точки";
-				final SalePointEditForm editWin = new SalePointEditForm(edFormCaption, beanItem);
+				final SalePointEditForm editWin = new SalePointEditForm(salePoint);
 				editWin.setModified(true);
 
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
+                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                    @Override
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
 						if (editWin.isSaved()) {
-							refreshFields(beanItem.getBean());
+							refreshFields(salePoint);
 						}
 					}
 				});
-				editWin.showModal();
+                FormUtils.showModalWin(editWin);
 			}
 		});
 		viewBtn.setIcon(Fontello.EDIT_3);

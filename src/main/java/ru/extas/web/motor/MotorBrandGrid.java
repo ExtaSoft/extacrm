@@ -2,9 +2,9 @@ package ru.extas.web.motor;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -19,10 +19,19 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class MotorBrandGrid extends ExtaGrid {
+public class MotorBrandGrid extends ExtaGrid<MotorBrand> {
 
 
-	/** {@inheritDoc} */
+    public MotorBrandGrid() {
+        super(MotorBrand.class);
+    }
+
+    @Override
+    public AbstractEditForm<MotorBrand> createEditForm(MotorBrand motorBrand) {
+        return new MotorBrandEditForm(motorBrand);
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new MotorBrandDataDecl();
@@ -42,48 +51,8 @@ public class MotorBrandGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового бренда техники", Fontello.DOC_NEW) {
-
-			@Override
-			public void fire(Object itemId) {
-				final BeanItem<MotorBrand> newObj = new BeanItem<>(new MotorBrand());
-
-				final MotorBrandEditForm editWin = new MotorBrandEditForm("Новый бренд", newObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainer();
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке бренд техники", Fontello.EDIT_3) {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<MotorBrand> curObj = new GridItem<>(table.getItem(itemId));
-
-				final MotorBrandEditForm editWin = new MotorBrandEditForm("Редактировать бренд", curObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainerItem(itemId);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
+		actions.add(new NewObjectAction("Новый", "Ввод нового бренда техники"));
+		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке бренд техники"));
 
 		return actions;
 	}

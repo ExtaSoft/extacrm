@@ -3,8 +3,6 @@ package ru.extas.web.lead;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Window;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
@@ -13,6 +11,7 @@ import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.3
  */
-public class LeadsGrid extends ExtaGrid {
+public class LeadsGrid extends ExtaGrid<Lead> {
 	private static final long serialVersionUID = 4876073256421755574L;
 	private final static Logger logger = LoggerFactory.getLogger(LeadsGrid.class);
 	private final Lead.Status status;
@@ -40,7 +39,7 @@ public class LeadsGrid extends ExtaGrid {
 	 * @param status a {@link ru.extas.model.lead.Lead.Status} object.
 	 */
 	public LeadsGrid(Lead.Status status) {
-		super(false);
+		super(Lead.class, false);
 		this.status = status;
 		initialize();
 	}
@@ -51,7 +50,12 @@ public class LeadsGrid extends ExtaGrid {
 		return new LeadDataDecl();
 	}
 
-	/** {@inheritDoc} */
+    @Override
+    public AbstractEditForm<Lead> createEditForm(Lead lead) {
+        return new LeadEditForm(lead, status == Lead.Status.QUALIFIED);
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected void initTable(Mode mode) {
 		super.initTable(mode);
@@ -79,68 +83,27 @@ public class LeadsGrid extends ExtaGrid {
 		List<UIAction> actions = newArrayList();
 
 		if (status == Lead.Status.NEW || status == Lead.Status.QUALIFIED) {
-			actions.add(new UIAction("Новый", "Ввод нового лида", Fontello.DOC_NEW) {
-				@Override
-				public void fire(Object itemId) {
-					final BeanItem<Lead> newObj = new BeanItem<>(new Lead());
-
-					final LeadEditForm editWin = new LeadEditForm("Ввод нового лида в систему", newObj, status == Lead.Status.QUALIFIED);
-					editWin.addCloseListener(new Window.CloseListener() {
-
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (editWin.isSaved()) {
-								refreshContainer();
-							}
-						}
-					});
-					editWin.showModal();
-				}
-			});
+			actions.add(new NewObjectAction("Новый", "Ввод нового лида"));
 		}
 
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке лид", Fontello.EDIT_3) {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<Lead> curObj = new GridItem<>(table.getItem(itemId));
-
-				final LeadEditForm editWin = new LeadEditForm("Редактирование лида", curObj, false);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainerItem(itemId);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
+		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке лид"));
 
 		if (status == Lead.Status.NEW) {
 			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.DOC_NEW) {
 				@Override
 				public void fire(final Object itemId) {
-					final BeanItem<Lead> curObj = new GridItem<>(table.getItem(itemId));
+					final Lead curObj = GridItem.extractBean(table.getItem(itemId));
 
-					final LeadEditForm editWin = new LeadEditForm("Квалификация лида", curObj, true);
-					editWin.addCloseListener(new Window.CloseListener() {
-
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
+					final LeadEditForm editWin = new LeadEditForm(curObj, true);
+                    editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                        @Override
+                        public void closeForm(AbstractEditForm.CloseFormEvent event) {
 							if (editWin.isSaved()) {
 								refreshContainerItem(itemId);
 							}
 						}
 					});
-					editWin.showModal();
+                    FormUtils.showModalWin(editWin);
 				}
 			});
 		}

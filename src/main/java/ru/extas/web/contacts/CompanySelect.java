@@ -1,8 +1,9 @@
 package ru.extas.web.contacts;
 
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window;
 import ru.extas.model.contacts.Company;
+import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.AbstractEditForm;
 
 /**
  * Выбор контакта - юр. лица
@@ -46,27 +47,22 @@ public class CompanySelect extends AbstractContactSelect<Company> {
 			@SuppressWarnings({"unchecked"})
 			@Override
 			public void addNewItem(final String newItemCaption) {
-				final BeanItem<Company> newObj = new BeanItem<>(new Company());
-				newObj.getBean().setName(newItemCaption);
-				newObj.expandProperty("actualAddress");
+				final Company newObj = new Company();
+				newObj.setName(newItemCaption);
 
-				final String edFormCaption = "Ввод нового контакта в систему";
-				final CompanyEditForm editWin = new CompanyEditForm(edFormCaption, newObj);
+				final CompanyEditForm editWin = new CompanyEditForm(newObj);
 				editWin.setModified(true);
 
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							container.refresh();
-							setValue(newObj.getBean().getId());
-						}
-					}
-				});
-				editWin.showModal();
+                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                    @Override
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                        if (editWin.isSaved()) {
+                            container.refresh();
+                            setValue(newObj.getId());
+                        }
+                    }
+                });
+                FormUtils.showModalWin(editWin);
 			}
 		});
 	}

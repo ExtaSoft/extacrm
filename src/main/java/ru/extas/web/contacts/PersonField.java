@@ -3,6 +3,7 @@ package ru.extas.web.contacts;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -48,8 +49,8 @@ public class PersonField extends CustomField<Person> {
 		final Button.ClickListener openLeadFormListener = new Button.ClickListener() {
 			@Override
 			public void buttonClick(final Button.ClickEvent event) {
-				PersonEditForm form = new PersonEditForm("Просмотр/редактирование клиента", personItem);
-				form.showModal();
+				PersonEditForm form = new PersonEditForm(personItem.getBean());
+                FormUtils.showModalWin(form);
 			}
 		};
 		// Открытие формы ввода/редактирования

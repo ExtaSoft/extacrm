@@ -3,6 +3,8 @@ package ru.extas.web.sale;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.Sale;
+import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.AbstractEditForm;
 
 /**
  * Поле расширенного просмотра продажи.
@@ -49,15 +51,15 @@ public class SaleField extends CustomField<Sale> {
 		Button openBtn = new Button("Нажмите для просмотра/редактирования продажи...", new Button.ClickListener() {
 			@Override
 			public void buttonClick(final Button.ClickEvent event) {
-				final SaleEditForm form = new SaleEditForm("Просмотр/редактирование продажи", saleItem);
-				form.addCloseListener(new Window.CloseListener() {
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (form.isSaved())
-							((VerticalLayout) getContent()).replaceComponent(productInSaleField, productInSaleField = createProdInSale(sale));
-					}
-				});
-				form.showModal();
+				final SaleEditForm form = new SaleEditForm(sale);
+                form.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                    @Override
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                        if (form.isSaved())
+                            ((VerticalLayout) getContent()).replaceComponent(productInSaleField, productInSaleField = createProdInSale(sale));
+                    }
+                });
+                FormUtils.showModalWin(form);
 			}
 		});
 		openBtn.addStyleName("link");

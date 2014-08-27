@@ -8,11 +8,12 @@ import com.vaadin.ui.*;
 import ru.extas.model.security.*;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.util.ComponentUtil;
 
 import java.util.*;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -61,7 +62,29 @@ public class ExtaPermissionField extends CustomField<Set> {
     @Override
     protected Component initContent() {
 
-        ExtaGrid grid = new ExtaGrid() {
+        ExtaGrid<ExtaPermission> grid = new ExtaGrid<ExtaPermission>(ExtaPermission.class) {
+
+            @Override
+            public AbstractEditForm<ExtaPermission> createEditForm(ExtaPermission extaPermission) {
+                return new ExtaPermissionEditForm(extaPermission) {
+                    @Override
+                    protected void saveObject(final ExtaPermission obj) {
+                        ((RefreshBeanContainer<ExtaPermission>) container).addBean(obj);
+                        ExtaPermissionField.this.setValue(newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds()));
+                    }
+                };
+            }
+
+            @Override
+            public ExtaPermission createEntity() {
+                final ExtaPermission permission = super.createEntity();
+                if (group != null)
+                    permission.setGroup(group);
+                else
+                    permission.setUser(profile);
+                return permission;
+            }
+
             @Override
             protected GridDataDecl createDataDecl() {
                 return new GridDataDecl() {
@@ -91,43 +114,8 @@ public class ExtaPermissionField extends CustomField<Set> {
             protected List<UIAction> createActions() {
                 List<UIAction> actions = newArrayList();
 
-                actions.add(new UIAction("Новое", "Ввод нового правила доступа в систему", Fontello.DOC_NEW) {
-                    @Override
-                    public void fire(Object itemId) {
-                        final ExtaPermission entity = new ExtaPermission();
-                        if (group != null)
-                            entity.setGroup(group);
-                        else
-                            entity.setUser(profile);
-                        final BeanItem<ExtaPermission> newObj = new BeanItem<>(entity);
-
-                        final ExtaPermissionEditForm editWin = new ExtaPermissionEditForm("Ввод нового правила доступа в систему", newObj) {
-                            @Override
-                            protected void saveObject(final ExtaPermission obj) {
-                                ((RefreshBeanContainer<ExtaPermission>) container).addBean(obj);
-                                ExtaPermissionField.this.setValue(newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds()));
-                            }
-                        };
-                        editWin.showModal();
-                    }
-                });
-
-                actions.add(new DefaultAction("Изменить", "Редактирование правила доступа", Fontello.EDIT_3) {
-                    @Override
-                    public void fire(final Object itemId) {
-                        final BeanItem<ExtaPermission> beanItem = new GridItem<>(table.getItem(itemId));
-                        final ExtaPermissionEditForm editWin = new ExtaPermissionEditForm("Редактирование правила доступа", beanItem) {
-                            @Override
-                            protected void saveObject(final ExtaPermission obj) {
-                                HashSet<ExtaPermission> fieldValue = newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds());
-                                ExtaPermissionField.this.setValue(null);
-                                ExtaPermissionField.this.setValue(fieldValue);
-                                refreshContainerItem(itemId);
-                            }
-                        };
-                        editWin.showModal();
-                    }
-                });
+                actions.add(new NewObjectAction("Новое", "Ввод нового правила доступа в систему"));
+                actions.add(new EditObjectAction("Изменить", "Редактирование правила доступа"));
                 actions.add(new ItemAction("Удалить", "Удалить правило доступа", Fontello.TRASH) {
                     @Override
                     public void fire(final Object itemId) {
@@ -160,8 +148,11 @@ public class ExtaPermissionField extends CustomField<Set> {
         @PropertyId("target")
         private OptionGroup targetField;
 
-        protected ExtaPermissionEditForm(String caption, BeanItem<ExtaPermission> beanItem) {
-            super(caption, beanItem);
+        public ExtaPermissionEditForm(ExtaPermission extaPermission) {
+            super(isNullOrEmpty(extaPermission.getId()) ?
+                            "Ввод нового правила доступа в систему" :
+                            "Редактирование правила доступа",
+                    new BeanItem<>(extaPermission));
         }
 
         @Override

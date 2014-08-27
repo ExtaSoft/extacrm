@@ -1,7 +1,7 @@
 /**
  *
  */
-package ru.extas.web.commons.window;
+package ru.extas.web.commons;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -9,11 +9,12 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.util.ReflectTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.web.commons.Fontello;
-import ru.extas.web.commons.NotificationUtil;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import static ru.extas.web.UiUtils.showValidationError;
@@ -25,11 +26,12 @@ import static ru.extas.web.UiUtils.showValidationError;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class AbstractEditForm<TEditObject> extends Window {
+public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
 
     private final static Logger logger = LoggerFactory.getLogger(AbstractEditForm.class);
 
     private static final long serialVersionUID = -5592353839008000742L;
+    private final String caption;
     protected boolean saved = false;
     private HorizontalLayout buttonsPanel;
     private Button cancelBtn;
@@ -37,13 +39,54 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
     private FieldGroup fieldGroup;
     private boolean modified;
 
+    public static class CloseFormEvent extends Component.Event {
+
+        /**
+         * Constructs a new event with the specified source component.
+         *
+         * @param source the source component of the event
+         */
+        public CloseFormEvent(Component source) {
+            super(source);
+        }
+    }
+
+    public interface CloseFormListener extends Serializable {
+
+        public static final Method CLOSE_FORM_METHOD = ReflectTools
+                .findMethod(CloseFormListener.class, "closeForm", CloseFormEvent.class);
+
+        public void closeForm(CloseFormEvent event);
+
+    }
+
+    public void addCloseFormListener(CloseFormListener listener) {
+        addListener(CloseFormEvent.class, listener,
+                CloseFormListener.CLOSE_FORM_METHOD);
+    }
+
+    public void removeCloseFormListener(CloseFormListener listener) {
+        removeListener(CloseFormEvent.class, listener,
+                CloseFormListener.CLOSE_FORM_METHOD);
+    }
+
+    public void closeForm() {
+        if (isEnabled() && !isReadOnly()) {
+            fireCloseForm();
+        }
+    }
+
+    protected void fireCloseForm() {
+        fireEvent(new CloseFormEvent(this));
+    }
+
     /**
      * <p>Constructor for AbstractEditForm.</p>
      *
      * @param caption a {@link java.lang.String} object.
      */
     protected AbstractEditForm(final String caption) {
-        super(caption);
+        this.caption = caption;
     }
 
     /**
@@ -53,9 +96,13 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
      * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
      */
     protected AbstractEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
-        super(caption);
+        this(caption);
 
         initForm(beanItem);
+    }
+
+    public String getCaption() {
+        return caption;
     }
 
     /**
@@ -80,7 +127,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
             public void buttonClick(final ClickEvent event) {
                 // TODO Проверять изменения и выдавать предупреждения
                 fieldGroup.discard();
-                close();
+                closeForm();
             }
         });
         cancelBtn.setIcon(Fontello.CANCEL);
@@ -105,7 +152,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
                             NotificationUtil.showError("Невозможно сохранить изменения!", e.getLocalizedMessage());
                             return;
                         }
-                        close();
+                        closeForm();
                     } else
                         showValidationError("Невозможно сохранить изменения!", fieldGroup);
                 }
@@ -128,17 +175,6 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         setDefaultFocus(form);
         setContent(form);
 
-        this.addCloseListener(new CloseListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void windowClose(final CloseEvent e) {
-
-                // TODO Обработать закрытие формы по кресту
-
-            }
-        });
     }
 
     /**
@@ -174,23 +210,15 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         return focused;
     }
 
-    /** {@inheritDoc} */
-    @Override
     public void setContent(Component content) {
         if (content != null) {
-//            Panel contentPanel = new Panel();
-//            contentPanel.setSizeFull();
-//            contentPanel.addStyleName("borderless");
-//            contentPanel.addStyleName("scroll-divider");
-//            contentPanel.setContent(content);
-
             final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
             contentContainer.setSizeUndefined();
             contentContainer.setMargin(true);
             contentContainer.setSpacing(true);
             content = contentContainer;
         }
-        super.setContent(content);
+        super.setCompositionRoot(content);
     }
 
     /**
@@ -202,15 +230,6 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         return this.saved;
     }
 
-    /**
-     * <p>showModal.</p>
-     */
-    public void showModal() {
-        setClosable(true);
-        setModal(true);
-
-        UI.getCurrent().addWindow(this);
-    }
 
     /**
      * <p>Getter for the field <code>fieldGroup</code>.</p>

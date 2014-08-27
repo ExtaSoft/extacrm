@@ -23,7 +23,7 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.LegalEntitySelect;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
@@ -33,6 +33,7 @@ import ru.extas.web.util.ComponentUtil;
 
 import java.math.BigDecimal;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -94,21 +95,19 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     private Label tarifField;
     private ObjectProperty<BigDecimal> tarifDataSource;
 
-    /**
-     * <p>Constructor for InsuranceEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
-        super(caption, obj);
+
+    public InsuranceEditForm(Insurance insurance) {
+        super(isNullOrEmpty(insurance.getId()) ?
+                "Новый полис" :
+                "Редактировать полис",
+                new BeanItem<>(insurance));
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Insurance obj) {
         TabSheet tabsheet = new TabSheet();
-        tabsheet.addStyleName("framed");
+//        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         final FormLayout polyceForm = createPolyceForm(obj);

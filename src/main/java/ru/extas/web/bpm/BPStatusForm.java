@@ -11,6 +11,7 @@ import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 import ru.extas.web.tasks.TaskEditForm;
 import ru.extas.web.users.LoginToUserNameConverter;
@@ -112,8 +113,8 @@ public class BPStatusForm extends CloseOnlylWindow {
 			final Button.ClickListener openTaskFormListener = new Button.ClickListener() {
 				@Override
 				public void buttonClick(final Button.ClickEvent event) {
-					TaskEditForm form = new TaskEditForm("Просмотр/редактирование задачи", new BeanItem<>(task));
-					form.showModal();
+					TaskEditForm form = new TaskEditForm(task);
+                    FormUtils.showModalWin(form);
 				}
 			};
 			// Открытие формы ввода/редактирования

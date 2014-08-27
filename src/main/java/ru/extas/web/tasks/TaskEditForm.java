@@ -26,7 +26,7 @@ import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.PersonField;
 import ru.extas.web.lead.LeadField;
 import ru.extas.web.sale.SaleField;
@@ -37,6 +37,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.gwt.thirdparty.guava.common.collect.Maps.newHashMap;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -70,20 +71,15 @@ public class TaskEditForm extends AbstractEditForm<Task> {
     private VerticalLayout formsContainer;
     private final boolean canAssigne;
 
-    /**
-     * <p>Constructor for TaskEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public TaskEditForm(final String caption, final BeanItem<Task> obj) {
-        super(caption);
-
+    public TaskEditForm(Task task) {
+        super(isNullOrEmpty(task.getId()) ?
+                "Ввод новой задачи в систему" :
+                "Редактирование задачи");
         // Может ли пользователь менять ответственного
         UserManagementService userService = lookup(UserManagementService.class);
         canAssigne = userService.isCurUserHasRole(UserRole.ADMIN)/* || userService.isCurUserHasRole(UserRole.MANAGER)*/;
 
-        initForm(obj);
+        initForm(new BeanItem(task));
     }
 
     /** {@inheritDoc} */
@@ -296,7 +292,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         // Закрыть окно
         taskCompleted = true;
         NotificationUtil.showSuccess("Задача выполнена");
-        close();
+        closeForm();
         // Показать статус выполнения процесса
         BPStatusForm statusForm = new BPStatusForm(obj.getProcessInstanceId());
         statusForm.showModal();

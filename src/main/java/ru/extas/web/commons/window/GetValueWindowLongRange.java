@@ -6,6 +6,7 @@ import com.vaadin.data.validator.RangeValidator;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 

@@ -68,7 +68,7 @@ public enum ExtaDomain {
 	/**
 	 * Продажи "Отмененные"
 	 */
-	SALES_CANCELED("sales/canseled"),
+	SALES_CANCELED("sales/canceled"),
 	/**
 	 * Имущ. страховки
 	 */

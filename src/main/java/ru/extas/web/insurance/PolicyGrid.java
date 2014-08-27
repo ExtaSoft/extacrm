@@ -5,10 +5,9 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
 import ru.extas.model.insurance.Policy;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class PolicyGrid extends ExtaGrid {
+public class PolicyGrid extends ExtaGrid<Policy> {
 
 	private static final long serialVersionUID = 4876073256421755574L;
 
@@ -29,9 +28,15 @@ public class PolicyGrid extends ExtaGrid {
 	 * <p>Constructor for PolicyGrid.</p>
 	 */
 	public PolicyGrid() {
-	}
+        super(Policy.class);
+    }
 
-	/** {@inheritDoc} */
+    @Override
+    public AbstractEditForm<Policy> createEditForm(Policy policy) {
+        return new PolicyEditForm(policy);
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new PolicyDataDecl();
@@ -48,48 +53,8 @@ public class PolicyGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового бланка", Fontello.DOC_NEW) {
-
-			@Override
-			public void fire(Object itemId) {
-				final BeanItem<Policy> newObj = new BeanItem<>(new Policy());
-
-				final PolicyEditForm editWin = new PolicyEditForm("Новый бланк", newObj);
-				editWin.addCloseListener(new CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final CloseEvent e) {
-						if (editWin.isSaved()) {
-							((ExtaDataContainer) container).refresh();
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке бланк", Fontello.EDIT_3) {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<Policy> curObj = new GridItem<>(table.getItem(itemId));
-
-				final PolicyEditForm editWin = new PolicyEditForm("Редактировать бланк", curObj);
-				editWin.addCloseListener(new CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final CloseEvent e) {
-						if (editWin.isSaved()) {
-							((ExtaDataContainer) container).refreshItem(itemId);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
+		actions.add(new NewObjectAction("Новый", "Ввод нового бланка"));
+		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке бланк"));
 
 		return actions;
 	}

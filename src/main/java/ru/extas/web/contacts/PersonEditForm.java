@@ -19,11 +19,12 @@ import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.DocFilesEditor;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 import ru.extas.web.util.ComponentUtil;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -39,7 +40,7 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     private static final long serialVersionUID = -7787385620289376599L;
     private final static Logger logger = LoggerFactory.getLogger(PersonEditForm.class);
     // Компоненты редактирования
-// Основные персональные данные
+    // Основные персональные данные
     @PropertyId("name")
     private EditField nameField;
     @PropertyId("birthday")
@@ -79,14 +80,14 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     private DocFilesEditor docFilesEditor;
 
 
-    /**
-     * <p>Constructor for PersonEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public PersonEditForm(final String caption, final BeanItem<Person> obj) {
-        super(caption, obj);
+    public PersonEditForm(Person person) {
+        super(isNullOrEmpty(person.getId()) ?
+                "Ввод нового контакта в систему" :
+                String.format("Редактирование контакта: %s", person.getName()));
+
+        BeanItem<Person> beanItem = new BeanItem<Person>(person);
+        beanItem.expandProperty("actualAddress");
+        initForm(beanItem);
     }
 
 
@@ -124,7 +125,7 @@ public class PersonEditForm extends AbstractEditForm<Person> {
     @Override
     protected ComponentContainer createEditFields(final Person obj) {
         TabSheet tabsheet = new TabSheet();
-        tabsheet.addStyleName("framed");
+//        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Форма редактирования персональных данных

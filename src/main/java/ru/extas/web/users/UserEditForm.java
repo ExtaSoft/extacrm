@@ -16,12 +16,13 @@ import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 import ru.extas.web.util.ComponentUtil;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -61,16 +62,12 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     @PropertyId("permissions")
     private ExtaPermissionField permissionsField;
 
-    /**
-     * <p>Constructor for UserEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public UserEditForm(final String caption, final BeanItem<UserProfile> obj) {
 
-        super(caption, obj);
-        initialPassword = obj.getBean().getPassword();
+    public UserEditForm(UserProfile userProfile) {
+        super(isNullOrEmpty(userProfile.getId()) ?
+                "Ввод нового пользователя в систему" :
+                "Редактирование данных пользователя");
+        initialPassword = userProfile.getPassword();
     }
 
     /** {@inheritDoc} */
@@ -112,7 +109,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     @Override
     protected ComponentContainer createEditFields(final UserProfile obj) {
         TabSheet tabsheet = new TabSheet();
-        tabsheet.addStyleName("framed");
+//        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

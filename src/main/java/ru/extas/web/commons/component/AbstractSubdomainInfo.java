@@ -1,5 +1,6 @@
 package ru.extas.web.commons.component;
 
+import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
 
 
@@ -11,7 +12,7 @@ import ru.extas.model.security.ExtaDomain;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class AbstractTabInfo implements TabInfo {
+public abstract class AbstractSubdomainInfo implements SubdomainInfo {
     private static final long serialVersionUID = -4891758708180700074L;
     private final String caption;
 	private final ExtaDomain domain;
@@ -22,7 +23,7 @@ public abstract class AbstractTabInfo implements TabInfo {
 	 * @param caption a {@link java.lang.String} object.
 	 * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
-	public AbstractTabInfo(final String caption, final ExtaDomain domain) {
+	public AbstractSubdomainInfo(final String caption, final ExtaDomain domain) {
 		this.caption = caption;
 		this.domain = domain;
 	}

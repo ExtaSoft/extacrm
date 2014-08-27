@@ -7,17 +7,11 @@ import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.MenuBar.Command;
-import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -30,7 +24,9 @@ import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
@@ -148,11 +144,9 @@ public class ExtaCrmUI extends UI {
                             // Поменять пароль
                             final ChangePasswordForm form = new ChangePasswordForm(new BeanItem<>(
                                     currentUserProfile));
-                            form.addCloseListener(new CloseListener() {
-                                private static final long serialVersionUID = 1L;
-
+                            form.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
                                 @Override
-                                public void windowClose(final CloseEvent e) {
+                                public void closeForm(AbstractEditForm.CloseFormEvent event) {
                                     if (form.isSaved()) {
                                         closeLoginAndBuildMain();
                                     } else {
@@ -160,7 +154,7 @@ public class ExtaCrmUI extends UI {
                                     }
                                 }
                             });
-                            form.showModal();
+                            FormUtils.showModalWin(form);
                         } else {
                             closeLoginAndBuildMain();
                         }
@@ -286,7 +280,7 @@ public class ExtaCrmUI extends UI {
         mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", Fontello.COG_ALT,
                 ConfigView.class, ExtaDomain.SETTINGS);
 
-        mainMenu.processURI(Page.getCurrent().getUriFragment());
+        mainMenu.processURI(null);
 
         setContent(root);
     }

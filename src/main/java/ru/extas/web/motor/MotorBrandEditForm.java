@@ -4,13 +4,12 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -28,16 +27,9 @@ public class MotorBrandEditForm extends AbstractEditForm<MotorBrand> {
     @PropertyId("brandTypes")
     private MotorTypeObjMultiselect typesField;
 
-    /**
-     * <p>Constructor for MotorBrandEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param newObj a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public MotorBrandEditForm(String caption, BeanItem<MotorBrand> newObj) {
-        super(caption, newObj);
+    public MotorBrandEditForm(MotorBrand motorBrand) {
+        super(motorBrand.isNew() ? "Новый бренд" : "Редактировать бренд", new BeanItem(motorBrand));
     }
-
 
 
     /** {@inheritDoc} */

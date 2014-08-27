@@ -5,7 +5,9 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
+import ru.extas.web.commons.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -68,28 +70,22 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
             @SuppressWarnings({"unchecked"})
             @Override
             public void addNewItem(final String newItemCaption) {
-                final BeanItem<LegalEntity> newObj;
-                newObj = new BeanItem<>(new LegalEntity());
-                newObj.getBean().setName(newItemCaption);
-                newObj.expandProperty("actualAddress");
+                final LegalEntity newObj = new LegalEntity();
+                newObj.setName(newItemCaption);
 
-                final String edFormCaption = "Ввод нового юр.лица в систему";
-                final LegalEntityEditForm editWin = new LegalEntityEditForm(edFormCaption, newObj);
+                final LegalEntityEditForm editWin = new LegalEntityEditForm(newObj);
                 editWin.setModified(true);
 
-                editWin.addCloseListener(new Window.CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
+                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
                     @Override
-                    public void windowClose(final Window.CloseEvent e) {
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             selectField.refreshContainer();
-                            selectField.setValue(newObj.getBean().getId());
+                            selectField.setValue(newObj.getId());
                         }
                     }
                 });
-                editWin.showModal();
+                FormUtils.showModalWin(editWin);
             }
         });
         selectField.addValueChangeListener(new ValueChangeListener() {
@@ -126,24 +122,20 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         viewBtn = new Button("Просмотр", new Button.ClickListener() {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
-                final BeanItem<LegalEntity> beanItem;
-                beanItem = new BeanItem<>((LegalEntity) selectField.getConvertedValue());
-                beanItem.expandProperty("actualAddress");
+                final LegalEntity bean = (LegalEntity) selectField.getConvertedValue();
 
-                final String edFormCaption = "Просмотр/Редактирование юр. лица";
-                final LegalEntityEditForm editWin = new LegalEntityEditForm(edFormCaption, beanItem);
+                final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
                 editWin.setModified(true);
 
-                editWin.addCloseListener(new Window.CloseListener() {
-
+                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
                     @Override
-                    public void windowClose(final Window.CloseEvent e) {
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
-                            refreshFields(beanItem.getBean());
+                            refreshFields(bean);
                         }
                     }
                 });
-                editWin.showModal();
+                FormUtils.showModalWin(editWin);
             }
         });
         viewBtn.setIcon(Fontello.EDIT_3);

@@ -3,10 +3,7 @@ package ru.extas.web.sale;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import ru.extas.model.sale.Sale;
-import ru.extas.web.commons.DataDeclMapping;
-import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.GridItem;
-import ru.extas.web.commons.NumColumnGenerator;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
 import ru.extas.web.lead.SalePointColumnGenerator;
 import ru.extas.web.motor.MotorColumnGenerator;
@@ -26,10 +23,10 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("num", "№", new NumColumnGenerator() {
             @Override
             public void fireClick(Item item) {
-                final BeanItem<Sale> curObj = new GridItem<>(item);
+                final Sale curObj = GridItem.extractBean(item);
 
-                final SaleEditForm editWin = new SaleEditForm("Редактирование лида", curObj);
-                editWin.showModal();
+                final SaleEditForm editWin = new SaleEditForm(curObj);
+                FormUtils.showModalWin(editWin);
             }
         }, null);
 		addMapping("client.name", "Клиент");

@@ -24,10 +24,10 @@ class LeadDataDecl extends GridDataDecl {
         addMapping("num", "№", new NumColumnGenerator() {
             @Override
             public void fireClick(Item item) {
-                final BeanItem<Lead> curObj = new GridItem<>(item);
+                final Lead curObj = GridItem.extractBean(item);
 
-                final LeadEditForm editWin = new LeadEditForm("Редактирование лида", curObj, false);
-                editWin.showModal();
+                final LeadEditForm editWin = new LeadEditForm(curObj, false);
+                FormUtils.showModalWin(editWin);
             }
         }, null);
         addMapping("contactName", "Клиент");

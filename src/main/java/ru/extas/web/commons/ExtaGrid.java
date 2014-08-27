@@ -1,17 +1,22 @@
 package ru.extas.web.commons;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.Action;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
+import com.vaadin.util.ReflectTools;
 import org.tepi.filtertable.FilterTable;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +33,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class ExtaGrid extends CustomComponent {
+public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private static final long serialVersionUID = 2299363623807745654L;
 
     /**
@@ -36,6 +41,7 @@ public abstract class ExtaGrid extends CustomComponent {
      */
     public static final String OVERALL_COLUMN = "OverallColumn";
 
+    private final Class<TEntity> entityClass;
     protected FilterTable table;
     protected Container container;
     private List<UIAction> actions;
@@ -56,7 +62,8 @@ public abstract class ExtaGrid extends CustomComponent {
      *
      * @param initNow a boolean.
      */
-    public ExtaGrid(boolean initNow) {
+    public ExtaGrid(Class<TEntity> entityClass, boolean initNow) {
+        this.entityClass = entityClass;
         if (initNow)
             initialize();
     }
@@ -64,8 +71,64 @@ public abstract class ExtaGrid extends CustomComponent {
     /**
      * <p>Constructor for ExtaGrid.</p>
      */
-    public ExtaGrid() {
-        this(true);
+    public ExtaGrid(Class<TEntity> entityClass) {
+        this(entityClass, true);
+    }
+
+    public Class<TEntity> getEntityClass() {
+        return entityClass;
+    }
+
+    public TEntity createEntity() {
+        try {
+            return entityClass.newInstance();
+        } catch (Throwable t) {
+            throw Throwables.propagate(t);
+        }
+    }
+
+    public TEntity getSelectedEntity() {
+        if (table != null) {
+            Object itemId = table.getValue();
+            if (itemId != null) {
+                Item item = table.getItem(itemId);
+                if (item != null)
+                    return GridItem.extractBean(item);
+            }
+        }
+        return null;
+    }
+
+    public abstract AbstractEditForm<TEntity> createEditForm(TEntity entity);
+
+    protected void goToEditObject(final Object itemId) {
+        TEntity entity = GridItem.extractBean(table.getItem(itemId));
+
+        final AbstractEditForm<TEntity> form = createEditForm(entity);
+        form.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+            @Override
+            public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                if (form.isSaved()) {
+                    refreshContainerItem(itemId);
+                }
+            }
+        });
+        FormUtils.showModalWin(form);
+    }
+
+    protected void goToEditNewObject(TEntity init) {
+        TEntity entity = init == null ? createEntity() : init;
+
+        final AbstractEditForm<TEntity> form = createEditForm(entity);
+        form.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+            @Override
+            public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                if (form.isSaved()) {
+                    refreshContainer();
+                }
+            }
+        });
+        FormUtils.showModalWin(form);
     }
 
     /**
@@ -180,7 +243,7 @@ public abstract class ExtaGrid extends CustomComponent {
     private void fillGridTollbarItem(final UIAction action, MenuBar.MenuItem menuItem) {
         menuItem.setDescription(action.getDescription());
 
-        if(action instanceof UIActionGroup) {
+        if (action instanceof UIActionGroup) {
             for (final UIAction subAction : (((UIActionGroup) action).getActionsGroup())) {
                 fillGridTollbarItem(subAction, menuItem.addItem(subAction.getName(), subAction.getIcon(), null));
             }
@@ -303,7 +366,7 @@ public abstract class ExtaGrid extends CustomComponent {
             if (a instanceof ItemAction && !(a instanceof DefaultAction)) {
                 Component command = a.createButton();
                 if (command instanceof Button) {
-                    ((Button)command).addClickListener(new Button.ClickListener() {
+                    ((Button) command).addClickListener(new Button.ClickListener() {
                         @Override
                         public void buttonClick(Button.ClickEvent event) {
                             a.fire(itemId);
@@ -444,6 +507,36 @@ public abstract class ExtaGrid extends CustomComponent {
             panel.setImmediate(true);
 
             return panel;
+        }
+    }
+
+    protected class NewObjectAction extends UIAction {
+        public NewObjectAction(String caption, String description, Fontello icon) {
+            super(caption, description, icon);
+        }
+
+        public NewObjectAction(String caption, String description) {
+            super(caption, description, Fontello.DOC_NEW);
+        }
+
+        @Override
+        public void fire(Object itemId) {
+            goToEditNewObject(null);
+        }
+    }
+
+    protected class EditObjectAction extends DefaultAction {
+        public EditObjectAction(String caption, String description, Fontello icon) {
+            super(caption, description, icon);
+        }
+
+        public EditObjectAction(String caption, String description) {
+            super(caption, description, Fontello.EDIT_3);
+        }
+
+        @Override
+        public void fire(final Object itemId) {
+            goToEditObject(itemId);
         }
     }
 }

@@ -4,14 +4,14 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
 import ru.extas.model.motor.MotorModel;
 import ru.extas.server.motor.MotorModelRepository;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -32,14 +32,11 @@ public class MotorModelEditForm extends AbstractEditForm<MotorModel> {
     @PropertyId("code")
     private EditField codeField;
 
-    /**
-     * <p>Constructor for MotorModelEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param newObj a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public MotorModelEditForm(String caption, BeanItem<MotorModel> newObj) {
-        super(caption, newObj);
+    public MotorModelEditForm(MotorModel motorModel) {
+        super(isNullOrEmpty(motorModel.getId()) ?
+                "Новая модель техники" :
+                "Редактировать модель техники",
+                new BeanItem<>(motorModel));
     }
 
     /** {@inheritDoc} */

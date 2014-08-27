@@ -7,20 +7,18 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.converter.StringToDateConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.joda.time.LocalDate;
-import ru.extas.model.lead.Lead;
 import ru.extas.model.security.UserRole;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.StringToDateTimeConverter;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
-import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -34,7 +32,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class TasksGrid extends ExtaGrid {
+public class TasksGrid extends ExtaGrid<Task> {
 	private static final long serialVersionUID = 4876073256421755574L;
 	private final Period period;
 
@@ -51,7 +49,7 @@ public class TasksGrid extends ExtaGrid {
 	 * @param period a {@link ru.extas.web.tasks.TasksGrid.Period} object.
 	 */
 	public TasksGrid(Period period) {
-		super(false);
+		super(Task.class, false);
 		this.period = period;
 		initialize();
 	}
@@ -130,29 +128,7 @@ public class TasksGrid extends ExtaGrid {
 //            }
 //        });
 
-		actions.add(new DefaultAction("Открыть", "Открыть выделенную в списке задачу", Fontello.EDIT_3) {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
-
-				final TaskEditForm editWin = new TaskEditForm("Редактирование задачи", curObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							//((JPAContainer) container).refreshItem(itemId);
-						}
-						if (editWin.isTaskCompleted()) {
-							refreshContainer();
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
+		actions.add(new EditObjectAction("Открыть", "Открыть выделенную в списке задачу"));
 
 		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", Fontello.SITEMAP) {
 			@Override
@@ -172,6 +148,11 @@ public class TasksGrid extends ExtaGrid {
 	protected void refreshContainer() {
 		fillDataContainer((BeanItemContainer<Task>) container);
 	}
+
+    @Override
+    public AbstractEditForm<Task> createEditForm(Task task) {
+        return new TaskEditForm(task);
+    }
 
     @Override
     protected CustomTable.ColumnGenerator createDetailColumnGenerator(final UIAction defAction) {

@@ -15,12 +15,13 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Contact;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -76,14 +77,14 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     private ContactEmployeeField employeeField;
 
 
-    /**
-     * <p>Constructor for CompanyEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public CompanyEditForm(final String caption, final BeanItem<Company> obj) {
-        super(caption, obj);
+    public CompanyEditForm(Company company) {
+        super(company.isNew() ?
+                "Ввод новой компании в систему" :
+                String.format("Редактирование компании: %s", company.getName()));
+        final BeanItem<Company> beanItem = new BeanItem<>(company);
+        beanItem.expandProperty("actualAddress");
+
+        initForm(beanItem);
     }
 
     /** {@inheritDoc} */
@@ -115,7 +116,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     @Override
     protected ComponentContainer createEditFields(final Company obj) {
         TabSheet tabsheet = new TabSheet();
-        tabsheet.addStyleName("framed");
+//        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

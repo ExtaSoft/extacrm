@@ -9,7 +9,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.CompanySelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -71,17 +71,11 @@ public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
-	/**
-	 * <p>Constructor for ProdCreditEditForm.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-	 */
-	public ProdCreditEditForm(final String caption, final BeanItem<ProdCredit> obj) {
-		super(caption, obj);
-	}
+    public ProdCreditEditForm(ProdCredit prodCredit) {
+        super(prodCredit.isNew() ? "Новый продукт" : "Редактировать продукт", new BeanItem(prodCredit));
+    }
 
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdCredit obj) {
 		if (obj.getId() == null) {

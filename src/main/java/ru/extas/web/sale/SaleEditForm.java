@@ -10,7 +10,7 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
 import ru.extas.web.motor.MotorBrandSelect;
@@ -59,14 +59,8 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     @PropertyId("productInSales")
     private ProductInSaleGrid productInSaleField;
 
-    /**
-     * <p>Constructor for SaleEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public SaleEditForm(final String caption, final BeanItem<Sale> obj) {
-        super(caption, obj);
+    public SaleEditForm(Sale sale) {
+        super(sale.isNew() ? "Ввод новой продажи в систему" : "Редактирование продажи", new BeanItem(sale));
     }
 
     /** {@inheritDoc} */

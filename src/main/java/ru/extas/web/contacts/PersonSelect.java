@@ -5,7 +5,9 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
+import ru.extas.web.commons.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -70,28 +72,23 @@ public class PersonSelect extends CustomField<Person> {
 			@SuppressWarnings({"unchecked"})
 			@Override
 			public void addNewItem(final String newItemCaption) {
-				final BeanItem<Person> newObj;
-				newObj = new BeanItem<>(new Person());
-				newObj.getBean().setName(newItemCaption);
-				newObj.expandProperty("actualAddress");
+                final Person newObj = new Person();
+				newObj.setName(newItemCaption);
 
 				final String edFormCaption = "Ввод нового контакта в систему";
-				final PersonEditForm editWin = new PersonEditForm(edFormCaption, newObj);
+				final PersonEditForm editWin = new PersonEditForm(newObj);
 				editWin.setModified(true);
 
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							personSelectField.refreshContainer();
-							personSelectField.setValue(newObj.getBean().getId());
-						}
-					}
-				});
-				editWin.showModal();
+                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                    @Override
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                        if (editWin.isSaved()) {
+                            personSelectField.refreshContainer();
+                            personSelectField.setValue(newObj.getId());
+                        }
+                    }
+                });
+                FormUtils.showModalWin(editWin);
 			}
 		});
 		personSelectField.addValueChangeListener(new ValueChangeListener() {
@@ -128,24 +125,20 @@ public class PersonSelect extends CustomField<Person> {
 		viewBtn = new Button("Просмотр", new Button.ClickListener() {
 			@Override
 			public void buttonClick(final Button.ClickEvent event) {
-				final BeanItem<Person> beanItem;
-				beanItem = new BeanItem<>((Person) personSelectField.getConvertedValue());
-				beanItem.expandProperty("actualAddress");
+				final Person bean = (Person) personSelectField.getConvertedValue();
 
-				final String edFormCaption = "Просмотр/Редактирование физ. лица";
-				final PersonEditForm editWin = new PersonEditForm(edFormCaption, beanItem);
+				final PersonEditForm editWin = new PersonEditForm(bean);
 				editWin.setModified(true);
 
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
+                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                    @Override
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
 						if (editWin.isSaved()) {
-							refreshFields(beanItem.getBean());
+							refreshFields(bean);
 						}
 					}
 				});
-				editWin.showModal();
+                FormUtils.showModalWin(editWin);
 			}
 		});
 		viewBtn.setIcon(Fontello.EDIT_3);

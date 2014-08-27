@@ -71,32 +71,29 @@ public class SalePointsField extends CustomField<Set> {
 					public void fire(Object itemId) {
 						final SalePoint entity = new SalePoint();
 						entity.setCompany(company);
-						final BeanItem<SalePoint> newObj = new BeanItem<>(entity);
-						newObj.expandProperty("actualAddress");
 
-						final SalePointEditForm editWin = new SalePointEditForm("Ввод новой торговой точки в систему", newObj) {
+						final SalePointEditForm editWin = new SalePointEditForm(entity) {
 							@Override
 							protected void saveObject(final SalePoint obj) {
 								((BeanItemContainer<SalePoint>) container).addBean(obj);
 								setValue(newHashSet(((BeanItemContainer<SalePoint>) container).getItemIds()));
 							}
 						};
-						editWin.showModal();
+                        FormUtils.showModalWin(editWin);
 					}
 				});
 
 				actions.add(new DefaultAction("Изменить", "Редактирование торговой точки", Fontello.EDIT_3) {
 					@Override
 					public void fire(final Object itemId) {
-						final BeanItem<SalePoint> beanItem = new GridItem<>(table.getItem(itemId));
-						beanItem.expandProperty("actualAddress");
-						final SalePointEditForm editWin = new SalePointEditForm("Редактирование торговой точки", beanItem) {
+						final SalePoint salePoint = GridItem.extractBean(table.getItem(itemId));
+						final SalePointEditForm editWin = new SalePointEditForm(salePoint) {
 							@Override
 							protected void saveObject(final SalePoint obj) {
 								setValue(newHashSet(((BeanItemContainer<SalePoint>) container).getItemIds()));
 							}
 						};
-						editWin.showModal();
+                        FormUtils.showModalWin(editWin);
 					}
 				});
 				actions.add(new ItemAction("Удалить", "Удалить торговую точку", Fontello.TRASH) {

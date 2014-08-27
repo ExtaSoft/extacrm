@@ -8,8 +8,6 @@ import com.vaadin.addon.tableexport.CustomTableHolder;
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.slf4j.Logger;
@@ -18,6 +16,7 @@ import ru.extas.model.insurance.Insurance;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
 import java.io.ByteArrayOutputStream;
@@ -44,7 +43,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.3
  */
-public class InsuranceGrid extends ExtaGrid {
+public class InsuranceGrid extends ExtaGrid<Insurance> {
 
     private static final long serialVersionUID = -2317741378090152128L;
     private final static Logger logger = LoggerFactory.getLogger(InsuranceGrid.class);
@@ -54,6 +53,12 @@ public class InsuranceGrid extends ExtaGrid {
      * <p>Constructor for InsuranceGrid.</p>
      */
     public InsuranceGrid() {
+        super(Insurance.class);
+    }
+
+    @Override
+    public AbstractEditForm<Insurance> createEditForm(Insurance insurance) {
+        return new InsuranceEditForm(insurance);
     }
 
     /** {@inheritDoc} */
@@ -80,56 +85,14 @@ public class InsuranceGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new UIAction("Новый", "Ввод нового полиса страхования", Fontello.DOC_NEW) {
-
+        actions.add(new NewObjectAction("Новый", "Ввод нового полиса страхования"));
+        actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке полис страхования"));
+        actions.add(new NewObjectAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", Fontello.CLOCK) {
             @Override
             public void fire(Object itemId) {
-                final BeanItem<Insurance> newObj = new BeanItem<>(new Insurance());
+                Insurance oldIns = GridItem.extractBean(table.getItem(itemId));
 
-                final InsuranceEditForm editWin = new InsuranceEditForm("Новый полис", newObj);
-                editWin.addCloseListener(new CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainer();
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
-
-        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке полис страхования", Fontello.EDIT_3) {
-            @Override
-            public void fire(final Object itemId) {
-                final BeanItem<Insurance> curObj = new GridItem<>(table.getItem(itemId));
-
-                final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", curObj);
-                editWin.addCloseListener(new CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainerItem(itemId);
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
-
-        actions.add(new ItemAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", Fontello.CLOCK) {
-            @Override
-            public void fire(Object itemId) {
-                final BeanItem<Insurance> curItem = new GridItem<>(table.getItem(itemId));
-                Insurance oldIns = curItem.getBean();
-
-                Insurance insurance = new Insurance();
+                Insurance insurance = createEntity();
                 // Копируем все необходимые данные из истекшего(истекающего) договора
                 insurance.setClient(oldIns.getClient());
                 insurance.setBeneficiary(oldIns.getBeneficiary());
@@ -148,19 +111,7 @@ public class InsuranceGrid extends ExtaGrid {
                 insurance.setSaleNum(oldIns.getSaleNum());
                 insurance.setSaleDate(oldIns.getSaleDate());
 
-                final InsuranceEditForm editWin = new InsuranceEditForm("Пролонгация полиса", new BeanItem<>(insurance));
-                editWin.addCloseListener(new CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainer();
-                        }
-                    }
-                });
-                editWin.showModal();
+                goToEditNewObject(insurance);
             }
         });
 

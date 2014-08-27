@@ -11,21 +11,24 @@ import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.AddressInfo;
+import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.LegalEntityFile;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.DocFilesEditor;
+import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.motor.BrandsField;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -77,15 +80,16 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
 
     private LegalEntity legalEntity;
 
-    /**
-     * <p>Constructor for LegalEntityEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public LegalEntityEditForm(final String caption, final BeanItem<LegalEntity> obj) {
-        super(caption, obj);
-        legalEntity = obj.getBean();
+    public LegalEntityEditForm(LegalEntity legalEntity) {
+        super(isNullOrEmpty(legalEntity.getId()) ?
+                "Ввод нового юр. лица в систему" :
+                "Редактирование юр. лица");
+
+        final BeanItem<LegalEntity> beanItem = new BeanItem<>(legalEntity);
+        beanItem.expandProperty("actualAddress");
+
+        this.legalEntity = legalEntity;
+        initForm(beanItem);
     }
 
     /** {@inheritDoc} */
@@ -141,7 +145,7 @@ public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
     @Override
     protected ComponentContainer createEditFields(final LegalEntity obj) {
         TabSheet tabsheet = new TabSheet();
-        tabsheet.addStyleName("framed");
+//        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

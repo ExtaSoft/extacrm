@@ -3,14 +3,13 @@ package ru.extas.web.sale;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Window;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SalesGrid extends ExtaGrid {
+public class SalesGrid extends ExtaGrid<Sale> {
 	private static final long serialVersionUID = 4876073256421755574L;
 	private final ExtaDomain domain;
 
@@ -37,7 +36,7 @@ public class SalesGrid extends ExtaGrid {
 	 * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
 	public SalesGrid(ExtaDomain domain) {
-		super(false);
+		super(Sale.class, false);
 		this.domain = domain;
 		initialize();
 	}
@@ -48,7 +47,12 @@ public class SalesGrid extends ExtaGrid {
 		return new SaleDataDecl();
 	}
 
-	/** {@inheritDoc} */
+    @Override
+    public AbstractEditForm<Sale> createEditForm(Sale sale) {
+        return new SaleEditForm(sale);
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected void initTable(Mode mode) {
 		super.initTable(mode);
@@ -75,70 +79,31 @@ public class SalesGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод новой продажи", Fontello.DOC_NEW) {
-			@Override
-			public void fire(Object itemId) {
-				final BeanItem<Sale> newObj = new BeanItem<>(new Sale());
-
-				final SaleEditForm editWin = new SaleEditForm("Ввод новой продажи в систему", newObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainer();
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенную в списке продажу", Fontello.EDIT_3) {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<Sale> curObj = new GridItem<>(table.getItem(itemId));
-
-				final SaleEditForm editWin = new SaleEditForm("Редактирование продажи", curObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainerItem(itemId);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
+		actions.add(new NewObjectAction("Новый", "Ввод новой продажи"));
+		actions.add(new EditObjectAction("Изменить", "Редактировать выделенную в списке продажу"));
 
 		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязана текущая продажа", Fontello.SITEMAP) {
-			@Override
-			public void fire(Object itemId) {
-				final Sale curObj = extractBean(table.getItem(itemId));
+            @Override
+            public void fire(Object itemId) {
+                final Sale curObj = extractBean(table.getItem(itemId));
 
-				// Ищем процесс к которому привязана текущая продажа
-				RuntimeService runtimeService = lookup(RuntimeService.class);
-				ProcessInstance process =
-						runtimeService.createProcessInstanceQuery()
-								.includeProcessVariables()
-								.variableValueEquals("sale", curObj)
-								.singleResult();
+                // Ищем процесс к которому привязана текущая продажа
+                RuntimeService runtimeService = lookup(RuntimeService.class);
+                ProcessInstance process =
+                        runtimeService.createProcessInstanceQuery()
+                                .includeProcessVariables()
+                                .variableValueEquals("sale", curObj)
+                                .singleResult();
 
-				if (process != null) {
-					// Показать статус выполнения процесса
-					BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
-					statusForm.showModal();
-				} else {
+                if (process != null) {
+                    // Показать статус выполнения процесса
+                    BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
+                    statusForm.showModal();
+                } else {
                     NotificationUtil.showWarning("Нет бизнес процесса с которым связана текущая продажа.");
-				}
-			}
-		});
+                }
+            }
+        });
 
 		return actions;
 	}

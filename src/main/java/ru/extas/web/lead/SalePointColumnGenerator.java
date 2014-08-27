@@ -6,6 +6,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.contacts.SalePointEditForm;
 
@@ -40,10 +41,9 @@ public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenera
             link.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    final BeanItem<SalePoint> curObj = new BeanItem<>(salePoint);
 
-                    final SalePointEditForm editWin = new SalePointEditForm("Просмотр торговой точки", curObj);
-                    editWin.showModal();
+                    final SalePointEditForm editWin = new SalePointEditForm(salePoint);
+                    FormUtils.showModalWin(editWin);
 
                 }
             });

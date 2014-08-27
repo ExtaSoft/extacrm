@@ -9,7 +9,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.CompanySelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -37,17 +37,11 @@ public class ProdInsuranceEditForm extends AbstractEditForm<ProdInsurance> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
-	/**
-	 * <p>Constructor for ProdInsuranceEditForm.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-	 */
-	public ProdInsuranceEditForm(final String caption, final BeanItem<ProdInsurance> obj) {
-		super(caption, obj);
-	}
+    public ProdInsuranceEditForm(ProdInsurance prodInsurance) {
+        super(prodInsurance.isNew() ? "Новая страховая программа" : "Редактировать страховую программу", new BeanItem(prodInsurance));
+    }
 
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdInsurance obj) {
 		if (obj.getId() == null) {

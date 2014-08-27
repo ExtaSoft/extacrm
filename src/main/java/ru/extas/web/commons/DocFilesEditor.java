@@ -59,7 +59,16 @@ public class DocFilesEditor<TFileContainer extends FileContainer> extends Custom
         return List.class;
     }
 
-    private class DocFilesGrid extends ExtaGrid {
+    private class DocFilesGrid extends ExtaGrid<FileContainer> {
+
+        public DocFilesGrid() {
+            super(FileContainer.class);
+        }
+
+        @Override
+        public AbstractEditForm<FileContainer> createEditForm(FileContainer fileContainer) {
+            return null;
+        }
 
         @Override
         protected GridDataDecl createDataDecl() {

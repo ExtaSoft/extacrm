@@ -5,9 +5,10 @@ package ru.extas.web.users;
 
 import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.web.commons.AbstractTabView;
-import ru.extas.web.commons.component.AbstractTabInfo;
-import ru.extas.web.commons.component.TabInfo;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainView;
+import ru.extas.web.commons.component.AbstractSubdomainInfo;
+import ru.extas.web.commons.component.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class UsersView extends AbstractTabView {
+public class UsersView extends SubdomainView {
 
     private static final long serialVersionUID = -1272779672761523416L;
 
@@ -34,17 +35,17 @@ public class UsersView extends AbstractTabView {
 
     /** {@inheritDoc} */
     @Override
-    protected List<TabInfo> getTabComponentsInfo() {
-        final ArrayList<TabInfo> ret = newArrayList();
-        ret.add(new AbstractTabInfo("Пользователи", ExtaDomain.USERS) {
+    protected List<SubdomainInfo> getSubdomainInfo() {
+        final ArrayList<SubdomainInfo> ret = newArrayList();
+        ret.add(new AbstractSubdomainInfo("Пользователи", ExtaDomain.USERS) {
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new UsersGrid();
             }
         });
-        ret.add(new AbstractTabInfo("Группы", ExtaDomain.USER_GROUPS) {
+        ret.add(new AbstractSubdomainInfo("Группы", ExtaDomain.USER_GROUPS) {
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new UserGroupGrid();
             }
         });

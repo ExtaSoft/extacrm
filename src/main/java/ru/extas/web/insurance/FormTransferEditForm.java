@@ -4,7 +4,6 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupDateField;
 import org.joda.time.LocalDate;
 import ru.extas.model.insurance.FormTransfer;
@@ -12,9 +11,10 @@ import ru.extas.server.insurance.FormTransferRepository;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.LocalDateField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -37,15 +37,11 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
     @PropertyId("formNums")
     private A7NumListEdit formNums;
 
-    /**
-     * <p>Constructor for FormTransferEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public FormTransferEditForm(final String caption, final BeanItem<FormTransfer> obj) {
-        super(caption, obj);
-
+    public FormTransferEditForm(FormTransfer formTransfer) {
+        super(isNullOrEmpty(formTransfer.getId()) ?
+                        "Новый акт приема/передачи" :
+                        "Редактировать акт приема/передачи",
+                new BeanItem(formTransfer));
     }
 
     /** {@inheritDoc} */

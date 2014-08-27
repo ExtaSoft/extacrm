@@ -13,9 +13,10 @@ package ru.extas.web.insurance;
 import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.security.UserManagementService;
-import ru.extas.web.commons.AbstractTabView;
-import ru.extas.web.commons.component.AbstractTabInfo;
-import ru.extas.web.commons.component.TabInfo;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainView;
+import ru.extas.web.commons.component.AbstractSubdomainInfo;
+import ru.extas.web.commons.component.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class InsuranceView extends AbstractTabView {
+public class InsuranceView extends SubdomainView {
 
     private static final long serialVersionUID = -2524035728558575428L;
 
@@ -42,36 +43,38 @@ public class InsuranceView extends AbstractTabView {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected List<TabInfo> getTabComponentsInfo() {
+    protected List<SubdomainInfo> getSubdomainInfo() {
         UserManagementService userService = lookup(UserManagementService.class);
-        final ArrayList<TabInfo> ret = newArrayList();
-        ret.add(new AbstractTabInfo("Имущ. страховки", ExtaDomain.INSURANCE_PROP) {
+        final ArrayList<SubdomainInfo> ret = newArrayList();
+        ret.add(new AbstractSubdomainInfo("Имущ. страховки", ExtaDomain.INSURANCE_PROP) {
 
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new InsuranceGrid();
             }
         });
-            ret.add(new AbstractTabInfo("Бланки (БСО)", ExtaDomain.INSURANCE_BSO) {
-
-                @Override
-                public Component createComponent() {
-                    return new PolicyGrid();
-                }
-            });
-            ret.add(new AbstractTabInfo("Акты Приема/Передачи", ExtaDomain.INSURANCE_TRANSFER) {
-
-                @Override
-                public Component createComponent() {
-                    return new FormTransferGrid();
-                }
-            });
-        ret.add(new AbstractTabInfo("Квитанции А-7", ExtaDomain.INSURANCE_A_7) {
+        ret.add(new AbstractSubdomainInfo("Бланки (БСО)", ExtaDomain.INSURANCE_BSO) {
 
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
+                return new PolicyGrid();
+            }
+        });
+        ret.add(new AbstractSubdomainInfo("Акты Приема/Передачи", ExtaDomain.INSURANCE_TRANSFER) {
+
+            @Override
+            public ExtaGrid createGrid() {
+                return new FormTransferGrid();
+            }
+        });
+        ret.add(new AbstractSubdomainInfo("Квитанции А-7", ExtaDomain.INSURANCE_A_7) {
+
+            @Override
+            public ExtaGrid createGrid() {
                 return new A7FormGrid();
             }
         });

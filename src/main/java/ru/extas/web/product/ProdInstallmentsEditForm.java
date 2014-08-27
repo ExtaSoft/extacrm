@@ -9,9 +9,10 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.CompanySelect;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -39,17 +40,14 @@ public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments>
 	@PropertyId("comment")
 	private TextArea commentField;
 
-	/**
-	 * <p>Constructor for ProdInstallmentsEditForm.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-	 */
-	public ProdInstallmentsEditForm(final String caption, final BeanItem<ProdInstallments> obj) {
-		super(caption, obj);
-	}
+    public ProdInstallmentsEditForm(ProdInstallments prodInstallments) {
+        super(isNullOrEmpty(prodInstallments.getId()) ?
+                "Новый продукт \"Рассрочка\"" :
+                "Редактировать продукт",
+                new BeanItem(prodInstallments));
+    }
 
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdInstallments obj) {
 		if (obj.getId() == null) {

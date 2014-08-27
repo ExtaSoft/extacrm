@@ -9,6 +9,8 @@ import com.vaadin.ui.*;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -69,18 +71,15 @@ public class ProductInSaleGrid extends CustomField<List> {
 					final BeanItem<ProductInSale> newObj = new BeanItem<>(new ProductInSale(sale));
 
 					final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", newObj);
-					editWin.addCloseListener(new Window.CloseListener() {
-
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (editWin.isSaved()) {
-								container.addBean(newObj.getBean());
-							}
-						}
-					});
-					editWin.showModal();
+                    editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                        @Override
+                        public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                        if (editWin.isSaved()) {
+                            container.addBean(newObj.getBean());
+                        }
+                    }
+                });
+                    FormUtils.showModalWin(editWin);
 				}
 			});
 			addProdBtn.setDescription("Добавить продукт в продажу");
@@ -93,7 +92,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 					if (productTable.getValue() != null) {
 						final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getItem(productTable.getValue());
 						final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem);
-						editWin.showModal();
+                        FormUtils.showModalWin(editWin);
 					}
 				}
 			});

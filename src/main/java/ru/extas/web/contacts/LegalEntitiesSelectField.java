@@ -90,15 +90,14 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 				actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.EDIT_3) {
 					@Override
 					public void fire(final Object itemId) {
-						final BeanItem<LegalEntity> beanItem = new GridItem<>(table.getItem(itemId));
-						beanItem.expandProperty("actualAddress");
-						final LegalEntityEditForm editWin = new LegalEntityEditForm("Редактирование контактных данных", beanItem) {
+						final LegalEntity bean = GridItem.extractBean(table.getItem(itemId));
+						final LegalEntityEditForm editWin = new LegalEntityEditForm(bean) {
 							@Override
 							protected void saveObject(final LegalEntity obj) {
 								setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
 							}
 						};
-						editWin.showModal();
+                        FormUtils.showModalWin(editWin);
 					}
 				});
 				actions.add(new ItemAction("Удалить", "Удалить юр.лицо из компании", Fontello.TRASH) {

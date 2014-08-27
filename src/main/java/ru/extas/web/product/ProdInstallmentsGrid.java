@@ -2,9 +2,9 @@ package ru.extas.web.product;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window;
 import ru.extas.model.sale.ProdInstallments;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -19,9 +19,18 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdInstallmentsGrid extends ExtaGrid {
+public class ProdInstallmentsGrid extends ExtaGrid<ProdInstallments> {
 
-	/** {@inheritDoc} */
+    public ProdInstallmentsGrid() {
+        super(ProdInstallments.class);
+    }
+
+    @Override
+    public AbstractEditForm<ProdInstallments> createEditForm(ProdInstallments prodInstallments) {
+        return new ProdInstallmentsEditForm(prodInstallments);
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new ProdInstallmentsDataDecl();
@@ -42,48 +51,8 @@ public class ProdInstallmentsGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод нового продукта", Fontello.DOC_NEW) {
-
-			@Override
-			public void fire(Object itemId) {
-				final BeanItem<ProdInstallments> newObj = new BeanItem<>(new ProdInstallments());
-
-				final ProdInstallmentsEditForm editWin = new ProdInstallmentsEditForm("Новый продукт \"Рассрочка\"", newObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainer();
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке продукт", Fontello.EDIT_3) {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<ProdInstallments> curObj = new GridItem<>(table.getItem(itemId));
-
-				final ProdInstallmentsEditForm editWin = new ProdInstallmentsEditForm("Редактировать продукт", curObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainerItem(itemId);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
+		actions.add(new NewObjectAction("Новый", "Ввод нового продукта"));
+		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке продукт"));
 
 		return actions;
 	}

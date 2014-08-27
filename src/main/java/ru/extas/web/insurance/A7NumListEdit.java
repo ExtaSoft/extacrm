@@ -12,6 +12,8 @@ import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.commons.window.GetValueWindowLong;
 import ru.extas.web.commons.window.GetValueWindowLongRange;
 
@@ -59,14 +61,14 @@ public class A7NumListEdit extends CustomField<List> {
             @Override
             public void buttonClick(final ClickEvent event) {
                 final GetValueWindowLong win = new GetValueWindowLong("Введите номер новой квитанции");
-                win.addCloseListener(new Window.CloseListener() {
+                win.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
                     @Override
-                    public void windowClose(final Window.CloseEvent e) {
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
                         if (win.isSaved())
                             addNumber(win.getValue().toString());
                     }
                 });
-                win.showModal();
+                FormUtils.showModalWin(win);
             }
         });
         addNumBtn.setDescription("Добавить номер квитанции к акту приема/передачи");
@@ -76,9 +78,9 @@ public class A7NumListEdit extends CustomField<List> {
             @Override
             public void buttonClick(final ClickEvent event) {
                 final GetValueWindowLongRange win = new GetValueWindowLongRange("Введите диапазон номеров квитанций");
-                win.addCloseListener(new Window.CloseListener() {
+                win.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
                     @Override
-                    public void windowClose(final Window.CloseEvent e) {
+                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
                         if (win.isSaved()) {
                             Range<Long> range = Range.closed(win.getStartValue(), win.getEndValue());
                             for (Long num : ContiguousSet.create(range, DiscreteDomain.longs())) {
@@ -87,7 +89,7 @@ public class A7NumListEdit extends CustomField<List> {
                         }
                     }
                 });
-                win.showModal();
+                FormUtils.showModalWin(win);
             }
         });
         addNumRangeBtn.setDescription("Добавить диапазон номеров квитанции (пачку квитанций) к акту приема/передачи");

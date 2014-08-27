@@ -5,11 +5,10 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class CompaniesGrid extends ExtaGrid {
+public class CompaniesGrid extends ExtaGrid<Company> {
 
 	private static final long serialVersionUID = 2299363623807745654L;
 
@@ -30,10 +29,15 @@ public class CompaniesGrid extends ExtaGrid {
 	 * <p>Constructor for CompaniesGrid.</p>
 	 */
 	public CompaniesGrid() {
-		super();
+		super(Company.class);
 	}
 
-	/** {@inheritDoc} */
+    @Override
+    public AbstractEditForm<Company> createEditForm(Company company) {
+        return new CompanyEditForm(company);
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new CompanyDataDecl();
@@ -53,49 +57,9 @@ public class CompaniesGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-		actions.add(new UIAction("Новый", "Ввод новой компании в систему", Fontello.DOC_NEW) {
-			@Override
-			public void fire(Object itemId) {
-				final BeanItem<Company> newObj = new BeanItem<>(new Company());
-				newObj.expandProperty("actualAddress");
+		actions.add(new NewObjectAction("Новый", "Ввод новой компании в систему"));
+		actions.add(new EditObjectAction("Изменить", "Редактирование контактных данных"));
 
-				final CompanyEditForm editWin = new CompanyEditForm("Ввод новой компании в систему", newObj);
-				editWin.addCloseListener(new CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainer();
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-
-		actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.EDIT_3) {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<Company> beanItem = new GridItem<>(table.getItem(itemId));
-				beanItem.expandProperty("actualAddress");
-				final String caption = String.format("Редактирование компании: %s", beanItem.getBean().getName());
-				final CompanyEditForm editWin = new CompanyEditForm(caption, beanItem);
-				editWin.addCloseListener(new CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainerItem(itemId);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
 		return actions;
 	}
 }
