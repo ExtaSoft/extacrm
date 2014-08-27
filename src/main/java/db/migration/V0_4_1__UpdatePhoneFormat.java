@@ -30,19 +30,14 @@ public class V0_4_1__UpdatePhoneFormat implements SpringJdbcMigration {
     @Override
     public void migrate(final JdbcTemplate jdbcTemplate) throws Exception {
 
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        String country = "RU";
+        final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        final String country = "RU";
 
         // Contacts
-        List<Contact> contacts = jdbcTemplate.query("SELECT ID, CELL_PHONE AS PHONE FROM CONTACT", new ContactRowMapper());
+        final List<Contact> contacts = jdbcTemplate.query("SELECT ID, CELL_PHONE AS PHONE FROM CONTACT", new ContactRowMapper());
         convertPhones(phoneUtil, country, contacts);
         jdbcTemplate.batchUpdate("UPDATE CONTACT set CELL_PHONE = ? where ID = ?",
-                Lists.transform(contacts, new Function<Contact, Object[]>() {
-                    @Override
-                    public Object[] apply(Contact input) {
-                        return new Object[]{input.getPhone(), input.getId()};
-                    }
-                })
+                Lists.transform(contacts, input -> new Object[]{input.getPhone(), input.getId()})
         );
     }
 
@@ -53,23 +48,21 @@ public class V0_4_1__UpdatePhoneFormat implements SpringJdbcMigration {
      * @param country a {@link java.lang.String} object.
      * @param contacts a {@link java.util.List} object.
      */
-    protected void convertPhones(PhoneNumberUtil phoneUtil, String country, List<Contact> contacts) {
-        for (Contact contact : contacts) {
-            if (!isNullOrEmpty(contact.getPhone())) {
-                try {
-                    Phonenumber.PhoneNumber phone = phoneUtil.parse(contact.getPhone(), country);
-                    contact.setPhone(phoneUtil.format(phone, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL));
-                } catch (NumberParseException e) {
-                }
+    protected void convertPhones(final PhoneNumberUtil phoneUtil, final String country, final List<Contact> contacts) {
+        contacts.stream().filter(contact -> !isNullOrEmpty(contact.getPhone())).forEach((final Contact contact) -> {
+            try {
+                final Phonenumber.PhoneNumber phone = phoneUtil.parse(contact.getPhone(), country);
+                contact.setPhone(phoneUtil.format(phone, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL));
+            } catch (final NumberParseException e) {
             }
-        }
+        });
     }
 
     private class Contact {
         private String id;
         private String phone;
 
-        private Contact(String id, String phone) {
+        private Contact(final String id, final String phone) {
             this.id = id;
             this.phone = phone;
         }
@@ -78,7 +71,7 @@ public class V0_4_1__UpdatePhoneFormat implements SpringJdbcMigration {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(final String id) {
             this.id = id;
         }
 
@@ -86,15 +79,15 @@ public class V0_4_1__UpdatePhoneFormat implements SpringJdbcMigration {
             return phone;
         }
 
-        public void setPhone(String phone) {
+        public void setPhone(final String phone) {
             this.phone = phone;
         }
     }
 
     private class ContactRowMapper implements RowMapper<Contact> {
 
-        public Contact mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Contact cnt = new Contact(rs.getString("ID"), rs.getString("PHONE"));
+        public Contact mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+            final Contact cnt = new Contact(rs.getString("ID"), rs.getString("PHONE"));
             return cnt;
         }
     }

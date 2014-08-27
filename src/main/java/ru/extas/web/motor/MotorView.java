@@ -3,12 +3,11 @@
  */
 package ru.extas.web.motor;
 
-import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainInfoImpl;
 import ru.extas.web.commons.SubdomainView;
-import ru.extas.web.commons.component.AbstractSubdomainInfo;
-import ru.extas.web.commons.component.SubdomainInfo;
+import ru.extas.web.commons.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,21 +37,21 @@ public class MotorView extends SubdomainView {
 	@Override
 	protected List<SubdomainInfo> getSubdomainInfo() {
 		final ArrayList<SubdomainInfo> ret = newArrayList();
-		ret.add(new AbstractSubdomainInfo("Модель техники", ExtaDomain.MOTOR_MODEL) {
+		ret.add(new SubdomainInfoImpl("Модель техники", ExtaDomain.MOTOR_MODEL) {
 
 			@Override
 			public ExtaGrid createGrid() {
 				return new MotorModelGrid();
 			}
 		});
-		ret.add(new AbstractSubdomainInfo("Бренд", ExtaDomain.MOTOR_BRAND) {
+		ret.add(new SubdomainInfoImpl("Бренд", ExtaDomain.MOTOR_BRAND) {
 
 			@Override
 			public ExtaGrid createGrid() {
 				return new MotorBrandGrid();
 			}
 		});
-		ret.add(new AbstractSubdomainInfo("Тип техники", ExtaDomain.MOTOR_TYPE) {
+		ret.add(new SubdomainInfoImpl("Тип техники", ExtaDomain.MOTOR_TYPE) {
 
 			@Override
 			public ExtaGrid createGrid() {

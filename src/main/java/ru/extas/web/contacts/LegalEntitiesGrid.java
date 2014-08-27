@@ -4,13 +4,11 @@
 package ru.extas.web.contacts;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -40,7 +38,7 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
 	}
 
     @Override
-    public AbstractEditForm<LegalEntity> createEditForm(LegalEntity legalEntity) {
+    public ExtaEditForm<LegalEntity> createEditForm(LegalEntity legalEntity) {
         return new LegalEntityEditForm(legalEntity);
     }
 

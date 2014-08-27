@@ -33,17 +33,17 @@ public class RootLayout extends HorizontalLayout {
         return contentArea;
     }
 
-    public void addMenu(Component menu) {
+    public void addMenu(final Component menu) {
         menu.addStyleName("valo-menu-part");
         menuArea.addComponent(menu);
     }
 
-    public void addBranding(Component branding) {
+    public void addBranding(final Component branding) {
         branding.setPrimaryStyleName("valo-menu-title");
         menuArea.addComponent(branding);
     }
 
-    public void addUserBadge(Component badge) {
+    public void addUserBadge(final Component badge) {
         badge.setPrimaryStyleName("valo-menu-bottom");
         menuArea.addComponent(badge);
     }

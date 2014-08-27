@@ -3,8 +3,8 @@ package ru.extas.web.sale;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.Sale;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FormUtils;
-import ru.extas.web.commons.AbstractEditForm;
 
 /**
  * Поле расширенного просмотра продажи.
@@ -52,9 +52,9 @@ public class SaleField extends CustomField<Sale> {
 			@Override
 			public void buttonClick(final Button.ClickEvent event) {
 				final SaleEditForm form = new SaleEditForm(sale);
-                form.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                form.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (form.isSaved())
                             ((VerticalLayout) getContent()).replaceComponent(productInSaleField, productInSaleField = createProdInSale(sale));
                     }

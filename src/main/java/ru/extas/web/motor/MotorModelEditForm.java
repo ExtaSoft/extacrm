@@ -9,7 +9,7 @@ import ru.extas.server.motor.MotorModelRepository;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -21,7 +21,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class MotorModelEditForm extends AbstractEditForm<MotorModel> {
+public class MotorModelEditForm extends ExtaEditForm<MotorModel> {
 
     @PropertyId("type")
     private MotorTypeSelect typeField;

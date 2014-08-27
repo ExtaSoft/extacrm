@@ -3,12 +3,11 @@
  */
 package ru.extas.web.users;
 
-import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainInfoImpl;
 import ru.extas.web.commons.SubdomainView;
-import ru.extas.web.commons.component.AbstractSubdomainInfo;
-import ru.extas.web.commons.component.SubdomainInfo;
+import ru.extas.web.commons.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +36,13 @@ public class UsersView extends SubdomainView {
     @Override
     protected List<SubdomainInfo> getSubdomainInfo() {
         final ArrayList<SubdomainInfo> ret = newArrayList();
-        ret.add(new AbstractSubdomainInfo("Пользователи", ExtaDomain.USERS) {
+        ret.add(new SubdomainInfoImpl("Пользователи", ExtaDomain.USERS) {
             @Override
             public ExtaGrid createGrid() {
                 return new UsersGrid();
             }
         });
-        ret.add(new AbstractSubdomainInfo("Группы", ExtaDomain.USER_GROUPS) {
+        ret.add(new SubdomainInfoImpl("Группы", ExtaDomain.USER_GROUPS) {
             @Override
             public ExtaGrid createGrid() {
                 return new UserGroupGrid();

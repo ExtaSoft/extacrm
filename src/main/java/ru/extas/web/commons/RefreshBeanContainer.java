@@ -19,7 +19,7 @@ public class RefreshBeanContainer<BEANTYPE> extends BeanItemContainer<BEANTYPE> 
      * @param type a {@link java.lang.Class} object.
      * @throws java.lang.IllegalArgumentException if any.
      */
-    public RefreshBeanContainer(Class<? super BEANTYPE> type) throws IllegalArgumentException {
+    public RefreshBeanContainer(final Class<? super BEANTYPE> type) throws IllegalArgumentException {
         super(type);
     }
 
@@ -30,7 +30,7 @@ public class RefreshBeanContainer<BEANTYPE> extends BeanItemContainer<BEANTYPE> 
      * @param collection a {@link java.util.Collection} object.
      * @throws java.lang.IllegalArgumentException if any.
      */
-    public RefreshBeanContainer(Class<? super BEANTYPE> type, Collection<? extends BEANTYPE> collection) throws IllegalArgumentException {
+    public RefreshBeanContainer(final Class<? super BEANTYPE> type, final Collection<? extends BEANTYPE> collection) throws IllegalArgumentException {
         super(type, collection);
     }
 

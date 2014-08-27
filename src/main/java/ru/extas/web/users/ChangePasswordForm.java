@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -26,7 +26,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
+public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
 
     private static final long serialVersionUID = -6196099478095832935L;
     private final static Logger logger = LoggerFactory.getLogger(ChangePasswordForm.class);

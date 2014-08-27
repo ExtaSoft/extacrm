@@ -18,7 +18,7 @@ public class EmailField extends EditField {
      * @param caption a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
      */
-    public EmailField(String caption, String description) {
+    public EmailField(final String caption, final String description) {
         super(caption, description);
         initField();
     }
@@ -28,7 +28,7 @@ public class EmailField extends EditField {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public EmailField(String caption) {
+    public EmailField(final String caption) {
         super(caption);
         initField();
     }

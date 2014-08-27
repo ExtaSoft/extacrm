@@ -3,12 +3,11 @@
  */
 package ru.extas.web.contacts;
 
-import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainInfoImpl;
 import ru.extas.web.commons.SubdomainView;
-import ru.extas.web.commons.component.AbstractSubdomainInfo;
-import ru.extas.web.commons.component.SubdomainInfo;
+import ru.extas.web.commons.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class ContactsView extends SubdomainView {
 	@Override
 	protected List<SubdomainInfo> getSubdomainInfo() {
 		final ArrayList<SubdomainInfo> ret = newArrayList();
-		ret.add(new AbstractSubdomainInfo("Контакты", ExtaDomain.PERSON) {
+		ret.add(new SubdomainInfoImpl("Контакты", ExtaDomain.PERSON) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -47,7 +46,7 @@ public class ContactsView extends SubdomainView {
 
 
 		});
-		ret.add(new AbstractSubdomainInfo("Компании", ExtaDomain.COMPANY) {
+		ret.add(new SubdomainInfoImpl("Компании", ExtaDomain.COMPANY) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -56,7 +55,7 @@ public class ContactsView extends SubdomainView {
 			}
 
         });
-		ret.add(new AbstractSubdomainInfo("Юридические лица", ExtaDomain.LEGAL_ENTITY) {
+		ret.add(new SubdomainInfoImpl("Юридические лица", ExtaDomain.LEGAL_ENTITY) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -64,7 +63,7 @@ public class ContactsView extends SubdomainView {
 				return new LegalEntitiesGrid(null);
 			}
 		});
-		ret.add(new AbstractSubdomainInfo("Торговые точки", ExtaDomain.SALE_POINT) {
+		ret.add(new SubdomainInfoImpl("Торговые точки", ExtaDomain.SALE_POINT) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

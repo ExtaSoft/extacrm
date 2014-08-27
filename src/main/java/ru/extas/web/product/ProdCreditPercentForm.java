@@ -9,7 +9,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -22,7 +22,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdCreditPercentForm extends AbstractEditForm<ProdCreditPercent> {
+public class ProdCreditPercentForm extends ExtaEditForm<ProdCreditPercent> {
 
 	@PropertyId("percent")
 	private EditField percentField;

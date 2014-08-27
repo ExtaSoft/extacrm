@@ -16,7 +16,6 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.StringToDateTimeConverter;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -150,7 +149,7 @@ public class TasksGrid extends ExtaGrid<Task> {
 	}
 
     @Override
-    public AbstractEditForm<Task> createEditForm(Task task) {
+    public ExtaEditForm<Task> createEditForm(Task task) {
         return new TaskEditForm(task);
     }
 

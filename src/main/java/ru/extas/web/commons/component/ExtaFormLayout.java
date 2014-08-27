@@ -19,7 +19,7 @@ public class ExtaFormLayout extends FormLayout {
         setSizeUndefined();
     }
 
-    public ExtaFormLayout(Component... children) {
+    public ExtaFormLayout(final Component... children) {
         super(children);
     }
 }

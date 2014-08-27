@@ -44,10 +44,10 @@ public class SalePointRestService {
         private String postIndex;
         private String streetBld;
 
-        public RestSalePoint(SalePoint point) {
+        public RestSalePoint(final SalePoint point) {
             id = point.getId();
             name = point.getName();
-            AddressInfo address = point.getActualAddress();
+            final AddressInfo address = point.getActualAddress();
             if (address != null) {
                 region = address.getRegion();
                 city = address.getCity();
@@ -90,9 +90,9 @@ public class SalePointRestService {
     @RequestMapping(method = RequestMethod.GET)
     public HttpEntity<String> info() throws IOException {
 
-        String help = HelpContent.loadMarkDown("/help/rest/salepoints.textile");
+        final String help = HelpContent.loadMarkDown("/help/rest/salepoints.textile");
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
         return new HttpEntity(help, headers);
     }
@@ -104,14 +104,14 @@ public class SalePointRestService {
      * @param region a {@link java.lang.String} object.
      */
     @RequestMapping(value = "/count", method = RequestMethod.GET)
-    public HttpEntity<String> count(@RequestParam(value = "region", required = false) String region) {
-        long count;
+    public HttpEntity<String> count(@RequestParam(value = "region", required = false) final String region) {
+        final long count;
         if (isNullOrEmpty(region))
             count = repository.count();
         else
             count = repository.countByRegion(region);
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/plain; charset=utf-8");
         return new HttpEntity(NumberFormat.getInstance().format(count), headers);
     }
@@ -125,16 +125,14 @@ public class SalePointRestService {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<RestSalePoint> list(@RequestParam(value = "region", required = false) String region) {
-        List<RestSalePoint> result = newArrayList();
-        List<SalePoint> salePoints;
+    List<RestSalePoint> list(@RequestParam(value = "region", required = false) final String region) {
+        final List<RestSalePoint> result = newArrayList();
+        final List<SalePoint> salePoints;
         if (isNullOrEmpty(region))
             salePoints = repository.findAll();
         else
             salePoints = repository.findByRegion(region);
-        for (SalePoint point : salePoints) {
-            result.add(new RestSalePoint(point));
-        }
+        result.addAll(salePoints.stream().map(RestSalePoint::new).collect(java.util.stream.Collectors.toList()));
 
         return result;
     }

@@ -26,16 +26,14 @@ import static ru.extas.web.UiUtils.showValidationError;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
+public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
 
-    private final static Logger logger = LoggerFactory.getLogger(AbstractEditForm.class);
+    private final static Logger logger = LoggerFactory.getLogger(ExtaEditForm.class);
 
     private static final long serialVersionUID = -5592353839008000742L;
     private final String caption;
     protected boolean saved = false;
     private HorizontalLayout buttonsPanel;
-    private Button cancelBtn;
-    private Button okBtn;
     private FieldGroup fieldGroup;
     private boolean modified;
 
@@ -46,7 +44,7 @@ public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
          *
          * @param source the source component of the event
          */
-        public CloseFormEvent(Component source) {
+        public CloseFormEvent(final Component source) {
             super(source);
         }
     }
@@ -60,12 +58,12 @@ public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
 
     }
 
-    public void addCloseFormListener(CloseFormListener listener) {
+    public void addCloseFormListener(final CloseFormListener listener) {
         addListener(CloseFormEvent.class, listener,
                 CloseFormListener.CLOSE_FORM_METHOD);
     }
 
-    public void removeCloseFormListener(CloseFormListener listener) {
+    public void removeCloseFormListener(final CloseFormListener listener) {
         removeListener(CloseFormEvent.class, listener,
                 CloseFormListener.CLOSE_FORM_METHOD);
     }
@@ -85,7 +83,7 @@ public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    protected AbstractEditForm(final String caption) {
+    protected ExtaEditForm(final String caption) {
         this.caption = caption;
     }
 
@@ -95,7 +93,7 @@ public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
      * @param caption a {@link java.lang.String} object.
      * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
      */
-    protected AbstractEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
+    protected ExtaEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
         this(caption);
 
         initForm(beanItem);
@@ -110,7 +108,7 @@ public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
      *
      * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
      */
-    protected void initForm(BeanItem<TEditObject> beanItem) {
+    protected void initForm(final BeanItem<TEditObject> beanItem) {
         final TEditObject bean = beanItem.getBean();
         initObject(bean);
         final ComponentContainer form = createEditFields(bean);
@@ -120,7 +118,7 @@ public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
 
-        cancelBtn = new Button("Отмена", new Button.ClickListener() {
+        Button cancelBtn = new Button("Отмена", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -133,7 +131,7 @@ public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
         cancelBtn.setIcon(Fontello.CANCEL);
         cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 
-        okBtn = new Button("OK", new Button.ClickListener() {
+        Button okBtn = new Button("OK", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -163,7 +161,7 @@ public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
         okBtn.setIcon(Fontello.OK);
         okBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
 
-        Label footerText = new Label("");
+        final Label footerText = new Label("");
         footerText.setSizeUndefined();
 
         buttonsPanel = new HorizontalLayout(footerText, okBtn, cancelBtn);
@@ -191,15 +189,15 @@ public abstract class AbstractEditForm<TEditObject> extends CustomComponent {
      *
      * @param modified a boolean.
      */
-    public void setModified(boolean modified) {
+    public void setModified(final boolean modified) {
         this.modified = modified;
     }
 
-    private boolean setDefaultFocus(HasComponents container) {
+    private boolean setDefaultFocus(final HasComponents container) {
         boolean focused = false;
-        Iterator<Component> childs = container.iterator();
+        final Iterator<Component> childs = container.iterator();
         while (childs.hasNext() && !focused) {
-            Component comp = childs.next();
+            final Component comp = childs.next();
             if (comp instanceof Component.Focusable && comp.isEnabled() && comp.isVisible()) {
                 ((Component.Focusable) comp).focus();
                 focused = true;

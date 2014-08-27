@@ -23,10 +23,10 @@ import org.springframework.stereotype.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
@@ -144,9 +144,9 @@ public class ExtaCrmUI extends UI {
                             // Поменять пароль
                             final ChangePasswordForm form = new ChangePasswordForm(new BeanItem<>(
                                     currentUserProfile));
-                            form.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                            form.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                                 @Override
-                                public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                                public void closeForm(ExtaEditForm.CloseFormEvent event) {
                                     if (form.isSaved()) {
                                         closeLoginAndBuildMain();
                                     } else {

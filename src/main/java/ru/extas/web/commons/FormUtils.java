@@ -11,14 +11,14 @@ import com.vaadin.ui.Window;
  *         Time: 18:49
  */
 public class FormUtils {
-    public static void showModalWin(AbstractEditForm<?> editWin) {
+    public static void showModalWin(ExtaEditForm<?> editWin) {
 
         final Window window = new Window(editWin.getCaption(), editWin);
         window.setClosable(true);
         window.setModal(true);
-        editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+        editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
             @Override
-            public void closeForm(AbstractEditForm.CloseFormEvent event) {
+            public void closeForm(ExtaEditForm.CloseFormEvent event) {
                 window.close();
             }
         });

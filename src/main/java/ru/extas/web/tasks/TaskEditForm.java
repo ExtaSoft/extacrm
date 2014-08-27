@@ -26,7 +26,7 @@ import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.PersonField;
 import ru.extas.web.lead.LeadField;
 import ru.extas.web.sale.SaleField;
@@ -48,7 +48,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class TaskEditForm extends AbstractEditForm<Task> {
+public class TaskEditForm extends ExtaEditForm<Task> {
 
     private static final long serialVersionUID = 9510268415882116L;
     private boolean taskCompleted = false;
@@ -71,12 +71,12 @@ public class TaskEditForm extends AbstractEditForm<Task> {
     private VerticalLayout formsContainer;
     private final boolean canAssigne;
 
-    public TaskEditForm(Task task) {
+    public TaskEditForm(final Task task) {
         super(isNullOrEmpty(task.getId()) ?
                 "Ввод новой задачи в систему" :
                 "Редактирование задачи");
         // Может ли пользователь менять ответственного
-        UserManagementService userService = lookup(UserManagementService.class);
+        final UserManagementService userService = lookup(UserManagementService.class);
         canAssigne = userService.isCurUserHasRole(UserRole.ADMIN)/* || userService.isCurUserHasRole(UserRole.MANAGER)*/;
 
         initForm(new BeanItem(task));

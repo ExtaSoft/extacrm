@@ -32,7 +32,7 @@ public class MotorBrandSelect extends ComboBox {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public MotorBrandSelect(String caption) {
+    public MotorBrandSelect(final String caption) {
         super(caption);
 
         setDescription("Укажите марку техники");
@@ -51,15 +51,15 @@ public class MotorBrandSelect extends ComboBox {
      *
      * @param type a {@link java.lang.String} object.
      */
-    protected void fillItems(String type) {
-        MotorBrandRepository brandRepository = lookup(MotorBrandRepository.class);
-        List<String> brands;
+    protected void fillItems(final String type) {
+        final MotorBrandRepository brandRepository = lookup(MotorBrandRepository.class);
+        final List<String> brands;
         if(type == null)
             brands = brandRepository.loadAllNames();
         else
             brands = brandRepository.loadNamesByType(type);
 
-        String curBrand = (String) getValue();
+        final String curBrand = (String) getValue();
         removeAllItems();
         for (final String item : brands)
             addItem(item);

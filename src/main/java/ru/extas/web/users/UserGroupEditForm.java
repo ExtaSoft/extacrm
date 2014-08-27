@@ -7,10 +7,10 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.security.UserGroup;
 import ru.extas.server.security.UserGroupRegistry;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 
@@ -26,7 +26,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
+public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
 
     @PropertyId("name")
     private EditField nameField;

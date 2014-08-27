@@ -4,12 +4,10 @@
 package ru.extas.web.users;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -36,7 +34,7 @@ public class UsersGrid extends ExtaGrid<UserProfile> {
 	}
 
     @Override
-    public AbstractEditForm<UserProfile> createEditForm(UserProfile userProfile) {
+    public ExtaEditForm<UserProfile> createEditForm(UserProfile userProfile) {
         return new UserEditForm(userProfile);
     }
 

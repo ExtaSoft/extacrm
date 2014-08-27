@@ -5,10 +5,10 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
-import ru.extas.web.commons.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -74,9 +74,9 @@ public class SalePointSelect extends CustomField<SalePoint> {
 				final SalePointEditForm editWin = new SalePointEditForm(defNewObj);
 				editWin.setModified(true);
 
-                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             contactSelect.refreshContainer();
                             contactSelect.setValue(defNewObj.getId());
@@ -124,9 +124,9 @@ public class SalePointSelect extends CustomField<SalePoint> {
 				final SalePointEditForm editWin = new SalePointEditForm(salePoint);
 				editWin.setModified(true);
 
-                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
 						if (editWin.isSaved()) {
 							refreshFields(salePoint);
 						}

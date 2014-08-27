@@ -2,8 +2,6 @@ package ru.extas.web.commons;
 
 import com.vaadin.server.*;
 import com.vaadin.server.StreamResource.StreamSource;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 
 import java.io.IOException;
 

@@ -4,10 +4,8 @@
 package ru.extas.web.insurance;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import ru.extas.model.insurance.Policy;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class PolicyGrid extends ExtaGrid<Policy> {
     }
 
     @Override
-    public AbstractEditForm<Policy> createEditForm(Policy policy) {
+    public ExtaEditForm<Policy> createEditForm(Policy policy) {
         return new PolicyEditForm(policy);
     }
 

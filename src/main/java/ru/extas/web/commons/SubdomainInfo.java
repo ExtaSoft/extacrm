@@ -6,11 +6,9 @@
  * @version $Id: $Id
  * @since 0.3
  */
-package ru.extas.web.commons.component;
+package ru.extas.web.commons;
 
-import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.commons.ExtaGrid;
 
 import java.io.Serializable;

@@ -4,10 +4,10 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
-import ru.extas.web.commons.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -76,9 +76,9 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
                 final LegalEntityEditForm editWin = new LegalEntityEditForm(newObj);
                 editWin.setModified(true);
 
-                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             selectField.refreshContainer();
                             selectField.setValue(newObj.getId());
@@ -127,9 +127,9 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
                 final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
                 editWin.setModified(true);
 
-                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             refreshFields(bean);
                         }

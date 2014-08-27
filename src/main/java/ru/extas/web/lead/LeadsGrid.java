@@ -1,7 +1,6 @@
 package ru.extas.web.lead;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -11,7 +10,6 @@ import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -51,7 +49,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 	}
 
     @Override
-    public AbstractEditForm<Lead> createEditForm(Lead lead) {
+    public ExtaEditForm<Lead> createEditForm(Lead lead) {
         return new LeadEditForm(lead, status == Lead.Status.QUALIFIED);
     }
 
@@ -95,9 +93,9 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 					final Lead curObj = GridItem.extractBean(table.getItem(itemId));
 
 					final LeadEditForm editWin = new LeadEditForm(curObj, true);
-                    editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                    editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                         @Override
-                        public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                        public void closeForm(ExtaEditForm.CloseFormEvent event) {
 							if (editWin.isSaved()) {
 								refreshContainerItem(itemId);
 							}

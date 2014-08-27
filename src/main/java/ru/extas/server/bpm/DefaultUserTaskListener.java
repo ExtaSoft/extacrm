@@ -24,8 +24,8 @@ public class DefaultUserTaskListener {
      *
      * @param task a {@link org.activiti.engine.delegate.DelegateTask} object.
      */
-    public void createTask(DelegateTask task) {
-        String user = userManagementService.getCurrentUserLogin();
+    public void createTask(final DelegateTask task) {
+        final String user = userManagementService.getCurrentUserLogin();
 
         // Значения по умолчанию
         task.setAssignee(user);

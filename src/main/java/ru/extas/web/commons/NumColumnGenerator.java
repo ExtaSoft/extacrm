@@ -1,18 +1,13 @@
 package ru.extas.web.commons;
 
-import com.google.common.base.Strings;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import ru.extas.model.lead.Lead;
 import ru.extas.web.commons.converters.StringToJodaDTConverter;
-import ru.extas.web.lead.LeadEditForm;
 
 import static ru.extas.web.commons.GridDataDecl.*;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
 * @author Valery Orlov
@@ -21,11 +16,11 @@ import static ru.extas.web.commons.GridItem.extractBean;
 */
 public abstract class NumColumnGenerator extends ComponentColumnGenerator {
 
-    private StringToJodaDTConverter dtConverter = new StringToJodaDTConverter("EEE, dd MMM, HH:mm");
+    private final StringToJodaDTConverter dtConverter = new StringToJodaDTConverter("EEE, dd MMM, HH:mm");
 
-    private String numProperty;
+    private final String numProperty;
 
-    public NumColumnGenerator(String numProperty) {
+    public NumColumnGenerator(final String numProperty) {
         this.numProperty = numProperty;
     }
 

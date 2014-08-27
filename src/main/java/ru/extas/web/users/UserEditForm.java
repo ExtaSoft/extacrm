@@ -5,7 +5,6 @@ package ru.extas.web.users;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
@@ -14,9 +13,9 @@ import ru.extas.model.security.UserProfile;
 import ru.extas.model.security.UserRole;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
@@ -32,7 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class UserEditForm extends AbstractEditForm<UserProfile> {
+public class UserEditForm extends ExtaEditForm<UserProfile> {
 
     private static final long serialVersionUID = -5016687382646391930L;
     private final static Logger logger = LoggerFactory.getLogger(UserEditForm.class);

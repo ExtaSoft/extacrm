@@ -3,12 +3,7 @@ package ru.extas.web.motor;
 import com.vaadin.data.Item;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
-import ru.extas.model.lead.Lead;
 import ru.extas.web.commons.GridDataDecl;
-
-import java.text.MessageFormat;
-
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
 * @author Valery Orlov

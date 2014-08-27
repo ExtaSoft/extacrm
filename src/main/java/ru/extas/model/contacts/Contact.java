@@ -94,7 +94,7 @@ public abstract class Contact extends SecuredObject{
 	 *
 	 * @param name the name to set
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -112,7 +112,7 @@ public abstract class Contact extends SecuredObject{
 	 *
 	 * @param phone the phone to set
 	 */
-	public void setPhone(String phone) {
+	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
 
@@ -130,7 +130,7 @@ public abstract class Contact extends SecuredObject{
 	 *
 	 * @param email the email to set
 	 */
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 

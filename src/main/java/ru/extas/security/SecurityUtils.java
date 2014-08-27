@@ -21,9 +21,9 @@ import ru.extas.model.security.ExtaDomain;
  */
 public class SecurityUtils {
 
-    private static BiMap<ExtaDomain, Class> domain2Class = HashBiMap.create(64);
+    private static final BiMap<ExtaDomain, Class> domain2Class = HashBiMap.create(64);
 
-    {
+    static {
         domain2Class.put(ExtaDomain.DASHBOARD, Class.class);
         domain2Class.put(ExtaDomain.TASKS_TODAY, Class.class);
         domain2Class.put(ExtaDomain.TASKS_WEEK, Class.class);

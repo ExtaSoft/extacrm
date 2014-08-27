@@ -23,7 +23,7 @@ public class LocalDateField extends PopupDateField {
      * @param caption     заголовок
      * @param description описание
      */
-    public LocalDateField(String caption, String description) {
+    public LocalDateField(final String caption, final String description) {
         super(caption);
 
         setImmediate(true);

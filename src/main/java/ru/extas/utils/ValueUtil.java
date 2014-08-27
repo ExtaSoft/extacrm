@@ -14,7 +14,7 @@ import java.text.MessageFormat;
 public class ValueUtil {
 
     private final static int DG_POWER = 6;
-    private static String[][] a_power = new String[][]{
+    private static final String[][] a_power = new String[][]{
             {"0", "", "", ""}, // 1
             {"1", "тысяча ", "тысячи ", "тысяч "}, // 2
             {"0", "миллион ", "миллиона ", "миллионов "}, // 3
@@ -23,7 +23,7 @@ public class ValueUtil {
             {"0", "квадриллион ", "квадриллиона ", "квадриллионов "}, // 6
             {"0", "квинтиллион ", "квинтиллиона ", "квинтиллионов "} // 7
     };
-    private static String[][] digit = new String[][]{
+    private static final String[][] digit = new String[][]{
             {"", "", "десять ", "", ""},
             {"один ", "одна ", "одиннадцать ", "десять ", "сто "},
             {"два ", "две ", "двенадцать ", "двадцать ", "двести "},
@@ -36,19 +36,19 @@ public class ValueUtil {
             {"девять ", "девять ", "девятнадцать ", "девяносто ", "девятьсот "}
     };
 
-    private static String intToString(int sum) {
+    private static String intToString(final int sum) {
         int i, mny;
-        StringBuilder result = new StringBuilder("");
+        final StringBuilder result = new StringBuilder("");
         long divisor; //делитель
         int psum = sum;
 
-        int one = 1;
-        int four = 2;
-        int many = 3;
+        final int one = 1;
+        final int four = 2;
+        final int many = 3;
 
-        int hun = 4;
-        int dec = 3;
-        int dec2 = 2;
+        final int hun = 4;
+        final int dec = 3;
+        final int dec2 = 2;
 
         if (sum == 0) {
             return "ноль ";
@@ -106,7 +106,7 @@ public class ValueUtil {
         return result.toString();
     }
 
-    private static String doubleToString(double num, String[][] curs) {
+    private static String doubleToString(final double num, final String[][] curs) {
         return MessageFormat.format("{0} {1} {2} {3}",
                 intToString((int) num),
                 declOfNum((int) num, curs[0]),
@@ -114,8 +114,8 @@ public class ValueUtil {
                 declOfNum((int) (num * 100 - ((int) num) * 100), curs[1]));
     }
 
-    private static String declOfNum(Integer number, String[] titles) {
-        Integer[] cases = new Integer[6];
+    private static String declOfNum(final Integer number, final String[] titles) {
+        final Integer[] cases = new Integer[6];
         cases[0] = 2;
         cases[1] = 0;
         cases[2] = 1;
@@ -124,7 +124,7 @@ public class ValueUtil {
         cases[5] = 2;
         String result = "";
 
-        Integer position;
+        final Integer position;
         if (number % 100 > 4 && number % 100 < 20) {
             position = 2;
         } else {
@@ -141,7 +141,7 @@ public class ValueUtil {
      * @param num a int.
      * @return a {@link java.lang.String} object.
      */
-    public static String spellOutInteger(int num) {
+    public static String spellOutInteger(final int num) {
         return intToString(num);
     }
 
@@ -151,8 +151,8 @@ public class ValueUtil {
      * @param num a double.
      * @return a {@link java.lang.String} object.
      */
-    public static String spellOutRubles(double num) {
-        String[][] curRubKop = {{"рубль", "рубля", "рублей"}, {"копейка", "копейки", "копеек"}};
+    public static String spellOutRubles(final double num) {
+        final String[][] curRubKop = {{"рубль", "рубля", "рублей"}, {"копейка", "копейки", "копеек"}};
         return doubleToString(num, curRubKop);
     }
 
@@ -162,8 +162,8 @@ public class ValueUtil {
      * @param num a int.
      * @return a {@link java.lang.String} object.
      */
-    public static String spellOutThing(int num) {
-        String[] curs = {"штука", "штуки", "штук"};
+    public static String spellOutThing(final int num) {
+        final String[] curs = {"штука", "штуки", "штук"};
         return String.format("%s %s", intToString(num), declOfNum(num, curs));
     }
-};
+}

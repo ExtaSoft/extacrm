@@ -29,14 +29,14 @@ public final class ServiceLocator {
 	 * @return экземпляр службы
 	 * @param <TServiceType> a TServiceType object.
 	 */
-	public static <TServiceType> TServiceType lookup(Class<TServiceType> srvType) {
+	public static <TServiceType> TServiceType lookup(final Class<TServiceType> srvType) {
 
-		VaadinServlet vaadinServlet = VaadinServlet.getCurrent();
+		final VaadinServlet vaadinServlet = VaadinServlet.getCurrent();
 		if (vaadinServlet == null) {
 			logger.error("Couldn't get current instance of VaadinServlet");
 			throw new IllegalStateException("Couldn't get current instance of VaadinServlet");
 		}
-		WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(vaadinServlet.getServletContext());
+		final WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(vaadinServlet.getServletContext());
 
 		return context.getBean(srvType);
 	}
@@ -49,14 +49,14 @@ public final class ServiceLocator {
 	 * @return экземпляр
 	 * @param <TServiceType> a TServiceType object.
 	 */
-	public static <TServiceType> TServiceType lookup(String name, Class<TServiceType> srvType) {
+	public static <TServiceType> TServiceType lookup(final String name, final Class<TServiceType> srvType) {
 
-		VaadinServlet vaadinServlet = VaadinServlet.getCurrent();
+		final VaadinServlet vaadinServlet = VaadinServlet.getCurrent();
 		if (vaadinServlet == null) {
 			logger.error("Couldn't get current instance of VaadinServlet");
 			throw new IllegalStateException("Couldn't get current instance of VaadinServlet");
 		}
-		WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(vaadinServlet.getServletContext());
+		final WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(vaadinServlet.getServletContext());
 
 		return context.getBean(name, srvType);
 	}

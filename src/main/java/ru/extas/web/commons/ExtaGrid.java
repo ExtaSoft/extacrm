@@ -6,17 +6,13 @@ import com.google.common.collect.Iterables;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.Action;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
-import com.vaadin.util.ReflectTools;
 import org.tepi.filtertable.FilterTable;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
@@ -62,7 +58,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      *
      * @param initNow a boolean.
      */
-    public ExtaGrid(Class<TEntity> entityClass, boolean initNow) {
+    public ExtaGrid(final Class<TEntity> entityClass, final boolean initNow) {
         this.entityClass = entityClass;
         if (initNow)
             initialize();
@@ -71,7 +67,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     /**
      * <p>Constructor for ExtaGrid.</p>
      */
-    public ExtaGrid(Class<TEntity> entityClass) {
+    public ExtaGrid(final Class<TEntity> entityClass) {
         this(entityClass, true);
     }
 
@@ -82,16 +78,16 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     public TEntity createEntity() {
         try {
             return entityClass.newInstance();
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             throw Throwables.propagate(t);
         }
     }
 
     public TEntity getSelectedEntity() {
         if (table != null) {
-            Object itemId = table.getValue();
+            final Object itemId = table.getValue();
             if (itemId != null) {
-                Item item = table.getItem(itemId);
+                final Item item = table.getItem(itemId);
                 if (item != null)
                     return GridItem.extractBean(item);
             }
@@ -99,15 +95,15 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         return null;
     }
 
-    public abstract AbstractEditForm<TEntity> createEditForm(TEntity entity);
+    public abstract ExtaEditForm<TEntity> createEditForm(TEntity entity);
 
     protected void goToEditObject(final Object itemId) {
         TEntity entity = GridItem.extractBean(table.getItem(itemId));
 
-        final AbstractEditForm<TEntity> form = createEditForm(entity);
-        form.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+        final ExtaEditForm<TEntity> form = createEditForm(entity);
+        form.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
             @Override
-            public void closeForm(AbstractEditForm.CloseFormEvent event) {
+            public void closeForm(ExtaEditForm.CloseFormEvent event) {
                 if (form.isSaved()) {
                     refreshContainerItem(itemId);
                 }
@@ -119,10 +115,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     protected void goToEditNewObject(TEntity init) {
         TEntity entity = init == null ? createEntity() : init;
 
-        final AbstractEditForm<TEntity> form = createEditForm(entity);
-        form.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+        final ExtaEditForm<TEntity> form = createEditForm(entity);
+        form.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
             @Override
-            public void closeForm(AbstractEditForm.CloseFormEvent event) {
+            public void closeForm(ExtaEditForm.CloseFormEvent event) {
                 if (form.isSaved()) {
                     refreshContainer();
                 }

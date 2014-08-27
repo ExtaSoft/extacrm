@@ -21,7 +21,7 @@ public class CitySelect extends ComboBox {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public CitySelect(String caption) {
+    public CitySelect(final String caption) {
         super(caption);
         setDescription("Введите город");
         setInputPrompt("Город");
@@ -29,8 +29,7 @@ public class CitySelect extends ComboBox {
         setNewItemsAllowed(true);
         setNullSelectionAllowed(false);
         setFilteringMode(FilteringMode.CONTAINS);
-        for (final String item : lookup(SupplementService.class).loadCities())
-            addItem(item);
+        lookup(SupplementService.class).loadCities().forEach((final String item) -> addItem(item));
 
     }
 

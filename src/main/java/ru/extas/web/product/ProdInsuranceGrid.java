@@ -1,10 +1,8 @@
 package ru.extas.web.product;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import ru.extas.model.sale.ProdInsurance;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class ProdInsuranceGrid extends ExtaGrid<ProdInsurance> {
     }
 
     @Override
-    public AbstractEditForm<ProdInsurance> createEditForm(ProdInsurance prodInsurance) {
+    public ExtaEditForm<ProdInsurance> createEditForm(ProdInsurance prodInsurance) {
         return new ProdInsuranceEditForm(prodInsurance);
     }
 

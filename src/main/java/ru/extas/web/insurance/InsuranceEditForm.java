@@ -18,12 +18,12 @@ import ru.extas.server.insurance.InsuranceRepository;
 import ru.extas.server.insurance.PolicyRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.DocFilesEditor;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.contacts.LegalEntitySelect;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
@@ -44,7 +44,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3.0
  */
-public class InsuranceEditForm extends AbstractEditForm<Insurance> {
+public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
     private static final long serialVersionUID = 9510268415882116L;
     // Компоненты редактирования

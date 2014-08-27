@@ -54,8 +54,8 @@ public enum SecureAction {
 	 * @param name a {@link java.lang.String} object.
 	 * @return a {@link ru.extas.model.security.SecureAction} object.
 	 */
-	public static SecureAction getByName(String name) {
-		for (SecureAction item : SecureAction.values())
+	public static SecureAction getByName(final String name) {
+		for (final SecureAction item : SecureAction.values())
 			if (item.getName().equals(name))
 				return item;
 		throw new IllegalArgumentException("There's no enum for name: " + name);

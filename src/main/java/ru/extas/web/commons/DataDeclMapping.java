@@ -28,7 +28,7 @@ public class DataDeclMapping implements Serializable {
      * @param generator a {@link ru.extas.web.commons.GridDataDecl.GridColumnGenerator} object.
      * @param presentFlags a {@link java.util.EnumSet} object.
      */
-    public DataDeclMapping(String propName, String caption, GridDataDecl.GridColumnGenerator generator, EnumSet<PresentFlag> presentFlags) {
+    public DataDeclMapping(final String propName, final String caption, final GridDataDecl.GridColumnGenerator generator, final EnumSet<PresentFlag> presentFlags) {
         this(propName, caption, presentFlags, null, generator);
     }
 
@@ -50,7 +50,7 @@ public class DataDeclMapping implements Serializable {
      * @param propName a {@link java.lang.String} object.
      * @param caption a {@link java.lang.String} object.
      */
-    public DataDeclMapping(String propName, String caption) {
+    public DataDeclMapping(final String propName, final String caption) {
         this(propName, caption, null, null);
     }
 
@@ -61,7 +61,7 @@ public class DataDeclMapping implements Serializable {
      * @param caption a {@link java.lang.String} object.
      * @param presentFlags a {@link java.util.EnumSet} object.
      */
-    public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags) {
+    public DataDeclMapping(final String propName, final String caption, final EnumSet<PresentFlag> presentFlags) {
         this(propName, caption, presentFlags, null, null);
     }
 
@@ -72,7 +72,7 @@ public class DataDeclMapping implements Serializable {
      * @param caption a {@link java.lang.String} object.
      * @param converter a {@link com.vaadin.data.util.converter.Converter} object.
      */
-    public DataDeclMapping(String propName, String caption, Converter<String, ?> converter) {
+    public DataDeclMapping(final String propName, final String caption, final Converter<String, ?> converter) {
         this(propName, caption, null, converter, null);
     }
 
@@ -85,7 +85,7 @@ public class DataDeclMapping implements Serializable {
      * @param converter a {@link com.vaadin.data.util.converter.Converter} object.
      * @param generator a {@link ru.extas.web.commons.GridDataDecl.GridColumnGenerator} object.
      */
-    public DataDeclMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags, Converter<String, ?> converter, GridDataDecl.GridColumnGenerator generator) {
+    public DataDeclMapping(final String propName, final String caption, final EnumSet<PresentFlag> presentFlags, final Converter<String, ?> converter, final GridDataDecl.GridColumnGenerator generator) {
         super();
         this.propName = propName;
         this.caption = caption;

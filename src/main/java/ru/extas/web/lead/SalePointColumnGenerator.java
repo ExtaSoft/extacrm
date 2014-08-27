@@ -1,7 +1,6 @@
 package ru.extas.web.lead;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -11,7 +10,6 @@ import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.contacts.SalePointEditForm;
 
 import static com.google.common.base.Strings.nullToEmpty;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
 * @author Valery Orlov

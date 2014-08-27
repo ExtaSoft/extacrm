@@ -42,7 +42,7 @@ public class UserProfileSelect extends ComboBox {
 		setScrollToSelectedItem(true);
 
 		// Инициализация контейнера
-		ExtaDataContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
+		final ExtaDataContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
 		container.addNestedContainerProperty("contact.name");
 
 		// Устанавливаем контент выбора

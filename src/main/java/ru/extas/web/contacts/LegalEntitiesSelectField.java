@@ -2,11 +2,9 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;

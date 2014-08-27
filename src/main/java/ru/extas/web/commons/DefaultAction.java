@@ -18,7 +18,7 @@ public abstract class DefaultAction extends ItemAction {
      * @param description a {@link String} object.
      * @param icon a {@link String} object.
      */
-    public DefaultAction(String name, String description, Resource icon) {
+    public DefaultAction(final String name, final String description, final Resource icon) {
         super(name, description, icon);
     }
 }

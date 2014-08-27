@@ -27,7 +27,7 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void initTableColumns(Table table, GridDataDecl dataDecl) {
+    public static void initTableColumns(final Table table, final GridDataDecl dataDecl) {
         initTableColumnHeaders(table, dataDecl);
         initTableVisibleColumns(table, dataDecl);
         initTableCollapsedColumns(table, dataDecl);
@@ -41,8 +41,8 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void initTableColumnConverters(Table table, GridDataDecl dataDecl) {
-        for (DataDeclMapping prop : dataDecl.getMappings())
+    public static void initTableColumnConverters(final Table table, final GridDataDecl dataDecl) {
+        for (final DataDeclMapping prop : dataDecl.getMappings())
             if (prop.getConverter() != null)
                 table.setConverter(prop.getPropName(), prop.getConverter());
     }
@@ -53,8 +53,8 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void initTableColumnConverters(FilterTable table, GridDataDecl dataDecl) {
-        for (DataDeclMapping prop : dataDecl.getMappings())
+    public static void initTableColumnConverters(final FilterTable table, final GridDataDecl dataDecl) {
+        for (final DataDeclMapping prop : dataDecl.getMappings())
             if (prop.getConverter() != null)
                 table.setConverter(prop.getPropName(), prop.getConverter());
     }
@@ -65,9 +65,9 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void initTableColumnHeaders(Table table, GridDataDecl dataDecl) {
+    public static void initTableColumnHeaders(final Table table, final GridDataDecl dataDecl) {
 
-        for (DataDeclMapping prop : dataDecl.getMappings())
+        for (final DataDeclMapping prop : dataDecl.getMappings())
             table.setColumnHeader(prop.getPropName(), prop.getCaption());
 
     }
@@ -78,9 +78,9 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void initTableColumnHeaders(FilterTable table, GridDataDecl dataDecl) {
+    public static void initTableColumnHeaders(final FilterTable table, final GridDataDecl dataDecl) {
 
-        for (DataDeclMapping prop : dataDecl.getMappings())
+        for (final DataDeclMapping prop : dataDecl.getMappings())
             table.setColumnHeader(prop.getPropName(), prop.getCaption());
 
     }
@@ -91,10 +91,10 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void initTableVisibleColumns(Table table, GridDataDecl dataDecl) {
+    public static void initTableVisibleColumns(final Table table, final GridDataDecl dataDecl) {
 
-        List<String> clmnIds = new ArrayList<>(dataDecl.getMappings().size());
-        for (DataDeclMapping prop : dataDecl.getMappings())
+        final List<String> clmnIds = new ArrayList<>(dataDecl.getMappings().size());
+        for (final DataDeclMapping prop : dataDecl.getMappings())
             clmnIds.add(prop.getPropName());
 
         table.setVisibleColumns(clmnIds.toArray());
@@ -106,10 +106,10 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void initTableVisibleColumns(FilterTable table, GridDataDecl dataDecl) {
+    public static void initTableVisibleColumns(final FilterTable table, final GridDataDecl dataDecl) {
 
-        List<String> clmnIds = new ArrayList<>(dataDecl.getMappings().size());
-        for (DataDeclMapping prop : dataDecl.getMappings())
+        final List<String> clmnIds = new ArrayList<>(dataDecl.getMappings().size());
+        for (final DataDeclMapping prop : dataDecl.getMappings())
             clmnIds.add(prop.getPropName());
 
         table.setVisibleColumns(clmnIds.toArray());
@@ -121,9 +121,9 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void initTableCollapsedColumns(Table table, GridDataDecl dataDecl) {
+    public static void initTableCollapsedColumns(final Table table, final GridDataDecl dataDecl) {
 
-        for (DataDeclMapping prop : dataDecl.getMappings())
+        for (final DataDeclMapping prop : dataDecl.getMappings())
             table.setColumnCollapsed(prop.getPropName(), prop.isCollapsed());
 
     }
@@ -134,9 +134,9 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void initTableCollapsedColumns(FilterTable table, GridDataDecl dataDecl) {
+    public static void initTableCollapsedColumns(final FilterTable table, final GridDataDecl dataDecl) {
 
-        for (DataDeclMapping prop : dataDecl.getMappings())
+        for (final DataDeclMapping prop : dataDecl.getMappings())
             table.setColumnCollapsed(prop.getPropName(), prop.isCollapsed());
 
     }
@@ -147,7 +147,7 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void fullInitTable(Table table, GridDataDecl dataDecl) {
+    public static void fullInitTable(final Table table, final GridDataDecl dataDecl) {
         addGeneratedColumns(table, dataDecl);
         initTableColumnHeaders(table, dataDecl);
         initTableVisibleColumns(table, dataDecl);

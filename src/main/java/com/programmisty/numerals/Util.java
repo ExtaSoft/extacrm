@@ -32,21 +32,21 @@ class Util {
      * @param groupSize
      * @return
      */
-    static byte[][] groups(String txt, int groupSize) {
+    static byte[][] groups(final String txt, final int groupSize) {
     	
-        int length = txt.length();
+        final int length = txt.length();
         int groupCount = length / groupSize;
-        int remainder = length % groupSize;
+        final int remainder = length % groupSize;
 
         int j = 0, k = 0;
         if (remainder > 0) {
             groupCount++;
             k = groupSize - remainder;
         }
-        byte nn[][] = new byte[groupCount][groupSize];
+        final byte[][] nn = new byte[groupCount][groupSize];
         // 1234567 - 1,2,3,4,5,6,7 -- [0,0,1],[2,3,4],[5,6,7]
         for (int i = 0; i < txt.length(); ++i) {
-            byte x = (byte) (txt.charAt(i) - '0');
+            final byte x = (byte) (txt.charAt(i) - '0');
             if (x < 0 || x > 9) {
                 throw new IllegalArgumentException("Wrong string:" + txt);
             }
@@ -66,7 +66,7 @@ class Util {
      * @param token
      * @return -1 = not found, else index
      */
-    static int search(String[] array, String token) {
+    static int search(final String[] array, final String token) {
         int x = -1;
         for (int i = 0; i < array.length; ++i) {
             if (array[i].equals(token)) {
@@ -77,15 +77,15 @@ class Util {
         return x;
     }
 
-    static void toUpperCaseFirstLetter(StringBuilder sb) {
+    static void toUpperCaseFirstLetter(final StringBuilder sb) {
         // to upper case
         char first = sb.charAt(0);
         first = Character.toUpperCase(first);
         sb.setCharAt(0, first);
     }
 
-    static BigDecimal toBigDecimal(Number n) {
-        BigDecimal bd;
+    static BigDecimal toBigDecimal(final Number n) {
+        final BigDecimal bd;
         if (n == null) {
             throw new IllegalArgumentException("Your number is null");
         } else if (n instanceof BigDecimal) {

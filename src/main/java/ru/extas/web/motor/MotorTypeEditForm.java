@@ -6,12 +6,11 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import ru.extas.model.motor.MotorType;
 import ru.extas.server.motor.MotorTypeRepository;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -21,7 +20,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class MotorTypeEditForm extends AbstractEditForm<MotorType> {
+public class MotorTypeEditForm extends ExtaEditForm<MotorType> {
 
     @PropertyId("name")
     private EditField nameField;

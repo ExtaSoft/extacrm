@@ -7,7 +7,6 @@ import com.vaadin.data.Container;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class PersonsGrid extends ExtaGrid<Person> {
     }
 
     @Override
-    public AbstractEditForm<Person> createEditForm(Person person) {
+    public ExtaEditForm<Person> createEditForm(Person person) {
         return new PersonEditForm(person);
     }
 

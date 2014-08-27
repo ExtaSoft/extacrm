@@ -1,10 +1,8 @@
 package ru.extas.web.users;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import ru.extas.model.security.UserGroup;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
     }
 
     @Override
-    public AbstractEditForm<UserGroup> createEditForm(UserGroup userGroup) {
+    public ExtaEditForm<UserGroup> createEditForm(UserGroup userGroup) {
         return new UserGroupEditForm(userGroup);
     }
 

@@ -16,7 +16,7 @@ class ListUtil {
      * @param list the list
      * @return a boolean.
      */
-    public static <E> boolean isNullOrEmpty(List<E> list) {
+    public static <E> boolean isNullOrEmpty(final List<E> list) {
         return list == null || list.size() == 0;
     }
 
@@ -27,7 +27,7 @@ class ListUtil {
      * @param list the list
      * @return a boolean.
      */
-    public static <E> boolean isNotNullAndEmpty(List<E> list) {
+    public static <E> boolean isNotNullAndEmpty(final List<E> list) {
         return list != null && list.size() != 0;
     }
 
@@ -38,7 +38,7 @@ class ListUtil {
      * @return the provided list or an empty one if it was null
      * @param <T> a T object.
      */
-    public static <T> List<T> emptyIfNull(List<T> list) {
+    public static <T> List<T> emptyIfNull(final List<T> list) {
         if (list == null) {
             return newArrayList();
         }

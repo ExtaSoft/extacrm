@@ -47,7 +47,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @RequestMapping("/service/lead")
 public class LeadRestService {
 
-    private Logger logger = LoggerFactory.getLogger(LeadRestService.class);
+    private final Logger logger = LoggerFactory.getLogger(LeadRestService.class);
 
     @Inject
     private LeadRepository leadRepository;

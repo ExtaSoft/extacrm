@@ -11,19 +11,17 @@ import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.AddressInfo;
-import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.LegalEntityFile;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.DocFilesEditor;
-import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.motor.BrandsField;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
@@ -39,7 +37,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @since 0.3
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class LegalEntityEditForm extends AbstractEditForm<LegalEntity> {
+public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
     private static final long serialVersionUID = -7787385620289376599L;
     private final static Logger logger = LoggerFactory.getLogger(LegalEntityEditForm.class);

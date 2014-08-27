@@ -2,7 +2,6 @@ package ru.extas.web.users;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.Person;
@@ -27,7 +26,7 @@ import static com.google.common.collect.Maps.newHashMap;
 @Component
 public class LoginToUserNameConverter implements Converter<String, String> {
 
-    private Map<String, String> nameCache = newHashMap();
+    private final Map<String, String> nameCache = newHashMap();
 
     @Inject
     private UserManagementService userService;

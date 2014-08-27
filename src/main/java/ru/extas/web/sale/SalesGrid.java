@@ -1,7 +1,6 @@
 package ru.extas.web.sale;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -9,7 +8,6 @@ import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
 	}
 
     @Override
-    public AbstractEditForm<Sale> createEditForm(Sale sale) {
+    public ExtaEditForm<Sale> createEditForm(Sale sale) {
         return new SaleEditForm(sale);
     }
 

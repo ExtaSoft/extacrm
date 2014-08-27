@@ -7,7 +7,6 @@ import com.google.common.base.Throwables;
 import com.vaadin.addon.tableexport.CustomTableHolder;
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import ru.extas.model.insurance.Insurance;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
 import java.io.ByteArrayOutputStream;
@@ -57,7 +55,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
     }
 
     @Override
-    public AbstractEditForm<Insurance> createEditForm(Insurance insurance) {
+    public ExtaEditForm<Insurance> createEditForm(Insurance insurance) {
         return new InsuranceEditForm(insurance);
     }
 

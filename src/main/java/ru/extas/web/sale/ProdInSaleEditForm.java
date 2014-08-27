@@ -5,10 +5,10 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import ru.extas.model.sale.ProductInSale;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.product.ProductSelect;
 
 /**
@@ -20,7 +20,7 @@ import ru.extas.web.product.ProductSelect;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdInSaleEditForm extends AbstractEditForm<ProductInSale> {
+public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
 
 	// Компоненты редактирования
 	@PropertyId("product")

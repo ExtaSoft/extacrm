@@ -30,7 +30,6 @@ public class DocumentSelect extends ComboBox {
 		setNewItemsAllowed(false);
 		setFilteringMode(FilteringMode.CONTAINS);
 		setWidth(20, Unit.EM);
-		for (final String item : lookup(SupplementService.class).loadDocumentTypes())
-			addItem(item);
+        lookup(SupplementService.class).loadDocumentTypes().forEach((final String item) -> addItem(item));
 	}
 }

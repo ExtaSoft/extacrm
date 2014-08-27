@@ -30,7 +30,7 @@ public abstract class String2EnumConverter<TEnum> implements Converter<String, T
 	 *
 	 * @param enumClass a {@link java.lang.Class} object.
 	 */
-	protected String2EnumConverter(Class<TEnum> enumClass) {
+	protected String2EnumConverter(final Class<TEnum> enumClass) {
 		this.enumClass = enumClass;
 		enum2StringMap = createEnum2StringMap();
 	}

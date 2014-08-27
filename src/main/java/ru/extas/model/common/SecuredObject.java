@@ -46,7 +46,7 @@ public class SecuredObject extends AuditedObject {
      *
      * @param associateUsers a {@link java.util.Set} object.
      */
-    public void setAssociateUsers(Set<Person> associateUsers) {
+    public void setAssociateUsers(final Set<Person> associateUsers) {
         this.associateUsers = associateUsers;
     }
 
@@ -64,7 +64,7 @@ public class SecuredObject extends AuditedObject {
      *
      * @param associateRegions a {@link java.util.Set} object.
      */
-    public void setAssociateRegions(Set<String> associateRegions) {
+    public void setAssociateRegions(final Set<String> associateRegions) {
         this.associateRegions = associateRegions;
     }
 
@@ -82,7 +82,7 @@ public class SecuredObject extends AuditedObject {
      *
      * @param associateBrands a {@link java.util.Set} object.
      */
-    public void setAssociateBrands(Set<String> associateBrands) {
+    public void setAssociateBrands(final Set<String> associateBrands) {
         this.associateBrands = associateBrands;
     }
 }

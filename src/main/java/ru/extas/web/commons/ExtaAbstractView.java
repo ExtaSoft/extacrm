@@ -34,7 +34,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
     /**
      * @param children
      */
-    private ExtaAbstractView(Component... children) {
+    private ExtaAbstractView(final Component... children) {
         super(children);
     }
 

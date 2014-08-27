@@ -19,8 +19,7 @@ import ru.extas.web.commons.ExtaDataContainer;
 public class AbstractContactSelect<TContactType extends Contact> extends ComboBox {
 
 	private static final long serialVersionUID = -8005905898383483037L;
-	private final Class<TContactType> contactType;
-	protected ExtaDataContainer<TContactType> container;
+    protected ExtaDataContainer<TContactType> container;
 
 	/**
 	 * <p>Constructor for AbstractContactSelect.</p>
@@ -42,7 +41,7 @@ public class AbstractContactSelect<TContactType extends Contact> extends ComboBo
 	protected AbstractContactSelect(final String caption, final String description, final Class<TContactType> contactType) {
 		super(caption);
 
-		this.contactType = contactType;
+        Class<TContactType> contactType1 = contactType;
 
 		// Преконфигурация
 		setDescription(description);

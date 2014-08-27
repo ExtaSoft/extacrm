@@ -15,13 +15,12 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Contact;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.references.SupplementService;
-import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -35,7 +34,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @since 0.3
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class CompanyEditForm extends AbstractEditForm<Company> {
+public class CompanyEditForm extends ExtaEditForm<Company> {
 
     private static final long serialVersionUID = -7787385620289376599L;
     private final static Logger logger = LoggerFactory.getLogger(CompanyEditForm.class);

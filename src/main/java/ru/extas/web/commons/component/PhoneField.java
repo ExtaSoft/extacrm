@@ -20,7 +20,7 @@ public class PhoneField extends EditField {
      * @param caption     a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
      */
-    public PhoneField(String caption, String description) {
+    public PhoneField(final String caption, final String description) {
         super(caption, description);
         initField();
     }
@@ -37,7 +37,7 @@ public class PhoneField extends EditField {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public PhoneField(String caption) {
+    public PhoneField(final String caption) {
         super(caption);
         initField();
     }

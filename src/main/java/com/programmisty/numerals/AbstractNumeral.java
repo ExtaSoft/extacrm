@@ -37,13 +37,13 @@ public abstract class AbstractNumeral {
      *
      * @param number a {@link java.lang.Number} object.
      */
-    protected void checkSupported(Number number) {
+    protected void checkSupported(final Number number) {
         if (number instanceof Integer
                 || number instanceof Long
                 || number instanceof Short
                 ||number instanceof Byte) {
         } else if (number instanceof BigInteger) {
-            BigInteger bi = (BigInteger) number;
+            final BigInteger bi = (BigInteger) number;
             if (bi.abs().compareTo(MAX_SUPPORTED) > 0) {
                 throw new IllegalArgumentException("Max supported number:" + MAX_SUPPORTED);
             }
@@ -75,7 +75,7 @@ public abstract class AbstractNumeral {
      * @param amount a {@link java.lang.Number} object.
      * @return a {@link java.lang.String} object.
      */
-    public String amount(Number amount) {
+    public String amount(final Number amount) {
         return amount(Util.toBigDecimal(amount));
     }
 }

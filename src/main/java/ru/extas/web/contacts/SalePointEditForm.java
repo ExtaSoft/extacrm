@@ -16,7 +16,7 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -31,7 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SalePointEditForm extends AbstractEditForm<SalePoint> {
+public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     private static final long serialVersionUID = -7787385620289376599L;
     private final static Logger logger = LoggerFactory.getLogger(LegalEntityEditForm.class);

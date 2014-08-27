@@ -73,7 +73,7 @@ public class IdentifiedObject implements Serializable {
      *
      * @param key ID объекта
      */
-    public void setId(String key) {
+    public void setId(final String key) {
         this.id = key;
     }
 

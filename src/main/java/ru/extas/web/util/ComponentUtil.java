@@ -45,7 +45,7 @@ public class ComponentUtil {
     public static <TEnum extends Enum<TEnum>> void fillSelectByEnum(final TokenField component, final Class<TEnum> cls) {
         final Converter<String, TEnum> converter = VaadinSession.getCurrent().getConverterFactory()
                 .createConverter(String.class, cls);
-        EnumSet<TEnum> enums = EnumSet.allOf(cls);
+        final EnumSet<TEnum> enums = EnumSet.allOf(cls);
         component.setContainerDataSource(CollectionContainer.fromBeans(enums));
         for (final TEnum en : enums) {
             component.setTokenCaption(en, converter.convertToPresentation(en, null, null));

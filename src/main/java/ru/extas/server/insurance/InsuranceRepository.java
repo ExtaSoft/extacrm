@@ -17,11 +17,11 @@ import ru.extas.model.insurance.Insurance;
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public interface InsuranceRepository extends JpaRepository<Insurance, String>, InsuranceService {
 
-/**
- * <p>findByCreatedBy.</p>
- *
- * @param createdBy a {@link java.lang.String} object.
- * @return a {@link java.lang.Iterable} object.
- */
-Iterable<Insurance> findByCreatedBy(String createdBy);
+    /**
+     * <p>findByCreatedBy.</p>
+     *
+     * @param createdBy a {@link java.lang.String} object.
+     * @return a {@link java.lang.Iterable} object.
+     */
+    Iterable<Insurance> findByCreatedBy(String createdBy);
 }

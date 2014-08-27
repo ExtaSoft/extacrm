@@ -6,7 +6,7 @@ import com.vaadin.data.validator.RangeValidator;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 
@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @version $Id: $Id
  * @since 0.3
  */
-public class GetValueWindowLong extends AbstractEditForm<GetValueWindowLong.ValueContainer> {
+public class GetValueWindowLong extends ExtaEditForm<GetValueWindowLong.ValueContainer> {
 
     private ValueContainer valueContainer;
     // Компоненты редактирования

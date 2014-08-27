@@ -24,20 +24,20 @@ public class FileUploader extends CustomComponent {
      * @param handler a {@link com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler} object.
      * @param multiple a boolean.
      */
-    public FileUploader(String caption, UploadFinishedHandler handler, boolean multiple) {
-        UploadStateWindow window = new UploadStateWindow();
+    public FileUploader(final String caption, final UploadFinishedHandler handler, final boolean multiple) {
+        final UploadStateWindow window = new UploadStateWindow();
         window.setUploadStatusCaption("Статус загрузки");
         window.setCancelButtonCaption("Отменить");
         window.setWindowPosition(UploadStateWindow.WindowPosition.CENTER);
         window.setModal(true);
-        ConfirmDialog confDialog = new ConfirmDialog();
+        final ConfirmDialog confDialog = new ConfirmDialog();
         confDialog.setConfirmHeader("Прерывание загрузки...");
         confDialog.setConfirmQuestion("Это действие отменит загрузку всех файлов. Продолжить?");
         confDialog.setConfirmYes("Да");
         confDialog.setConfirmNo("Нет");
         window.setConfirmDialog(confDialog);
 
-        MultiFileUpload multiFileUpload = new MultiFileUpload(handler, window, multiple);
+        final MultiFileUpload multiFileUpload = new MultiFileUpload(handler, window, multiple);
         multiFileUpload.setMaxFileSize(128*1024*1024);
         multiFileUpload.setInterruptedMsg("Загрузка прервана...");
         multiFileUpload.setSizeErrorMsgPattern(
@@ -53,7 +53,7 @@ public class FileUploader extends CustomComponent {
      * @param caption a {@link java.lang.String} object.
      * @param handler a {@link com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler} object.
      */
-    public FileUploader(String caption, UploadFinishedHandler handler) {
+    public FileUploader(final String caption, final UploadFinishedHandler handler) {
         this(caption, handler, true);
     }
 }

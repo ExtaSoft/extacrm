@@ -11,9 +11,9 @@ import com.vaadin.data.Container.ItemSetChangeListener;
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
-import ru.extas.web.commons.AbstractEditForm;
 import ru.extas.web.commons.window.GetValueWindowLong;
 import ru.extas.web.commons.window.GetValueWindowLongRange;
 
@@ -61,9 +61,9 @@ public class A7NumListEdit extends CustomField<List> {
             @Override
             public void buttonClick(final ClickEvent event) {
                 final GetValueWindowLong win = new GetValueWindowLong("Введите номер новой квитанции");
-                win.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                win.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (win.isSaved())
                             addNumber(win.getValue().toString());
                     }
@@ -78,9 +78,9 @@ public class A7NumListEdit extends CustomField<List> {
             @Override
             public void buttonClick(final ClickEvent event) {
                 final GetValueWindowLongRange win = new GetValueWindowLongRange("Введите диапазон номеров квитанций");
-                win.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                win.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (win.isSaved()) {
                             Range<Long> range = Range.closed(win.getStartValue(), win.getEndValue());
                             for (Long num : ContiguousSet.create(range, DiscreteDomain.longs())) {

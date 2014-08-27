@@ -66,7 +66,7 @@ public class DocFilesEditor<TFileContainer extends FileContainer> extends Custom
         }
 
         @Override
-        public AbstractEditForm<FileContainer> createEditForm(FileContainer fileContainer) {
+        public ExtaEditForm<FileContainer> createEditForm(FileContainer fileContainer) {
             return null;
         }
 

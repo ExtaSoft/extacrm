@@ -1,10 +1,8 @@
 package ru.extas.web.motor;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import ru.extas.model.motor.MotorModel;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class MotorModelGrid extends ExtaGrid<MotorModel> {
     }
 
     @Override
-    public AbstractEditForm<MotorModel> createEditForm(MotorModel motorModel) {
+    public ExtaEditForm<MotorModel> createEditForm(MotorModel motorModel) {
         return new MotorModelEditForm(motorModel);
     }
 

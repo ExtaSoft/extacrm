@@ -4,10 +4,10 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
-import ru.extas.web.commons.AbstractEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -79,9 +79,9 @@ public class PersonSelect extends CustomField<Person> {
 				final PersonEditForm editWin = new PersonEditForm(newObj);
 				editWin.setModified(true);
 
-                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             personSelectField.refreshContainer();
                             personSelectField.setValue(newObj.getId());
@@ -130,9 +130,9 @@ public class PersonSelect extends CustomField<Person> {
 				final PersonEditForm editWin = new PersonEditForm(bean);
 				editWin.setModified(true);
 
-                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
 						if (editWin.isSaved()) {
 							refreshFields(bean);
 						}

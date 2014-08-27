@@ -1,10 +1,8 @@
 package ru.extas.web.product;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class ProdCreditGrid extends ExtaGrid<ProdCredit> {
     }
 
     @Override
-    public AbstractEditForm<ProdCredit> createEditForm(ProdCredit prodCredit) {
+    public ExtaEditForm<ProdCredit> createEditForm(ProdCredit prodCredit) {
         return new ProdCreditEditForm(prodCredit);
     }
 

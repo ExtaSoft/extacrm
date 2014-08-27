@@ -30,24 +30,24 @@ public class HelpContent {
      * @return Подготовленный html документ
      * @throws java.io.IOException if any.
      */
-    public static String loadMarkDown(String resource) throws IOException {
+    public static String loadMarkDown(final String resource) throws IOException {
         // Читаем файл помоци
-        InputStream contentStream = HelpContent.class.getResourceAsStream(resource);
-        String content = CharStreams.toString(new InputStreamReader(contentStream, Charsets.UTF_8));
+        final InputStream contentStream = HelpContent.class.getResourceAsStream(resource);
+        final String content = CharStreams.toString(new InputStreamReader(contentStream, Charsets.UTF_8));
         Closeables.close(contentStream, true);
 
         // Читаем файл стилей
-        InputStream cssStream = HelpContent.class.getResourceAsStream("/help/rest/help.css");
-        String cssContent = CharStreams.toString(new InputStreamReader(cssStream, Charsets.UTF_8))
+        final InputStream cssStream = HelpContent.class.getResourceAsStream("/help/rest/help.css");
+        final String cssContent = CharStreams.toString(new InputStreamReader(cssStream, Charsets.UTF_8))
                 .replaceAll(System.getProperty("line.separator"), "");
         Closeables.close(contentStream, true);
 
         // Преобразуем в html
-        StringBuilder out = new StringBuilder();
-        HtmlDocumentBuilder builder = new HtmlDocumentBuilder(CharStreams.asWriter(out));
-        HtmlDocumentBuilder.Stylesheet stylesheet = new HtmlDocumentBuilder.Stylesheet(new StringReader(cssContent));
+        final StringBuilder out = new StringBuilder();
+        final HtmlDocumentBuilder builder = new HtmlDocumentBuilder(CharStreams.asWriter(out));
+        final HtmlDocumentBuilder.Stylesheet stylesheet = new HtmlDocumentBuilder.Stylesheet(new StringReader(cssContent));
         builder.addCssStylesheet(stylesheet);
-        MarkupParser markupParser = new MarkupParser();
+        final MarkupParser markupParser = new MarkupParser();
         markupParser.setMarkupLanguage(new TextileLanguage());
         markupParser.setBuilder(builder);
         markupParser.parse(content);

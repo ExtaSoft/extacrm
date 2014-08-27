@@ -28,7 +28,7 @@ public class ExtaUri {
 
         private String name;
 
-        Mode(String name) {
+        Mode(final String name) {
             this.name = name;
         }
 

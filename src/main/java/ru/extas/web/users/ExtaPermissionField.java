@@ -8,7 +8,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.security.*;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.util.ComponentUtil;
 
 import java.util.*;
@@ -65,7 +65,7 @@ public class ExtaPermissionField extends CustomField<Set> {
         ExtaGrid<ExtaPermission> grid = new ExtaGrid<ExtaPermission>(ExtaPermission.class) {
 
             @Override
-            public AbstractEditForm<ExtaPermission> createEditForm(ExtaPermission extaPermission) {
+            public ExtaEditForm<ExtaPermission> createEditForm(ExtaPermission extaPermission) {
                 return new ExtaPermissionEditForm(extaPermission) {
                     @Override
                     protected void saveObject(final ExtaPermission obj) {
@@ -137,7 +137,7 @@ public class ExtaPermissionField extends CustomField<Set> {
         return Set.class;
     }
 
-    private abstract class ExtaPermissionEditForm extends AbstractEditForm<ExtaPermission> {
+    private abstract class ExtaPermissionEditForm extends ExtaEditForm<ExtaPermission> {
 
         @PropertyId("domain")
         private ComboBox domainField;

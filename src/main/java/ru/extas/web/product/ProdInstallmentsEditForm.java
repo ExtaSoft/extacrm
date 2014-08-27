@@ -9,7 +9,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.CompanySelect;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -24,7 +24,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments> {
+public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 
 	// Компоненты редактирования
 	@PropertyId("name")

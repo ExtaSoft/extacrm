@@ -20,7 +20,7 @@ public class GridItem<BT> extends BeanItem<BT> {
 	 *
 	 * @param item a {@link com.vaadin.data.Item} object.
 	 */
-	public GridItem(Item item) {
+	public GridItem(final Item item) {
 		super(GridItem.<BT>extractBean(item));
 	}
 

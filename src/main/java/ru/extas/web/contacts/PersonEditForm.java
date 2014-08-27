@@ -19,7 +19,7 @@ import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.DocFilesEditor;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 import ru.extas.web.util.ComponentUtil;
@@ -35,7 +35,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @since 0.3
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class PersonEditForm extends AbstractEditForm<Person> {
+public class PersonEditForm extends ExtaEditForm<Person> {
 
     private static final long serialVersionUID = -7787385620289376599L;
     private final static Logger logger = LoggerFactory.getLogger(PersonEditForm.class);

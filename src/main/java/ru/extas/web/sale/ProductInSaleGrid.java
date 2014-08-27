@@ -8,9 +8,9 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.List;
 
@@ -71,9 +71,9 @@ public class ProductInSaleGrid extends CustomField<List> {
 					final BeanItem<ProductInSale> newObj = new BeanItem<>(new ProductInSale(sale));
 
 					final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", newObj);
-                    editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                    editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                         @Override
-                        public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                        public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             container.addBean(newObj.getBean());
                         }

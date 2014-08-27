@@ -41,7 +41,7 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
      *                    (must not be null).
      * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
      */
-    public SecuredDataContainer(final Class<TEntityType> entityClass, ExtaDomain domain) {
+    public SecuredDataContainer(final Class<TEntityType> entityClass, final ExtaDomain domain) {
         super(entityClass);
         this.domain = domain;
 

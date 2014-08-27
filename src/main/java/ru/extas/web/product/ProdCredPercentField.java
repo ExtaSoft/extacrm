@@ -8,10 +8,10 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditPercent;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.AbstractEditForm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,9 +69,9 @@ public class ProdCredPercentField extends CustomField<List> {
                     final BeanItem<ProdCreditPercent> newObj = new BeanItem<>(new ProdCreditPercent(product));
 
                     final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Новая процентная ставка", newObj);
-                    editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                    editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                         @Override
-                        public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                        public void closeForm(ExtaEditForm.CloseFormEvent event) {
                             if (editWin.isSaved()) {
                                 container.addBean(newObj.getBean());
                             }

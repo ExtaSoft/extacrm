@@ -5,13 +5,12 @@ package ru.extas.web.insurance;
 
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.FormTransfer;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -38,7 +37,7 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
     }
 
     @Override
-    public AbstractEditForm<FormTransfer> createEditForm(FormTransfer formTransfer) {
+    public ExtaEditForm<FormTransfer> createEditForm(FormTransfer formTransfer) {
         return new FormTransferEditForm(formTransfer);
     }
 

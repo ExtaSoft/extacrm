@@ -20,7 +20,7 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.*;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
@@ -43,7 +43,7 @@ import static ru.extas.web.commons.TableUtils.initTableColumns;
  * @version $Id: $Id
  * @since 0.3
  */
-public class LeadEditForm extends AbstractEditForm<Lead> {
+public class LeadEditForm extends ExtaEditForm<Lead> {
 
     private static final long serialVersionUID = 9510268415882116L;
     // Компоненты редактирования
@@ -250,9 +250,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
                 final SalePointEditForm editWin = new SalePointEditForm(newObj);
                 editWin.setModified(true);
 
-                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             vendorsContainer.refresh();
                             table.setValue(newObj.getId());
@@ -322,9 +322,9 @@ public class LeadEditForm extends AbstractEditForm<Lead> {
                 final PersonEditForm editWin = new PersonEditForm(newObj);
                 editWin.setModified(true);
 
-                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             clientsContainer.refresh();
                             table.setValue(newObj.getId());

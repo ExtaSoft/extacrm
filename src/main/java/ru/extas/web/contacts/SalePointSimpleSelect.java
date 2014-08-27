@@ -42,7 +42,7 @@ public class SalePointSimpleSelect extends AbstractContactSelect<SalePoint> {
      * @param company a {@link ru.extas.model.contacts.Company} object.
      * @param region a {@link java.lang.String} object.
      */
-    public void setContainerFilter(Company company, String region) {
+    public void setContainerFilter(final Company company, final String region) {
         container.removeAllContainerFilters();
         if (company != null)
             container.addContainerFilter(new Compare.Equal("company", company));

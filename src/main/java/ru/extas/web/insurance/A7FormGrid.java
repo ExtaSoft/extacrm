@@ -33,7 +33,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
     }
 
     @Override
-    public AbstractEditForm<A7Form> createEditForm(A7Form a7Form) {
+    public ExtaEditForm<A7Form> createEditForm(A7Form a7Form) {
         return null;
     }
 

@@ -50,8 +50,8 @@ public enum SecureTarget {
 	 * @param name a {@link java.lang.String} object.
 	 * @return a {@link ru.extas.model.security.SecureTarget} object.
 	 */
-	public static SecureTarget getByName(String name) {
-		for (SecureTarget item : SecureTarget.values())
+	public static SecureTarget getByName(final String name) {
+		for (final SecureTarget item : SecureTarget.values())
 			if (item.getName().equals(name))
 				return item;
 		throw new IllegalArgumentException("There's no enum for name: " + name);

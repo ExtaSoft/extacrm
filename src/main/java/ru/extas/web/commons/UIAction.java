@@ -30,7 +30,7 @@ public abstract class UIAction implements Serializable {
      * @param description a {@link String} object.
      * @param icon a {@link String} object.
      */
-    public UIAction(String name, String description, Resource icon) {
+    public UIAction(final String name, final String description, final Resource icon) {
         this.description = description;
         this.name = name;
         this.icon = icon;
@@ -69,7 +69,7 @@ public abstract class UIAction implements Serializable {
      *
      * @param name a {@link java.lang.String} object.
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -87,7 +87,7 @@ public abstract class UIAction implements Serializable {
      *
      * @param description a {@link java.lang.String} object.
      */
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -105,7 +105,7 @@ public abstract class UIAction implements Serializable {
      *
      * @param icon a {@link String} object.
      */
-    public void setIcon(Resource icon) {
+    public void setIcon(final Resource icon) {
         this.icon = icon;
     }
 }

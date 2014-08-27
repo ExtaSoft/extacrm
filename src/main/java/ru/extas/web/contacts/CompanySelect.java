@@ -1,9 +1,8 @@
 package ru.extas.web.contacts;
 
-import com.vaadin.data.util.BeanItem;
 import ru.extas.model.contacts.Company;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FormUtils;
-import ru.extas.web.commons.AbstractEditForm;
 
 /**
  * Выбор контакта - юр. лица
@@ -53,9 +52,9 @@ public class CompanySelect extends AbstractContactSelect<Company> {
 				final CompanyEditForm editWin = new CompanyEditForm(newObj);
 				editWin.setModified(true);
 
-                editWin.addCloseFormListener(new AbstractEditForm.CloseFormListener() {
+                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
                     @Override
-                    public void closeForm(AbstractEditForm.CloseFormEvent event) {
+                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
                         if (editWin.isSaved()) {
                             container.refresh();
                             setValue(newObj.getId());

@@ -10,7 +10,7 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
 import ru.extas.web.motor.MotorBrandSelect;
@@ -29,7 +29,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SaleEditForm extends AbstractEditForm<Sale> {
+public class SaleEditForm extends ExtaEditForm<Sale> {
 
     private static final long serialVersionUID = 9510268415882116L;
     // Компоненты редактирования

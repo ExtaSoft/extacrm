@@ -25,9 +25,9 @@ public class NotificationUtil {
      * @param caption a {@link java.lang.String} object.
      * @param messages a {@link java.util.List} object.
      */
-    public static void showErrors(String caption, List<String> messages) {
+    public static void showErrors(final String caption, final List<String> messages) {
 
-        StringBuilder content = new StringBuilder();
+        final StringBuilder content = new StringBuilder();
         content.append("<ul><li>");
         Joiner.on("</li><li>").appendTo(content, messages);
         content.append("</li></ul>");
@@ -36,7 +36,7 @@ public class NotificationUtil {
         showError(caption, description);
     }
 
-    public static void showError(String caption, String description) {
+    public static void showError(final String caption, final String description) {
         final Notification notify = new Notification(caption, description, Notification.Type.ERROR_MESSAGE);
         notify.setStyleName("error failure closable");
         notify.setPosition(Position.MIDDLE_CENTER);
@@ -44,7 +44,7 @@ public class NotificationUtil {
         notify.show(Page.getCurrent());
     }
 
-    public static void showWarning(String caption, String description) {
+    public static void showWarning(final String caption, final String description) {
         final Notification notify = new Notification(caption, description, Notification.Type.WARNING_MESSAGE);
         notify.setStyleName("warning closable");
         notify.setPosition(Position.MIDDLE_CENTER);
@@ -52,30 +52,30 @@ public class NotificationUtil {
         notify.show(Page.getCurrent());
     }
 
-    public static void showSuccess(String caption) {
+    public static void showSuccess(final String caption) {
         showSuccess(caption, null);
 
     }
 
-    public static void showSuccess(String caption, String description) {
+    public static void showSuccess(final String caption, final String description) {
         final Notification notify = new Notification(caption, description, Notification.Type.TRAY_NOTIFICATION);
         notify.setStyleName("tray success closable");
         notify.setHtmlContentAllowed(true);
         notify.show(Page.getCurrent());
     }
 
-    public static void showWarning(String caption) {
+    public static void showWarning(final String caption) {
         showWarning(caption, null);
     }
 
-    public static void show(String caption, String description) {
+    public static void show(final String caption, final String description) {
         final Notification notify = new Notification(caption, description, Notification.Type.HUMANIZED_MESSAGE);
         notify.setStyleName("closable");
         notify.setHtmlContentAllowed(true);
         notify.show(Page.getCurrent());
     }
 
-    public static void show(String caption) {
+    public static void show(final String caption) {
         show(caption, null);
     }
 }

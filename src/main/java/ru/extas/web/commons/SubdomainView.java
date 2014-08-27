@@ -2,11 +2,9 @@ package ru.extas.web.commons;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.web.commons.component.SubdomainInfo;
 
 import java.util.List;
 
@@ -62,6 +60,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
                     tab.removeAllComponents();
                     final ExtaGrid tabGrid = info.createGrid();
                     tabGrid.setSizeFull();
+                    tab.addComponent(tabGrid);
 
                     UI.getCurrent().getPage().setUriFragment("!" + info.getDomain().getName(), false);
                 }

@@ -22,7 +22,7 @@ public class RegionSelect extends ComboBox {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public RegionSelect(String caption) {
+    public RegionSelect(final String caption) {
         super(caption);
 
         setDescription("Укажите регион проживания");
@@ -33,8 +33,7 @@ public class RegionSelect extends ComboBox {
         setNewItemsAllowed(false);
         setFilteringMode(FilteringMode.CONTAINS);
         setWidth(18, Unit.EM);
-        for (final String item : lookup(SupplementService.class).loadRegions())
-            addItem(item);
+        lookup(SupplementService.class).loadRegions().forEach((final String item) -> addItem(item));
     }
 
     /**

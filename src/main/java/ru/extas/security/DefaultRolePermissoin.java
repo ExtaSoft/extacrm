@@ -29,8 +29,7 @@ public class DefaultRolePermissoin {
 	public static List<Permission> createAdminPermissions() {
 		final List<Permission> permissions;
 		permissions = newArrayList();
-        for(ExtaDomain domain : EnumSet.allOf(ExtaDomain.class))
-		    permissions.add(new ExtaPermission(domain, SecureAction.ALL, SecureTarget.ALL));
+        permissions.addAll(EnumSet.allOf(ExtaDomain.class).stream().map(domain -> new ExtaPermission(domain, SecureAction.ALL, SecureTarget.ALL)).collect(java.util.stream.Collectors.toList()));
 		return permissions;
 	}
 

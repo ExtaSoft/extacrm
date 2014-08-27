@@ -8,11 +8,11 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.PolicyRepository;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.DateTimeField;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.AbstractEditForm;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -24,7 +24,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class PolicyEditForm extends AbstractEditForm<Policy> {
+public class PolicyEditForm extends ExtaEditForm<Policy> {
 
     private static final long serialVersionUID = 44314371625923505L;
 

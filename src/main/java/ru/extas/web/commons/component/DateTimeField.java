@@ -24,7 +24,7 @@ public class DateTimeField extends PopupDateField {
      * @param caption     заголовок
      * @param description описание
      */
-    public DateTimeField(String caption, String description) {
+    public DateTimeField(final String caption, final String description) {
         super(caption);
 
         setImmediate(true);
