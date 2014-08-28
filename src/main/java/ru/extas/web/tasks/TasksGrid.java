@@ -169,12 +169,7 @@ public class TasksGrid extends ExtaGrid<Task> {
                 titleLink.setCaption(task.getName());
                 titleLink.setDescription(defAction.getDescription());
                 titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-                titleLink.addClickListener(new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        defAction.fire(itemId);
-                    }
-                });
+                titleLink.addClickListener(event -> defAction.fire(itemId));
 
                 VerticalLayout panel = new VerticalLayout();
                 panel.addComponent(titleLink);

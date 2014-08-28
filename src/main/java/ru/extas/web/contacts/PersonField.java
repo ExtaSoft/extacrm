@@ -46,13 +46,10 @@ public class PersonField extends CustomField<Person> {
 		final Person person = (Person) getPropertyDataSource().getValue();
 		personItem = new BeanItem<>(person == null ? new Person() : person);
 
-		final Button.ClickListener openLeadFormListener = new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				PersonEditForm form = new PersonEditForm(personItem.getBean());
-                FormUtils.showModalWin(form);
-			}
-		};
+		final Button.ClickListener openLeadFormListener = event -> {
+            PersonEditForm form = new PersonEditForm(personItem.getBean());
+FormUtils.showModalWin(form);
+        };
 		// Открытие формы ввода/редактирования
 		Button openBtn = new Button("Нажмите для просмотра/редактирования клиента...", openLeadFormListener);
 		openBtn.addStyleName("link");

@@ -69,12 +69,9 @@ public class ProdCredPercentField extends CustomField<List> {
                     final BeanItem<ProdCreditPercent> newObj = new BeanItem<>(new ProdCreditPercent(product));
 
                     final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Новая процентная ставка", newObj);
-                    editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                        @Override
-                        public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                            if (editWin.isSaved()) {
-                                container.addBean(newObj.getBean());
-                            }
+                    editWin.addCloseFormListener(event1 -> {
+                        if (editWin.isSaved()) {
+                            container.addBean(newObj.getBean());
                         }
                     });
                     FormUtils.showModalWin(editWin);
@@ -84,26 +81,20 @@ public class ProdCredPercentField extends CustomField<List> {
             addProdBtn.setIcon(Fontello.DOC_NEW);
             commandBar.addComponent(addProdBtn);
 
-            final Button edtProdBtn = new Button("Изменить", new Button.ClickListener() {
-                @Override
-                public void buttonClick(final Button.ClickEvent event) {
-                    if (procentTable.getValue() != null) {
-                        final BeanItem<ProdCreditPercent> percentItem = (BeanItem<ProdCreditPercent>) procentTable.getItem(procentTable.getValue());
-                        final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Редактирование процентной ставки", percentItem);
-                        FormUtils.showModalWin(editWin);
-                    }
+            final Button edtProdBtn = new Button("Изменить", event -> {
+                if (procentTable.getValue() != null) {
+                    final BeanItem<ProdCreditPercent> percentItem = (BeanItem<ProdCreditPercent>) procentTable.getItem(procentTable.getValue());
+                    final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Редактирование процентной ставки", percentItem);
+                    FormUtils.showModalWin(editWin);
                 }
             });
             edtProdBtn.setDescription("Изменить выделенную в списке процентную ставку");
             edtProdBtn.setIcon(Fontello.EDIT_3);
             commandBar.addComponent(edtProdBtn);
 
-            final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-                @Override
-                public void buttonClick(final Button.ClickEvent event) {
-                    if (procentTable.getValue() != null) {
-                        procentTable.removeItem(procentTable.getValue());
-                    }
+            final Button delProdBtn = new Button("Удалить", event -> {
+                if (procentTable.getValue() != null) {
+                    procentTable.removeItem(procentTable.getValue());
                 }
             });
             delProdBtn.setDescription("Удалить процентную ставку из продукта");
@@ -127,12 +118,7 @@ public class ProdCredPercentField extends CustomField<List> {
             }
         }
         procentTable.setContainerDataSource(container);
-        procentTable.addItemSetChangeListener(new Container.ItemSetChangeListener() {
-            @Override
-            public void containerItemSetChange(final Container.ItemSetChangeEvent event) {
-                setValue(newArrayList(procentTable.getItemIds()));
-            }
-        });
+        procentTable.addItemSetChangeListener(event -> setValue(newArrayList(procentTable.getItemIds())));
         // Колонки таблицы
         procentTable.setVisibleColumns("percent", "period", "downpayment");
         procentTable.setColumnHeader("percent", "Процент");

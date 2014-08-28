@@ -47,11 +47,12 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void saveAndIssue(Insurance insurance) {
+    public Insurance saveAndIssue(Insurance insurance) {
         logger.debug("Persisting insurance: {}", insurance.getRegNum());
-        insuranceRepository.secureSave(insurance);
+        insurance = insuranceRepository.secureSave(insurance);
         policyService.issuePolicy(insurance.getRegNum());
         formService.spendForm(insurance.getA7Num());
+        return insurance;
     }
 
     /** {@inheritDoc} */

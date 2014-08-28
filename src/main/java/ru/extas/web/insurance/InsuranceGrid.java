@@ -109,7 +109,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
                 insurance.setSaleNum(oldIns.getSaleNum());
                 insurance.setSaleDate(oldIns.getSaleDate());
 
-                goToEditNewObject(insurance);
+                doEditNewObject(insurance);
             }
         });
 

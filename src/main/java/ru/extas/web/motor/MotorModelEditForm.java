@@ -33,7 +33,7 @@ public class MotorModelEditForm extends ExtaEditForm<MotorModel> {
     private EditField codeField;
 
     public MotorModelEditForm(MotorModel motorModel) {
-        super(isNullOrEmpty(motorModel.getId()) ?
+        super(motorModel.isNew() ?
                 "Новая модель техники" :
                 "Редактировать модель техники",
                 new BeanItem<>(motorModel));
@@ -47,10 +47,10 @@ public class MotorModelEditForm extends ExtaEditForm<MotorModel> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(MotorModel obj) {
+    protected MotorModel saveObject(MotorModel obj) {
         MotorModel loc = lookup(MotorModelRepository.class).save(obj);
         NotificationUtil.showSuccess("Модель техники сохранена");
-
+        return loc;
     }
 
     /** {@inheritDoc} */

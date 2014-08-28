@@ -79,7 +79,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     private LegalEntity legalEntity;
 
     public LegalEntityEditForm(LegalEntity legalEntity) {
-        super(isNullOrEmpty(legalEntity.getId()) ?
+        super(legalEntity.isNew() ?
                 "Ввод нового юр. лица в систему" :
                 "Редактирование юр. лица");
 
@@ -102,7 +102,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         } else {
             companyField.setReadOnly(true);
             companyField.getPropertyDataSource().setReadOnly(true);
-            if (legalEntity.getCompany().getId() == null) {
+            if (legalEntity.getCompany().isNew()) {
                 companyField.setVisible(false);
                 companyField.setRequired(false);
             }
@@ -112,7 +112,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final LegalEntity obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
@@ -123,13 +123,14 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final LegalEntity obj) {
-        if (obj.getCompany().getId() != null) {
+    protected LegalEntity saveObject(LegalEntity obj) {
+        if (!obj.getCompany().isNew()) {
             logger.debug("Saving contact data...");
             final LegalEntityRepository contactRepository = lookup(LegalEntityRepository.class);
-            contactRepository.secureSave(obj);
+            obj = contactRepository.secureSave(obj);
             NotificationUtil.showSuccess("Юр. лицо сохранено");
         }
+        return obj;
     }
 
 

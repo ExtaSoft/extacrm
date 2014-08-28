@@ -12,6 +12,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.util.ReflectTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.common.IdentifiedObject;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -36,6 +37,21 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     private HorizontalLayout buttonsPanel;
     private FieldGroup fieldGroup;
     private boolean modified;
+    private TEditObject bean;
+
+    public Object getObjectId() {
+        if (bean != null) {
+            if (bean instanceof IdentifiedObject)
+                return ((IdentifiedObject) bean).getId();
+            else
+                return bean;
+        }
+        return null;
+    }
+
+    public TEditObject getObject() {
+        return bean;
+    }
 
     public static class CloseFormEvent extends Component.Event {
 
@@ -69,9 +85,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     }
 
     public void closeForm() {
-        if (isEnabled() && !isReadOnly()) {
-            fireCloseForm();
-        }
+        fireCloseForm();
     }
 
     protected void fireCloseForm() {
@@ -90,7 +104,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     /**
      * <p>Constructor for AbstractEditForm.</p>
      *
-     * @param caption a {@link java.lang.String} object.
+     * @param caption  a {@link java.lang.String} object.
      * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
      */
     protected ExtaEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
@@ -109,7 +123,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
      * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
      */
     protected void initForm(final BeanItem<TEditObject> beanItem) {
-        final TEditObject bean = beanItem.getBean();
+        bean = beanItem.getBean();
         initObject(bean);
         final ComponentContainer form = createEditFields(bean);
 
@@ -142,7 +156,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
                         try {
                             fieldGroup.commit();
                             checkBeforeSave(bean);
-                            saveObject(bean);
+                            bean = saveObject(bean);
                             saved = true;
                             modified = false;
                         } catch (final CommitException e) {
@@ -250,7 +264,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
      *
      * @param obj a TEditObject object.
      */
-    protected abstract void saveObject(TEditObject obj);
+    protected abstract TEditObject saveObject(TEditObject obj);
 
     /**
      * <p>checkBeforeSave.</p>

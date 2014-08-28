@@ -37,7 +37,7 @@ public class PolicyEditForm extends ExtaEditForm<Policy> {
     private PopupDateField issueDateField;
 
     public PolicyEditForm(Policy policy) {
-        super(isNullOrEmpty(policy.getId()) ?
+        super(policy.isNew() ?
                 "Новый бланк" :
                 "Редактировать бланк", new BeanItem(policy));
     }
@@ -50,10 +50,11 @@ public class PolicyEditForm extends ExtaEditForm<Policy> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final Policy obj) {
+    protected Policy saveObject(Policy obj) {
         final PolicyRepository policyRepository = lookup(PolicyRepository.class);
-        policyRepository.save(obj);
+        obj = policyRepository.save(obj);
         NotificationUtil.showSuccess("Бланк сохранен");
+        return obj;
     }
 
 

@@ -51,12 +51,9 @@ public class RegionMultiselect extends CustomField<Set> {
         tokenField.setInputSizeFull();
         //tokenField.setInputWidth(13, Unit.EX);
         //tokenField.setTokenInsertPosition(TokenField.InsertPosition.BEFORE);
-        tokenField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(final Property.ValueChangeEvent event) {
-                Set selected = (Set) tokenField.getValue();
-                setValue(selected);
-            }
+        tokenField.addValueChangeListener(event -> {
+            Set selected = (Set) tokenField.getValue();
+            setValue(selected);
         });
 
 		final Property dataSource = getPropertyDataSource();

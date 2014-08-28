@@ -40,9 +40,10 @@ public class MotorTypeEditForm extends ExtaEditForm<MotorType> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(MotorType obj) {
+    protected MotorType saveObject(MotorType obj) {
         MotorType loc = lookup(MotorTypeRepository.class).save(obj);
         NotificationUtil.showSuccess("Тип техники сохранен");
+        return loc;
     }
 
     /** {@inheritDoc} */

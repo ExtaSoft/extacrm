@@ -23,6 +23,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
 
     private static final long serialVersionUID = -9143359275908526515L;
     private final static Logger logger = LoggerFactory.getLogger(ExtaAbstractView.class);
+    private VerticalLayout content;
 
     /**
      * <p>Constructor for ExtaAbstractView.</p>
@@ -71,15 +72,20 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
         top.addComponent(helpBtn);
         top.setComponentAlignment(helpBtn, Alignment.MIDDLE_LEFT);
 
-        VerticalLayout content = new VerticalLayout();
+        content = new VerticalLayout();
         content.setMargin(true);
         content.setSizeFull();
         content.setSpacing(true);
         addComponent(content);
         setExpandRatio(content, 5);
 
-        content.addComponent(getContent());
+        replaceContent(getContent());
 
+    }
+
+    protected void replaceContent(Component component){
+        content.removeAllComponents();
+        content.addComponent(component);
     }
 
     /**

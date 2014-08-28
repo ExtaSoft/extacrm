@@ -56,17 +56,13 @@ public class LegalProductsField extends CustomField<List> {
 				public void buttonClick(final Button.ClickEvent event) {
 
 					final ProductSelectWindow selectWindow = new ProductSelectWindow("Выберите продукт");
-					selectWindow.addCloseListener(new Window.CloseListener() {
-
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (selectWindow.isSelectPressed()) {
-								container.addBean(selectWindow.getSelected());
-								setValue(container.getItemIds());
-                                NotificationUtil.showSuccess("Продукт добавлен");
-							}
-						}
-					});
+					selectWindow.addCloseListener(e -> {
+                        if (selectWindow.isSelectPressed()) {
+                            container.addBean(selectWindow.getSelected());
+                            setValue(container.getItemIds());
+NotificationUtil.showSuccess("Продукт добавлен");
+                        }
+                    });
 					selectWindow.showModal();
 				}
 			});
@@ -74,15 +70,12 @@ public class LegalProductsField extends CustomField<List> {
 			addProdBtn.setIcon(Fontello.DOC_NEW);
 			commandBar.addComponent(addProdBtn);
 
-			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (table.getValue() != null) {
-						container.removeItem(table.getValue());
-						setValue(container.getItemIds());
-					}
-				}
-			});
+			final Button delProdBtn = new Button("Удалить", event -> {
+                if (table.getValue() != null) {
+                    container.removeItem(table.getValue());
+                    setValue(container.getItemIds());
+                }
+            });
 			delProdBtn.setDescription("Удалить продукт из списка доступных данному юридическому лицу");
 			delProdBtn.setIcon(Fontello.TRASH);
 			commandBar.addComponent(delProdBtn);

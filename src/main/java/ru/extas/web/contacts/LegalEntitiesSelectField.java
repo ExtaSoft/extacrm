@@ -5,7 +5,6 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Window;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.*;
@@ -70,17 +69,13 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 					@Override
 					public void fire(Object itemId) {
 						final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите юридическое лицо", company);
-						selectWindow.addCloseListener(new Window.CloseListener() {
-
-							@Override
-							public void windowClose(final Window.CloseEvent e) {
-								if (selectWindow.isSelectPressed()) {
-									((BeanItemContainer<LegalEntity>) container).addBean(selectWindow.getSelected());
-									setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
-                                    NotificationUtil.showSuccess("Юридическое лицо добавлено");
-								}
-							}
-						});
+						selectWindow.addCloseListener(e -> {
+                            if (selectWindow.isSelectPressed()) {
+                                ((BeanItemContainer<LegalEntity>) container).addBean(selectWindow.getSelected());
+                                setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
+NotificationUtil.showSuccess("Юридическое лицо добавлено");
+                            }
+                        });
 						selectWindow.showModal();
 					}
 				});
@@ -91,9 +86,10 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 						final LegalEntity bean = GridItem.extractBean(table.getItem(itemId));
 						final LegalEntityEditForm editWin = new LegalEntityEditForm(bean) {
 							@Override
-							protected void saveObject(final LegalEntity obj) {
+							protected LegalEntity saveObject(final LegalEntity obj) {
 								setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
-							}
+                                return obj;
+                            }
 						};
                         FormUtils.showModalWin(editWin);
 					}

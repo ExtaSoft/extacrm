@@ -178,11 +178,6 @@ public class SupplementServiceImpl implements SupplementService {
         dirtyClientRegion = dirtyClientRegion.trim();
         Collection<String> regions = loadRegions();
         final String finalDirtyClientRegion = dirtyClientRegion;
-        return tryFind(regions, new Predicate<String>() {
-            @Override
-            public boolean apply(String input) {
-                return containsIgnoreCase(input, finalDirtyClientRegion);
-            }
-        }).orNull();
+        return tryFind(regions, input -> containsIgnoreCase(input, finalDirtyClientRegion)).orNull();
     }
 }

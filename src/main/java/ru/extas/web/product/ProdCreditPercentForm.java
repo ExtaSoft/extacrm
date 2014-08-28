@@ -49,9 +49,10 @@ public class ProdCreditPercentForm extends ExtaEditForm<ProdCreditPercent> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void saveObject(final ProdCreditPercent obj) {
+	protected ProdCreditPercent saveObject(final ProdCreditPercent obj) {
         NotificationUtil.showSuccess("Процентная ставка сохранена");
-	}
+        return obj;
+    }
 
 	/** {@inheritDoc} */
 	@Override

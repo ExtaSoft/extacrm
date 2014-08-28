@@ -43,7 +43,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
     private ExtaPermissionField permissionsField;
 
     public UserGroupEditForm(UserGroup userGroup) {
-        super(isNullOrEmpty(userGroup.getId()) ?
+        super(userGroup.isNew() ?
         "Ввод новой группы пользователей" :
         "Редактирование группы", new BeanItem<>(userGroup));
     }
@@ -51,17 +51,18 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(UserGroup obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(UserGroup obj) {
+    protected UserGroup saveObject(UserGroup obj) {
         final UserGroupRegistry groupRegistry = lookup(UserGroupRegistry.class);
-        groupRegistry.save(obj);
+        obj = groupRegistry.save(obj);
         NotificationUtil.showSuccess("Группа сохранена");
+        return obj;
     }
 
     /** {@inheritDoc} */

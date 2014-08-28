@@ -63,7 +63,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
 
     public UserEditForm(UserProfile userProfile) {
-        super(isNullOrEmpty(userProfile.getId()) ?
+        super(userProfile.isNew() ?
                 "Ввод нового пользователя в систему" :
                 "Редактирование данных пользователя");
         initialPassword = userProfile.getPassword();
@@ -72,7 +72,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final UserProfile obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
             obj.setRole(UserRole.USER);
             obj.setChangePassword(true);
@@ -81,12 +81,13 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final UserProfile obj) {
+    protected UserProfile saveObject(UserProfile obj) {
         logger.debug("Saving user profile...");
         securePassword(obj);
         final UserRegistry userService = lookup(UserRegistry.class);
-        userService.save(obj);
+        obj = userService.save(obj);
         NotificationUtil.showSuccess("Пользователь сохранен");
+        return obj;
     }
 
     /**
@@ -161,7 +162,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
         // FIXME Проверить уникальность логина
         loginField = new TextField("Логин (e-mail)");
-        loginField.setReadOnly(obj.getId() != null);
+        loginField.setReadOnly(!obj.isNew());
         loginField.setImmediate(true);
         loginField.setWidth(40, Unit.EX);
         loginField.setDescription("Введите имя e-mail пользователя который будет использоваться для входа в систему");

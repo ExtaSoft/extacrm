@@ -57,7 +57,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
 
                 UserGroup copy = curObj.clone();
                 copy.setName("Копия - " + curObj.getName());
-                goToEditNewObject(copy);
+                doEditNewObject(copy);
             }
         });
         return actions;

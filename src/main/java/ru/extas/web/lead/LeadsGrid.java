@@ -93,14 +93,11 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 					final Lead curObj = GridItem.extractBean(table.getItem(itemId));
 
 					final LeadEditForm editWin = new LeadEditForm(curObj, true);
-                    editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                        @Override
-                        public void closeForm(ExtaEditForm.CloseFormEvent event) {
-							if (editWin.isSaved()) {
-								refreshContainerItem(itemId);
-							}
-						}
-					});
+                    editWin.addCloseFormListener(event -> {
+                        if (editWin.isSaved()) {
+                            refreshContainerItem(itemId);
+                        }
+                    });
                     FormUtils.showModalWin(editWin);
 				}
 			});

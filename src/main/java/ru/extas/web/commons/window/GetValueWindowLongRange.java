@@ -69,7 +69,8 @@ public class GetValueWindowLongRange extends ExtaEditForm<GetValueWindowLongRang
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final ValueContainer obj) {
+    protected ValueContainer saveObject(final ValueContainer obj) {
+        return obj;
     }
 
     /** {@inheritDoc} */

@@ -38,7 +38,7 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
     private A7NumListEdit formNums;
 
     public FormTransferEditForm(FormTransfer formTransfer) {
-        super(isNullOrEmpty(formTransfer.getId()) ?
+        super(formTransfer.isNew() ?
                         "Новый акт приема/передачи" :
                         "Редактировать акт приема/передачи",
                 new BeanItem(formTransfer));
@@ -73,7 +73,7 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final FormTransfer obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             final LocalDate now = LocalDate.now();
             obj.setTransferDate(now);
             // TODO: Инициализировать поле "От" текущим пользователем
@@ -82,9 +82,10 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final FormTransfer obj) {
-        lookup(FormTransferRepository.class).saveAndChangeOwner(obj);
+    protected FormTransfer saveObject(FormTransfer obj) {
+        obj = lookup(FormTransferRepository.class).saveAndChangeOwner(obj);
         NotificationUtil.showSuccess("Акт приема/передачи сохранен");
+        return obj;
     }
 
     /** {@inheritDoc} */

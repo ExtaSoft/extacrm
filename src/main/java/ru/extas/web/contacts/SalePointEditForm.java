@@ -93,7 +93,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         } else {
             companyField.setReadOnly(true);
             companyField.getPropertyDataSource().setReadOnly(true);
-            if (salePoint.getCompany().getId() == null) {
+            if (salePoint.getCompany().isNew()) {
                 companyField.setVisible(false);
                 companyField.setRequired(false);
             }
@@ -103,7 +103,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final SalePoint obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
@@ -114,13 +114,14 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final SalePoint obj) {
-        if (obj.getCompany().getId() != null) {
+    protected SalePoint saveObject(SalePoint obj) {
+        if (!obj.getCompany().isNew()) {
             logger.debug("Saving contact data...");
             final SalePointRepository contactRepository = lookup(SalePointRepository.class);
-            contactRepository.secureSave(obj);
+            obj = contactRepository.secureSave(obj);
             NotificationUtil.showSuccess("Торговая точка сохранена");
         }
+        return obj;
     }
 
 

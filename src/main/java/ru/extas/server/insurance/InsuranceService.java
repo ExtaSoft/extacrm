@@ -14,11 +14,11 @@ import ru.extas.security.SecuredRepository;
  */
 public interface InsuranceService extends SecuredRepository<Insurance> {
 
-/**
- * Сохраняет и выпускает полис страхования
- *
- * @param insurance что сохраняем
- */
-void saveAndIssue(Insurance insurance);
+    /**
+     * Сохраняет и выпускает полис страхования
+     *
+     * @param insurance что сохраняем
+     */
+    Insurance saveAndIssue(Insurance insurance);
 
 }

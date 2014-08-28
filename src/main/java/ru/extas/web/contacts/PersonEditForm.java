@@ -81,7 +81,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
 
     public PersonEditForm(Person person) {
-        super(isNullOrEmpty(person.getId()) ?
+        super(person.isNew() ?
                 "Ввод нового контакта в систему" :
                 String.format("Редактирование контакта: %s", person.getName()));
 
@@ -96,7 +96,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     protected void initObject(final Person obj) {
         if (obj.getActualAddress() == null)
             obj.setActualAddress(new AddressInfo());
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
             // пользователя (регион, город)
@@ -108,11 +108,12 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final Person obj) {
+    protected Person saveObject(Person obj) {
         logger.debug("Saving contact data...");
         final PersonRepository contactRepository = lookup(PersonRepository.class);
-        contactRepository.secureSave(obj);
+        obj = contactRepository.secureSave(obj);
         NotificationUtil.showSuccess("Контакт сохранен");
+        return obj;
     }
 
     /** {@inheritDoc} */

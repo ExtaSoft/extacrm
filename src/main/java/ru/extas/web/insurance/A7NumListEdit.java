@@ -61,12 +61,9 @@ public class A7NumListEdit extends CustomField<List> {
             @Override
             public void buttonClick(final ClickEvent event) {
                 final GetValueWindowLong win = new GetValueWindowLong("Введите номер новой квитанции");
-                win.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (win.isSaved())
-                            addNumber(win.getValue().toString());
-                    }
+                win.addCloseFormListener(event1 -> {
+                    if (win.isSaved())
+                        addNumber(win.getValue().toString());
                 });
                 FormUtils.showModalWin(win);
             }
@@ -74,23 +71,17 @@ public class A7NumListEdit extends CustomField<List> {
         addNumBtn.setDescription("Добавить номер квитанции к акту приема/передачи");
         commandBar.addComponent(addNumBtn);
 
-        final Button addNumRangeBtn = new Button("Диапазон", new Button.ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                final GetValueWindowLongRange win = new GetValueWindowLongRange("Введите диапазон номеров квитанций");
-                win.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (win.isSaved()) {
-                            Range<Long> range = Range.closed(win.getStartValue(), win.getEndValue());
-                            for (Long num : ContiguousSet.create(range, DiscreteDomain.longs())) {
-                                addNumber(num.toString());
-                            }
-                        }
+        final Button addNumRangeBtn = new Button("Диапазон", event -> {
+            final GetValueWindowLongRange win = new GetValueWindowLongRange("Введите диапазон номеров квитанций");
+            win.addCloseFormListener(event1 -> {
+                if (win.isSaved()) {
+                    Range<Long> range = Range.closed(win.getStartValue(), win.getEndValue());
+                    for (Long num : ContiguousSet.create(range, DiscreteDomain.longs())) {
+                        addNumber(num.toString());
                     }
-                });
-                FormUtils.showModalWin(win);
-            }
+                }
+            });
+            FormUtils.showModalWin(win);
         });
         addNumRangeBtn.setDescription("Добавить диапазон номеров квитанции (пачку квитанций) к акту приема/передачи");
         commandBar.addComponent(addNumRangeBtn);
@@ -110,12 +101,7 @@ public class A7NumListEdit extends CustomField<List> {
                 addNumber(num);
             }
         }
-        formNums.addItemSetChangeListener(new ItemSetChangeListener() {
-            @Override
-            public void containerItemSetChange(final ItemSetChangeEvent event) {
-                setValue(newArrayList(formNums.getItemIds()));
-            }
-        });
+        formNums.addItemSetChangeListener(event -> setValue(newArrayList(formNums.getItemIds())));
         fieldLayout.addComponent(formNums);
 
         return fieldLayout;

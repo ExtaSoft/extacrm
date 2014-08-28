@@ -68,9 +68,10 @@ public class ExtaPermissionField extends CustomField<Set> {
             public ExtaEditForm<ExtaPermission> createEditForm(ExtaPermission extaPermission) {
                 return new ExtaPermissionEditForm(extaPermission) {
                     @Override
-                    protected void saveObject(final ExtaPermission obj) {
+                    protected ExtaPermission saveObject(final ExtaPermission obj) {
                         ((RefreshBeanContainer<ExtaPermission>) container).addBean(obj);
                         ExtaPermissionField.this.setValue(newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds()));
+                        return obj;
                     }
                 };
             }
@@ -149,7 +150,7 @@ public class ExtaPermissionField extends CustomField<Set> {
         private OptionGroup targetField;
 
         public ExtaPermissionEditForm(ExtaPermission extaPermission) {
-            super(isNullOrEmpty(extaPermission.getId()) ?
+            super(extaPermission.isNew() ?
                             "Ввод нового правила доступа в систему" :
                             "Редактирование правила доступа",
                     new BeanItem<>(extaPermission));
@@ -190,18 +191,15 @@ public class ExtaPermissionField extends CustomField<Set> {
             actionsField.setMultiSelect(true);
             actionsField.setNullSelectionAllowed(true);
             actionsField.setRequired(true);
-            actionsField.addValueChangeListener(new ValueChangeListener() {
-                @Override
-                public void valueChange(Property.ValueChangeEvent event) {
-                    Collection<SecureAction> selected = (Collection<SecureAction>) event.getProperty().getValue();
-                    if(selected.contains(SecureAction.ALL)) {
-                        actionsField.setValue(EnumSet.of(SecureAction.ALL));
-                        for(SecureAction action : EnumSet.complementOf(EnumSet.of(SecureAction.ALL)))
-                            actionsField.setItemEnabled(action, false);
-                    } else {
-                        for(SecureAction action : EnumSet.allOf(SecureAction.class))
-                            actionsField.setItemEnabled(action, true);
-                    }
+            actionsField.addValueChangeListener(event -> {
+                Collection<SecureAction> selected = (Collection<SecureAction>) event.getProperty().getValue();
+                if(selected.contains(SecureAction.ALL)) {
+                    actionsField.setValue(EnumSet.of(SecureAction.ALL));
+                    for(SecureAction action : EnumSet.complementOf(EnumSet.of(SecureAction.ALL)))
+                        actionsField.setItemEnabled(action, false);
+                } else {
+                    for(SecureAction action : EnumSet.allOf(SecureAction.class))
+                        actionsField.setItemEnabled(action, true);
                 }
             });
             ComponentUtil.fillSelectByEnum(actionsField, SecureAction.class);

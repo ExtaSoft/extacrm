@@ -144,14 +144,11 @@ public class ExtaCrmUI extends UI {
                             // Поменять пароль
                             final ChangePasswordForm form = new ChangePasswordForm(new BeanItem<>(
                                     currentUserProfile));
-                            form.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                                @Override
-                                public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                                    if (form.isSaved()) {
-                                        closeLoginAndBuildMain();
-                                    } else {
-                                        lookup(UserManagementService.class).logout();
-                                    }
+                            form.addCloseFormListener(event1 -> {
+                                if (form.isSaved()) {
+                                    closeLoginAndBuildMain();
+                                } else {
+                                    lookup(UserManagementService.class).logout();
                                 }
                             });
                             FormUtils.showModalWin(form);
@@ -242,16 +239,13 @@ public class ExtaCrmUI extends UI {
         Button exit = new Button("Выход", FontAwesome.SIGN_OUT);
         exit.setDescription("Выход из системы");
         exit.addStyleName("link");
-        exit.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                lookup(UserManagementService.class).logout();
-                // Close the VaadinServiceSession
-                getUI().getSession().close();
-                // Redirect to avoid keeping the removed
-                // UI open in the browser
-                getUI().getPage().setLocation("/");
-            }
+        exit.addClickListener(event -> {
+            lookup(UserManagementService.class).logout();
+            // Close the VaadinServiceSession
+            getUI().getSession().close();
+            // Redirect to avoid keeping the removed
+            // UI open in the browser
+            getUI().getPage().setLocation("/");
         });
         userMenu.addComponent(exit);
 

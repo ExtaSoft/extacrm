@@ -44,17 +44,18 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
     /** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdInsurance obj) {
-		if (obj.getId() == null) {
+		if (obj.isNew()) {
 			obj.setActive(true);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void saveObject(final ProdInsurance obj) {
-		lookup(ProdInsuranceRepository.class).save(obj);
+	protected ProdInsurance saveObject(ProdInsurance obj) {
+        obj = lookup(ProdInsuranceRepository.class).save(obj);
         NotificationUtil.showSuccess("Продукт сохранен");
-	}
+        return obj;
+    }
 
 	/** {@inheritDoc} */
 	@Override

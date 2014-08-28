@@ -92,12 +92,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
 
         TaskFormData taskData = formService.getTaskFormData(obj.getId());
         List<FormProperty> formProps = taskData.getFormProperties();
-        Optional<FormProperty> result = Iterators.tryFind(formProps.iterator(), new Predicate<FormProperty>() {
-            @Override
-            public boolean apply(FormProperty input) {
-                return input.getId().equals("result");
-            }
-        });
+        Optional<FormProperty> result = Iterators.tryFind(formProps.iterator(), input -> input.getId().equals("result"));
         HorizontalLayout finishToolBar = new HorizontalLayout();
         finishToolBar.setSpacing(true);
         finishToolBar.setMargin(true);
@@ -106,24 +101,16 @@ public class TaskEditForm extends ExtaEditForm<Task> {
             FormType resultType = result.get().getType();
             Map<String, String> resultValues = (Map<String, String>) resultType.getInformation("values");
             for (Map.Entry<String, String> resultValue : resultValues.entrySet()) {
-                Button btn = new Button(resultValue.getValue(), new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        String curValue = (String) event.getButton().getData();
-                        completeTask(curValue, obj);
-                    }
+                Button btn = new Button(resultValue.getValue(), event -> {
+                    String curValue = (String) event.getButton().getData();
+                    completeTask(curValue, obj);
                 });
                 btn.setData(resultValue.getKey());
                 btn.setDescription(MessageFormat.format("Завершить задачу с результатом: \"{0}\"", resultValue.getValue()));
                 finishToolBar.addComponent(btn);
             }
         } else {
-            Button btn = new Button("Завершить", new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    completeTask(null, obj);
-                }
-            });
+            Button btn = new Button("Завершить", event -> completeTask(null, obj));
             finishToolBar.addComponent(btn);
         }
         formsContainer.addComponent(new Panel("Завершить задачу", finishToolBar));
@@ -161,13 +148,10 @@ public class TaskEditForm extends ExtaEditForm<Task> {
             // Поле для выбора пользователя
             profileSelect = new UserProfileSelect("Ответственный", "Ответственный за выполнение задачи");
             profileSelect.setWidth(25, Unit.EM);
-            profileSelect.addValueChangeListener(new Property.ValueChangeListener() {
-                @Override
-                public void valueChange(final Property.ValueChangeEvent event) {
-                    UserProfile profile = (UserProfile) profileSelect.getConvertedValue();
-                    if (profile != null) {
-                        assigneeField.setValue(profile.getLogin());
-                    }
+            profileSelect.addValueChangeListener(event -> {
+                UserProfile profile = (UserProfile) profileSelect.getConvertedValue();
+                if (profile != null) {
+                    assigneeField.setValue(profile.getLogin());
                 }
             });
             if (obj.getAssignee() != null) {
@@ -314,7 +298,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final Task obj) {
+    protected Task saveObject(final Task obj) {
         TaskService taskService = lookup(TaskService.class);
         Task task = taskService.createTaskQuery().taskId(obj.getId()).singleResult();
 
@@ -326,6 +310,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
 
         taskService.saveTask(task);
         NotificationUtil.showSuccess("Задача сохранена");
+        return task;
     }
 
     /** {@inheritDoc} */

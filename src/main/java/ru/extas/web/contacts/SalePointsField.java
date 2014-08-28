@@ -73,10 +73,11 @@ public class SalePointsField extends CustomField<Set> {
 
 						final SalePointEditForm editWin = new SalePointEditForm(entity) {
 							@Override
-							protected void saveObject(final SalePoint obj) {
+							protected SalePoint saveObject(final SalePoint obj) {
 								((BeanItemContainer<SalePoint>) container).addBean(obj);
 								setValue(newHashSet(((BeanItemContainer<SalePoint>) container).getItemIds()));
-							}
+                                return obj;
+                            }
 						};
                         FormUtils.showModalWin(editWin);
 					}
@@ -88,9 +89,10 @@ public class SalePointsField extends CustomField<Set> {
 						final SalePoint salePoint = GridItem.extractBean(table.getItem(itemId));
 						final SalePointEditForm editWin = new SalePointEditForm(salePoint) {
 							@Override
-							protected void saveObject(final SalePoint obj) {
+							protected SalePoint saveObject(final SalePoint obj) {
 								setValue(newHashSet(((BeanItemContainer<SalePoint>) container).getItemIds()));
-							}
+                                return obj;
+                            }
 						};
                         FormUtils.showModalWin(editWin);
 					}

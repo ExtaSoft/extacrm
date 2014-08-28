@@ -45,15 +45,16 @@ public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
 	/** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProductInSale obj) {
-		if (obj.getId() == null) {
+		if (obj.isNew()) {
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void saveObject(ProductInSale obj) {
+	protected ProductInSale saveObject(ProductInSale obj) {
         NotificationUtil.showSuccess("Продукт сохранен в продаже");
-	}
+        return obj;
+    }
 
 	/** {@inheritDoc} */
 	@Override

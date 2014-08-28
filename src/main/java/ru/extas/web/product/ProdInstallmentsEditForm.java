@@ -41,7 +41,7 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 	private TextArea commentField;
 
     public ProdInstallmentsEditForm(ProdInstallments prodInstallments) {
-        super(isNullOrEmpty(prodInstallments.getId()) ?
+        super(prodInstallments.isNew() ?
                 "Новый продукт \"Рассрочка\"" :
                 "Редактировать продукт",
                 new BeanItem(prodInstallments));
@@ -50,17 +50,18 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
     /** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdInstallments obj) {
-		if (obj.getId() == null) {
+		if (obj.isNew()) {
 			obj.setActive(true);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void saveObject(final ProdInstallments obj) {
-		lookup(ProdInstallmentsRepository.class).save(obj);
+	protected ProdInstallments saveObject(ProdInstallments obj) {
+        obj = lookup(ProdInstallmentsRepository.class).save(obj);
         NotificationUtil.showSuccess("Продукт сохранен");
-	}
+        return obj;
+    }
 
 	/** {@inheritDoc} */
 	@Override

@@ -78,17 +78,18 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
     /** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdCredit obj) {
-		if (obj.getId() == null) {
+		if (obj.isNew()) {
 			obj.setActive(true);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void saveObject(ProdCredit obj) {
+	protected ProdCredit saveObject(ProdCredit obj) {
 		ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
         NotificationUtil.showSuccess("Продукт сохранен");
-	}
+        return loc;
+    }
 
 	/** {@inheritDoc} */
 	@Override

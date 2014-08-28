@@ -36,14 +36,11 @@ public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenera
         final SalePoint salePoint = (SalePoint) item.getItemProperty(salePointPropId).getValue();
         if (salePoint != null) {
             link.setCaption(salePoint.getName());
-            link.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
+            link.addClickListener(event -> {
 
-                    final SalePointEditForm editWin = new SalePointEditForm(salePoint);
-                    FormUtils.showModalWin(editWin);
+                final SalePointEditForm editWin = new SalePointEditForm(salePoint);
+                FormUtils.showModalWin(editWin);
 
-                }
             });
             region = salePoint.getActualAddress().getRegion();
         } else if (salePointNamePropId != null) {

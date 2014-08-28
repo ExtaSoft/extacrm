@@ -53,15 +53,12 @@ public class MotorBrandObjMultiselect extends CustomField<Set> {
         tokenField.setContainerDataSource(container);
         tokenField.setTokenCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         tokenField.setTokenCaptionPropertyId("name");
-        tokenField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(final Property.ValueChangeEvent event) {
-                Set selected = (Set) tokenField.getValue();
-                Set objValue = newHashSet();
-                for (Object id : selected)
-                    objValue.add(container.getItem(id).getEntity());
-                setValue(objValue);
-            }
+        tokenField.addValueChangeListener(event -> {
+            Set selected = (Set) tokenField.getValue();
+            Set objValue = newHashSet();
+            for (Object id : selected)
+                objValue.add(container.getItem(id).getEntity());
+            setValue(objValue);
         });
         final Property dataSource = getPropertyDataSource();
         final Set<MotorBrand> set = dataSource != null ? (Set<MotorBrand>) dataSource.getValue() : null;

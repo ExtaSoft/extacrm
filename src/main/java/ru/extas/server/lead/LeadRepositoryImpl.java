@@ -47,7 +47,7 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void qualify(Lead obj) {
+    public Lead qualify(Lead obj) {
         checkNotNull(obj);
         checkState(obj.getClient() != null, "Can't qualify lead without client link!");
         checkState(obj.getVendor() != null, "Can't qualify lead without vendor link!");
@@ -60,11 +60,12 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         // Статус
         obj.setStatus(Lead.Status.QUALIFIED);
         // Сохранить изменения
-        leadRepository.secureSave(obj);
+        obj = leadRepository.secureSave(obj);
         // Привязать лид к процессу
         runtimeService.setVariable(processInstance.getId(), "lead", obj);
 
         logger.debug("Started \"saleCreditProcess\" business process instance (id = {})", processInstance.getId());
+        return obj;
     }
 
     /** {@inheritDoc} */

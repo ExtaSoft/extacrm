@@ -71,12 +71,9 @@ public class ProductInSaleGrid extends CustomField<List> {
 					final BeanItem<ProductInSale> newObj = new BeanItem<>(new ProductInSale(sale));
 
 					final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", newObj);
-                    editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                        @Override
-                        public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (editWin.isSaved()) {
-                            container.addBean(newObj.getBean());
-                        }
+                    editWin.addCloseFormListener(event1 -> {
+                    if (editWin.isSaved()) {
+                        container.addBean(newObj.getBean());
                     }
                 });
                     FormUtils.showModalWin(editWin);
@@ -86,28 +83,22 @@ public class ProductInSaleGrid extends CustomField<List> {
 			addProdBtn.setIcon(Fontello.DOC_NEW);
 			commandBar.addComponent(addProdBtn);
 
-			final Button edtProdBtn = new Button("Изменить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (productTable.getValue() != null) {
-						final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getItem(productTable.getValue());
-						final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem);
-                        FormUtils.showModalWin(editWin);
-					}
-				}
-			});
+			final Button edtProdBtn = new Button("Изменить", event -> {
+                if (productTable.getValue() != null) {
+                    final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getItem(productTable.getValue());
+                    final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem);
+FormUtils.showModalWin(editWin);
+                }
+            });
 			edtProdBtn.setDescription("Изменить выделенный в списке продукт");
 			edtProdBtn.setIcon(Fontello.EDIT_3);
 			commandBar.addComponent(edtProdBtn);
 
-			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (productTable.getValue() != null) {
-						productTable.removeItem(productTable.getValue());
-					}
-				}
-			});
+			final Button delProdBtn = new Button("Удалить", event -> {
+                if (productTable.getValue() != null) {
+                    productTable.removeItem(productTable.getValue());
+                }
+            });
 			delProdBtn.setDescription("Удалить продукт из продажи");
 			delProdBtn.setIcon(Fontello.TRASH);
 			commandBar.addComponent(delProdBtn);
@@ -130,12 +121,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 			}
 		}
 		productTable.setContainerDataSource(container);
-		productTable.addItemSetChangeListener(new Container.ItemSetChangeListener() {
-			@Override
-			public void containerItemSetChange(final Container.ItemSetChangeEvent event) {
-				setValue(newArrayList(productTable.getItemIds()));
-			}
-		});
+		productTable.addItemSetChangeListener(event -> setValue(newArrayList(productTable.getItemIds())));
 		// Колонки таблицы
 		productTable.setVisibleColumns("product.name", "summ", "period");
 		productTable.setColumnHeader("product.name", "Продукт");

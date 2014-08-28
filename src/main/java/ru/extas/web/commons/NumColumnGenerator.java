@@ -33,12 +33,7 @@ public abstract class NumColumnGenerator extends ComponentColumnGenerator {
         Property numProp = item.getItemProperty(numProperty);
         VerticalLayout cell = new VerticalLayout();
         Button link = new Button(String.valueOf(numProp.getValue()));
-        link.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                fireClick(item);
-            }
-        });
+        link.addClickListener(event -> fireClick(item));
         link.addStyleName("link");
         cell.addComponent(link);
         //cell.setComponentAlignment(link, Alignment.TOP_RIGHT);

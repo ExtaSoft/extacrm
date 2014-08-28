@@ -54,17 +54,13 @@ public class CompanyOwnersField extends CustomField<Set> {
 				public void buttonClick(final Button.ClickEvent event) {
 
 					final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите владельца компании");
-					selectWindow.addCloseListener(new Window.CloseListener() {
-
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (selectWindow.isSelectPressed()) {
-								container.addBean(selectWindow.getSelected());
-								setValue(newHashSet(container.getItemIds()));
-                                NotificationUtil.showSuccess("Владелец добавлен");
-							}
-						}
-					});
+					selectWindow.addCloseListener(e -> {
+                        if (selectWindow.isSelectPressed()) {
+                            container.addBean(selectWindow.getSelected());
+                            setValue(newHashSet(container.getItemIds()));
+NotificationUtil.showSuccess("Владелец добавлен");
+                        }
+                    });
 					selectWindow.showModal();
 				}
 			});
@@ -72,15 +68,12 @@ public class CompanyOwnersField extends CustomField<Set> {
 			addProdBtn.setIcon(Fontello.DOC_NEW);
 			commandBar.addComponent(addProdBtn);
 
-			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (table.getValue() != null) {
-						container.removeItem(table.getValue());
-						setValue(newHashSet(container.getItemIds()));
-					}
-				}
-			});
+			final Button delProdBtn = new Button("Удалить", event -> {
+                if (table.getValue() != null) {
+                    container.removeItem(table.getValue());
+                    setValue(newHashSet(container.getItemIds()));
+                }
+            });
 			delProdBtn.setDescription("Удалить физ. лицо из списка владельцев компании");
 			delProdBtn.setIcon(Fontello.TRASH);
 			commandBar.addComponent(delProdBtn);

@@ -108,7 +108,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final Sale obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             obj.setStatus(Sale.Status.NEW);
             UserManagementService userService = lookup(UserManagementService.class);
             Person user = userService.getCurrentUserContact();
@@ -122,12 +122,13 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final Sale obj) {
+    protected Sale saveObject(final Sale obj) {
         final SaleRepository leadService = lookup(SaleRepository.class);
         Sale sale = leadService.secureSave(obj);
-        if (obj.getId() == null)
+        if (sale.getNum() == null)
             lookup(EntityManager.class).getEntityManagerFactory().getCache().evict(sale.getClass(), sale.getId());
         NotificationUtil.showSuccess("Продажа сохранена");
+        return sale;
     }
 
 

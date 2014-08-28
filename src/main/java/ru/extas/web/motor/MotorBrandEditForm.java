@@ -39,9 +39,10 @@ public class MotorBrandEditForm extends ExtaEditForm<MotorBrand> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(MotorBrand obj) {
+    protected MotorBrand saveObject(MotorBrand obj) {
         MotorBrand loc = lookup(MotorBrandRepository.class).save(obj);
         NotificationUtil.showSuccess("Марка сохранена");
+        return loc;
     }
 
     /** {@inheritDoc} */

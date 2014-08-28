@@ -89,7 +89,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final Company obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
@@ -99,11 +99,12 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final Company obj) {
+    protected Company saveObject(final Company obj) {
         logger.debug("Saving contact data...");
         final CompanyRepository contactRepository = lookup(CompanyRepository.class);
         contactRepository.secureSave(obj);
         NotificationUtil.showSuccess("Компания сохранена");
+        return obj;
     }
 
     /** {@inheritDoc} */
@@ -134,12 +135,9 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         // Вкладка - "Торговые точки"
         final Component salePointsForm = createSalePointsForm(obj);
         tabsheet.addTab(salePointsForm).setCaption("Торговые точки");
-        tabsheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
-            @Override
-            public void selectedTabChange(final TabSheet.SelectedTabChangeEvent event) {
-                if (event.getTabSheet().getSelectedTab() == salePointsForm)
-                    legalsField.commit();
-            }
+        tabsheet.addSelectedTabChangeListener(event -> {
+            if (event.getTabSheet().getSelectedTab() == salePointsForm)
+                legalsField.commit();
         });
 
         // Вкладка - "Сотрудники"

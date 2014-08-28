@@ -17,5 +17,5 @@ public interface FormTransferService {
      *
      * @param tf акт приема передачи
      */
-    void saveAndChangeOwner(FormTransfer tf);
+    FormTransfer saveAndChangeOwner(FormTransfer tf);
 }

@@ -98,28 +98,25 @@ public class DocFilesEditor<TFileContainer extends FileContainer> extends Custom
 
                 @Override
                 public Component createButton() {
-                    UploadFinishedHandler handler = new UploadFinishedHandler() {
-                        @Override
-                        public void handleFile(InputStream inputStream, String filename, String mimeType, long length) {
-                            FileContainer fileContainer = null;
-                            try {
-                                fileContainer = containerClass.newInstance();
-                            } catch (InstantiationException e) {
-                                e.printStackTrace();
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
-                            fileContainer.setName(filename);
-                            fileContainer.setMimeType(mimeType);
-                            fileContainer.setFileSize(length);
-                            try {
-                                fileContainer.setFileData(ByteStreams.toByteArray(inputStream));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            ((BeanItemContainer<FileContainer>) container).addBean(fileContainer);
-                            DocFilesEditor.this.setValue(newArrayList(((BeanItemContainer<FileContainer>) container).getItemIds()));
+                    UploadFinishedHandler handler = (inputStream, filename, mimeType, length) -> {
+                        FileContainer fileContainer = null;
+                        try {
+                            fileContainer = containerClass.newInstance();
+                        } catch (InstantiationException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
                         }
+                        fileContainer.setName(filename);
+                        fileContainer.setMimeType(mimeType);
+                        fileContainer.setFileSize(length);
+                        try {
+                            fileContainer.setFileData(ByteStreams.toByteArray(inputStream));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        ((BeanItemContainer<FileContainer>) container).addBean(fileContainer);
+                        DocFilesEditor.this.setValue(newArrayList(((BeanItemContainer<FileContainer>) container).getItemIds()));
                     };
                     FileUploader fileUploader = new FileUploader("Добавить файлы", handler);
                     fileUploader.setIcon(Fontello.DOWNLOAD);

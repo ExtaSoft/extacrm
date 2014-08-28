@@ -73,10 +73,11 @@ public class LegalEntitiesField extends CustomField<Set> {
 
 						final LegalEntityEditForm editWin = new LegalEntityEditForm(entity) {
 							@Override
-							protected void saveObject(final LegalEntity obj) {
+							protected LegalEntity saveObject(final LegalEntity obj) {
 								((BeanItemContainer<LegalEntity>) container).addBean(obj);
 								setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
-							}
+                                return obj;
+                            }
 						};
                         FormUtils.showModalWin(editWin);
 					}
@@ -88,9 +89,10 @@ public class LegalEntitiesField extends CustomField<Set> {
 						final LegalEntity legalEntity = GridItem.extractBean(table.getItem(itemId));
 						final LegalEntityEditForm editWin = new LegalEntityEditForm(legalEntity) {
 							@Override
-							protected void saveObject(final LegalEntity obj) {
+							protected LegalEntity saveObject(final LegalEntity obj) {
 								setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
-							}
+                                return obj;
+                            }
 						};
                         FormUtils.showModalWin(editWin);
 					}

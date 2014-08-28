@@ -30,12 +30,7 @@ public class ConfigView extends ExtaAbstractView {
     @Override
     protected Component getContent() {
         logger.debug("Creating view content...");
-        final Button updateBtn = new Button("Обновить права доступа", new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent event) {
-                updateDataBase();
-            }
-        });
+        final Button updateBtn = new Button("Обновить права доступа", event -> updateDataBase());
         final Component title = new Label("Скоро будет реализовано...");
         title.setSizeUndefined();
         title.addStyleName("view-title");

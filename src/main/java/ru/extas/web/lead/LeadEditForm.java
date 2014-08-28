@@ -140,12 +140,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         contactNameField.setRequired(true);
         contactNameField.setRequiredError("Имя контакта не может быть пустым.");
         contactNameField.setImmediate(true);
-        contactNameField.addTextChangeListener(new FieldEvents.TextChangeListener() {
-            @Override
-            public void textChange(FieldEvents.TextChangeEvent event) {
-                if (qualifyForm)
-                    setClientsFilter(event.getText());
-            }
+        contactNameField.addTextChangeListener(event -> {
+            if (qualifyForm)
+                setClientsFilter(event.getText());
         });
         contactNameField.addValueChangeListener(new ConactChangeListener());
         form.addComponent(contactNameField);
@@ -179,23 +176,17 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         pointOfSaleField = new EditField("Мотосалон");
         pointOfSaleField.setImmediate(true);
-        pointOfSaleField.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                if (qualifyForm)
-                    setVendorsFilter();
-            }
+        pointOfSaleField.addValueChangeListener(event -> {
+            if (qualifyForm)
+                setVendorsFilter();
         });
         vendorField = new SalePointSelect("Мотосалон", "Название мотосалона", null);
-        vendorField.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                Property property = event.getProperty();
-                if (property != null) {
-                    Object value = property.getValue();
-                    if (value != null)
-                        pointOfSaleField.setValue(((SalePoint) value).getName());
-                }
+        vendorField.addValueChangeListener(event -> {
+            Property property = event.getProperty();
+            if (property != null) {
+                Object value = property.getValue();
+                if (value != null)
+                    pointOfSaleField.setValue(((SalePoint) value).getName());
             }
         });
         if (obj.getVendor() == null) {
@@ -242,25 +233,19 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         Button newBtn = new Button("Новый");
         newBtn.setIcon(Fontello.DOC_NEW);
-        newBtn.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                final SalePoint newObj = createCompanyFromLead(lead);
+        newBtn.addClickListener(event -> {
+            final SalePoint newObj = createCompanyFromLead(lead);
 
-                final SalePointEditForm editWin = new SalePointEditForm(newObj);
-                editWin.setModified(true);
+            final SalePointEditForm editWin = new SalePointEditForm(newObj);
+            editWin.setModified(true);
 
-                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (editWin.isSaved()) {
-                            vendorsContainer.refresh();
-                            table.setValue(newObj.getId());
-                        }
-                    }
-                });
-                FormUtils.showModalWin(editWin);
-            }
+            editWin.addCloseFormListener(event1 -> {
+                if (editWin.isSaved()) {
+                    vendorsContainer.refresh();
+                    table.setValue(editWin.getObjectId());
+                }
+            });
+            FormUtils.showModalWin(editWin);
         });
         panel.addComponent(newBtn);
 
@@ -279,14 +264,11 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.setColumnCollapsed("phone", true);
         table.setColumnCollapsed("email", true);
         // Обрабатываем выбор контакта
-        table.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                final SalePoint curObj = extractBean(table.getItem(table.getValue()));
-                lead.setVendor(curObj);
-                pointOfSaleField.setValue(curObj.getName());
-                setModified(true);
-            }
+        table.addValueChangeListener(event -> {
+            final SalePoint curObj = extractBean(table.getItem(table.getValue()));
+            lead.setVendor(curObj);
+            pointOfSaleField.setValue(curObj.getName());
+            setModified(true);
         });
         panel.addComponent(table);
 
@@ -314,25 +296,19 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         Button newBtn = new Button("Новый");
         newBtn.setIcon(Fontello.DOC_NEW);
-        newBtn.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                final Person newObj = createPersonFromLead(lead);
+        newBtn.addClickListener(event -> {
+            final Person newObj = createPersonFromLead(lead);
 
-                final PersonEditForm editWin = new PersonEditForm(newObj);
-                editWin.setModified(true);
+            final PersonEditForm editWin = new PersonEditForm(newObj);
+            editWin.setModified(true);
 
-                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (editWin.isSaved()) {
-                            clientsContainer.refresh();
-                            table.setValue(newObj.getId());
-                        }
-                    }
-                });
-                FormUtils.showModalWin(editWin);
-            }
+            editWin.addCloseFormListener(event1 -> {
+                if (editWin.isSaved()) {
+                    clientsContainer.refresh();
+                    table.setValue(editWin.getObjectId());
+                }
+            });
+            FormUtils.showModalWin(editWin);
         });
         panel.addComponent(newBtn);
 
@@ -352,14 +328,11 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.setColumnCollapsed("birthday", true);
         table.setColumnCollapsed("email", true);
         // Обрабатываем выбор контакта
-        table.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                final Person curObj = extractBean(table.getItem(table.getValue()));
-                lead.setClient(curObj);
-                fillLeadFromClient(curObj);
-                setModified(true);
-            }
+        table.addValueChangeListener(event -> {
+            final Person curObj = extractBean(table.getItem(table.getValue()));
+            lead.setClient(curObj);
+            fillLeadFromClient(curObj);
+            setModified(true);
         });
         panel.addComponent(table);
 
@@ -398,7 +371,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
      */
     @Override
     protected void initObject(final Lead obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             obj.setStatus(Lead.Status.NEW);
             UserManagementService userService = lookup(UserManagementService.class);
             Person user = userService.getCurrentUserContact();
@@ -417,17 +390,18 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(final Lead obj) {
+    protected Lead saveObject(Lead obj) {
         LeadRepository leadRepository = lookup(LeadRepository.class);
         if (qualifyForm) {
-            leadRepository.qualify(obj);
+            obj = leadRepository.qualify(obj);
             NotificationUtil.showSuccess("Лид квалифицирован");
         } else {
-            Lead lead = leadRepository.secureSave(obj);
-            if (obj.getId() == null)
-                lookup(EntityManager.class).getEntityManagerFactory().getCache().evict(lead.getClass(), lead.getId());
+            obj = leadRepository.secureSave(obj);
+            if (obj.getNum() == null)
+                lookup(EntityManager.class).getEntityManagerFactory().getCache().evict(obj.getClass(), obj.getId());
             NotificationUtil.showSuccess("Лид сохранен");
         }
+        return obj;
     }
 
 

@@ -181,16 +181,13 @@ public class LeadInputFormUI extends UI {
 
         vendorField = new SalePointSimpleSelect("Мотосалон", "Выберите мотосалон");
         vendorField.setInputPrompt("Выберите мотосалон...");
-        vendorField.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                Property property = event.getProperty();
-                if (property != null) {
-                    Object value = property.getValue();
-                    if (value != null) {
-                        pointOfSaleField.setValue(((SalePoint) vendorField.getConvertedValue()).getName());
-                        regionField.setValue(((SalePoint) vendorField.getConvertedValue()).getActualAddress().getRegion());
-                    }
+        vendorField.addValueChangeListener(event -> {
+            Property property = event.getProperty();
+            if (property != null) {
+                Object value = property.getValue();
+                if (value != null) {
+                    pointOfSaleField.setValue(((SalePoint) vendorField.getConvertedValue()).getName());
+                    regionField.setValue(((SalePoint) vendorField.getConvertedValue()).getActualAddress().getRegion());
                 }
             }
         });
@@ -313,12 +310,7 @@ public class LeadInputFormUI extends UI {
             SupplementService service = lookup(SupplementService.class);
             Collection<String> regions = service.loadRegions();
             final String finalContactRegion = contactRegion;
-            Optional<String> trueRegion = Iterables.tryFind(regions, new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return StringUtils.containsIgnoreCase(input, finalContactRegion);
-                }
-            });
+            Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalContactRegion));
             lead.setContactRegion(trueRegion.orNull());
         }
         // Тип техники
@@ -328,12 +320,7 @@ public class LeadInputFormUI extends UI {
             MotorTypeRepository repository = lookup(MotorTypeRepository.class);
             List<String> types = repository.loadAllNames();
             final String finalMotorType = motorType;
-            Optional<String> trueType = Iterables.tryFind(types, new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return StringUtils.containsIgnoreCase(input, finalMotorType);
-                }
-            });
+            Optional<String> trueType = Iterables.tryFind(types, input -> StringUtils.containsIgnoreCase(input, finalMotorType));
             lead.setMotorType(trueType.orNull());
         }
         // Марка техники
@@ -343,12 +330,7 @@ public class LeadInputFormUI extends UI {
             MotorBrandRepository repository = lookup(MotorBrandRepository.class);
             List<String> brands = repository.loadAllNames();
             final String finalMotorBrand = motorBrand;
-            Optional<String> trueMotorBrand = Iterables.tryFind(brands, new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return StringUtils.containsIgnoreCase(input, finalMotorBrand);
-                }
-            });
+            Optional<String> trueMotorBrand = Iterables.tryFind(brands, input -> StringUtils.containsIgnoreCase(input, finalMotorBrand));
             lead.setMotorBrand(trueMotorBrand.orNull());
         }
         // Модель техники
@@ -375,12 +357,7 @@ public class LeadInputFormUI extends UI {
             SupplementService service = lookup(SupplementService.class);
             Collection<String> regions = service.loadRegions();
             final String finalregion = region;
-            Optional<String> trueRegion = Iterables.tryFind(regions, new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return StringUtils.containsIgnoreCase(input, finalregion);
-                }
-            });
+            Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalregion));
             lead.setRegion(trueRegion.orNull());
         }
         // Комментарий

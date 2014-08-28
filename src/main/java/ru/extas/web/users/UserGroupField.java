@@ -68,15 +68,11 @@ public class UserGroupField extends CustomField<Set> {
                     @Override
                     public void fire(Object itemId) {
                         final UserGroupSelectWindow selectWindow = new UserGroupSelectWindow("Выберите группу");
-                        selectWindow.addCloseListener(new Window.CloseListener() {
-
-                            @Override
-                            public void windowClose(final Window.CloseEvent e) {
-                                if (selectWindow.isSelectPressed()) {
-                                    itemContainer.addBean(selectWindow.getSelected());
-                                    setValue(newHashSet(itemContainer.getItemIds()));
-                                    NotificationUtil.showSuccess("Группа добавлена");
-                                }
+                        selectWindow.addCloseListener(e -> {
+                            if (selectWindow.isSelectPressed()) {
+                                itemContainer.addBean(selectWindow.getSelected());
+                                setValue(newHashSet(itemContainer.getItemIds()));
+                                NotificationUtil.showSuccess("Группа добавлена");
                             }
                         });
                         selectWindow.showModal();

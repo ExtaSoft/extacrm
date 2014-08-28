@@ -79,68 +79,50 @@ public class PersonSelect extends CustomField<Person> {
 				final PersonEditForm editWin = new PersonEditForm(newObj);
 				editWin.setModified(true);
 
-                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (editWin.isSaved()) {
-                            personSelectField.refreshContainer();
-                            personSelectField.setValue(newObj.getId());
-                        }
+                editWin.addCloseFormListener(event -> {
+                    if (editWin.isSaved()) {
+                        personSelectField.refreshContainer();
+                        personSelectField.setValue(editWin.getObjectId());
                     }
                 });
                 FormUtils.showModalWin(editWin);
 			}
 		});
-		personSelectField.addValueChangeListener(new ValueChangeListener() {
-			@Override
-			public void valueChange(final Property.ValueChangeEvent event) {
-				refreshFields((Person) personSelectField.getConvertedValue());
-			}
-		});
+		personSelectField.addValueChangeListener(event -> refreshFields((Person) personSelectField.getConvertedValue()));
 		nameLay.addComponent(personSelectField);
 
-		Button searchBtn = new Button("Поиск", new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
+		Button searchBtn = new Button("Поиск", event -> {
 
-				final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
-				selectWindow.addCloseListener(new Window.CloseListener() {
+            final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
+            selectWindow.addCloseListener(e -> {
+                if (selectWindow.isSelectPressed()) {
+                    final Person selected = selectWindow.getSelected();
+                    personSelectField.setConvertedValue(selected);
+                }
+            });
+            selectWindow.showModal();
 
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (selectWindow.isSelectPressed()) {
-							final Person selected = selectWindow.getSelected();
-							personSelectField.setConvertedValue(selected);
-						}
-					}
-				});
-				selectWindow.showModal();
-
-			}
-		});
+        });
 		searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
                 searchBtn.addStyleName("icon-only");
 		nameLay.addComponent(searchBtn);
 
-		viewBtn = new Button("Просмотр", new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				final Person bean = (Person) personSelectField.getConvertedValue();
+		viewBtn = new Button("Просмотр", event -> {
+            final Person bean = (Person) personSelectField.getConvertedValue();
 
-				final PersonEditForm editWin = new PersonEditForm(bean);
-				editWin.setModified(true);
+            final PersonEditForm editWin = new PersonEditForm(bean);
+            editWin.setModified(true);
 
-                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-						if (editWin.isSaved()) {
-							refreshFields(bean);
-						}
-					}
-				});
-                FormUtils.showModalWin(editWin);
-			}
-		});
+editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
+@Override
+public void closeForm(ExtaEditForm.CloseFormEvent event) {
+                    if (editWin.isSaved()) {
+                        refreshFields(bean);
+                    }
+                }
+            });
+FormUtils.showModalWin(editWin);
+        });
 		viewBtn.setIcon(Fontello.EDIT_3);
         viewBtn.addStyleName("last");
 		viewBtn.addStyleName("icon-only");

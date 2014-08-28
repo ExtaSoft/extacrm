@@ -76,67 +76,46 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
                 final LegalEntityEditForm editWin = new LegalEntityEditForm(newObj);
                 editWin.setModified(true);
 
-                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (editWin.isSaved()) {
-                            selectField.refreshContainer();
-                            selectField.setValue(newObj.getId());
-                        }
+                editWin.addCloseFormListener(event -> {
+                    if (editWin.isSaved()) {
+                        selectField.refreshContainer();
+                        selectField.setValue(editWin.getObjectId());
                     }
                 });
                 FormUtils.showModalWin(editWin);
             }
         });
-        selectField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(final Property.ValueChangeEvent event) {
-                refreshFields((LegalEntity) selectField.getConvertedValue());
-            }
-        });
+        selectField.addValueChangeListener(event -> refreshFields((LegalEntity) selectField.getConvertedValue()));
         nameLay.addComponent(selectField);
 
-        Button searchBtn = new Button("Поиск", new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent event) {
+        Button searchBtn = new Button("Поиск", event -> {
 
-                final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите клиента или введите нового", null);
-                selectWindow.addCloseListener(new Window.CloseListener() {
+            final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите клиента или введите нового", null);
+            selectWindow.addCloseListener(e -> {
+                if (selectWindow.isSelectPressed()) {
+                    final LegalEntity selected = selectWindow.getSelected();
+                    selectField.setConvertedValue(selected);
+                }
+            });
+            selectWindow.showModal();
 
-                    @Override
-                    public void windowClose(final Window.CloseEvent e) {
-                        if (selectWindow.isSelectPressed()) {
-                            final LegalEntity selected = selectWindow.getSelected();
-                            selectField.setConvertedValue(selected);
-                        }
-                    }
-                });
-                selectWindow.showModal();
-
-            }
         });
         searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
         searchBtn.addStyleName("icon-only");
         nameLay.addComponent(searchBtn);
 
-        viewBtn = new Button("Просмотр", new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent event) {
-                final LegalEntity bean = (LegalEntity) selectField.getConvertedValue();
+        viewBtn = new Button("Просмотр", event -> {
+            final LegalEntity bean = (LegalEntity) selectField.getConvertedValue();
 
-                final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
-                editWin.setModified(true);
+            final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
+            editWin.setModified(true);
 
-                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (editWin.isSaved()) {
-                            refreshFields(bean);
-                        }
-                    }
-                });
-                FormUtils.showModalWin(editWin);
-            }
+            editWin.addCloseFormListener(event1 -> {
+                if (editWin.isSaved()) {
+                    refreshFields(bean);
+                }
+            });
+            FormUtils.showModalWin(editWin);
         });
         viewBtn.setIcon(Fontello.EDIT_3);
         viewBtn.addStyleName("last");

@@ -18,5 +18,5 @@ public interface LeadService extends SecuredRepository<Lead> {
      *
      * @param obj лид для квалификации
      */
-    void qualify(Lead obj);
+    Lead qualify(Lead obj);
 }

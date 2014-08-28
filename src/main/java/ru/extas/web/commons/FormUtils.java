@@ -16,12 +16,8 @@ public class FormUtils {
         final Window window = new Window(editWin.getCaption(), editWin);
         window.setClosable(true);
         window.setModal(true);
-        editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-            @Override
-            public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                window.close();
-            }
-        });
+        window.addCloseListener(event -> editWin.closeForm());
+        editWin.addCloseFormListener(event -> window.close());
 
         UI.getCurrent().addWindow(window);
     }

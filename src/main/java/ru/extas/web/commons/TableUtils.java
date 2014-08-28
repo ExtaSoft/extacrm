@@ -159,12 +159,9 @@ public class TableUtils {
 
         for (final DataDeclMapping prop : dataDecl.getMappings())
             if (prop.getGenerator() != null)
-                table.addGeneratedColumn(prop.getPropName(), new Table.ColumnGenerator() {
-                    @Override
-                    public Object generateCell(Table source, Object itemId, Object columnId) {
-                        Item item = source.getItem(itemId);
-                        return prop.getGenerator().generateCell(columnId, item);
-                    }
+                table.addGeneratedColumn(prop.getPropName(), (source, itemId, columnId) -> {
+                    Item item = source.getItem(itemId);
+                    return prop.getGenerator().generateCell(columnId, item);
                 });
     }
 

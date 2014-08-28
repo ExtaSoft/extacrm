@@ -3,7 +3,6 @@
  */
 package ru.extas.web;
 
-import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
@@ -142,9 +141,13 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
      */
     public void processURI(String uriStr) {
         ExtaUri uri = new ExtaUri(uriStr);
-        String uriFragment = isNullOrEmpty(uri.getDomainPrefix()) ? ExtaDomain.DASHBOARD.getName() : uri.getUri();
+        String uriFragment;
+        if (isNullOrEmpty(uri.getDomainPrefix())) {
+            uriFragment = ExtaDomain.DASHBOARD.getName();
+            navigator.navigateTo(uriFragment);
+        }
+        else uriFragment = uri.toString();
 
-        navigator.navigateTo(uriFragment);
         Button selButton = fragmentToButton.get(uri.getDomainPrefix());
         if (selButton != null)
             selButton.addStyleName("selected");
@@ -200,12 +203,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 		}
 
 		private boolean isOurName(final String viewName) {
-			return Iterables.tryFind(domains, new Predicate<ExtaDomain>() {
-				@Override
-				public boolean apply(final ExtaDomain input) {
-					return input.getName().equals(viewName);
-				}
-			}).isPresent();
+			return Iterables.tryFind(domains, input -> input.getName().equals(viewName)).isPresent();
 		}
 	}
 }

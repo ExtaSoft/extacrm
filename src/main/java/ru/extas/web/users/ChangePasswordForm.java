@@ -52,7 +52,7 @@ public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final UserProfile obj) {
+    protected UserProfile saveObject(UserProfile obj) {
         logger.debug("Saving changed password...");
 
         // Шифруем пароль
@@ -61,7 +61,8 @@ public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
         obj.setChangePassword(false);
 
         final UserRegistry userService = lookup(UserRegistry.class);
-        userService.save(obj);
+        obj = userService.save(obj);
+        return obj;
     }
 
     /** {@inheritDoc} */

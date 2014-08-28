@@ -48,20 +48,14 @@ public class SaleField extends CustomField<Sale> {
 		container.setSpacing(true);
 
 		// Открытие формы ввода/редактирования
-		Button openBtn = new Button("Нажмите для просмотра/редактирования продажи...", new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				final SaleEditForm form = new SaleEditForm(sale);
-                form.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (form.isSaved())
-                            ((VerticalLayout) getContent()).replaceComponent(productInSaleField, productInSaleField = createProdInSale(sale));
-                    }
-                });
-                FormUtils.showModalWin(form);
-			}
-		});
+		Button openBtn = new Button("Нажмите для просмотра/редактирования продажи...", event -> {
+            final SaleEditForm form = new SaleEditForm(sale);
+form.addCloseFormListener(event1 -> {
+    if (form.isSaved())
+        ((VerticalLayout) getContent()).replaceComponent(productInSaleField, productInSaleField = createProdInSale(sale));
+});
+FormUtils.showModalWin(form);
+        });
 		openBtn.addStyleName("link");
 		container.addComponent(openBtn);
 		// Список продуктов в продаже

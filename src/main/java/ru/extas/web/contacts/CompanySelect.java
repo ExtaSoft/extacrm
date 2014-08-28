@@ -52,13 +52,10 @@ public class CompanySelect extends AbstractContactSelect<Company> {
 				final CompanyEditForm editWin = new CompanyEditForm(newObj);
 				editWin.setModified(true);
 
-                editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                    @Override
-                    public void closeForm(ExtaEditForm.CloseFormEvent event) {
-                        if (editWin.isSaved()) {
-                            container.refresh();
-                            setValue(newObj.getId());
-                        }
+                editWin.addCloseFormListener(event -> {
+                    if (editWin.isSaved()) {
+                        container.refresh();
+                        setValue(editWin.getObjectId());
                     }
                 });
                 FormUtils.showModalWin(editWin);

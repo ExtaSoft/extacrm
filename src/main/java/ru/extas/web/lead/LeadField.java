@@ -44,13 +44,10 @@ public class LeadField extends CustomField<Lead> {
 		leadItem = new BeanItem<>(lead != null ? lead : new Lead());
 
 		// Открытие формы ввода/редактирования
-		final Button.ClickListener openLeadFormListener = new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				LeadEditForm form = new LeadEditForm(lead, false);
-                FormUtils.showModalWin(form);
-			}
-		};
+		final Button.ClickListener openLeadFormListener = event -> {
+            LeadEditForm form = new LeadEditForm(lead, false);
+FormUtils.showModalWin(form);
+        };
 		Button openBtn = new Button("Нажмите для просмотра/редактирования лида...", openLeadFormListener);
 		openBtn.addStyleName("link");
 		container.addComponent(openBtn);

@@ -104,14 +104,11 @@ public class ProdCredDocsField extends CustomField<List> {
 //			edtProdBtn.addStyleName(Fontello.EDIT_3);
 //			commandBar.addComponent(edtProdBtn);
 
-			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (docTable.getValue() != null) {
-						docTable.removeItem(docTable.getValue());
-					}
-				}
-			});
+			final Button delProdBtn = new Button("Удалить", event -> {
+                if (docTable.getValue() != null) {
+                    docTable.removeItem(docTable.getValue());
+                }
+            });
 			delProdBtn.setDescription("Удалить процентную ставку из продукта");
 			delProdBtn.setIcon(Fontello.TRASH);
 			commandBar.addComponent(delProdBtn);
@@ -134,32 +131,24 @@ public class ProdCredDocsField extends CustomField<List> {
 			}
 		}
 		docTable.setContainerDataSource(container);
-		docTable.addItemSetChangeListener(new Container.ItemSetChangeListener() {
-			@Override
-			public void containerItemSetChange(final Container.ItemSetChangeEvent event) {
-				setValue(newArrayList(docTable.getItemIds()));
-			}
-		});
+		docTable.addItemSetChangeListener(event -> setValue(newArrayList(docTable.getItemIds())));
 		// Колонки таблицы
 		docTable.setVisibleColumns("name", "required");
 		docTable.setColumnHeader("name", "Документ");
 		docTable.setColumnHeader("required", "Обязательный");
 		docTable.setEditable(true);
-		docTable.setTableFieldFactory(new TableFieldFactory() {
-			@Override
-			public Field<?> createField(final Container container, final Object itemId, final Object propertyId, final Component uiContext) {
-				if ("name".equals(propertyId)) {
-					final DocumentSelect field = new DocumentSelect("Документ");
-					field.setPropertyDataSource(container.getItem(itemId).getItemProperty(propertyId));
-					return field;
-				} else if ("required".equals(propertyId)) {
-					final CheckBox checkBox = new CheckBox();
-					checkBox.setPropertyDataSource(container.getItem(itemId).getItemProperty(propertyId));
-					return checkBox;
-				}
-				return null;
-			}
-		});
+		docTable.setTableFieldFactory((container1, itemId, propertyId, uiContext) -> {
+            if ("name".equals(propertyId)) {
+                final DocumentSelect field = new DocumentSelect("Документ");
+                field.setPropertyDataSource(container1.getItem(itemId).getItemProperty(propertyId));
+                return field;
+            } else if ("required".equals(propertyId)) {
+                final CheckBox checkBox = new CheckBox();
+                checkBox.setPropertyDataSource(container1.getItem(itemId).getItemProperty(propertyId));
+                return checkBox;
+            }
+            return null;
+        });
 		fieldLayout.addComponent(docTable);
 
 		return fieldLayout;

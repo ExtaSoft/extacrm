@@ -97,7 +97,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
 
     public InsuranceEditForm(Insurance insurance) {
-        super(isNullOrEmpty(insurance.getId()) ?
+        super(insurance.isNew() ?
                 "Новый полис" :
                 "Редактировать полис",
                 new BeanItem<>(insurance));
@@ -182,12 +182,9 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         boolean isLegalEntity = obj.getClient() != null && obj.getClient() instanceof LegalEntity;
         isLegalEntityField = new CheckBox("Страхователь Юр.лицо", isLegalEntity);
         isLegalEntityField.setDescription("Отметте флаг, если страхователь является юр.лицом");
-        isLegalEntityField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                Boolean isLegalEntity1 = isLegalEntityField.getValue();
-                createAndBindClientNameField(isLegalEntity1, form);
-            }
+        isLegalEntityField.addValueChangeListener(event -> {
+            Boolean isLegalEntity1 = isLegalEntityField.getValue();
+            createAndBindClientNameField(isLegalEntity1, form);
         });
         form.addComponent(isLegalEntityField);
 
@@ -203,12 +200,9 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
         usedMotorField = new CheckBox("Б/у техника");
         usedMotorField.setDescription("Признак бывшей в употреблении техники");
-        usedMotorField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                calculatePremium();
-                updateTarifField();
-            }
+        usedMotorField.addValueChangeListener(event -> {
+            calculatePremium();
+            updateTarifField();
         });
         form.addComponent(usedMotorField);
 
@@ -218,12 +212,9 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
         motorBrandField = new MotorBrandSelect();
         motorBrandField.setRequired(true);
-        motorBrandField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                calculatePremium();
-                updateTarifField();
-            }
+        motorBrandField.addValueChangeListener(event -> {
+            calculatePremium();
+            updateTarifField();
         });
         motorBrandField.linkToType(motorTypeField);
         form.addComponent(motorBrandField);
@@ -275,13 +266,10 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         coverTimeField.setNewItemsAllowed(false);
         coverTimeField.setImmediate(true);
         ComponentUtil.fillSelectByEnum(coverTimeField, Insurance.PeriodOfCover.class);
-        coverTimeField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                calculatePremium();
-                calcEndDate();
-                updateTarifField();
-            }
+        coverTimeField.addValueChangeListener(event -> {
+            calculatePremium();
+            calcEndDate();
+            updateTarifField();
         });
         form.addComponent(coverTimeField);
 
@@ -354,14 +342,11 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
             select = new PersonSelect(caption);
         }
         select.setRequired(true);
-        select.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                Contact contact = clientNameField.getValue();
-                if (beneficiaryField.getPropertyDataSource() != null && contact != null) {
-                    fillBeneficiariesChoice(contact);
-                    beneficiaryField.setValue(contact.getName());
-                }
+        select.addValueChangeListener(event -> {
+            Contact contact = clientNameField.getValue();
+            if (beneficiaryField.getPropertyDataSource() != null && contact != null) {
+                fillBeneficiariesChoice(contact);
+                beneficiaryField.setValue(contact.getName());
             }
         });
 
@@ -408,7 +393,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final Insurance obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             final LocalDate now = LocalDate.now();
             obj.setDate(now);
             obj.setPaymentDate(now);
@@ -426,9 +411,10 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final Insurance obj) {
-        lookup(InsuranceRepository.class).saveAndIssue(obj);
+    protected Insurance saveObject(Insurance obj) {
+        obj = lookup(InsuranceRepository.class).saveAndIssue(obj);
         NotificationUtil.showSuccess("Полис сохранен");
+        return obj;
     }
 
     /** {@inheritDoc} */
