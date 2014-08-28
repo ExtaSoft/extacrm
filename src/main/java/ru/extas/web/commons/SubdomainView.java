@@ -24,8 +24,35 @@ import static ru.extas.server.ServiceLocator.lookup;
 public abstract class SubdomainView extends ExtaAbstractView {
     private final static Logger logger = LoggerFactory.getLogger(SubdomainView.class);
 
+    private ContentContainer contentContainer;
     private TabSheet tabsheet;
     private final List<TabSheet.Tab> tabs = newArrayList();
+    private Label title;
+
+    private class ContentContainer extends VerticalLayout {
+        private ExtaEditForm form;
+
+        private ContentContainer() {
+            setSizeFull();
+            addComponent(tabsheet);
+        }
+
+        public void switchToTabsheet() {
+            if(form != null) {
+                removeComponent(form);
+                form = null;
+            }
+            tabsheet.setVisible(true);
+            title.setValue(titleCaption);
+        }
+
+        public void switchToForm(ExtaEditForm form) {
+            this.form = form;
+            tabsheet.setVisible(false);
+            addComponent(form);
+            title.setValue(form.getCaption());
+        }
+    }
 
     /**
      * <p>Constructor for AbstractTabView.</p>
@@ -34,16 +61,30 @@ public abstract class SubdomainView extends ExtaAbstractView {
      */
     protected SubdomainView(String titleCaption) {
         this.titleCaption = titleCaption;
-        tabsheet = new TabSheet();
-        tabsheet.setSizeFull();
+    }
 
-        // Create tab content dynamically when tab is selected
-        tabsheet.addSelectedTabChangeListener(event -> {
-            final SubdomainUI subdomainUI = (SubdomainUI) tabsheet.getSelectedTab();
-            subdomainUI.show();
-        });
-        // Создаем закладки в соответствии с описанием
-        getSubdomainInfo().forEach(info -> tabs.add(tabsheet.addTab(new SubdomainUI(info), info.getCaption())));
+    private void initTabsheet() {
+        if (tabsheet == null) {
+            tabsheet = new TabSheet();
+            tabsheet.setSizeFull();
+            contentContainer = new ContentContainer();
+
+            final List<SubdomainInfo> subdomainInfo = getSubdomainInfo();
+            final ExtaUri uri = new ExtaUri();
+            if(uri.getDomain() == null){
+                uri.setDomain(subdomainInfo.get(0).getDomain());
+                NavigationUtils.setUriFragment(uri);
+            }
+
+            // Создаем закладки в соответствии с описанием
+            subdomainInfo.forEach(info -> tabs.add(tabsheet.addTab(new SubdomainUI(info), info.getCaption())));
+            // Create tab content dynamically when tab is selected
+            tabsheet.addSelectedTabChangeListener(event -> {
+                final SubdomainUI subdomainUI = (SubdomainUI) tabsheet.getSelectedTab();
+                subdomainUI.show();
+            });
+
+        }
     }
 
     private String titleCaption;
@@ -59,10 +100,10 @@ public abstract class SubdomainView extends ExtaAbstractView {
         }
 
         public void show() {
+            final ExtaUri uri = new ExtaUri();
+
             if (grid == null) initGrid();
             else grid.refreshContainer();
-
-            final ExtaUri uri = new ExtaUri();//info.getDomain(), ExtaUri.Mode.GRID, null);
 
             if(uri.getDomain() == info.getDomain()) {
                 if(uri.getMode() == ExtaUri.Mode.GRID) {
@@ -85,48 +126,83 @@ public abstract class SubdomainView extends ExtaAbstractView {
                         NotificationUtil.showWarning("Немогу открыть форму редактирования",
                                 "Ненайден объект редактирования. Возможно, неверный URL.");
                 }
-            } else {
+            } else
                 NavigationUtils.setUriFragment(new ExtaUri(info.getDomain(), ExtaUri.Mode.GRID, null));
-            }
         }
 
         public void initGrid() {
             grid = info.createGrid();
             grid.setSizeFull();
             addComponent(grid);
-            ExtaGrid.FormService defaultService = grid.getFormService();
-            grid.setFormService(new ExtaGrid.DefaultFormService(grid) {
-                @Override
-                public void open4Edit(ExtaEditForm form) {
-                    final ExtaUri uri = new ExtaUri(info.getDomain(), ExtaUri.Mode.EDIT, form.getObjectId().toString());
-                    NavigationUtils.setUriFragment(uri);
-                    form.addCloseFormListener(event -> {
-                        uri.setMode(ExtaUri.Mode.GRID);
-                        NavigationUtils.setUriFragment(uri);
-                    });
-                    defaultService.open4Edit(form);
-                }
-
-                @Override
-                public void open4Insert(ExtaEditForm form) {
-                    final ExtaUri uri = new ExtaUri(info.getDomain(), ExtaUri.Mode.NEW, null);
-                    NavigationUtils.setUriFragment(uri);
-                    form.addCloseFormListener(event -> {
-                        uri.setMode(ExtaUri.Mode.GRID);
-                        final Object objectId = form.getObjectId();
-                        if(objectId != null) {
-                            uri.setId(objectId.toString());
-                            grid.selectObject(objectId);
-                        }
-                        NavigationUtils.setUriFragment(uri);
-                    });
-                    defaultService.open4Insert(form);
-                }
-            });
+            if(info.isEditInPage())
+                grid.setFormService(new URIWrapFormService(new PageFormService()));
+            else
+                grid.setFormService(new URIWrapFormService(grid.getFormService()));
         }
 
         public SubdomainInfo getInfo() {
             return info;
+        }
+
+        private class URIWrapFormService implements ExtaGrid.FormService {
+            private final ExtaGrid.FormService wrappedService;
+
+            public URIWrapFormService(ExtaGrid.FormService wrappedService) {
+                this.wrappedService = wrappedService;
+            }
+
+            @Override
+            public void open4Edit(ExtaEditForm form) {
+                final ExtaUri uri = new ExtaUri(info.getDomain(), ExtaUri.Mode.EDIT, form.getObjectId().toString());
+                NavigationUtils.setUriFragment(uri);
+                form.addCloseFormListener(event -> {
+                    uri.setMode(ExtaUri.Mode.GRID);
+                    NavigationUtils.setUriFragment(uri);
+                });
+                wrappedService.open4Edit(form);
+            }
+
+            @Override
+            public void open4Insert(ExtaEditForm form) {
+                final ExtaUri uri = new ExtaUri(info.getDomain(), ExtaUri.Mode.NEW, null);
+                NavigationUtils.setUriFragment(uri);
+                form.addCloseFormListener(event -> {
+                    uri.setMode(ExtaUri.Mode.GRID);
+                    final Object objectId = form.getObjectId();
+                    if(objectId != null) {
+                        uri.setId(objectId.toString());
+                        grid.selectObject(objectId);
+                    }
+                    NavigationUtils.setUriFragment(uri);
+                });
+                wrappedService.open4Insert(form);
+            }
+        }
+
+        private class PageFormService implements ExtaGrid.FormService {
+            @Override
+            public void open4Edit(ExtaEditForm form) {
+                form.addCloseFormListener(event -> {
+                    if (form.isSaved()) {
+                        grid.refreshContainerItem(form.getObjectId());
+                    }
+                    grid.selectObject(form.getObjectId());
+                    contentContainer.switchToTabsheet();
+                });
+                contentContainer.switchToForm(form);
+            }
+
+            @Override
+            public void open4Insert(ExtaEditForm form) {
+                form.addCloseFormListener(event -> {
+                    if (form.isSaved()) {
+                        grid.refreshContainer();
+                        grid.selectObject(form.getObjectId());
+                    }
+                    contentContainer.switchToTabsheet();
+                });
+                contentContainer.switchToForm(form);
+            }
         }
     }
 
@@ -134,16 +210,21 @@ public abstract class SubdomainView extends ExtaAbstractView {
      * {@inheritDoc}
      */
     @Override
-    protected Component getContent() {
+    protected Component createContent() {
         logger.debug("Creating view content...");
 
+        initTabsheet();
         final ExtaUri uri = new ExtaUri();
         TabSheet.Tab tabCandidat = getTab4Uri(uri).orElse(tabs.get(0));
 
         // Делаем текущей нужную закладку
-        tabsheet.setSelectedTab(tabCandidat);
+        final SubdomainUI selectedTab = (SubdomainUI) tabsheet.getSelectedTab();
+        if(selectedTab.equals(tabCandidat.getComponent()))
+            selectedTab.show();
+        else
+            tabsheet.setSelectedTab(tabCandidat);
 
-        return tabsheet;
+        return contentContainer;
     }
 
     private Optional<TabSheet.Tab> getTab4Uri(ExtaUri uri) {
@@ -163,8 +244,8 @@ public abstract class SubdomainView extends ExtaAbstractView {
      * {@inheritDoc}
      */
     @Override
-    protected Component getTitle() {
-        final Component title = new Label(titleCaption);
+    protected Component createTitle() {
+        title = new Label(titleCaption);
         title.setSizeUndefined();
         title.addStyleName("view-title");
         return title;

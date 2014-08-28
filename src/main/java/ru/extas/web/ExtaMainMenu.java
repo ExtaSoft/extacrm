@@ -44,7 +44,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
     /**
      * <p>Constructor for ExtaMainMenu.</p>
      *
-     * @param ui a {@link com.vaadin.ui.UI} object.
+     * @param ui      a {@link com.vaadin.ui.UI} object.
      * @param content a {@link com.vaadin.ui.ComponentContainer} object.
      */
     public ExtaMainMenu(UI ui, ComponentContainer content) {
@@ -55,32 +55,35 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 
         fragmentToButton = new HashMap<>();
 
-	    ui.getPage().addUriFragmentChangedListener(this);
+        ui.getPage().addUriFragmentChangedListener(this);
     }
 
-	/**
-	 * <p>addChapter.</p>
-	 *  @param name a {@link String} object.
-	 * @param desc a {@link String} object.
+    /**
+     * <p>addChapter.</p>
+     *
+     * @param name    a {@link String} object.
+     * @param desc    a {@link String} object.
      * @param btnIcon a {@link String} object.
      * @param viewCls a {@link Class} object.
-     * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
+     * @param domain  a {@link ru.extas.model.security.ExtaDomain} object.
      */
-	public void addChapter(String name, // Имя раздела
-	                       String desc, // Описание раздела
+    public void addChapter(String name, // Имя раздела
+                           String desc, // Описание раздела
                            Resource btnIcon, // Стиль кнопки раздела
-	                       Class<? extends View> viewCls, // Класс раздела
-	                       ExtaDomain domain // Раздел
-	) {
-		addChapter(name, desc, btnIcon, viewCls, EnumSet.of(domain));
-	}
+                           Class<? extends View> viewCls, // Класс раздела
+                           ExtaDomain domain // Раздел
+    ) {
+        addChapter(name, desc, btnIcon, viewCls, EnumSet.of(domain));
+    }
+
     /**
      * Создает раздел основного меню
-     *  @param name     Имя раздела
-     * @param desc     Описание раздела
+     *
+     * @param name    Имя раздела
+     * @param desc    Описание раздела
      * @param btnIcon Стиль кнопки раздела
-     * @param viewCls  Класс раздела
-     * @param domains  Раздел или подразделы системы
+     * @param viewCls Класс раздела
+     * @param domains Раздел или подразделы системы
      */
     public void addChapter(String name, // Имя раздела
                            String desc, // Описание раздела
@@ -88,42 +91,42 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
                            Class<? extends View> viewCls, // Класс раздела
                            Set<ExtaDomain> domains // Раздел или подразделы
     ) {
-	    checkNotNull(domains);
-	    checkState(!domains.isEmpty());
+        checkNotNull(domains);
+        checkState(!domains.isEmpty());
 
-	    // Проверяем права доступа
-	    UserManagementService userService = lookup(UserManagementService.class);
-	    if (userService.isPermittedOneOf(domains)) {
-		    // Фрагмент адреса
-		    final String domainUrl = Iterables.getFirst(domains, null).getName();
-		    String fragment = Iterables.getFirst(Splitter.on('/').split(domainUrl), domainUrl);
+        // Проверяем права доступа
+        UserManagementService userService = lookup(UserManagementService.class);
+        if (userService.isPermittedOneOf(domains)) {
+            // Фрагмент адреса
+            final String domainUrl = Iterables.getFirst(domains, null).getName();
+            String fragment = Iterables.getFirst(Splitter.on('/').split(domainUrl), domainUrl);
 
-		    final String normFragment = fragment;
+            final String normFragment = fragment;
 
-		    // Регистрируем в навигаторе
-		    navigator.addView(fragment, viewCls);
+            // Регистрируем в навигаторе
+            navigator.addView(fragment, viewCls);
 
-		    // Кнопка раздела
-		    Button b = new Button(name);
-		    b.setIcon(btnIcon);
-		    b.setDescription(desc);
+            // Кнопка раздела
+            Button b = new Button(name);
+            b.setIcon(btnIcon);
+            b.setDescription(desc);
             b.setPrimaryStyleName("valo-menu-item");
-		    b.addClickListener(new ClickListener() {
-			    private static final long serialVersionUID = 1L;
+            b.addClickListener(new ClickListener() {
+                private static final long serialVersionUID = 1L;
 
-			    @Override
-			    public void buttonClick(ClickEvent event) {
-				    clearMenuSelection();
-				    event.getButton().addStyleName("selected");
-				    if (!navigator.getState().equals(normFragment))
-					    navigator.navigateTo(normFragment);
-			    }
-		    });
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    clearMenuSelection();
+                    event.getButton().addStyleName("selected");
+                    if (!navigator.getState().equals(normFragment))
+                        navigator.navigateTo(normFragment);
+                }
+            });
 
-		    // Добавляем кнопку
-		    addComponent(b);
-		    fragmentToButton.put(normFragment, b);
-	    }
+            // Добавляем кнопку
+            addComponent(b);
+            fragmentToButton.put(normFragment, b);
+        }
     }
 
     private void clearMenuSelection() {
@@ -139,71 +142,75 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
      *
      * @param uriStr a {@link java.lang.String} object.
      */
-    public void processURI(String uriStr) {
+    public void processURI(String uriStr, boolean navigate) {
         ExtaUri uri = new ExtaUri(uriStr);
         String uriFragment;
         if (isNullOrEmpty(uri.getDomainPrefix())) {
             uriFragment = ExtaDomain.DASHBOARD.getName();
-            navigator.navigateTo(uriFragment);
-        }
-        else uriFragment = uri.toString();
+        } else
+            uriFragment = uri.toString();
 
         Button selButton = fragmentToButton.get(uri.getDomainPrefix());
         if (selButton != null)
             selButton.addStyleName("selected");
+
+        if(navigate)
+            navigator.navigateTo(uriFragment);
     }
 
-	/** {@inheritDoc} */
-	@Override
-	public void uriFragmentChanged(final Page.UriFragmentChangedEvent event) {
-        processURI(event.getUriFragment());
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void uriFragmentChanged(final Page.UriFragmentChangedEvent event) {
+        processURI(event.getUriFragment(), false);
     }
 
-	private class DomainViewProvider implements ViewProvider {
+    private class DomainViewProvider implements ViewProvider {
 
-		private final Set<ExtaDomain> domains;
-		private final Class<? extends View> viewCls;
+        private final Set<ExtaDomain> domains;
+        private final Class<? extends View> viewCls;
 
-		public DomainViewProvider(final Set<ExtaDomain> domains, final Class<? extends View> viewCls) {
-			this.domains = domains;
-			this.viewCls = viewCls;
-		}
+        public DomainViewProvider(final Set<ExtaDomain> domains, final Class<? extends View> viewCls) {
+            this.domains = domains;
+            this.viewCls = viewCls;
+        }
 
-		@Override
-		public String getViewName(String navigationState) {
-			if (null == navigationState) {
-				return null;
-			}
-			if (navigationState.startsWith("!"))
-				navigationState = navigationState.substring(1);
-			for (ExtaDomain domain:domains) {
-				final String viewName = domain.getName();
-				if (navigationState.equals(viewName)
-						|| navigationState.startsWith(viewName + "/")
-						|| viewName.startsWith(navigationState + "/")) {
-					return viewName;
-				}
-			}
-			return null;
-		}
+        @Override
+        public String getViewName(String navigationState) {
+            if (null == navigationState) {
+                return null;
+            }
+            if (navigationState.startsWith("!"))
+                navigationState = navigationState.substring(1);
+            for (ExtaDomain domain : domains) {
+                final String viewName = domain.getName();
+                if (navigationState.equals(viewName)
+                        || navigationState.startsWith(viewName + "/")
+                        || viewName.startsWith(navigationState + "/")) {
+                    return viewName;
+                }
+            }
+            return null;
+        }
 
-		@Override
-		public View getView(final String viewName) {
-			if (isOurName(viewName)) {
-				try {
-					View view = viewCls.newInstance();
-					return view;
-				} catch (InstantiationException e) {
-					throw Throwables.propagate(e);
-				} catch (IllegalAccessException e) {
-					throw Throwables.propagate(e);
-				}
-			}
-			return null;
-		}
+        @Override
+        public View getView(final String viewName) {
+            if (isOurName(viewName)) {
+                try {
+                    View view = viewCls.newInstance();
+                    return view;
+                } catch (InstantiationException e) {
+                    throw Throwables.propagate(e);
+                } catch (IllegalAccessException e) {
+                    throw Throwables.propagate(e);
+                }
+            }
+            return null;
+        }
 
-		private boolean isOurName(final String viewName) {
-			return Iterables.tryFind(domains, input -> input.getName().equals(viewName)).isPresent();
-		}
-	}
+        private boolean isOurName(final String viewName) {
+            return Iterables.tryFind(domains, input -> input.getName().equals(viewName)).isPresent();
+        }
+    }
 }

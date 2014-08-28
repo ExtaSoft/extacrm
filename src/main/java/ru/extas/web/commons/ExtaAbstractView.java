@@ -5,7 +5,6 @@ package ru.extas.web.commons;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -23,7 +22,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
 
     private static final long serialVersionUID = -9143359275908526515L;
     private final static Logger logger = LoggerFactory.getLogger(ExtaAbstractView.class);
-    private VerticalLayout content;
+    protected VerticalLayout content;
 
     /**
      * <p>Constructor for ExtaAbstractView.</p>
@@ -51,7 +50,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
         top.setSpacing(true);
         top.addStyleName("toolbar");
         addComponent(top);
-        final Component title = getTitle();
+        final Component title = createTitle();
         top.addComponent(title);
         top.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
         top.setExpandRatio(title, 1);
@@ -79,27 +78,24 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
         addComponent(content);
         setExpandRatio(content, 5);
 
-        replaceContent(getContent());
+        final Component contentComponent = createContent();
+        if(contentComponent != null)
+            content.addComponent(contentComponent);
 
     }
 
-    protected void replaceContent(Component component){
-        content.removeAllComponents();
-        content.addComponent(component);
-    }
-
     /**
-     * <p>getContent.</p>
+     * <p>createContent.</p>
      *
      * @return a {@link com.vaadin.ui.Component} object.
      */
-    protected abstract Component getContent();
+    protected abstract Component createContent();
 
     /**
-     * <p>getTitle.</p>
+     * <p>createTitle.</p>
      *
      * @return a {@link com.vaadin.ui.Component} object.
      */
-    protected abstract Component getTitle();
+    protected abstract Component createTitle();
 
 }

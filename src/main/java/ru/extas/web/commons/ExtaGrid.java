@@ -11,7 +11,6 @@ import org.tepi.filtertable.FilterTable;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
@@ -64,10 +63,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
     }
 
-    public static class DefaultFormService implements FormService {
+    public static class ModalPopupFormService implements FormService {
         private final ExtaGrid grid;
 
-        public DefaultFormService(ExtaGrid grid) {
+        public ModalPopupFormService(ExtaGrid grid) {
             this.grid = grid;
         }
 
@@ -101,7 +100,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      */
     public ExtaGrid(final Class<TEntity> entityClass, final boolean initNow) {
         this.entityClass = entityClass;
-        formService = new DefaultFormService(this);
+        formService = new ModalPopupFormService(this);
         if (initNow)
             initialize();
     }

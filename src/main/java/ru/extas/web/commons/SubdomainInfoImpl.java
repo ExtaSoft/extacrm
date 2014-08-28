@@ -14,16 +14,22 @@ public abstract class SubdomainInfoImpl implements SubdomainInfo {
     private static final long serialVersionUID = -4891758708180700074L;
     private final String caption;
 	private final ExtaDomain domain;
+    private final boolean editInPage;
 
-	/**
+    protected SubdomainInfoImpl(String caption, ExtaDomain domain) {
+        this(caption, domain, false);
+    }
+
+    /**
 	 * <p>Constructor for AbstractTabInfo.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
-	public SubdomainInfoImpl(final String caption, final ExtaDomain domain) {
+	public SubdomainInfoImpl(final String caption, final ExtaDomain domain, boolean editInPage) {
 		this.caption = caption;
 		this.domain = domain;
+        this.editInPage = editInPage;
 	}
 
     /** {@inheritDoc} */
@@ -37,4 +43,9 @@ public abstract class SubdomainInfoImpl implements SubdomainInfo {
 	public ExtaDomain getDomain() {
 		return domain;
 	}
+
+    @Override
+    public boolean isEditInPage() {
+        return editInPage;
+    }
 }

@@ -274,7 +274,7 @@ public class ExtaCrmUI extends UI {
         mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", Fontello.COG_ALT,
                 ConfigView.class, ExtaDomain.SETTINGS);
 
-        mainMenu.processURI(null);
+        mainMenu.processURI(null, true);
 
         setContent(root);
     }

@@ -28,7 +28,7 @@ public class ConfigView extends ExtaAbstractView {
 
     /** {@inheritDoc} */
     @Override
-    protected Component getContent() {
+    protected Component createContent() {
         logger.debug("Creating view content...");
         final Button updateBtn = new Button("Обновить права доступа", event -> updateDataBase());
         final Component title = new Label("Скоро будет реализовано...");
@@ -48,7 +48,7 @@ public class ConfigView extends ExtaAbstractView {
 
     /** {@inheritDoc} */
     @Override
-    protected Component getTitle() {
+    protected Component createTitle() {
         final Component title = new Label("Настройки");
         title.setSizeUndefined();
         title.addStyleName("view-title");

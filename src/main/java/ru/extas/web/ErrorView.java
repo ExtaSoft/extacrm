@@ -16,7 +16,7 @@ import ru.extas.web.commons.ExtaAbstractView;
 public class ErrorView extends ExtaAbstractView {
     /** {@inheritDoc} */
     @Override
-    protected Component getContent() {
+    protected Component createContent() {
         final Component msg = new Label("Пожалуйста выберите другой пункт главного меню!");
         msg.setSizeUndefined();
         msg.addStyleName("view-title");
@@ -25,7 +25,7 @@ public class ErrorView extends ExtaAbstractView {
 
     /** {@inheritDoc} */
     @Override
-    protected Component getTitle() {
+    protected Component createTitle() {
         final Component title = new Label("Неверные данные в адресной строке!!!");
         title.setSizeUndefined();
         title.addStyleName("view-title");

@@ -32,7 +32,7 @@ public class HomeView extends ExtaAbstractView {
 
     /** {@inheritDoc} */
     @Override
-    protected Component getContent() {
+    protected Component createContent() {
         logger.info("Creating view content...");
 
         VerticalSplitPanel verticalSplitPanel = new VerticalSplitPanel();
@@ -119,7 +119,7 @@ public class HomeView extends ExtaAbstractView {
 
     /** {@inheritDoc} */
     @Override
-    protected Component getTitle() {
+    protected Component createTitle() {
         final Component title = new Label("Рабочий стол");
         title.setSizeUndefined();
         title.addStyleName("view-title");

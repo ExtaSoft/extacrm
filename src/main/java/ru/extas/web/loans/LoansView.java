@@ -26,7 +26,7 @@ public class LoansView extends ExtaAbstractView {
 
     /** {@inheritDoc} */
     @Override
-    protected Component getContent() {
+    protected Component createContent() {
         logger.info("Creating view content...");
         final Component title = new Label("Скоро будет реализовано...");
         title.setSizeUndefined();
@@ -40,7 +40,7 @@ public class LoansView extends ExtaAbstractView {
 
     /** {@inheritDoc} */
     @Override
-    protected Component getTitle() {
+    protected Component createTitle() {
         final Component title = new Label("Кредитование");
         title.setSizeUndefined();
         title.addStyleName("view-title");

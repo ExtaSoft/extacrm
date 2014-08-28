@@ -16,7 +16,7 @@ public class UUIDUtils {
 
         UUID uuid = UUID.fromString(uuidStr);
 
-        return Base64.getUrlEncoder().encodeToString(toByteArray(uuid));
+        return Base64.getUrlEncoder().encodeToString(toByteArray(uuid)).replace("=", "");
     }
 
     public static String fromUrl(String base64idStr) {

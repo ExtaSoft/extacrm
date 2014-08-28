@@ -36,7 +36,7 @@ public class ContactsView extends SubdomainView {
 	@Override
 	protected List<SubdomainInfo> getSubdomainInfo() {
 		final ArrayList<SubdomainInfo> ret = newArrayList();
-		ret.add(new SubdomainInfoImpl("Контакты", ExtaDomain.PERSON) {
+		ret.add(new SubdomainInfoImpl("Физ. лица", ExtaDomain.PERSON, true) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

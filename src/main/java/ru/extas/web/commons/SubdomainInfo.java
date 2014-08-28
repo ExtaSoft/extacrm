@@ -34,4 +34,6 @@ public interface SubdomainInfo extends Serializable {
 	 * @return a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
 	ExtaDomain getDomain();
+
+    boolean isEditInPage();
 }
