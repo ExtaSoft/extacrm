@@ -1,7 +1,6 @@
 package ru.extas.web.lead.embedded;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -187,7 +186,7 @@ public class LeadInputFormUI extends UI {
                 Object value = property.getValue();
                 if (value != null) {
                     pointOfSaleField.setValue(((SalePoint) vendorField.getConvertedValue()).getName());
-                    regionField.setValue(((SalePoint) vendorField.getConvertedValue()).getActualAddress().getRegion());
+                    regionField.setValue(((SalePoint) vendorField.getConvertedValue()).getRegAddress().getRegion());
                 }
             }
         });

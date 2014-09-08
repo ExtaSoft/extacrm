@@ -3,17 +3,21 @@
  */
 package ru.extas.web.contacts;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.common.primitives.Chars;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.contacts.AddressInfo;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.*;
 import ru.extas.model.contacts.Person.Sex;
-import ru.extas.model.contacts.PersonFileContainer;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.*;
@@ -21,6 +25,8 @@ import ru.extas.web.commons.component.*;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 import ru.extas.web.util.ComponentUtil;
+
+import java.util.*;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -52,14 +58,32 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private PhoneField homePhoneField;
     @PropertyId("email")
     private EmailField emailField;
+
+    @PropertyId("regAddress.region")
+    private RegionSelect regRegionField;
+    @PropertyId("regAddress.city")
+    private CitySelect regCityField;
+    @PropertyId("regAddress.postIndex")
+    private EditField regPostIndexField;
+    @PropertyId("regAddress.streetBld")
+    private TextArea regStreetBldField;
+    @PropertyId("regAddress.realtyKind")
+    private ComboBox regRealtyKindField;
+    @PropertyId("regAddress.periodOfResidence")
+    private ComboBox regPeriodOfResidenceField;
+
     @PropertyId("actualAddress.region")
-    private RegionSelect regionField;
+    private RegionSelect actRegionField;
     @PropertyId("actualAddress.city")
-    private CitySelect cityField;
+    private CitySelect actCityField;
     @PropertyId("actualAddress.postIndex")
-    private EditField postIndexField;
+    private EditField actPostIndexField;
     @PropertyId("actualAddress.streetBld")
-    private TextArea streetBldField;
+    private TextArea actStreetBldField;
+    @PropertyId("actualAddress.realtyKind")
+    private ComboBox actRealtyKindField;
+    @PropertyId("actualAddress.periodOfResidence")
+    private ComboBox actPeriodOfResidenceField;
 
     // Паспортнве данные
     @PropertyId("passNum")
@@ -68,13 +92,35 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private LocalDateField passIssueDateField;
     @PropertyId("passIssuedBy")
     private TextArea passIssuedByField;
+
     @PropertyId("passIssuedByNum")
     private EditField passIssuedByNumField;
-    @PropertyId("passRegAdress")
-    private TextArea passRegAdressField;
 
     @PropertyId("files")
     private DocFilesEditor docFilesEditor;
+    @PropertyId("birthPlace")
+    private CitySelect birthPlaceField;
+    @PropertyId("citizenship")
+    private EditField citizenshipField;
+    @PropertyId("changeName")
+    private CheckBox changeNameField;
+    @PropertyId("exName")
+    private EditField exNameField;
+    @PropertyId("changeNameDate")
+    private LocalDateField changeNameDateField;
+    @PropertyId("regNactIsSame")
+    private CheckBox regNactIsSameField;
+
+    @PropertyId("dlNum")
+    private EditField dlNumField;
+    @PropertyId("dlIssueDate")
+    private LocalDateField dlIssueDateField;
+    @PropertyId("dlIssuedBy")
+    private TextArea dlIssuedByField;
+    @PropertyId("periodOfDriving")
+    private EditField periodOfDrivingField;
+    @PropertyId("drivingCategories")
+    private OptionGroup drivingCategoriesField;
 
 
     public PersonEditForm(Person person) {
@@ -83,6 +129,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
                 String.format("Редактирование контакта: %s", person.getName()));
 
         BeanItem<Person> beanItem = new BeanItem<>(person);
+        beanItem.expandProperty("regAddress");
         beanItem.expandProperty("actualAddress");
         initForm(beanItem);
     }
@@ -91,8 +138,8 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final Person obj) {
-        if (obj.getActualAddress() == null)
-            obj.setActualAddress(new AddressInfo());
+        if (obj.getRegAddress() == null)
+            obj.setRegAddress(new AddressInfo());
         if (obj.isNew()) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
@@ -127,8 +174,10 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         // Форма редактирования персональных данных
         final FormLayout personForm = new ExtaFormLayout();
+        personForm.setSizeUndefined();
         personForm.setMargin(true);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupHeader("Персональные данные"));
         nameField = new EditField("Имя");
         nameField.setColumns(30);
@@ -150,14 +199,44 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         sexField.setItemIcon(Sex.FEMALE, Fontello.FEMALE);
         personForm.addComponent(sexField);
 
-        birthdayField = new PopupDateField("Дата рождения");
+        birthdayField = new LocalDateField("Дата рождения", "Введите дату рождения контакта");
         birthdayField.setImmediate(true);
         birthdayField.setInputPrompt("31.12.1978");
-        birthdayField.setDescription("Введите дату рождения контакта");
         birthdayField.setDateFormat("dd.MM.yyyy");
         birthdayField.setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ");
         personForm.addComponent(birthdayField);
 
+        birthPlaceField = new CitySelect("Место рождения");
+        personForm.addComponent(birthPlaceField);
+
+        citizenshipField = new EditField("Гражданство", "Введите гражданство");
+        personForm.addComponent(citizenshipField);
+
+        changeNameField = new CheckBox("Менялась ли фамилия", false);
+        changeNameField.setDescription("Укажите менялась ли фамилия");
+        changeNameField.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(ValueChangeEvent event) {
+                Boolean isChangeName = (Boolean) event.getProperty().getValue();
+                if(isChangeName == null)
+                    isChangeName = false;
+                exNameField.setVisible(isChangeName);
+                changeNameDateField.setVisible(isChangeName);
+            }
+        });
+        personForm.addComponent(changeNameField);
+
+        exNameField = new EditField("Прежняя фамилия", "Укажите прежнюю (до смены) фамилию");
+        exNameField.setVisible(obj.isChangeName());
+        personForm.addComponent(exNameField);
+
+        changeNameDateField = new LocalDateField("Дата смены фамилии", "Укажите дату когда менялась фамилия");
+        changeNameDateField.setVisible(obj.isChangeName());
+        personForm.addComponent(changeNameDateField);
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        personForm.addComponent(new FormGroupHeader("Контактные данные"));
         cellPhoneField = new PhoneField("Мобильный телефон");
         personForm.addComponent(cellPhoneField);
 
@@ -170,9 +249,20 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         emailField = new EmailField("E-Mail");
         personForm.addComponent(emailField);
 
-        regionField = new RegionSelect();
-        regionField.setDescription("Укажите регион проживания");
-        regionField.addValueChangeListener(new ValueChangeListener() {
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        personForm.addComponent(new FormGroupHeader("Адрес по месту постоянной регистрации"));
+        regRealtyKindField = new ComboBox("Отношение к недвижимости");
+        regRealtyKindField.setWidth(15, Unit.EM);
+        regRealtyKindField.setMultiSelect(false);
+        regRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
+        regRealtyKindField.setNullSelectionAllowed(false);
+        regRealtyKindField.setNewItemsAllowed(false);
+        ComponentUtil.fillSelectByEnum(regRealtyKindField, RealtyKind.class);
+        personForm.addComponent(regRealtyKindField);
+
+        regRegionField = new RegionSelect();
+        regRegionField.setDescription("Укажите регион проживания");
+        regRegionField.addValueChangeListener(new ValueChangeListener() {
             private static final long serialVersionUID1 = 1L;
 
             @Override
@@ -180,16 +270,16 @@ public class PersonEditForm extends ExtaEditForm<Person> {
                 final String newRegion = (String) event.getProperty().getValue();
                 final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
                 if (city != null)
-                    cityField.setValue(city);
+                    regCityField.setValue(city);
             }
         });
-        personForm.addComponent(regionField);
+        personForm.addComponent(regRegionField);
 
-        cityField = new CitySelect();
-        cityField.setDescription("Введите город проживания контакта");
-        if (obj.getActualAddress().getCity() != null)
-            cityField.addItem(obj.getActualAddress().getCity());
-        cityField.addValueChangeListener(new ValueChangeListener() {
+        regCityField = new CitySelect();
+        regCityField.setDescription("Введите город проживания контакта");
+        if (obj.getRegAddress().getCity() != null)
+            regCityField.addItem(obj.getRegAddress().getCity());
+        regCityField.addValueChangeListener(new ValueChangeListener() {
             private static final long serialVersionUID1 = 1L;
 
             @Override
@@ -197,28 +287,166 @@ public class PersonEditForm extends ExtaEditForm<Person> {
                 final String newCity = (String) event.getProperty().getValue();
                 final String region = lookup(SupplementService.class).findRegionByCity(newCity);
                 if (region != null)
-                    regionField.setValue(region);
+                    regRegionField.setValue(region);
             }
         });
-        personForm.addComponent(cityField);
+        personForm.addComponent(regCityField);
 
-        postIndexField = new EditField("Почтовый индекс");
-        postIndexField.setColumns(8);
-        postIndexField.setInputPrompt("Индекс");
-        postIndexField.setNullRepresentation("");
-        personForm.addComponent(postIndexField);
+        regPostIndexField = new EditField("Почтовый индекс");
+        regPostIndexField.setColumns(8);
+        regPostIndexField.setInputPrompt("Индекс");
+        regPostIndexField.setNullRepresentation("");
+        personForm.addComponent(regPostIndexField);
 
-        streetBldField = new TextArea("Адрес");
-        streetBldField.setColumns(30);
-        streetBldField.setRows(5);
-        streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
-        streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
-        streetBldField.setNullRepresentation("");
-        personForm.addComponent(streetBldField);
+        regStreetBldField = new TextArea("Адрес");
+        regStreetBldField.setColumns(20);
+        regStreetBldField.setRows(2);
+        regStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
+        regStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
+        regStreetBldField.setNullRepresentation("");
+        personForm.addComponent(regStreetBldField);
 
-        // Форма редактирования паспортных данных
-        final FormLayout passForm = createPassForm();
-        tabsheet.addTab(passForm).setCaption("Паспортные данные");
+        regPeriodOfResidenceField = new ComboBox("Срок проживания");
+        regPeriodOfResidenceField.setWidth(15, Unit.EM);
+        regPeriodOfResidenceField.setMultiSelect(false);
+        regPeriodOfResidenceField.setDescription("Укажите срок проживания по данному адресу");
+        regPeriodOfResidenceField.setNullSelectionAllowed(false);
+        regPeriodOfResidenceField.setNewItemsAllowed(false);
+        ComponentUtil.fillSelectByEnum(regPeriodOfResidenceField, PeriodOfResidence.class);
+        personForm.addComponent(regPeriodOfResidenceField);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        personForm.addComponent(new FormGroupHeader("Адрес фактического проживания"));
+        regNactIsSameField = new CheckBox("Совпадает с адресом постоянной регистрации");
+        regNactIsSameField.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(ValueChangeEvent event) {
+                Boolean isRegIsAct = (Boolean) event.getProperty().getValue();
+                if(isRegIsAct == null)
+                    isRegIsAct = false;
+                setActualAdressStatus(isRegIsAct);
+            }
+        });
+        personForm.addComponent(regNactIsSameField);
+
+        actRealtyKindField = new ComboBox("Отношение к недвижимости");
+        actRealtyKindField.setWidth(15, Unit.EM);
+        actRealtyKindField.setMultiSelect(false);
+        actRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
+        actRealtyKindField.setNullSelectionAllowed(false);
+        actRealtyKindField.setNewItemsAllowed(false);
+        ComponentUtil.fillSelectByEnum(actRealtyKindField, RealtyKind.class);
+        personForm.addComponent(actRealtyKindField);
+
+        actRegionField = new RegionSelect();
+        actRegionField.setDescription("Укажите регион проживания");
+        actRegionField.addValueChangeListener(new ValueChangeListener() {
+            private static final long serialVersionUID1 = 1L;
+
+            @Override
+            public void valueChange(final ValueChangeEvent event) {
+                final String newRegion = (String) event.getProperty().getValue();
+                final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+                if (city != null)
+                    actCityField.setValue(city);
+            }
+        });
+        personForm.addComponent(actRegionField);
+
+        actCityField = new CitySelect();
+        actCityField.setDescription("Введите город проживания контакта");
+        if (obj.getRegAddress().getCity() != null)
+            actCityField.addItem(obj.getRegAddress().getCity());
+        actCityField.addValueChangeListener(new ValueChangeListener() {
+            private static final long serialVersionUID1 = 1L;
+
+            @Override
+            public void valueChange(final ValueChangeEvent event) {
+                final String newCity = (String) event.getProperty().getValue();
+                final String region = lookup(SupplementService.class).findRegionByCity(newCity);
+                if (region != null)
+                    actRegionField.setValue(region);
+            }
+        });
+        personForm.addComponent(actCityField);
+
+        actPostIndexField = new EditField("Почтовый индекс");
+        actPostIndexField.setColumns(8);
+        actPostIndexField.setInputPrompt("Индекс");
+        actPostIndexField.setNullRepresentation("");
+        personForm.addComponent(actPostIndexField);
+
+        actStreetBldField = new TextArea("Адрес");
+        actStreetBldField.setColumns(20);
+        actStreetBldField.setRows(2);
+        actStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
+        actStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
+        actStreetBldField.setNullRepresentation("");
+        personForm.addComponent(actStreetBldField);
+
+        actPeriodOfResidenceField = new ComboBox("Срок проживания");
+        actPeriodOfResidenceField.setWidth(15, Unit.EM);
+        actPeriodOfResidenceField.setMultiSelect(false);
+        actPeriodOfResidenceField.setDescription("Укажите срок проживания по данному адресу");
+        actPeriodOfResidenceField.setNullSelectionAllowed(false);
+        actPeriodOfResidenceField.setNewItemsAllowed(false);
+        ComponentUtil.fillSelectByEnum(actPeriodOfResidenceField, PeriodOfResidence.class);
+        personForm.addComponent(actPeriodOfResidenceField);
+        setActualAdressStatus(obj.isRegNactIsSame());
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        personForm.addComponent(new FormGroupHeader("Паспорт"));
+        passNumField = new EditField("Серия/номер");
+        passNumField.setColumns(20);
+        personForm.addComponent(passNumField);
+
+        passIssueDateField = new LocalDateField("Дата выдачи", "Дата выдачи документа");
+        personForm.addComponent(passIssueDateField);
+
+        passIssuedByField = new TextArea("Кем выдан");
+        passIssuedByField.setDescription("Наименование органа выдавшего документ");
+        passIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
+        passIssuedByField.setNullRepresentation("");
+        passIssuedByField.setRows(2);
+        passIssuedByField.setColumns(20);
+        personForm.addComponent(passIssuedByField);
+
+        passIssuedByNumField = new EditField("Код подразделения");
+        personForm.addComponent(passIssuedByNumField);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        personForm.addComponent(new FormGroupHeader("Водительское удостоверение"));
+        dlNumField = new EditField("Серия/номер");
+        dlNumField.setColumns(20);
+        personForm.addComponent(dlNumField);
+
+        dlIssueDateField = new LocalDateField("Дата выдачи", "Дата выдачи документа");
+        personForm.addComponent(dlIssueDateField);
+
+        dlIssuedByField = new TextArea("Кем выдан");
+        dlIssuedByField.setDescription("Наименование органа выдавшего документ");
+        dlIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
+        dlIssuedByField.setNullRepresentation("");
+        dlIssuedByField.setRows(2);
+        dlIssuedByField.setColumns(20);
+        personForm.addComponent(dlIssuedByField);
+
+        periodOfDrivingField = new EditField("Водительский стаж");
+        personForm.addComponent(periodOfDrivingField);
+
+        drivingCategoriesField = new OptionGroup("Открытые категории");
+        drivingCategoriesField.setMultiSelect(true);
+        drivingCategoriesField.addStyleName(ExtaTheme.OPTIONGROUP_HORIZONTAL);
+        drivingCategoriesField.setDescription("Укажите категории открытые в водительском удостоверении");
+        drivingCategoriesField.setNullSelectionAllowed(false);
+        drivingCategoriesField.setNewItemsAllowed(false);
+        drivingCategoriesField.addItem('A');
+        drivingCategoriesField.addItem('B');
+        drivingCategoriesField.addItem('C');
+        drivingCategoriesField.addItem('D');
+        drivingCategoriesField.addItem('E');
+        drivingCategoriesField.setConverter(new DrivingCategoriesConverter());
+        personForm.addComponent(drivingCategoriesField);
 
         // Форма просмотра истории продаж
         final FormLayout salesForm = createSalesForm();
@@ -230,6 +458,15 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         return personForm;
     }
 
+    public void setActualAdressStatus(Boolean isRegIsAct) {
+        actRegionField.setVisible(!isRegIsAct);
+        actCityField.setVisible(!isRegIsAct);
+        actPostIndexField.setVisible(!isRegIsAct);
+        actStreetBldField.setVisible(!isRegIsAct);
+        actRealtyKindField.setVisible(!isRegIsAct);
+        actPeriodOfResidenceField.setVisible(!isRegIsAct);
+    }
+
     private FormLayout createSalesForm() {
         final FormLayout form = new ExtaFormLayout();
         form.setMargin(true);
@@ -237,42 +474,41 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         return form;
     }
 
-    private FormLayout createPassForm() {
-        final FormLayout passForm = new ExtaFormLayout();
-        passForm.setMargin(true);
-
-        passNumField = new EditField("Номер паспорта");
-        passNumField.setColumns(20);
-        passForm.addComponent(passNumField);
-
-        passIssueDateField = new LocalDateField("Дата выдачи", "Дата выдачи документа");
-        passForm.addComponent(passIssueDateField);
-
-        passIssuedByField = new TextArea("Кем выдан");
-        passIssuedByField.setDescription("Наименование органа выдавшего документ");
-        passIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
-        passIssuedByField.setNullRepresentation("");
-        passIssuedByField.setRows(3);
-        passIssuedByField.setColumns(30);
-        passForm.addComponent(passIssuedByField);
-
-        passIssuedByNumField = new EditField("Код подразделения");
-        passForm.addComponent(passIssuedByNumField);
-
-        passRegAdressField = new TextArea("Адрес регистрации");
-        passRegAdressField.setDescription("Введите адрес регистрации (прописки) контакта");
-        passRegAdressField.setInputPrompt("Регион, Город, Улица, Дом...");
-        passRegAdressField.setNullRepresentation("");
-        passRegAdressField.setRows(3);
-        passRegAdressField.setColumns(30);
-        passForm.addComponent(passRegAdressField);
-
-        return passForm;
-    }
-
     private Component createDocsForm() {
         docFilesEditor = new DocFilesEditor(PersonFileContainer.class);
 
         return docFilesEditor;
+    }
+
+    private static class DrivingCategoriesConverter implements Converter<Object, String> {
+
+        @Override
+        public String convertToModel(Object value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+            String s = null;
+            if (value != null) {
+                Set<Character> set = (Set<Character>) value;
+                s = String.valueOf(Chars.toArray(set));
+            }
+            return s;
+        }
+
+        @Override
+        public Object convertToPresentation(String value, Class<?> targetType, Locale locale) throws ConversionException {
+            if (value != null) {
+                final HashSet hashSet = new HashSet(Lists.charactersOf(value));
+                return hashSet;
+            }
+            return null;
+        }
+
+        @Override
+        public Class<String> getModelType() {
+            return String.class;
+        }
+
+        @Override
+        public Class<Object> getPresentationType() {
+            return Object.class;
+        }
     }
 }

@@ -24,7 +24,7 @@ public class RootLayout extends HorizontalLayout {
         menuArea.setPrimaryStyleName(ExtaTheme.MENU_ROOT);
 
         contentArea.setPrimaryStyleName(ExtaTheme.MENU_CONTENT);
-        contentArea.addStyleName(ExtaTheme.V_SCROLLABLE);
+//        contentArea.addStyleName(ExtaTheme.V_SCROLLABLE);
         contentArea.setSizeFull();
 
         addComponents(menuArea, contentArea);

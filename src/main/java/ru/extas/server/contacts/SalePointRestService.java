@@ -47,7 +47,7 @@ public class SalePointRestService {
         public RestSalePoint(final SalePoint point) {
             id = point.getId();
             name = point.getName();
-            final AddressInfo address = point.getActualAddress();
+            final AddressInfo address = point.getRegAddress();
             if (address != null) {
                 region = address.getRegion();
                 city = address.getCity();

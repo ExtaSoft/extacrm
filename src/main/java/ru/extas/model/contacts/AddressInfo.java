@@ -2,6 +2,8 @@ package ru.extas.model.contacts;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
@@ -39,6 +41,13 @@ public class AddressInfo implements Serializable {
     @Max(255)
     private String streetBld;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "REALTY_KIND", length = 14)
+    private RealtyKind realtyKind;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "PERIOD_OF_RESIDENCE", length = 7)
+    private PeriodOfResidence periodOfResidence;
     /**
      * <p>Constructor for AddressInfo.</p>
      */
@@ -130,5 +139,21 @@ public class AddressInfo implements Serializable {
      */
     public void setStreetBld(final String streetBld) {
         this.streetBld = streetBld;
+    }
+
+    public RealtyKind getRealtyKind() {
+        return realtyKind;
+    }
+
+    public void setRealtyKind(RealtyKind realtyKind) {
+        this.realtyKind = realtyKind;
+    }
+
+    public PeriodOfResidence getPeriodOfResidence() {
+        return periodOfResidence;
+    }
+
+    public void setPeriodOfResidence(PeriodOfResidence periodOfResidence) {
+        this.periodOfResidence = periodOfResidence;
     }
 }

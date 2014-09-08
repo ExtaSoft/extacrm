@@ -158,13 +158,13 @@ public class SalePointSelect extends CustomField<SalePoint> {
 
         BeanItem<SalePoint> personItem = new BeanItem<>(salePoint);
         personItem.addNestedProperty("company.name");
-        personItem.addNestedProperty("actualAddress.streetBld");
+        personItem.addNestedProperty("regAddress.streetBld");
         // Компания
         companyField.setPropertyDataSource(personItem.getItemProperty("company.name"));
         // Телефон
         phoneField.setPropertyDataSource(personItem.getItemProperty("phone"));
         // Адрес
-        adressField.setPropertyDataSource(personItem.getItemProperty("actualAddress.streetBld"));
+        adressField.setPropertyDataSource(personItem.getItemProperty("regAddress.streetBld"));
     }
 
     /**

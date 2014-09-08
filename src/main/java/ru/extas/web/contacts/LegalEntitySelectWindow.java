@@ -66,14 +66,14 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
                         itemContainer.addBean(item);
                     }
                 }
-                itemContainer.addNestedContainerProperty("actualAddress.region");
+                itemContainer.addNestedContainerProperty("regAddress.region");
                 itemContainer.addNestedContainerProperty("company.name");
                 return itemContainer;
             } else {
                 final ExtaDataContainer<LegalEntity> container = new ExtaDataContainer<>(LegalEntity.class);
                 if (company != null)
                     container.addContainerFilter(new Compare.Equal("company", company));
-                container.addNestedContainerProperty("actualAddress.region");
+                container.addNestedContainerProperty("regAddress.region");
                 container.addNestedContainerProperty("company.name");
                 return container;
             }

@@ -7,7 +7,6 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Like;
 import com.vaadin.data.util.filter.Or;
-import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Person;
@@ -115,7 +114,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         person.setName(lead.getContactName());
         person.setPhone(lead.getContactPhone());
         person.setEmail(lead.getContactEmail());
-        person.setActualAddress(new AddressInfo(lead.getRegion(), null, null, null));
+        person.setRegAddress(new AddressInfo(lead.getRegion(), null, null, null));
         return person;
 
     }
@@ -123,7 +122,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private SalePoint createCompanyFromLead(Lead lead) {
         SalePoint salePoint = new SalePoint();
         salePoint.setName(lead.getPointOfSale());
-        salePoint.setActualAddress(new AddressInfo(lead.getRegion(), null, null, null));
+        salePoint.setRegAddress(new AddressInfo(lead.getRegion(), null, null, null));
         return salePoint;
     }
 
@@ -228,7 +227,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.setRequired(true);
         // Запрос данных
         vendorsContainer = new ExtaDataContainer<>(SalePoint.class);
-        vendorsContainer.addNestedContainerProperty("actualAddress.region");
+        vendorsContainer.addNestedContainerProperty("regAddress.region");
         setVendorsFilter();
 
         Button newBtn = new Button("Новый");
@@ -291,7 +290,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         // Запрос данных
         clientsContainer = new ExtaDataContainer<>(Person.class);
-        clientsContainer.addNestedContainerProperty("actualAddress.region");
+        clientsContainer.addNestedContainerProperty("regAddress.region");
         setClientsFilter(lead.getContactName());
 
         Button newBtn = new Button("Новый");

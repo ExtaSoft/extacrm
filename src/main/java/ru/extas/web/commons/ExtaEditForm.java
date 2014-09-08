@@ -7,6 +7,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.util.ReflectTools;
@@ -226,7 +227,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         if (content != null) {
             final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
             contentContainer.setSizeUndefined();
-//            contentContainer.setMargin(true);
+            contentContainer.setMargin(new MarginInfo(false, true, false, true));
             contentContainer.setSpacing(true);
             content = contentContainer;
         }

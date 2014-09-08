@@ -33,9 +33,9 @@ public abstract class Contact extends SecuredObject{
 	/** Constant <code>PHONE_LINGHT=20</code> */
 	public static final int PHONE_LINGHT = 20;
 
-	// Фактический адрес
-	@Embedded
-	private AddressInfo actualAddress;
+	// Адрес Регистрации
+	@Embedded()
+	private AddressInfo regAddress;
 
 	// Имя контакта
 	@Column(length = NAME_LENGTH)
@@ -135,21 +135,21 @@ public abstract class Contact extends SecuredObject{
 	}
 
 	/**
-	 * <p>Setter for the field <code>actualAddress</code>.</p>
+	 * <p>Setter for the field <code>regAddress</code>.</p>
 	 *
-	 * @param actualAddress a {@link ru.extas.model.contacts.AddressInfo} object.
+	 * @param regAddress a {@link ru.extas.model.contacts.AddressInfo} object.
 	 */
-	public void setActualAddress(final AddressInfo actualAddress) {
-		this.actualAddress = actualAddress;
+	public void setRegAddress(final AddressInfo regAddress) {
+		this.regAddress = regAddress;
 	}
 
 	/**
-	 * <p>Getter for the field <code>actualAddress</code>.</p>
+	 * <p>Getter for the field <code>regAddress</code>.</p>
 	 *
 	 * @return a {@link ru.extas.model.contacts.AddressInfo} object.
 	 */
-	public AddressInfo getActualAddress() {
-		return actualAddress;
+	public AddressInfo getRegAddress() {
+		return regAddress;
 	}
 
 	/**

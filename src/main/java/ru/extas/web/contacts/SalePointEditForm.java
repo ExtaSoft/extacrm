@@ -49,13 +49,13 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     private EditField emailField;
     @PropertyId("www")
     private EditField wwwField;
-    @PropertyId("actualAddress.region")
+    @PropertyId("regAddress.region")
     private ComboBox regionField;
-    @PropertyId("actualAddress.city")
+    @PropertyId("regAddress.city")
     private ComboBox cityField;
-    @PropertyId("actualAddress.postIndex")
+    @PropertyId("regAddress.postIndex")
     private EditField postIndexField;
-    @PropertyId("actualAddress.streetBld")
+    @PropertyId("regAddress.streetBld")
     private TextArea streetBldField;
     @PropertyId("legalEntities")
     private LegalEntitiesSelectField legalsField;
@@ -76,7 +76,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     public SalePointEditForm(SalePoint salePoint) {
         super(salePoint.isNew() ? "Ввод новой торговой точки в систему" : "Редактирование данных торговой точки");
         final BeanItem beanItem = new BeanItem<>(salePoint);
-        beanItem.expandProperty("actualAddress");
+        beanItem.expandProperty("regAddress");
 
         initForm(beanItem);
     }
@@ -107,8 +107,8 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
-        if (obj.getActualAddress() == null)
-            obj.setActualAddress(new AddressInfo());
+        if (obj.getRegAddress() == null)
+            obj.setRegAddress(new AddressInfo());
     }
 
 
@@ -240,7 +240,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
         cityField = new CitySelect();
         cityField.setDescription("Введите город регистрации");
-        if (obj.getActualAddress().getCity() != null) cityField.addItem(obj.getActualAddress().getCity());
+        if (obj.getRegAddress().getCity() != null) cityField.addItem(obj.getRegAddress().getCity());
         cityField.addValueChangeListener(new Property.ValueChangeListener() {
             private static final long serialVersionUID = 1L;
 

@@ -81,13 +81,13 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     protected Collection<String> getObjectRegions(Sale sale) {
         Set<String> regions = newHashSet();
         if(sale.getClient() != null
-                && sale.getClient().getActualAddress() != null
-                && !isNullOrEmpty(sale.getClient().getActualAddress().getRegion()))
-            regions.add(sale.getClient().getActualAddress().getRegion());
+                && sale.getClient().getRegAddress() != null
+                && !isNullOrEmpty(sale.getClient().getRegAddress().getRegion()))
+            regions.add(sale.getClient().getRegAddress().getRegion());
         if(sale.getDealer() != null
-                && sale.getDealer().getActualAddress() != null
-                && !isNullOrEmpty(sale.getDealer().getActualAddress().getRegion()))
-            regions.add(sale.getDealer().getActualAddress().getRegion());
+                && sale.getDealer().getRegAddress() != null
+                && !isNullOrEmpty(sale.getDealer().getRegAddress().getRegion()))
+            regions.add(sale.getDealer().getRegAddress().getRegion());
         return regions;
     }
 

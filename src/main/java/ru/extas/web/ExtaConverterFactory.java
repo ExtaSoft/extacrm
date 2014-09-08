@@ -4,8 +4,10 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.DefaultConverterFactory;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import ru.extas.model.contacts.PeriodOfResidence;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.Person.Sex;
+import ru.extas.model.contacts.RealtyKind;
 import ru.extas.model.insurance.A7Form;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.insurance.Policy;
@@ -17,8 +19,10 @@ import ru.extas.model.security.SecureAction;
 import ru.extas.model.security.SecureTarget;
 import ru.extas.model.security.UserRole;
 import ru.extas.web.commons.converters.*;
+import ru.extas.web.contacts.StringToPeriodOfResidence;
 import ru.extas.web.contacts.StringToPersonPosition;
 import ru.extas.web.contacts.StringToPersonSex;
+import ru.extas.web.contacts.StringToRealtyKind;
 import ru.extas.web.insurance.StringToA7FormConverter;
 import ru.extas.web.insurance.StringToA7StatusConverter;
 import ru.extas.web.insurance.StringToPeriodOfCoverConverter;
@@ -129,6 +133,14 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 		// Конвертер целевых объектов правила доступа
 		if (presentationType == String.class && modelType == SecureTarget.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToSecureTargetConverter.class);
+
+		// Конвертер отношение к объекту недвижимости
+		if (presentationType == String.class && modelType == RealtyKind.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToRealtyKind.class);
+
+		// Конвертер срока проживания
+		if (presentationType == String.class && modelType == PeriodOfResidence.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToPeriodOfResidence.class);
 
 		// Let default factory handle the rest
 		return super.findConverter(presentationType, modelType);

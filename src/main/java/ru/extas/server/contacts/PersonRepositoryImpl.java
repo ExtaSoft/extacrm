@@ -43,8 +43,8 @@ public class PersonRepositoryImpl extends AbstractSecuredRepository<Person> {
     /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectRegions(Person person) {
-        if(person.getActualAddress() != null && !isNullOrEmpty(person.getActualAddress().getRegion()))
-            return newHashSet(person.getActualAddress().getRegion());
+        if(person.getRegAddress() != null && !isNullOrEmpty(person.getRegAddress().getRegion()))
+            return newHashSet(person.getRegAddress().getRegion());
         return null;
     }
 }

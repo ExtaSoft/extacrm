@@ -34,6 +34,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
 
         private ContentContainer() {
             setSizeFull();
+            addStyleName(ExtaTheme.V_SCROLLABLE);
             addComponent(tabsheet);
         }
 

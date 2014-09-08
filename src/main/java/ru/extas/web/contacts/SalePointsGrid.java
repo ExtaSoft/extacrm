@@ -61,7 +61,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 	protected Container createContainer() {
 		// Запрос данных
 		final ExtaDataContainer<SalePoint> container = new SecuredDataContainer<>(SalePoint.class, ExtaDomain.SALE_POINT);
-		container.addNestedContainerProperty("actualAddress.region");
+		container.addNestedContainerProperty("regAddress.region");
 		container.addNestedContainerProperty("company.name");
 		if (company != null)
 			container.addContainerFilter(new Compare.Equal("company", company));

@@ -30,7 +30,7 @@ public class CitySelect extends ComboBox {
         setNullSelectionAllowed(false);
         setFilteringMode(FilteringMode.CONTAINS);
         lookup(SupplementService.class).loadCities().forEach((final String item) -> addItem(item));
-
+        setWidth(15, Unit.EM);
     }
 
     /**

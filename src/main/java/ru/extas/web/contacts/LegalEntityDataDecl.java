@@ -28,7 +28,7 @@ public class LegalEntityDataDecl extends GridDataDecl {
 		addMapping("phone", "Телефон", PhoneConverter.class);
 		addMapping("email", "E-Mail");
 		addMapping("www", "WWW");
-		addMapping("actualAddress.region", "Регион");
+		addMapping("regAddress.region", "Регион");
 		super.addDefaultMappings();
 	}
 

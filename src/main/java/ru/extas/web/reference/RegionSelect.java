@@ -32,7 +32,7 @@ public class RegionSelect extends ComboBox {
         setNullSelectionAllowed(false);
         setNewItemsAllowed(false);
         setFilteringMode(FilteringMode.CONTAINS);
-        setWidth(18, Unit.EM);
+        setWidth(15, Unit.EM);
         lookup(SupplementService.class).loadRegions().forEach((final String item) -> addItem(item));
     }
 

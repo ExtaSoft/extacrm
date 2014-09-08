@@ -88,13 +88,13 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     protected Collection<String> getObjectRegions(Lead lead) {
         Set<String> regions = newHashSet();
         if(lead.getClient() != null
-                && lead.getClient().getActualAddress() != null
-                && !isNullOrEmpty(lead.getClient().getActualAddress().getRegion()))
-            regions.add(lead.getClient().getActualAddress().getRegion());
+                && lead.getClient().getRegAddress() != null
+                && !isNullOrEmpty(lead.getClient().getRegAddress().getRegion()))
+            regions.add(lead.getClient().getRegAddress().getRegion());
         if(lead.getVendor() != null
-                && lead.getVendor().getActualAddress() != null
-                && !isNullOrEmpty(lead.getVendor().getActualAddress().getRegion()))
-            regions.add(lead.getVendor().getActualAddress().getRegion());
+                && lead.getVendor().getRegAddress() != null
+                && !isNullOrEmpty(lead.getVendor().getRegAddress().getRegion()))
+            regions.add(lead.getVendor().getRegAddress().getRegion());
         return regions;
     }
 

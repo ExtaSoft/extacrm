@@ -96,7 +96,7 @@ public class ContactEmployeeField extends CustomField<Set> {
                 container.addBean(doc);
             }
         }
-        container.addNestedContainerProperty("actualAddress.region");
+        container.addNestedContainerProperty("regAddress.region");
         table.setContainerDataSource(container);
 
         final GridDataDecl dataDecl = new PersonDataDecl();

@@ -43,7 +43,7 @@ public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenera
                 FormUtils.showModalWin(editWin);
 
             });
-            region = salePoint.getActualAddress().getRegion();
+            region = salePoint.getRegAddress().getRegion();
         } else if (salePointNamePropId != null) {
             region = nullToEmpty((String) item.getItemProperty(regionPropId).getValue());
             link.setCaption(nullToEmpty((String) item.getItemProperty(salePointNamePropId).getValue()));

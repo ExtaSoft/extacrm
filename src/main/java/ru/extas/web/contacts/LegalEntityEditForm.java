@@ -26,7 +26,6 @@ import ru.extas.web.motor.BrandsField;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -59,13 +58,13 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     private EditField emailField;
     @PropertyId("www")
     private EditField wwwField;
-    @PropertyId("actualAddress.region")
+    @PropertyId("regAddress.region")
     private ComboBox regionField;
-    @PropertyId("actualAddress.city")
+    @PropertyId("regAddress.city")
     private ComboBox cityField;
-    @PropertyId("actualAddress.postIndex")
+    @PropertyId("regAddress.postIndex")
     private EditField postIndexField;
-    @PropertyId("actualAddress.streetBld")
+    @PropertyId("regAddress.streetBld")
     private TextArea streetBldField;
     @PropertyId("director")
     private PersonSelect directorField;
@@ -84,7 +83,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
                 "Редактирование юр. лица");
 
         final BeanItem<LegalEntity> beanItem = new BeanItem<>(legalEntity);
-        beanItem.expandProperty("actualAddress");
+        beanItem.expandProperty("regAddress");
 
         this.legalEntity = legalEntity;
         initForm(beanItem);
@@ -116,8 +115,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
-        if (obj.getActualAddress() == null)
-            obj.setActualAddress(new AddressInfo());
+        if (obj.getRegAddress() == null)
+            obj.setRegAddress(new AddressInfo());
     }
 
 
@@ -235,7 +234,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
         cityField = new CitySelect();
         cityField.setDescription("Введите город регистрации");
-        if (obj.getActualAddress().getCity() != null) cityField.addItem(obj.getActualAddress().getCity());
+        if (obj.getRegAddress().getCity() != null) cityField.addItem(obj.getRegAddress().getCity());
         cityField.addValueChangeListener(new ValueChangeListener() {
             private static final long serialVersionUID = 1L;
 

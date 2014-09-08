@@ -50,13 +50,13 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     private EditField emailField;
     @PropertyId("www")
     private EditField wwwField;
-    @PropertyId("actualAddress.region")
+    @PropertyId("regAddress.region")
     private ComboBox regionField;
-    @PropertyId("actualAddress.city")
+    @PropertyId("regAddress.city")
     private ComboBox cityField;
-    @PropertyId("actualAddress.postIndex")
+    @PropertyId("regAddress.postIndex")
     private EditField postIndexField;
-    @PropertyId("actualAddress.streetBld")
+    @PropertyId("regAddress.streetBld")
     private TextArea streetBldField;
 
     // Вкладка - "Владельцы"
@@ -81,7 +81,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
                 "Ввод новой компании в систему" :
                 String.format("Редактирование компании: %s", company.getName()));
         final BeanItem<Company> beanItem = new BeanItem<>(company);
-        beanItem.expandProperty("actualAddress");
+        beanItem.expandProperty("regAddress");
 
         initForm(beanItem);
     }
@@ -93,8 +93,8 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
-        if (obj.getActualAddress() == null)
-            obj.setActualAddress(new AddressInfo());
+        if (obj.getRegAddress() == null)
+            obj.setRegAddress(new AddressInfo());
     }
 
     /** {@inheritDoc} */
@@ -219,7 +219,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
         cityField = new CitySelect();
         cityField.setDescription("Введите город регистрации");
-        if (obj.getActualAddress().getCity() != null) cityField.addItem(obj.getActualAddress().getCity());
+        if (obj.getRegAddress().getCity() != null) cityField.addItem(obj.getRegAddress().getCity());
         cityField.addValueChangeListener(new ValueChangeListener() {
             private static final long serialVersionUID = 1L;
 

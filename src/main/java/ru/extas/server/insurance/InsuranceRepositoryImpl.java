@@ -74,13 +74,13 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
     protected Collection<String> getObjectRegions(Insurance insurance) {
         Set<String> regions = newHashSet();
         if(insurance.getClient() != null
-                && insurance.getClient().getActualAddress() != null
-                && !isNullOrEmpty(insurance.getClient().getActualAddress().getRegion()))
-            regions.add(insurance.getClient().getActualAddress().getRegion());
+                && insurance.getClient().getRegAddress() != null
+                && !isNullOrEmpty(insurance.getClient().getRegAddress().getRegion()))
+            regions.add(insurance.getClient().getRegAddress().getRegion());
         if(insurance.getDealer() != null
-                && insurance.getDealer().getActualAddress() != null
-                && !isNullOrEmpty(insurance.getDealer().getActualAddress().getRegion()))
-            regions.add(insurance.getDealer().getActualAddress().getRegion());
+                && insurance.getDealer().getRegAddress() != null
+                && !isNullOrEmpty(insurance.getDealer().getRegAddress().getRegion()))
+            regions.add(insurance.getDealer().getRegAddress().getRegion());
         return regions;
     }
 

@@ -96,7 +96,7 @@ NotificationUtil.showSuccess("Владелец добавлен");
 				container.addBean(item);
 			}
 		}
-		container.addNestedContainerProperty("actualAddress.region");
+		container.addNestedContainerProperty("regAddress.region");
 		table.setContainerDataSource(container);
 
 		final GridDataDecl dataDecl = new PersonDataDecl();

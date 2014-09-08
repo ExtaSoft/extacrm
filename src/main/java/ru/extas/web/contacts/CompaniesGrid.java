@@ -46,7 +46,7 @@ public class CompaniesGrid extends ExtaGrid<Company> {
 	protected Container createContainer() {
 		// Запрос данных
 		final ExtaDataContainer<Company> container = new SecuredDataContainer<>(Company.class, ExtaDomain.COMPANY);
-		container.addNestedContainerProperty("actualAddress.region");
+		container.addNestedContainerProperty("regAddress.region");
 		return container;
 	}
 

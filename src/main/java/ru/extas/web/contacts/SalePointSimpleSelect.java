@@ -47,7 +47,7 @@ public class SalePointSimpleSelect extends AbstractContactSelect<SalePoint> {
         if (company != null)
             container.addContainerFilter(new Compare.Equal("company", company));
         if (region != null)
-            container.addContainerFilter(new Compare.Equal("actualAddress.region", region));
+            container.addContainerFilter(new Compare.Equal("regAddress.region", region));
         refreshContainer();
     }
 }
