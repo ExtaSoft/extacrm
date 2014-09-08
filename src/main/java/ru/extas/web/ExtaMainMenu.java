@@ -16,6 +16,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.ExtaUri;
 
 import java.util.EnumSet;
@@ -110,14 +111,14 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
             Button b = new Button(name);
             b.setIcon(btnIcon);
             b.setDescription(desc);
-            b.setPrimaryStyleName("valo-menu-item");
+            b.setPrimaryStyleName(ExtaTheme.MENU_ITEM);
             b.addClickListener(new ClickListener() {
                 private static final long serialVersionUID = 1L;
 
                 @Override
                 public void buttonClick(ClickEvent event) {
                     clearMenuSelection();
-                    event.getButton().addStyleName("selected");
+                    event.getButton().addStyleName(ExtaTheme.SELECTED);
                     if (!navigator.getState().equals(normFragment))
                         navigator.navigateTo(normFragment);
                 }
@@ -132,7 +133,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
     private void clearMenuSelection() {
         for (Component next : this) {
             if (next instanceof Button) {
-                next.removeStyleName("selected");
+                next.removeStyleName(ExtaTheme.SELECTED);
             }
         }
     }
@@ -152,7 +153,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
 
         Button selButton = fragmentToButton.get(uri.getDomainPrefix());
         if (selButton != null)
-            selButton.addStyleName("selected");
+            selButton.addStyleName(ExtaTheme.SELECTED);
 
         if(navigate)
             navigator.navigateTo(uriFragment);

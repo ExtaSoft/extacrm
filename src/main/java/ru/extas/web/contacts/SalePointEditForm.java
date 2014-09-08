@@ -135,7 +135,6 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     @Override
     protected ComponentContainer createEditFields(final SalePoint obj) {
         TabSheet tabsheet = new TabSheet();
-//        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

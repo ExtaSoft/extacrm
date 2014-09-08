@@ -2,6 +2,7 @@ package ru.extas.web.product;
 
 import ru.extas.model.sale.Product;
 import ru.extas.web.commons.DefaultAction;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
@@ -31,7 +32,7 @@ public class ProductSelectWindow extends CloseOnlylWindow {
 	 */
 	public ProductSelectWindow(final String caption) {
 		super(caption);
-		addStyleName("base-view");
+		addStyleName(ExtaTheme.BASE_VIEW);
 		setContent(new SelectGrid());
 	}
 

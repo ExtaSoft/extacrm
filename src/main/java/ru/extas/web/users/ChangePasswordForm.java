@@ -9,12 +9,14 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PasswordField;
+import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.ExtaFormLayout;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -76,6 +78,8 @@ public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
         final FormLayout form = new ExtaFormLayout();
 
         passField = new PasswordField("Пароль");
+//        passField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        passField.setIcon(Fontello.LOCK);
         passField.setImmediate(true);
         passField.setDescription("Введите пароль для входа в систему");
         passField.setInputPrompt("Пароль");
@@ -85,6 +89,8 @@ public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
         form.addComponent(passField);
 
         passConfField = new PasswordField("Подтверждение пароля");
+//        passConfField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        passConfField.setIcon(Fontello.LOCK);
         passConfField.setImmediate(true);
         passConfField.setDescription("Введите повторно пароль для для его подтвержедения");
         passConfField.setInputPrompt("Подтверждение пароля");

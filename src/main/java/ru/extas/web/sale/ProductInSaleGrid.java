@@ -9,6 +9,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 
@@ -59,7 +60,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 
 		if (!isReadOnly()) {
 			final HorizontalLayout commandBar = new HorizontalLayout();
-			commandBar.addStyleName("configure");
+			commandBar.addStyleName(ExtaTheme.CONFIGURE);
 			commandBar.setSpacing(true);
 
 			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {

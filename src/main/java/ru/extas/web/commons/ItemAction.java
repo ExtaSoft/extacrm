@@ -13,6 +13,7 @@ import com.vaadin.ui.Component;
  * @since 0.3
  */
 public abstract class ItemAction extends UIAction {
+
     /**
      * <p>Constructor for ItemAction.</p>
      *  @param name a {@link String} object.
@@ -27,7 +28,7 @@ public abstract class ItemAction extends UIAction {
     @Override
     public Component createButton() {
         Component button = super.createButton();
-        button.addStyleName("item-action");
+        button.addStyleName(ExtaTheme.ITEM_ACTION);
         return button;
     }
 }

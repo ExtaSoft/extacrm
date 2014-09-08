@@ -33,7 +33,7 @@ public class ExtaPermissionField extends CustomField<Set> {
 
     private ExtaPermissionField() {
         setBuffered(true);
-        addStyleName("inline-base-view");
+        addStyleName(ExtaTheme.INLINE_BASE_VIEW);
         setSizeFull();
         setWidth(600, Unit.PIXELS);
     }

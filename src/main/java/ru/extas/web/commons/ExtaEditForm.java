@@ -171,7 +171,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
             }
 
         });
-        okBtn.addStyleName("primary");
+        okBtn.addStyleName(ExtaTheme.BUTTON_PRIMARY);
         okBtn.setIcon(Fontello.OK);
         okBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
 
@@ -180,7 +180,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
 
         buttonsPanel = new HorizontalLayout(footerText, okBtn, cancelBtn);
         buttonsPanel.setExpandRatio(footerText, 1);
-        buttonsPanel.addStyleName("v-window-bottom-toolbar");
+        buttonsPanel.addStyleName(ExtaTheme.WINDOW_BOTTOM_TOOLBAR);
         buttonsPanel.setWidth(100, Unit.PERCENTAGE);
         buttonsPanel.setSpacing(true);
 
@@ -226,7 +226,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         if (content != null) {
             final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
             contentContainer.setSizeUndefined();
-            contentContainer.setMargin(true);
+//            contentContainer.setMargin(true);
             contentContainer.setSpacing(true);
             content = contentContainer;
         }

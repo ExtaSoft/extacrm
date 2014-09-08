@@ -22,7 +22,7 @@ public class NotificationUtil {
     /**
      * <p>showErrors.</p>
      *
-     * @param caption a {@link java.lang.String} object.
+     * @param caption  a {@link java.lang.String} object.
      * @param messages a {@link java.util.List} object.
      */
     public static void showErrors(final String caption, final List<String> messages) {
@@ -38,7 +38,10 @@ public class NotificationUtil {
 
     public static void showError(final String caption, final String description) {
         final Notification notify = new Notification(caption, description, Notification.Type.ERROR_MESSAGE);
-        notify.setStyleName("error failure closable");
+        notify.setStyleName(
+                ExtaTheme.NOTIFICATION_ERROR + " " +
+                        ExtaTheme.NOTIFICATION_FAILURE + " " +
+                        ExtaTheme.NOTIFICATION_CLOSABLE);
         notify.setPosition(Position.MIDDLE_CENTER);
         notify.setHtmlContentAllowed(true);
         notify.show(Page.getCurrent());
@@ -46,7 +49,8 @@ public class NotificationUtil {
 
     public static void showWarning(final String caption, final String description) {
         final Notification notify = new Notification(caption, description, Notification.Type.WARNING_MESSAGE);
-        notify.setStyleName("warning closable");
+        notify.setStyleName(ExtaTheme.NOTIFICATION_WARNING + " " +
+                ExtaTheme.NOTIFICATION_CLOSABLE);
         notify.setPosition(Position.MIDDLE_CENTER);
         notify.setHtmlContentAllowed(true);
         notify.show(Page.getCurrent());
@@ -59,7 +63,10 @@ public class NotificationUtil {
 
     public static void showSuccess(final String caption, final String description) {
         final Notification notify = new Notification(caption, description, Notification.Type.TRAY_NOTIFICATION);
-        notify.setStyleName("tray success closable");
+        notify.setStyleName(
+                ExtaTheme.NOTIFICATION_TRAY + " " +
+                        ExtaTheme.NOTIFICATION_SUCCESS + " " +
+                        ExtaTheme.NOTIFICATION_CLOSABLE);
         notify.setHtmlContentAllowed(true);
         notify.show(Page.getCurrent());
     }
@@ -70,7 +77,7 @@ public class NotificationUtil {
 
     public static void show(final String caption, final String description) {
         final Notification notify = new Notification(caption, description, Notification.Type.HUMANIZED_MESSAGE);
-        notify.setStyleName("closable");
+        notify.setStyleName(ExtaTheme.NOTIFICATION_CLOSABLE);
         notify.setHtmlContentAllowed(true);
         notify.show(Page.getCurrent());
     }

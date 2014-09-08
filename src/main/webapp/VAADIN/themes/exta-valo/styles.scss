@@ -43,6 +43,7 @@
       padding: 2px;
     }
   }
+
   .v-customcomponent-bordered-component {
     border-radius: 6px;
     border: 2px solid rgba(51, 50, 49, 0.07);
@@ -86,4 +87,5 @@
     }
   }
 
+  @include valo-formlayout-margin($v-layout-margin-top);
 }

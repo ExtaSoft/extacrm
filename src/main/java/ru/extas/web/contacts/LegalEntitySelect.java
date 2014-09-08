@@ -5,6 +5,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
@@ -48,7 +49,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         setCaption(caption);
         setDescription(description);
         setBuffered(true);
-        addStyleName("bordered-component");
+        addStyleName(ExtaTheme.BORDERED_COMPONENT);
     }
 
     /** {@inheritDoc} */
@@ -58,7 +59,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         container.setSpacing(true);
 
         CssLayout nameLay = new CssLayout();
-        nameLay.addStyleName("v-component-group");
+        nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
         selectField = new LESelectField("Название", "Введите или выберите название юридического лица");
         selectField.setInputPrompt("ООО \"Рога и Копыта\"");
@@ -101,7 +102,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
 
         });
         searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
-        searchBtn.addStyleName("icon-only");
+        searchBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         nameLay.addComponent(searchBtn);
 
         viewBtn = new Button("Просмотр", event -> {
@@ -118,8 +119,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
             FormUtils.showModalWin(editWin);
         });
         viewBtn.setIcon(Fontello.EDIT_3);
-        viewBtn.addStyleName("last");
-        viewBtn.addStyleName("icon-only");
+        viewBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         nameLay.addComponent(viewBtn);
         container.addComponent(nameLay);
 

@@ -12,6 +12,7 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.themes.ValoTheme;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -23,10 +24,7 @@ import org.springframework.stereotype.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
-import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.Fontello;
-import ru.extas.web.commons.FormUtils;
-import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.*;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
@@ -55,7 +53,7 @@ import static ru.extas.web.UiUtils.initUi;
  */
 @Component
 @Scope("session")
-@Theme("exta-valo")
+@Theme(ExtaTheme.NAME)
 @Title("Extreme Assistance CRM")
 //@Push(PushMode.AUTOMATIC)
 public class ExtaCrmUI extends UI {
@@ -94,27 +92,24 @@ public class ExtaCrmUI extends UI {
         loginPanel.setSizeUndefined();
 
         final TextField username = new TextField("Пользователь");
+//        username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        username.setIcon(Fontello.AT);
         username.setColumns(20);
         username.focus();
 
         final PasswordField password = new PasswordField("Пароль");
+//        password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        password.setIcon(Fontello.LOCK);
         password.setColumns(20);
 
         final Button signin = new Button("Войти");
-        signin.addStyleName("primary");
+        signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         FormLayout loginForm = new FormLayout(username, password, signin);
         loginForm.setSizeUndefined();
         loginForm.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
-        //fields.addComponent(loginForm);
-
 
         final ShortcutListener enter = new ShortcutListener("Войти", KeyCode.ENTER, null) {
-            /**
-             *
-             */
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void handleAction(final Object sender, final Object target) {
                 signin.click();
@@ -122,11 +117,6 @@ public class ExtaCrmUI extends UI {
         };
 
         signin.addClickListener(new ClickListener() {
-            /**
-             *
-             */
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void buttonClick(final ClickEvent event) {
                 UserManagementService userService = lookup(UserManagementService.class);
@@ -195,7 +185,7 @@ public class ExtaCrmUI extends UI {
 
         VerticalLayout loginRoot = new VerticalLayout();
         loginRoot.setSizeFull();
-        loginRoot.setPrimaryStyleName("login-view");
+        loginRoot.setPrimaryStyleName(ExtaTheme.LOGIN_VIEW);
         loginRoot.addComponent(loginPanel);
         loginRoot.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
         setContent(loginRoot);
@@ -226,8 +216,8 @@ public class ExtaCrmUI extends UI {
         final VerticalLayout userMenu = new VerticalLayout();
         userMenu.setSizeUndefined();
         final Button profilePic = new Button(FontAwesome.USER);
-        profilePic.addStyleName("link");
-        profilePic.addStyleName("avatar");
+        profilePic.addStyleName(ValoTheme.BUTTON_LINK);
+        profilePic.addStyleName(ExtaTheme.AVATAR);
         String login = lookup(UserManagementService.class).getCurrentUserLogin();
         final Label userName = new Label(new ObjectProperty(login));
         userName.setSizeUndefined();
@@ -238,7 +228,7 @@ public class ExtaCrmUI extends UI {
 
         Button exit = new Button("Выход", FontAwesome.SIGN_OUT);
         exit.setDescription("Выход из системы");
-        exit.addStyleName("link");
+        exit.addStyleName(ValoTheme.BUTTON_LINK);
         exit.addClickListener(event -> {
             lookup(UserManagementService.class).logout();
             // Close the VaadinServiceSession

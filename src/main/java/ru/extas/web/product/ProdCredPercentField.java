@@ -9,6 +9,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditPercent;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.StringToPercentConverter;
@@ -57,7 +58,7 @@ public class ProdCredPercentField extends CustomField<List> {
 
         if (!isReadOnly()) {
             final HorizontalLayout commandBar = new HorizontalLayout();
-            commandBar.addStyleName("configure");
+            commandBar.addStyleName(ExtaTheme.CONFIGURE);
             commandBar.setSpacing(true);
 
             final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {

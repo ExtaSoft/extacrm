@@ -10,6 +10,7 @@ import com.vaadin.ui.Label;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.web.commons.ExtaAbstractView;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 
 /**
@@ -30,7 +31,7 @@ public class LoansView extends ExtaAbstractView {
         logger.info("Creating view content...");
         final Component title = new Label("Скоро будет реализовано...");
         title.setSizeUndefined();
-        title.addStyleName("view-title");
+        title.addStyleName(ExtaTheme.VIEW_TITLE);
         title.setIcon(Fontello.WRENCH_1);
                 HorizontalLayout l = new HorizontalLayout(title);
         l.setSizeFull();
@@ -43,7 +44,7 @@ public class LoansView extends ExtaAbstractView {
     protected Component createTitle() {
         final Component title = new Label("Кредитование");
         title.setSizeUndefined();
-        title.addStyleName("view-title");
+        title.addStyleName(ExtaTheme.VIEW_TITLE);
         return title;
     }
 

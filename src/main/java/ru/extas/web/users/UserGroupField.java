@@ -8,10 +8,7 @@ import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import ru.extas.model.security.UserGroup;
-import ru.extas.web.commons.Fontello;
-import ru.extas.web.commons.ItemAction;
-import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -38,7 +35,7 @@ public class UserGroupField extends CustomField<Set> {
      */
     public UserGroupField() {
         setBuffered(true);
-        addStyleName("base-view");
+        addStyleName(ExtaTheme.BASE_VIEW);
         setSizeFull();
         setWidth(600, Unit.PIXELS);
     }

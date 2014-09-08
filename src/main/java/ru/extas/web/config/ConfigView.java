@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.server.security.PermissionService;
 import ru.extas.web.commons.ExtaAbstractView;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -33,8 +34,8 @@ public class ConfigView extends ExtaAbstractView {
         final Button updateBtn = new Button("Обновить права доступа", event -> updateDataBase());
         final Component title = new Label("Скоро будет реализовано...");
         title.setSizeUndefined();
-        title.addStyleName("view-title");
-        title.setIcon(Fontello.WRENCH_1);
+        title.addStyleName(ExtaTheme.VIEW_TITLE);
+                title.setIcon(Fontello.WRENCH_1);
         HorizontalLayout l = new HorizontalLayout(title);
         //l.addComponent(updateBtn);
         l.setSizeFull();
@@ -51,7 +52,7 @@ public class ConfigView extends ExtaAbstractView {
     protected Component createTitle() {
         final Component title = new Label("Настройки");
         title.setSizeUndefined();
-        title.addStyleName("view-title");
+        title.addStyleName(ExtaTheme.VIEW_TITLE);
         return title;
     }
 

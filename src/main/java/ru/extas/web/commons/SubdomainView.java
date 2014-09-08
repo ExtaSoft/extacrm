@@ -247,7 +247,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
     protected Component createTitle() {
         title = new Label(titleCaption);
         title.setSizeUndefined();
-        title.addStyleName("view-title");
+        title.addStyleName(ExtaTheme.VIEW_TITLE);
         return title;
     }
 }

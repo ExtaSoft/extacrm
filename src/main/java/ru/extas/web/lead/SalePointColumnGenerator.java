@@ -5,6 +5,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.contacts.SalePointEditForm;
@@ -32,7 +33,7 @@ public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenera
     public Object generateCell(Object columnId, Item item) {
         String region = "";
         Button link = new Button();
-        link.addStyleName("link");
+        link.addStyleName(ExtaTheme.BUTTON_LINK);
         final SalePoint salePoint = (SalePoint) item.getItemProperty(salePointPropId).getValue();
         if (salePoint != null) {
             link.setCaption(salePoint.getName());

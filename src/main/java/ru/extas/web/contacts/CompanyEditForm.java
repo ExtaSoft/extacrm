@@ -116,7 +116,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     @Override
     protected ComponentContainer createEditFields(final Company obj) {
         TabSheet tabsheet = new TabSheet();
-//        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

@@ -2,6 +2,7 @@ package ru.extas.web.users;
 
 import ru.extas.model.security.UserGroup;
 import ru.extas.web.commons.DefaultAction;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
@@ -32,7 +33,7 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
      */
     public UserGroupSelectWindow(String caption) {
         super(caption);
-        addStyleName("base-view");
+        addStyleName(ExtaTheme.BASE_VIEW);
         setContent(new UserGroupGrid() {
 
 //            @Override

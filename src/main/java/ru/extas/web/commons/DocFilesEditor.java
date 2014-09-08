@@ -42,7 +42,7 @@ public class DocFilesEditor<TFileContainer extends FileContainer> extends Custom
     public DocFilesEditor(Class<TFileContainer> containerClass) {
         this.containerClass = containerClass;
         setBuffered(true);
-        addStyleName("base-view");
+        addStyleName(ExtaTheme.BASE_VIEW);
         setSizeUndefined();
         setWidth(700, Unit.PIXELS);
     }

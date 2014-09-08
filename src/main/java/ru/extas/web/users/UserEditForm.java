@@ -5,8 +5,10 @@ package ru.extas.web.users;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
@@ -14,6 +16,7 @@ import ru.extas.model.security.UserRole;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.contacts.PersonSelect;
@@ -65,7 +68,8 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
     public UserEditForm(UserProfile userProfile) {
         super(userProfile.isNew() ?
                 "Ввод нового пользователя в систему" :
-                "Редактирование данных пользователя");
+                "Редактирование данных пользователя",
+                new BeanItem<>(userProfile));
         initialPassword = userProfile.getPassword();
     }
 
@@ -109,7 +113,6 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
     @Override
     protected ComponentContainer createEditFields(final UserProfile obj) {
         TabSheet tabsheet = new TabSheet();
-//        tabsheet.addStyleName("framed");
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"
@@ -162,6 +165,8 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
         // FIXME Проверить уникальность логина
         loginField = new TextField("Логин (e-mail)");
+//        loginField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        loginField.setIcon(Fontello.AT);
         loginField.setReadOnly(!obj.isNew());
         loginField.setImmediate(true);
         loginField.setWidth(40, Unit.EX);
@@ -175,6 +180,8 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         form.addComponent(loginField);
 
         passField = new PasswordField("Пароль");
+//        passField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        passField.setIcon(Fontello.LOCK);
         passField.setImmediate(true);
         passField.setDescription("Введите пароль для входа в систему");
         passField.setInputPrompt("Пароль");
@@ -184,6 +191,8 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         form.addComponent(passField);
 
         passConfField = new PasswordField("Подтверждение пароля");
+//        passConfField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        passConfField.setIcon(Fontello.LOCK);
         passConfField.setImmediate(true);
         passConfField.setDescription("Введите повторно пароль для для его подтвержедения");
         passConfField.setInputPrompt("Подтверждение пароля");

@@ -34,7 +34,7 @@ public abstract class NumColumnGenerator extends ComponentColumnGenerator {
         VerticalLayout cell = new VerticalLayout();
         Button link = new Button(String.valueOf(numProp.getValue()));
         link.addClickListener(event -> fireClick(item));
-        link.addStyleName("link");
+        link.addStyleName(ExtaTheme.BUTTON_LINK);
         cell.addComponent(link);
         //cell.setComponentAlignment(link, Alignment.TOP_RIGHT);
         final Label createdAt = new Label(item.getItemProperty("createdAt"));

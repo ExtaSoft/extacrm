@@ -2,6 +2,7 @@ package ru.extas.web.commons.component;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
+import ru.extas.web.commons.ExtaTheme;
 
 /**
  * @author Valery Orlov
@@ -15,7 +16,7 @@ public class ExtaFormLayout extends FormLayout {
     }
 
     protected void init() {
-        addStyleName("light");
+        addStyleName(ExtaTheme.FORMLAYOUT_LIGHT);
         setSizeUndefined();
     }
 

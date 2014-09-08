@@ -16,9 +16,9 @@
         <shiro.version>1.2.3</shiro.version>
         <slf4j.version>1.7.7</slf4j.version>
         <joda-time.version>2.3</joda-time.version>
-        <gson.version>2.2.4</gson.version>
+        <gson.version>2.3</gson.version>
 
-        <vaadin.version>7.3.0.rc1</vaadin.version>
+        <vaadin.version>7.3.0</vaadin.version>
         <vaadin-charts.version>1.1.6</vaadin-charts.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
@@ -28,17 +28,17 @@
         <vaadin-tableexport.version>1.5.1.3</vaadin-tableexport.version>
 
         <servlet-api.version>2.5</servlet-api.version>
-        <activiti-version>5.15.1</activiti-version>
+        <activiti-version>5.16</activiti-version>
 
         <junit.version>4.11</junit.version>
         <mockito.version>1.9.5</mockito.version>
 
-        <spring.version>4.0.4.RELEASE</spring.version>
-        <spring-data.version>1.5.2.RELEASE</spring-data.version>
-        <eclipselink.version>2.5.1-RC3</eclipselink.version>
-        <jasperreports.version>5.6.0</jasperreports.version>
-        <groovy.version>2.3.0</groovy.version>
-        <guava.version>17.0</guava.version>
+        <spring.version>4.1.0.RELEASE</spring.version>
+        <spring-data.version>1.6.4.RELEASE</spring-data.version>
+        <eclipselink.version>2.6.0-M3</eclipselink.version>
+        <jasperreports.version>5.6.1</jasperreports.version>
+        <groovy.version>2.3.6</groovy.version>
+        <guava.version>18.0</guava.version>
         <mysql.connector.version>5.1.26</mysql.connector.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
     </properties>
@@ -319,14 +319,8 @@
 
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
             <version>${eclipselink.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.eclipse.persistence</groupId>
-                    <artifactId>commonj.sdo</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -471,21 +465,25 @@
             </plugin>
 
             <plugin>
-                <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
-                <groupId>au.com.alderaan</groupId>
-                <version>1.0.4</version>
+                <groupId>de.empulse.eclipselink</groupId>
+                <artifactId>staticweave-maven-plugin</artifactId>
+                <version>1.0.0</version>
                 <executions>
                     <execution>
+                        <phase>process-classes</phase>
                         <goals>
                             <goal>weave</goal>
                         </goals>
-                        <phase>process-classes</phase>
+                        <configuration>
+                            <persistenceXMLLocation>META-INF/persistence.xml</persistenceXMLLocation>
+                            <logLevel>FINE</logLevel>
+                        </configuration>
                     </execution>
                 </executions>
                 <dependencies>
                     <dependency>
                         <groupId>org.eclipse.persistence</groupId>
-                        <artifactId>eclipselink</artifactId>
+                        <artifactId>org.eclipse.persistence.jpa</artifactId>
                         <version>${eclipselink.version}</version>
                     </dependency>
                 </dependencies>

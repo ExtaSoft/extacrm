@@ -43,12 +43,12 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
     public void enter(ViewChangeEvent event) {
         logger.info("Entering view {}...", event.getViewName());
         setSizeFull();
-        addStyleName("base-view");
+        addStyleName(ExtaTheme.BASE_VIEW);
 
         HorizontalLayout top = new HorizontalLayout();
         top.setWidth(100, Unit.PERCENTAGE);
         top.setSpacing(true);
-        top.addStyleName("toolbar");
+        top.addStyleName(ExtaTheme.TOOLBAR);
         addComponent(top);
         final Component title = createTitle();
         top.addComponent(title);
@@ -57,8 +57,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
 
         Button helpBtn = new Button(Fontello.HELP_1);
         helpBtn.setDescription("Контекстная справка");
-        // notify.addStyleName("borderless");
-        helpBtn.addStyleName("icon-only");
+        helpBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         helpBtn.addClickListener(new ClickListener() {
             private static final long serialVersionUID = 1L;
 

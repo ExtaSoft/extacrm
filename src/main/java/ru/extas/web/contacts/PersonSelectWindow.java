@@ -2,10 +2,7 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Container;
 import ru.extas.model.contacts.Person;
-import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaDataContainer;
-import ru.extas.web.commons.Fontello;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
@@ -34,7 +31,7 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 	 */
 	public PersonSelectWindow(final String caption) {
 		super(caption);
-		addStyleName("base-view");
+		addStyleName(ExtaTheme.BASE_VIEW);
 		setContent(new SelectGrid());
 	}
 

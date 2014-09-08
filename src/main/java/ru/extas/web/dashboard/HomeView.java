@@ -13,6 +13,7 @@ import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.ExtaAbstractView;
 import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.lead.LeadsGrid;
 import ru.extas.web.sale.SalesGrid;
@@ -41,7 +42,6 @@ public class HomeView extends ExtaAbstractView {
 
         TabSheet saleSheet = new TabSheet();
         saleSheet.setSizeFull();
-//        saleSheet.addStyleName("framed");
         saleSheet.addTab(new LeadsGrid(Lead.Status.NEW), "Новые Лиды", Fontello.INBOX_ALT);
         saleSheet.addTab(new SalesGrid(ExtaDomain.SALES_OPENED), "Мои Продажи", Fontello.DOLLAR);
         verticalSplitPanel.setFirstComponent(saleSheet);
@@ -52,7 +52,6 @@ public class HomeView extends ExtaAbstractView {
 
         TabSheet sheet = new TabSheet();
         sheet.setSizeFull();
-//        sheet.addStyleName("framed");
 
         sheet.addTab(getChart(), "Мои Продажи", Fontello.CHART_LINE);
         sheet.addTab(new Label("Рейтинг"), "Рейтинг", Fontello.CHART_BAR_1);
@@ -122,7 +121,7 @@ public class HomeView extends ExtaAbstractView {
     protected Component createTitle() {
         final Component title = new Label("Рабочий стол");
         title.setSizeUndefined();
-        title.addStyleName("view-title");
+        title.addStyleName(ExtaTheme.VIEW_TITLE);
         return title;
     }
 

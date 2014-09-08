@@ -12,6 +12,7 @@ import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.window.GetValueWindowLong;
@@ -51,7 +52,7 @@ public class A7NumListEdit extends CustomField<List> {
         fieldLayout.setSpacing(true);
 
         final HorizontalLayout commandBar = new HorizontalLayout();
-        commandBar.addStyleName("configure");
+        commandBar.addStyleName(ExtaTheme.CONFIGURE);
         commandBar.setSpacing(true);
 
         final Button addNumBtn = new Button("Добавить", new Button.ClickListener() {
@@ -114,7 +115,7 @@ public class A7NumListEdit extends CustomField<List> {
         final Button delItemBtn = new Button("Удалить");
         delItemBtn.setDescription("Удалить квитанцию из акта");
         delItemBtn.setIcon(Fontello.TRASH);
-        delItemBtn.addStyleName("icon-only");
+        delItemBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         delItemBtn.addClickListener(new Button.ClickListener() {
 
             private static final long serialVersionUID = 1L;

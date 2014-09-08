@@ -37,7 +37,7 @@ public class SalePointsField extends CustomField<Set> {
 	public SalePointsField(final Company company) {
 		this.company = company;
 		setBuffered(true);
-		addStyleName("base-view");
+		addStyleName(ExtaTheme.BASE_VIEW);
 		setSizeFull();
 		setWidth(600, Unit.PIXELS);
 	}

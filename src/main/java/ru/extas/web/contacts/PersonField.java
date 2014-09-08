@@ -3,6 +3,7 @@ package ru.extas.web.contacts;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
 
@@ -52,12 +53,12 @@ FormUtils.showModalWin(form);
         };
 		// Открытие формы ввода/редактирования
 		Button openBtn = new Button("Нажмите для просмотра/редактирования клиента...", openLeadFormListener);
-		openBtn.addStyleName("link");
+		openBtn.addStyleName(ExtaTheme.BUTTON_LINK);
 		container.addComponent(openBtn);
 
 		HorizontalLayout fieldsContainer = new HorizontalLayout();
 		fieldsContainer.setSpacing(true);
-		fieldsContainer.addStyleName("bordered-items");
+		fieldsContainer.addStyleName(ExtaTheme.BORDERED_ITEMS);
 		// Имя
 		Label nameField = new Label(personItem.getItemProperty("name"));
 		nameField.setCaption("Имя");

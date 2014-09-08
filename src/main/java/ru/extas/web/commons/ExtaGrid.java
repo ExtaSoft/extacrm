@@ -187,11 +187,11 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
         // Переключение режима таблицы
         final MenuBar modeSwitchBar = new MenuBar();
-        modeSwitchBar.addStyleName("borderless");
-        modeSwitchBar.addStyleName("mode-switch-bar");
-        final MenuBar.MenuItem tableFilterBtn = modeSwitchBar.addItem("", Fontello.FILTER0, selectedItem -> table.setFilterBarVisible(selectedItem.isChecked()));
+        modeSwitchBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+        modeSwitchBar.addStyleName(ExtaTheme.MODE_SWITCH_BAR);
+        final MenuBar.MenuItem tableFilterBtn = modeSwitchBar.addItem("", Fontello.FILTER, selectedItem -> table.setFilterBarVisible(selectedItem.isChecked()));
         tableFilterBtn.setDescription("Показать строку фильтра таблицы");
-        tableFilterBtn.setStyleName("icon-only");
+        tableFilterBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         tableFilterBtn.setCheckable(true);
 
         MenuBar.Command modeCommand = selectedItem -> {
@@ -203,12 +203,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         };
         tableModeBtn = modeSwitchBar.addItem("", Fontello.TABLE, modeCommand);
         tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
-        tableModeBtn.setStyleName("icon-only");
+        tableModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         tableModeBtn.setCheckable(true);
 
         detailModeBtn = modeSwitchBar.addItem("", Fontello.LIST_ALT, modeCommand);
         detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
-        detailModeBtn.setStyleName("icon-only");
+        detailModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         detailModeBtn.setCheckable(true);
 
         if (currentMode == Mode.TABLE) {
@@ -248,8 +248,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private MenuBar createGridToolbar(Mode mode) {
         final MenuBar commandBar = new MenuBar();
         commandBar.setAutoOpen(true);
-        commandBar.addStyleName("grid-toolbar");
-        commandBar.addStyleName("borderless");
+        commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+        commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
         commandBar.focus();
 
         needCurrentBtns = newArrayList();
@@ -364,7 +364,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
     private HorizontalLayout createItemToolbar(final Object itemId) {
         HorizontalLayout actionToolbar = new HorizontalLayout();
-        actionToolbar.addStyleName("item-toolbar");
+        actionToolbar.addStyleName(ExtaTheme.ITEM_TOOLBAR);
         actionToolbar.setSpacing(true);
         actionToolbar.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
         for (final UIAction a : actions)
@@ -456,7 +456,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                 titleComp = titleLbl;
             } else {
                 Button titleLink = new Button();
-                titleLink.addStyleName("link");
+                titleLink.addStyleName(ExtaTheme.BUTTON_LINK);
                 titleLink.setCaption((String) item.getItemProperty(titleMap.getPropName()).getValue());
                 titleLink.setDescription(defAction.getDescription());
                 titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -464,7 +464,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                 titleComp = titleLink;
             }
             titleComp.setImmediate(true);
-            titleComp.addStyleName("main-item-text");
+            titleComp.addStyleName(ExtaTheme.MAIN_ITEM_TEXT);
             panel.addComponent(titleComp);
 //                final HorizontalLayout header = new HorizontalLayout(titleComp, createItemToolbar(itemId));
 //                header.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
@@ -477,7 +477,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                 DataDeclMapping prop = mapIterator.next();
                 if (!prop.isCollapsed()) {
                     Label detail = new Label(item.getItemProperty(prop.getPropName()));
-                    detail.addStyleName("h3");
+                    detail.addStyleName(ExtaTheme.LABEL_H3);
                     detail.setDescription(prop.getCaption());
                     details.addComponent(detail);
                 }

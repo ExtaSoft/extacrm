@@ -10,6 +10,7 @@ import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 import ru.extas.web.tasks.TaskEditForm;
@@ -104,7 +105,7 @@ public class BPStatusForm extends CloseOnlylWindow {
 		final Panel panel = new Panel("Следующая (активная) задача");
 		final VerticalLayout container = new VerticalLayout();
 		container.setSpacing(true);
-		container.addStyleName("bordered-items");
+		container.addStyleName(ExtaTheme.BORDERED_ITEMS);
 
 		if (task != null) {
 			final Button.ClickListener openTaskFormListener = event -> {
@@ -113,7 +114,7 @@ FormUtils.showModalWin(form);
             };
 			// Открытие формы ввода/редактирования
 			final Button openBtn = new Button("Нажмите для просмотра/редактирования задачи...", openTaskFormListener);
-			openBtn.addStyleName("link");
+			openBtn.addStyleName(ExtaTheme.BUTTON_LINK);
 			container.addComponent(openBtn);
 
 			final HorizontalLayout fieldsContainer = new HorizontalLayout();
@@ -165,7 +166,7 @@ FormUtils.showModalWin(form);
 		final Panel panel = new Panel("Последняя завершенная задача");
 		final HorizontalLayout container = new HorizontalLayout();
 		container.setSpacing(true);
-		container.addStyleName("bordered-items");
+		container.addStyleName(ExtaTheme.BORDERED_ITEMS);
 
 		if (task != null) {
 			// Имя задачи

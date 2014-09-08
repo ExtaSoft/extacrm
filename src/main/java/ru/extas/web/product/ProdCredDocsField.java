@@ -8,6 +8,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditDoc;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class ProdCredDocsField extends CustomField<List> {
 
 		if (!isReadOnly()) {
 			final HorizontalLayout commandBar = new HorizontalLayout();
-			commandBar.addStyleName("configure");
+			commandBar.addStyleName(ExtaTheme.CONFIGURE);
 			commandBar.setSpacing(true);
 
 			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
@@ -121,7 +122,6 @@ public class ProdCredDocsField extends CustomField<List> {
 		docTable.setSelectable(true);
 		docTable.setHeight(10, Unit.EM);
 		docTable.setWidth(25, Unit.EM);
-		docTable.addStyleName("components-inside");
 		final Property dataSource = getPropertyDataSource();
 		final List<ProdCreditDoc> docList = dataSource != null ? (List<ProdCreditDoc>) dataSource.getValue() : new ArrayList<ProdCreditDoc>();
 		container = new BeanItemContainer<>(ProdCreditDoc.class);

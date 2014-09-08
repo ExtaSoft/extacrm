@@ -3,6 +3,7 @@ package ru.extas.web;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import ru.extas.web.commons.ExtaAbstractView;
+import ru.extas.web.commons.ExtaTheme;
 
 /**
  * Страница ошибки
@@ -14,12 +15,13 @@ import ru.extas.web.commons.ExtaAbstractView;
  * @since 0.4.2
  */
 public class ErrorView extends ExtaAbstractView {
+
     /** {@inheritDoc} */
     @Override
     protected Component createContent() {
         final Component msg = new Label("Пожалуйста выберите другой пункт главного меню!");
         msg.setSizeUndefined();
-        msg.addStyleName("view-title");
+        msg.addStyleName(ExtaTheme.VIEW_TITLE);
         return msg;
     }
 
@@ -28,7 +30,7 @@ public class ErrorView extends ExtaAbstractView {
     protected Component createTitle() {
         final Component title = new Label("Неверные данные в адресной строке!!!");
         title.setSizeUndefined();
-        title.addStyleName("view-title");
+        title.addStyleName(ExtaTheme.VIEW_TITLE);
         return title;
     }
 }

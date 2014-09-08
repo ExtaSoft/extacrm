@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.NotificationUtil;
@@ -25,7 +26,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  */
 public class CompanyOwnersField extends CustomField<Set> {
 
-	private Table table;
+    private Table table;
 	private BeanItemContainer<Person> container;
 
 	/**
@@ -43,7 +44,7 @@ public class CompanyOwnersField extends CustomField<Set> {
 
 		if (!isReadOnly()) {
 			final HorizontalLayout commandBar = new HorizontalLayout();
-			commandBar.addStyleName("configure");
+			commandBar.addStyleName(ExtaTheme.CONFIGURE);
 			commandBar.setSpacing(true);
 
 			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {

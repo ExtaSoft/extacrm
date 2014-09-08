@@ -4,6 +4,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.themes.ValoTheme;
+import ru.extas.web.commons.ExtaTheme;
 
 /**
  * @author Valery Orlov
@@ -19,10 +21,10 @@ public class RootLayout extends HorizontalLayout {
     public RootLayout() {
         setSizeFull();
 
-        menuArea.setPrimaryStyleName("valo-menu");
+        menuArea.setPrimaryStyleName(ExtaTheme.MENU_ROOT);
 
-        contentArea.setPrimaryStyleName("valo-content");
-        contentArea.addStyleName("v-scrollable");
+        contentArea.setPrimaryStyleName(ExtaTheme.MENU_CONTENT);
+        contentArea.addStyleName(ExtaTheme.V_SCROLLABLE);
         contentArea.setSizeFull();
 
         addComponents(menuArea, contentArea);
@@ -34,17 +36,17 @@ public class RootLayout extends HorizontalLayout {
     }
 
     public void addMenu(final Component menu) {
-        menu.addStyleName("valo-menu-part");
+        menu.addStyleName(ExtaTheme.MENU_PART);
         menuArea.addComponent(menu);
     }
 
     public void addBranding(final Component branding) {
-        branding.setPrimaryStyleName("valo-menu-title");
+        branding.setPrimaryStyleName(ExtaTheme.MENU_TITLE);
         menuArea.addComponent(branding);
     }
 
     public void addUserBadge(final Component badge) {
-        badge.setPrimaryStyleName("valo-menu-bottom");
+        badge.setPrimaryStyleName(ExtaTheme.VALO_MENU_BOTTOM);
         menuArea.addComponent(badge);
     }
 }

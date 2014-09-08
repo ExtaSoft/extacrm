@@ -3,6 +3,7 @@ package ru.extas.web.lead;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.lead.Lead;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
 
 /**
@@ -49,12 +50,12 @@ public class LeadField extends CustomField<Lead> {
 FormUtils.showModalWin(form);
         };
 		Button openBtn = new Button("Нажмите для просмотра/редактирования лида...", openLeadFormListener);
-		openBtn.addStyleName("link");
-		container.addComponent(openBtn);
+		openBtn.addStyleName(ExtaTheme.BUTTON_LINK);
+                container.addComponent(openBtn);
 
 		HorizontalLayout fieldsContainer = new HorizontalLayout();
 		fieldsContainer.setSpacing(true);
-		fieldsContainer.addStyleName("bordered-items");
+		fieldsContainer.addStyleName(ExtaTheme.BORDERED_ITEMS);
 		// Тип техники
 		Label motorTypeField = new Label(leadItem.getItemProperty("motorType"));
 		motorTypeField.setCaption("Тип техники");

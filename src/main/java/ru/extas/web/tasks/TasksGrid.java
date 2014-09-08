@@ -165,7 +165,7 @@ public class TasksGrid extends ExtaGrid<Task> {
                 Task task = GridItem.extractBean(item);
 
                 Button titleLink = new Button();
-                titleLink.addStyleName("link");
+                titleLink.addStyleName(ExtaTheme.BUTTON_LINK);
                 titleLink.setCaption(task.getName());
                 titleLink.setDescription(defAction.getDescription());
                 titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
