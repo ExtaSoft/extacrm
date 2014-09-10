@@ -4,10 +4,8 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.DefaultConverterFactory;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import ru.extas.model.contacts.PeriodOfResidence;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.*;
 import ru.extas.model.contacts.Person.Sex;
-import ru.extas.model.contacts.RealtyKind;
 import ru.extas.model.insurance.A7Form;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.insurance.Policy;
@@ -19,10 +17,7 @@ import ru.extas.model.security.SecureAction;
 import ru.extas.model.security.SecureTarget;
 import ru.extas.model.security.UserRole;
 import ru.extas.web.commons.converters.*;
-import ru.extas.web.contacts.StringToPeriodOfResidence;
-import ru.extas.web.contacts.StringToPersonPosition;
-import ru.extas.web.contacts.StringToPersonSex;
-import ru.extas.web.contacts.StringToRealtyKind;
+import ru.extas.web.contacts.*;
 import ru.extas.web.insurance.StringToA7FormConverter;
 import ru.extas.web.insurance.StringToA7StatusConverter;
 import ru.extas.web.insurance.StringToPeriodOfCoverConverter;
@@ -141,6 +136,18 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 		// Конвертер срока проживания
 		if (presentationType == String.class && modelType == PeriodOfResidence.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToPeriodOfResidence.class);
+
+		// Конвертер семейного положения
+		if (presentationType == String.class && modelType == MaritalStatus.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToMaritalStatus.class);
+
+		// Конвертер уровня образования
+		if (presentationType == String.class && modelType == EducationKind.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToEducationKind.class);
+
+		// Конвертер уровня образования
+		if (presentationType == String.class && modelType == TypeOfEmployment.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToTypeOfEmployment.class);
 
 		// Let default factory handle the rest
 		return super.findConverter(presentationType, modelType);

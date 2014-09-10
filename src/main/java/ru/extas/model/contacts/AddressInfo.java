@@ -19,15 +19,17 @@ import java.io.Serializable;
 public class AddressInfo implements Serializable {
 
     private static final long serialVersionUID = -7891940678175752858L;
+    public static final int REGION_LENGTH = 50;
+    public static final int CITY_LENGTH = 30;
 
     // Регион
-    @Column(length = 50)
-    @Max(50)
+    @Column(length = REGION_LENGTH)
+    @Max(REGION_LENGTH)
     private String region;
 
     // Город
-    @Column(length = 30)
-    @Max(30)
+    @Column(length = CITY_LENGTH)
+    @Max(CITY_LENGTH)
     private String city;
 
     // Индекс

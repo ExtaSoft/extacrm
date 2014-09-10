@@ -118,8 +118,6 @@ public class A7NumListEdit extends CustomField<List> {
         delItemBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         delItemBtn.addClickListener(new Button.ClickListener() {
 
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void buttonClick(final ClickEvent event) {
                 formNums.removeItem(event.getButton().getData());

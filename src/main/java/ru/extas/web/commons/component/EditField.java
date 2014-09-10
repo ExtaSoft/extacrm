@@ -40,4 +40,9 @@ public class EditField extends TextField {
     public EditField(final String caption) {
         this(caption, caption);
     }
+
+    public EditField() {
+        setImmediate(true);
+        setNullRepresentation("");
+    }
 }

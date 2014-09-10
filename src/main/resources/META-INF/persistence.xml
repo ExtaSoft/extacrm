@@ -27,6 +27,11 @@
         <class>ru.extas.model.contacts.ContactCode</class>
         <class>ru.extas.model.contacts.PayAccount</class>
         <class>ru.extas.model.contacts.Person</class>
+        <class>ru.extas.model.contacts.PersonChild</class>
+        <class>ru.extas.model.contacts.PersonRealty</class>
+        <class>ru.extas.model.contacts.PersonAuto</class>
+        <class>ru.extas.model.contacts.PersonIncome</class>
+        <class>ru.extas.model.contacts.PersonExpense</class>
         <class>ru.extas.model.contacts.PersonFileContainer</class>
         <class>ru.extas.model.insurance.A7Form</class>
         <class>ru.extas.model.insurance.FormTransfer</class>

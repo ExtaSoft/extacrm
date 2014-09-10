@@ -35,7 +35,7 @@ public abstract class Contact extends SecuredObject{
 
 	// Адрес Регистрации
 	@Embedded()
-	private AddressInfo regAddress;
+	private AddressInfo regAddress = new AddressInfo();
 
 	// Имя контакта
 	@Column(length = NAME_LENGTH)

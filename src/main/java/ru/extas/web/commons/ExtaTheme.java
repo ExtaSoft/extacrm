@@ -31,4 +31,5 @@ public class ExtaTheme extends ValoTheme {
     public static final String BORDERED_COMPONENT = "bordered-component";
     public static final String INLINE_BASE_VIEW = "inline-base-view";
     public static final String LOGIN_VIEW = "login-view";
+    public static final String INLINE_DATEFIELD = "inline-datefield";
 }
