@@ -43,7 +43,8 @@ public class Person extends Contact {
     @Column(name = "IS_CHANGE_NAME")
     private boolean changeName;
 
-    @Column(name = "EX_NAME", length = 25)
+    @Column(name = "EX_NAME", length = NAME_LENGTH)
+    @Max(NAME_LENGTH)
     private String exName;
 
     @Column(name = "CHANGE_NAME_DATE")
@@ -317,10 +318,55 @@ public class Person extends Contact {
     @Max(PHONE_LINGHT)
     private String closeRelativeHomePhone;
 
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PersonAuto> autos = newArrayList();
+
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PersonRealty> realties = newArrayList();
+
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PersonIncome> incomes = newArrayList();
+
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PersonExpense> expenses = newArrayList();
+
+
     /**
      * <p>Constructor for Person.</p>
      */
     public Person() {
+    }
+
+    public List<PersonAuto> getAutos() {
+        return autos;
+    }
+
+    public void setAutos(List<PersonAuto> autos) {
+        this.autos = autos;
+    }
+
+    public List<PersonRealty> getRealties() {
+        return realties;
+    }
+
+    public void setRealties(List<PersonRealty> realties) {
+        this.realties = realties;
+    }
+
+    public List<PersonIncome> getIncomes() {
+        return incomes;
+    }
+
+    public void setIncomes(List<PersonIncome> incomes) {
+        this.incomes = incomes;
+    }
+
+    public List<PersonExpense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<PersonExpense> expenses) {
+        this.expenses = expenses;
     }
 
     public String getCloseRelativeName() {

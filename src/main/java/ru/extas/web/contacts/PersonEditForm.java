@@ -10,9 +10,7 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.converter.Converter;
-import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.*;
@@ -231,6 +229,15 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private PhoneField closeRelativeMobPhoneField;
     @PropertyId("closeRelativeHomePhone")
     private PhoneField closeRelativeHomePhoneField;
+
+    @PropertyId("realties")
+    private PersonRealtyField realtiesField;
+    @PropertyId("autos")
+    private PersonAutosField autosField;
+    @PropertyId("incomes")
+    private PersonIncomeField incomesField;
+    @PropertyId("expenses")
+    private PersonExpensesField expensesField;
 
 
     public PersonEditForm(Person person) {
@@ -627,37 +634,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         ComponentUtil.fillSelectByEnum(eduKindField, EducationKind.class);
         personForm.addComponent(eduKindField);
 
-        eduFinishField = new PopupDateField("Год окончания");
-        eduFinishField.setInputPrompt("Год");
-        eduFinishField.setResolution(Resolution.YEAR);
-        eduFinishField.setWidth(5, Unit.EM);
-        eduFinishField.setConverter(new Converter<Date, Integer>() {
-            @Override
-            public Integer convertToModel(Date value, Class<? extends Integer> targetType, Locale locale) throws ConversionException {
-                if (value != null) {
-                    return new LocalDate(value).getYear();
-                }
-                return null;
-            }
-
-            @Override
-            public Date convertToPresentation(Integer value, Class<? extends Date> targetType, Locale locale) throws ConversionException {
-                if (value != null) {
-                    return new LocalDate(value, 1, 1).toDate();
-                }
-                return null;
-            }
-
-            @Override
-            public Class<Integer> getModelType() {
-                return Integer.class;
-            }
-
-            @Override
-            public Class<Date> getPresentationType() {
-                return Date.class;
-            }
-        });
+        eduFinishField = new YearField("Год окончания");
         personForm.addComponent(eduFinishField);
 
         eduInstNameField = new EditField("Название учебного заведения", "Укажите наименование учебного заведения");
@@ -783,12 +760,24 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupSubHeader("Недвижимость"));
+        realtiesField = new PersonRealtyField(obj);
+        personForm.addComponent(realtiesField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupSubHeader("Автотранспорт"));
+        autosField = new PersonAutosField(obj);
+        personForm.addComponent(autosField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupHeader("Информация о доходах/расходах"));
+        personForm.addComponent(new FormGroupSubHeader("Доходы"));
+        incomesField = new PersonIncomeField(obj);
+        personForm.addComponent(incomesField);
+
+        personForm.addComponent(new FormGroupSubHeader("Расходы"));
+        expensesField = new PersonExpensesField(obj);
+        personForm.addComponent(expensesField);
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupHeader("Кредиты банков и/или других организаций"));
@@ -817,11 +806,11 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         accountingForPsychiatristField.setDescription("Состоите (состояли) ли Вы на учете у врача нарколога?");
         personForm.addComponent(accountingForPsychiatristField);
         // Привлекались ли Вы или привлекаетесь в настоящее к уголовной ответственности
-        criminalLiabilityField = new YesNoSelect("Привлекался к уголовной ответственности");
+        criminalLiabilityField = new YesNoSelect("Привлекался к уг. ответственности");
         criminalLiabilityField.setDescription("Привлекался ли или привлекается в настоящее к уголовной ответственности?");
         personForm.addComponent(criminalLiabilityField);
         // Являетесь ли Вы ответчиком по имущественным спорам?
-        receivershipField = new YesNoSelect("Ответчик по имущественным спорам");
+        receivershipField = new YesNoSelect("Ответчик по имущ. спорам");
         receivershipField.setDescription("Является ли ответчиком по имущественным спорам?");
         personForm.addComponent(receivershipField);
         // Является ли ваше имущество предметом залога, наложен ли на него арест?
