@@ -50,6 +50,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
         public void switchToForm(ExtaEditForm form) {
             this.form = form;
             tabsheet.setVisible(false);
+            form.setWidth(100, Unit.PERCENTAGE);
             addComponent(form);
             title.setValue(form.getCaption());
         }

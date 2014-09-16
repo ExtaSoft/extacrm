@@ -83,6 +83,7 @@ public class PersonExpensesField extends CustomField<List> {
         );
         table.setVisibleColumns("type", "expense", "deleteAction");
         table.setColumnHeaders("Статья расхода", "Расход", "Удалить");
+        table.setColumnWidth("type", 180);
         table.setTableFieldFactory((container, itemId, propertyId, uiContext) -> {
             if ("type".equals(propertyId)) {
                 final HashSet<String> options = newHashSet("Текущие расходы (питание, одежда)", "Оплата кредитов");

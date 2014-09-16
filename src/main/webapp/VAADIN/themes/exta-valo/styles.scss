@@ -96,7 +96,46 @@
     }
   }
 
-//  .v-formlayout-contentcell {
+  .drop-area {
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+
+    padding: 10px;
+    border: 5px dashed #a4a4a2;
+  }
+
+  .drop-area .v-label {
+    color: #919083;
+//    font-weight: bold;
+//    font-size: 17px;
+  }
+
+  .exta-large-icon {
+    .v-icon {
+      font-size: $v-font-size--large;
+    }
+  }
+  .v-caption-exta-large-icon {
+    .v-icon {
+      font-size: $v-font-size--large;
+    }
+  }
+
+  .exta-huge-icon {
+    .v-icon {
+      font-size: $v-font-size--huge;
+    }
+  }
+  .v-caption-exta-huge-icon {
+    .v-icon {
+      font-size: $v-font-size--huge;
+    }
+  }
+
+  //  .v-formlayout-contentcell {
 //    > .v-no-caption-complex-field {
 //      position: absolute;
 //      left: 0;

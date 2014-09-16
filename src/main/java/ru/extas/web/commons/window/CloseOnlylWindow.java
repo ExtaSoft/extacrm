@@ -2,6 +2,7 @@ package ru.extas.web.commons.window;
 
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 
 /**
@@ -15,7 +16,7 @@ public class CloseOnlylWindow extends Window {
 
     private static final long serialVersionUID = -1869372339151029572L;
     private boolean okPressed = false;
-    private final HorizontalLayout buttonsPanel = new HorizontalLayout();
+    private HorizontalLayout buttonsPanel;
     protected Button closeBtn;
 
     /**
@@ -51,9 +52,16 @@ public class CloseOnlylWindow extends Window {
             }
         });
         closeBtn.setIcon(Fontello.OK);
-        this.buttonsPanel.addComponent(closeBtn);
-        this.buttonsPanel.setComponentAlignment(closeBtn, Alignment.MIDDLE_RIGHT);
-        this.buttonsPanel.setSpacing(true);
+        closeBtn.addStyleName(ExtaTheme.BUTTON_PRIMARY);
+
+        final Label footerText = new Label("");
+        footerText.setSizeUndefined();
+
+        buttonsPanel = new HorizontalLayout(footerText, closeBtn);
+        buttonsPanel.setExpandRatio(footerText, 1);
+        buttonsPanel.addStyleName(ExtaTheme.WINDOW_BOTTOM_TOOLBAR);
+        buttonsPanel.setWidth(100, Unit.PERCENTAGE);
+        buttonsPanel.setSpacing(true);
     }
 
     /** {@inheritDoc} */

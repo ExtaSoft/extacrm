@@ -44,4 +44,6 @@
     <inherits name="com.vaadin.addon.charts.Widgetset" />
 
     <inherits name="com.vaadin.addon.timeline.gwt.TimelineWidgetSet" />
+
+    <inherits name="org.vaadin.addon.itemlayout.widgetset.ItemLayoutWidgetset" />
 </module>

@@ -8,6 +8,7 @@ import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
+import ru.extas.model.common.IdentifiedObject;
 
 import java.util.Iterator;
 import java.util.List;
@@ -410,6 +411,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             ((RefreshBeanContainer) container).refreshItems();
     }
 
+    public void adjustGridHeight() {
+        table.setPageLength(table.size());
+    }
     /**
      * <p>createDataDecl.</p>
      *
@@ -444,6 +448,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
             Iterator<DataDeclMapping> mapIterator = dataDecl.getMappings().iterator();
             DataDeclMapping titleMap = mapIterator.next();
+            if(titleMap.getPropName().equals("id"))
+                titleMap = mapIterator.next();
             VerticalLayout panel = new VerticalLayout();
 
             // Основная строка данных

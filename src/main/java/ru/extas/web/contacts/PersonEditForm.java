@@ -96,7 +96,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private EditField passIssuedByNumField;
 
     @PropertyId("files")
-    private DocFilesEditor docFilesEditor;
+    private FilesManageField docFilesEditor;
     @PropertyId("birthPlace")
     private CitySelect birthPlaceField;
     @PropertyId("citizenship")
@@ -301,7 +301,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         // Форма редактирования персональных данных
         final FormLayout personForm = new ExtaFormLayout();
-        personForm.setSizeUndefined();
+//        personForm.setSizeUndefined();
         personForm.setMargin(true);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -761,6 +761,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupSubHeader("Недвижимость"));
         realtiesField = new PersonRealtyField(obj);
+        //realtiesField.setWidth(25, Unit.EM);
         personForm.addComponent(realtiesField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -834,12 +835,16 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         personForm.addComponent(closeRelativeHomePhoneField);
 
 
+        // Документы контакта
+        personForm.addComponent(new FormGroupHeader("Документы"));
+        docFilesEditor = new FilesManageField(PersonFileContainer.class);
+        personForm.addComponent(docFilesEditor);
+
+
         // Форма просмотра истории продаж
 //        final FormLayout salesForm = createSalesForm();
 //        tabsheet.addTab(salesForm).setCaption("История продаж");
 //
-//        final Component docsForm = createDocsForm();
-//        tabsheet.addTab(docsForm).setCaption("Документы");
 
         return personForm;
     }
@@ -904,12 +909,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         form.setMargin(true);
 
         return form;
-    }
-
-    private Component createDocsForm() {
-        docFilesEditor = new DocFilesEditor(PersonFileContainer.class);
-
-        return docFilesEditor;
     }
 
     private static class DrivingCategoriesConverter implements Converter<Object, String> {

@@ -86,16 +86,18 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     public void attach() {
         super.attach();
 
-        if (salePoint.getCompany() == null) {
-            companyField.setReadOnly(false);
-            companyField.setVisible(true);
-            companyField.setRequired(true);
-        } else {
-            companyField.setReadOnly(true);
-            companyField.getPropertyDataSource().setReadOnly(true);
-            if (salePoint.getCompany().isNew()) {
-                companyField.setVisible(false);
-                companyField.setRequired(false);
+        if (salePoint != null) {
+            if (salePoint.getCompany() == null) {
+                companyField.setReadOnly(false);
+                companyField.setVisible(true);
+                companyField.setRequired(true);
+            } else {
+                companyField.setReadOnly(true);
+                companyField.getPropertyDataSource().setReadOnly(true);
+                if (salePoint.getCompany().isNew()) {
+                    companyField.setVisible(false);
+                    companyField.setRequired(false);
+                }
             }
         }
     }

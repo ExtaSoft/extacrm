@@ -15,7 +15,7 @@ import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.LegalEntityFile;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.references.SupplementService;
-import ru.extas.web.commons.DocFilesEditor;
+import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
@@ -73,7 +73,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     @PropertyId("motorBrands")
     private BrandsField brandsField;
     @PropertyId("files")
-    private DocFilesEditor docFilesEditor;
+    private FilesManageField docFilesEditor;
 
     private LegalEntity legalEntity;
 
@@ -269,8 +269,9 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     }
 
     private Component createDocsForm() {
-        docFilesEditor = new DocFilesEditor(LegalEntityFile.class);
-
-        return docFilesEditor;
+        docFilesEditor = new FilesManageField(LegalEntityFile.class);
+        VerticalLayout l = new VerticalLayout(docFilesEditor);
+        l.setMargin(true);
+        return l;
     }
 }

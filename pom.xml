@@ -41,6 +41,7 @@
         <guava.version>18.0</guava.version>
         <mysql.connector.version>5.1.26</mysql.connector.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
+        <vaadin-itemlayout.version>2.0.1</vaadin-itemlayout.version>
     </properties>
 
     <profiles>
@@ -315,6 +316,11 @@
             <groupId>groupId</groupId>
             <artifactId>tableexport-for-vaadin</artifactId>
             <version>${vaadin-tableexport.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.addon</groupId>
+            <artifactId>itemlayout</artifactId>
+            <version>${vaadin-itemlayout.version}</version>
         </dependency>
 
         <dependency>

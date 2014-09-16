@@ -97,6 +97,7 @@ public class PersonIncomeField extends CustomField<List> {
         );
         table.setVisibleColumns("type", "income", "spouseIncome", "overallIncome", "deleteAction");
         table.setColumnHeaders("Ежемесячный доход", "Доход", "Доход супруги(а)", "Всего", "Удалить");
+        table.setColumnWidth("type", 190);
         table.setTableFieldFactory((container, itemId, propertyId, uiContext) -> {
             if ("type".equals(propertyId)) {
                 final HashSet<String> options = newHashSet("Основная зарплата", "Зарплата по совместительству");

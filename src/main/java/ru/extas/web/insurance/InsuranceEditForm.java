@@ -17,8 +17,8 @@ import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.server.insurance.InsuranceRepository;
 import ru.extas.server.insurance.PolicyRepository;
 import ru.extas.server.security.UserManagementService;
-import ru.extas.web.commons.DocFilesEditor;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
@@ -33,7 +33,6 @@ import ru.extas.web.util.ComponentUtil;
 
 import java.math.BigDecimal;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -88,7 +87,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     @PropertyId("dealer")
     private SalePointSelect dealerField;
     @PropertyId("files")
-    private DocFilesEditor docFilesEditor;
+    private FilesManageField docFilesEditor;
     @PropertyId("docComplete")
     private CheckBox docCompleteField;
 
@@ -120,9 +119,10 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
     private Component createDocsForm() {
         VerticalLayout layout = new VerticalLayout();
+        layout.setMargin(true);
         layout.setSpacing(true);
 
-        docFilesEditor = new DocFilesEditor(InsuranceFileContainer.class);
+        docFilesEditor = new FilesManageField(InsuranceFileContainer.class);
         layout.addComponent(docFilesEditor);
 
         docCompleteField = new CheckBox("Полный комплект документов");

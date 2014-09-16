@@ -33,4 +33,6 @@ public class ExtaTheme extends ValoTheme {
     public static final String LOGIN_VIEW = "login-view";
     public static final String INLINE_DATEFIELD = "inline-datefield";
     public static final String NO_CAPTION_COMPLEX_FIELD = "v-no-caption-complex-field";
+    public static final String LARGE_ICON = "exta-large-icon";
+    public static final String HUGE_ICON = "exta-huge-icon";
 }

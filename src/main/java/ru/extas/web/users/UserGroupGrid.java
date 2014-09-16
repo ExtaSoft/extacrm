@@ -50,7 +50,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
         actions.add(new NewObjectAction("Новая", "Ввод новой группы пользователей в систему", Fontello.USER_ADD));
         actions.add(new EditObjectAction("Изменить", "Редактирование группы", Fontello.USER_1));
 
-        actions.add(new NewObjectAction("Копировать", "Копировать текущую группу в новую запись", Fontello.DOCS) {
+        actions.add(new ItemAction("Копировать", "Копировать текущую группу в новую запись", Fontello.DOCS) {
             @Override
             public void fire(final Object itemId) {
                 final UserGroup curObj = GridItem.extractBean(table.getItem(itemId));
