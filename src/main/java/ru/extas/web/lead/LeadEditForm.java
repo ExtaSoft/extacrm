@@ -265,7 +265,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         // Обрабатываем выбор контакта
         table.addValueChangeListener(event -> {
             final SalePoint curObj = extractBean(table.getItem(table.getValue()));
-            lead.setVendor(curObj);
+            vendorField.setValue(curObj);
             pointOfSaleField.setValue(curObj.getName());
             setModified(true);
         });
