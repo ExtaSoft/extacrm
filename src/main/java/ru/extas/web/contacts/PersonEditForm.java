@@ -283,13 +283,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         return obj;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void checkBeforeSave(final Person obj) {
-    }
-
 
     /**
      * {@inheritDoc}

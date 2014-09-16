@@ -12,7 +12,6 @@ import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.CompanySelect;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -63,13 +62,7 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
         return obj;
     }
 
-	/** {@inheritDoc} */
-	@Override
-	protected void checkBeforeSave(final ProdInstallments obj) {
-
-	}
-
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdInstallments obj) {
 		final FormLayout form = new ExtaFormLayout();

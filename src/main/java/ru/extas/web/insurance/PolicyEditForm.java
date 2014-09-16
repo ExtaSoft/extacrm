@@ -14,7 +14,6 @@ import ru.extas.web.commons.component.DateTimeField;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -57,11 +56,6 @@ public class PolicyEditForm extends ExtaEditForm<Policy> {
         return obj;
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final Policy obj) {
-    }
 
     /** {@inheritDoc} */
     @Override

@@ -47,12 +47,6 @@ public class MotorBrandEditForm extends ExtaEditForm<MotorBrand> {
 
     /** {@inheritDoc} */
     @Override
-    protected void checkBeforeSave(MotorBrand obj) {
-
-    }
-
-    /** {@inheritDoc} */
-    @Override
     protected ComponentContainer createEditFields(MotorBrand obj) {
         final FormLayout form = new ExtaFormLayout();
 

@@ -129,12 +129,6 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     /** {@inheritDoc} */
     @Override
-    protected void checkBeforeSave(final SalePoint obj) {
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     protected ComponentContainer createEditFields(final SalePoint obj) {
         TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeUndefined();

@@ -132,9 +132,4 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final Sale obj) {
-    }
-
 }

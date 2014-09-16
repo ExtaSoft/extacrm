@@ -14,7 +14,6 @@ import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -67,12 +66,6 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
 
     /** {@inheritDoc} */
     @Override
-    protected void checkBeforeSave(UserGroup obj) {
-
-    }
-
-    /** {@inheritDoc} */
-    @Override
     protected ComponentContainer createEditFields(UserGroup obj) {
         final FormLayout form = new ExtaFormLayout();
 
@@ -100,6 +93,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
 
         permissionsField = new ExtaPermissionField(obj);
         permissionsField.setCaption("Правила доступа группы");
+        permissionsField.setHeight(10, Unit.EM);
         form.addComponent(permissionsField);
 
         return form;

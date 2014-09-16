@@ -416,11 +416,6 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         return obj;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final Insurance obj) {
-    }
-
     /**
      *
      */

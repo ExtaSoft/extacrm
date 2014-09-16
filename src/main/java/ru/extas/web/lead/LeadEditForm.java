@@ -404,13 +404,6 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void checkBeforeSave(final Lead obj) {
-    }
-
     private enum Qualify {
         EXIST, NEW
     }

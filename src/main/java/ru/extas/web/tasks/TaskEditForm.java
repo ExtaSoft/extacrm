@@ -1,9 +1,7 @@
 package ru.extas.web.tasks;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
-import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
@@ -311,11 +309,6 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         taskService.saveTask(task);
         NotificationUtil.showSuccess("Задача сохранена");
         return task;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final Task obj) {
     }
 
     /**

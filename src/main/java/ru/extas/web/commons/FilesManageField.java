@@ -7,19 +7,16 @@ import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Resource;
 import com.vaadin.server.StreamVariable;
 import com.vaadin.ui.*;
 import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler;
-import org.apache.tika.mime.MimeTypes;
-import org.vaadin.addon.itemlayout.horizontal.ItemHorizontal;
-import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
-import org.vaadin.addon.itemlayout.layout.model.ItemGenerator;
+import org.vaadin.addon.itemlayout.grid.ItemGrid;
 import ru.extas.model.common.FileContainer;
-import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.component.FileUploader;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
-import javax.activation.MimetypesFileTypeMap;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,6 +24,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
@@ -40,6 +38,8 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
     private BeanItemContainer<TFileContainer> container;
     private ProgressBar progress;
 
+    private Mode mode;
+    private ItemGrid filesContainer;
 
     public FilesManageField(Class<TFileContainer> containerClass) {
         this.containerClass = containerClass;
@@ -59,13 +59,14 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         VerticalLayout root = new VerticalLayout();
         root.addStyleName("drop-area");
 
-        ItemHorizontal filesContainer = new ItemHorizontal();
-        filesContainer.setWidth(600, Unit.PIXELS);
+        filesContainer = new ItemGrid();
         filesContainer.setContainerDataSource(container);
         filesContainer.setItemGenerator((pSource, pItemId) -> getItemComponent((TFileContainer) pItemId));
         root.addComponent(filesContainer);
+        setMode(Mode.LIST);
 
-        final Label infoLabel = new Label("Перетащите файлы сюда для загрузки, или нажмите кнопку \"Добавить файлы...\"");
+        final Label infoLabel = new Label("Перетащите файлы для загрузки сюда, или нажмите кнопку \"Добавить файлы...\"");
+//        infoLabel.setIcon(Fontello.INFO_CIRCLED);
         root.addComponent(infoLabel);
 
         progress = new ProgressBar();
@@ -87,52 +88,84 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
     }
 
     private Component getItemComponent(TFileContainer item) {
-        final VerticalLayout component = new VerticalLayout();
-        component.setDefaultComponentAlignment(Alignment.BOTTOM_CENTER);
+        final ComponentContainer root;
+        if (mode == Mode.LIST) {
+            final HorizontalLayout layout = new HorizontalLayout();
+            layout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
+            //layout.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
+            root = layout;
+        } else {
+            final VerticalLayout layout = new VerticalLayout();
+            layout.setDefaultComponentAlignment(Alignment.BOTTOM_CENTER);
+            root = layout;
+        }
 
         Button dwnBtn = new Button(item.getName());
         dwnBtn.setIcon(getFileIcon(item.getMimeType()));
         dwnBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-        dwnBtn.addStyleName(ExtaTheme.BUTTON_ICON_ALIGN_TOP);
-        dwnBtn.addStyleName(ExtaTheme.HUGE_ICON);
+        dwnBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         dwnBtn.setData(item);
         dwnBtn.addClickListener(this::downloadClickListener);
-        component.addComponent(dwnBtn);
+        root.addComponent(dwnBtn);
 
         Button delBtn = new Button("Удалить", Fontello.TRASH_4);
         delBtn.addStyleName(ExtaTheme.BUTTON_QUIET);
+        delBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         delBtn.setData(item);
         delBtn.addClickListener(this::deleteClickListener);
-        component.addComponent(delBtn);
+        root.addComponent(delBtn);
 
-        return component;
+        if (mode == Mode.LIST) {
+            delBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+        } else {
+            dwnBtn.addStyleName(ExtaTheme.BUTTON_ICON_ALIGN_TOP);
+            dwnBtn.addStyleName(ExtaTheme.LARGE_ICON);
+        }
+
+        return root;
     }
 
-    private Fontello getFileIcon(String mimeType) {
+    public Mode getMode() {
+        return mode;
+    }
+
+    public void setMode(Mode mode) {
+        if (this.mode != mode) {
+            this.mode = mode;
+            if (mode == Mode.LIST) {
+                filesContainer.setColumns(1);
+            } else {
+                filesContainer.setColumns(4);
+            }
+        }
+    }
+
+    private Resource getFileIcon(String mimeType) {
         // TODO: Move to map
-        if (mimeType.startsWith("image/"))
-            return Fontello.FILE_IMAGE;
-        else if (mimeType.equals("application/pdf"))
-            return Fontello.FILE_PDF;
-        else if (mimeType.equals("application/vnd.ms-excel")
-                || mimeType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-            return Fontello.FILE_EXCEL;
-        else if (mimeType.equals("application/msword")
-                || mimeType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
-            return Fontello.FILE_WORD;
-        else if (mimeType.equals("application/vnd.ms-powerpoint")
-                || mimeType.equals("application/vnd.openxmlformats-officedocument.presentationml.presentation"))
-            return Fontello.FILE_POWERPOINT;
-        else if (mimeType.equals("application/zip")
-                || mimeType.equals("application/x-rar-compressed")
-                || mimeType.equals("application/x-gzip"))
-            return Fontello.FILE_ARCHIVE;
-        else if (mimeType.startsWith("audio/"))
-            return Fontello.FILE_AUDIO;
-        else if (mimeType.startsWith("video/"))
-            return Fontello.FILE_VIDEO;
-        else
-            return Fontello.FILE_CODE;
+        if (!isNullOrEmpty(mimeType)) {
+            if (mimeType.startsWith("image/"))
+                return Fontello.FILE_IMAGE;
+            else if (mimeType.equals("application/pdf"))
+                return Fontello.FILE_PDF;
+            else if (mimeType.equals("application/vnd.ms-excel")
+                    || mimeType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                return Fontello.FILE_EXCEL;
+            else if (mimeType.equals("application/msword")
+                    || mimeType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+                return Fontello.FILE_WORD;
+            else if (mimeType.equals("application/vnd.ms-powerpoint")
+                    || mimeType.equals("application/vnd.openxmlformats-officedocument.presentationml.presentation"))
+                return Fontello.FILE_POWERPOINT;
+            else if (mimeType.equals("application/zip")
+                    || mimeType.equals("application/x-rar-compressed")
+                    || mimeType.equals("application/x-gzip"))
+                return Fontello.FILE_ARCHIVE;
+            else if (mimeType.startsWith("audio/"))
+                return Fontello.FILE_AUDIO;
+            else if (mimeType.startsWith("video/"))
+                return Fontello.FILE_VIDEO;
+        }
+        return Fontello.FILE_CODE;
     }
 
     public void addUploadedFile(byte[] inputStream, String filename, String mimeType, long length) {
@@ -240,5 +273,10 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         public AcceptCriterion getAcceptCriterion() {
             return AcceptAll.get();
         }
+    }
+
+    private enum Mode {
+        LIST,
+        GRID
     }
 }

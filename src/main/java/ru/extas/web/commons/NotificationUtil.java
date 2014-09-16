@@ -40,7 +40,7 @@ public class NotificationUtil {
         final Notification notify = new Notification(caption, description, Notification.Type.ERROR_MESSAGE);
         notify.setStyleName(
                 ExtaTheme.NOTIFICATION_ERROR + " " +
-                        ExtaTheme.NOTIFICATION_FAILURE + " " +
+//                        ExtaTheme.NOTIFICATION_FAILURE + " " +
                         ExtaTheme.NOTIFICATION_CLOSABLE);
         notify.setPosition(Position.MIDDLE_CENTER);
         notify.setHtmlContentAllowed(true);

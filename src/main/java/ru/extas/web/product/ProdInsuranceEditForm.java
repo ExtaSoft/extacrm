@@ -57,13 +57,7 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
         return obj;
     }
 
-	/** {@inheritDoc} */
-	@Override
-	protected void checkBeforeSave(final ProdInsurance obj) {
-
-	}
-
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdInsurance obj) {
 		final FormLayout form = new ExtaFormLayout();

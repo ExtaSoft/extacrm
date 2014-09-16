@@ -9,14 +9,12 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.ExtaFormLayout;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -65,11 +63,6 @@ public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
         final UserRegistry userService = lookup(UserRegistry.class);
         obj = userService.save(obj);
         return obj;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final UserProfile obj) {
     }
 
     /** {@inheritDoc} */

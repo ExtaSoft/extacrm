@@ -91,13 +91,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
         return loc;
     }
 
-	/** {@inheritDoc} */
-	@Override
-	protected void checkBeforeSave(final ProdCredit obj) {
-
-	}
-
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdCredit obj) {
 		final FormLayout form = new ExtaFormLayout();

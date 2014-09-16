@@ -13,7 +13,6 @@ import ru.extas.web.util.ComponentUtil;
 
 import java.util.*;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -158,11 +157,6 @@ public class ExtaPermissionField extends CustomField<Set> {
 
         @Override
         protected void initObject(ExtaPermission obj) {
-
-        }
-
-        @Override
-        protected void checkBeforeSave(ExtaPermission obj) {
 
         }
 

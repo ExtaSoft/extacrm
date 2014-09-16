@@ -49,9 +49,9 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     @Override
     public Lead qualify(Lead obj) {
         checkNotNull(obj);
-        checkState(obj.getClient() != null, "Can't qualify lead without client link!");
-        checkState(obj.getVendor() != null, "Can't qualify lead without vendor link!");
-        checkState(obj.getStatus() == Lead.Status.NEW, "Can't qualify not new lead!");
+        checkState(obj.getClient() != null, "Невозможно квалифицировать, поскольку не привязан клиент!");
+        checkState(obj.getVendor() != null, "Невозможно квалифицировать, поскольку не привязан Мото салон!");
+        checkState(obj.getStatus() == Lead.Status.NEW, "Квалифицировать можно только новый лид!");
 
         // запуск БП
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("saleCreditProcess");

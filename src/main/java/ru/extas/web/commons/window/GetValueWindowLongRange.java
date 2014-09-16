@@ -75,11 +75,6 @@ public class GetValueWindowLongRange extends ExtaEditForm<GetValueWindowLongRang
 
     /** {@inheritDoc} */
     @Override
-    protected void checkBeforeSave(final ValueContainer obj) {
-    }
-
-    /** {@inheritDoc} */
-    @Override
     protected ComponentContainer createEditFields(final ValueContainer obj) {
         final FormLayout form = new ExtaFormLayout();
 

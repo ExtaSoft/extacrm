@@ -109,11 +109,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
     /** {@inheritDoc} */
     @Override
-    protected void checkBeforeSave(final Company obj) {
-    }
-
-    /** {@inheritDoc} */
-    @Override
     protected ComponentContainer createEditFields(final Company obj) {
         TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeUndefined();

@@ -11,7 +11,6 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.ExtaEditForm;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -51,12 +50,6 @@ public class MotorModelEditForm extends ExtaEditForm<MotorModel> {
         MotorModel loc = lookup(MotorModelRepository.class).save(obj);
         NotificationUtil.showSuccess("Модель техники сохранена");
         return loc;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(MotorModel obj) {
-
     }
 
     /** {@inheritDoc} */

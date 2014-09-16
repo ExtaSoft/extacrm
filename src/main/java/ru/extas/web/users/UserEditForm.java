@@ -8,7 +8,6 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
@@ -16,7 +15,6 @@ import ru.extas.model.security.UserRole;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.contacts.PersonSelect;
@@ -24,7 +22,6 @@ import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 import ru.extas.web.util.ComponentUtil;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -102,11 +99,6 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         if (!passField.getValue().equals(initialPassword)) {
             UserRealm.securePassword(user);
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final UserProfile obj) {
     }
 
     /** {@inheritDoc} */

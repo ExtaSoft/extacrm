@@ -135,12 +135,6 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
     /** {@inheritDoc} */
     @Override
-    protected void checkBeforeSave(final LegalEntity obj) {
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     protected ComponentContainer createEditFields(final LegalEntity obj) {
         TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeUndefined();

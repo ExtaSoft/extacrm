@@ -156,11 +156,10 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
                     if (fieldGroup.isValid()) {
                         try {
                             fieldGroup.commit();
-                            checkBeforeSave(bean);
                             bean = saveObject(bean);
                             saved = true;
                             modified = false;
-                        } catch (final CommitException e) {
+                        } catch (final Throwable e) {
                             logger.error("Can't apply form changes", e);
                             NotificationUtil.showError("Невозможно сохранить изменения!", e.getLocalizedMessage());
                             return;
@@ -266,13 +265,6 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
      * @param obj a TEditObject object.
      */
     protected abstract TEditObject saveObject(TEditObject obj);
-
-    /**
-     * <p>checkBeforeSave.</p>
-     *
-     * @param obj a TEditObject object.
-     */
-    protected abstract void checkBeforeSave(TEditObject obj);
 
     /**
      * <p>createEditFields.</p>

@@ -14,7 +14,6 @@ import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.PersonSelect;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -86,11 +85,6 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
         obj = lookup(FormTransferRepository.class).saveAndChangeOwner(obj);
         NotificationUtil.showSuccess("Акт приема/передачи сохранен");
         return obj;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final FormTransfer obj) {
     }
 
 }
