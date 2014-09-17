@@ -6,6 +6,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.LegalEntity;
@@ -363,7 +364,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     @Override
     protected void initObject(final Insurance obj) {
         if (obj.isNew()) {
-            final LocalDate now = LocalDate.now();
+            final LocalDate now = LocalDate.now(lookup(DateTimeZone.class));
             obj.setDate(now);
             obj.setPaymentDate(now);
             obj.setCoverTime(Insurance.PeriodOfCover.YEAR);

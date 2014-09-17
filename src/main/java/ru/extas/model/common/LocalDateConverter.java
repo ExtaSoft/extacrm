@@ -1,6 +1,7 @@
 package ru.extas.model.common;
 
 
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 
 import javax.persistence.AttributeConverter;

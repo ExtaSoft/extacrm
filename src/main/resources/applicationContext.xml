@@ -41,6 +41,13 @@
         <constructor-arg value="RU"/>
     </bean>
 
+    <!-- Часовой пояс клиента -->
+    <bean id="clientTimeZoneFactory" scope="singleton" class="ru.extas.web.util.InternalizationUtils"/>
+    <bean id="clientTimeZone" scope="session" class="org.joda.time.DateTimeZone"
+          factory-bean="clientTimeZoneFactory" factory-method="getClientTimeZone">
+        <aop:scoped-proxy/>
+    </bean>
+
     <!--Информация о версии и билде -->
     <context:property-placeholder location="classpath:version.properties" ignore-unresolvable="true"/>
     <bean id="application.version" class="java.lang.String">

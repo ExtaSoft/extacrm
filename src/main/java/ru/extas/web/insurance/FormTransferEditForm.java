@@ -5,6 +5,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import ru.extas.model.insurance.FormTransfer;
 import ru.extas.server.insurance.FormTransferRepository;
@@ -73,7 +74,7 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
     @Override
     protected void initObject(final FormTransfer obj) {
         if (obj.isNew()) {
-            final LocalDate now = LocalDate.now();
+            final LocalDate now = LocalDate.now(lookup(DateTimeZone.class));
             obj.setTransferDate(now);
             // TODO: Инициализировать поле "От" текущим пользователем
         }

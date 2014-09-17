@@ -7,6 +7,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import ru.extas.web.commons.converters.StringToJodaDTConverter;
 
+import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.GridDataDecl.*;
 
 /**
@@ -16,12 +17,14 @@ import static ru.extas.web.commons.GridDataDecl.*;
 */
 public abstract class NumColumnGenerator extends ComponentColumnGenerator {
 
-    private final StringToJodaDTConverter dtConverter = new StringToJodaDTConverter("EEE, dd MMM, HH:mm");
+    private final StringToJodaDTConverter dtConverter;
 
     private final String numProperty;
 
     public NumColumnGenerator(final String numProperty) {
         this.numProperty = numProperty;
+        dtConverter = lookup(StringToJodaDTConverter.class);
+        dtConverter.setPattern("EEE, dd MMM, HH:mm");
     }
 
     public NumColumnGenerator() {

@@ -60,6 +60,8 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToJodaDTConverter.class);
 		if (presentationType == String.class && modelType == LocalDate.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToJodaLDConverter.class);
+		if (presentationType == String.class && modelType == Date.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToDateTimeConverter.class);
 
 		// Конвертер денег
 		if (presentationType == String.class && modelType == BigDecimal.class)

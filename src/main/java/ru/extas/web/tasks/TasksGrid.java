@@ -157,7 +157,11 @@ public class TasksGrid extends ExtaGrid<Task> {
     protected CustomTable.ColumnGenerator createDetailColumnGenerator(final UIAction defAction) {
         return new CustomTable.ColumnGenerator() {
 
-            private StringToDateConverter dtConverter = new StringToDateTimeConverter("EEE, dd MMM, HH:mm");
+            private StringToDateTimeConverter dtConverter;
+            {
+                dtConverter = lookup(StringToDateTimeConverter.class);
+                dtConverter.setPattern("EEE, dd MMM, HH:mm");
+            }
 
             @Override
             public Object generateCell(CustomTable source, final Object itemId, Object columnId) {
