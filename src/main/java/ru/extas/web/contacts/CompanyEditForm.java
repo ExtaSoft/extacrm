@@ -86,7 +86,9 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         initForm(beanItem);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initObject(final Company obj) {
         if (obj.isNew()) {
@@ -97,7 +99,9 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
             obj.setRegAddress(new AddressInfo());
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Company saveObject(final Company obj) {
         logger.debug("Saving contact data...");
@@ -107,7 +111,9 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         return obj;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields(final Company obj) {
         TabSheet tabsheet = new TabSheet();
@@ -187,32 +193,22 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
         regionField = new RegionSelect();
         regionField.setDescription("Укажите регион регистрации");
-        regionField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newRegion = (String) event.getProperty().getValue();
-                final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
-                if (city != null)
-                    cityField.setValue(city);
-            }
+        regionField.addValueChangeListener(event -> {
+            final String newRegion = (String) event.getProperty().getValue();
+            final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+            if (city != null)
+                cityField.setValue(city);
         });
         formLayout.addComponent(regionField);
 
         cityField = new CitySelect();
         cityField.setDescription("Введите город регистрации");
         if (obj.getRegAddress().getCity() != null) cityField.addItem(obj.getRegAddress().getCity());
-        cityField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newCity = (String) event.getProperty().getValue();
-                final String region = lookup(SupplementService.class).findRegionByCity(newCity);
-                if (region != null)
-                    regionField.setValue(region);
-            }
+        cityField.addValueChangeListener(event -> {
+            final String newCity = (String) event.getProperty().getValue();
+            final String region = lookup(SupplementService.class).findRegionByCity(newCity);
+            if (region != null)
+                regionField.setValue(region);
         });
         formLayout.addComponent(cityField);
 

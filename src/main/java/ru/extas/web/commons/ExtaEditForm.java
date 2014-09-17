@@ -146,7 +146,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         cancelBtn.setIcon(Fontello.CANCEL);
         cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 
-        Button okBtn = new Button("OK", new Button.ClickListener() {
+        Button okBtn = new Button("Сохранить", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override

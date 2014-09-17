@@ -1,7 +1,14 @@
 package ru.extas.web.commons;
 
+import com.vaadin.server.Sizeable;
+import com.vaadin.ui.JavaScript;
+import com.vaadin.ui.JavaScriptFunction;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.UUID;
 
 /**
  * Вспомогательные методы для работы с формами ввода/редактирования
@@ -19,6 +26,19 @@ public class FormUtils {
         window.addCloseListener(event -> editWin.closeForm());
         editWin.addCloseFormListener(event -> window.close());
 
+        UUID id = UUID.randomUUID();
+        window.setId(id.toString());
+        JavaScript.getCurrent().addFunction("extaGetHeight",
+                arguments -> {
+                    int wndHeight = arguments.getInt(0);
+                    int brwHeight = UI.getCurrent().getPage().getBrowserWindowHeight();
+                    if(wndHeight >= brwHeight)
+                        window.setHeight(100, Sizeable.Unit.PERCENTAGE);
+                    //NotificationUtil.showWarning("Высота окна равна " + wndHeight + "<br/>Высота браузера равна " + brwHeight);
+                });
+        window.addAttachListener(x ->
+                        JavaScript.getCurrent().execute("extaGetHeight(document.getElementById('" + window.getId() + "').clientHeight);")
+        );
         UI.getCurrent().addWindow(window);
     }
 }

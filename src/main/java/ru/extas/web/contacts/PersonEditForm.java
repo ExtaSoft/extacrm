@@ -334,15 +334,12 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         changeNameField = new YesNoSelect("Менялась ли фамилия");
         changeNameField.setDescription("Укажите менялась ли фамилия");
-        changeNameField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                Boolean isChangeName = (Boolean) event.getProperty().getValue();
-                if (isChangeName == null)
-                    isChangeName = false;
-                exNameField.setVisible(isChangeName);
-                changeNameDateField.setVisible(isChangeName);
-            }
+        changeNameField.addValueChangeListener(event -> {
+            Boolean isChangeName = (Boolean) event.getProperty().getValue();
+            if (isChangeName == null)
+                isChangeName = false;
+            exNameField.setVisible(isChangeName);
+            changeNameDateField.setVisible(isChangeName);
         });
         personForm.addComponent(changeNameField);
 
@@ -382,16 +379,11 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         regRegionField = new RegionSelect();
         regRegionField.setDescription("Укажите регион проживания");
-        regRegionField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID1 = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newRegion = (String) event.getProperty().getValue();
-                final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
-                if (city != null)
-                    regCityField.setValue(city);
-            }
+        regRegionField.addValueChangeListener(event -> {
+            final String newRegion = (String) event.getProperty().getValue();
+            final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+            if (city != null)
+                regCityField.setValue(city);
         });
         personForm.addComponent(regRegionField);
 
@@ -399,16 +391,11 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         regCityField.setDescription("Введите город проживания контакта");
         if (obj.getRegAddress().getCity() != null)
             regCityField.addItem(obj.getRegAddress().getCity());
-        regCityField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID1 = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newCity = (String) event.getProperty().getValue();
-                final String region = lookup(SupplementService.class).findRegionByCity(newCity);
-                if (region != null)
-                    regRegionField.setValue(region);
-            }
+        regCityField.addValueChangeListener(event -> {
+            final String newCity = (String) event.getProperty().getValue();
+            final String region = lookup(SupplementService.class).findRegionByCity(newCity);
+            if (region != null)
+                regRegionField.setValue(region);
         });
         personForm.addComponent(regCityField);
 
@@ -438,14 +425,11 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupHeader("Адрес фактического проживания"));
         regNactIsSameField = new CheckBox("Совпадает с адресом постоянной регистрации");
-        regNactIsSameField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                Boolean isRegIsAct = (Boolean) event.getProperty().getValue();
-                if (isRegIsAct == null)
-                    isRegIsAct = false;
-                setActualAdressStatus(isRegIsAct);
-            }
+        regNactIsSameField.addValueChangeListener(event -> {
+            Boolean isRegIsAct = (Boolean) event.getProperty().getValue();
+            if (isRegIsAct == null)
+                isRegIsAct = false;
+            setActualAdressStatus(isRegIsAct);
         });
         personForm.addComponent(regNactIsSameField);
 
@@ -460,16 +444,11 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         actRegionField = new RegionSelect();
         actRegionField.setDescription("Укажите регион проживания");
-        actRegionField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID1 = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newRegion = (String) event.getProperty().getValue();
-                final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
-                if (city != null)
-                    actCityField.setValue(city);
-            }
+        actRegionField.addValueChangeListener(event -> {
+            final String newRegion = (String) event.getProperty().getValue();
+            final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+            if (city != null)
+                actCityField.setValue(city);
         });
         personForm.addComponent(actRegionField);
 
@@ -477,16 +456,11 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         actCityField.setDescription("Введите город проживания контакта");
         if (obj.getRegAddress().getCity() != null)
             actCityField.addItem(obj.getRegAddress().getCity());
-        actCityField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID1 = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newCity = (String) event.getProperty().getValue();
-                final String region = lookup(SupplementService.class).findRegionByCity(newCity);
-                if (region != null)
-                    actRegionField.setValue(region);
-            }
+        actCityField.addValueChangeListener(event -> {
+            final String newCity = (String) event.getProperty().getValue();
+            final String region = lookup(SupplementService.class).findRegionByCity(newCity);
+            if (region != null)
+                actRegionField.setValue(region);
         });
         personForm.addComponent(actCityField);
 

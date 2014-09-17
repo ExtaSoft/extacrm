@@ -75,6 +75,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
         container.addNestedContainerProperty("dealer.name");
+        container.sort(new Object[]{"createdAt"}, new boolean[]{false});
         return container;
     }
 
@@ -85,7 +86,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
 
         actions.add(new NewObjectAction("Новый", "Ввод нового полиса страхования"));
         actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке полис страхования"));
-        actions.add(new NewObjectAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", Fontello.CLOCK) {
+        actions.add(new EditObjectAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", Fontello.CLOCK) {
             @Override
             public void fire(Object itemId) {
                 Insurance oldIns = GridItem.extractBean(table.getItem(itemId));

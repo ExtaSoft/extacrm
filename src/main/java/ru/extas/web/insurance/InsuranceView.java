@@ -49,7 +49,7 @@ public class InsuranceView extends SubdomainView {
     protected List<SubdomainInfo> getSubdomainInfo() {
         UserManagementService userService = lookup(UserManagementService.class);
         final ArrayList<SubdomainInfo> ret = newArrayList();
-        ret.add(new SubdomainInfoImpl("Имущ. страховки", ExtaDomain.INSURANCE_PROP) {
+        ret.add(new SubdomainInfoImpl("Имущ. страховки", ExtaDomain.INSURANCE_PROP, true) {
 
             @Override
             public ExtaGrid createGrid() {
