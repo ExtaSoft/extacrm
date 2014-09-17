@@ -2,6 +2,7 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.ExtaTheme;
@@ -34,6 +35,9 @@ public class ContactEmployeeField extends CustomField<Set> {
      */
     public ContactEmployeeField() {
         super.setBuffered(true);
+        setBuffered(true);
+        setWidth(600, Unit.PIXELS);
+        setHeight(300, Unit.PIXELS);
     }
 
     /**
@@ -42,36 +46,33 @@ public class ContactEmployeeField extends CustomField<Set> {
     @Override
     protected Component initContent() {
         final VerticalLayout fieldLayout = new VerticalLayout();
+        fieldLayout.setSizeFull();
         fieldLayout.setSpacing(true);
+        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
 
         if (!isReadOnly()) {
-            final HorizontalLayout commandBar = new HorizontalLayout();
-            commandBar.addStyleName(ExtaTheme.CONFIGURE);
-            commandBar.setSpacing(true);
+            final MenuBar commandBar = new MenuBar();
+            commandBar.setAutoOpen(true);
+            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+            commandBar.focus();
 
-            final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
+            final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
 
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void buttonClick(final Button.ClickEvent event) {
-
-                    final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите сотрудника");
-                    selectWindow.addCloseListener(e -> {
-                        if (selectWindow.isSelectPressed()) {
-                            container.addBean(selectWindow.getSelected());
-                            setValue(newHashSet(container.getItemIds()));
-                            NotificationUtil.showSuccess("Сотрудник добавлен");
-                        }
-                    });
-                    selectWindow.showModal();
-                }
+                final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите сотрудника");
+                selectWindow.addCloseListener(e -> {
+                    if (selectWindow.isSelectPressed()) {
+                        container.addBean(selectWindow.getSelected());
+                        setValue(newHashSet(container.getItemIds()));
+                        NotificationUtil.showSuccess("Сотрудник добавлен");
+                    }
+                });
+                selectWindow.showModal();
             });
             addProdBtn.setDescription("Добавить физ. лицо в список сотрудников");
             addProdBtn.setIcon(Fontello.DOC_NEW);
-            commandBar.addComponent(addProdBtn);
 
-            final Button delProdBtn = new Button("Удалить", event -> {
+            final MenuBar.MenuItem delProdBtn = commandBar.addItem("Удалить", event -> {
                 if (table.getValue() != null) {
                     container.removeItem(table.getValue());
                     setValue(newHashSet(container.getItemIds()));
@@ -79,12 +80,12 @@ public class ContactEmployeeField extends CustomField<Set> {
             });
             delProdBtn.setDescription("Удалить физ. лицо из списка сотрудников");
             delProdBtn.setIcon(Fontello.TRASH);
-            commandBar.addComponent(delProdBtn);
 
             fieldLayout.addComponent(commandBar);
         }
 
         table = new Table();
+        table.setSizeFull();
         table.setRequired(true);
         table.setSelectable(true);
         table.setColumnCollapsingAllowed(true);
@@ -103,6 +104,7 @@ public class ContactEmployeeField extends CustomField<Set> {
         fullInitTable(table, dataDecl);
 
         fieldLayout.addComponent(table);
+        fieldLayout.setExpandRatio(table, 1);
 
         return fieldLayout;
     }

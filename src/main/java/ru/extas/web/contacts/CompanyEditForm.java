@@ -118,7 +118,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         tabsheet.addTab(mainForm).setCaption("Общие данные");
 
         // Вкладка - "Владельцы"
-        final FormLayout ownerForm = createOwnerForm();
+        final Component ownerForm = createOwnerForm();
         tabsheet.addTab(ownerForm).setCaption("Владельцы");
 
         // Вкладка - "Юр. лица"
@@ -135,7 +135,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         });
 
         // Вкладка - "Сотрудники"
-        final FormLayout employesForm = createEmployesForm();
+        final Component employesForm = createEmployesForm();
         tabsheet.addTab(employesForm).setCaption("Сотрудники");
 
         return tabsheet;
@@ -143,34 +143,22 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
     private Component createLegalsForm(final Company obj) {
         legalsField = new LegalEntitiesField(obj);
-
         return legalsField;
     }
 
-    private FormLayout createEmployesForm() {
-        final FormLayout formLayout = new ExtaFormLayout();
-        formLayout.setMargin(true);
-
+    private Component createEmployesForm() {
         employeeField = new ContactEmployeeField();
-        formLayout.addComponent(employeeField);
-
-        return formLayout;
+        return employeeField;
     }
 
     private Component createSalePointsForm(final Company obj) {
         salePointsField = new SalePointsField(obj);
-
         return salePointsField;
     }
 
-    private FormLayout createOwnerForm() {
-        final FormLayout formLayout = new ExtaFormLayout();
-        formLayout.setMargin(true);
-
+    private Component createOwnerForm() {
         ownersField = new CompanyOwnersField();
-        formLayout.addComponent(ownersField);
-
-        return formLayout;
+        return ownersField;
     }
 
     private FormLayout createMainForm(final Contact obj) {

@@ -37,8 +37,7 @@ public class LegalEntitiesField extends CustomField<Set> {
 	public LegalEntitiesField(Company company) {
 		this.company = company;
 		setBuffered(true);
-		addStyleName(ExtaTheme.BASE_VIEW);
-		setSizeFull();
+		setHeight(300, Unit.PIXELS);
 		setWidth(600, Unit.PIXELS);
 	}
 

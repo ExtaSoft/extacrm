@@ -5,6 +5,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditPercent;
@@ -44,6 +45,8 @@ public class ProdCredPercentField extends CustomField<List> {
      */
     public ProdCredPercentField(String caption, final String description, ProdCredit product) {
         this.product = product;
+        setWidth(400, Unit.PIXELS);
+        setHeight(200, Unit.PIXELS);
         setCaption(caption);
         setDescription(description);
     }
@@ -54,35 +57,31 @@ public class ProdCredPercentField extends CustomField<List> {
     @Override
     protected Component initContent() {
         final VerticalLayout fieldLayout = new VerticalLayout();
+        fieldLayout.setSizeFull();
         fieldLayout.setSpacing(true);
+        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
 
         if (!isReadOnly()) {
-            final HorizontalLayout commandBar = new HorizontalLayout();
-            commandBar.addStyleName(ExtaTheme.CONFIGURE);
-            commandBar.setSpacing(true);
+            final MenuBar commandBar = new MenuBar();
+            commandBar.setAutoOpen(true);
+            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
 
-            final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
+            final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
+                final BeanItem<ProdCreditPercent> newObj = new BeanItem<>(new ProdCreditPercent(product));
 
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void buttonClick(final Button.ClickEvent event) {
-                    final BeanItem<ProdCreditPercent> newObj = new BeanItem<>(new ProdCreditPercent(product));
-
-                    final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Новая процентная ставка", newObj);
-                    editWin.addCloseFormListener(event1 -> {
-                        if (editWin.isSaved()) {
-                            container.addBean(newObj.getBean());
-                        }
-                    });
-                    FormUtils.showModalWin(editWin);
-                }
+                final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Новая процентная ставка", newObj);
+                editWin.addCloseFormListener(event1 -> {
+                    if (editWin.isSaved()) {
+                        container.addBean(newObj.getBean());
+                    }
+                });
+                FormUtils.showModalWin(editWin);
             });
             addProdBtn.setDescription("Добавить процентную стаквку в продукт");
             addProdBtn.setIcon(Fontello.DOC_NEW);
-            commandBar.addComponent(addProdBtn);
 
-            final Button edtProdBtn = new Button("Изменить", event -> {
+            final MenuBar.MenuItem edtProdBtn = commandBar.addItem("Изменить", event -> {
                 if (procentTable.getValue() != null) {
                     final BeanItem<ProdCreditPercent> percentItem = (BeanItem<ProdCreditPercent>) procentTable.getItem(procentTable.getValue());
                     final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Редактирование процентной ставки", percentItem);
@@ -91,25 +90,24 @@ public class ProdCredPercentField extends CustomField<List> {
             });
             edtProdBtn.setDescription("Изменить выделенную в списке процентную ставку");
             edtProdBtn.setIcon(Fontello.EDIT_3);
-            commandBar.addComponent(edtProdBtn);
 
-            final Button delProdBtn = new Button("Удалить", event -> {
+            final MenuBar.MenuItem delProdBtn = commandBar.addItem("Удалить", event -> {
                 if (procentTable.getValue() != null) {
                     procentTable.removeItem(procentTable.getValue());
                 }
             });
             delProdBtn.setDescription("Удалить процентную ставку из продукта");
             delProdBtn.setIcon(Fontello.TRASH);
-            commandBar.addComponent(delProdBtn);
 
             fieldLayout.addComponent(commandBar);
         }
 
         procentTable = new Table();
+        procentTable.setSizeFull();
+        procentTable.addStyleName(ExtaTheme.TABLE_SMALL);
+        procentTable.addStyleName(ExtaTheme.TABLE_COMPACT);
         procentTable.setRequired(true);
         procentTable.setSelectable(true);
-        procentTable.setHeight(7, Unit.EM);
-        procentTable.setWidth(25, Unit.EM);
         final Property dataSource = getPropertyDataSource();
         final List<ProdCreditPercent> percentList = dataSource != null ? (List<ProdCreditPercent>) dataSource.getValue() : new ArrayList<ProdCreditPercent>();
         container = new BeanItemContainer<>(ProdCreditPercent.class);
@@ -128,6 +126,7 @@ public class ProdCredPercentField extends CustomField<List> {
         procentTable.setColumnHeader("downpayment", "Первоначальный взнос");
         procentTable.setConverter("downpayment", lookup(StringToPercentConverter.class));
         fieldLayout.addComponent(procentTable);
+        fieldLayout.setExpandRatio(procentTable, 1);
 
         return fieldLayout;
     }

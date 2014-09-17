@@ -138,7 +138,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         tabsheet.addTab(mainForm).setCaption("Общие данные");
 
         // Вкладка - "Сотрудники"
-        final FormLayout employesForm = createEmployesForm();
+        final Component employesForm = createEmployesForm();
         tabsheet.addTab(employesForm).setCaption("Сотрудники");
 
         // Вкладка - "Юр.лица"
@@ -181,14 +181,8 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         return legalsField;
     }
 
-    private FormLayout createEmployesForm() {
-        final FormLayout formLayout = new ExtaFormLayout();
-        formLayout.setMargin(true);
-
-        employeeField = new ContactEmployeeField();
-        formLayout.addComponent(employeeField);
-
-        return formLayout;
+    private Component createEmployesForm() {
+        return employeeField = new ContactEmployeeField();
     }
 
     private FormLayout createMainForm(final SalePoint obj) {

@@ -32,9 +32,8 @@ public class ExtaPermissionField extends CustomField<Set> {
 
     private ExtaPermissionField() {
         setBuffered(true);
-        addStyleName(ExtaTheme.INLINE_BASE_VIEW);
-        setSizeFull();
-        setWidth(600, Unit.PIXELS);
+        setWidth(100, Unit.PERCENTAGE);
+        setHeight(300, Unit.PIXELS);
     }
 
     /**
@@ -126,7 +125,6 @@ public class ExtaPermissionField extends CustomField<Set> {
                 return actions;
             }
         };
-
 
         return grid;
     }

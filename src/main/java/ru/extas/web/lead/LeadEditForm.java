@@ -221,6 +221,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
     private Panel createVendorPanel(final Lead lead) {
         VerticalLayout panel = new VerticalLayout();
+        panel.setMargin(true);
         panel.setSpacing(true);
 
         final Table table = new Table();
@@ -283,6 +284,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
     private Panel createClientPanel(final Lead lead) {
         VerticalLayout panel = new VerticalLayout();
+        panel.setMargin(true);
         panel.setSpacing(true);
 
         final Table table = new Table();

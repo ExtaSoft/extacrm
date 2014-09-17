@@ -144,11 +144,11 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         tabsheet.addTab(mainForm).setCaption("Общие данные");
 
         // Вкладка - "Продукты"
-        final FormLayout ownerForm = createProductsForm();
+        final Component ownerForm = createProductsForm();
         tabsheet.addTab(ownerForm).setCaption("Продукты");
 
         // Вкладка - "Бренды"
-        final FormLayout salePointsForm = createBrendsForm();
+        final Component salePointsForm = createBrendsForm();
         tabsheet.addTab(salePointsForm).setCaption("Бренды");
 
         final Component docsForm = createDocsForm();
@@ -157,24 +157,12 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         return tabsheet;
     }
 
-    private FormLayout createBrendsForm() {
-        final FormLayout formLayout = new ExtaFormLayout();
-        formLayout.setMargin(true);
-
-        brandsField = new BrandsField();
-        formLayout.addComponent(brandsField);
-
-        return formLayout;
+    private Component createBrendsForm() {
+        return brandsField = new BrandsField();
     }
 
-    private FormLayout createProductsForm() {
-        final FormLayout formLayout = new ExtaFormLayout();
-        formLayout.setMargin(true);
-
-        productsField = new LegalProductsField();
-        formLayout.addComponent(productsField);
-
-        return formLayout;
+    private Component createProductsForm() {
+        return productsField = new LegalProductsField();
     }
 
     private FormLayout createMainForm(final LegalEntity obj) {

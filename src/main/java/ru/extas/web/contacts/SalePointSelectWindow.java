@@ -33,8 +33,8 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 	 */
 	public SalePointSelectWindow(final String caption, final Company company) {
 		super(caption);
-		addStyleName(ExtaTheme.BASE_VIEW);
-		setContent(new SelectGrid(company));
+        setWidth(800, Unit.PIXELS);
+        setContent(new SelectGrid(company));
 	}
 
 	/**

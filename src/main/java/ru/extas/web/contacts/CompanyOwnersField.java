@@ -2,6 +2,7 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.ExtaTheme;
@@ -27,90 +28,90 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
 public class CompanyOwnersField extends CustomField<Set> {
 
     private Table table;
-	private BeanItemContainer<Person> container;
+    private BeanItemContainer<Person> container;
 
-	/**
-	 * <p>Constructor for CompanyOwnersField.</p>
-	 */
-	public CompanyOwnersField() {
-		super.setBuffered(true);
-	}
+    /**
+     * <p>Constructor for CompanyOwnersField.</p>
+     */
+    public CompanyOwnersField() {
+        super.setBuffered(true);
+        setWidth(600, Unit.PIXELS);
+        setHeight(300, Unit.PIXELS);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected Component initContent() {
-		final VerticalLayout fieldLayout = new VerticalLayout();
-		fieldLayout.setSpacing(true);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Component initContent() {
+        final VerticalLayout fieldLayout = new VerticalLayout();
+        fieldLayout.setSizeFull();
+        fieldLayout.setSpacing(true);
+        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
 
-		if (!isReadOnly()) {
-			final HorizontalLayout commandBar = new HorizontalLayout();
-			commandBar.addStyleName(ExtaTheme.CONFIGURE);
-			commandBar.setSpacing(true);
+        if (!isReadOnly()) {
+            final MenuBar commandBar = new MenuBar();
+            commandBar.setAutoOpen(true);
+            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+            commandBar.focus();
 
-			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
-
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-
-					final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите владельца компании");
-					selectWindow.addCloseListener(e -> {
-                        if (selectWindow.isSelectPressed()) {
-                            container.addBean(selectWindow.getSelected());
-                            setValue(newHashSet(container.getItemIds()));
-NotificationUtil.showSuccess("Владелец добавлен");
-                        }
+            final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", Fontello.DOC_NEW,
+                    item -> {
+                        final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите владельца компании");
+                        selectWindow.addCloseListener(e -> {
+                            if (selectWindow.isSelectPressed()) {
+                                container.addBean(selectWindow.getSelected());
+                                setValue(newHashSet(container.getItemIds()));
+                                NotificationUtil.showSuccess("Владелец добавлен");
+                            }
+                        });
+                        selectWindow.showModal();
                     });
-					selectWindow.showModal();
-				}
-			});
-			addProdBtn.setDescription("Добавить физ. лицо в список владельцев компании");
-			addProdBtn.setIcon(Fontello.DOC_NEW);
-			commandBar.addComponent(addProdBtn);
+            addProdBtn.setDescription("Добавить физ. лицо в список владельцев компании");
 
-			final Button delProdBtn = new Button("Удалить", event -> {
+            final MenuBar.MenuItem delProdBtn = commandBar.addItem("Удалить", Fontello.TRASH, event -> {
                 if (table.getValue() != null) {
                     container.removeItem(table.getValue());
                     setValue(newHashSet(container.getItemIds()));
                 }
             });
-			delProdBtn.setDescription("Удалить физ. лицо из списка владельцев компании");
-			delProdBtn.setIcon(Fontello.TRASH);
-			commandBar.addComponent(delProdBtn);
+            delProdBtn.setDescription("Удалить физ. лицо из списка владельцев компании");
 
-			fieldLayout.addComponent(commandBar);
-		}
+            fieldLayout.addComponent(commandBar);
+        }
 
-		table = new Table();
-		table.setRequired(true);
-		table.setSelectable(true);
-		table.setColumnCollapsingAllowed(true);
-		//table.setHeight(10, Unit.EM);
-		//table.setWidth(25, Unit.EM);
-		final Property dataSource = getPropertyDataSource();
-		final Set<Person> list = dataSource != null ? (Set<Person>) dataSource.getValue() : new HashSet<Person>();
-		container = new BeanItemContainer<>(Person.class);
-		if (list != null) {
-			for (final Person item : list) {
-				container.addBean(item);
-			}
-		}
-		container.addNestedContainerProperty("regAddress.region");
-		table.setContainerDataSource(container);
+        table = new Table();
+        table.setRequired(true);
+        table.setSelectable(true);
+        table.setColumnCollapsingAllowed(true);
+        table.setSizeFull();
+        final Property dataSource = getPropertyDataSource();
+        final Set<Person> list = dataSource != null ? (Set<Person>) dataSource.getValue() : new HashSet<Person>();
+        container = new BeanItemContainer<>(Person.class);
+        if (list != null) {
+            for (final Person item : list) {
+                container.addBean(item);
+            }
+        }
+        container.addNestedContainerProperty("regAddress.region");
+        table.setContainerDataSource(container);
 
-		final GridDataDecl dataDecl = new PersonDataDecl();
-		fullInitTable(table, dataDecl);
+        final GridDataDecl dataDecl = new PersonDataDecl();
+        fullInitTable(table, dataDecl);
 
-		fieldLayout.addComponent(table);
+        fieldLayout.addComponent(table);
+        fieldLayout.setExpandRatio(table, 1);
 
-		return fieldLayout;
-	}
+        return fieldLayout;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public Class<? extends Set> getType() {
-		return Set.class;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends Set> getType() {
+        return Set.class;
+    }
 
 }

@@ -9,6 +9,7 @@ import com.google.common.collect.Range;
 import com.vaadin.data.Container.ItemSetChangeEvent;
 import com.vaadin.data.Container.ItemSetChangeListener;
 import com.vaadin.data.Validator.InvalidValueException;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import ru.extas.web.commons.ExtaEditForm;
@@ -42,6 +43,8 @@ public class A7NumListEdit extends CustomField<List> {
      */
     public A7NumListEdit(final String caption) {
         this.setCaption(caption);
+        setWidth(400, Unit.PIXELS);
+        setHeight(300, Unit.PIXELS);
     }
 
     /** {@inheritDoc} */
@@ -49,30 +52,26 @@ public class A7NumListEdit extends CustomField<List> {
     @Override
     protected Component initContent() {
         final VerticalLayout fieldLayout = new VerticalLayout();
+        fieldLayout.setSizeFull();
         fieldLayout.setSpacing(true);
+        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
 
-        final HorizontalLayout commandBar = new HorizontalLayout();
-        commandBar.addStyleName(ExtaTheme.CONFIGURE);
-        commandBar.setSpacing(true);
+        final MenuBar commandBar = new MenuBar();
+        commandBar.setAutoOpen(true);
+        commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+        commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
 
-        final Button addNumBtn = new Button("Добавить", new Button.ClickListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                final GetValueWindowLong win = new GetValueWindowLong("Введите номер новой квитанции");
-                win.addCloseFormListener(event1 -> {
-                    if (win.isSaved())
-                        addNumber(win.getValue().toString());
-                });
-                FormUtils.showModalWin(win);
-            }
+        final MenuBar.MenuItem addNumBtn = commandBar.addItem("Добавить", Fontello.PLUS, event -> {
+            final GetValueWindowLong win = new GetValueWindowLong("Введите номер новой квитанции");
+            win.addCloseFormListener(event1 -> {
+                if (win.isSaved())
+                    addNumber(win.getValue().toString());
+            });
+            FormUtils.showModalWin(win);
         });
         addNumBtn.setDescription("Добавить номер квитанции к акту приема/передачи");
-        commandBar.addComponent(addNumBtn);
 
-        final Button addNumRangeBtn = new Button("Диапазон", event -> {
+        final MenuBar.MenuItem addNumRangeBtn = commandBar.addItem("Диапазон", event -> {
             final GetValueWindowLongRange win = new GetValueWindowLongRange("Введите диапазон номеров квитанций");
             win.addCloseFormListener(event1 -> {
                 if (win.isSaved()) {
@@ -85,17 +84,17 @@ public class A7NumListEdit extends CustomField<List> {
             FormUtils.showModalWin(win);
         });
         addNumRangeBtn.setDescription("Добавить диапазон номеров квитанции (пачку квитанций) к акту приема/передачи");
-        commandBar.addComponent(addNumRangeBtn);
 
         fieldLayout.addComponent(commandBar);
 
         formNums = new Table();
+        formNums.setSizeFull();
+        formNums.addStyleName(ExtaTheme.TABLE_SMALL);
+        formNums.addStyleName(ExtaTheme.TABLE_COMPACT);
         formNums.addContainerProperty("Номер", String.class, null);
         formNums.addContainerProperty("Действия", Button.class, null);
         formNums.setRequired(true);
         formNums.setSelectable(true);
-        formNums.setHeight(20, Unit.EM);
-        formNums.setWidth(20, Unit.EM);
         final List<String> numList = (List<String>) getPropertyDataSource().getValue();
         if (numList != null) {
             for (final String num : numList) {
@@ -104,6 +103,8 @@ public class A7NumListEdit extends CustomField<List> {
         }
         formNums.addItemSetChangeListener(event -> setValue(newArrayList(formNums.getItemIds())));
         fieldLayout.addComponent(formNums);
+        fieldLayout.setExpandRatio(formNums, 1);
+
 
         return fieldLayout;
     }

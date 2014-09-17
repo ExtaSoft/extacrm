@@ -4,6 +4,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.security.UserGroup;
 import ru.extas.server.security.UserGroupRegistry;
@@ -93,8 +94,8 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
 
         permissionsField = new ExtaPermissionField(obj);
         permissionsField.setCaption("Правила доступа группы");
-        permissionsField.setHeight(10, Unit.EM);
         form.addComponent(permissionsField);
+//        form.addComponent(new Label("test"));
 
         return form;
     }

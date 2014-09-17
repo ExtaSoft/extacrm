@@ -31,8 +31,8 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 	 */
 	public PersonSelectWindow(final String caption) {
 		super(caption);
-		addStyleName(ExtaTheme.BASE_VIEW);
-		setContent(new SelectGrid());
+        setWidth(800, Unit.PIXELS);
+        setContent(new SelectGrid());
 	}
 
 	/**

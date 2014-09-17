@@ -38,8 +38,8 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 	public LegalEntitySelectWindow(final String caption, final Company company) {
 		super(caption);
 		this.company = company;
-		addStyleName(ExtaTheme.BASE_VIEW);
-		setContent(new SelectGrid());
+        setWidth(800, Unit.PIXELS);
+        setContent(new SelectGrid());
 	}
 
 	/**

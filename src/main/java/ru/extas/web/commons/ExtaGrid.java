@@ -6,6 +6,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
 import ru.extas.model.common.IdentifiedObject;
@@ -178,52 +179,63 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         currentMode = mode;
         setSizeFull();
 
-        final CssLayout panel = new CssLayout();
-        panel.addStyleName(toolbarVisible ? "grid-panel" : "grid-panel-notools");
+        final GridLayout panel = new GridLayout(2, 2);
+//        panel.addStyleName(toolbarVisible ? "grid-panel" : "grid-panel-notools");
         panel.setSizeFull();
 
-        // Формируем тулбар
-        final MenuBar commandBar = createGridToolbar(mode);
-        panel.addComponent(commandBar);
+        panel.setRowExpandRatio(0, 0);
+        panel.setRowExpandRatio(1, 1);
+        panel.setColumnExpandRatio(0, 1);
+        panel.setColumnExpandRatio(1, 0);
+        panel.setMargin(new MarginInfo(true, false, true, false));
 
-        // Переключение режима таблицы
-        final MenuBar modeSwitchBar = new MenuBar();
-        modeSwitchBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
-        modeSwitchBar.addStyleName(ExtaTheme.MODE_SWITCH_BAR);
-        final MenuBar.MenuItem tableFilterBtn = modeSwitchBar.addItem("", Fontello.FILTER, selectedItem -> table.setFilterBarVisible(selectedItem.isChecked()));
-        tableFilterBtn.setDescription("Показать строку фильтра таблицы");
-        tableFilterBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-        tableFilterBtn.setCheckable(true);
+        if (toolbarVisible) {
+            panel.setSpacing(true);
+            // Формируем тулбар
+            final MenuBar commandBar = createGridToolbar(mode);
+            panel.addComponent(commandBar, 0, 0);
+            panel.setComponentAlignment(commandBar, Alignment.TOP_LEFT);
 
-        MenuBar.Command modeCommand = selectedItem -> {
-            if (selectedItem == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
-                setMode(Mode.TABLE);
-            } else if (currentMode == Mode.TABLE) {
-                setMode(Mode.DETAIL_LIST);
+            // Переключение режима таблицы
+            final MenuBar modeSwitchBar = new MenuBar();
+            modeSwitchBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+//        modeSwitchBar.addStyleName(ExtaTheme.MODE_SWITCH_BAR);
+            final MenuBar.MenuItem tableFilterBtn = modeSwitchBar.addItem("", Fontello.FILTER, selectedItem -> table.setFilterBarVisible(selectedItem.isChecked()));
+            tableFilterBtn.setDescription("Показать строку фильтра таблицы");
+            tableFilterBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            tableFilterBtn.setCheckable(true);
+
+            MenuBar.Command modeCommand = selectedItem -> {
+                if (selectedItem == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
+                    setMode(Mode.TABLE);
+                } else if (currentMode == Mode.TABLE) {
+                    setMode(Mode.DETAIL_LIST);
+                }
+            };
+            tableModeBtn = modeSwitchBar.addItem("", Fontello.TABLE, modeCommand);
+            tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
+            tableModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            tableModeBtn.setCheckable(true);
+
+            detailModeBtn = modeSwitchBar.addItem("", Fontello.LIST_ALT, modeCommand);
+            detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
+            detailModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            detailModeBtn.setCheckable(true);
+
+            if (currentMode == Mode.TABLE) {
+                tableModeBtn.setChecked(true);
+                detailModeBtn.setChecked(false);
+            } else {
+                detailModeBtn.setChecked(true);
+                tableModeBtn.setChecked(false);
             }
-        };
-        tableModeBtn = modeSwitchBar.addItem("", Fontello.TABLE, modeCommand);
-        tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
-        tableModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-        tableModeBtn.setCheckable(true);
-
-        detailModeBtn = modeSwitchBar.addItem("", Fontello.LIST_ALT, modeCommand);
-        detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
-        detailModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-        detailModeBtn.setCheckable(true);
-
-        if (currentMode == Mode.TABLE) {
-            tableModeBtn.setChecked(true);
-            detailModeBtn.setChecked(false);
-        } else {
-            detailModeBtn.setChecked(true);
-            tableModeBtn.setChecked(false);
+            panel.addComponent(modeSwitchBar, 1, 0);
+            panel.setComponentAlignment(modeSwitchBar, Alignment.TOP_RIGHT);
         }
-        panel.addComponent(modeSwitchBar);
 
         // Таблица
         initTable(mode);
-        panel.addComponent(table);
+        panel.addComponent(table, 0, 1, 1, 1);
 
         setCompositionRoot(panel);
     }
@@ -414,6 +426,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     public void adjustGridHeight() {
         table.setPageLength(table.size());
     }
+
     /**
      * <p>createDataDecl.</p>
      *
@@ -448,7 +461,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
             Iterator<DataDeclMapping> mapIterator = dataDecl.getMappings().iterator();
             DataDeclMapping titleMap = mapIterator.next();
-            if(titleMap.getPropName().equals("id"))
+            if (titleMap.getPropName().equals("id"))
                 titleMap = mapIterator.next();
             VerticalLayout panel = new VerticalLayout();
 

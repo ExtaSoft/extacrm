@@ -32,8 +32,8 @@ public class ProductSelectWindow extends CloseOnlylWindow {
 	 */
 	public ProductSelectWindow(final String caption) {
 		super(caption);
-		addStyleName(ExtaTheme.BASE_VIEW);
-		setContent(new SelectGrid());
+        setWidth(800, Unit.PIXELS);
+        setContent(new SelectGrid());
 	}
 
 	/**
