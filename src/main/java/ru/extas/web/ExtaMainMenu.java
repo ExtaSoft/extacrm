@@ -41,6 +41,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
     private static final long serialVersionUID = 4672093745206168652L;
     private final Navigator navigator;
     private final Map<String, Button> fragmentToButton;
+    private String defaultUriFragment;
 
     /**
      * <p>Constructor for ExtaMainMenu.</p>
@@ -127,6 +128,8 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
             // Добавляем кнопку
             addComponent(b);
             fragmentToButton.put(normFragment, b);
+            if (isNullOrEmpty(defaultUriFragment))
+                defaultUriFragment = normFragment;
         }
     }
 
@@ -147,7 +150,7 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
         ExtaUri uri = new ExtaUri(uriStr);
         String uriFragment;
         if (isNullOrEmpty(uri.getDomainPrefix())) {
-            uriFragment = ExtaDomain.DASHBOARD.getName();
+            uriFragment = getDefaultUriFragment();
         } else
             uriFragment = uri.toString();
 
@@ -165,6 +168,10 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
     @Override
     public void uriFragmentChanged(final Page.UriFragmentChangedEvent event) {
         processURI(event.getUriFragment(), false);
+    }
+
+    public String getDefaultUriFragment() {
+        return defaultUriFragment;
     }
 
     private class DomainViewProvider implements ViewProvider {
