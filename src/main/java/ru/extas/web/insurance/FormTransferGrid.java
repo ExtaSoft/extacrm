@@ -7,15 +7,27 @@ import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Person_;
+import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.insurance.A7Form;
+import ru.extas.model.insurance.A7Form_;
 import ru.extas.model.insurance.FormTransfer;
+import ru.extas.model.insurance.FormTransfer_;
+import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.SecureTarget;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.ExtaEditForm;
 
+import javax.persistence.criteria.*;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Set;
 
+import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 /**
  * <p>FormTransferGrid class.</p>
@@ -47,11 +59,51 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
         return new FormTransferDataDecl();
     }
 
+    private class FormTransferSecuredContainer extends AbstractSecuredDataContainer<FormTransfer> {
+
+        public FormTransferSecuredContainer(Class<FormTransfer> entityClass, ExtaDomain domain) {
+            super(entityClass, domain);
+        }
+
+        @Override
+        protected Predicate createSecurityPredicate(CriteriaBuilder cb, CriteriaQuery<?> cq) {
+            Predicate predicate;
+            final Root<FormTransfer> objectRoot = (Root<FormTransfer>) getFirst(cq.getRoots(), null);
+            final Person curUserContact = securityService.getCurrentUserContact();
+
+            // Определить область видимости и Наложить фильтр в соответствии с областью видимости
+            if (securityService.isPermittedTarget(domain, SecureTarget.ALL)) {
+                // Доступно все, ничего не делаем кроме общего фильтра
+                return null;
+            } else {
+                // Если не все доступно, то добавляем проежде всего "собственные" объекты
+                predicate = cb.or(
+                        cb.equal(objectRoot.get(FormTransfer_.fromContact), curUserContact),
+                        cb.equal(objectRoot.get(FormTransfer_.toContact), curUserContact));
+                Set<SalePoint> workPlaces = null;
+                if (securityService.isPermittedTarget(domain, SecureTarget.CORPORATE)) {
+                    final Set<Company> companies = curUserContact.getEmployers();
+                    for (final Company company : companies) {
+                        workPlaces.addAll(company.getSalePoints());
+                    }
+                } else if (securityService.isPermittedTarget(domain, SecureTarget.SALE_POINT)) {
+                    workPlaces = curUserContact.getWorkPlaces();
+                }
+                if (!isEmpty(workPlaces)) {
+                    SetJoin<Person, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                    SetJoin<Person, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                    predicate = cb.or(predicate, workPlaceRootF.in(workPlaces), workPlaceRootT.in(workPlaces));
+                }
+            }
+            return predicate;
+        }
+    }
+
     /** {@inheritDoc} */
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final JPAContainer<FormTransfer> container = new ExtaDataContainer<>(FormTransfer.class);
+        final JPAContainer<FormTransfer> container = new FormTransferSecuredContainer(FormTransfer.class, ExtaDomain.INSURANCE_TRANSFER);
         container.addNestedContainerProperty("fromContact.name");
         container.addNestedContainerProperty("toContact.name");
 

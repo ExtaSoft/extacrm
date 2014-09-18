@@ -6,6 +6,7 @@ package ru.extas.model.insurance;
 
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Contact;
+import ru.extas.model.contacts.Person;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -70,7 +71,7 @@ public class A7Form extends AuditedObject {
      * Владелец квитанции
      */
     @OneToOne
-    private Contact owner;
+    private Person owner;
 
     /**
      * Создает новую запись о бланке
@@ -78,7 +79,7 @@ public class A7Form extends AuditedObject {
      * @param regNum Номер бланка
      * @param owner  Владелец бланка
      */
-    public A7Form(final String regNum, final Contact owner) {
+    public A7Form(final String regNum, final Person owner) {
         super();
         this.regNum = regNum;
         this.owner = owner;
@@ -131,7 +132,7 @@ public class A7Form extends AuditedObject {
      *
      * @return the owner
      */
-    public Contact getOwner() {
+    public Person getOwner() {
         return owner;
     }
 
@@ -140,7 +141,7 @@ public class A7Form extends AuditedObject {
      *
      * @param owner the owner to set
      */
-    public void setOwner(final Contact owner) {
+    public void setOwner(final Person owner) {
         this.owner = owner;
     }
 

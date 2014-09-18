@@ -236,7 +236,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
         streetBldField = new TextArea("Адрес");
         streetBldField.setColumns(30);
-        streetBldField.setRows(5);
+        streetBldField.setRows(2);
         streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
         streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
         streetBldField.setNullRepresentation("");
