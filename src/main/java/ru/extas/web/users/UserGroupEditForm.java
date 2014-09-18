@@ -79,11 +79,12 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
         form.addComponent(nameField);
 
         descriptionField = new TextArea("Описание");
+        descriptionField.setImmediate(true);
         descriptionField.setDescription("Введите описание группы пользователей.");
         descriptionField.setInputPrompt("Описание группы пользователей");
         descriptionField.setNullRepresentation("");
         descriptionField.setColumns(30);
-        descriptionField.setRows(3);
+        descriptionField.setRows(2);
         form.addComponent(descriptionField);
 
         brandsField = new MotorBrandMultiselect("Доступные бренды");
