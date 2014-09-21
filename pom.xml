@@ -505,7 +505,7 @@
                     <environment>${jelastic.environment}</environment>
                     <context>ROOT</context>
                     <comment>${project.name} ${project.version} built at ${maven.build.timestamp}</comment>
-                    <api_hoster>app.jelastic.regruhosting.ru</api_hoster>
+                    <api_hoster>app.jelasticloud.com</api_hoster>
                 </configuration>
             </plugin>
 
