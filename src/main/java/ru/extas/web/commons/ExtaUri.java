@@ -9,6 +9,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.extas.model.security.ExtaDomain;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -24,7 +25,7 @@ import static java.util.EnumSet.allOf;
  *         Date: 22.08.2014
  *         Time: 14:29
  */
-public class ExtaUri {
+public class ExtaUri implements Serializable {
 
     public static final char SEPARATOR = '/';
     public static final String ID_PRM_NAME = "id";
