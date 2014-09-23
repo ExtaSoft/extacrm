@@ -53,7 +53,9 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
         return new FormTransferEditForm(formTransfer);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected GridDataDecl createDataDecl() {
         return new FormTransferDataDecl();
@@ -66,40 +68,51 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
         }
 
         @Override
-        protected Predicate createSecurityPredicate(CriteriaBuilder cb, CriteriaQuery<?> cq) {
-            Predicate predicate;
+        protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
+            Predicate predicate = null;
             final Root<FormTransfer> objectRoot = (Root<FormTransfer>) getFirst(cq.getRoots(), null);
             final Person curUserContact = securityService.getCurrentUserContact();
 
-            // Определить область видимости и Наложить фильтр в соответствии с областью видимости
-            if (securityService.isPermittedTarget(domain, SecureTarget.ALL)) {
-                // Доступно все, ничего не делаем кроме общего фильтра
-                return null;
-            } else {
-                // Если не все доступно, то добавляем проежде всего "собственные" объекты
-                predicate = cb.or(
-                        cb.equal(objectRoot.get(FormTransfer_.fromContact), curUserContact),
-                        cb.equal(objectRoot.get(FormTransfer_.toContact), curUserContact));
-                Set<SalePoint> workPlaces = null;
-                if (securityService.isPermittedTarget(domain, SecureTarget.CORPORATE)) {
+            switch (target) {
+                case OWNONLY:
+                    predicate = cb.or(
+                            cb.equal(objectRoot.get(FormTransfer_.fromContact), curUserContact),
+                            cb.equal(objectRoot.get(FormTransfer_.toContact), curUserContact));
+                    break;
+                case SALE_POINT: {
+                    Set<SalePoint> workPlaces = null;
+                    workPlaces = curUserContact.getWorkPlaces();
+                    if (!isEmpty(workPlaces)) {
+                        SetJoin<Person, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        SetJoin<Person, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        predicate = cb.or(workPlaceRootF.in(workPlaces), workPlaceRootT.in(workPlaces));
+                    }
+                    break;
+                }
+                case CORPORATE: {
+                    Set<SalePoint> workPlaces = null;
                     final Set<Company> companies = curUserContact.getEmployers();
                     for (final Company company : companies) {
                         workPlaces.addAll(company.getSalePoints());
                     }
-                } else if (securityService.isPermittedTarget(domain, SecureTarget.SALE_POINT)) {
-                    workPlaces = curUserContact.getWorkPlaces();
+                    if (!isEmpty(workPlaces)) {
+                        SetJoin<Person, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        SetJoin<Person, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        predicate = cb.or(workPlaceRootF.in(workPlaces), workPlaceRootT.in(workPlaces));
+                    }
+                    break;
                 }
-                if (!isEmpty(workPlaces)) {
-                    SetJoin<Person, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
-                    SetJoin<Person, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
-                    predicate = cb.or(predicate, workPlaceRootF.in(workPlaces), workPlaceRootT.in(workPlaces));
-                }
+                case ALL:
+                    break;
             }
+
             return predicate;
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Container createContainer() {
         // Запрос данных
@@ -110,7 +123,9 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
         return container;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();

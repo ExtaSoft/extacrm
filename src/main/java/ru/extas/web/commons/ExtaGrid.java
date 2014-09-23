@@ -151,14 +151,18 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     public void doEditObject(final TEntity entity) {
 
         final ExtaEditForm<TEntity> form = createEditForm(entity);
+        form.setReadOnly(!GridUtils.isPermitEdit(container, entity));
         formService.open4Edit(form);
     }
 
     public void doEditNewObject(TEntity init) {
         TEntity entity = init == null ? createEntity() : init;
 
-        final ExtaEditForm<TEntity> form = createEditForm(entity);
-        formService.open4Insert(form);
+        if (GridUtils.isPermitInsert(container)) {
+            final ExtaEditForm<TEntity> form = createEditForm(entity);
+            formService.open4Insert(form);
+        } else
+            NotificationUtil.showWarning("Ввод новых объектов запрещен администратором!");
     }
 
     /**
@@ -199,7 +203,6 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             // Переключение режима таблицы
             final MenuBar modeSwitchBar = new MenuBar();
             modeSwitchBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
-//        modeSwitchBar.addStyleName(ExtaTheme.MODE_SWITCH_BAR);
             final MenuBar.MenuItem tableFilterBtn = modeSwitchBar.addItem("", Fontello.FILTER, selectedItem -> table.setFilterBarVisible(selectedItem.isChecked()));
             tableFilterBtn.setDescription("Показать строку фильтра таблицы");
             tableFilterBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
@@ -295,6 +298,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         if (action instanceof ItemAction) {
             needCurrentBtns.add(menuItem);
             menuItem.setEnabled(false);
+        }
+        if (action instanceof ExtaGrid.NewObjectAction) {
+            menuItem.setEnabled(GridUtils.isPermitInsert(container));
         }
     }
 

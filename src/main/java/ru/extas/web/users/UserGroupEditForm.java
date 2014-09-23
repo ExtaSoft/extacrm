@@ -85,7 +85,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
         descriptionField.setNullRepresentation("");
         descriptionField.setColumns(25);
         descriptionField.setRows(2);
-        descriptionField.addValueChangeListener((e)->NotificationUtil.show(e.getProperty().getValue().toString()));
+//        descriptionField.addValueChangeListener((e)->NotificationUtil.show(e.getProperty().getValue().toString()));
         form.addComponent(descriptionField);
 
         brandsField = new MotorBrandMultiselect("Доступные бренды");

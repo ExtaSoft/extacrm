@@ -51,7 +51,9 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected GridDataDecl createDataDecl() {
         return new A7FormDataDecl();
@@ -64,37 +66,46 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
         }
 
         @Override
-        protected Predicate createSecurityPredicate(CriteriaBuilder cb, CriteriaQuery<?> cq) {
-            Predicate predicate;
+        protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
+            Predicate predicate = null;
             final Root<A7Form> objectRoot = (Root<A7Form>) getFirst(cq.getRoots(), null);
             final Person curUserContact = securityService.getCurrentUserContact();
 
-            // Определить область видимости и Наложить фильтр в соответствии с областью видимости
-            if (securityService.isPermittedTarget(domain, SecureTarget.ALL)) {
-                // Доступно все, ничего не делаем кроме общего фильтра
-                return null;
-            } else {
-                // Если не все доступно, то добавляем проежде всего "собственные" объекты
-                predicate = cb.equal(objectRoot.get(A7Form_.owner), curUserContact);
-                Set<SalePoint> workPlaces = null;
-                if (securityService.isPermittedTarget(domain, SecureTarget.CORPORATE)) {
+            switch (target) {
+                case OWNONLY:
+                    predicate = cb.equal(objectRoot.get(A7Form_.owner), curUserContact);
+                    break;
+                case SALE_POINT: {
+                    Set<SalePoint> workPlaces = null;
+                    workPlaces = curUserContact.getWorkPlaces();
+                    if (!isEmpty(workPlaces)) {
+                        SetJoin<Person, SalePoint> workPlaceRoot = objectRoot.join(A7Form_.owner, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        predicate = workPlaceRoot.in(workPlaces);
+                    }
+                    break;
+                }
+                case CORPORATE:
+                    Set<SalePoint> workPlaces = null;
                     final Set<Company> companies = curUserContact.getEmployers();
                     for (final Company company : companies) {
                         workPlaces.addAll(company.getSalePoints());
                     }
-                } else if (securityService.isPermittedTarget(domain, SecureTarget.SALE_POINT)) {
-                    workPlaces = curUserContact.getWorkPlaces();
-                }
-                if(!isEmpty(workPlaces)) {
-                    SetJoin<Person, SalePoint> workPlaceRoot = objectRoot.join(A7Form_.owner, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
-                    predicate = cb.or(predicate, workPlaceRoot.in(workPlaces));
-                }
+                    if (!isEmpty(workPlaces)) {
+                        SetJoin<Person, SalePoint> workPlaceRoot = objectRoot.join(A7Form_.owner, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        workPlaceRoot.in(workPlaces);
+                    }
+                    break;
+                case ALL:
+                    break;
             }
+
             return predicate;
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Container createContainer() {
         ExtaDataContainer<A7Form> cnt = new A7SecuredContainer(A7Form.class, ExtaDomain.INSURANCE_A_7);
@@ -102,7 +113,9 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
         return cnt;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();

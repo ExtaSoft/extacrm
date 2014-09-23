@@ -39,6 +39,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     private FieldGroup fieldGroup;
     private boolean modified;
     private TEditObject bean;
+    private Button okBtn;
 
     public Object getObjectId() {
         if (bean != null) {
@@ -146,7 +147,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         cancelBtn.setIcon(Fontello.CANCEL);
         cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 
-        Button okBtn = new Button("Сохранить", new Button.ClickListener() {
+        okBtn = new Button("Сохранить", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -187,6 +188,10 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         setDefaultFocus(form);
         setContent(form);
 
+        addAttachListener(e->{
+            fieldGroup.setReadOnly(isReadOnly());
+            okBtn.setEnabled(!isReadOnly());
+        });
     }
 
     /**
@@ -232,6 +237,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         }
         super.setCompositionRoot(content);
     }
+
 
     /**
      * <p>isSaved.</p>

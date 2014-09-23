@@ -1,10 +1,7 @@
 package ru.extas.server.security;
 
 import ru.extas.model.contacts.Person;
-import ru.extas.model.security.ExtaDomain;
-import ru.extas.model.security.SecureTarget;
-import ru.extas.model.security.UserProfile;
-import ru.extas.model.security.UserRole;
+import ru.extas.model.security.*;
 
 import java.util.Set;
 
@@ -107,4 +104,12 @@ public interface UserManagementService {
      */
     boolean isPermittedTarget(ExtaDomain domain, SecureTarget target);
 
+    /**
+     * Проверяет разрешено ли пользователю действие над целевым объектам раздела
+     *
+     * @param domain раздел, объекты которого пповеряются
+     * @param target целевые объекты
+     * @return true если запроценные целевые объекты доступны
+     */
+    boolean isPermitted(ExtaDomain domain, SecureTarget target, SecureAction action);
 }
