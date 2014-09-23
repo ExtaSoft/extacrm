@@ -55,7 +55,7 @@ public class ContactsView extends SubdomainView {
 			}
 
         });
-		ret.add(new SubdomainInfoImpl("Юридические лица", ExtaDomain.LEGAL_ENTITY) {
+		ret.add(new SubdomainInfoImpl("Юридические лица", ExtaDomain.LEGAL_ENTITY, true) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
