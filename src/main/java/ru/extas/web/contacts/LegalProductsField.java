@@ -55,7 +55,7 @@ public class LegalProductsField extends CustomField<List> {
             commandBar.setAutoOpen(true);
             commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
             commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
-            commandBar.focus();
+//            commandBar.focus();
 
             final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
 

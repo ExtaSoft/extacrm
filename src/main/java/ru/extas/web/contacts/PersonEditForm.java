@@ -289,12 +289,8 @@ public class PersonEditForm extends ExtaEditForm<Person> {
      */
     @Override
     protected ComponentContainer createEditFields(final Person obj) {
-        TabSheet tabsheet = new TabSheet();
-        tabsheet.setSizeUndefined();
-
         // Форма редактирования персональных данных
         final FormLayout personForm = new ExtaFormLayout();
-//        personForm.setSizeUndefined();
         personForm.setMargin(true);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

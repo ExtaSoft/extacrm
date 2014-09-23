@@ -266,7 +266,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         commandBar.setAutoOpen(true);
         commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
         commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
-        commandBar.focus();
+//        commandBar.focus();
 
         needCurrentBtns = newArrayList();
         for (final UIAction action : actions) {
