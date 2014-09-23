@@ -6,7 +6,6 @@ package ru.extas.web.contacts;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
-import ru.extas.model.contacts.EducationKind;
 import ru.extas.model.contacts.TypeOfEmployment;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
@@ -30,8 +29,8 @@ public class StringToTypeOfEmployment extends String2EnumConverter<TypeOfEmploym
      * {@inheritDoc}
      */
     @Override
-    protected BiMap<TypeOfEmployment, String> createEnum2StringMap() {
-        BiMap<TypeOfEmployment, String> map = HashBiMap.create();
+    protected HashBiMap<TypeOfEmployment, String> createEnum2StringMap() {
+        HashBiMap<TypeOfEmployment, String> map = HashBiMap.create();
         map.put(TypeOfEmployment.UNEMPLOYED, "Не работает");
         map.put(TypeOfEmployment.PERMANENT, "Постоянная (без срока)");
         map.put(TypeOfEmployment.TEMPORARY, "Срочный трудовой договор");

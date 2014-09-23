@@ -28,8 +28,8 @@ public class StringToSaleResult extends String2EnumConverter<Sale.Result> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<Sale.Result, String> createEnum2StringMap() {
-		BiMap<Sale.Result, String> map = HashBiMap.create();
+	protected HashBiMap<Sale.Result, String> createEnum2StringMap() {
+        HashBiMap<Sale.Result, String> map = HashBiMap.create();
 		map.put(Sale.Result.SUCCESSFUL, "Успешное выполнение");
 		map.put(Sale.Result.CLIENT_REJECTED, "Отказ клиента");
 		map.put(Sale.Result.VENDOR_REJECTED, "Отказ контрагента");

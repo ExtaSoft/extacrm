@@ -17,6 +17,7 @@ import ru.extas.model.insurance.FormTransfer;
 import ru.extas.model.insurance.FormTransfer_;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.SecureTarget;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.ExtaEditForm;
 
@@ -28,6 +29,7 @@ import java.util.Set;
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * <p>FormTransferGrid class.</p>
@@ -71,7 +73,7 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
         protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
             Predicate predicate = null;
             final Root<FormTransfer> objectRoot = (Root<FormTransfer>) getFirst(cq.getRoots(), null);
-            final Person curUserContact = securityService.getCurrentUserContact();
+            final Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
 
             switch (target) {
                 case OWNONLY:

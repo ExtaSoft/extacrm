@@ -27,8 +27,8 @@ public class String2CreditProgramType extends String2EnumConverter {
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<ProdCredit.ProgramType, String> createEnum2StringMap() {
-		BiMap<ProdCredit.ProgramType, String> map = HashBiMap.create();
+	protected HashBiMap createEnum2StringMap() {
+        HashBiMap<ProdCredit.ProgramType, String> map = HashBiMap.create();
 		map.put(ProdCredit.ProgramType.NO_COLLATERAL, "Незалоговая");
 		map.put(ProdCredit.ProgramType.COLLATERAL_WITH_PTS, "Залоговая без передачи ПТС (ПСМ) в Банк");
 		map.put(ProdCredit.ProgramType.COLLATERAL_WITHOUT_PTS, "Залоговая с передачей ПТС (ПСМ) в Банк");

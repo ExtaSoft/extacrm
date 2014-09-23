@@ -29,8 +29,8 @@ public class StringToPersonSex extends String2EnumConverter<Person.Sex> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<Sex, String> createEnum2StringMap() {
-		BiMap<Sex, String> map = HashBiMap.create();
+	protected HashBiMap<Sex, String> createEnum2StringMap() {
+        HashBiMap<Sex, String> map = HashBiMap.create();
 		map.put(Person.Sex.MALE, "Мужской");
 		map.put(Person.Sex.FEMALE, "Женский");
 		return map;

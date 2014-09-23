@@ -28,8 +28,8 @@ public class StringToSecureTargetConverter extends String2EnumConverter<SecureTa
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<SecureTarget, String> createEnum2StringMap() {
-		final BiMap<SecureTarget, String> map = HashBiMap.create();
+	protected HashBiMap<SecureTarget, String> createEnum2StringMap() {
+		final HashBiMap<SecureTarget, String> map = HashBiMap.create();
         map.put(SecureTarget.OWNONLY, "Собственные объекты");
         map.put(SecureTarget.SALE_POINT, "Объекты той же торговой точки");
         map.put(SecureTarget.CORPORATE, "Корпоративные объекты (той же компании)");

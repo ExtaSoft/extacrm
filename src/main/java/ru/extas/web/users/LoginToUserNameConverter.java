@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Конвертирует логин в имя пользователя с кешированием.
@@ -27,9 +28,6 @@ import static com.google.common.collect.Maps.newHashMap;
 public class LoginToUserNameConverter implements Converter<String, String> {
 
     private final Map<String, String> nameCache = newHashMap();
-
-    @Inject
-    private UserManagementService userService;
 
     /**
      * {@inheritDoc}
@@ -64,7 +62,7 @@ public class LoginToUserNameConverter implements Converter<String, String> {
     }
 
     private void fillNameCash(final String login) {
-        Person userContact = userService.findUserContactByLogin(login);
+        Person userContact = lookup(UserManagementService.class).findUserContactByLogin(login);
         if (userContact != null) {
             final String name = userContact.getName();
             final List<String> nameParts = Splitter.on(' ')

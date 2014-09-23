@@ -28,8 +28,8 @@ public class StringToLeadResult extends String2EnumConverter<Lead.Result> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<Lead.Result, String> createEnum2StringMap() {
-		BiMap<Lead.Result, String> map = HashBiMap.create();
+	protected HashBiMap<Lead.Result, String> createEnum2StringMap() {
+        HashBiMap<Lead.Result, String> map = HashBiMap.create();
 		map.put(Lead.Result.SUCCESSFUL, "Успешное выполнение");
 		map.put(Lead.Result.CLIENT_REJECTED, "Отказ клиента");
 		map.put(Lead.Result.VENDOR_REJECTED, "Отказ контрагента");

@@ -366,7 +366,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         personForm.addComponent(new FormGroupHeader("Адрес по месту постоянной регистрации"));
         regRealtyKindField = new ComboBox("Отношение к недвижимости");
         regRealtyKindField.setWidth(15, Unit.EM);
-        regRealtyKindField.setMultiSelect(false);
         regRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
         regRealtyKindField.setNullSelectionAllowed(false);
         regRealtyKindField.setNewItemsAllowed(false);
@@ -411,7 +410,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         regPeriodOfResidenceField = new ComboBox("Срок проживания");
         regPeriodOfResidenceField.setWidth(15, Unit.EM);
-        regPeriodOfResidenceField.setMultiSelect(false);
         regPeriodOfResidenceField.setDescription("Укажите срок проживания по данному адресу");
         regPeriodOfResidenceField.setNullSelectionAllowed(false);
         regPeriodOfResidenceField.setNewItemsAllowed(false);
@@ -431,7 +429,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         actRealtyKindField = new ComboBox("Отношение к недвижимости");
         actRealtyKindField.setWidth(15, Unit.EM);
-        actRealtyKindField.setMultiSelect(false);
         actRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
         actRealtyKindField.setNullSelectionAllowed(false);
         actRealtyKindField.setNewItemsAllowed(false);
@@ -476,7 +473,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         actPeriodOfResidenceField = new ComboBox("Срок проживания");
         actPeriodOfResidenceField.setWidth(15, Unit.EM);
-        actPeriodOfResidenceField.setMultiSelect(false);
         actPeriodOfResidenceField.setDescription("Укажите срок проживания по данному адресу");
         actPeriodOfResidenceField.setNullSelectionAllowed(false);
         actPeriodOfResidenceField.setNewItemsAllowed(false);
@@ -543,7 +539,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         maritalStatusField = new ComboBox("Семейное положение");
         maritalStatusField.setDescription("Укажите семейное положение");
         maritalStatusField.setWidth(15, Unit.EM);
-        maritalStatusField.setMultiSelect(false);
         maritalStatusField.setNullSelectionAllowed(false);
         maritalStatusField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(maritalStatusField, MaritalStatus.class);
@@ -591,7 +586,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         eduKindField = new ComboBox("Образование");
         eduKindField.setDescription("Укажите уровень образования");
         eduKindField.setWidth(15, Unit.EM);
-        eduKindField.setMultiSelect(false);
         eduKindField.setNullSelectionAllowed(false);
         eduKindField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(eduKindField, EducationKind.class);
@@ -616,7 +610,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         typeOfEmploymentField = new ComboBox("Вид занятости");
         typeOfEmploymentField.setDescription("Укажите уровень образования");
         typeOfEmploymentField.setWidth(15, Unit.EM);
-        typeOfEmploymentField.setMultiSelect(false);
         typeOfEmploymentField.setNullSelectionAllowed(false);
         typeOfEmploymentField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(typeOfEmploymentField, TypeOfEmployment.class);
@@ -761,7 +754,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
                 newArrayList("СМИ", "Автосалон", "Партнеры КА", "Печатная продукция", "Наружная реклама", "Повторное обращение"));
         marketingChannelField.setDescription("Укажите источник из которого клиент узнал о Экстрим Ассистанс");
         marketingChannelField.setWidth(15, Unit.EM);
-        marketingChannelField.setMultiSelect(false);
         marketingChannelField.setNullSelectionAllowed(false);
         marketingChannelField.setNewItemsAllowed(true);
         personForm.addComponent(marketingChannelField);

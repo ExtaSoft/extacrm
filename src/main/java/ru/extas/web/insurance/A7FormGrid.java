@@ -14,6 +14,7 @@ import ru.extas.model.insurance.A7Form_;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.SecureTarget;
 import ru.extas.server.insurance.A7FormRepository;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 
 import javax.persistence.criteria.*;
@@ -69,7 +70,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
         protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
             Predicate predicate = null;
             final Root<A7Form> objectRoot = (Root<A7Form>) getFirst(cq.getRoots(), null);
-            final Person curUserContact = securityService.getCurrentUserContact();
+            final Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
 
             switch (target) {
                 case OWNONLY:

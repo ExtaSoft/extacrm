@@ -24,7 +24,7 @@
   .login-view {
     @include background(radial-gradient(circle at 50% 50%, $v-app-background-color, $bg));
 
-    @include valo-anim-fade-in;
+    @include valo-animate-fade-in;
 
     .v-panel-caption {
       color: $v-selection-color;

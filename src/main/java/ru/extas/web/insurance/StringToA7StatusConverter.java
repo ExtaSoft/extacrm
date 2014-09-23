@@ -28,8 +28,8 @@ public class StringToA7StatusConverter extends String2EnumConverter<A7Form.Statu
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<A7Form.Status, String> createEnum2StringMap() {
-		BiMap<A7Form.Status, String> map = HashBiMap.create();
+	protected HashBiMap<A7Form.Status, String> createEnum2StringMap() {
+        HashBiMap<A7Form.Status, String> map = HashBiMap.create();
 		map.put(A7Form.Status.NEW, "Новый бланк");
 		map.put(A7Form.Status.SPENT, "Использованный бланк");
 		map.put(A7Form.Status.LOST, "Потерянный бланк");

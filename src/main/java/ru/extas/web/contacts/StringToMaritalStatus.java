@@ -7,7 +7,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.MaritalStatus;
-import ru.extas.model.contacts.RealtyKind;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**
@@ -29,8 +28,8 @@ public class StringToMaritalStatus extends String2EnumConverter<MaritalStatus> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<MaritalStatus, String> createEnum2StringMap() {
-		BiMap<MaritalStatus, String> map = HashBiMap.create();
+	protected HashBiMap<MaritalStatus, String> createEnum2StringMap() {
+        HashBiMap<MaritalStatus, String> map = HashBiMap.create();
 		map.put(MaritalStatus.CIVIL_MARRIAGE, "Гражданский брак");
 		map.put(MaritalStatus.SINGLE, "Холост/не замужем");
 		map.put(MaritalStatus.MARRIAGE, "Женат/замужем");

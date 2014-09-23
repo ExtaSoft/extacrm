@@ -29,14 +29,10 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public abstract class AbstractSecuredDataContainer<TEntityType extends IdentifiedObject> extends ExtaDataContainer<TEntityType> {
     protected ExtaDomain domain;
-    protected UserManagementService securityService;
-    private EntityManager em;
 
     public AbstractSecuredDataContainer(Class<TEntityType> entityClass, final ExtaDomain domain) {
         super(entityClass);
         this.domain = domain;
-        this.securityService = lookup(UserManagementService.class);
-        this.em = lookup(EntityManager.class);
 
         // Установить фильтр в соответствии с правами доступа пользователя
         setSecurityFilter();
@@ -54,7 +50,7 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
                         if (cb == null || cq == null || predicates == null)
                             return;
 
-                        if (securityService.isCurUserHasRole(UserRole.ADMIN))
+                        if (lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN))
                             return;
 
                         Predicate predicate = createSecurityPredicate(cb, cq);
@@ -71,6 +67,7 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
     private Predicate createSecurityPredicate(CriteriaBuilder cb, CriteriaQuery<?> cq) {
         Predicate predicate;
         Root<TEntityType> objectRoot = (Root<TEntityType>) getFirst(cq.getRoots(), null);
+        UserManagementService securityService = lookup(UserManagementService.class);
         Person curUserContact = securityService.getCurrentUserContact();
 
         // Определить область видимости и Наложить фильтр в соответствии с областью видимости
@@ -97,17 +94,18 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
     protected abstract Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target);
 
     public boolean isInsertPermitted() {
-        return securityService.isPermitted(domain, null, SecureAction.INSERT);
+        return lookup(UserManagementService.class).isPermitted(domain, null, SecureAction.INSERT);
     }
 
-    public boolean isItemPermitAction(String itemId, SecureAction action){
+    public boolean isItemPermitAction(String itemId, SecureAction action) {
+        UserManagementService securityService = lookup(UserManagementService.class);
 
         // Прежде всего надо проверить разрешено ли действие для всех объектов
-        if(securityService.isPermitted(domain, SecureTarget.ALL, action))
+        if (securityService.isPermitted(domain, SecureTarget.ALL, action))
             return true;
 
         // Проверить, входит ли элемент в "собственные объекты"
-        if(isItemFromTarget(itemId, SecureTarget.OWNONLY))
+        if (isItemFromTarget(itemId, SecureTarget.OWNONLY))
             return securityService.isPermitted(domain, SecureTarget.OWNONLY, action);
 
         // Проверить, входит ли элемент в "объекты торговой точки"
@@ -122,7 +120,8 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
     }
 
     public boolean isItemFromTarget(String itemId, SecureTarget target) {
-        boolean res;CriteriaBuilder cb = em.getCriteriaBuilder();
+        EntityManager em = lookup(EntityManager.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<TEntityType> root = cq.from(getEntityClass());
         Predicate predicate = createPredicate4Target(cb, cq, target);
@@ -131,7 +130,6 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
 
         Query qry = em.createQuery(cq);
         Long results = (Long) qry.getSingleResult();
-        res = results != 0;
-        return res;
+        return results != 0;
     }
 }

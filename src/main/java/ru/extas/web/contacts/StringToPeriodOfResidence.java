@@ -7,7 +7,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.PeriodOfResidence;
-import ru.extas.model.contacts.RealtyKind;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**
@@ -29,8 +28,8 @@ public class StringToPeriodOfResidence extends String2EnumConverter<PeriodOfResi
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<PeriodOfResidence, String> createEnum2StringMap() {
-		BiMap<PeriodOfResidence, String> map = HashBiMap.create();
+	protected HashBiMap<PeriodOfResidence, String> createEnum2StringMap() {
+        HashBiMap<PeriodOfResidence, String> map = HashBiMap.create();
 		map.put(PeriodOfResidence.LESS_1, "До 1 года");
 		map.put(PeriodOfResidence.FROM_1, "От 1 года");
 		map.put(PeriodOfResidence.LESS_5, "До 5 лет");

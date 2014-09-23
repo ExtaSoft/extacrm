@@ -11,6 +11,7 @@ import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
 import ru.extas.model.common.IdentifiedObject;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         DETAIL_LIST
     }
 
-    public interface FormService {
+    public interface FormService extends Serializable {
 
         void open4Edit(ExtaEditForm form);
 

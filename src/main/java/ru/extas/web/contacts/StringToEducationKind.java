@@ -7,7 +7,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.EducationKind;
-import ru.extas.model.contacts.MaritalStatus;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**
@@ -29,8 +28,8 @@ public class StringToEducationKind extends String2EnumConverter<EducationKind> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<EducationKind, String> createEnum2StringMap() {
-		BiMap<EducationKind, String> map = HashBiMap.create();
+	protected HashBiMap<EducationKind, String> createEnum2StringMap() {
+        HashBiMap<EducationKind, String> map = HashBiMap.create();
 		map.put(EducationKind.SUBAVERAGE, "Ниже среднего");
 		map.put(EducationKind.SECONDARY, "Среднее");
 		map.put(EducationKind.SECONDARY_SPECIAL, "Среднее специальное");

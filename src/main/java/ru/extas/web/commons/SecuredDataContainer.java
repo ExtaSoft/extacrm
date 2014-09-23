@@ -46,7 +46,7 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
     protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
         Predicate predicate = null;
         Root<TEntityType> objectRoot = (Root<TEntityType>) getFirst(cq.getRoots(), null);
-        Person curUserContact = securityService.getCurrentUserContact();
+        Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
 
         switch (target) {
             case OWNONLY: {
@@ -88,7 +88,7 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
     }
 
     private Predicate composeWithAreaFilter(CriteriaBuilder cb, Root<TEntityType> objectRoot, Predicate predicate) {
-        UserProfile curUserProfile = securityService.getCurrentUser();
+        UserProfile curUserProfile = lookup(UserManagementService.class).getCurrentUser();
         Set<String> permitRegions = newHashSet(curUserProfile.getPermitRegions());
         Set<String> permitBrands = newHashSet(curUserProfile.getPermitBrands());
         Set<UserGroup> groups = curUserProfile.getGroupList();
