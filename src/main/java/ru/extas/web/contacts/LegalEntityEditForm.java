@@ -63,6 +63,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     private TextArea streetBldField;
     @PropertyId("director")
     private PersonSelect directorField;
+    @PropertyId("accountant")
+    private PersonSelect accountantField;
     @PropertyId("credProducts")
     private LegalProductsField productsField;
     @PropertyId("motorBrands")
@@ -211,6 +213,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
         directorField = new PersonSelect("Генеральный директор", "Выберите или введите геннерального деректора юридического лица");
         formLayout.addComponent(directorField);
+        accountantField = new PersonSelect("Главный бухгалтер", "Выберите или введите главного бухгалтера юридического лица");
+        formLayout.addComponent(accountantField);
 
         // "Продукты"
         formLayout.addComponent(new FormGroupHeader("Продукты"));

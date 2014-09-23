@@ -39,6 +39,10 @@ public class LegalEntity extends Contact{
     @OneToOne(cascade = CascadeType.REFRESH)
     private Person director;
 
+    // Главный бухгалтер
+    @OneToOne(cascade = CascadeType.REFRESH)
+    private Person accountant;
+
     // Банки и кредитные продукты
     @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(
@@ -56,6 +60,13 @@ public class LegalEntity extends Contact{
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
     private List<LegalEntityFile> files = newArrayList();
 
+    public Person getAccountant() {
+        return accountant;
+    }
+
+    public void setAccountant(Person accountant) {
+        this.accountant = accountant;
+    }
 
     /**
      * <p>Getter for the field <code>ogrnOgrip</code>.</p>
