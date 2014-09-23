@@ -862,7 +862,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         spouseHeader.setVisible(!hasntFamily);
     }
 
-    public void setActualAdressStatus(Boolean isRegIsAct) {
+    private void setActualAdressStatus(Boolean isRegIsAct) {
         actRegionField.setVisible(!isRegIsAct);
         actCityField.setVisible(!isRegIsAct);
         actPostIndexField.setVisible(!isRegIsAct);
