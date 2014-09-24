@@ -93,7 +93,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         dealerField = new SalePointSelect("Мотосалон", "Введите точку продаж", null);
         form.addComponent(dealerField);
 
-        commentField = new TextArea("Комментарий");
+        commentField = new TextArea("Примечание");
         commentField.setColumns(25);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);

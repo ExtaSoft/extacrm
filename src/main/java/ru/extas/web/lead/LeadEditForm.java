@@ -2,11 +2,12 @@ package ru.extas.web.lead;
 
 import com.google.common.base.Strings;
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Like;
 import com.vaadin.data.util.filter.Or;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Person;
@@ -15,10 +16,7 @@ import ru.extas.model.lead.Lead;
 import ru.extas.server.lead.LeadRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.component.EmailField;
-import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.component.PhoneField;
+import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.*;
 import ru.extas.web.motor.MotorBrandSelect;
@@ -30,6 +28,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.GridItem.extractBean;
@@ -72,6 +71,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     // Мотосалон
     @PropertyId("pointOfSale")
     private EditField pointOfSaleField;
+    @PropertyId("client")
+    private PersonSelect clientField;
     @PropertyId("vendor")
     private SalePointSelect vendorField;
     @PropertyId("comment")
@@ -82,7 +83,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private ExtaDataContainer<Person> clientsContainer;
 
     public LeadEditForm(Lead lead, boolean qualifyForm) {
-        super(lead.isNew() ? "Ввод нового лида в систему" : "Редактирование лида");
+        super(lead.isNew() ? "Ввод нового лида в систему" :
+                qualifyForm ? MessageFormat.format("Квалификация лида № {0}", lead.getNum()) :
+                        MessageFormat.format("Редактирование лида № {0}", lead.getNum()));
         this.qualifyForm = qualifyForm;
         initForm(new BeanItem<>(lead));
     }
@@ -119,7 +122,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
     }
 
-    private SalePoint createCompanyFromLead(Lead lead) {
+    private SalePoint createSalePointFromLead(Lead lead) {
         SalePoint salePoint = new SalePoint();
         salePoint.setName(lead.getPointOfSale());
         salePoint.setRegAddress(new AddressInfo(lead.getRegion(), null, null, null));
@@ -134,107 +137,109 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     protected ComponentContainer createEditFields(final Lead obj) {
         final FormLayout form = new ExtaFormLayout();
 
-        contactNameField = new EditField("Клиент", "Введите имя клиента");
-        contactNameField.setColumns(25);
-        contactNameField.setRequired(true);
-        contactNameField.setRequiredError("Имя контакта не может быть пустым.");
-        contactNameField.setImmediate(true);
-        contactNameField.addTextChangeListener(event -> {
-            if (qualifyForm)
-                setClientsFilter(event.getText());
-        });
-        contactNameField.addValueChangeListener(new ConactChangeListener());
-        form.addComponent(contactNameField);
+        form.addComponent(new FormGroupHeader("Клиент"));
+        if (obj.getStatus() == Lead.Status.NEW) {
+            if (qualifyForm) {
+                Component clientPanel = createClientPanel(obj);
+                form.addComponent(clientPanel);
+            } else {
+                contactNameField = new EditField("Имя", "Введите имя клиента");
+                contactNameField.setColumns(25);
+                contactNameField.setRequired(true);
+                contactNameField.setRequiredError("Имя контакта не может быть пустым.");
+                form.addComponent(contactNameField);
 
-        cellPhoneField = new PhoneField("Телефон");
-        cellPhoneField.setImmediate(true);
-        cellPhoneField.addValueChangeListener(new ConactChangeListener());
-        form.addComponent(cellPhoneField);
+                cellPhoneField = new PhoneField("Телефон");
+                form.addComponent(cellPhoneField);
 
-        contactEmailField = new EmailField("E-Mail");
-        contactEmailField.setImmediate(true);
-        contactEmailField.addValueChangeListener(new ConactChangeListener());
-        form.addComponent(contactEmailField);
+                contactEmailField = new EmailField("E-Mail");
+                form.addComponent(contactEmailField);
+            }
+        } else {
+            clientField = new PersonSelect("Клиент");
+            clientField.setRequired(true);
+            form.addComponent(clientField);
+        }
 
-        regionField = new RegionSelect();
-        regionField.setDescription("Укажите регион услуги");
-        form.addComponent(regionField);
-
+        form.addComponent(new FormGroupHeader("Техника"));
         motorTypeField = new MotorTypeSelect();
+        motorTypeField.setRequired(qualifyForm);
         form.addComponent(motorTypeField);
 
         motorBrandField = new MotorBrandSelect();
+        motorBrandField.setRequired(qualifyForm);
         form.addComponent(motorBrandField);
 
         motorModelField = new EditField("Модель техники", "Введите модель техники");
+        motorModelField.setRequired(qualifyForm);
         motorModelField.setColumns(15);
         form.addComponent(motorModelField);
 
         mototPriceField = new EditField("Цена техники");
+        mototPriceField.setRequired(qualifyForm);
         form.addComponent(mototPriceField);
 
-        pointOfSaleField = new EditField("Мотосалон");
-        pointOfSaleField.setImmediate(true);
-        pointOfSaleField.addValueChangeListener(event -> {
-            if (qualifyForm)
-                setVendorsFilter();
-        });
-        vendorField = new SalePointSelect("Мотосалон", "Название мотосалона", null);
-        vendorField.addValueChangeListener(event -> {
-            Property property = event.getProperty();
-            if (property != null) {
-                Object value = property.getValue();
-                if (value != null)
-                    pointOfSaleField.setValue(((SalePoint) value).getName());
+        form.addComponent(new FormGroupHeader("Диллер"));
+        if (obj.getStatus() == Lead.Status.NEW) {
+            if (qualifyForm) {
+                if (obj.getVendor() == null) {
+                    Component vendorPanel = createVendorPanel(obj);
+                    form.addComponent(vendorPanel);
+                } else {
+                    createVendorSelectField(form);
+                }
+            } else {
+                regionField = new RegionSelect();
+                regionField.setDescription("Укажите регион услуги");
+                form.addComponent(regionField);
+
+                pointOfSaleField = new EditField("Мотосалон");
+                form.addComponent(pointOfSaleField);
             }
-        });
-        if (obj.getVendor() == null) {
-            form.addComponent(pointOfSaleField);
         } else {
-            form.addComponent(vendorField);
+            createVendorSelectField(form);
         }
 
-
-        commentField = new TextArea("Комментарий");
-        commentField.setColumns(25);
-        commentField.setRows(6);
+        form.addComponent(new FormGroupHeader("Дополнительно"));
+        commentField = new TextArea("Примечание");
+        commentField.setRows(3);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);
 
-        if (qualifyForm) {
-            HorizontalLayout layout = new HorizontalLayout(form, createQualifyForm(obj));
-            layout.setSpacing(true);
-            return layout;
-        } else
-            return form;
+        return form;
     }
 
-    private Component createQualifyForm(Lead lead) {
-        Component clientPanel = createClientPanel(lead);
-        Component vendorPanel = createVendorPanel(lead);
-        VerticalLayout qForm = new VerticalLayout(clientPanel, vendorPanel);
-        qForm.setSpacing(true);
-        qForm.setExpandRatio(clientPanel, 1);
-        qForm.setExpandRatio(vendorPanel, 1);
-        return qForm;
+    private void createVendorSelectField(FormLayout form) {
+        vendorField = new SalePointSelect("Мотосалон", "Название мотосалона", null);
+        vendorField.setRequired(true);
+        form.addComponent(vendorField);
     }
 
-    private Panel createVendorPanel(final Lead lead) {
-        VerticalLayout panel = new VerticalLayout();
-        panel.setMargin(true);
-        panel.setSpacing(true);
+    private Component createVendorPanel(final Lead lead) {
+        VerticalLayout layout = new VerticalLayout();
+        layout.setMargin(true);
+        layout.setSpacing(true);
 
         final Table table = new Table();
         table.setRequired(true);
         // Запрос данных
         vendorsContainer = new ExtaDataContainer<>(SalePoint.class);
         vendorsContainer.addNestedContainerProperty("regAddress.region");
-        setVendorsFilter();
+        setVendorsFilter(lead.getPointOfSale(), lead.getRegion());
 
-        Button newBtn = new Button("Новый");
+        Label info = new Label(Fontello.INFO_CIRCLED.getHtml() +
+                " Выберите подходящую точку продаж из списка или введите новую.<br/>Для поиска существующей торговой точки используйте поля фильтра.");
+        info.setContentMode(ContentMode.HTML);
+        info.addStyleName(ExtaTheme.LABEL_SMALL);
+        info.addStyleName(ExtaTheme.LABEL_LIGHT);
+        layout.addComponent(info);
+
+        Button newBtn = new Button("Новая точка продаж");
         newBtn.setIcon(Fontello.DOC_NEW);
+        newBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+        newBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         newBtn.addClickListener(event -> {
-            final SalePoint newObj = createCompanyFromLead(lead);
+            final SalePoint newObj = createSalePointFromLead(lead);
 
             final SalePointEditForm editWin = new SalePointEditForm(newObj);
             editWin.setModified(true);
@@ -247,7 +252,24 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             });
             FormUtils.showModalWin(editWin);
         });
-        panel.addComponent(newBtn);
+        layout.addComponent(newBtn);
+
+        EditField name = new EditField("Название");
+        name.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
+        name.setIcon(Fontello.FILTER);
+        name.setValue(lead.getPointOfSale());
+
+        EditField region = new EditField("Регион");
+        region.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
+        region.setIcon(Fontello.FILTER);
+        region.setValue(lead.getRegion());
+
+        name.addTextChangeListener(e -> setVendorsFilter(e.getText(), region.getValue()));
+        region.addTextChangeListener(e -> setVendorsFilter(name.getValue(), e.getText()));
+
+        final HorizontalLayout searchLay = new HorizontalLayout(name, region);
+        searchLay.setSpacing(true);
+        layout.addComponent(searchLay);
 
         // Общие настройки таблицы
         table.setContainerDataSource(vendorsContainer);
@@ -266,37 +288,54 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         // Обрабатываем выбор контакта
         table.addValueChangeListener(event -> {
             final SalePoint curObj = extractBean(table.getItem(table.getValue()));
-            vendorField.setValue(curObj);
-            pointOfSaleField.setValue(curObj.getName());
+            lead.setVendor(curObj);
             setModified(true);
         });
-        panel.addComponent(table);
+        layout.addComponent(table);
 
-        return new Panel("Мото салон", panel);
+        final Panel panel = new Panel("Квалификация точки продаж", layout);
+        final VerticalLayout components = new VerticalLayout(panel);
+        components.setMargin(new MarginInfo(true, false, true, false));
+        return components;
     }
 
-    private void setVendorsFilter() {
+    private void setVendorsFilter(String name, String region) {
         vendorsContainer.removeAllContainerFilters();
-        String name = pointOfSaleField.getValue();
+        List<Container.Filter> filters = newArrayListWithCapacity(2);
         if (!Strings.isNullOrEmpty(name))
-            vendorsContainer.addContainerFilter(new Like("name", MessageFormat.format("%{0}%", name), false));
+            filters.add(new Like("name", MessageFormat.format("%{0}%", name), false));
+        if (!Strings.isNullOrEmpty(region)) {
+            filters.add(new Like("regAddress.region", MessageFormat.format("%{0}%", region), false));
+        }
+        if (!filters.isEmpty())
+            vendorsContainer.addContainerFilter(new Or(filters.toArray(new Container.Filter[filters.size()])));
     }
 
-    private Panel createClientPanel(final Lead lead) {
-        VerticalLayout panel = new VerticalLayout();
-        panel.setMargin(true);
-        panel.setSpacing(true);
+    private Component createClientPanel(final Lead lead) {
+        VerticalLayout layout = new VerticalLayout();
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        layout.setSizeFull();
 
         final Table table = new Table();
         table.setRequired(true);
 
+        Label info = new Label(Fontello.INFO_CIRCLED.getHtml() +
+                " Выберите подходящего клиента из списка или введите нового.<br/>Для поиска существующего клиента используйте поля фильтра.");
+        info.setContentMode(ContentMode.HTML);
+        info.addStyleName(ExtaTheme.LABEL_SMALL);
+        info.addStyleName(ExtaTheme.LABEL_LIGHT);
+        layout.addComponent(info);
+
         // Запрос данных
         clientsContainer = new ExtaDataContainer<>(Person.class);
         clientsContainer.addNestedContainerProperty("regAddress.region");
-        setClientsFilter(lead.getContactName());
+        setClientsFilter(lead.getContactName(), lead.getContactPhone(), lead.getContactEmail());
 
-        Button newBtn = new Button("Новый");
+        Button newBtn = new Button("Новый клиент");
         newBtn.setIcon(Fontello.DOC_NEW);
+        newBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+        newBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         newBtn.addClickListener(event -> {
             final Person newObj = createPersonFromLead(lead);
 
@@ -311,7 +350,30 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             });
             FormUtils.showModalWin(editWin);
         });
-        panel.addComponent(newBtn);
+        layout.addComponent(newBtn);
+
+        EditField name = new EditField("Имя");
+        name.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
+        name.setIcon(Fontello.FILTER);
+        name.setValue(lead.getContactName());
+
+        EditField phone = new PhoneField("Телефон");
+        phone.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
+        phone.setIcon(Fontello.FILTER);
+        phone.setValue(lead.getContactPhone());
+
+        EditField email = new EditField("E-mail");
+        email.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
+        email.setIcon(Fontello.FILTER);
+        email.setValue(lead.getContactEmail());
+
+        name.addTextChangeListener(e -> setClientsFilter(e.getText(), email.getValue(), phone.getValue()));
+        email.addTextChangeListener(e -> setClientsFilter(name.getValue(), e.getText(), phone.getValue()));
+        phone.addTextChangeListener(e -> setClientsFilter(name.getValue(), email.getValue(), e.getText()));
+
+        final HorizontalLayout searchLay = new HorizontalLayout(name, phone, email);
+        searchLay.setSpacing(true);
+        layout.addComponent(searchLay);
 
         // Общие настройки таблицы
         table.setContainerDataSource(clientsContainer);
@@ -321,38 +383,33 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.setColumnReorderingAllowed(true);
         table.setNullSelectionAllowed(false);
         table.setHeight(10, Unit.EM);
+        table.setWidth(100, Unit.PERCENTAGE);
+        table.addStyleName(ExtaTheme.TABLE_SMALL);
         // Настройка столбцов таблицы
         table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
         GridDataDecl dataDecl = new PersonDataDecl();
         initTableColumns(table, dataDecl);
         table.setColumnCollapsed("sex", true);
-        table.setColumnCollapsed("birthday", true);
-        table.setColumnCollapsed("email", true);
+//        table.setColumnCollapsed("birthday", true);
+//        table.setColumnCollapsed("email", true);
         // Обрабатываем выбор контакта
         table.addValueChangeListener(event -> {
             final Person curObj = extractBean(table.getItem(table.getValue()));
             lead.setClient(curObj);
-            fillLeadFromClient(curObj);
             setModified(true);
         });
-        panel.addComponent(table);
+        layout.addComponent(table);
 
 
-        return new Panel("Клиент", panel);
+        final Panel panel = new Panel("Квалификация клиента", layout);
+        final VerticalLayout components = new VerticalLayout(panel);
+        components.setMargin(new MarginInfo(true, false, true, false));
+        return components;
     }
 
-    private void fillLeadFromClient(Person contact) {
-        contactNameField.setValue(contact.getName());
-        cellPhoneField.setValue(contact.getPhone());
-        contactEmailField.setValue(contact.getEmail());
-    }
-
-    private void setClientsFilter(String name) {
-        //String name = contactNameField.getValue();
-        String email = contactEmailField.getValue();
-        String cellPhone = cellPhoneField.getValue();
+    private void setClientsFilter(String name, String email, String cellPhone) {
         clientsContainer.removeAllContainerFilters();
-        List<Container.Filter> filters = newArrayList();
+        List<Container.Filter> filters = newArrayListWithCapacity(3);
         if (!Strings.isNullOrEmpty(name)) {
             filters.add(new Like("name", MessageFormat.format("%{0}%", name), false));
         }
@@ -405,16 +462,4 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         return obj;
     }
 
-
-    private enum Qualify {
-        EXIST, NEW
-    }
-
-    private class ConactChangeListener implements Property.ValueChangeListener {
-        @Override
-        public void valueChange(Property.ValueChangeEvent event) {
-            if (qualifyForm)
-                setClientsFilter(contactNameField.getValue());
-        }
-    }
 }

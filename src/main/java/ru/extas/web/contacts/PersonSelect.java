@@ -65,7 +65,7 @@ public class PersonSelect extends CustomField<Person> {
         CssLayout nameLay = new CssLayout();
         nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
-        personSelectField = new PersonSelectField("Имя", "Введите или выберите имя контакта");
+        personSelectField = new PersonSelectField("", "Введите или выберите имя контакта");
         personSelectField.setInputPrompt("Фамилия Имя Отчество");
         personSelectField.setPropertyDataSource(getPropertyDataSource());
         personSelectField.setNewItemsAllowed(true);

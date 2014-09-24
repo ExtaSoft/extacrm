@@ -154,6 +154,10 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         }
         if (obj.getRegAddress() == null)
             obj.setRegAddress(new AddressInfo());
+        if (obj.getActualAddress() == null)
+            obj.setActualAddress(new AddressInfo());
+        if (obj.getPostAddress() == null)
+            obj.setPostAddress(new AddressInfo());
     }
 
 

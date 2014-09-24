@@ -61,7 +61,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         CssLayout nameLay = new CssLayout();
         nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
-        selectField = new LESelectField("Название", "Введите или выберите название юридического лица");
+        selectField = new LESelectField("", "Введите или выберите название юридического лица");
         selectField.setInputPrompt("ООО \"Рога и Копыта\"");
         selectField.setPropertyDataSource(getPropertyDataSource());
         selectField.setNewItemsAllowed(true);
@@ -91,7 +91,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
 
         Button searchBtn = new Button("Поиск", event -> {
 
-            final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите клиента или введите нового", null);
+            final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите ЮЛ или введите новое", null);
             selectWindow.addCloseListener(e -> {
                 if (selectWindow.isSelectPressed()) {
                     final LegalEntity selected = selectWindow.getSelected();

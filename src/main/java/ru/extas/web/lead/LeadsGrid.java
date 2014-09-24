@@ -42,10 +42,14 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 		initialize();
 	}
 
-	/** {@inheritDoc} */
+    public Lead.Status getStatus() {
+        return status;
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
-		return new LeadDataDecl();
+		return new LeadDataDecl(this);
 	}
 
     @Override
@@ -87,46 +91,50 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке лид"));
 
 		if (status == Lead.Status.NEW) {
-			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.DOC_NEW) {
+			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {
 				@Override
 				public void fire(final Object itemId) {
-					final Lead curObj = GridItem.extractBean(table.getItem(itemId));
-
-					final LeadEditForm editWin = new LeadEditForm(curObj, true);
-                    editWin.addCloseFormListener(event -> {
-                        if (editWin.isSaved()) {
-                            refreshContainerItem(itemId);
-                        }
-                    });
-                    FormUtils.showModalWin(editWin);
+                    doQualifyLead(itemId);
 				}
 			});
 		}
 
-		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязан текущий Лид", Fontello.SITEMAP) {
-			@Override
-			public void fire(Object itemId) {
-				final Lead curObj = extractBean(table.getItem(itemId));
-
-				// Ищем процесс к которому привязана текущая продажа
-				RuntimeService runtimeService = lookup(RuntimeService.class);
-				ProcessInstance process =
-						runtimeService.createProcessInstanceQuery()
-								.includeProcessVariables()
-								.variableValueEquals("lead", curObj)
-								.singleResult();
-
-				if (process != null) {
-					// Показать статус выполнения процесса
-					BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
-					statusForm.showModal();
-				} else {
-                    NotificationUtil.showWarning("Нет бизнес процесса с которым связан текущий Лид.");
-				}
-			}
-		});
+//		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязан текущий Лид", Fontello.SITEMAP) {
+//			@Override
+//			public void fire(Object itemId) {
+//				final Lead curObj = extractBean(table.getItem(itemId));
+//
+//				// Ищем процесс к которому привязана текущая продажа
+//				RuntimeService runtimeService = lookup(RuntimeService.class);
+//				ProcessInstance process =
+//						runtimeService.createProcessInstanceQuery()
+//								.includeProcessVariables()
+//								.variableValueEquals("lead", curObj)
+//								.singleResult();
+//
+//				if (process != null) {
+//					// Показать статус выполнения процесса
+//					BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
+//					statusForm.showModal();
+//				} else {
+//                    NotificationUtil.showWarning("Нет бизнес процесса с которым связан текущий Лид.");
+//				}
+//			}
+//		});
 
 		return actions;
 	}
+
+    public void doQualifyLead(Object itemId) {
+        final Lead curObj = GridItem.extractBean(table.getItem(itemId));
+
+        final LeadEditForm editWin = new LeadEditForm(curObj, true);
+        editWin.addCloseFormListener(event -> {
+            if (editWin.isSaved()) {
+                refreshContainerItem(itemId);
+            }
+        });
+        FormUtils.showModalWin(editWin);
+    }
 
 }

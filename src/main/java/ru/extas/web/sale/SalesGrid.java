@@ -80,28 +80,28 @@ public class SalesGrid extends ExtaGrid<Sale> {
 		actions.add(new NewObjectAction("Новый", "Ввод новой продажи"));
 		actions.add(new EditObjectAction("Изменить", "Редактировать выделенную в списке продажу"));
 
-		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязана текущая продажа", Fontello.SITEMAP) {
-            @Override
-            public void fire(Object itemId) {
-                final Sale curObj = extractBean(table.getItem(itemId));
-
-                // Ищем процесс к которому привязана текущая продажа
-                RuntimeService runtimeService = lookup(RuntimeService.class);
-                ProcessInstance process =
-                        runtimeService.createProcessInstanceQuery()
-                                .includeProcessVariables()
-                                .variableValueEquals("sale", curObj)
-                                .singleResult();
-
-                if (process != null) {
-                    // Показать статус выполнения процесса
-                    BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
-                    statusForm.showModal();
-                } else {
-                    NotificationUtil.showWarning("Нет бизнес процесса с которым связана текущая продажа.");
-                }
-            }
-        });
+//		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязана текущая продажа", Fontello.SITEMAP) {
+//            @Override
+//            public void fire(Object itemId) {
+//                final Sale curObj = extractBean(table.getItem(itemId));
+//
+//                // Ищем процесс к которому привязана текущая продажа
+//                RuntimeService runtimeService = lookup(RuntimeService.class);
+//                ProcessInstance process =
+//                        runtimeService.createProcessInstanceQuery()
+//                                .includeProcessVariables()
+//                                .variableValueEquals("sale", curObj)
+//                                .singleResult();
+//
+//                if (process != null) {
+//                    // Показать статус выполнения процесса
+//                    BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
+//                    statusForm.showModal();
+//                } else {
+//                    NotificationUtil.showWarning("Нет бизнес процесса с которым связана текущая продажа.");
+//                }
+//            }
+//        });
 
 		return actions;
 	}

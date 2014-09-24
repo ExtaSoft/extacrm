@@ -26,7 +26,7 @@ public class PhoneField extends EditField {
     }
 
     private void initField() {
-        setColumns(20);
+//        setColumns(20);
         setDescription("Введите телефон в формате 8 XXX XXX-XX-XX");
         setInputPrompt("8 XXX XXX-XX-XX");
         setConverter(lookup(PhoneConverter.class));

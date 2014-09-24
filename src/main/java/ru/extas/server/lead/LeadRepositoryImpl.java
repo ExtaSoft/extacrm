@@ -1,7 +1,5 @@
 package ru.extas.server.lead;
 
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -14,6 +12,7 @@ import ru.extas.model.lead.Lead;
 import ru.extas.security.AbstractSecuredRepository;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.contacts.SalePointRepository;
+import ru.extas.server.sale.SaleRepository;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -40,32 +39,41 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     private final static Logger logger = LoggerFactory.getLogger(LeadRepositoryImpl.class);
 
     @Inject private LeadRepository leadRepository;
-    @Inject private RuntimeService runtimeService;
+//    @Inject private RuntimeService runtimeService;
     @Inject private PersonRepository personRepository;
     @Inject private SalePointRepository salePointRepository;
+    @Inject private SaleRepository saleRepository;
 
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public Lead qualify(Lead obj) {
-        checkNotNull(obj);
-        checkState(obj.getClient() != null, "Невозможно квалифицировать, поскольку не привязан клиент!");
-        checkState(obj.getVendor() != null, "Невозможно квалифицировать, поскольку не привязан Мото салон!");
-        checkState(obj.getStatus() == Lead.Status.NEW, "Квалифицировать можно только новый лид!");
+    public Lead qualify(Lead lead) {
+        checkNotNull(lead);
+        checkState(lead.getClient() != null, "Невозможно квалифицировать, поскольку не привязан клиент!");
+        checkState(lead.getVendor() != null, "Невозможно квалифицировать, поскольку не привязан Мото салон!");
+        checkState(lead.getStatus() == Lead.Status.NEW, "Квалифицировать можно только новый лид!");
 
-        // запуск БП
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("saleCreditProcess");
-        // Привязать процесс к лиду
-        obj.setProcessId(processInstance.getId());
+//        // запуск БП
+//        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("saleCreditProcess");
+//        // Привязать процесс к лиду
+//        lead.setProcessId(processInstance.getId());
+
+        // Обновляем поля лида
+        lead.setContactName(lead.getClient().getName());
+
         // Статус
-        obj.setStatus(Lead.Status.QUALIFIED);
+        lead.setStatus(Lead.Status.QUALIFIED);
         // Сохранить изменения
-        obj = leadRepository.secureSave(obj);
-        // Привязать лид к процессу
-        runtimeService.setVariable(processInstance.getId(), "lead", obj);
+        lead = leadRepository.secureSave(lead);
 
-        logger.debug("Started \"saleCreditProcess\" business process instance (id = {})", processInstance.getId());
-        return obj;
+        // Создать продажу на базе лида
+        saleRepository.ctreateSaleByLead(lead);
+
+        // Привязать лид к процессу
+//        runtimeService.setVariable(processInstance.getId(), "lead", lead);
+//        logger.debug("Started \"saleCreditProcess\" business process instance (id = {})", processInstance.getId());
+
+        return lead;
     }
 
     /** {@inheritDoc} */

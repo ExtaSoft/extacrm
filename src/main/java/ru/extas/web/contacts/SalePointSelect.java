@@ -59,7 +59,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
         CssLayout nameLay = new CssLayout();
         nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
-        contactSelect = new AbstractContactSelect("Имя", "Введите или выберите имя контакта", SalePoint.class);
+        contactSelect = new AbstractContactSelect("", "Введите или выберите название торговой точки", SalePoint.class);
         contactSelect.setPropertyDataSource(getPropertyDataSource());
         contactSelect.setNewItemsAllowed(true);
         contactSelect.setNewItemHandler(new AbstractSelect.NewItemHandler() {

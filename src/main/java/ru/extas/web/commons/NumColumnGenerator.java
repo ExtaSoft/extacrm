@@ -32,18 +32,16 @@ public abstract class NumColumnGenerator extends ComponentColumnGenerator {
     }
 
     @Override
-    public Object generateCell(Object columnId, final Item item) {
+    public Object generateCell(Object columnId, final Item item, Object itemId) {
         Property numProp = item.getItemProperty(numProperty);
         VerticalLayout cell = new VerticalLayout();
         Button link = new Button(String.valueOf(numProp.getValue()));
         link.addClickListener(event -> fireClick(item));
         link.addStyleName(ExtaTheme.BUTTON_LINK);
         cell.addComponent(link);
-        //cell.setComponentAlignment(link, Alignment.TOP_RIGHT);
         final Label createdAt = new Label(item.getItemProperty("createdAt"));
         createdAt.setConverter(dtConverter);
         cell.addComponent(createdAt);
-        //cell.setComponentAlignment(createdAt, Alignment.BOTTOM_RIGHT);
         return cell;
     }
 

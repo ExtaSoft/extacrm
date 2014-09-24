@@ -319,7 +319,7 @@ public enum Fontello implements FontIcon {
 
     @Override
     public String getHtml() {
-        return "<span class=\"v_icon\" style=\"font_family: " + fontFamily
+        return "<span class=\"v_icon\" style=\"font-family: " + fontFamily
                 + ";\">&#x" + Integer.toHexString(codepoint) + ";</span>";
     }
 

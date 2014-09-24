@@ -1,7 +1,6 @@
 package ru.extas.web.lead;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.lead.Lead;
 import ru.extas.web.commons.*;
@@ -20,14 +19,12 @@ class LeadDataDecl extends GridDataDecl {
     /**
      * <p>Constructor for LeadDataDecl.</p>
      */
-    public LeadDataDecl() {
+    public LeadDataDecl(LeadsGrid grid) {
         addMapping("num", "№", new NumColumnGenerator() {
             @Override
             public void fireClick(Item item) {
                 final Lead curObj = GridItem.extractBean(item);
-
-                final LeadEditForm editWin = new LeadEditForm(curObj, false);
-                FormUtils.showModalWin(editWin);
+                grid.doEditObject(curObj);
             }
         }, null);
         addMapping("contactName", "Клиент");
@@ -38,18 +35,21 @@ class LeadDataDecl extends GridDataDecl {
         addMapping("motorPrice", "Стоимость техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("contactPhone", "Телефон", PhoneConverter.class);
         addMapping("pointOfSale", "Регион | Мотосалон", new SalePointColumnGenerator("vendor", "pointOfSale", "region"), null);
-        addMapping("to_work", "", new ToWorkGenerator(), null);
+        if (grid.getStatus() == Lead.Status.NEW) {
+            addMapping("to_work", "", new ComponentColumnGenerator() {
+                @Override
+                public Object generateCell(Object columnId, Item item, Object itemId) {
+                    final Button button = new Button("В работу", Fontello.CHECK_2);
+                    button.addStyleName(ExtaTheme.BUTTON_SMALL);
+                    button.addClickListener(e -> grid.doQualifyLead(itemId));
+                    return button;
+                }
+            }, null);
+        }
         addMapping("region", "Регион", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("status", "Статус", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         super.addDefaultMappings();
     }
 
-    private class ToWorkGenerator extends ComponentColumnGenerator {
-        @Override
-        public Object generateCell(Object columnId, Item item) {
-            return new Button("В работу");
-        }
-
-    }
 }

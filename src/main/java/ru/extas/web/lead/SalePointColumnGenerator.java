@@ -30,7 +30,7 @@ public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenera
     }
 
     @Override
-    public Object generateCell(Object columnId, Item item) {
+    public Object generateCell(Object columnId, Item item, Object itemId) {
         String region = "";
         Button link = new Button();
         link.addStyleName(ExtaTheme.BUTTON_LINK);

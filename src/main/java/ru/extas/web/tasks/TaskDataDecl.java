@@ -1,7 +1,6 @@
 package ru.extas.web.tasks;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItem;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.task.Task;
 import ru.extas.model.lead.Lead;
@@ -34,7 +33,7 @@ class TaskDataDecl extends GridDataDecl {
 	    addMapping("assignee", "Ответственный", LoginToUserNameConverter.class);
         addMapping("clientName", "Клиент", new ComponentColumnGenerator() {
             @Override
-            public Object generateCell(Object columnId, Item item) {
+            public Object generateCell(Object columnId, Item item, Object itemId) {
                 String clientName = null;
                 Task task = GridItem.extractBean(item);
                 RuntimeService runtimeService = lookup(RuntimeService.class);
@@ -48,7 +47,7 @@ class TaskDataDecl extends GridDataDecl {
         });
         addMapping("dealerName", "Мотосалон", new ComponentColumnGenerator() {
             @Override
-            public Object generateCell(Object columnId, Item item) {
+            public Object generateCell(Object columnId, Item item, Object itemId) {
                 String dealerName = null;
                 Task task = GridItem.extractBean(item);
                 RuntimeService runtimeService = lookup(RuntimeService.class);

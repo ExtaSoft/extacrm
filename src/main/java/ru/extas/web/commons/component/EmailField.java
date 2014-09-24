@@ -34,7 +34,7 @@ public class EmailField extends EditField {
     }
 
     private void initField() {
-        setColumns(20);
+//        setColumns(20);
         setDescription("Введите имя e-mail контакта который будет использоваться для связи");
         setInputPrompt("e-mail");
         addValidator(new EmailValidator("{0} не является допустимым адресом электронной почты."));

@@ -196,7 +196,7 @@ public class LeadInputFormUI extends UI {
             form.addComponent(vendorField);
         }
 
-        commentField = new TextArea("Комментарий");
+        commentField = new TextArea("Примечание");
         commentField.setInputPrompt("Укажите любую дополнительную информацию");
         commentField.setColumns(25);
         commentField.setRows(6);
@@ -359,7 +359,7 @@ public class LeadInputFormUI extends UI {
             Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalregion));
             lead.setRegion(trueRegion.orNull());
         }
-        // Комментарий
+        // Примечание
         String comment = getParamValue("comment", params);
         if (!isNullOrEmpty(comment))
             lead.setComment(comment);

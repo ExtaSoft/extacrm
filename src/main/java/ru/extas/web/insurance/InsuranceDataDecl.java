@@ -58,7 +58,7 @@ class InsuranceDataDecl extends GridDataDecl {
     private class ClientBirthdayGenerator implements GridColumnGenerator {
 
         @Override
-        public Object generateCell(Object columnId, Item item) {
+        public Object generateCell(Object columnId, Item item, Object itemId) {
             Property itemProperty = getCellProperty(columnId, item);
             if (itemProperty != null) {
                 Label value = new Label(itemProperty);

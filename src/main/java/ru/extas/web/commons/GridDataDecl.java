@@ -32,7 +32,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class GridDataDecl implements Serializable {
 
     public interface GridColumnGenerator extends Serializable {
-        Object generateCell(Object columnId, Item item);
+        Object generateCell(Object columnId, Item item, Object itemId);
 
         Property getCellProperty(Object columnId, Item item);
 

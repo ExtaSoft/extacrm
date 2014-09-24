@@ -12,7 +12,7 @@ import ru.extas.web.commons.GridDataDecl;
 */
 public class MotorColumnGenerator extends GridDataDecl.ComponentColumnGenerator {
     @Override
-    public Object generateCell(Object columnId, Item item) {
+    public Object generateCell(Object columnId, Item item, Object itemId) {
         StringBuilder content = new StringBuilder();
         final Object motorType = item.getItemProperty("motorType").getValue();
         final Object motorBrand = item.getItemProperty("motorBrand").getValue();

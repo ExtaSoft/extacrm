@@ -161,7 +161,7 @@ public class TableUtils {
             if (prop.getGenerator() != null)
                 table.addGeneratedColumn(prop.getPropName(), (source, itemId, columnId) -> {
                     Item item = source.getItem(itemId);
-                    return prop.getGenerator().generateCell(columnId, item);
+                    return prop.getGenerator().generateCell(columnId, item, itemId);
                 });
     }
 
@@ -186,7 +186,7 @@ public class TableUtils {
                     @Override
                     public Object generateCell(CustomTable source, Object itemId, Object columnId) {
                         Item item = source.getItem(itemId);
-                        return prop.getGenerator().generateCell(columnId, item);
+                        return prop.getGenerator().generateCell(columnId, item, itemId);
                     }
 
                     @Override

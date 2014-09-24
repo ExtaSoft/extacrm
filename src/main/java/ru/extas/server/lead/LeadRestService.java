@@ -100,7 +100,7 @@ public class LeadRestService {
         // Идентификатор мотосалона.
         private String dealerId;
 
-        // Комментарий.
+        // Примечание.
         private String comment;
 
         public RestLead() {
@@ -327,12 +327,16 @@ public class LeadRestService {
             SalePoint salePoint = salePointRepository.findOne(lead.getDealerId());
             if (salePoint == null)
                 throw new IllegalArgumentException("Id торговой точки не действителен (не найден)");
-            else
+            else {
                 newLead.setVendor(salePoint);
+                newLead.setPointOfSale(salePoint.getName());
+                if(salePoint.getRegAddress() != null)
+                    newLead.setRegion(salePoint.getRegAddress().getRegion());
+            }
         }
         newLead.setPointOfSale(lead.getDealer());
 
-        // Комментарий.
+        // Примечание.
         if(!isNullOrEmpty(lead.getComment()))
             dirtyData.append(lead.getComment());
         newLead.setComment(dirtyData.toString());
