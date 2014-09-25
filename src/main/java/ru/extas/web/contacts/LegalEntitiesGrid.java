@@ -38,7 +38,7 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
 	}
 
     @Override
-    public ExtaEditForm<LegalEntity> createEditForm(LegalEntity legalEntity) {
+    public ExtaEditForm<LegalEntity> createEditForm(LegalEntity legalEntity, boolean isInsert) {
         return new LegalEntityEditForm(legalEntity);
     }
 

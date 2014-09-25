@@ -537,8 +537,12 @@
       <exported-key name="FK_LEGAL_ENTITY_PROD_CREDIT_LEGAL_ENTITY_ID" table="legal_entity_prod_credit" schema="" catalog="extacrm" columns="LEGAL_ENTITY_ID"/>
       <exported-key name="FK_PAY_ACCOUNT_CONTACT_ID" table="pay_account" schema="" catalog="extacrm" columns="CONTACT_ID"/>
       <exported-key name="FK_PERSON_ID" table="person" schema="" catalog="extacrm" columns="ID"/>
+      <exported-key name="FK_PERSON_AUTO_OWNER_ID" table="person_auto" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <exported-key name="FK_PERSON_CHILD_PARENT_ID" table="person_child" schema="" catalog="extacrm" columns="PARENT_ID"/>
+      <exported-key name="FK_PERSON_EXPENSE_OWNER_ID" table="person_expense" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <exported-key name="FK_PERSON_FILE_OWNER_ID" table="person_file" schema="" catalog="extacrm" columns="OWNER_ID"/>
+      <exported-key name="FK_PERSON_INCOME_OWNER_ID" table="person_income" schema="" catalog="extacrm" columns="OWNER_ID"/>
+      <exported-key name="FK_PERSON_REALTY_OWNER_ID" table="person_realty" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <exported-key name="FK_PRODUCT_VENDOR_ID" table="product" schema="" catalog="extacrm" columns="VENDOR_ID"/>
       <exported-key name="FK_SALE_CLIENT_ID" table="sale" schema="" catalog="extacrm" columns="CLIENT_ID"/>
       <exported-key name="FK_SALE_DEALER_ID" table="sale" schema="" catalog="extacrm" columns="DEALER_ID"/>
@@ -784,6 +788,26 @@
       <column name="OGRN_OGRIP" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
       <column name="COMPANY_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="DIRECTOR_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ACCOUNTANT_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="BANK_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="BIC" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
+      <column name="KPP" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
+      <column name="LORO_ACCOUNT" sqlType="VARCHAR" precision="150" scale="0" nullable="true" jdbcType="12"/>
+      <column name="REG_N_ACT_IS_SAME" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="REG_N_PST_IS_SAME" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="SETTLEMENT_ACCOUNT" sqlType="VARCHAR" precision="25" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ACT_CITY" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ACT_PERIOD_OF_RESIDENCE" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ACT_POST_INDEX" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ACT_REALTY_KIND" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ACT_REGION" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ACT_STREET_BLD" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="PST_CITY" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="PST_PERIOD_OF_RESIDENCE" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="PST_POST_INDEX" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="PST_REALTY_KIND" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="PST_REGION" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="PST_STREET_BLD" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_LEGAL_ENTITY_COMPANY_ID" columns="COMPANY_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_LEGAL_ENTITY_DIRECTOR_ID" columns="DIRECTOR_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
@@ -908,8 +932,70 @@
       <column name="HAS_CHILDREN" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
       <column name="MARITAL_STATUS" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
       <column name="HAS_MARRIAGE_СONTRACT" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="DEPENDANTS" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="LIVING_TOGETHER" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="SPOUSE_BIRTH_PLACE" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
+      <column name="SPOUSE_BIRTHDAY" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="SPOUSECITIZENSHIP" sqlType="VARCHAR" precision="60" scale="0" nullable="true" jdbcType="12"/>
+      <column name="SPOUSE_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EDU_FINISH" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="EDU_INST_INN" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EDU_INST_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EDU_KIND" sqlType="VARCHAR" precision="18" scale="0" nullable="true" jdbcType="12"/>
+      <column name="SPECIALITY" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EMPLOYER_ACCOUNTANT_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EMPLOYER_ADRESS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EMPLOYER_DIRECTOR_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EMPLOYER_INN" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EMPLOYER_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EMPLOYER_PHONE" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EMPLOYER_SCOPE" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="EMPLOYER_WWW" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="GEN_EXPERIENCE" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="JOBS_FOR_3YEARS" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="LAST_EXPERIENCE" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="OFFICE_POSITION" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="PRACTICE_TYPE" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="SALARY" sqlType="DECIMAL" precision="38" scale="0" nullable="true" jdbcType="3"/>
+      <column name="TEMP_JOB_PERIOD" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="TYPE_OF_EMPLOYMENT" sqlType="VARCHAR" precision="12" scale="0" nullable="true" jdbcType="12"/>
+      <column name="BUSINESS_ADRESS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="BUSINESS_BALANCE" sqlType="DECIMAL" precision="32" scale="4" nullable="true" jdbcType="3"/>
+      <column name="BUSINESS_INN" sqlType="VARCHAR" precision="10" scale="0" nullable="true" jdbcType="12"/>
+      <column name="BUSINESS_MEMB_EMP" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="BUSINESS_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="IS_BUSINESS_OWNER" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="BUSINESS_PART" sqlType="DECIMAL" precision="32" scale="4" nullable="true" jdbcType="3"/>
+      <column name="BUSINESS_PHONE" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="BUSINESS_SCOPE" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="BUSINESS_YEARLY_SALES" sqlType="DECIMAL" precision="32" scale="4" nullable="true" jdbcType="3"/>
+      <column name="ACCOUNTING_4_PSYCHIATRIST" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="HAS_ANOTHER_CREDIT" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="ANOTHER_CREDIT_BANK" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="HAS_COLLATERAL_PROPERTY" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="HAS_CRIMINAL_LIABILITY" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="MARKETING_CHANNAL" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="RECEIVERSHIP" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="CLOSE_RELATIVE_FILIATION" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
+      <column name="CLOSE_RELATIVE_HOME_PHONE" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="CLOSE_RELATIVE_MOB_PHONE" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="CLOSE_RELATIVE_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PERSON_ID" columns="ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="person_auto" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="BRAND_MODEL" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="PRICE" sqlType="DECIMAL" precision="32" scale="4" nullable="true" jdbcType="3"/>
+      <column name="PURCHASE_DATE" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="REG_NUM" sqlType="VARCHAR" precision="12" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="WAY_2_PURCHASE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="YEAR_OF_MANUFACTURE" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_PERSON_AUTO_OWNER_ID" columns="OWNER_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IX_PERSON_AUTO_FK_PERSON_AUTO_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="person_child" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -920,6 +1006,16 @@
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PERSON_CHILD_PARENT_ID" columns="PARENT_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="IX_PERSON_CHILD_FK_PERSON_CHILD_PARENT_ID" unique="false" columns="PARENT_ID"/>
+    </table>
+    <table name="person_expense" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="EXPENSE" sqlType="DECIMAL" precision="32" scale="4" nullable="true" jdbcType="3"/>
+      <column name="TYPE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_PERSON_EXPENSE_OWNER_ID" columns="OWNER_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IX_PERSON_EXPENSE_FK_PERSON_EXPENSE_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="person_file" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -937,6 +1033,32 @@
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PERSON_FILE_OWNER_ID" columns="OWNER_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="IX_PERSON_FILE_FK_PERSON_FILE_OWNER_ID" unique="false" columns="OWNER_ID"/>
+    </table>
+    <table name="person_income" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="INCOME" sqlType="DECIMAL" precision="32" scale="4" nullable="true" jdbcType="3"/>
+      <column name="SPOUSE_INCOME" sqlType="DECIMAL" precision="32" scale="4" nullable="true" jdbcType="3"/>
+      <column name="TYPE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_PERSON_INCOME_OWNER_ID" columns="OWNER_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IX_PERSON_INCOME_FK_PERSON_INCOME_OWNER_ID" unique="false" columns="OWNER_ID"/>
+    </table>
+    <table name="person_realty" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="ADRESS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="AREA_OF_HOUSE" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="AREA_OF_LAND" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="OWNING_PERIOD" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="PART" sqlType="DECIMAL" precision="32" scale="4" nullable="true" jdbcType="3"/>
+      <column name="TYPE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="WAY_2_PURCHASE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_PERSON_REALTY_OWNER_ID" columns="OWNER_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IX_PERSON_REALTY_FK_PERSON_REALTY_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="policy" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>

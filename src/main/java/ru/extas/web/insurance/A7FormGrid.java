@@ -4,7 +4,6 @@
 package ru.extas.web.insurance;
 
 import com.vaadin.data.Container;
-import ru.extas.model.common.SecuredObject_;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.Person_;
@@ -21,7 +20,6 @@ import javax.persistence.criteria.*;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -48,7 +46,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
     }
 
     @Override
-    public ExtaEditForm<A7Form> createEditForm(A7Form a7Form) {
+    public ExtaEditForm<A7Form> createEditForm(A7Form a7Form, boolean isInsert) {
         return null;
     }
 

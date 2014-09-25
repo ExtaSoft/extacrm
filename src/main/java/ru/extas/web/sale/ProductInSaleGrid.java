@@ -68,6 +68,7 @@ public class ProductInSaleGrid extends CustomField<List> {
             commandBar.setAutoOpen(true);
             commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
             commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_SMALL);
 
             final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
                 final BeanItem<ProductInSale> newObj = new BeanItem<>(new ProductInSale(sale));

@@ -11,6 +11,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
 import ru.extas.web.motor.MotorBrandSelect;
@@ -19,7 +20,10 @@ import ru.extas.web.reference.RegionSelect;
 
 import javax.persistence.EntityManager;
 
+import java.text.MessageFormat;
+
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static ru.extas.model.common.ModelUtils.evictCache;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -60,7 +64,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private ProductInSaleGrid productInSaleField;
 
     public SaleEditForm(Sale sale) {
-        super(sale.isNew() ? "Ввод новой продажи в систему" : "Редактирование продажи", new BeanItem(sale));
+        super(sale.isNew() ? "Ввод новой продажи в систему" :
+                MessageFormat.format("Редактирование продажи № {0}", sale.getNum()), new BeanItem(sale));
     }
 
     /** {@inheritDoc} */
@@ -68,15 +73,15 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     protected ComponentContainer createEditFields(final Sale obj) {
         final FormLayout form = new ExtaFormLayout();
 
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Клиент"));
         clientField = new PersonSelect("Клиент", "Введите имя клиента");
         clientField.setRequired(true);
         clientField.setRequiredError("Имя контакта не может быть пустым.");
         form.addComponent(clientField);
 
-        regionField = new RegionSelect();
-        regionField.setDescription("Укажите регион услуги");
-        form.addComponent(regionField);
-
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Техника"));
         motorTypeField = new MotorTypeSelect();
         form.addComponent(motorTypeField);
 
@@ -90,16 +95,29 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         mototPriceField = new EditField("Цена техники");
         form.addComponent(mototPriceField);
 
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Диллер"));
+        regionField = new RegionSelect();
+        regionField.setDescription("Укажите регион услуги");
+        form.addComponent(regionField);
+
         dealerField = new SalePointSelect("Мотосалон", "Введите точку продаж", null);
         form.addComponent(dealerField);
 
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Дополнительно"));
         commentField = new TextArea("Примечание");
-        commentField.setColumns(25);
+        commentField.setRows(3);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);
 
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Продукты"));
         productInSaleField = new ProductInSaleGrid("Продукты в продаже", obj);
         form.addComponent(productInSaleField);
+
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Коментарии"));
 
         return form;
     }
@@ -126,7 +144,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         final SaleRepository leadService = lookup(SaleRepository.class);
         Sale sale = leadService.secureSave(obj);
         if (sale.getNum() == null)
-            lookup(EntityManager.class).getEntityManagerFactory().getCache().evict(sale.getClass(), sale.getId());
+            evictCache(sale);
         NotificationUtil.showSuccess("Продажа сохранена");
         return sale;
     }

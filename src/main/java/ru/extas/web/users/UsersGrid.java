@@ -34,7 +34,7 @@ public class UsersGrid extends ExtaGrid<UserProfile> {
 	}
 
     @Override
-    public ExtaEditForm<UserProfile> createEditForm(UserProfile userProfile) {
+    public ExtaEditForm<UserProfile> createEditForm(UserProfile userProfile, boolean isInsert) {
         return new UserEditForm(userProfile);
     }
 

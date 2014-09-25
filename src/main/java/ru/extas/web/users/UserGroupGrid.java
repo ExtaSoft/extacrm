@@ -23,7 +23,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
     }
 
     @Override
-    public ExtaEditForm<UserGroup> createEditForm(UserGroup userGroup) {
+    public ExtaEditForm<UserGroup> createEditForm(UserGroup userGroup, boolean isInsert) {
         return new UserGroupEditForm(userGroup);
     }
 

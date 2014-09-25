@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
 
 /**
@@ -18,5 +19,8 @@ import ru.extas.model.sale.Sale;
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public interface SaleRepository extends JpaRepository<Sale, String>, SaleService {
+
+    // Найти продажу по лиду
+    Sale findByLead(Lead lead);
 
 }

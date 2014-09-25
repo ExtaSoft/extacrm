@@ -29,7 +29,7 @@ public class PersonsGrid extends ExtaGrid<Person> {
     }
 
     @Override
-    public ExtaEditForm<Person> createEditForm(Person person) {
+    public ExtaEditForm<Person> createEditForm(Person person, boolean isInsert) {
         return new PersonEditForm(person);
     }
 

@@ -31,7 +31,7 @@ public class CompaniesGrid extends ExtaGrid<Company> {
 	}
 
     @Override
-    public ExtaEditForm<Company> createEditForm(Company company) {
+    public ExtaEditForm<Company> createEditForm(Company company, boolean isInsert) {
         return new CompanyEditForm(company);
     }
 

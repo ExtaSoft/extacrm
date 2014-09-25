@@ -24,7 +24,7 @@ public class ProdInstallmentsGrid extends ExtaGrid<ProdInstallments> {
     }
 
     @Override
-    public ExtaEditForm<ProdInstallments> createEditForm(ProdInstallments prodInstallments) {
+    public ExtaEditForm<ProdInstallments> createEditForm(ProdInstallments prodInstallments, boolean isInsert) {
         return new ProdInstallmentsEditForm(prodInstallments);
     }
 

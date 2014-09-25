@@ -9,7 +9,6 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
-import ru.extas.model.common.IdentifiedObject;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -44,12 +43,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private GridDataDecl dataDecl;
     private Mode currentMode;
     private boolean toolbarVisible = true;
-    private List<MenuBar.MenuItem> needCurrentBtns;
+    private List<MenuBar.MenuItem> needCurrentMenu;
     private MenuBar.MenuItem tableModeBtn;
     private MenuBar.MenuItem detailModeBtn;
 
     public void selectObject(Object objectId) {
-        if (table != null && objectId != null)
+        if (table != null && objectId != null && table.containsId(objectId))
             table.select(objectId);
     }
 
@@ -147,12 +146,13 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         return null;
     }
 
-    public abstract ExtaEditForm<TEntity> createEditForm(TEntity entity);
+    public abstract ExtaEditForm<TEntity> createEditForm(TEntity entity, boolean isInsert);
 
     public void doEditObject(final TEntity entity) {
 
-        final ExtaEditForm<TEntity> form = createEditForm(entity);
-        form.setReadOnly(!GridUtils.isPermitEdit(container, entity));
+        final ExtaEditForm<TEntity> form = createEditForm(entity, false);
+        if(!form.isReadOnly())
+            form.setReadOnly(!GridUtils.isPermitEdit(container, entity));
         formService.open4Edit(form);
     }
 
@@ -160,7 +160,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         TEntity entity = init == null ? createEntity() : init;
 
         if (GridUtils.isPermitInsert(container)) {
-            final ExtaEditForm<TEntity> form = createEditForm(entity);
+            final ExtaEditForm<TEntity> form = createEditForm(entity, true);
             formService.open4Insert(form);
         } else
             NotificationUtil.showWarning("Ввод новых объектов запрещен администратором!");
@@ -269,7 +269,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
 //        commandBar.focus();
 
-        needCurrentBtns = newArrayList();
+        needCurrentMenu = newArrayList();
         for (final UIAction action : actions) {
             final MenuBar.MenuItem menuItem = commandBar.addItem(action.getName(), action.getIcon(), null);
             fillGridTollbarItem(action, menuItem);
@@ -281,7 +281,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         menuItem.setDescription(action.getDescription());
 
         if (action instanceof UIActionGroup) {
-            for (final UIAction subAction : (((UIActionGroup) action).getActionsGroup())) {
+            final List<UIAction> actionsGroup = ((UIActionGroup) action).getActionsGroup();
+            for (final UIAction subAction : actionsGroup) {
                 fillGridTollbarItem(subAction, menuItem.addItem(subAction.getName(), subAction.getIcon(), null));
             }
         } else {
@@ -297,7 +298,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             menuItem.setCommand(command);
         }
         if (action instanceof ItemAction) {
-            needCurrentBtns.add(menuItem);
+            needCurrentMenu.add(menuItem);
             menuItem.setEnabled(false);
         }
         if (action instanceof ExtaGrid.NewObjectAction) {
@@ -357,12 +358,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                 if (event.isDoubleClick())
                     defAction.fire(event.getItemId());
             });
-            for (MenuBar.MenuItem btn : needCurrentBtns)
+            for (MenuBar.MenuItem btn : needCurrentMenu)
                 btn.setVisible(true);
             // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
             table.addValueChangeListener(event -> {
                 final boolean enableBtb = event.getProperty().getValue() != null;
-                for (MenuBar.MenuItem btn : needCurrentBtns)
+                for (MenuBar.MenuItem btn : needCurrentMenu)
                     btn.setEnabled(enableBtb);
             });
 
@@ -374,7 +375,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         table.addGeneratedColumn(OVERALL_COLUMN, createDetailColumnGenerator(defAction));
         table.setColumnHeader(OVERALL_COLUMN, "Общая информация");
         table.setVisibleColumns(OVERALL_COLUMN);
-        for (MenuBar.MenuItem btn : needCurrentBtns)
+        for (MenuBar.MenuItem btn : needCurrentMenu)
             btn.setVisible(false);
     }
 
@@ -412,10 +413,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      * <p>refreshContainer.</p>
      */
     protected void refreshContainer() {
+        Object itemId = table.getValue();
         if (container instanceof ExtaDataContainer)
             ((ExtaDataContainer) container).refresh();
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
+        table.setValue(itemId);
     }
 
     /**

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.sale.Sale;
 import ru.extas.security.AbstractSecuredRepository;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.contacts.SalePointRepository;
@@ -38,13 +39,19 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
 
     private final static Logger logger = LoggerFactory.getLogger(LeadRepositoryImpl.class);
 
-    @Inject private LeadRepository leadRepository;
-//    @Inject private RuntimeService runtimeService;
-    @Inject private PersonRepository personRepository;
-    @Inject private SalePointRepository salePointRepository;
-    @Inject private SaleRepository saleRepository;
+    @Inject
+    private LeadRepository leadRepository;
+    //    @Inject private RuntimeService runtimeService;
+    @Inject
+    private PersonRepository personRepository;
+    @Inject
+    private SalePointRepository salePointRepository;
+    @Inject
+    private SaleRepository saleRepository;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public Lead qualify(Lead lead) {
@@ -67,7 +74,7 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         lead = leadRepository.secureSave(lead);
 
         // Создать продажу на базе лида
-        saleRepository.ctreateSaleByLead(lead);
+        Sale sale = saleRepository.ctreateSaleByLead(lead);
 
         // Привязать лид к процессу
 //        runtimeService.setVariable(processInstance.getId(), "lead", lead);
@@ -76,37 +83,53 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         return lead;
     }
 
-    /** {@inheritDoc} */
+    @Transactional
+    @Override
+    public void finishLead(Lead lead, Lead.Result result) {
+        lead.setResult(result);
+        lead.setStatus(Lead.Status.CLOSED);
+        secureSave(lead);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpaRepository<Lead, ?> getEntityRepository() {
         return leadRepository;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Collection<String> getObjectBrands(Lead lead) {
-        if(!isNullOrEmpty(lead.getMotorBrand()))
+        if (!isNullOrEmpty(lead.getMotorBrand()))
             newHashSet(lead.getMotorBrand());
 
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Collection<String> getObjectRegions(Lead lead) {
         Set<String> regions = newHashSet();
-        if(lead.getClient() != null
+        if (lead.getClient() != null
                 && lead.getClient().getRegAddress() != null
                 && !isNullOrEmpty(lead.getClient().getRegAddress().getRegion()))
             regions.add(lead.getClient().getRegAddress().getRegion());
-        if(lead.getVendor() != null
+        if (lead.getVendor() != null
                 && lead.getVendor().getRegAddress() != null
                 && !isNullOrEmpty(lead.getVendor().getRegAddress().getRegion()))
             regions.add(lead.getVendor().getRegAddress().getRegion());
         return regions;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public Lead permitAndSave(Lead lead, Person userContact, Collection<String> regions, Collection<String> brands) {
@@ -115,7 +138,7 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
             // При этом необходимо сделать “видимыми” все связанные объекты лида:
             // Клиент
 //            if(lead.getClient() instanceof Person)
-                personRepository.permitAndSave(lead.getClient(), userContact, regions, brands);
+            personRepository.permitAndSave(lead.getClient(), userContact, regions, brands);
 //            else
 //                companyRepository.permitAndSave((Company) lead.getClient(), userContact, regions, brands);
             // Продавец (торговая точка или компания)

@@ -2,20 +2,16 @@ package ru.extas.web.lead;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * <p>LeadsGrid class.</p>
@@ -53,8 +49,10 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 	}
 
     @Override
-    public ExtaEditForm<Lead> createEditForm(Lead lead) {
-        return new LeadEditForm(lead, status == Lead.Status.QUALIFIED);
+    public ExtaEditForm<Lead> createEditForm(Lead lead, boolean isInsert) {
+        final LeadEditForm editForm = new LeadEditForm(lead, isInsert && status == Lead.Status.QUALIFIED);
+        editForm.setReadOnly(status != Lead.Status.NEW && !isInsert);
+        return editForm;
     }
 
     /** {@inheritDoc} */
@@ -88,7 +86,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 			actions.add(new NewObjectAction("Новый", "Ввод нового лида"));
 		}
 
-		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке лид"));
+		actions.add(new EditObjectAction(status == Lead.Status.NEW ? "Изменить" : "Просмотреть", "Редактировать выделенный в списке лид"));
 
 		if (status == Lead.Status.NEW) {
 			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {

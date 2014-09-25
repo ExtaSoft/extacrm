@@ -21,4 +21,12 @@ public interface SaleService extends SecuredRepository<Sale> {
      * @return созданная продажа
      */
     Sale ctreateSaleByLead(Lead lead);
+
+    /**
+     * Завершает продажу с указанным результатом
+     *
+     * @param sale продажа
+     * @param result результат завершения
+     */
+    void finishSale(Sale sale, Sale.Result result);
 }

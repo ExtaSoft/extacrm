@@ -11,8 +11,6 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.Person_;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.insurance.A7Form;
-import ru.extas.model.insurance.A7Form_;
 import ru.extas.model.insurance.FormTransfer;
 import ru.extas.model.insurance.FormTransfer_;
 import ru.extas.model.security.ExtaDomain;
@@ -51,7 +49,7 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
     }
 
     @Override
-    public ExtaEditForm<FormTransfer> createEditForm(FormTransfer formTransfer) {
+    public ExtaEditForm<FormTransfer> createEditForm(FormTransfer formTransfer, boolean isInsert) {
         return new FormTransferEditForm(formTransfer);
     }
 

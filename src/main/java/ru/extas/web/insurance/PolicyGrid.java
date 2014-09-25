@@ -30,7 +30,7 @@ public class PolicyGrid extends ExtaGrid<Policy> {
     }
 
     @Override
-    public ExtaEditForm<Policy> createEditForm(Policy policy) {
+    public ExtaEditForm<Policy> createEditForm(Policy policy, boolean isInsert) {
         return new PolicyEditForm(policy);
     }
 

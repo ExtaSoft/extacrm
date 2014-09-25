@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaTheme;
@@ -24,7 +25,6 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class SalePointSelect extends CustomField<SalePoint> {
 
-    private AbstractContactSelect contactSelect;
     private Button viewBtn;
     private Label companyField;
     private Label phoneField;
@@ -59,70 +59,75 @@ public class SalePointSelect extends CustomField<SalePoint> {
         CssLayout nameLay = new CssLayout();
         nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
-        contactSelect = new AbstractContactSelect("", "Введите или выберите название торговой точки", SalePoint.class);
-        contactSelect.setPropertyDataSource(getPropertyDataSource());
-        contactSelect.setNewItemsAllowed(true);
-        contactSelect.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-            private static final long serialVersionUID = 1L;
+        if (!isReadOnly()) {
+            final AbstractContactSelect contactSelect = new AbstractContactSelect("", "Введите или выберите название торговой точки", SalePoint.class);
+            contactSelect.setPropertyDataSource(getPropertyDataSource());
+            contactSelect.setNewItemsAllowed(true);
+            contactSelect.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+                private static final long serialVersionUID = 1L;
 
-            @SuppressWarnings({"unchecked"})
-            @Override
-            public void addNewItem(final String newItemCaption) {
-                final SalePoint defNewObj = new SalePoint();
-                if (defNewObj.getName() == null) {
-                    defNewObj.setName(newItemCaption);
-                }
-                defNewObj.setCompany(company);
-
-                final SalePointEditForm editWin = new SalePointEditForm(defNewObj);
-                editWin.setModified(true);
-
-                editWin.addCloseFormListener(event -> {
-                    if (editWin.isSaved()) {
-                        contactSelect.refreshContainer();
-                        contactSelect.setValue(editWin.getObjectId());
+                @SuppressWarnings({"unchecked"})
+                @Override
+                public void addNewItem(final String newItemCaption) {
+                    final SalePoint defNewObj = new SalePoint();
+                    if (defNewObj.getName() == null) {
+                        defNewObj.setName(newItemCaption);
                     }
-                });
-                FormUtils.showModalWin(editWin);
-            }
-        });
-        contactSelect.addValueChangeListener(event -> refreshFields((SalePoint) contactSelect.getConvertedValue()));
-        nameLay.addComponent(contactSelect);
+                    defNewObj.setCompany(company);
 
-        Button searchBtn = new Button("Поиск", event -> {
+                    final SalePointEditForm editWin = new SalePointEditForm(defNewObj);
+                    editWin.setModified(true);
 
-            final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите клиента или введите нового", company);
-            selectWindow.addCloseListener(e -> {
-                if (selectWindow.isSelectPressed()) {
-                    contactSelect.setConvertedValue(selectWindow.getSelected());
+                    editWin.addCloseFormListener(event -> {
+                        if (editWin.isSaved()) {
+                            contactSelect.refreshContainer();
+                            contactSelect.setValue(editWin.getObjectId());
+                        }
+                    });
+                    FormUtils.showModalWin(editWin);
                 }
             });
-            selectWindow.showModal();
+            contactSelect.addValueChangeListener(event -> refreshFields((SalePoint) contactSelect.getConvertedValue()));
+            nameLay.addComponent(contactSelect);
 
-        });
-        searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
-        searchBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-        nameLay.addComponent(searchBtn);
+            Button searchBtn = new Button("Поиск", event -> {
 
-        viewBtn = new Button("Просмотр", event -> {
-            final SalePoint salePoint = (SalePoint) contactSelect.getConvertedValue();
+                final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите клиента или введите нового", company);
+                selectWindow.addCloseListener(e -> {
+                    if (selectWindow.isSelectPressed()) {
+                        contactSelect.setConvertedValue(selectWindow.getSelected());
+                    }
+                });
+                selectWindow.showModal();
 
-            final SalePointEditForm editWin = new SalePointEditForm(salePoint);
-            editWin.setModified(true);
+            });
+            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+            searchBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            nameLay.addComponent(searchBtn);
 
-            editWin.addCloseFormListener(new ExtaEditForm.CloseFormListener() {
-                @Override
-                public void closeForm(ExtaEditForm.CloseFormEvent event) {
+            viewBtn = new Button("Просмотр", event -> {
+                final SalePoint salePoint = (SalePoint) getPropertyDataSource().getValue();
+
+                final SalePointEditForm editWin = new SalePointEditForm(salePoint);
+
+                editWin.addCloseFormListener(e -> {
                     if (editWin.isSaved()) {
                         refreshFields(salePoint);
                     }
-                }
+                });
+                FormUtils.showModalWin(editWin);
             });
-            FormUtils.showModalWin(editWin);
-        });
-        viewBtn.setIcon(Fontello.EDIT_3);
-        viewBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-        nameLay.addComponent(viewBtn);
+            viewBtn.setIcon(Fontello.EDIT_3);
+            viewBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            nameLay.addComponent(viewBtn);
+
+        } else {
+            Label name = new Label();
+            SalePoint salePoint = (SalePoint) getPropertyDataSource().getValue();
+            if (salePoint != null)
+                name.setValue(salePoint.getName());
+            nameLay.addComponent(name);
+        }
 
         container.addComponent(nameLay);
 

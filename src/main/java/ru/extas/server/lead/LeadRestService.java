@@ -33,6 +33,7 @@ import java.util.Set;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.System.lineSeparator;
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static ru.extas.model.common.ModelUtils.evictCache;
 
 /**
  * Предоставляет точку доступа для ввода лида
@@ -352,7 +353,7 @@ public class LeadRestService {
             user = userService.findUserContactByLogin("admin");
 
         newLead = leadRepository.permitAndSave(newLead, user);
-        entityManager.getEntityManagerFactory().getCache().evict(newLead.getClass(), newLead.getId());
+        evictCache(entityManager, newLead);
     }
 
     /**

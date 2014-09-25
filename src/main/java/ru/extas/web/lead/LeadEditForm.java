@@ -13,7 +13,9 @@ import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.sale.Sale;
 import ru.extas.server.lead.LeadRepository;
+import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
@@ -30,6 +32,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static ru.extas.model.common.ModelUtils.evictCache;
 import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.GridItem.extractBean;
 import static ru.extas.web.commons.TableUtils.initTableColumns;
@@ -137,6 +140,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     protected ComponentContainer createEditFields(final Lead obj) {
         final FormLayout form = new ExtaFormLayout();
 
+        ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Клиент"));
         if (obj.getStatus() == Lead.Status.NEW) {
             if (qualifyForm) {
@@ -161,6 +165,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             form.addComponent(clientField);
         }
 
+        ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Техника"));
         motorTypeField = new MotorTypeSelect();
         motorTypeField.setRequired(qualifyForm);
@@ -179,6 +184,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         mototPriceField.setRequired(qualifyForm);
         form.addComponent(mototPriceField);
 
+        ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Диллер"));
         if (obj.getStatus() == Lead.Status.NEW) {
             if (qualifyForm) {
@@ -200,6 +206,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             createVendorSelectField(form);
         }
 
+        ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дополнительно"));
         commentField = new TextArea("Примечание");
         commentField.setRows(3);
@@ -279,6 +286,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.setColumnReorderingAllowed(true);
         table.setNullSelectionAllowed(false);
         table.setHeight(10, Unit.EM);
+        table.setWidth(100, Unit.PERCENTAGE);
+        table.addStyleName(ExtaTheme.TABLE_SMALL);
         // Настройка столбцов таблицы
         table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
         GridDataDecl dataDecl = new ContactDataDecl();
@@ -450,13 +459,18 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @Override
     protected Lead saveObject(Lead obj) {
         LeadRepository leadRepository = lookup(LeadRepository.class);
+        obj = leadRepository.qualify(obj);
+
+        // Решаем проблему с автоинкрементами базы о  которых не знает JPA
+        if (obj.getNum() == null)
+            evictCache(obj);
+        Sale sale = lookup(SaleRepository.class).findByLead(obj);
+        if (sale != null && sale.getNum() == null)
+            evictCache(sale);
+
         if (qualifyForm) {
-            obj = leadRepository.qualify(obj);
             NotificationUtil.showSuccess("Лид квалифицирован");
         } else {
-            obj = leadRepository.secureSave(obj);
-            if (obj.getNum() == null)
-                lookup(EntityManager.class).getEntityManagerFactory().getCache().evict(obj.getClass(), obj.getId());
             NotificationUtil.showSuccess("Лид сохранен");
         }
         return obj;

@@ -4,7 +4,6 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.converter.StringToDateConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import org.activiti.engine.TaskService;
@@ -149,7 +148,7 @@ public class TasksGrid extends ExtaGrid<Task> {
 	}
 
     @Override
-    public ExtaEditForm<Task> createEditForm(Task task) {
+    public ExtaEditForm<Task> createEditForm(Task task, boolean isInsert) {
         return new TaskEditForm(task);
     }
 

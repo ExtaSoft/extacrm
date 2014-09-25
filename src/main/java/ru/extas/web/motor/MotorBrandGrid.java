@@ -25,7 +25,7 @@ public class MotorBrandGrid extends ExtaGrid<MotorBrand> {
     }
 
     @Override
-    public ExtaEditForm<MotorBrand> createEditForm(MotorBrand motorBrand) {
+    public ExtaEditForm<MotorBrand> createEditForm(MotorBrand motorBrand, boolean isInsert) {
         return new MotorBrandEditForm(motorBrand);
     }
 

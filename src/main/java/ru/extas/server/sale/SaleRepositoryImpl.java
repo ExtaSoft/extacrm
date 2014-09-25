@@ -13,6 +13,7 @@ import ru.extas.model.sale.Sale;
 import ru.extas.security.AbstractSecuredRepository;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.contacts.SalePointRepository;
+import ru.extas.server.lead.LeadRepository;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -39,6 +40,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 	@Inject private SaleRepository saleRepository;
     @Inject private PersonRepository personRepository;
     @Inject private SalePointRepository salePointRepository;
+    @Inject private LeadRepository leadRepository;
 
 	/** {@inheritDoc} */
 	@Transactional
@@ -56,10 +58,37 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 		sale.setDealer(lead.getVendor());
 		sale.setComment(lead.getComment());
 		sale.setProcessId(lead.getProcessId());
+        sale.setLead(lead);
 
 		return saleRepository.secureSave(sale);
 
 	}
+
+    @Transactional
+    @Override
+    public void finishSale(Sale sale, Sale.Result result) {
+        Lead.Result leadResult = Lead.Result.SUCCESSFUL;
+        sale.setResult(result);
+
+        switch (result) {
+            case SUCCESSFUL:
+                sale.setStatus(Sale.Status.FINISHED);
+                leadResult = Lead.Result.SUCCESSFUL;
+                break;
+            case VENDOR_REJECTED:
+                sale.setStatus(Sale.Status.CANCELED);
+                leadResult = Lead.Result.VENDOR_REJECTED;
+                break;
+            case CLIENT_REJECTED:
+                sale.setStatus(Sale.Status.CANCELED);
+                leadResult = Lead.Result.CLIENT_REJECTED;
+                break;
+        }
+        sale = secureSave(sale);
+        Lead lead = sale.getLead();
+        if(lead != null)
+            leadRepository.finishLead(lead, leadResult);
+    }
 
     /** {@inheritDoc} */
     @Override

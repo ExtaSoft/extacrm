@@ -63,7 +63,7 @@ public class ExtaPermissionField extends CustomField<Set> {
         ExtaGrid<ExtaPermission> grid = new ExtaGrid<ExtaPermission>(ExtaPermission.class) {
 
             @Override
-            public ExtaEditForm<ExtaPermission> createEditForm(ExtaPermission extaPermission) {
+            public ExtaEditForm<ExtaPermission> createEditForm(ExtaPermission extaPermission, boolean isInsert) {
                 return new ExtaPermissionEditForm(extaPermission) {
                     @Override
                     protected ExtaPermission saveObject(final ExtaPermission obj) {
