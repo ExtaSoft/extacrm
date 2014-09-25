@@ -159,6 +159,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
                 NavigationUtils.setUriFragment(uri);
                 form.addCloseFormListener(event -> {
                     uri.setMode(ExtaUri.Mode.GRID);
+                    uri.setId(null);
                     NavigationUtils.setUriFragment(uri);
                 });
                 wrappedService.open4Edit(form);
@@ -171,8 +172,8 @@ public abstract class SubdomainView extends ExtaAbstractView {
                 form.addCloseFormListener(event -> {
                     uri.setMode(ExtaUri.Mode.GRID);
                     final Object objectId = form.getObjectId();
+                    uri.setId(null);
                     if(objectId != null) {
-                        uri.setId(objectId.toString());
                         grid.selectObject(objectId);
                     }
                     NavigationUtils.setUriFragment(uri);

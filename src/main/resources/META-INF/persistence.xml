@@ -18,6 +18,7 @@
         <class>ru.extas.model.common.SecureActionConverter</class>
         <class>ru.extas.model.common.ExtaDomainConverter</class>
         <class>ru.extas.model.common.FileContainer</class>
+        <class>ru.extas.model.common.Comment</class>
         <class>ru.extas.model.contacts.AddressInfo</class>
         <class>ru.extas.model.contacts.Company</class>
         <class>ru.extas.model.contacts.Contact</class>
@@ -43,6 +44,7 @@
         <class>ru.extas.model.security.UserGroup</class>
         <class>ru.extas.model.security.UserProfile</class>
         <class>ru.extas.model.sale.Sale</class>
+        <class>ru.extas.model.sale.SaleComment</class>
         <class>ru.extas.model.sale.Product</class>
         <class>ru.extas.model.sale.ProdCredit</class>
         <class>ru.extas.model.sale.ProdCreditPercent</class>

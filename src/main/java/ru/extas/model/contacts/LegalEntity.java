@@ -64,22 +64,6 @@ public class LegalEntity extends Contact{
     private String bic;
 
     // Фактический адрес совпадает с юридическим
-    @Column(name = "REG_N_ACT_IS_SAME")
-    private boolean regNactIsSame;
-
-    // Фактический адрес
-    @Embedded()
-    @AttributeOverrides({
-            @AttributeOverride(name = "region", column = @Column(name = "ACT_REGION")),
-            @AttributeOverride(name = "city", column = @Column(name = "ACT_CITY")),
-            @AttributeOverride(name = "postIndex", column = @Column(name = "ACT_POST_INDEX")),
-            @AttributeOverride(name = "streetBld", column = @Column(name = "ACT_STREET_BLD")),
-            @AttributeOverride(name = "realtyKind", column = @Column(name = "ACT_REALTY_KIND")),
-            @AttributeOverride(name = "periodOfResidence", column = @Column(name = "ACT_PERIOD_OF_RESIDENCE"))
-    })
-    private AddressInfo actualAddress = new AddressInfo();
-
-    // Фактический адрес совпадает с юридическим
     @Column(name = "REG_N_PST_IS_SAME")
     private boolean regNpstIsSame;
 
@@ -174,22 +158,6 @@ public class LegalEntity extends Contact{
 
     public void setBic(String bik) {
         this.bic = bik;
-    }
-
-    public boolean isRegNactIsSame() {
-        return regNactIsSame;
-    }
-
-    public void setRegNactIsSame(boolean regNactIsSame) {
-        this.regNactIsSame = regNactIsSame;
-    }
-
-    public AddressInfo getActualAddress() {
-        return actualAddress;
-    }
-
-    public void setActualAddress(AddressInfo actualAddress) {
-        this.actualAddress = actualAddress;
     }
 
     public AddressInfo getPostAddress() {

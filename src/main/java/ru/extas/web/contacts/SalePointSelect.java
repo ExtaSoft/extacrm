@@ -155,11 +155,12 @@ public class SalePointSelect extends CustomField<SalePoint> {
 
     private void refreshFields(SalePoint salePoint) {
         setValue(salePoint);
+        if (viewBtn != null) {
+            viewBtn.setEnabled(salePoint != null);
+        }
         if (salePoint == null) {
-            viewBtn.setEnabled(false);
             salePoint = new SalePoint();
-        } else
-            viewBtn.setEnabled(true);
+        }
 
         BeanItem<SalePoint> personItem = new BeanItem<>(salePoint);
         personItem.addNestedProperty("company.name");

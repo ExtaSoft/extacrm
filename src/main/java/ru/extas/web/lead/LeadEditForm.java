@@ -459,7 +459,13 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @Override
     protected Lead saveObject(Lead obj) {
         LeadRepository leadRepository = lookup(LeadRepository.class);
-        obj = leadRepository.qualify(obj);
+        if (qualifyForm) {
+            obj = leadRepository.qualify(obj);
+            NotificationUtil.showSuccess("Лид квалифицирован");
+        } else {
+            obj = leadRepository.secureSave(obj);
+            NotificationUtil.showSuccess("Лид сохранен");
+        }
 
         // Решаем проблему с автоинкрементами базы о  которых не знает JPA
         if (obj.getNum() == null)
@@ -468,11 +474,6 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         if (sale != null && sale.getNum() == null)
             evictCache(sale);
 
-        if (qualifyForm) {
-            NotificationUtil.showSuccess("Лид квалифицирован");
-        } else {
-            NotificationUtil.showSuccess("Лид сохранен");
-        }
         return obj;
     }
 

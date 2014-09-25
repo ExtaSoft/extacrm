@@ -5,8 +5,10 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.SaleComment;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.CommentsField;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
@@ -62,6 +64,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private TextArea commentField;
     @PropertyId("productInSales")
     private ProductInSaleGrid productInSaleField;
+    @PropertyId("comments")
+    private CommentsField<SaleComment> commentsField;
 
     public SaleEditForm(Sale sale) {
         super(sale.isNew() ? "Ввод новой продажи в систему" :
@@ -118,6 +122,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Коментарии"));
+        commentsField = new CommentsField<>(SaleComment.class);
+        form.addComponent(commentsField);
 
         return form;
     }

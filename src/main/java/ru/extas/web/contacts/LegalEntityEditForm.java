@@ -77,17 +77,6 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     @PropertyId("kpp")
     private EditField kppField;
 
-    @PropertyId("regNactIsSame")
-    private CheckBox regNactIsSameField;
-    @PropertyId("actualAddress.region")
-    private RegionSelect actRegionField;
-    @PropertyId("actualAddress.city")
-    private CitySelect actCityField;
-    @PropertyId("actualAddress.postIndex")
-    private EditField actPostIndexField;
-    @PropertyId("actualAddress.streetBld")
-    private TextArea actStreetBldField;
-
     @PropertyId("regNpstIsSame")
     private CheckBox regNpstIsSameField;
     @PropertyId("postAddress.region")
@@ -154,8 +143,6 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         }
         if (obj.getRegAddress() == null)
             obj.setRegAddress(new AddressInfo());
-        if (obj.getActualAddress() == null)
-            obj.setActualAddress(new AddressInfo());
         if (obj.getPostAddress() == null)
             obj.setPostAddress(new AddressInfo());
     }
@@ -258,51 +245,6 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         formLayout.addComponent(streetBldField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        formLayout.addComponent(new FormGroupHeader("Фактический адрес"));
-        regNactIsSameField = new CheckBox("Совпадает с юридическим адресом");
-        regNactIsSameField.addValueChangeListener(event -> {
-            Boolean isRegIsAct = (Boolean) event.getProperty().getValue();
-            if (isRegIsAct == null)
-                isRegIsAct = false;
-            setActualAdressStatus(isRegIsAct);
-        });
-        formLayout.addComponent(regNactIsSameField);
-
-        actRegionField = new RegionSelect();
-        actRegionField.addValueChangeListener(event -> {
-            final String newRegion = (String) event.getProperty().getValue();
-            final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
-            if (city != null)
-                actCityField.setValue(city);
-        });
-        formLayout.addComponent(actRegionField);
-
-        actCityField = new CitySelect();
-        if (obj.getRegAddress().getCity() != null)
-            actCityField.addItem(obj.getRegAddress().getCity());
-        actCityField.addValueChangeListener(event -> {
-            final String newCity = (String) event.getProperty().getValue();
-            final String region = lookup(SupplementService.class).findRegionByCity(newCity);
-            if (region != null)
-                actRegionField.setValue(region);
-        });
-        formLayout.addComponent(actCityField);
-
-        actPostIndexField = new EditField("Почтовый индекс");
-        actPostIndexField.setColumns(8);
-        actPostIndexField.setInputPrompt("Индекс");
-        actPostIndexField.setNullRepresentation("");
-        formLayout.addComponent(actPostIndexField);
-
-        actStreetBldField = new TextArea("Адрес");
-        actStreetBldField.setColumns(20);
-        actStreetBldField.setRows(2);
-        actStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
-        actStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
-        actStreetBldField.setNullRepresentation("");
-        formLayout.addComponent(actStreetBldField);
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Почтовый адрес"));
         regNpstIsSameField = new CheckBox("Совпадает с юридическим адресом");
         regNpstIsSameField.addValueChangeListener(event -> {
@@ -391,13 +333,6 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         formLayout.addComponent(docFilesEditor);
 
         return formLayout;
-    }
-
-    private void setActualAdressStatus(Boolean isRegIsAct) {
-        actRegionField.setVisible(!isRegIsAct);
-        actCityField.setVisible(!isRegIsAct);
-        actPostIndexField.setVisible(!isRegIsAct);
-        actStreetBldField.setVisible(!isRegIsAct);
     }
 
     private void setPostAdressStatus(Boolean isRegIsAct) {

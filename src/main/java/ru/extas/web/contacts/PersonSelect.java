@@ -162,11 +162,12 @@ public class PersonSelect extends CustomField<Person> {
     private void refreshFields(Person person) {
         setValue(person);
 
+        if (viewBtn != null) {
+            viewBtn.setEnabled(person != null);
+        }
         if (person == null) {
-            viewBtn.setEnabled(false);
             person = new Person();
-        } else
-            viewBtn.setEnabled(true);
+        }
 
         BeanItem<Person> personItem = new BeanItem<>(person);
         // Дата рождения

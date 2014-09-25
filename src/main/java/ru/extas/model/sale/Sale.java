@@ -1,13 +1,18 @@
 package ru.extas.model.sale;
 
+import ru.extas.model.common.Comment;
+import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.PersonFileContainer;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Модель данных для продажи
@@ -58,6 +63,19 @@ public class Sale extends SecuredObject {
 
     @OneToOne(cascade = CascadeType.REFRESH)
     private Lead lead;
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = Comment.OWNER_ID_COLUMN)
+    @OrderBy("createdAt")
+    private List<SaleComment> comments = newArrayList();
+
+    public List<SaleComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<SaleComment> comments) {
+        this.comments = comments;
+    }
 
     public Lead getLead() {
         return lead;
