@@ -22,6 +22,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
 
     private static final long serialVersionUID = -9143359275908526515L;
     private final static Logger logger = LoggerFactory.getLogger(ExtaAbstractView.class);
+    protected VerticalLayout content;
 
     /**
      * <p>Constructor for ExtaAbstractView.</p>
@@ -33,7 +34,7 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
     /**
      * @param children
      */
-    private ExtaAbstractView(Component... children) {
+    private ExtaAbstractView(final Component... children) {
         super(children);
     }
 
@@ -42,59 +43,58 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
     public void enter(ViewChangeEvent event) {
         logger.info("Entering view {}...", event.getViewName());
         setSizeFull();
-        addStyleName("base-view");
+        addStyleName(ExtaTheme.BASE_VIEW);
 
         HorizontalLayout top = new HorizontalLayout();
-        top.setWidth("100%");
+        top.setWidth(100, Unit.PERCENTAGE);
         top.setSpacing(true);
-        top.addStyleName("toolbar");
+        top.addStyleName(ExtaTheme.TOOLBAR);
         addComponent(top);
-        final Component title = getTitle();
+        final Component title = createTitle();
         top.addComponent(title);
         top.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
         top.setExpandRatio(title, 1);
 
-        Button helpBtn = new Button();
+        Button helpBtn = new Button(Fontello.HELP_1);
         helpBtn.setDescription("Контекстная справка");
-        // notify.addStyleName("borderless");
-        helpBtn.addStyleName("notifications");
-        helpBtn.addStyleName("icon-only");
-        helpBtn.addStyleName("icon-help-1");
+        helpBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         helpBtn.addClickListener(new ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
             public void buttonClick(ClickEvent event) {
                 // TODO: Implement context help
-                Notification.show("Не реализовано пока");
+                NotificationUtil.show("Не реализовано пока");
             }
         });
         top.addComponent(helpBtn);
         top.setComponentAlignment(helpBtn, Alignment.MIDDLE_LEFT);
 
-        VerticalLayout content = new VerticalLayout();
+        content = new VerticalLayout();
         content.setMargin(true);
         content.setSizeFull();
         content.setSpacing(true);
         addComponent(content);
-        setExpandRatio(content, 2);
+        setExpandRatio(content, 5);
 
-        content.addComponent(getContent());
+        final Component contentComponent = createContent();
+        if(contentComponent != null)
+            content.addComponent(contentComponent);
 
     }
 
     /**
-     * <p>getContent.</p>
+     * <p>createContent.</p>
      *
      * @return a {@link com.vaadin.ui.Component} object.
      */
-    protected abstract Component getContent();
+    protected abstract Component createContent();
 
     /**
-     * <p>getTitle.</p>
+     * <p>createTitle.</p>
      *
      * @return a {@link com.vaadin.ui.Component} object.
      */
-    protected abstract Component getTitle();
+    protected abstract Component createTitle();
 
 }

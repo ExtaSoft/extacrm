@@ -6,6 +6,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.util.Locale;
 
 /**
@@ -21,6 +22,9 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
 
     transient private DateTimeFormatter formatter;
     private final String pattern;
+
+    @Inject
+    private Locale locale;
 
     private DateTimeFormatter getFormatter() {
         if (formatter == null)
@@ -65,7 +69,7 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
         if (value == null || value.isEmpty())
             return null;
         if (locale == null)
-            locale = Locale.getDefault();
+            locale = this.locale;
         return getFormatter().withLocale(locale).parseLocalDate(value);
     }
 
@@ -76,7 +80,7 @@ public class StringToJodaLDConverter implements Converter<String, LocalDate> {
         if (value == null)
             return null;
         if (locale == null)
-            locale = Locale.getDefault();
+            locale = this.locale;
 
         return getFormatter().withLocale(locale).print(value);
     }

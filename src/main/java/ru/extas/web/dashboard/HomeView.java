@@ -3,13 +3,21 @@
  */
 package ru.extas.web.dashboard;
 
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
+import com.vaadin.addon.charts.Chart;
+import com.vaadin.addon.charts.model.*;
+import com.vaadin.server.Sizeable;
+import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.lead.Lead;
+import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.ExtaAbstractView;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.lead.LeadsGrid;
+import ru.extas.web.sale.SalesGrid;
+import ru.extas.web.tasks.TasksGrid;
 
 /**
  * Реализует домашний экран CRM
@@ -25,24 +33,95 @@ public class HomeView extends ExtaAbstractView {
 
     /** {@inheritDoc} */
     @Override
-    protected Component getContent() {
+    protected Component createContent() {
         logger.info("Creating view content...");
-        final Component title = new Label("Скоро будет реализовано...");
-        title.setSizeUndefined();
-        title.addStyleName("h1");
-        title.addStyleName("icon-wrench-1");
-        HorizontalLayout l = new HorizontalLayout(title);
-        l.setSizeFull();
-        l.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
-        return l;
+
+        VerticalSplitPanel verticalSplitPanel = new VerticalSplitPanel();
+        verticalSplitPanel.setSizeFull();
+        verticalSplitPanel.setSplitPosition(65);
+
+        TabSheet saleSheet = new TabSheet();
+        saleSheet.setSizeFull();
+        saleSheet.addTab(new LeadsGrid(Lead.Status.NEW), "Новые Лиды", Fontello.INBOX_ALT);
+        saleSheet.addTab(new SalesGrid(ExtaDomain.SALES_OPENED), "Мои Продажи", Fontello.DOLLAR);
+        verticalSplitPanel.setFirstComponent(saleSheet);
+
+        HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
+        horizontalSplitPanel.setSizeFull();
+        horizontalSplitPanel.setSplitPosition(50);
+
+        TabSheet sheet = new TabSheet();
+        sheet.setSizeFull();
+
+        sheet.addTab(getChart(), "Мои Продажи", Fontello.CHART_LINE);
+        sheet.addTab(new Label("Рейтинг"), "Рейтинг", Fontello.CHART_BAR_1);
+        horizontalSplitPanel.setFirstComponent(sheet);
+
+        final TasksGrid tasksGrid = new TasksGrid(TasksGrid.Period.TODAY);
+        tasksGrid.setToolbarVisible(false);
+        tasksGrid.setMode(ExtaGrid.Mode.DETAIL_LIST);
+        Panel taskPanel = new Panel("Задачи");
+        taskPanel.setSizeFull();
+        taskPanel.setContent(tasksGrid);
+        horizontalSplitPanel.setSecondComponent(taskPanel);
+        verticalSplitPanel.setSecondComponent(horizontalSplitPanel);
+
+        return verticalSplitPanel;
+    }
+
+    protected Component getChart() {
+        Chart chart = new Chart();
+        chart.setSizeFull();
+
+        Configuration configuration = new Configuration();
+        configuration.getChart().setType(ChartType.LINE);
+//        configuration.getChart().setMarginRight(130);
+//        configuration.getChart().setMarginBottom(25);
+
+        configuration.getTitle().setText("Подажи страховок и кредитов");
+//        configuration.getSubTitle().setText("Source: WorldClimate.com");
+
+        configuration.getxAxis().setCategories("Янв", "Фев.", "Мар", "Апр","Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Нов", "Дек");
+
+        Axis yAxis = configuration.getyAxis();
+//        yAxis.setMin(-5d);
+        yAxis.setTitle(new Title("Количество (шт.)"));
+        yAxis.getTitle().setVerticalAlign(VerticalAlign.HIGH);
+
+        configuration
+                .getTooltip()
+                .setFormatter("''+ this.series.name +' ' + this.x +': '+ this.y +'шт.'");
+        PlotOptionsLine plotOptions = new PlotOptionsLine();
+        plotOptions.setDataLabels(new Labels(true));
+        configuration.setPlotOptions(plotOptions);
+
+        Legend legend = configuration.getLegend();
+        legend.setLayout(LayoutDirection.VERTICAL);
+        legend.setHorizontalAlign(HorizontalAlign.RIGHT);
+        legend.setVerticalAlign(VerticalAlign.TOP);
+//        legend.setX(-10d);
+//        legend.setY(100d);
+//        legend.setBorderWidth(0);
+
+        ListSeries ls = new ListSeries();
+        ls.setName("Кредиты");
+        ls.setData(70, 69, 95, 145, 182, 215, 252, 265, 233, 183, 139, 96);
+        configuration.addSeries(ls);
+        ls = new ListSeries();
+        ls.setName("Страховки");
+        ls.setData(39, 42, 57, 85, 119, 152, 170, 166, 142, 103, 66, 48);
+        configuration.addSeries(ls);
+
+        chart.drawChart(configuration);
+        return chart;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected Component getTitle() {
+    protected Component createTitle() {
         final Component title = new Label("Рабочий стол");
         title.setSizeUndefined();
-        title.addStyleName("h1");
+        title.addStyleName(ExtaTheme.VIEW_TITLE);
         return title;
     }
 

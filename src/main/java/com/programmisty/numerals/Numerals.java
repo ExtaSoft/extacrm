@@ -60,7 +60,7 @@ public class Numerals {
 	 * @param n a {@link java.lang.Number} object.
 	 * @return a {@link java.lang.String} object.
 	 */
-	public static String english(Number n) {
+	public static String english(final Number n) {
 		return new English().format(n);
 	}
 
@@ -77,7 +77,7 @@ public class Numerals {
 	 * @param n a {@link java.lang.Number} object.
 	 * @return a {@link java.lang.String} object.
 	 */
-	public static String russian(Number n) {
+	public static String russian(final Number n) {
 		return new Russian().format(n);
 	}
 
@@ -94,7 +94,7 @@ public class Numerals {
 	 * @param n a {@link java.lang.Number} object.
 	 * @return a {@link java.lang.String} object.
 	 */
-	public static String uzbek(Number n) {
+	public static String uzbek(final Number n) {
 		return new Uzbek().format(n);
 	}
 
@@ -109,8 +109,8 @@ public class Numerals {
 	 * @param n a {@link java.lang.Number} object.
 	 * @return a {@link java.lang.String} object.
 	 */
-	public static String amount(Number n) {
-		BigDecimal bd = Util.toBigDecimal(n);
+	public static String amount(final Number n) {
+		final BigDecimal bd = Util.toBigDecimal(n);
 		return new English().amount(bd);
 	}
 
@@ -126,8 +126,8 @@ public class Numerals {
 	 * @param n a {@link java.lang.Number} object.
 	 * @return a {@link java.lang.String} object.
 	 */
-	public static String russianRubles(Number n) {
-		BigDecimal bd = Util.toBigDecimal(n);
+	public static String russianRubles(final Number n) {
+		final BigDecimal bd = Util.toBigDecimal(n);
 		return new Russian().amount(bd);
 	}
 
@@ -143,8 +143,8 @@ public class Numerals {
 	 * @param n a {@link java.lang.Number} object.
 	 * @return a {@link java.lang.String} object.
 	 */
-	public static String uzbekSums(Number n){
-		BigDecimal bd=Util.toBigDecimal(n);
+	public static String uzbekSums(final Number n){
+		final BigDecimal bd=Util.toBigDecimal(n);
 		
 		return new Uzbek().amount(bd); 
 	}

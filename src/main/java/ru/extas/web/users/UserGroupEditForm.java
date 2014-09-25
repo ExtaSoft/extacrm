@@ -4,12 +4,14 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.security.UserGroup;
 import ru.extas.server.security.UserGroupRegistry;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 
@@ -24,7 +26,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
+public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
 
     @PropertyId("name")
     private EditField nameField;
@@ -40,42 +42,33 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
     @PropertyId("permissions")
     private ExtaPermissionField permissionsField;
 
-    /**
-     * <p>Constructor for UserGroupEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public UserGroupEditForm(String caption, BeanItem<UserGroup> obj) {
-        super(caption, obj);
+    public UserGroupEditForm(UserGroup userGroup) {
+        super(userGroup.isNew() ?
+        "Ввод новой группы пользователей" :
+        "Редактирование группы", new BeanItem<>(userGroup));
     }
 
     /** {@inheritDoc} */
     @Override
     protected void initObject(UserGroup obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(UserGroup obj) {
+    protected UserGroup saveObject(UserGroup obj) {
         final UserGroupRegistry groupRegistry = lookup(UserGroupRegistry.class);
-        groupRegistry.save(obj);
-        Notification.show("Группа сохранена", Notification.Type.TRAY_NOTIFICATION);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(UserGroup obj) {
-
+        obj = groupRegistry.save(obj);
+        NotificationUtil.showSuccess("Группа сохранена");
+        return obj;
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(UserGroup obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         nameField = new EditField("Название");
         nameField.setImmediate(true);
@@ -86,11 +79,13 @@ public class UserGroupEditForm extends AbstractEditForm<UserGroup> {
         form.addComponent(nameField);
 
         descriptionField = new TextArea("Описание");
+        descriptionField.setImmediate(true);
         descriptionField.setDescription("Введите описание группы пользователей.");
         descriptionField.setInputPrompt("Описание группы пользователей");
         descriptionField.setNullRepresentation("");
-        descriptionField.setColumns(30);
-        descriptionField.setRows(3);
+        descriptionField.setColumns(25);
+        descriptionField.setRows(2);
+//        descriptionField.addValueChangeListener((e)->NotificationUtil.show(e.getProperty().getValue().toString()));
         form.addComponent(descriptionField);
 
         brandsField = new MotorBrandMultiselect("Доступные бренды");

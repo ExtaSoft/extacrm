@@ -8,6 +8,8 @@ import ru.extas.server.security.UserManagementService;
 import javax.inject.Inject;
 import java.util.Locale;
 
+import static ru.extas.server.ServiceLocator.lookup;
+
 /**
  * Конвертирует логин в имя пользователя с кешированием.
  *
@@ -20,8 +22,6 @@ import java.util.Locale;
 @Component
 public class LoginToUserProfileConverter implements Converter<UserProfile, String> {
 
-	@Inject
-	private UserManagementService userService;
 
 	/** {@inheritDoc} */
 	@Override
@@ -40,7 +40,7 @@ public class LoginToUserProfileConverter implements Converter<UserProfile, Strin
 		if (value == null)
 			return null;
 
-		return userService.findUserByLogin(value);
+		return lookup(UserManagementService.class).findUserByLogin(value);
 	}
 
 	/** {@inheritDoc} */

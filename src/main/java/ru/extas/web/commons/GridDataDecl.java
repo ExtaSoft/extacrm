@@ -31,12 +31,24 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class GridDataDecl implements Serializable {
 
-    public interface GridColumnGenerator {
-        Object generateCell(Object columnId, Item item);
+    public interface GridColumnGenerator extends Serializable {
+        Object generateCell(Object columnId, Item item, Object itemId);
 
         Property getCellProperty(Object columnId, Item item);
 
         Class<?> getType();
+    }
+
+    public static abstract class ComponentColumnGenerator implements GridColumnGenerator {
+        @Override
+        public Property getCellProperty(final Object columnId, final Item item) {
+            return null;
+        }
+
+        @Override
+        public Class<?> getType() {
+            return null;
+        }
     }
 
     private final List<DataDeclMapping> mappings = new ArrayList<>();
@@ -56,7 +68,7 @@ public class GridDataDecl implements Serializable {
      * @param caption      - Заголовок столбца
      * @param presentFlags параметры отображения
      */
-    protected void addMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags) {
+    protected void addMapping(final String propName, final String caption, final EnumSet<PresentFlag> presentFlags) {
         mappings.add(new DataDeclMapping(propName, caption, presentFlags));
     }
 
@@ -68,8 +80,12 @@ public class GridDataDecl implements Serializable {
      * @param generator a {@link ru.extas.web.commons.GridDataDecl.GridColumnGenerator} object.
      * @param presentFlags a {@link java.util.EnumSet} object.
      */
-    protected void addMapping(String propName, String caption, GridColumnGenerator generator, EnumSet<PresentFlag> presentFlags) {
+    protected void addMapping(final String propName, final String caption, final GridColumnGenerator generator, final EnumSet<PresentFlag> presentFlags) {
         mappings.add(new DataDeclMapping(propName, caption, generator, presentFlags));
+    }
+
+    protected void addMapping(final String propName, final String caption, final GridColumnGenerator generator) {
+        addMapping(propName, caption, generator, null);
     }
 
     /**
@@ -78,7 +94,7 @@ public class GridDataDecl implements Serializable {
      * @param propName - Имя свойства
      * @param caption  - Заголовок столбца
      */
-    protected void addMapping(String propName, String caption) {
+    protected void addMapping(final String propName, final String caption) {
         mappings.add(new DataDeclMapping(propName, caption));
     }
 
@@ -89,7 +105,7 @@ public class GridDataDecl implements Serializable {
      * @param caption      - Заголовок столбца
      * @param converterCls a {@link java.lang.Class} object.
      */
-    public void addMapping(String propName, String caption, Class<? extends Converter<String, ?>> converterCls) {
+    public void addMapping(final String propName, final String caption, final Class<? extends Converter<String, ?>> converterCls) {
         mappings.add(new DataDeclMapping(propName, caption, lookup(converterCls)));
     }
 
@@ -101,7 +117,7 @@ public class GridDataDecl implements Serializable {
      * @param presentFlags - параметры отображения
      * @param converterCls - конвертер значения
      */
-    public void addMapping(String propName, String caption, EnumSet<PresentFlag> presentFlags, Class<? extends Converter<String, ?>> converterCls) {
+    public void addMapping(final String propName, final String caption, final EnumSet<PresentFlag> presentFlags, final Class<? extends Converter<String, ?>> converterCls) {
         mappings.add(new DataDeclMapping(propName, caption, presentFlags, lookup(converterCls), null));
     }
 

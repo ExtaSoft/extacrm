@@ -2,18 +2,12 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Window;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
-import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.GridItem;
-import ru.extas.web.commons.ItemAction;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -43,9 +37,8 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 	public LegalEntitiesSelectField(Company company) {
 		this.company = company;
 		setBuffered(true);
-		addStyleName("base-view");
-		setSizeFull();
 		setWidth(600, Unit.PIXELS);
+		setHeight(300, Unit.PIXELS);
 	}
 
 	/** {@inheritDoc} */
@@ -62,7 +55,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 						itemContainer.addBean(item);
 					}
 				}
-				itemContainer.addNestedContainerProperty("actualAddress.region");
+				itemContainer.addNestedContainerProperty("regAddress.region");
                 itemContainer.addNestedContainerProperty("company.name");
 				return itemContainer;
 			}
@@ -71,40 +64,36 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 			protected List<UIAction> createActions() {
 				List<UIAction> actions = newArrayList();
 
-				actions.add(new UIAction("Добавить", "Выбрать юридическое лицо осуществляющуе деятельность на торговой точке", "icon-doc-new") {
+				actions.add(new UIAction("Добавить", "Выбрать юридическое лицо осуществляющуе деятельность на торговой точке", Fontello.DOC_NEW) {
 					@Override
 					public void fire(Object itemId) {
 						final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите юридическое лицо", company);
-						selectWindow.addCloseListener(new Window.CloseListener() {
-
-							@Override
-							public void windowClose(final Window.CloseEvent e) {
-								if (selectWindow.isSelectPressed()) {
-									((BeanItemContainer<LegalEntity>) container).addBean(selectWindow.getSelected());
-									setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
-									Notification.show("Юридическое лицо добавлено", Notification.Type.TRAY_NOTIFICATION);
-								}
-							}
-						});
+						selectWindow.addCloseListener(e -> {
+                            if (selectWindow.isSelectPressed()) {
+                                ((BeanItemContainer<LegalEntity>) container).addBean(selectWindow.getSelected());
+                                setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
+NotificationUtil.showSuccess("Юридическое лицо добавлено");
+                            }
+                        });
 						selectWindow.showModal();
 					}
 				});
 
-				actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", "icon-edit-3") {
+				actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.EDIT_3) {
 					@Override
 					public void fire(final Object itemId) {
-						final BeanItem<LegalEntity> beanItem = new GridItem<>(table.getItem(itemId));
-						beanItem.expandProperty("actualAddress");
-						final LegalEntityEditForm editWin = new LegalEntityEditForm("Редактирование контактных данных", beanItem) {
+						final LegalEntity bean = GridItem.extractBean(table.getItem(itemId));
+						final LegalEntityEditForm editWin = new LegalEntityEditForm(bean) {
 							@Override
-							protected void saveObject(final LegalEntity obj) {
+							protected LegalEntity saveObject(final LegalEntity obj) {
 								setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
-							}
+                                return obj;
+                            }
 						};
-						editWin.showModal();
+                        FormUtils.showModalWin(editWin);
 					}
 				});
-				actions.add(new ItemAction("Удалить", "Удалить юр.лицо из компании", "icon-trash") {
+				actions.add(new ItemAction("Удалить", "Удалить юр.лицо из компании", Fontello.TRASH) {
 					@Override
 					public void fire(final Object itemId) {
 						container.removeItem(itemId);

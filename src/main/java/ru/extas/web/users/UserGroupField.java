@@ -8,8 +8,7 @@ import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import ru.extas.model.security.UserGroup;
-import ru.extas.web.commons.ItemAction;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +35,7 @@ public class UserGroupField extends CustomField<Set> {
      */
     public UserGroupField() {
         setBuffered(true);
-        addStyleName("base-view");
+        addStyleName(ExtaTheme.BASE_VIEW);
         setSizeFull();
         setWidth(600, Unit.PIXELS);
     }
@@ -62,26 +61,22 @@ public class UserGroupField extends CustomField<Set> {
             protected List<UIAction> createActions() {
                 List<UIAction> actions = newArrayList();
 
-                actions.add(new UIAction("Добавить", "Добавить пользователя в группу", "icon-user-add") {
+                actions.add(new UIAction("Добавить", "Добавить пользователя в группу", Fontello.USER_ADD) {
                     @Override
                     public void fire(Object itemId) {
                         final UserGroupSelectWindow selectWindow = new UserGroupSelectWindow("Выберите группу");
-                        selectWindow.addCloseListener(new Window.CloseListener() {
-
-                            @Override
-                            public void windowClose(final Window.CloseEvent e) {
-                                if (selectWindow.isSelectPressed()) {
-                                    itemContainer.addBean(selectWindow.getSelected());
-                                    setValue(newHashSet(itemContainer.getItemIds()));
-                                    Notification.show("Группа добавлена", Notification.Type.TRAY_NOTIFICATION);
-                                }
+                        selectWindow.addCloseListener(e -> {
+                            if (selectWindow.isSelectPressed()) {
+                                itemContainer.addBean(selectWindow.getSelected());
+                                setValue(newHashSet(itemContainer.getItemIds()));
+                                NotificationUtil.showSuccess("Группа добавлена");
                             }
                         });
                         selectWindow.showModal();
                     }
                 });
 
-                actions.add(new ItemAction("Удалить", "Удалить принадлежность к группе", "icon-trash") {
+                actions.add(new ItemAction("Удалить", "Удалить принадлежность к группе", Fontello.TRASH) {
                     @Override
                     public void fire(final Object itemId) {
                         container.removeItem(itemId);

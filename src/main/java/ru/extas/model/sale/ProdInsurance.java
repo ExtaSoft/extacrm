@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  * @since 0.3
  */
 @Entity
-@DiscriminatorValue("INSURANCE_PROP")
+@DiscriminatorValue("INSURANCE")
 @Table(name = "PROD_INSURANCE")
 public class ProdInsurance extends Product {
 

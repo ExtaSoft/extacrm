@@ -4,11 +4,12 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
 import ru.extas.model.motor.MotorType;
 import ru.extas.server.motor.MotorTypeRepository;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.component.ExtaFormLayout;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -19,7 +20,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class MotorTypeEditForm extends AbstractEditForm<MotorType> {
+public class MotorTypeEditForm extends ExtaEditForm<MotorType> {
 
     @PropertyId("name")
     private EditField nameField;
@@ -27,14 +28,8 @@ public class MotorTypeEditForm extends AbstractEditForm<MotorType> {
     @PropertyId("brands")
     private MotorBrandObjMultiselect brandsField;
 
-    /**
-     * <p>Constructor for MotorTypeEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param newObj a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public MotorTypeEditForm(String caption, BeanItem<MotorType> newObj) {
-        super(caption, newObj);
+    public MotorTypeEditForm(MotorType motorType) {
+        super(motorType.isNew() ? "Новый тип техники" : "Редактировать тип техники", new BeanItem(motorType));
     }
 
     /** {@inheritDoc} */
@@ -45,21 +40,16 @@ public class MotorTypeEditForm extends AbstractEditForm<MotorType> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(MotorType obj) {
+    protected MotorType saveObject(MotorType obj) {
         MotorType loc = lookup(MotorTypeRepository.class).save(obj);
-        Notification.show("Тип техники сохранен", Notification.Type.TRAY_NOTIFICATION);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(MotorType obj) {
-
+        NotificationUtil.showSuccess("Тип техники сохранен");
+        return loc;
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(MotorType obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         nameField = new EditField("Название типа техники", "Введите название типа техники");
         nameField.setColumns(20);

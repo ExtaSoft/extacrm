@@ -1,7 +1,6 @@
 package ru.extas.web.lead.embedded;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -29,8 +28,11 @@ import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorTypeRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.contacts.SalePointSimpleSelect;
 import ru.extas.web.motor.MotorBrandSelect;
@@ -66,10 +68,6 @@ public class LeadInputFormUI extends UI {
 
     private final static Logger logger = LoggerFactory.getLogger(LeadInputFormUI.class);
 
-    // Компоненты редактирования
-    // Имя контакта
-    @PropertyId("contactName")
-    private EditField contactNameField;
     @PropertyId("contactPhone")
     private PhoneField cellPhoneField;
     // Эл. почта
@@ -121,9 +119,10 @@ public class LeadInputFormUI extends UI {
             getPage().getStyles().add(new ExternalResource(customCss));
         if (initLead(lead, params)) return;
 
-        FormLayout form = new FormLayout();
+        FormLayout form = new ExtaFormLayout();
+        form.setSizeUndefined();
 
-        contactNameField = new EditField("Имя", "Введите фамилию имя отчество");
+        EditField contactNameField = new EditField("Имя", "Введите фамилию имя отчество");
         contactNameField.setInputPrompt("Фамилия Имя Отчество");
         contactNameField.setColumns(25);
         contactNameField.setRequired(true);
@@ -181,16 +180,13 @@ public class LeadInputFormUI extends UI {
 
         vendorField = new SalePointSimpleSelect("Мотосалон", "Выберите мотосалон");
         vendorField.setInputPrompt("Выберите мотосалон...");
-        vendorField.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                Property property = event.getProperty();
-                if (property != null) {
-                    Object value = property.getValue();
-                    if (value != null) {
-                        pointOfSaleField.setValue(((SalePoint) vendorField.getConvertedValue()).getName());
-                        regionField.setValue(((SalePoint) vendorField.getConvertedValue()).getActualAddress().getRegion());
-                    }
+        vendorField.addValueChangeListener(event -> {
+            Property property = event.getProperty();
+            if (property != null) {
+                Object value = property.getValue();
+                if (value != null) {
+                    pointOfSaleField.setValue(((SalePoint) vendorField.getConvertedValue()).getName());
+                    regionField.setValue(((SalePoint) vendorField.getConvertedValue()).getRegAddress().getRegion());
                 }
             }
         });
@@ -200,7 +196,7 @@ public class LeadInputFormUI extends UI {
             form.addComponent(vendorField);
         }
 
-        commentField = new TextArea("Комментарий");
+        commentField = new TextArea("Примечание");
         commentField.setInputPrompt("Укажите любую дополнительную информацию");
         commentField.setColumns(25);
         commentField.setRows(6);
@@ -227,15 +223,14 @@ public class LeadInputFormUI extends UI {
                     try {
                         fieldGroup.commit();
                         saveObject(lead);
-                        Notification.show(
+                        NotificationUtil.show(
                                 "Заявка отправлена!",
-                                "В ближайшее время наш менеджер свяжется с вами для уточнения деталей.",
-                                Notification.Type.HUMANIZED_MESSAGE);
+                                "В ближайшее время наш менеджер свяжется с вами для уточнения деталей.");
                         LeadInputFormUI.this.setContent(new HorizontalLayout());
                     } catch (final FieldGroup.CommitException e) {
                         // TODO Correct error handling
                         logger.error("Can't apply form changes", e);
-                        Notification.show("Невозможно отправить данные!", e.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+                        NotificationUtil.showError("Невозможно отправить данные!", e.getLocalizedMessage());
                         return;
                     }
                     close();
@@ -247,8 +242,8 @@ public class LeadInputFormUI extends UI {
 
         });
 
-        submitBtn.setStyleName("icon-ok");
-        submitBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
+        submitBtn.setIcon(Fontello.OK);
+                submitBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
 
         panel.addComponent(submitBtn);
 
@@ -265,15 +260,13 @@ public class LeadInputFormUI extends UI {
                 CompanyRepository companyRepository = lookup(CompanyRepository.class);
                 company = companyRepository.findOne(companyId);
                 if (company == null) {
-                    Notification.show("Неверные параметры формы!",
-                            "Неверно задан идентификатор компании в параметре 'company'.",
-                            Notification.Type.ERROR_MESSAGE);
+                    NotificationUtil.showError("Неверные параметры формы!",
+                            "Неверно задан идентификатор компании в параметре 'company'.");
                     return true;
                 }
             } else {
-                Notification.show("Неверные параметры формы!",
-                        "Неверно задан идентификатор компании в параметре 'company'.",
-                        Notification.Type.ERROR_MESSAGE);
+                NotificationUtil.showError("Неверные параметры формы!",
+                        "Неверно задан идентификатор компании в параметре 'company'.");
                 return true;
             }
         } else { // или торговая точка
@@ -284,16 +277,14 @@ public class LeadInputFormUI extends UI {
                     SalePointRepository salePointRepository = lookup(SalePointRepository.class);
                     SalePoint salePoint = salePointRepository.findOne(salePointId);
                     if (salePoint == null) {
-                        Notification.show("Неверные параметры формы!",
-                                "Неверно задан идентификатор торговой точки в параметре 'salepoint'.",
-                                Notification.Type.ERROR_MESSAGE);
+                        NotificationUtil.showError("Неверные параметры формы!",
+                                "Неверно задан идентификатор торговой точки в параметре 'salepoint'.");
                         return true;
                     } else
                         lead.setVendor(salePoint);
                 } else {
-                    Notification.show("Неверные параметры формы!",
-                            "Неверно задан идентификатор торговой точки в параметре 'salepoint'.",
-                            Notification.Type.ERROR_MESSAGE);
+                    NotificationUtil.showError("Неверные параметры формы!",
+                            "Неверно задан идентификатор торговой точки в параметре 'salepoint'.");
                     return true;
                 }
             }
@@ -318,12 +309,7 @@ public class LeadInputFormUI extends UI {
             SupplementService service = lookup(SupplementService.class);
             Collection<String> regions = service.loadRegions();
             final String finalContactRegion = contactRegion;
-            Optional<String> trueRegion = Iterables.tryFind(regions, new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return StringUtils.containsIgnoreCase(input, finalContactRegion);
-                }
-            });
+            Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalContactRegion));
             lead.setContactRegion(trueRegion.orNull());
         }
         // Тип техники
@@ -333,12 +319,7 @@ public class LeadInputFormUI extends UI {
             MotorTypeRepository repository = lookup(MotorTypeRepository.class);
             List<String> types = repository.loadAllNames();
             final String finalMotorType = motorType;
-            Optional<String> trueType = Iterables.tryFind(types, new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return StringUtils.containsIgnoreCase(input, finalMotorType);
-                }
-            });
+            Optional<String> trueType = Iterables.tryFind(types, input -> StringUtils.containsIgnoreCase(input, finalMotorType));
             lead.setMotorType(trueType.orNull());
         }
         // Марка техники
@@ -348,12 +329,7 @@ public class LeadInputFormUI extends UI {
             MotorBrandRepository repository = lookup(MotorBrandRepository.class);
             List<String> brands = repository.loadAllNames();
             final String finalMotorBrand = motorBrand;
-            Optional<String> trueMotorBrand = Iterables.tryFind(brands, new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return StringUtils.containsIgnoreCase(input, finalMotorBrand);
-                }
-            });
+            Optional<String> trueMotorBrand = Iterables.tryFind(brands, input -> StringUtils.containsIgnoreCase(input, finalMotorBrand));
             lead.setMotorBrand(trueMotorBrand.orNull());
         }
         // Модель техники
@@ -367,9 +343,8 @@ public class LeadInputFormUI extends UI {
             format.setParseBigDecimal(true);
             BigDecimal price = (BigDecimal) format.parse(motorPrice, new ParsePosition(0));
             if (price == null) {
-                Notification.show("Неверные параметры формы!",
-                        "Неверно задана сумма в параметре 'motorPrice'.",
-                        Notification.Type.ERROR_MESSAGE);
+                NotificationUtil.showError("Неверные параметры формы!",
+                        "Неверно задана сумма в параметре 'motorPrice'.");
                 return true;
             }
             lead.setMotorPrice(price);
@@ -381,15 +356,10 @@ public class LeadInputFormUI extends UI {
             SupplementService service = lookup(SupplementService.class);
             Collection<String> regions = service.loadRegions();
             final String finalregion = region;
-            Optional<String> trueRegion = Iterables.tryFind(regions, new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return StringUtils.containsIgnoreCase(input, finalregion);
-                }
-            });
+            Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalregion));
             lead.setRegion(trueRegion.orNull());
         }
-        // Комментарий
+        // Примечание
         String comment = getParamValue("comment", params);
         if (!isNullOrEmpty(comment))
             lead.setComment(comment);

@@ -2,9 +2,13 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.NotificationUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,96 +27,94 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  */
 public class ContactEmployeeField extends CustomField<Set> {
 
-	private Table table;
-	private BeanItemContainer<Person> container;
+    private Table table;
+    private BeanItemContainer<Person> container;
 
-	/**
-	 * <p>Constructor for ContactEmployeeField.</p>
-	 */
-	public ContactEmployeeField() {
-		super.setBuffered(true);
-	}
+    /**
+     * <p>Constructor for ContactEmployeeField.</p>
+     */
+    public ContactEmployeeField() {
+        super.setBuffered(true);
+        setBuffered(true);
+        setWidth(600, Unit.PIXELS);
+        setHeight(300, Unit.PIXELS);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected Component initContent() {
-		final VerticalLayout fieldLayout = new VerticalLayout();
-		fieldLayout.setSpacing(true);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Component initContent() {
+        final VerticalLayout fieldLayout = new VerticalLayout();
+        fieldLayout.setSizeFull();
+        fieldLayout.setSpacing(true);
+        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
 
-		if (!isReadOnly()) {
-			final HorizontalLayout commandBar = new HorizontalLayout();
-			commandBar.addStyleName("configure");
-			commandBar.setSpacing(true);
+        if (!isReadOnly()) {
+            final MenuBar commandBar = new MenuBar();
+            commandBar.setAutoOpen(true);
+            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+            commandBar.focus();
 
-			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
+            final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
 
-				private static final long serialVersionUID = 1L;
+                final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите сотрудника");
+                selectWindow.addCloseListener(e -> {
+                    if (selectWindow.isSelectPressed()) {
+                        container.addBean(selectWindow.getSelected());
+                        setValue(newHashSet(container.getItemIds()));
+                        NotificationUtil.showSuccess("Сотрудник добавлен");
+                    }
+                });
+                selectWindow.showModal();
+            });
+            addProdBtn.setDescription("Добавить физ. лицо в список сотрудников");
+            addProdBtn.setIcon(Fontello.DOC_NEW);
 
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
+            final MenuBar.MenuItem delProdBtn = commandBar.addItem("Удалить", event -> {
+                if (table.getValue() != null) {
+                    container.removeItem(table.getValue());
+                    setValue(newHashSet(container.getItemIds()));
+                }
+            });
+            delProdBtn.setDescription("Удалить физ. лицо из списка сотрудников");
+            delProdBtn.setIcon(Fontello.TRASH);
 
-					final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите сотрудника");
-					selectWindow.addCloseListener(new Window.CloseListener() {
+            fieldLayout.addComponent(commandBar);
+        }
 
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (selectWindow.isSelectPressed()) {
-								container.addBean(selectWindow.getSelected());
-								setValue(newHashSet(container.getItemIds()));
-								Notification.show("Сотрудник добавлен", Notification.Type.TRAY_NOTIFICATION);
-							}
-						}
-					});
-					selectWindow.showModal();
-				}
-			});
-			addProdBtn.setDescription("Добавить физ. лицо в список сотрудников");
-			addProdBtn.addStyleName("icon-doc-new");
-			commandBar.addComponent(addProdBtn);
+        table = new Table();
+        table.setSizeFull();
+        table.setRequired(true);
+        table.setSelectable(true);
+        table.setColumnCollapsingAllowed(true);
+        final Property dataSource = getPropertyDataSource();
+        final Set<Person> list = dataSource != null ? (Set<Person>) dataSource.getValue() : new HashSet<Person>();
+        container = new BeanItemContainer<>(Person.class);
+        if (list != null) {
+            for (final Person doc : list) {
+                container.addBean(doc);
+            }
+        }
+        container.addNestedContainerProperty("regAddress.region");
+        table.setContainerDataSource(container);
 
-			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (table.getValue() != null) {
-						container.removeItem(table.getValue());
-						setValue(newHashSet(container.getItemIds()));
-					}
-				}
-			});
-			delProdBtn.setDescription("Удалить физ. лицо из списка сотрудников");
-			delProdBtn.addStyleName("icon-trash");
-			commandBar.addComponent(delProdBtn);
+        final GridDataDecl dataDecl = new PersonDataDecl();
+        fullInitTable(table, dataDecl);
 
-			fieldLayout.addComponent(commandBar);
-		}
+        fieldLayout.addComponent(table);
+        fieldLayout.setExpandRatio(table, 1);
 
-		table = new Table();
-		table.setRequired(true);
-		table.setSelectable(true);
-		table.setColumnCollapsingAllowed(true);
-		final Property dataSource = getPropertyDataSource();
-		final Set<Person> list = dataSource != null ? (Set<Person>) dataSource.getValue() : new HashSet<Person>();
-		container = new BeanItemContainer<>(Person.class);
-		if (list != null) {
-			for (final Person doc : list) {
-				container.addBean(doc);
-			}
-		}
-		container.addNestedContainerProperty("actualAddress.region");
-		table.setContainerDataSource(container);
+        return fieldLayout;
+    }
 
-		final GridDataDecl dataDecl = new PersonDataDecl();
-		fullInitTable(table, dataDecl);
-
-		fieldLayout.addComponent(table);
-
-		return fieldLayout;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Class<? extends Set> getType() {
-		return Set.class;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends Set> getType() {
+        return Set.class;
+    }
 
 }

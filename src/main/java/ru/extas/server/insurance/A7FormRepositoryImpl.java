@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Contact;
+import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.A7Form;
 import ru.extas.model.insurance.A7Form.Status;
 import ru.extas.server.security.UserManagementService;
@@ -49,7 +50,7 @@ public class A7FormRepositoryImpl implements A7FormService {
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void changeOwner(final List<String> formNums, final Contact owner) {
+    public void changeOwner(final List<String> formNums, final Person owner) {
         for (String num : formNums) {
             A7Form form = formRepository.findByRegNum(num);
             if (form != null) {

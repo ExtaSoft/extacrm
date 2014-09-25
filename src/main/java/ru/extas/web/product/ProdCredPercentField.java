@@ -5,9 +5,14 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditPercent;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 
 import java.util.ArrayList;
@@ -27,132 +32,121 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class ProdCredPercentField extends CustomField<List> {
 
-	private final ProdCredit product;
-	private Table procentTable;
-	private BeanItemContainer<ProdCreditPercent> container;
+    private final ProdCredit product;
+    private Table procentTable;
+    private BeanItemContainer<ProdCreditPercent> container;
 
-	/**
-	 * <p>Constructor for ProdCredPercentField.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param description a {@link java.lang.String} object.
-	 * @param product a {@link ru.extas.model.sale.ProdCredit} object.
-	 */
-	public ProdCredPercentField(String caption, final String description, ProdCredit product) {
-		this.product = product;
-		setCaption(caption);
-		setDescription(description);
-	}
+    /**
+     * <p>Constructor for ProdCredPercentField.</p>
+     *
+     * @param caption     a {@link java.lang.String} object.
+     * @param description a {@link java.lang.String} object.
+     * @param product     a {@link ru.extas.model.sale.ProdCredit} object.
+     */
+    public ProdCredPercentField(String caption, final String description, ProdCredit product) {
+        this.product = product;
+        setWidth(400, Unit.PIXELS);
+        setHeight(200, Unit.PIXELS);
+        setCaption(caption);
+        setDescription(description);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected Component initContent() {
-		final VerticalLayout fieldLayout = new VerticalLayout();
-		fieldLayout.setSpacing(true);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Component initContent() {
+        final VerticalLayout fieldLayout = new VerticalLayout();
+        fieldLayout.setSizeFull();
+        fieldLayout.setSpacing(true);
+        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
 
-		if (!isReadOnly()) {
-			final HorizontalLayout commandBar = new HorizontalLayout();
-			commandBar.addStyleName("configure");
-			commandBar.setSpacing(true);
+        if (!isReadOnly()) {
+            final MenuBar commandBar = new MenuBar();
+            commandBar.setAutoOpen(true);
+            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
 
-			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
+            final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
+                final BeanItem<ProdCreditPercent> newObj = new BeanItem<>(new ProdCreditPercent(product));
 
-				private static final long serialVersionUID = 1L;
+                final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Новая процентная ставка", newObj);
+                editWin.addCloseFormListener(event1 -> {
+                    if (editWin.isSaved()) {
+                        container.addBean(newObj.getBean());
+                    }
+                });
+                FormUtils.showModalWin(editWin);
+            });
+            addProdBtn.setDescription("Добавить процентную стаквку в продукт");
+            addProdBtn.setIcon(Fontello.DOC_NEW);
 
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					final BeanItem<ProdCreditPercent> newObj = new BeanItem<>(new ProdCreditPercent(product));
+            final MenuBar.MenuItem edtProdBtn = commandBar.addItem("Изменить", event -> {
+                if (procentTable.getValue() != null) {
+                    final BeanItem<ProdCreditPercent> percentItem = (BeanItem<ProdCreditPercent>) procentTable.getItem(procentTable.getValue());
+                    final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Редактирование процентной ставки", percentItem);
+                    FormUtils.showModalWin(editWin);
+                }
+            });
+            edtProdBtn.setDescription("Изменить выделенную в списке процентную ставку");
+            edtProdBtn.setIcon(Fontello.EDIT_3);
 
-					final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Новая процентная ставка", newObj);
-					editWin.addCloseListener(new Window.CloseListener() {
+            final MenuBar.MenuItem delProdBtn = commandBar.addItem("Удалить", event -> {
+                if (procentTable.getValue() != null) {
+                    procentTable.removeItem(procentTable.getValue());
+                }
+            });
+            delProdBtn.setDescription("Удалить процентную ставку из продукта");
+            delProdBtn.setIcon(Fontello.TRASH);
 
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (editWin.isSaved()) {
-								container.addBean(newObj.getBean());
-							}
-						}
-					});
-					editWin.showModal();
-				}
-			});
-			addProdBtn.setDescription("Добавить процентную стаквку в продукт");
-			addProdBtn.addStyleName("icon-doc-new");
-			commandBar.addComponent(addProdBtn);
+            fieldLayout.addComponent(commandBar);
+        }
 
-			final Button edtProdBtn = new Button("Изменить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (procentTable.getValue() != null) {
-						final BeanItem<ProdCreditPercent> percentItem = (BeanItem<ProdCreditPercent>) procentTable.getItem(procentTable.getValue());
-						final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Редактирование процентной ставки", percentItem);
-						editWin.showModal();
-					}
-				}
-			});
-			edtProdBtn.setDescription("Изменить выделенную в списке процентную ставку");
-			edtProdBtn.addStyleName("icon-edit-3");
-			commandBar.addComponent(edtProdBtn);
+        procentTable = new Table();
+        procentTable.setSizeFull();
+        procentTable.addStyleName(ExtaTheme.TABLE_SMALL);
+        procentTable.addStyleName(ExtaTheme.TABLE_COMPACT);
+        procentTable.setRequired(true);
+        procentTable.setSelectable(true);
+        final Property dataSource = getPropertyDataSource();
+        final List<ProdCreditPercent> percentList = dataSource != null ? (List<ProdCreditPercent>) dataSource.getValue() : new ArrayList<ProdCreditPercent>();
+        container = new BeanItemContainer<>(ProdCreditPercent.class);
+        if (percentList != null) {
+            for (final ProdCreditPercent percent : percentList) {
+                container.addBean(percent);
+            }
+        }
+        procentTable.setContainerDataSource(container);
+        procentTable.addItemSetChangeListener(event -> setValue(newArrayList(procentTable.getItemIds())));
+        // Колонки таблицы
+        procentTable.setVisibleColumns("percent", "period", "downpayment");
+        procentTable.setColumnHeader("percent", "Процент");
+        procentTable.setConverter("percent", lookup(StringToPercentConverter.class));
+        procentTable.setColumnHeader("period", "Срок");
+        procentTable.setColumnHeader("downpayment", "Первоначальный взнос");
+        procentTable.setConverter("downpayment", lookup(StringToPercentConverter.class));
+        fieldLayout.addComponent(procentTable);
+        fieldLayout.setExpandRatio(procentTable, 1);
 
-			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (procentTable.getValue() != null) {
-						procentTable.removeItem(procentTable.getValue());
-					}
-				}
-			});
-			delProdBtn.setDescription("Удалить процентную ставку из продукта");
-			delProdBtn.addStyleName("icon-trash");
-			commandBar.addComponent(delProdBtn);
+        return fieldLayout;
+    }
 
-			fieldLayout.addComponent(commandBar);
-		}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void commit() throws SourceException, Validator.InvalidValueException {
+        super.commit();
+        final Property dataSource = getPropertyDataSource();
+        if (dataSource != null)
+            dataSource.setValue(container.getItemIds());
+    }
 
-		procentTable = new Table();
-		procentTable.setRequired(true);
-		procentTable.setSelectable(true);
-		procentTable.setHeight(7, Unit.EM);
-		procentTable.setWidth(25, Unit.EM);
-		final Property dataSource = getPropertyDataSource();
-		final List<ProdCreditPercent> percentList = dataSource != null ? (List<ProdCreditPercent>) dataSource.getValue() : new ArrayList<ProdCreditPercent>();
-		container = new BeanItemContainer<>(ProdCreditPercent.class);
-		if (percentList != null) {
-			for (final ProdCreditPercent percent : percentList) {
-				container.addBean(percent);
-			}
-		}
-		procentTable.setContainerDataSource(container);
-		procentTable.addItemSetChangeListener(new Container.ItemSetChangeListener() {
-			@Override
-			public void containerItemSetChange(final Container.ItemSetChangeEvent event) {
-				setValue(newArrayList(procentTable.getItemIds()));
-			}
-		});
-		// Колонки таблицы
-		procentTable.setVisibleColumns("percent", "period", "downpayment");
-		procentTable.setColumnHeader("percent", "Процент");
-		procentTable.setConverter("percent", lookup(StringToPercentConverter.class));
-		procentTable.setColumnHeader("period", "Срок");
-		procentTable.setColumnHeader("downpayment", "Первоначальный взнос");
-		procentTable.setConverter("downpayment", lookup(StringToPercentConverter.class));
-		fieldLayout.addComponent(procentTable);
-
-		return fieldLayout;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void commit() throws SourceException, Validator.InvalidValueException {
-		super.commit();
-		final Property dataSource = getPropertyDataSource();
-		if (dataSource != null)
-			dataSource.setValue(container.getItemIds());
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Class<? extends List> getType() {
-		return List.class;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends List> getType() {
+        return List.class;
+    }
 }

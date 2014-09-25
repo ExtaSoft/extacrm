@@ -11,10 +11,12 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -29,7 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SalePointEditForm extends AbstractEditForm<SalePoint> {
+public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     private static final long serialVersionUID = -7787385620289376599L;
     private final static Logger logger = LoggerFactory.getLogger(LegalEntityEditForm.class);
@@ -47,13 +49,13 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     private EditField emailField;
     @PropertyId("www")
     private EditField wwwField;
-    @PropertyId("actualAddress.region")
+    @PropertyId("regAddress.region")
     private ComboBox regionField;
-    @PropertyId("actualAddress.city")
+    @PropertyId("regAddress.city")
     private ComboBox cityField;
-    @PropertyId("actualAddress.postIndex")
+    @PropertyId("regAddress.postIndex")
     private EditField postIndexField;
-    @PropertyId("actualAddress.streetBld")
+    @PropertyId("regAddress.streetBld")
     private TextArea streetBldField;
     @PropertyId("legalEntities")
     private LegalEntitiesSelectField legalsField;
@@ -71,15 +73,12 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 
     private SalePoint salePoint;
 
-    /**
-     * <p>Constructor for SalePointEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public SalePointEditForm(final String caption, final BeanItem<SalePoint> obj) {
-        super(caption, obj);
-        salePoint = obj.getBean();
+    public SalePointEditForm(SalePoint salePoint) {
+        super(salePoint.isNew() ? "Ввод новой торговой точки в систему" : "Редактирование данных торговой точки");
+        final BeanItem beanItem = new BeanItem<>(salePoint);
+        beanItem.expandProperty("regAddress");
+
+        initForm(beanItem);
     }
 
     /** {@inheritDoc} */
@@ -87,16 +86,18 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     public void attach() {
         super.attach();
 
-        if (salePoint.getCompany() == null) {
-            companyField.setReadOnly(false);
-            companyField.setVisible(true);
-            companyField.setRequired(true);
-        } else {
-            companyField.setReadOnly(true);
-            companyField.getPropertyDataSource().setReadOnly(true);
-            if (salePoint.getCompany().getId() == null) {
-                companyField.setVisible(false);
-                companyField.setRequired(false);
+        if (salePoint != null) {
+            if (salePoint.getCompany() == null) {
+                companyField.setReadOnly(false);
+                companyField.setVisible(true);
+                companyField.setRequired(true);
+            } else {
+                companyField.setReadOnly(true);
+                companyField.getPropertyDataSource().setReadOnly(true);
+                if (salePoint.getCompany().isNew()) {
+                    companyField.setVisible(false);
+                    companyField.setRequired(false);
+                }
             }
         }
     }
@@ -104,30 +105,25 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final SalePoint obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
-        if (obj.getActualAddress() == null)
-            obj.setActualAddress(new AddressInfo());
+        if (obj.getRegAddress() == null)
+            obj.setRegAddress(new AddressInfo());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final SalePoint obj) {
-        if (obj.getCompany().getId() != null) {
+    protected SalePoint saveObject(SalePoint obj) {
+        if (!obj.getCompany().isNew()) {
             logger.debug("Saving contact data...");
             final SalePointRepository contactRepository = lookup(SalePointRepository.class);
-            contactRepository.secureSave(obj);
-            Notification.show("Торговая точка сохранена", Notification.Type.TRAY_NOTIFICATION);
+            obj = contactRepository.secureSave(obj);
+            NotificationUtil.showSuccess("Торговая точка сохранена");
         }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final SalePoint obj) {
+        return obj;
     }
 
 
@@ -142,7 +138,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
         tabsheet.addTab(mainForm).setCaption("Общие данные");
 
         // Вкладка - "Сотрудники"
-        final FormLayout employesForm = createEmployesForm();
+        final Component employesForm = createEmployesForm();
         tabsheet.addTab(employesForm).setCaption("Сотрудники");
 
         // Вкладка - "Юр.лица"
@@ -157,7 +153,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
     }
 
     private Component createIdentityForm() {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         extaCodeField = new EditField("Код Экстрим Ассистанс", "Введите идентификационный Код Экстрим Ассистанс");
@@ -185,18 +181,12 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
         return legalsField;
     }
 
-    private FormLayout createEmployesForm() {
-        final FormLayout formLayout = new FormLayout();
-        formLayout.setMargin(true);
-
-        employeeField = new ContactEmployeeField();
-        formLayout.addComponent(employeeField);
-
-        return formLayout;
+    private Component createEmployesForm() {
+        return employeeField = new ContactEmployeeField();
     }
 
     private FormLayout createMainForm(final SalePoint obj) {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         nameField = new EditField("Название");
@@ -240,7 +230,7 @@ public class SalePointEditForm extends AbstractEditForm<SalePoint> {
 
         cityField = new CitySelect();
         cityField.setDescription("Введите город регистрации");
-        if (obj.getActualAddress().getCity() != null) cityField.addItem(obj.getActualAddress().getCity());
+        if (obj.getRegAddress().getCity() != null) cityField.addItem(obj.getRegAddress().getCity());
         cityField.addValueChangeListener(new Property.ValueChangeListener() {
             private static final long serialVersionUID = 1L;
 

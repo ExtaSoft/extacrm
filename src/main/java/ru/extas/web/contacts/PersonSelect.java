@@ -4,6 +4,10 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -11,7 +15,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 /**
  * Выбор контакта - физ. лица
  * с возможностью добавления нового
- * <p/>
+ * <p>
  * Date: 12.09.13
  * Time: 12:15
  *
@@ -21,194 +25,175 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class PersonSelect extends CustomField<Person> {
 
-	private PersonSelectField personSelectField;
-	private Label emailField;
-	private Label birthdayField;
-	private Label phoneField;
-	private Button viewBtn;
+    private Label emailField;
+    private Label birthdayField;
+    private Label phoneField;
+    private Button viewBtn;
 
-	/**
-	 * <p>Constructor for PersonSelect.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 */
-	public PersonSelect(final String caption) {
-		this(caption, "");
-	}
+    /**
+     * <p>Constructor for PersonSelect.</p>
+     *
+     * @param caption a {@link java.lang.String} object.
+     */
+    public PersonSelect(final String caption) {
+        this(caption, "");
+    }
 
-	/**
-	 * <p>Constructor for PersonSelect.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param description a {@link java.lang.String} object.
-	 */
-	public PersonSelect(final String caption, final String description) {
-		setCaption(caption);
-		setDescription(description);
-		setBuffered(true);
-		addStyleName("bordered-component");
-	}
+    /**
+     * <p>Constructor for PersonSelect.</p>
+     *
+     * @param caption     a {@link java.lang.String} object.
+     * @param description a {@link java.lang.String} object.
+     */
+    public PersonSelect(final String caption, final String description) {
+        setCaption(caption);
+        setDescription(description);
+        setBuffered(true);
+        addStyleName(ExtaTheme.BORDERED_COMPONENT);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected Component initContent() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Component initContent() {
 
-		VerticalLayout container = new VerticalLayout();
-		container.setSpacing(true);
+        VerticalLayout container = new VerticalLayout();
+        container.setSpacing(true);
 
-		HorizontalLayout nameLay = new HorizontalLayout();
+        CssLayout nameLay = new CssLayout();
+        nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
-		personSelectField = new PersonSelectField("Имя", "Введите или выберите имя контакта");
-		personSelectField.setInputPrompt("Фамилия Имя Отчество");
-		personSelectField.setPropertyDataSource(getPropertyDataSource());
-		personSelectField.setNewItemsAllowed(true);
-		personSelectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-			private static final long serialVersionUID = 1L;
+        if (!isReadOnly()) {
+            PersonSelectField personSelectField = new PersonSelectField("", "Введите или выберите имя контакта");
+            personSelectField.setInputPrompt("Фамилия Имя Отчество");
+            personSelectField.setPropertyDataSource(getPropertyDataSource());
+            personSelectField.setNewItemsAllowed(true);
+            personSelectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+                private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings({"unchecked"})
-			@Override
-			public void addNewItem(final String newItemCaption) {
-				final BeanItem<Person> newObj;
-				newObj = new BeanItem<>(new Person());
-				newObj.getBean().setName(newItemCaption);
-				newObj.expandProperty("actualAddress");
+                @SuppressWarnings({"unchecked"})
+                @Override
+                public void addNewItem(final String newItemCaption) {
+                    final Person newObj = new Person();
+                    newObj.setName(newItemCaption);
 
-				final String edFormCaption = "Ввод нового контакта в систему";
-				final PersonEditForm editWin = new PersonEditForm(edFormCaption, newObj);
-				editWin.setModified(true);
+                    final String edFormCaption = "Ввод нового контакта в систему";
+                    final PersonEditForm editWin = new PersonEditForm(newObj);
+                    editWin.setModified(true);
 
-				editWin.addCloseListener(new Window.CloseListener() {
+                    editWin.addCloseFormListener(event -> {
+                        if (editWin.isSaved()) {
+                            personSelectField.refreshContainer();
+                            personSelectField.setValue(editWin.getObjectId());
+                        }
+                    });
+                    FormUtils.showModalWin(editWin);
+                }
+            });
+            personSelectField.addValueChangeListener(event -> refreshFields((Person) personSelectField.getConvertedValue()));
+            nameLay.addComponent(personSelectField);
 
-					private static final long serialVersionUID = 1L;
+            Button searchBtn = new Button("Поиск", event -> {
 
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							personSelectField.refreshContainer();
-							personSelectField.setValue(newObj.getBean().getId());
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-		personSelectField.addValueChangeListener(new ValueChangeListener() {
-			@Override
-			public void valueChange(final Property.ValueChangeEvent event) {
-				refreshFields((Person) personSelectField.getConvertedValue());
-			}
-		});
-		nameLay.addComponent(personSelectField);
+                final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
+                selectWindow.addCloseListener(e -> {
+                    if (selectWindow.isSelectPressed()) {
+                        final Person selected = selectWindow.getSelected();
+                        personSelectField.setConvertedValue(selected);
+                    }
+                });
+                selectWindow.showModal();
 
-		Button searchBtn = new Button("Поиск", new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
+            });
+            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+            searchBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            nameLay.addComponent(searchBtn);
 
-				final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
-				selectWindow.addCloseListener(new Window.CloseListener() {
+            viewBtn = new Button("Просмотр", event -> {
+                final Person bean = (Person) getPropertyDataSource().getValue();
 
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (selectWindow.isSelectPressed()) {
-							final Person selected = selectWindow.getSelected();
-							personSelectField.setConvertedValue(selected);
-						}
-					}
-				});
-				selectWindow.showModal();
+                final PersonEditForm editWin = new PersonEditForm(bean);
+                editWin.setReadOnly(isReadOnly());
 
-			}
-		});
-		searchBtn.addStyleName("icon-search-outline");
-		searchBtn.addStyleName("icon-only");
-		nameLay.addComponent(searchBtn);
-		nameLay.setComponentAlignment(searchBtn, Alignment.BOTTOM_LEFT);
+                editWin.addCloseFormListener(event1 -> {
+                    if (editWin.isSaved()) {
+                        refreshFields(bean);
+                    }
+                });
+                FormUtils.showModalWin(editWin);
+            });
+            viewBtn.setIcon(Fontello.EDIT_3);
+            viewBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            nameLay.addComponent(viewBtn);
 
-		viewBtn = new Button("Просмотр", new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				final BeanItem<Person> beanItem;
-				beanItem = new BeanItem<>((Person) personSelectField.getConvertedValue());
-				beanItem.expandProperty("actualAddress");
+        } else {
+            Label name = new Label();
+            Person person = (Person) getPropertyDataSource().getValue();
+            if(person != null)
+                name.setValue(person.getName());
+            nameLay.addComponent(name);
+        }
 
-				final String edFormCaption = "Просмотр/Редактирование физ. лица";
-				final PersonEditForm editWin = new PersonEditForm(edFormCaption, beanItem);
-				editWin.setModified(true);
+        container.addComponent(nameLay);
 
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshFields(beanItem.getBean());
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-		viewBtn.addStyleName("icon-edit-3");
-		viewBtn.addStyleName("icon-only");
-		nameLay.addComponent(viewBtn);
-		nameLay.setComponentAlignment(viewBtn, Alignment.BOTTOM_LEFT);
-
-		container.addComponent(nameLay);
-
-		HorizontalLayout fieldsContainer = new HorizontalLayout();
-		fieldsContainer.setSpacing(true);
-		//fieldsContainer.addStyleName("bordered-items");
-		// Дата рождения
-		birthdayField = new Label();
-		birthdayField.setCaption("Дата рождения");
-		fieldsContainer.addComponent(birthdayField);
-		// Телефон
-		phoneField = new Label();
-		phoneField.setCaption("Телефон");
+        HorizontalLayout fieldsContainer = new HorizontalLayout();
+        fieldsContainer.setSpacing(true);
+        // Дата рождения
+        birthdayField = new Label();
+        birthdayField.setCaption("Дата рождения");
+        fieldsContainer.addComponent(birthdayField);
+        // Телефон
+        phoneField = new Label();
+        phoneField.setCaption("Телефон");
         phoneField.setConverter(lookup(PhoneConverter.class));
         fieldsContainer.addComponent(phoneField);
-		// Мыло
-		emailField = new Label();
-		emailField.setCaption("E-Mail");
-		fieldsContainer.addComponent(emailField);
-		refreshFields((Person) getPropertyDataSource().getValue());
+        // Мыло
+        emailField = new Label();
+        emailField.setCaption("E-Mail");
+        fieldsContainer.addComponent(emailField);
+        refreshFields((Person) getPropertyDataSource().getValue());
 
-		container.addComponent(fieldsContainer);
+        container.addComponent(fieldsContainer);
 
-		return container;
-	}
+        return container;
+    }
 
-	private void refreshFields(Person person) {
-		setValue(person);
+    private void refreshFields(Person person) {
+        setValue(person);
 
-		if (person == null) {
-			viewBtn.setEnabled(false);
-			person = new Person();
-		} else
-			viewBtn.setEnabled(true);
+        if (viewBtn != null) {
+            viewBtn.setEnabled(person != null);
+        }
+        if (person == null) {
+            person = new Person();
+        }
 
-		BeanItem<Person> personItem = new BeanItem<>(person);
-		// Дата рождения
-		birthdayField.setPropertyDataSource(personItem.getItemProperty("birthday"));
-		// Телефон
-		phoneField.setPropertyDataSource(personItem.getItemProperty("phone"));
-		// Мыло
-		emailField.setPropertyDataSource(personItem.getItemProperty("email"));
-	}
+        BeanItem<Person> personItem = new BeanItem<>(person);
+        // Дата рождения
+        birthdayField.setPropertyDataSource(personItem.getItemProperty("birthday"));
+        // Телефон
+        phoneField.setPropertyDataSource(personItem.getItemProperty("phone"));
+        // Мыло
+        emailField.setPropertyDataSource(personItem.getItemProperty("email"));
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public Class<? extends Person> getType() {
-		return Person.class;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends Person> getType() {
+        return Person.class;
+    }
 
-	private class PersonSelectField extends AbstractContactSelect<Person> {
+    private class PersonSelectField extends AbstractContactSelect<Person> {
 
-		protected PersonSelectField(final String caption) {
-			super(caption, Person.class);
-		}
+        protected PersonSelectField(final String caption) {
+            super(caption, Person.class);
+        }
 
-		protected PersonSelectField(final String caption, final String description) {
-			super(caption, description, Person.class);
-		}
-	}
+        protected PersonSelectField(final String caption, final String description) {
+            super(caption, description, Person.class);
+        }
+    }
 }

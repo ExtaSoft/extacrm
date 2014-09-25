@@ -33,9 +33,9 @@ public abstract class Contact extends SecuredObject{
 	/** Constant <code>PHONE_LINGHT=20</code> */
 	public static final int PHONE_LINGHT = 20;
 
-	// Фактический адрес
-	@Embedded
-	private AddressInfo actualAddress;
+	// Адрес Регистрации
+	@Embedded()
+	private AddressInfo regAddress = new AddressInfo();
 
 	// Имя контакта
 	@Column(length = NAME_LENGTH)
@@ -94,7 +94,7 @@ public abstract class Contact extends SecuredObject{
 	 *
 	 * @param name the name to set
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -112,7 +112,7 @@ public abstract class Contact extends SecuredObject{
 	 *
 	 * @param phone the phone to set
 	 */
-	public void setPhone(String phone) {
+	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
 
@@ -130,26 +130,26 @@ public abstract class Contact extends SecuredObject{
 	 *
 	 * @param email the email to set
 	 */
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
 	/**
-	 * <p>Setter for the field <code>actualAddress</code>.</p>
+	 * <p>Setter for the field <code>regAddress</code>.</p>
 	 *
-	 * @param actualAddress a {@link ru.extas.model.contacts.AddressInfo} object.
+	 * @param regAddress a {@link ru.extas.model.contacts.AddressInfo} object.
 	 */
-	public void setActualAddress(final AddressInfo actualAddress) {
-		this.actualAddress = actualAddress;
+	public void setRegAddress(final AddressInfo regAddress) {
+		this.regAddress = regAddress;
 	}
 
 	/**
-	 * <p>Getter for the field <code>actualAddress</code>.</p>
+	 * <p>Getter for the field <code>regAddress</code>.</p>
 	 *
 	 * @return a {@link ru.extas.model.contacts.AddressInfo} object.
 	 */
-	public AddressInfo getActualAddress() {
-		return actualAddress;
+	public AddressInfo getRegAddress() {
+		return regAddress;
 	}
 
 	/**

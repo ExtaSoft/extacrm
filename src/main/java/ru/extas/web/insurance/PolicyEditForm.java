@@ -8,9 +8,11 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.PolicyRepository;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.DateTimeField;
 import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.component.ExtaFormLayout;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -21,7 +23,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class PolicyEditForm extends AbstractEditForm<Policy> {
+public class PolicyEditForm extends ExtaEditForm<Policy> {
 
     private static final long serialVersionUID = 44314371625923505L;
 
@@ -33,14 +35,10 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
     @PropertyId("issueDate")
     private PopupDateField issueDateField;
 
-    /**
-     * <p>Constructor for PolicyEditForm.</p>
-     *
-     * @param caption   a {@link java.lang.String} object.
-     * @param editedObj a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public PolicyEditForm(final String caption, final BeanItem<Policy> editedObj) {
-        super(caption, editedObj);
+    public PolicyEditForm(Policy policy) {
+        super(policy.isNew() ?
+                "Новый бланк" :
+                "Редактировать бланк", new BeanItem(policy));
     }
 
     /** {@inheritDoc} */
@@ -51,22 +49,18 @@ public class PolicyEditForm extends AbstractEditForm<Policy> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final Policy obj) {
+    protected Policy saveObject(Policy obj) {
         final PolicyRepository policyRepository = lookup(PolicyRepository.class);
-        policyRepository.save(obj);
-        Notification.show("Бланк сохранен", Notification.Type.TRAY_NOTIFICATION);
+        obj = policyRepository.save(obj);
+        NotificationUtil.showSuccess("Бланк сохранен");
+        return obj;
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final Policy obj) {
-    }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Policy obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         regNumField = new EditField("Номер полиса", "Введите номер полиса.");
         regNumField.setColumns(20);

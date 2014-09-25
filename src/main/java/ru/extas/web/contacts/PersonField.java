@@ -3,6 +3,8 @@ package ru.extas.web.contacts;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -45,21 +47,18 @@ public class PersonField extends CustomField<Person> {
 		final Person person = (Person) getPropertyDataSource().getValue();
 		personItem = new BeanItem<>(person == null ? new Person() : person);
 
-		final Button.ClickListener openLeadFormListener = new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				PersonEditForm form = new PersonEditForm("Просмотр/редактирование клиента", personItem);
-				form.showModal();
-			}
-		};
+		final Button.ClickListener openLeadFormListener = event -> {
+            PersonEditForm form = new PersonEditForm(personItem.getBean());
+FormUtils.showModalWin(form);
+        };
 		// Открытие формы ввода/редактирования
 		Button openBtn = new Button("Нажмите для просмотра/редактирования клиента...", openLeadFormListener);
-		openBtn.addStyleName("link");
+		openBtn.addStyleName(ExtaTheme.BUTTON_LINK);
 		container.addComponent(openBtn);
 
 		HorizontalLayout fieldsContainer = new HorizontalLayout();
 		fieldsContainer.setSpacing(true);
-		fieldsContainer.addStyleName("bordered-items");
+		fieldsContainer.addStyleName(ExtaTheme.BORDERED_ITEMS);
 		// Имя
 		Label nameField = new Label(personItem.getItemProperty("name"));
 		nameField.setCaption("Имя");

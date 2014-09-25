@@ -28,8 +28,8 @@ public class StringToPersonPosition extends String2EnumConverter<Person.Position
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<Person.Position, String> createEnum2StringMap() {
-		BiMap<Person.Position, String> map = HashBiMap.create();
+	protected HashBiMap<Person.Position, String> createEnum2StringMap() {
+        HashBiMap<Person.Position, String> map = HashBiMap.create();
 		map.put(Person.Position.EMPLOYEE, "Сотрудник");
 		map.put(Person.Position.DIRECTOR, "Генеральный директор");
 		map.put(Person.Position.ACCOUNTANT, "Главный бухгалтер");

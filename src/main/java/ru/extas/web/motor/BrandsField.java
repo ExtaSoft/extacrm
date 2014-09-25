@@ -40,13 +40,10 @@ public class BrandsField extends CustomField<Set> {
 		twin.setImmediate(true);
 		twin.setLeftColumnCaption("Доступные бренды");
 		twin.setRightColumnCaption("Бренды юр.лица");
-		twin.addValueChangeListener(new ValueChangeListener() {
-			@Override
-			public void valueChange(final Property.ValueChangeEvent event) {
-				Set selected = (Set) twin.getValue();
-				setValue(selected);
-			}
-		});
+		twin.addValueChangeListener(event -> {
+            Set selected = (Set) twin.getValue();
+            setValue(selected);
+        });
 
 		final Property dataSource = getPropertyDataSource();
 		final Set<String> set = (Set<String>) dataSource.getValue();

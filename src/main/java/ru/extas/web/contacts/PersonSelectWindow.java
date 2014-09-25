@@ -2,9 +2,7 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Container;
 import ru.extas.model.contacts.Person;
-import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaDataContainer;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
@@ -33,8 +31,8 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 	 */
 	public PersonSelectWindow(final String caption) {
 		super(caption);
-		addStyleName("base-view");
-		setContent(new SelectGrid());
+        setWidth(800, Unit.PIXELS);
+        setContent(new SelectGrid());
 	}
 
 	/**
@@ -50,7 +48,7 @@ public class PersonSelectWindow extends CloseOnlylWindow {
         @Override
         protected Container createContainer() {
             final ExtaDataContainer<Person> container = new ExtaDataContainer<>(Person.class);
-            container.addNestedContainerProperty("actualAddress.region");
+            container.addNestedContainerProperty("regAddress.region");
             return container;
         }
 
@@ -58,7 +56,7 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 		protected List<UIAction> createActions() {
 			List<UIAction> actions = newArrayList();
 
-			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", "icon-check") {
+			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
 				@Override
 				public void fire(final Object itemId) {
 

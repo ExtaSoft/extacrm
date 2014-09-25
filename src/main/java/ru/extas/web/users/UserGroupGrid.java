@@ -1,8 +1,6 @@
 package ru.extas.web.users;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window;
 import ru.extas.model.security.UserGroup;
 import ru.extas.web.commons.*;
 
@@ -19,7 +17,16 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class UserGroupGrid extends ExtaGrid {
+public class UserGroupGrid extends ExtaGrid<UserGroup> {
+    public UserGroupGrid() {
+        super(UserGroup.class);
+    }
+
+    @Override
+    public ExtaEditForm<UserGroup> createEditForm(UserGroup userGroup, boolean isInsert) {
+        return new UserGroupEditForm(userGroup);
+    }
+
     /** {@inheritDoc} */
     @Override
     protected GridDataDecl createDataDecl() {
@@ -40,70 +47,17 @@ public class UserGroupGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new UIAction("Новая", "Ввод новой группы пользователей в систему", "icon-user-add") {
-            @Override
-            public void fire(Object itemId) {
-                final BeanItem<UserGroup> newObj = new BeanItem<>(new UserGroup());
+        actions.add(new NewObjectAction("Новая", "Ввод новой группы пользователей в систему", Fontello.USER_ADD));
+        actions.add(new EditObjectAction("Изменить", "Редактирование группы", Fontello.USER_1));
 
-                final UserGroupEditForm editWin = new UserGroupEditForm("Ввод новой группы", newObj);
-                editWin.addCloseListener(new Window.CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final Window.CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainer();
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
-
-
-        actions.add(new DefaultAction("Изменить", "Редактирование группы", "icon-user-1") {
-            @Override
-            public void fire(final Object itemId) {
-                final BeanItem<UserGroup> curObj = new GridItem<>(table.getItem(itemId));
-
-                final UserGroupEditForm editWin = new UserGroupEditForm("Редактирование группы", curObj);
-                editWin.addCloseListener(new Window.CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final Window.CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainerItem(itemId);
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
-
-        actions.add(new ItemAction("Копировать", "Копировать текущую группу в новую запись", "icon-copycard") {
+        actions.add(new ItemAction("Копировать", "Копировать текущую группу в новую запись", Fontello.DOCS) {
             @Override
             public void fire(final Object itemId) {
                 final UserGroup curObj = GridItem.extractBean(table.getItem(itemId));
 
                 UserGroup copy = curObj.clone();
                 copy.setName("Копия - " + curObj.getName());
-                final UserGroupEditForm editWin = new UserGroupEditForm("Редактирование копируемой группы", new BeanItem<>(copy));
-                editWin.addCloseListener(new Window.CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final Window.CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainerItem(itemId);
-                        }
-                    }
-                });
-                editWin.setModified(true);
-                editWin.showModal();
+                doEditNewObject(copy);
             }
         });
         return actions;

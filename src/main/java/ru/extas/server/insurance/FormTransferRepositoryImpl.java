@@ -34,10 +34,10 @@ public class FormTransferRepositoryImpl implements FormTransferService {
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void saveAndChangeOwner(final FormTransfer tf) {
+    public FormTransfer saveAndChangeOwner(final FormTransfer tf) {
         logger.debug("Persisting FormTransfer");
         a7FormService.changeOwner(tf.getFormNums(), tf.getToContact());
-        transferRepository.save(tf);
+        return transferRepository.save(tf);
     }
 
 }

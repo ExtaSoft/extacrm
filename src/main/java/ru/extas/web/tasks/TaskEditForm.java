@@ -1,9 +1,7 @@
 package ru.extas.web.tasks;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
-import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
@@ -23,8 +21,10 @@ import ru.extas.model.security.UserProfile;
 import ru.extas.model.security.UserRole;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.PersonField;
 import ru.extas.web.lead.LeadField;
 import ru.extas.web.sale.SaleField;
@@ -35,6 +35,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.gwt.thirdparty.guava.common.collect.Maps.newHashMap;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -45,7 +46,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class TaskEditForm extends AbstractEditForm<Task> {
+public class TaskEditForm extends ExtaEditForm<Task> {
 
     private static final long serialVersionUID = 9510268415882116L;
     private boolean taskCompleted = false;
@@ -68,20 +69,15 @@ public class TaskEditForm extends AbstractEditForm<Task> {
     private VerticalLayout formsContainer;
     private final boolean canAssigne;
 
-    /**
-     * <p>Constructor for TaskEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public TaskEditForm(final String caption, final BeanItem<Task> obj) {
-        super(caption);
-
+    public TaskEditForm(final Task task) {
+        super(isNullOrEmpty(task.getId()) ?
+                "Ввод новой задачи в систему" :
+                "Редактирование задачи");
         // Может ли пользователь менять ответственного
-        UserManagementService userService = lookup(UserManagementService.class);
+        final UserManagementService userService = lookup(UserManagementService.class);
         canAssigne = userService.isCurUserHasRole(UserRole.ADMIN)/* || userService.isCurUserHasRole(UserRole.MANAGER)*/;
 
-        initForm(obj);
+        initForm(new BeanItem(task));
     }
 
     /** {@inheritDoc} */
@@ -94,12 +90,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
 
         TaskFormData taskData = formService.getTaskFormData(obj.getId());
         List<FormProperty> formProps = taskData.getFormProperties();
-        Optional<FormProperty> result = Iterators.tryFind(formProps.iterator(), new Predicate<FormProperty>() {
-            @Override
-            public boolean apply(FormProperty input) {
-                return input.getId().equals("result");
-            }
-        });
+        Optional<FormProperty> result = Iterators.tryFind(formProps.iterator(), input -> input.getId().equals("result"));
         HorizontalLayout finishToolBar = new HorizontalLayout();
         finishToolBar.setSpacing(true);
         finishToolBar.setMargin(true);
@@ -108,29 +99,21 @@ public class TaskEditForm extends AbstractEditForm<Task> {
             FormType resultType = result.get().getType();
             Map<String, String> resultValues = (Map<String, String>) resultType.getInformation("values");
             for (Map.Entry<String, String> resultValue : resultValues.entrySet()) {
-                Button btn = new Button(resultValue.getValue(), new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        String curValue = (String) event.getButton().getData();
-                        completeTask(curValue, obj);
-                    }
+                Button btn = new Button(resultValue.getValue(), event -> {
+                    String curValue = (String) event.getButton().getData();
+                    completeTask(curValue, obj);
                 });
                 btn.setData(resultValue.getKey());
                 btn.setDescription(MessageFormat.format("Завершить задачу с результатом: \"{0}\"", resultValue.getValue()));
                 finishToolBar.addComponent(btn);
             }
         } else {
-            Button btn = new Button("Завершить", new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    completeTask(null, obj);
-                }
-            });
+            Button btn = new Button("Завершить", event -> completeTask(null, obj));
             finishToolBar.addComponent(btn);
         }
         formsContainer.addComponent(new Panel("Завершить задачу", finishToolBar));
 
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         nameField = new EditField("Название", "Название задачи");
         nameField.setRequired(true);
@@ -163,13 +146,10 @@ public class TaskEditForm extends AbstractEditForm<Task> {
             // Поле для выбора пользователя
             profileSelect = new UserProfileSelect("Ответственный", "Ответственный за выполнение задачи");
             profileSelect.setWidth(25, Unit.EM);
-            profileSelect.addValueChangeListener(new Property.ValueChangeListener() {
-                @Override
-                public void valueChange(final Property.ValueChangeEvent event) {
-                    UserProfile profile = (UserProfile) profileSelect.getConvertedValue();
-                    if (profile != null) {
-                        assigneeField.setValue(profile.getLogin());
-                    }
+            profileSelect.addValueChangeListener(event -> {
+                UserProfile profile = (UserProfile) profileSelect.getConvertedValue();
+                if (profile != null) {
+                    assigneeField.setValue(profile.getLogin());
                 }
             });
             if (obj.getAssignee() != null) {
@@ -293,8 +273,8 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         }
         // Закрыть окно
         taskCompleted = true;
-        Notification.show("Задача выполнена", Notification.Type.TRAY_NOTIFICATION);
-        close();
+        NotificationUtil.showSuccess("Задача выполнена");
+        closeForm();
         // Показать статус выполнения процесса
         BPStatusForm statusForm = new BPStatusForm(obj.getProcessInstanceId());
         statusForm.showModal();
@@ -316,7 +296,7 @@ public class TaskEditForm extends AbstractEditForm<Task> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final Task obj) {
+    protected Task saveObject(final Task obj) {
         TaskService taskService = lookup(TaskService.class);
         Task task = taskService.createTaskQuery().taskId(obj.getId()).singleResult();
 
@@ -327,12 +307,8 @@ public class TaskEditForm extends AbstractEditForm<Task> {
         task.setAssignee(obj.getAssignee());
 
         taskService.saveTask(task);
-        Notification.show("Задача сохранена", Notification.Type.TRAY_NOTIFICATION);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final Task obj) {
+        NotificationUtil.showSuccess("Задача сохранена");
+        return task;
     }
 
     /**

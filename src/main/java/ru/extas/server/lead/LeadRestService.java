@@ -1,9 +1,9 @@
 package ru.extas.server.lead;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -22,6 +22,7 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.HelpContent;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -32,6 +33,7 @@ import java.util.Set;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.System.lineSeparator;
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static ru.extas.model.common.ModelUtils.evictCache;
 
 /**
  * Предоставляет точку доступа для ввода лида
@@ -46,7 +48,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @RequestMapping("/service/lead")
 public class LeadRestService {
 
-    private Logger logger = LoggerFactory.getLogger(LeadRestService.class);
+    private final Logger logger = LoggerFactory.getLogger(LeadRestService.class);
 
     @Inject
     private LeadRepository leadRepository;
@@ -60,6 +62,8 @@ public class LeadRestService {
     private MotorBrandRepository motorBrandRepository;
     @Inject
     private MotorTypeRepository motorTypeRepository;
+    @Inject
+    private EntityManager entityManager;
 
     @JsonAutoDetect
     public static class RestLead {
@@ -97,7 +101,7 @@ public class LeadRestService {
         // Идентификатор мотосалона.
         private String dealerId;
 
-        // Комментарий.
+        // Примечание.
         private String comment;
 
         public RestLead() {
@@ -324,12 +328,16 @@ public class LeadRestService {
             SalePoint salePoint = salePointRepository.findOne(lead.getDealerId());
             if (salePoint == null)
                 throw new IllegalArgumentException("Id торговой точки не действителен (не найден)");
-            else
+            else {
                 newLead.setVendor(salePoint);
+                newLead.setPointOfSale(salePoint.getName());
+                if(salePoint.getRegAddress() != null)
+                    newLead.setRegion(salePoint.getRegAddress().getRegion());
+            }
         }
         newLead.setPointOfSale(lead.getDealer());
 
-        // Комментарий.
+        // Примечание.
         if(!isNullOrEmpty(lead.getComment()))
             dirtyData.append(lead.getComment());
         newLead.setComment(dirtyData.toString());
@@ -344,8 +352,8 @@ public class LeadRestService {
         if (user == null)
             user = userService.findUserContactByLogin("admin");
 
-        leadRepository.permitAndSave(newLead, user);
-
+        newLead = leadRepository.permitAndSave(newLead, user);
+        evictCache(entityManager, newLead);
     }
 
     /**

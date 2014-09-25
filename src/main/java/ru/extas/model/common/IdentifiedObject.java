@@ -5,6 +5,8 @@ import org.eclipse.persistence.annotations.UuidGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 /**
  * Объект с идентификатором и контролем версий
  *
@@ -71,7 +73,7 @@ public class IdentifiedObject implements Serializable {
      *
      * @param key ID объекта
      */
-    public void setId(String key) {
+    public void setId(final String key) {
         this.id = key;
     }
 
@@ -98,11 +100,14 @@ public class IdentifiedObject implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        AuditedObject other = (AuditedObject) obj;
+        IdentifiedObject other = (IdentifiedObject) obj;
         if (id == null || other.id == null) {
             return super.equals(other);
         } else
             return id.equals(other.id);
     }
 
+    public boolean isNew() {
+        return isNullOrEmpty(getId());
+    }
 }

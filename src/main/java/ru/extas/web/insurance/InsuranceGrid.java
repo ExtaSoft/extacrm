@@ -7,9 +7,6 @@ import com.google.common.base.Throwables;
 import com.vaadin.addon.tableexport.CustomTableHolder;
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.slf4j.Logger;
@@ -44,7 +41,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.3
  */
-public class InsuranceGrid extends ExtaGrid {
+public class InsuranceGrid extends ExtaGrid<Insurance> {
 
     private static final long serialVersionUID = -2317741378090152128L;
     private final static Logger logger = LoggerFactory.getLogger(InsuranceGrid.class);
@@ -54,6 +51,12 @@ public class InsuranceGrid extends ExtaGrid {
      * <p>Constructor for InsuranceGrid.</p>
      */
     public InsuranceGrid() {
+        super(Insurance.class);
+    }
+
+    @Override
+    public ExtaEditForm<Insurance> createEditForm(Insurance insurance, boolean isInsert) {
+        return new InsuranceEditForm(insurance);
     }
 
     /** {@inheritDoc} */
@@ -72,6 +75,7 @@ public class InsuranceGrid extends ExtaGrid {
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
         container.addNestedContainerProperty("dealer.name");
+        container.sort(new Object[]{"createdAt"}, new boolean[]{false});
         return container;
     }
 
@@ -80,56 +84,14 @@ public class InsuranceGrid extends ExtaGrid {
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new UIAction("Новый", "Ввод нового полиса страхования", "icon-doc-new") {
-
+        actions.add(new NewObjectAction("Новый", "Ввод нового полиса страхования"));
+        actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке полис страхования"));
+        actions.add(new EditObjectAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", Fontello.CLOCK) {
             @Override
             public void fire(Object itemId) {
-                final BeanItem<Insurance> newObj = new BeanItem<>(new Insurance());
+                Insurance oldIns = GridItem.extractBean(table.getItem(itemId));
 
-                final InsuranceEditForm editWin = new InsuranceEditForm("Новый полис", newObj);
-                editWin.addCloseListener(new CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainer();
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
-
-        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке полис страхования", "icon-edit-3") {
-            @Override
-            public void fire(final Object itemId) {
-                final BeanItem<Insurance> curObj = new GridItem<>(table.getItem(itemId));
-
-                final InsuranceEditForm editWin = new InsuranceEditForm("Редактировать полис", curObj);
-                editWin.addCloseListener(new CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainerItem(itemId);
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
-
-        actions.add(new ItemAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", "icon-clock") {
-            @Override
-            public void fire(Object itemId) {
-                final BeanItem<Insurance> curItem = new GridItem<>(table.getItem(itemId));
-                Insurance oldIns = curItem.getBean();
-
-                Insurance insurance = new Insurance();
+                Insurance insurance = createEntity();
                 // Копируем все необходимые данные из истекшего(истекающего) договора
                 insurance.setClient(oldIns.getClient());
                 insurance.setBeneficiary(oldIns.getBeneficiary());
@@ -148,44 +110,39 @@ public class InsuranceGrid extends ExtaGrid {
                 insurance.setSaleNum(oldIns.getSaleNum());
                 insurance.setSaleDate(oldIns.getSaleDate());
 
-                final InsuranceEditForm editWin = new InsuranceEditForm("Пролонгация полиса", new BeanItem<>(insurance));
-                editWin.addCloseListener(new CloseListener() {
+                doEditNewObject(insurance);
+            }
+        });
 
-                    private static final long serialVersionUID = 1L;
-
+        actions.add(new UIActionGroup("Печать", "Создать печатное представление полиса страхования", Fontello.PRINT_2) {
+            @Override
+            protected List<UIAction> makeActionsGroup() {
+                List<UIAction> group = newArrayList();
+                group.add(new ItemAction("Печать", "Создать печатное представление полиса страхования", Fontello.PRINT_2) {
                     @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainer();
-                        }
+                    public void fire(Object itemId) {
+                        printPolicy(itemId, true);
                     }
                 });
-                editWin.showModal();
+
+                group.add(new ItemAction("Печать без подложки", "Создать печатное представление полиса страхования без подложки", Fontello.PRINT_2) {
+                    @Override
+                    public void fire(Object itemId) {
+                        printPolicy(itemId, false);
+                    }
+                });
+
+                group.add(new ItemAction("Печать счета", "Создать печатную форму счета на оплату страховки", Fontello.PRINT_2) {
+                    @Override
+                    public void fire(Object itemId) {
+                        printInvoice(itemId);
+                    }
+                });
+                return group;
             }
         });
 
-        actions.add(new ItemAction("Печать", "Создать печатное представление полиса страхования", "icon-print-2") {
-            @Override
-            public void fire(Object itemId) {
-                printPolicy(itemId, true);
-            }
-        });
-
-        actions.add(new ItemAction("Печать без подложки", "Создать печатное представление полиса страхования без подложки", "icon-print-2") {
-            @Override
-            public void fire(Object itemId) {
-                printPolicy(itemId, false);
-            }
-        });
-
-        actions.add(new ItemAction("Печать счета", "Создать печатную форму счета на оплату страховки", "icon-print-2") {
-            @Override
-            public void fire(Object itemId) {
-                printInvoice(itemId);
-            }
-        });
-
-        actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в Excel файл", "icon-grid") {
+        actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в Excel файл", Fontello.GRID) {
             @Override
             public void fire(Object itemId) {
                 exportTableData();

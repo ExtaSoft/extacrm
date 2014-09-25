@@ -1,17 +1,16 @@
 package ru.extas.web.commons;
 
-import com.google.common.base.Predicate;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.data.Property;
 import com.vaadin.event.Action;
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +27,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class ExtaGrid extends CustomComponent {
+public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private static final long serialVersionUID = 2299363623807745654L;
 
     /**
@@ -36,16 +35,64 @@ public abstract class ExtaGrid extends CustomComponent {
      */
     public static final String OVERALL_COLUMN = "OverallColumn";
 
+    private final Class<TEntity> entityClass;
+    private FormService formService;
     protected FilterTable table;
     protected Container container;
     private List<UIAction> actions;
     private GridDataDecl dataDecl;
     private Mode currentMode;
-    private List<Component> needCurrentBtns;
+    private boolean toolbarVisible = true;
+    private List<MenuBar.MenuItem> needCurrentMenu;
+    private MenuBar.MenuItem tableModeBtn;
+    private MenuBar.MenuItem detailModeBtn;
+
+    public void selectObject(Object objectId) {
+        if (table != null && objectId != null && table.containsId(objectId))
+            table.select(objectId);
+    }
 
     public enum Mode {
         TABLE,
         DETAIL_LIST
+    }
+
+    public interface FormService extends Serializable {
+
+        void open4Edit(ExtaEditForm form);
+
+        void open4Insert(ExtaEditForm form);
+
+    }
+
+    public static class ModalPopupFormService implements FormService {
+        private final ExtaGrid grid;
+
+        public ModalPopupFormService(ExtaGrid grid) {
+            this.grid = grid;
+        }
+
+        @Override
+        public void open4Edit(ExtaEditForm form) {
+            form.addCloseFormListener(event -> {
+                if (form.isSaved()) {
+                    grid.refreshContainerItem(form.getObjectId());
+                }
+                grid.selectObject(form.getObjectId());
+            });
+            FormUtils.showModalWin(form);
+        }
+
+        @Override
+        public void open4Insert(ExtaEditForm form) {
+            form.addCloseFormListener(event -> {
+                if (form.isSaved()) {
+                    grid.refreshContainer();
+                    grid.selectObject(form.getObjectId());
+                }
+            });
+            FormUtils.showModalWin(form);
+        }
     }
 
     /**
@@ -53,7 +100,9 @@ public abstract class ExtaGrid extends CustomComponent {
      *
      * @param initNow a boolean.
      */
-    public ExtaGrid(boolean initNow) {
+    public ExtaGrid(final Class<TEntity> entityClass, final boolean initNow) {
+        this.entityClass = entityClass;
+        formService = new ModalPopupFormService(this);
         if (initNow)
             initialize();
     }
@@ -61,8 +110,60 @@ public abstract class ExtaGrid extends CustomComponent {
     /**
      * <p>Constructor for ExtaGrid.</p>
      */
-    public ExtaGrid() {
-        this(true);
+    public ExtaGrid(final Class<TEntity> entityClass) {
+        this(entityClass, true);
+    }
+
+    public FormService getFormService() {
+        return formService;
+    }
+
+    public void setFormService(FormService formService) {
+        this.formService = formService;
+    }
+
+    public Class<TEntity> getEntityClass() {
+        return entityClass;
+    }
+
+    public TEntity createEntity() {
+        try {
+            return entityClass.newInstance();
+        } catch (final Throwable t) {
+            throw Throwables.propagate(t);
+        }
+    }
+
+    public TEntity getSelectedEntity() {
+        if (table != null) {
+            final Object itemId = table.getValue();
+            if (itemId != null) {
+                final Item item = table.getItem(itemId);
+                if (item != null)
+                    return GridItem.extractBean(item);
+            }
+        }
+        return null;
+    }
+
+    public abstract ExtaEditForm<TEntity> createEditForm(TEntity entity, boolean isInsert);
+
+    public void doEditObject(final TEntity entity) {
+
+        final ExtaEditForm<TEntity> form = createEditForm(entity, false);
+        if(!form.isReadOnly())
+            form.setReadOnly(!GridUtils.isPermitEdit(container, entity));
+        formService.open4Edit(form);
+    }
+
+    public void doEditNewObject(TEntity init) {
+        TEntity entity = init == null ? createEntity() : init;
+
+        if (GridUtils.isPermitInsert(container)) {
+            final ExtaEditForm<TEntity> form = createEditForm(entity, true);
+            formService.open4Insert(form);
+        } else
+            NotificationUtil.showWarning("Ввод новых объектов запрещен администратором!");
     }
 
     /**
@@ -81,101 +182,128 @@ public abstract class ExtaGrid extends CustomComponent {
 
     private void initContent(Mode mode) {
         currentMode = mode;
-        final CssLayout panel = new CssLayout();
-        panel.addStyleName("layout-panel");
+        setSizeFull();
+
+        final GridLayout panel = new GridLayout(2, 2);
+//        panel.addStyleName(toolbarVisible ? "grid-panel" : "grid-panel-notools");
         panel.setSizeFull();
 
-        // Формируем тулбар
-        final HorizontalLayout commandBar = createGridToolbar(mode);
-        panel.addComponent(commandBar);
+        panel.setRowExpandRatio(0, 0);
+        panel.setRowExpandRatio(1, 1);
+        panel.setColumnExpandRatio(0, 1);
+        panel.setColumnExpandRatio(1, 0);
+        panel.setMargin(new MarginInfo(true, false, true, false));
 
-        // Переключение режима таблицы
-        final HorizontalLayout modeSwitchBar = new HorizontalLayout();
-        modeSwitchBar.addStyleName("mode-switch-bar segment");
-        final Button tableFilterBtn = new Button("Фильтр");
-        tableFilterBtn.setDescription("Показать строку фильтра таблицы");
-        tableFilterBtn.addStyleName("first icon-filter0 icon-only");
-        tableFilterBtn.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                boolean isFilterVisible = table.isFilterBarVisible();
-                table.setFilterBarVisible(!isFilterVisible);
-                if (isFilterVisible)
-                    tableFilterBtn.removeStyleName("down");
-                else
-                    tableFilterBtn.addStyleName("down");
-            }
-        });
-        final Button tableModeBtn = new Button("Таблица");
-        tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
-        tableModeBtn.addStyleName("icon-table icon-only");
-        final Button detailModeBtn = new Button("Детали");
-        detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
-        detailModeBtn.addStyleName("last icon-list-alt icon-only");
-        if (currentMode == Mode.TABLE)
-            tableModeBtn.addStyleName("down");
-        else
-            detailModeBtn.addStyleName("down");
-        final Button.ClickListener switchListener = new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                if (event.getButton() == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
-                    initContent(Mode.TABLE);
-                    tableModeBtn.addStyleName("down");
-                    detailModeBtn.removeStyleName("down");
+        if (toolbarVisible) {
+            panel.setSpacing(true);
+            // Формируем тулбар
+            final MenuBar commandBar = createGridToolbar(mode);
+            panel.addComponent(commandBar, 0, 0);
+            panel.setComponentAlignment(commandBar, Alignment.TOP_LEFT);
+
+            // Переключение режима таблицы
+            final MenuBar modeSwitchBar = new MenuBar();
+            modeSwitchBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+            final MenuBar.MenuItem tableFilterBtn = modeSwitchBar.addItem("", Fontello.FILTER, selectedItem -> table.setFilterBarVisible(selectedItem.isChecked()));
+            tableFilterBtn.setDescription("Показать строку фильтра таблицы");
+            tableFilterBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            tableFilterBtn.setCheckable(true);
+
+            MenuBar.Command modeCommand = selectedItem -> {
+                if (selectedItem == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
+                    setMode(Mode.TABLE);
                 } else if (currentMode == Mode.TABLE) {
-                    initContent(Mode.DETAIL_LIST);
-                    tableModeBtn.removeStyleName("down");
-                    detailModeBtn.addStyleName("down");
+                    setMode(Mode.DETAIL_LIST);
                 }
+            };
+            tableModeBtn = modeSwitchBar.addItem("", Fontello.TABLE, modeCommand);
+            tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
+            tableModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            tableModeBtn.setCheckable(true);
+
+            detailModeBtn = modeSwitchBar.addItem("", Fontello.LIST_ALT, modeCommand);
+            detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
+            detailModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            detailModeBtn.setCheckable(true);
+
+            if (currentMode == Mode.TABLE) {
+                tableModeBtn.setChecked(true);
+                detailModeBtn.setChecked(false);
+            } else {
+                detailModeBtn.setChecked(true);
+                tableModeBtn.setChecked(false);
             }
-        };
-        tableModeBtn.addClickListener(switchListener);
-        detailModeBtn.addClickListener(switchListener);
-        modeSwitchBar.addComponent(tableFilterBtn);
-        modeSwitchBar.addComponent(tableModeBtn);
-        modeSwitchBar.addComponent(detailModeBtn);
-        panel.addComponent(modeSwitchBar);
+            panel.addComponent(modeSwitchBar, 1, 0);
+            panel.setComponentAlignment(modeSwitchBar, Alignment.TOP_RIGHT);
+        }
 
         // Таблица
         initTable(mode);
-        panel.addComponent(table);
+        panel.addComponent(table, 0, 1, 1, 1);
 
         setCompositionRoot(panel);
     }
 
-    private HorizontalLayout createGridToolbar(Mode mode) {
-        final HorizontalLayout commandBar = new HorizontalLayout();
-        commandBar.addStyleName("grid-toolbar");
-        commandBar.setSpacing(true);
+    public void setMode(Mode mode) {
+        initContent(mode);
+        detailModeBtn.setChecked(mode == Mode.DETAIL_LIST);
+        tableModeBtn.setChecked(mode == Mode.TABLE);
+    }
 
-        needCurrentBtns = newArrayList();
+    public Mode getMode() {
+        return currentMode;
+    }
+
+    public boolean isToolbarVisible() {
+        return toolbarVisible;
+    }
+
+    public void setToolbarVisible(boolean toolbarVisible) {
+        this.toolbarVisible = toolbarVisible;
+    }
+
+    private MenuBar createGridToolbar(Mode mode) {
+        final MenuBar commandBar = new MenuBar();
+        commandBar.setAutoOpen(true);
+        commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+        commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+//        commandBar.focus();
+
+        needCurrentMenu = newArrayList();
         for (final UIAction action : actions) {
-            final Component button = action.createButton();
-
-
-            if (button instanceof Button) {
-                ((Button) button).addClickListener(new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(final Button.ClickEvent event) {
-                        if (action instanceof ItemAction) {
-                            Object item = table.getValue();
-                            refreshContainerItem(item);
-                            action.fire(checkNotNull(item, "No selected row"));
-                        } else
-                            action.fire(null);
-                    }
-                });
-                if (commandBar.getComponentCount() == 0)
-                    ((Button) button).focus(); // фокус на первую кнопку
-            }
-            commandBar.addComponent(button);
-            if (action instanceof ItemAction) {
-                needCurrentBtns.add(button);
-                button.setEnabled(false);
-            }
+            final MenuBar.MenuItem menuItem = commandBar.addItem(action.getName(), action.getIcon(), null);
+            fillGridTollbarItem(action, menuItem);
         }
         return commandBar;
+    }
+
+    private void fillGridTollbarItem(final UIAction action, MenuBar.MenuItem menuItem) {
+        menuItem.setDescription(action.getDescription());
+
+        if (action instanceof UIActionGroup) {
+            final List<UIAction> actionsGroup = ((UIActionGroup) action).getActionsGroup();
+            for (final UIAction subAction : actionsGroup) {
+                fillGridTollbarItem(subAction, menuItem.addItem(subAction.getName(), subAction.getIcon(), null));
+            }
+        } else {
+            MenuBar.Command command = selectedItem -> {
+                if (action instanceof ItemAction) {
+                    Object item = table.getValue();
+                    refreshContainerItem(item);
+                    action.fire(checkNotNull(item, "No selected row"));
+                } else
+                    action.fire(null);
+
+            };
+            menuItem.setCommand(command);
+        }
+        if (action instanceof ItemAction) {
+            needCurrentMenu.add(menuItem);
+            menuItem.setEnabled(false);
+        }
+        if (action instanceof ExtaGrid.NewObjectAction) {
+            menuItem.setEnabled(GridUtils.isPermitInsert(container));
+        }
     }
 
     /**
@@ -213,138 +341,58 @@ public abstract class ExtaGrid extends CustomComponent {
 
                 @Override
                 public void handleAction(final Action action, Object sender, Object target) {
-                    UIAction firedAction = Iterables.find(actions, new Predicate<UIAction>() {
-                        @Override
-                        public boolean apply(UIAction input) {
-                            return input.getName().equals(action.getCaption());
-                        }
-                    });
+                    UIAction firedAction = Iterables.find(actions, input -> input.getName().equals(action.getCaption()));
                     firedAction.fire(table.getValue());
                 }
             });
         }
 
         if (mode == Mode.DETAIL_LIST) {
-            table.setColumnHeaderMode(CustomTable.ColumnHeaderMode.HIDDEN);
-            table.addGeneratedColumn(OVERALL_COLUMN, new CustomTable.ColumnGenerator() {
-                @Override
-                public Object generateCell(final CustomTable source, final Object itemId, Object columnId) {
-                    Item item = source.getItem(itemId);
-
-                    Iterator<DataDeclMapping> mapIterator = dataDecl.getMappings().iterator();
-                    DataDeclMapping titleMap = mapIterator.next();
-                    VerticalLayout panel = new VerticalLayout();
-
-                    // Основная строка данных
-                    AbstractComponent titleComp;
-                    if (defAction == null) {
-                        Label titleLbl = new Label(item.getItemProperty(titleMap.getPropName()));
-                        if (titleMap.getConverter() != null)
-                            titleLbl.setConverter(titleMap.getConverter());
-                        titleLbl.setDescription(titleMap.getCaption());
-                        titleComp = titleLbl;
-                    } else {
-                        Button titleLink = new Button();
-                        titleLink.addStyleName("link");
-                        titleLink.setCaption((String) item.getItemProperty(titleMap.getPropName()).getValue());
-                        titleLink.setDescription(defAction.getDescription());
-                        titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-                        titleLink.addClickListener(new Button.ClickListener() {
-                            @Override
-                            public void buttonClick(Button.ClickEvent event) {
-                                defAction.fire(itemId);
-                            }
-                        });
-                        titleComp = titleLink;
-                    }
-                    titleComp.setImmediate(true);
-                    titleComp.addStyleName("main-item-text");
-                    panel.addComponent(titleComp);
-//                final HorizontalLayout header = new HorizontalLayout(titleComp, createItemToolbar(itemId));
-//                header.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
-//                panel.addComponent(header);
-
-                    // Дополнительные данные
-                    HorizontalLayout details = new HorizontalLayout();
-                    details.setSpacing(true);
-                    while (mapIterator.hasNext()) {
-                        DataDeclMapping prop = mapIterator.next();
-                        if (!prop.isCollapsed()) {
-                            Label detail = new Label(item.getItemProperty(prop.getPropName()));
-                            detail.addStyleName("h3");
-                            detail.setDescription(prop.getCaption());
-                            details.addComponent(detail);
-                        }
-                    }
-                    panel.addComponent(details);
-
-                    // Кнопки действий
-                    HorizontalLayout actionToolbar = createItemToolbar(itemId);
-                    if (actionToolbar.getComponentCount() > 0)
-                        panel.addComponent(actionToolbar);
-
-                    // Forward clicks on the layout as selection
-                    // in the table
-                    panel.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-                        @Override
-                        public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                            source.select(itemId);
-                            if (event.isDoubleClick())
-                                defAction.fire(itemId);
-                        }
-                    });
-                    panel.setImmediate(true);
-
-                    return panel;
-                }
-            });
-            table.setColumnHeader(OVERALL_COLUMN, "Общая информация");
-            table.setVisibleColumns(OVERALL_COLUMN);
-            for (Component btn : needCurrentBtns)
-                btn.setVisible(false);
+            initDetailTable(defAction);
         } else { // Classic table
             // Настройка столбцов таблицы
             table.setColumnHeaderMode(CustomTable.ColumnHeaderMode.EXPLICIT);
             //table.removecolutable.getVisibleColumns()
             fullInitTable(table, dataDecl);
-            table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
-                @Override
-                public void itemClick(ItemClickEvent event) {
-                    if (event.isDoubleClick())
-                        defAction.fire(event.getItemId());
-                }
+            table.addItemClickListener(event -> {
+                if (event.isDoubleClick())
+                    defAction.fire(event.getItemId());
             });
-            for (Component btn : needCurrentBtns)
+            for (MenuBar.MenuItem btn : needCurrentMenu)
                 btn.setVisible(true);
             // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
-            table.addValueChangeListener(new Property.ValueChangeListener() {
-
-                @Override
-                public void valueChange(final Property.ValueChangeEvent event) {
-                    final boolean enableBtb = event.getProperty().getValue() != null;
-                    for (Component btn : needCurrentBtns)
-                        btn.setEnabled(enableBtb);
-                }
+            table.addValueChangeListener(event -> {
+                final boolean enableBtb = event.getProperty().getValue() != null;
+                for (MenuBar.MenuItem btn : needCurrentMenu)
+                    btn.setEnabled(enableBtb);
             });
 
         }
     }
 
+    private void initDetailTable(final UIAction defAction) {
+        table.setColumnHeaderMode(CustomTable.ColumnHeaderMode.HIDDEN);
+        table.addGeneratedColumn(OVERALL_COLUMN, createDetailColumnGenerator(defAction));
+        table.setColumnHeader(OVERALL_COLUMN, "Общая информация");
+        table.setVisibleColumns(OVERALL_COLUMN);
+        for (MenuBar.MenuItem btn : needCurrentMenu)
+            btn.setVisible(false);
+    }
+
+    protected CustomTable.ColumnGenerator createDetailColumnGenerator(final UIAction defAction) {
+        return new DefaultDetailGenerator(defAction);
+    }
+
     private HorizontalLayout createItemToolbar(final Object itemId) {
         HorizontalLayout actionToolbar = new HorizontalLayout();
-        actionToolbar.addStyleName("item-toolbar");
+        actionToolbar.addStyleName(ExtaTheme.ITEM_TOOLBAR);
         actionToolbar.setSpacing(true);
         actionToolbar.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
         for (final UIAction a : actions)
             if (a instanceof ItemAction && !(a instanceof DefaultAction)) {
                 Component command = a.createButton();
                 if (command instanceof Button) {
-                    ((Button)command).addClickListener(new Button.ClickListener() {
-                        @Override
-                        public void buttonClick(Button.ClickEvent event) {
-                            a.fire(itemId);
-                        }
-                    });
+                    ((Button) command).addClickListener(event -> a.fire(itemId));
                 }
                 actionToolbar.addComponent(command);
             }
@@ -365,10 +413,12 @@ public abstract class ExtaGrid extends CustomComponent {
      * <p>refreshContainer.</p>
      */
     protected void refreshContainer() {
+        Object itemId = table.getValue();
         if (container instanceof ExtaDataContainer)
             ((ExtaDataContainer) container).refresh();
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
+        table.setValue(itemId);
     }
 
     /**
@@ -381,6 +431,10 @@ public abstract class ExtaGrid extends CustomComponent {
             ((ExtaDataContainer) container).refreshItem(itemId);
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
+    }
+
+    public void adjustGridHeight() {
+        table.setPageLength(table.size());
     }
 
     /**
@@ -403,4 +457,108 @@ public abstract class ExtaGrid extends CustomComponent {
      * @return a {@link java.util.List} object.
      */
     protected abstract List<UIAction> createActions();
+
+    private class DefaultDetailGenerator implements CustomTable.ColumnGenerator {
+        private final UIAction defAction;
+
+        public DefaultDetailGenerator(UIAction defAction) {
+            this.defAction = defAction;
+        }
+
+        @Override
+        public Object generateCell(final CustomTable source, final Object itemId, Object columnId) {
+            Item item = source.getItem(itemId);
+
+            Iterator<DataDeclMapping> mapIterator = dataDecl.getMappings().iterator();
+            DataDeclMapping titleMap = mapIterator.next();
+            if (titleMap.getPropName().equals("id"))
+                titleMap = mapIterator.next();
+            VerticalLayout panel = new VerticalLayout();
+
+            // Основная строка данных
+            AbstractComponent titleComp;
+            if (defAction == null) {
+                Label titleLbl = new Label(item.getItemProperty(titleMap.getPropName()));
+                if (titleMap.getConverter() != null)
+                    titleLbl.setConverter(titleMap.getConverter());
+                titleLbl.setDescription(titleMap.getCaption());
+                titleComp = titleLbl;
+            } else {
+                Button titleLink = new Button();
+                titleLink.addStyleName(ExtaTheme.BUTTON_LINK);
+                titleLink.setCaption((String) item.getItemProperty(titleMap.getPropName()).getValue());
+                titleLink.setDescription(defAction.getDescription());
+                titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+                titleLink.addClickListener(event -> defAction.fire(itemId));
+                titleComp = titleLink;
+            }
+            titleComp.setImmediate(true);
+            titleComp.addStyleName(ExtaTheme.MAIN_ITEM_TEXT);
+            panel.addComponent(titleComp);
+//                final HorizontalLayout header = new HorizontalLayout(titleComp, createItemToolbar(itemId));
+//                header.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
+//                panel.addComponent(header);
+
+            // Дополнительные данные
+            HorizontalLayout details = new HorizontalLayout();
+            details.setSpacing(true);
+            while (mapIterator.hasNext()) {
+                DataDeclMapping prop = mapIterator.next();
+                if (!prop.isCollapsed()) {
+                    Label detail = new Label(item.getItemProperty(prop.getPropName()));
+                    detail.addStyleName(ExtaTheme.LABEL_H3);
+                    detail.setDescription(prop.getCaption());
+                    details.addComponent(detail);
+                }
+            }
+            panel.addComponent(details);
+
+            // Кнопки действий
+            HorizontalLayout actionToolbar = createItemToolbar(itemId);
+            if (actionToolbar.getComponentCount() > 0)
+                panel.addComponent(actionToolbar);
+
+            // Forward clicks on the layout as selection
+            // in the table
+            panel.addLayoutClickListener(event -> {
+                source.select(itemId);
+                if (event.isDoubleClick())
+                    defAction.fire(itemId);
+            });
+            panel.setImmediate(true);
+
+            return panel;
+        }
+    }
+
+    protected class NewObjectAction extends UIAction {
+        public NewObjectAction(String caption, String description, Fontello icon) {
+            super(caption, description, icon);
+        }
+
+        public NewObjectAction(String caption, String description) {
+            super(caption, description, Fontello.DOC_NEW);
+        }
+
+        @Override
+        public void fire(Object itemId) {
+            doEditNewObject(null);
+        }
+    }
+
+    protected class EditObjectAction extends DefaultAction {
+        public EditObjectAction(String caption, String description, Fontello icon) {
+            super(caption, description, icon);
+        }
+
+        public EditObjectAction(String caption, String description) {
+            super(caption, description, Fontello.EDIT_3);
+        }
+
+        @Override
+        public void fire(final Object itemId) {
+            TEntity entity = GridItem.extractBean(table.getItem(itemId));
+            doEditObject(entity);
+        }
+    }
 }

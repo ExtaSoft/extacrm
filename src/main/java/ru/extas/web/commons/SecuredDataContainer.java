@@ -1,6 +1,5 @@
 package ru.extas.web.commons;
 
-import com.vaadin.addon.jpacontainer.util.DefaultQueryModifierDelegate;
 import ru.extas.model.common.SecuredObject;
 import ru.extas.model.common.SecuredObject_;
 import ru.extas.model.contacts.Company;
@@ -11,9 +10,9 @@ import ru.extas.model.security.*;
 import ru.extas.server.security.UserManagementService;
 
 import javax.persistence.criteria.*;
-import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -27,9 +26,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SecuredDataContainer<TEntityType extends SecuredObject> extends ExtaDataContainer<TEntityType> {
-
-    private ExtaDomain domain;
+public class SecuredDataContainer<TEntityType extends SecuredObject> extends AbstractSecuredDataContainer<TEntityType> {
 
     /**
      * Creates a new <code>JPAContainer</code> instance for entities of class
@@ -39,100 +36,76 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Ext
      *
      * @param entityClass the class of the entities that will reside in this container
      *                    (must not be null).
-     * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
+     * @param domain      a {@link ru.extas.model.security.ExtaDomain} object.
      */
-    public SecuredDataContainer(final Class<TEntityType> entityClass, ExtaDomain domain) {
-        super(entityClass);
-        this.domain = domain;
-
-        // Установить фильтр в соответствии с правами доступа пользователя
-        setSecurityFilter();
+    public SecuredDataContainer(final Class<TEntityType> entityClass, final ExtaDomain domain) {
+        super(entityClass, domain);
     }
 
-    /**
-     * <p>setSecurityFilter.</p>
-     */
-    public void setSecurityFilter() {
+    @Override
+    protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
+        Predicate predicate = null;
+        Root<TEntityType> objectRoot = (Root<TEntityType>) getFirst(cq.getRoots(), null);
+        Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
 
-        getEntityProvider().setQueryModifierDelegate(
-                new DefaultQueryModifierDelegate() {
-                    @Override
-                    public void filtersWillBeAdded(CriteriaBuilder cb, CriteriaQuery<?> cq, List<Predicate> predicates) {
-                        if (cb == null || cq == null || predicates == null)
-                            return;
-
-                        UserManagementService userService = lookup(UserManagementService.class);
-                        if(userService.isCurUserHasRole(UserRole.ADMIN))
-                            return;
-
-                        Root<TEntityType> objectRoot = (Root<TEntityType>) cq.getRoots().iterator().next();
-                        Person curUserContact = userService.getCurrentUserContact();
-                        Predicate predicate = null;
-
-                        // Определить область видимости и Наложить фильтр в соответствии с областью видимости
-                        if (userService.isPermittedTarget(domain, SecureTarget.ALL)) {
-                            // Доступно все, ничего не делаем кроме общего фильтра
-                            predicate = composeWithAreaFilter(cb, objectRoot, userService, null);
-                        } else {
-                            // Если не все доступно, то добавляем проежде всего "собственные" объекты
-                            SetJoin<TEntityType, Person> associatesUsersRoot = objectRoot.join(SecuredObject_.associateUsers, JoinType.LEFT);
-                            predicate = cb.equal(associatesUsersRoot, curUserContact);
-
-                            if (userService.isPermittedTarget(domain, SecureTarget.CORPORATE)) {
-                                Set<Company> companies = curUserContact.getEmployers();
-                                Set<SalePoint> workPlaces = newHashSet();
-                                for (Company company : companies) {
-                                    workPlaces.addAll(company.getSalePoints());
-                                }
-                                predicate = createSatePointPredicate(cb, userService, objectRoot, predicate, associatesUsersRoot, workPlaces);
-                            } else if (userService.isPermittedTarget(domain, SecureTarget.SALE_POINT)) {
-                                Set<SalePoint> workPlaces = curUserContact.getWorkPlaces();
-                                predicate = createSatePointPredicate(cb, userService, objectRoot, predicate, associatesUsersRoot, workPlaces);
-                            }
-                        }
-                        if (predicate != null) {
-                            predicates.add(predicate);
-                            cq.distinct(true);
-                        }
-
-                    }
-
-                    protected Predicate createSatePointPredicate(CriteriaBuilder cb, UserManagementService userService, Root<TEntityType> objectRoot, Predicate predicate, SetJoin<TEntityType, Person> associatesUsersRoot, Set<SalePoint> workPlaces) {
-                        if (workPlaces.isEmpty()) {
-                            SalePoint salePoint = new SalePoint();
-                            salePoint.setId("00-00");
-                            workPlaces.add(salePoint);
-                        }
-                        SetJoin<Person, SalePoint> workPlaceRoot = associatesUsersRoot.join(Person_.workPlaces, JoinType.LEFT);
-                        predicate = cb.or(predicate, composeWithAreaFilter(cb, objectRoot, userService, workPlaceRoot.in(workPlaces)));
-                        return predicate;
-                    }
-
-                    protected Predicate composeWithAreaFilter(CriteriaBuilder cb, Root<TEntityType> objectRoot, UserManagementService userService, Predicate predicate) {
-                        UserProfile curUserProfile = userService.getCurrentUser();
-                        Set<String> permitRegions = newHashSet(curUserProfile.getPermitRegions());
-                        Set<String> permitBrands = newHashSet(curUserProfile.getPermitBrands());
-                        Set<UserGroup> groups = curUserProfile.getGroupList();
-                        if(groups != null) {
-                            for(UserGroup group : groups) {
-                                permitBrands.addAll(group.getPermitBrands());
-                                permitRegions.addAll(group.getPermitRegions());
-                            }
-                        }
-                        if (!permitRegions.isEmpty()) {
-                            Predicate regPredicate = objectRoot.join(SecuredObject_.associateRegions, JoinType.LEFT).in(permitRegions);
-                            predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
-                        }
-                        if (!permitBrands.isEmpty()) {
-                            Predicate brPredicate = objectRoot.join(SecuredObject_.associateBrands, JoinType.LEFT).in(permitBrands);
-                            predicate = predicate == null ? brPredicate : cb.and(predicate, brPredicate);
-                        }
-                        return predicate;
-                    }
+        switch (target) {
+            case OWNONLY: {
+                SetJoin<TEntityType, Person> associatesUsersRoot = objectRoot.join(SecuredObject_.associateUsers, JoinType.LEFT);
+                predicate = cb.equal(associatesUsersRoot, curUserContact);
+                break;
+            }
+            case SALE_POINT: {
+                SetJoin<TEntityType, Person> associatesUsersRoot = objectRoot.join(SecuredObject_.associateUsers, JoinType.LEFT);
+                Set<SalePoint> workPlaces = curUserContact.getWorkPlaces();
+                predicate = createSalePointPredicate(cb, objectRoot, associatesUsersRoot, workPlaces);
+                break;
+            }
+            case CORPORATE: {
+                SetJoin<TEntityType, Person> associatesUsersRoot = objectRoot.join(SecuredObject_.associateUsers, JoinType.LEFT);
+                Set<Company> companies = curUserContact.getEmployers();
+                Set<SalePoint> workPlaces = newHashSet();
+                for (Company company : companies) {
+                    workPlaces.addAll(company.getSalePoints());
                 }
-        );
-
-
+                predicate = createSalePointPredicate(cb, objectRoot, associatesUsersRoot, workPlaces);
+                break;
+            }
+            case ALL:
+                predicate = composeWithAreaFilter(cb, objectRoot, null);
+                break;
+        }
+        return predicate;
     }
 
+    private Predicate createSalePointPredicate(CriteriaBuilder cb, Root<TEntityType> objectRoot, SetJoin<TEntityType, Person> associatesUsersRoot, Set<SalePoint> workPlaces) {
+        if (workPlaces.isEmpty()) {
+            SalePoint salePoint = new SalePoint();
+            salePoint.setId("00-00");
+            workPlaces.add(salePoint);
+        }
+        SetJoin<Person, SalePoint> workPlaceRoot = associatesUsersRoot.join(Person_.workPlaces, JoinType.LEFT);
+        return composeWithAreaFilter(cb, objectRoot, workPlaceRoot.in(workPlaces));
+    }
+
+    private Predicate composeWithAreaFilter(CriteriaBuilder cb, Root<TEntityType> objectRoot, Predicate predicate) {
+        UserProfile curUserProfile = lookup(UserManagementService.class).getCurrentUser();
+        Set<String> permitRegions = newHashSet(curUserProfile.getPermitRegions());
+        Set<String> permitBrands = newHashSet(curUserProfile.getPermitBrands());
+        Set<UserGroup> groups = curUserProfile.getGroupList();
+        if (groups != null) {
+            for (UserGroup group : groups) {
+                permitBrands.addAll(group.getPermitBrands());
+                permitRegions.addAll(group.getPermitRegions());
+            }
+        }
+        if (!permitRegions.isEmpty()) {
+            Predicate regPredicate = objectRoot.join(SecuredObject_.associateRegions, JoinType.LEFT).in(permitRegions);
+            predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
+        }
+        if (!permitBrands.isEmpty()) {
+            Predicate brPredicate = objectRoot.join(SecuredObject_.associateBrands, JoinType.LEFT).in(permitBrands);
+            predicate = predicate == null ? brPredicate : cb.and(predicate, brPredicate);
+        }
+        return predicate;
+    }
 }

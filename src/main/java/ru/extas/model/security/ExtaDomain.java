@@ -68,7 +68,7 @@ public enum ExtaDomain {
 	/**
 	 * Продажи "Отмененные"
 	 */
-	SALES_CANCELED("sales/canseled"),
+	SALES_CANCELED("sales/canceled"),
 	/**
 	 * Имущ. страховки
 	 */
@@ -146,8 +146,8 @@ public enum ExtaDomain {
 	 * @param name a {@link java.lang.String} object.
 	 * @return a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
-	public static ExtaDomain getByName(String name) {
-		for (ExtaDomain item : ExtaDomain.values())
+	public static ExtaDomain getByName(final String name) {
+		for (final ExtaDomain item : ExtaDomain.values())
 			if (item.getName().equals(name))
 				return item;
 		throw new IllegalArgumentException("There's no enum for name: " + name);

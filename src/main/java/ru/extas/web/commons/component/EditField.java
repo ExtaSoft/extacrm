@@ -22,7 +22,7 @@ public class EditField extends TextField {
      * @param caption     заголовок
      * @param description описание
      */
-    public EditField(String caption, String description) {
+    public EditField(final String caption, final String description) {
         super(caption);
 
         setImmediate(true);
@@ -39,5 +39,10 @@ public class EditField extends TextField {
      */
     public EditField(final String caption) {
         this(caption, caption);
+    }
+
+    public EditField() {
+        setImmediate(true);
+        setNullRepresentation("");
     }
 }

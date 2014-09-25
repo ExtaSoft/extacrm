@@ -5,19 +5,29 @@ package ru.extas.web.insurance;
 
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Person_;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.insurance.FormTransfer;
+import ru.extas.model.insurance.FormTransfer_;
+import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.SecureTarget;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
 
+import javax.persistence.criteria.*;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Set;
 
+import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * <p>FormTransferGrid class.</p>
@@ -26,7 +36,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class FormTransferGrid extends ExtaGrid {
+public class FormTransferGrid extends ExtaGrid<FormTransfer> {
 
     private static final long serialVersionUID = 1170175803163742829L;
     private final static Logger logger = LoggerFactory.getLogger(FormTransferGrid.class);
@@ -35,75 +45,95 @@ public class FormTransferGrid extends ExtaGrid {
      * <p>Constructor for FormTransferGrid.</p>
      */
     public FormTransferGrid() {
-
+        super(FormTransfer.class);
     }
 
-    /** {@inheritDoc} */
+    @Override
+    public ExtaEditForm<FormTransfer> createEditForm(FormTransfer formTransfer, boolean isInsert) {
+        return new FormTransferEditForm(formTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected GridDataDecl createDataDecl() {
         return new FormTransferDataDecl();
     }
 
-    /** {@inheritDoc} */
+    private class FormTransferSecuredContainer extends AbstractSecuredDataContainer<FormTransfer> {
+
+        public FormTransferSecuredContainer(Class<FormTransfer> entityClass, ExtaDomain domain) {
+            super(entityClass, domain);
+        }
+
+        @Override
+        protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
+            Predicate predicate = null;
+            final Root<FormTransfer> objectRoot = (Root<FormTransfer>) getFirst(cq.getRoots(), null);
+            final Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
+
+            switch (target) {
+                case OWNONLY:
+                    predicate = cb.or(
+                            cb.equal(objectRoot.get(FormTransfer_.fromContact), curUserContact),
+                            cb.equal(objectRoot.get(FormTransfer_.toContact), curUserContact));
+                    break;
+                case SALE_POINT: {
+                    Set<SalePoint> workPlaces = null;
+                    workPlaces = curUserContact.getWorkPlaces();
+                    if (!isEmpty(workPlaces)) {
+                        SetJoin<Person, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        SetJoin<Person, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        predicate = cb.or(workPlaceRootF.in(workPlaces), workPlaceRootT.in(workPlaces));
+                    }
+                    break;
+                }
+                case CORPORATE: {
+                    Set<SalePoint> workPlaces = null;
+                    final Set<Company> companies = curUserContact.getEmployers();
+                    for (final Company company : companies) {
+                        workPlaces.addAll(company.getSalePoints());
+                    }
+                    if (!isEmpty(workPlaces)) {
+                        SetJoin<Person, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        SetJoin<Person, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        predicate = cb.or(workPlaceRootF.in(workPlaces), workPlaceRootT.in(workPlaces));
+                    }
+                    break;
+                }
+                case ALL:
+                    break;
+            }
+
+            return predicate;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final JPAContainer<FormTransfer> container = new ExtaDataContainer<>(FormTransfer.class);
+        final JPAContainer<FormTransfer> container = new FormTransferSecuredContainer(FormTransfer.class, ExtaDomain.INSURANCE_TRANSFER);
         container.addNestedContainerProperty("fromContact.name");
         container.addNestedContainerProperty("toContact.name");
 
         return container;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected List<UIAction> createActions() {
         List<UIAction> actions = newArrayList();
 
-        actions.add(new UIAction("Новый", "Ввод нового акта приема/передачи", "icon-doc-new") {
-            @Override
-            public void fire(Object itemId) {
-                final BeanItem<FormTransfer> newObj = new BeanItem<>(new FormTransfer());
+        actions.add(new NewObjectAction("Новый", "Ввод нового акта приема/передачи"));
+        actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке акта приема/передачи"));
 
-                final FormTransferEditForm editWin = new FormTransferEditForm("Новый акт приема/передачи", newObj);
-                editWin.addCloseListener(new CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainer();
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
-
-        actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке акта приема/передачи", "icon-edit-3") {
-            @Override
-            public void fire(final Object itemId) {
-                final BeanItem<FormTransfer> curObj = new GridItem<>(table.getItem(itemId));
-
-                final FormTransferEditForm editWin = new FormTransferEditForm("Редактировать акт приема/передачи",
-                        curObj);
-                editWin.addCloseListener(new CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshContainerItem(itemId);
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
-        });
-
-        actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", "icon-print-2") {
+        actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", Fontello.PRINT_2) {
             @Override
             public void fire(Object itemId) {
                 printFormTransfer(itemId);

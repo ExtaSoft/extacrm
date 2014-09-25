@@ -5,9 +5,11 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.server.sale.ProdCreditRepository;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.CompanySelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -21,7 +23,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
+public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 
 	// Компоненты редактирования
 	@PropertyId("name")
@@ -69,41 +71,30 @@ public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
-	/**
-	 * <p>Constructor for ProdCreditEditForm.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-	 */
-	public ProdCreditEditForm(final String caption, final BeanItem<ProdCredit> obj) {
-		super(caption, obj);
-	}
+    public ProdCreditEditForm(ProdCredit prodCredit) {
+        super(prodCredit.isNew() ? "Новый продукт" : "Редактировать продукт", new BeanItem(prodCredit));
+    }
 
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdCredit obj) {
-		if (obj.getId() == null) {
+		if (obj.isNew()) {
 			obj.setActive(true);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void saveObject(ProdCredit obj) {
+	protected ProdCredit saveObject(ProdCredit obj) {
 		ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
-		Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
-	}
+        NotificationUtil.showSuccess("Продукт сохранен");
+        return loc;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected void checkBeforeSave(final ProdCredit obj) {
-
-	}
-
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdCredit obj) {
-		final FormLayout form = new FormLayout();
+		final FormLayout form = new ExtaFormLayout();
 
 		activeField = new CheckBox("Активный продукт");
 		activeField.setDescription("Укажите участвует ли продукт в продажах (учавствует если активен)");
@@ -155,7 +146,7 @@ public class ProdCreditEditForm extends AbstractEditForm<ProdCredit> {
 		stepField.setRequired(true);
 		form.addComponent(stepField);
 
-		dealerSubsidyField = new EditField("Субсидия дилера", "Введите процент субсидии диллера (процент от суммы кредита)");
+		dealerSubsidyField = new EditField("Субсидия дилера", "Введите процент субсидии дилера (процент от суммы кредита)");
 		dealerSubsidyField.setRequired(true);
 		dealerSubsidyField.setConverter(lookup(StringToPercentConverter.class));
 		form.addComponent(dealerSubsidyField);

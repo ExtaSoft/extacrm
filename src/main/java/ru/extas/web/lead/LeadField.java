@@ -3,6 +3,8 @@ package ru.extas.web.lead;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.lead.Lead;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.FormUtils;
 
 /**
  * Поле расширенного просмотра лида.
@@ -39,24 +41,21 @@ public class LeadField extends CustomField<Lead> {
 		VerticalLayout container = new VerticalLayout();
 		container.setSpacing(true);
 
-		Lead lead = (Lead) getPropertyDataSource().getValue();
+		final Lead lead = (Lead) getPropertyDataSource().getValue();
 		leadItem = new BeanItem<>(lead != null ? lead : new Lead());
 
 		// Открытие формы ввода/редактирования
-		final Button.ClickListener openLeadFormListener = new Button.ClickListener() {
-			@Override
-			public void buttonClick(final Button.ClickEvent event) {
-				LeadEditForm form = new LeadEditForm("Просмотр/редактирование лида", leadItem, false);
-				form.showModal();
-			}
-		};
+		final Button.ClickListener openLeadFormListener = event -> {
+            LeadEditForm form = new LeadEditForm(lead, false);
+FormUtils.showModalWin(form);
+        };
 		Button openBtn = new Button("Нажмите для просмотра/редактирования лида...", openLeadFormListener);
-		openBtn.addStyleName("link");
-		container.addComponent(openBtn);
+		openBtn.addStyleName(ExtaTheme.BUTTON_LINK);
+                container.addComponent(openBtn);
 
 		HorizontalLayout fieldsContainer = new HorizontalLayout();
 		fieldsContainer.setSpacing(true);
-		fieldsContainer.addStyleName("bordered-items");
+		fieldsContainer.addStyleName(ExtaTheme.BORDERED_ITEMS);
 		// Тип техники
 		Label motorTypeField = new Label(leadItem.getItemProperty("motorType"));
 		motorTypeField.setCaption("Тип техники");

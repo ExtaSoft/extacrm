@@ -18,5 +18,13 @@ public interface LeadService extends SecuredRepository<Lead> {
      *
      * @param obj лид для квалификации
      */
-    void qualify(Lead obj);
+    Lead qualify(Lead obj);
+
+    /**
+     * Завершает лид с заданным результатом
+     *
+     * @param lead лид
+     * @param result результат завершения
+     */
+    void finishLead(Lead lead, Lead.Result result);
 }

@@ -7,7 +7,8 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.security.*;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.util.ComponentUtil;
 
 import java.util.*;
@@ -31,9 +32,8 @@ public class ExtaPermissionField extends CustomField<Set> {
 
     private ExtaPermissionField() {
         setBuffered(true);
-        addStyleName("inline-base-view");
-        setSizeFull();
-        setWidth(600, Unit.PIXELS);
+        setWidth(100, Unit.PERCENTAGE);
+        setHeight(300, Unit.PIXELS);
     }
 
     /**
@@ -60,7 +60,30 @@ public class ExtaPermissionField extends CustomField<Set> {
     @Override
     protected Component initContent() {
 
-        ExtaGrid grid = new ExtaGrid() {
+        ExtaGrid<ExtaPermission> grid = new ExtaGrid<ExtaPermission>(ExtaPermission.class) {
+
+            @Override
+            public ExtaEditForm<ExtaPermission> createEditForm(ExtaPermission extaPermission, boolean isInsert) {
+                return new ExtaPermissionEditForm(extaPermission) {
+                    @Override
+                    protected ExtaPermission saveObject(final ExtaPermission obj) {
+                        ((RefreshBeanContainer<ExtaPermission>) container).addBean(obj);
+                        ExtaPermissionField.this.setValue(newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds()));
+                        return obj;
+                    }
+                };
+            }
+
+            @Override
+            public ExtaPermission createEntity() {
+                final ExtaPermission permission = super.createEntity();
+                if (group != null)
+                    permission.setGroup(group);
+                else
+                    permission.setUser(profile);
+                return permission;
+            }
+
             @Override
             protected GridDataDecl createDataDecl() {
                 return new GridDataDecl() {
@@ -90,44 +113,9 @@ public class ExtaPermissionField extends CustomField<Set> {
             protected List<UIAction> createActions() {
                 List<UIAction> actions = newArrayList();
 
-                actions.add(new UIAction("Новое", "Ввод нового правила доступа в систему", "icon-doc-new") {
-                    @Override
-                    public void fire(Object itemId) {
-                        final ExtaPermission entity = new ExtaPermission();
-                        if (group != null)
-                            entity.setGroup(group);
-                        else
-                            entity.setUser(profile);
-                        final BeanItem<ExtaPermission> newObj = new BeanItem<>(entity);
-
-                        final ExtaPermissionEditForm editWin = new ExtaPermissionEditForm("Ввод нового правила доступа в систему", newObj) {
-                            @Override
-                            protected void saveObject(final ExtaPermission obj) {
-                                ((RefreshBeanContainer<ExtaPermission>) container).addBean(obj);
-                                ExtaPermissionField.this.setValue(newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds()));
-                            }
-                        };
-                        editWin.showModal();
-                    }
-                });
-
-                actions.add(new DefaultAction("Изменить", "Редактирование правила доступа", "icon-edit-3") {
-                    @Override
-                    public void fire(final Object itemId) {
-                        final BeanItem<ExtaPermission> beanItem = new GridItem<>(table.getItem(itemId));
-                        final ExtaPermissionEditForm editWin = new ExtaPermissionEditForm("Редактирование правила доступа", beanItem) {
-                            @Override
-                            protected void saveObject(final ExtaPermission obj) {
-                                HashSet<ExtaPermission> fieldValue = newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds());
-                                ExtaPermissionField.this.setValue(null);
-                                ExtaPermissionField.this.setValue(fieldValue);
-                                refreshContainerItem(itemId);
-                            }
-                        };
-                        editWin.showModal();
-                    }
-                });
-                actions.add(new ItemAction("Удалить", "Удалить правило доступа", "icon-trash") {
+                actions.add(new NewObjectAction("Новое", "Ввод нового правила доступа в систему"));
+                actions.add(new EditObjectAction("Изменить", "Редактирование правила доступа"));
+                actions.add(new ItemAction("Удалить", "Удалить правило доступа", Fontello.TRASH) {
                     @Override
                     public void fire(final Object itemId) {
                         container.removeItem(itemId);
@@ -138,7 +126,6 @@ public class ExtaPermissionField extends CustomField<Set> {
             }
         };
 
-
         return grid;
     }
 
@@ -148,7 +135,7 @@ public class ExtaPermissionField extends CustomField<Set> {
         return Set.class;
     }
 
-    private abstract class ExtaPermissionEditForm extends AbstractEditForm<ExtaPermission> {
+    private abstract class ExtaPermissionEditForm extends ExtaEditForm<ExtaPermission> {
 
         @PropertyId("domain")
         private ComboBox domainField;
@@ -159,8 +146,11 @@ public class ExtaPermissionField extends CustomField<Set> {
         @PropertyId("target")
         private OptionGroup targetField;
 
-        protected ExtaPermissionEditForm(String caption, BeanItem<ExtaPermission> beanItem) {
-            super(caption, beanItem);
+        public ExtaPermissionEditForm(ExtaPermission extaPermission) {
+            super(extaPermission.isNew() ?
+                            "Ввод нового правила доступа в систему" :
+                            "Редактирование правила доступа",
+                    new BeanItem<>(extaPermission));
         }
 
         @Override
@@ -169,13 +159,8 @@ public class ExtaPermissionField extends CustomField<Set> {
         }
 
         @Override
-        protected void checkBeforeSave(ExtaPermission obj) {
-
-        }
-
-        @Override
         protected ComponentContainer createEditFields(ExtaPermission obj) {
-            final FormLayout form = new FormLayout();
+            final FormLayout form = new ExtaFormLayout();
 
             domainField = new ComboBox("Раздел системы");
             domainField.setDescription("Выберете раздел системы к которой предоставляется доступ");
@@ -198,18 +183,15 @@ public class ExtaPermissionField extends CustomField<Set> {
             actionsField.setMultiSelect(true);
             actionsField.setNullSelectionAllowed(true);
             actionsField.setRequired(true);
-            actionsField.addValueChangeListener(new ValueChangeListener() {
-                @Override
-                public void valueChange(Property.ValueChangeEvent event) {
-                    Collection<SecureAction> selected = (Collection<SecureAction>) event.getProperty().getValue();
-                    if(selected.contains(SecureAction.ALL)) {
-                        actionsField.setValue(EnumSet.of(SecureAction.ALL));
-                        for(SecureAction action : EnumSet.complementOf(EnumSet.of(SecureAction.ALL)))
-                            actionsField.setItemEnabled(action, false);
-                    } else {
-                        for(SecureAction action : EnumSet.allOf(SecureAction.class))
-                            actionsField.setItemEnabled(action, true);
-                    }
+            actionsField.addValueChangeListener(event -> {
+                Collection<SecureAction> selected = (Collection<SecureAction>) event.getProperty().getValue();
+                if(selected.contains(SecureAction.ALL)) {
+                    actionsField.setValue(EnumSet.of(SecureAction.ALL));
+                    for(SecureAction action : EnumSet.complementOf(EnumSet.of(SecureAction.ALL)))
+                        actionsField.setItemEnabled(action, false);
+                } else {
+                    for(SecureAction action : EnumSet.allOf(SecureAction.class))
+                        actionsField.setItemEnabled(action, true);
                 }
             });
             ComponentUtil.fillSelectByEnum(actionsField, SecureAction.class);

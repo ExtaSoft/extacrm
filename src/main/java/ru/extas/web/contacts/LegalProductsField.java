@@ -2,9 +2,13 @@ package ru.extas.web.contacts;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.Product;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.product.ProductDataDecl;
 import ru.extas.web.product.ProductSelectWindow;
 
@@ -24,98 +28,92 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  */
 public class LegalProductsField extends CustomField<List> {
 
-	private Table table;
-	private BeanItemContainer<Product> container;
+    private Table table;
+    private BeanItemContainer<Product> container;
 
-	/**
-	 * <p>Constructor for LegalProductsField.</p>
-	 */
-	public LegalProductsField() {
-		setBuffered(true);
-		setWidth(600, Unit.PIXELS);
-	}
+    /**
+     * <p>Constructor for LegalProductsField.</p>
+     */
+    public LegalProductsField() {
+        setBuffered(true);
+        setWidth(600, Unit.PIXELS);
+        setHeight(300, Unit.PIXELS);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected Component initContent() {
-		final VerticalLayout fieldLayout = new VerticalLayout();
-		fieldLayout.setSpacing(true);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Component initContent() {
+        final VerticalLayout fieldLayout = new VerticalLayout();
+        fieldLayout.setSizeFull();
+        fieldLayout.setSpacing(true);
+        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
 
-		if (!isReadOnly()) {
-			final HorizontalLayout commandBar = new HorizontalLayout();
-			commandBar.addStyleName("configure");
-			commandBar.setSpacing(true);
+        if (!isReadOnly()) {
+            final MenuBar commandBar = new MenuBar();
+            commandBar.setAutoOpen(true);
+            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+//            commandBar.focus();
 
-			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
+            final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
 
-				private static final long serialVersionUID = 1L;
+                final ProductSelectWindow selectWindow = new ProductSelectWindow("Выберите продукт");
+                selectWindow.addCloseListener(e -> {
+                    if (selectWindow.isSelectPressed()) {
+                        container.addBean(selectWindow.getSelected());
+                        setValue(container.getItemIds());
+                        NotificationUtil.showSuccess("Продукт добавлен");
+                    }
+                });
+                selectWindow.showModal();
+            });
+            addProdBtn.setDescription("Добавить продукт в список доступных данному юридическому лицу");
+            addProdBtn.setIcon(Fontello.DOC_NEW);
 
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
+            final MenuBar.MenuItem delProdBtn = commandBar.addItem("Удалить", event -> {
+                if (table.getValue() != null) {
+                    container.removeItem(table.getValue());
+                    setValue(container.getItemIds());
+                }
+            });
+            delProdBtn.setDescription("Удалить продукт из списка доступных данному юридическому лицу");
+            delProdBtn.setIcon(Fontello.TRASH);
 
-					final ProductSelectWindow selectWindow = new ProductSelectWindow("Выберите продукт");
-					selectWindow.addCloseListener(new Window.CloseListener() {
+            fieldLayout.addComponent(commandBar);
+        }
 
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (selectWindow.isSelectPressed()) {
-								container.addBean(selectWindow.getSelected());
-								setValue(container.getItemIds());
-								Notification.show("Продукт добавлен", Notification.Type.TRAY_NOTIFICATION);
-							}
-						}
-					});
-					selectWindow.showModal();
-				}
-			});
-			addProdBtn.setDescription("Добавить продукт в список доступных данному юридическому лицу");
-			addProdBtn.addStyleName("icon-doc-new");
-			commandBar.addComponent(addProdBtn);
+        table = new Table();
+        table.setSizeFull();
+        table.setRequired(true);
+        table.setSelectable(true);
+        table.setColumnCollapsingAllowed(true);
+        final Property dataSource = getPropertyDataSource();
+        final List<Product> list = dataSource != null ? (List<Product>) dataSource.getValue() : new ArrayList<>();
+        container = new BeanItemContainer<>(Product.class);
+        if (list != null) {
+            for (final Product item : list) {
+                container.addBean(item);
+            }
+        }
+        container.addNestedContainerProperty("vendor.name");
+        table.setContainerDataSource(container);
 
-			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (table.getValue() != null) {
-						container.removeItem(table.getValue());
-						setValue(container.getItemIds());
-					}
-				}
-			});
-			delProdBtn.setDescription("Удалить продукт из списка доступных данному юридическому лицу");
-			delProdBtn.addStyleName("icon-trash");
-			commandBar.addComponent(delProdBtn);
+        final GridDataDecl dataDecl = new ProductDataDecl();
+        fullInitTable(table, dataDecl);
 
-			fieldLayout.addComponent(commandBar);
-		}
+        fieldLayout.addComponent(table);
+        fieldLayout.setExpandRatio(table, 1);
 
-		table = new Table();
-		table.setRequired(true);
-		table.setSelectable(true);
-		table.setColumnCollapsingAllowed(true);
-		//table.setHeight(10, Unit.EM);
-		//table.setWidth(25, Unit.EM);
-		final Property dataSource = getPropertyDataSource();
-		final List<Product> list = dataSource != null ? (List<Product>) dataSource.getValue() : new ArrayList<Product>();
-		container = new BeanItemContainer<>(Product.class);
-		if (list != null) {
-			for (final Product item : list) {
-				container.addBean(item);
-			}
-		}
-		container.addNestedContainerProperty("vendor.name");
-		table.setContainerDataSource(container);
+        return fieldLayout;
+    }
 
-		final GridDataDecl dataDecl = new ProductDataDecl();
-		fullInitTable(table, dataDecl);
-
-		fieldLayout.addComponent(table);
-
-		return fieldLayout;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Class<? extends List> getType() {
-		return List.class;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends List> getType() {
+        return List.class;
+    }
 }

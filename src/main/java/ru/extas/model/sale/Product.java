@@ -49,7 +49,7 @@ public abstract class Product extends AuditedObject {
 	@Column(name = "IS_ACTIVE")
 	private boolean active;
 
-	// Комментарий к продукту
+	// Примечание к продукту
 	@Column(name = "COMMENT")
 	private String comment;
 

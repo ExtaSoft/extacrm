@@ -3,12 +3,12 @@
  */
 package ru.extas.web.lead;
 
-import com.vaadin.ui.Component;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.web.commons.AbstractTabView;
-import ru.extas.web.commons.component.AbstractTabInfo;
-import ru.extas.web.commons.component.TabInfo;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainInfoImpl;
+import ru.extas.web.commons.SubdomainView;
+import ru.extas.web.commons.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class LeadsView extends AbstractTabView {
+public class LeadsView extends SubdomainView {
 
     private static final long serialVersionUID = -1272779672761523416L;
 
@@ -34,28 +34,30 @@ public class LeadsView extends AbstractTabView {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected List<TabInfo> getTabComponentsInfo() {
-        final ArrayList<TabInfo> ret = newArrayList();
-        ret.add(new AbstractTabInfo("Новые", ExtaDomain.LEADS_NEW) {
+    protected List<SubdomainInfo> getSubdomainInfo() {
+        final ArrayList<SubdomainInfo> ret = newArrayList();
+        ret.add(new SubdomainInfoImpl("Новые", ExtaDomain.LEADS_NEW) {
 
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new LeadsGrid(Lead.Status.NEW);
             }
         });
-        ret.add(new AbstractTabInfo("Квалифицированные", ExtaDomain.LEADS_QUAL) {
+        ret.add(new SubdomainInfoImpl("Квалифицированные", ExtaDomain.LEADS_QUAL) {
 
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new LeadsGrid(Lead.Status.QUALIFIED);
             }
         });
-        ret.add(new AbstractTabInfo("Закрытые", ExtaDomain.LEADS_CLOSED) {
+        ret.add(new SubdomainInfoImpl("Закрытые", ExtaDomain.LEADS_CLOSED) {
 
             @Override
-            public Component createComponent() {
+            public ExtaGrid createGrid() {
                 return new LeadsGrid(Lead.Status.CLOSED);
             }
         });

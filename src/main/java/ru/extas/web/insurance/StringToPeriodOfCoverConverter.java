@@ -28,8 +28,8 @@ public class StringToPeriodOfCoverConverter extends String2EnumConverter<Insuran
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<Insurance.PeriodOfCover, String> createEnum2StringMap() {
-		BiMap<Insurance.PeriodOfCover, String> map = HashBiMap.create();
+	protected HashBiMap<Insurance.PeriodOfCover, String> createEnum2StringMap() {
+        HashBiMap<Insurance.PeriodOfCover, String> map = HashBiMap.create();
 		map.put(Insurance.PeriodOfCover.YEAR, "Год");
 		map.put(Insurance.PeriodOfCover.HALF_A_YEAR, "Полгода");
 		return map;

@@ -5,9 +5,11 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdInsurance;
 import ru.extas.server.sale.ProdInsuranceRepository;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.CompanySelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -21,7 +23,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdInsuranceEditForm extends AbstractEditForm<ProdInsurance> {
+public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 
 	// Компоненты редактирования
 	@PropertyId("name")
@@ -35,41 +37,30 @@ public class ProdInsuranceEditForm extends AbstractEditForm<ProdInsurance> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
-	/**
-	 * <p>Constructor for ProdInsuranceEditForm.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-	 */
-	public ProdInsuranceEditForm(final String caption, final BeanItem<ProdInsurance> obj) {
-		super(caption, obj);
-	}
+    public ProdInsuranceEditForm(ProdInsurance prodInsurance) {
+        super(prodInsurance.isNew() ? "Новая страховая программа" : "Редактировать страховую программу", new BeanItem(prodInsurance));
+    }
 
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdInsurance obj) {
-		if (obj.getId() == null) {
+		if (obj.isNew()) {
 			obj.setActive(true);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void saveObject(final ProdInsurance obj) {
-		lookup(ProdInsuranceRepository.class).save(obj);
-		Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
-	}
+	protected ProdInsurance saveObject(ProdInsurance obj) {
+        obj = lookup(ProdInsuranceRepository.class).save(obj);
+        NotificationUtil.showSuccess("Продукт сохранен");
+        return obj;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected void checkBeforeSave(final ProdInsurance obj) {
-
-	}
-
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdInsurance obj) {
-		final FormLayout form = new FormLayout();
+		final FormLayout form = new ExtaFormLayout();
 
 		nameField = new EditField("Название продукта", "Введите название продукта");
 		nameField.setColumns(30);

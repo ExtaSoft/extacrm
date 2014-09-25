@@ -1,18 +1,22 @@
 /**
  *
  */
-package ru.extas.web.commons.window;
+package ru.extas.web.commons;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Notification.Type;
+import com.vaadin.util.ReflectTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.common.IdentifiedObject;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import static ru.extas.web.UiUtils.showValidationError;
@@ -24,37 +28,95 @@ import static ru.extas.web.UiUtils.showValidationError;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class AbstractEditForm<TEditObject> extends Window {
+public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
 
-    private final static Logger logger = LoggerFactory.getLogger(AbstractEditForm.class);
+    private final static Logger logger = LoggerFactory.getLogger(ExtaEditForm.class);
 
     private static final long serialVersionUID = -5592353839008000742L;
+    private final String caption;
     protected boolean saved = false;
-    private final HorizontalLayout buttonsPanel = new HorizontalLayout();
-    private Button cancelBtn;
-    private Button okBtn;
+    private HorizontalLayout buttonsPanel;
     private FieldGroup fieldGroup;
     private boolean modified;
+    private TEditObject bean;
+    private Button okBtn;
 
-    /**
-     * <p>Constructor for AbstractEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     */
-    protected AbstractEditForm(final String caption) {
-        super(caption);
+    public Object getObjectId() {
+        if (bean != null) {
+            if (bean instanceof IdentifiedObject)
+                return ((IdentifiedObject) bean).getId();
+            else
+                return bean;
+        }
+        return null;
+    }
+
+    public TEditObject getObject() {
+        return bean;
+    }
+
+    public static class CloseFormEvent extends Component.Event {
+
+        /**
+         * Constructs a new event with the specified source component.
+         *
+         * @param source the source component of the event
+         */
+        public CloseFormEvent(final Component source) {
+            super(source);
+        }
+    }
+
+    public interface CloseFormListener extends Serializable {
+
+        public static final Method CLOSE_FORM_METHOD = ReflectTools
+                .findMethod(CloseFormListener.class, "closeForm", CloseFormEvent.class);
+
+        public void closeForm(CloseFormEvent event);
+
+    }
+
+    public void addCloseFormListener(final CloseFormListener listener) {
+        addListener(CloseFormEvent.class, listener,
+                CloseFormListener.CLOSE_FORM_METHOD);
+    }
+
+    public void removeCloseFormListener(final CloseFormListener listener) {
+        removeListener(CloseFormEvent.class, listener,
+                CloseFormListener.CLOSE_FORM_METHOD);
+    }
+
+    public void closeForm() {
+        fireCloseForm();
+    }
+
+    protected void fireCloseForm() {
+        fireEvent(new CloseFormEvent(this));
     }
 
     /**
      * <p>Constructor for AbstractEditForm.</p>
      *
      * @param caption a {@link java.lang.String} object.
+     */
+    protected ExtaEditForm(final String caption) {
+        this.caption = caption;
+    }
+
+    /**
+     * <p>Constructor for AbstractEditForm.</p>
+     *
+     * @param caption  a {@link java.lang.String} object.
      * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
      */
-    protected AbstractEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
-        super(caption);
+    protected ExtaEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
+        this(caption);
 
         initForm(beanItem);
+    }
+
+    public String getCaption() {
+        return caption;
     }
 
     /**
@@ -62,8 +124,8 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
      *
      * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
      */
-    protected void initForm(BeanItem<TEditObject> beanItem) {
-        final TEditObject bean = beanItem.getBean();
+    protected void initForm(final BeanItem<TEditObject> beanItem) {
+        bean = beanItem.getBean();
         initObject(bean);
         final ComponentContainer form = createEditFields(bean);
 
@@ -72,20 +134,20 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
 
-        cancelBtn = new Button("Отмена", new Button.ClickListener() {
+        Button cancelBtn = new Button("Отмена", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
             public void buttonClick(final ClickEvent event) {
                 // TODO Проверять изменения и выдавать предупреждения
                 fieldGroup.discard();
-                close();
+                closeForm();
             }
         });
-        cancelBtn.setStyleName("icon-cancel");
+        cancelBtn.setIcon(Fontello.CANCEL);
         cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 
-        okBtn = new Button("OK", new Button.ClickListener() {
+        okBtn = new Button("Сохранить", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -95,44 +157,40 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
                     if (fieldGroup.isValid()) {
                         try {
                             fieldGroup.commit();
-                            checkBeforeSave(bean);
-                            saveObject(bean);
+                            bean = saveObject(bean);
                             saved = true;
                             modified = false;
-                        } catch (final CommitException e) {
+                        } catch (final Throwable e) {
                             logger.error("Can't apply form changes", e);
-                            Notification.show("Невозможно сохранить изменения!", e.getLocalizedMessage(), Type.ERROR_MESSAGE);
+                            NotificationUtil.showError("Невозможно сохранить изменения!", e.getLocalizedMessage());
                             return;
                         }
-                        close();
+                        closeForm();
                     } else
                         showValidationError("Невозможно сохранить изменения!", fieldGroup);
                 }
             }
 
         });
-
-        okBtn.setStyleName("icon-ok");
+        okBtn.addStyleName(ExtaTheme.BUTTON_PRIMARY);
+        okBtn.setIcon(Fontello.OK);
         okBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
-        this.buttonsPanel.addComponent(okBtn);
-        this.buttonsPanel.setComponentAlignment(okBtn, Alignment.MIDDLE_RIGHT);
-        this.buttonsPanel.addComponent(cancelBtn);
-        this.buttonsPanel.setComponentAlignment(cancelBtn, Alignment.MIDDLE_RIGHT);
-        this.buttonsPanel.setSpacing(true);
+
+        final Label footerText = new Label("");
+        footerText.setSizeUndefined();
+
+        buttonsPanel = new HorizontalLayout(footerText, okBtn, cancelBtn);
+        buttonsPanel.setExpandRatio(footerText, 1);
+        buttonsPanel.addStyleName(ExtaTheme.WINDOW_BOTTOM_TOOLBAR);
+        buttonsPanel.setWidth(100, Unit.PERCENTAGE);
+        buttonsPanel.setSpacing(true);
 
         setDefaultFocus(form);
         setContent(form);
 
-        this.addCloseListener(new CloseListener() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void windowClose(final CloseEvent e) {
-
-                // TODO Обработать закрытие формы по кресту
-
-            }
+        addAttachListener(e->{
+            fieldGroup.setReadOnly(isReadOnly());
+            okBtn.setEnabled(!isReadOnly());
         });
     }
 
@@ -150,15 +208,15 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
      *
      * @param modified a boolean.
      */
-    public void setModified(boolean modified) {
+    public void setModified(final boolean modified) {
         this.modified = modified;
     }
 
-    private boolean setDefaultFocus(HasComponents container) {
+    private boolean setDefaultFocus(final HasComponents container) {
         boolean focused = false;
-        Iterator<Component> childs = container.iterator();
+        final Iterator<Component> childs = container.iterator();
         while (childs.hasNext() && !focused) {
-            Component comp = childs.next();
+            final Component comp = childs.next();
             if (comp instanceof Component.Focusable && comp.isEnabled() && comp.isVisible()) {
                 ((Component.Focusable) comp).focus();
                 focused = true;
@@ -169,18 +227,17 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         return focused;
     }
 
-    /** {@inheritDoc} */
-    @Override
     public void setContent(Component content) {
         if (content != null) {
             final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
-            contentContainer.setMargin(true);
+            contentContainer.setSizeUndefined();
+            contentContainer.setMargin(new MarginInfo(false, true, false, true));
             contentContainer.setSpacing(true);
-            contentContainer.setComponentAlignment(this.buttonsPanel, Alignment.MIDDLE_RIGHT);
             content = contentContainer;
         }
-        super.setContent(content);
+        super.setCompositionRoot(content);
     }
+
 
     /**
      * <p>isSaved.</p>
@@ -191,15 +248,6 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
         return this.saved;
     }
 
-    /**
-     * <p>showModal.</p>
-     */
-    public void showModal() {
-        setClosable(true);
-        setModal(true);
-
-        UI.getCurrent().addWindow(this);
-    }
 
     /**
      * <p>Getter for the field <code>fieldGroup</code>.</p>
@@ -222,14 +270,7 @@ public abstract class AbstractEditForm<TEditObject> extends Window {
      *
      * @param obj a TEditObject object.
      */
-    protected abstract void saveObject(TEditObject obj);
-
-    /**
-     * <p>checkBeforeSave.</p>
-     *
-     * @param obj a TEditObject object.
-     */
-    protected abstract void checkBeforeSave(TEditObject obj);
+    protected abstract TEditObject saveObject(TEditObject obj);
 
     /**
      * <p>createEditFields.</p>

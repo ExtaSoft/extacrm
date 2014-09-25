@@ -4,6 +4,10 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -45,7 +49,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         setCaption(caption);
         setDescription(description);
         setBuffered(true);
-        addStyleName("bordered-component");
+        addStyleName(ExtaTheme.BORDERED_COMPONENT);
     }
 
     /** {@inheritDoc} */
@@ -54,9 +58,10 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         VerticalLayout container = new VerticalLayout();
         container.setSpacing(true);
 
-        HorizontalLayout nameLay = new HorizontalLayout();
+        CssLayout nameLay = new CssLayout();
+        nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
-        selectField = new LESelectField("Название", "Введите или выберите название юридического лица");
+        selectField = new LESelectField("", "Введите или выберите название юридического лица");
         selectField.setInputPrompt("ООО \"Рога и Копыта\"");
         selectField.setPropertyDataSource(getPropertyDataSource());
         selectField.setNewItemsAllowed(true);
@@ -66,89 +71,56 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
             @SuppressWarnings({"unchecked"})
             @Override
             public void addNewItem(final String newItemCaption) {
-                final BeanItem<LegalEntity> newObj;
-                newObj = new BeanItem<>(new LegalEntity());
-                newObj.getBean().setName(newItemCaption);
-                newObj.expandProperty("actualAddress");
+                final LegalEntity newObj = new LegalEntity();
+                newObj.setName(newItemCaption);
 
-                final String edFormCaption = "Ввод нового юр.лица в систему";
-                final LegalEntityEditForm editWin = new LegalEntityEditForm(edFormCaption, newObj);
+                final LegalEntityEditForm editWin = new LegalEntityEditForm(newObj);
                 editWin.setModified(true);
 
-                editWin.addCloseListener(new Window.CloseListener() {
-
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void windowClose(final Window.CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            selectField.refreshContainer();
-                            selectField.setValue(newObj.getBean().getId());
-                        }
+                editWin.addCloseFormListener(event -> {
+                    if (editWin.isSaved()) {
+                        selectField.refreshContainer();
+                        selectField.setValue(editWin.getObjectId());
                     }
                 });
-                editWin.showModal();
+                FormUtils.showModalWin(editWin);
             }
         });
-        selectField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(final Property.ValueChangeEvent event) {
-                refreshFields((LegalEntity) selectField.getConvertedValue());
-            }
-        });
+        selectField.addValueChangeListener(event -> refreshFields((LegalEntity) selectField.getConvertedValue()));
         nameLay.addComponent(selectField);
 
-        Button searchBtn = new Button("Поиск", new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent event) {
+        Button searchBtn = new Button("Поиск", event -> {
 
-                final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите клиента или введите нового", null);
-                selectWindow.addCloseListener(new Window.CloseListener() {
+            final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите ЮЛ или введите новое", null);
+            selectWindow.addCloseListener(e -> {
+                if (selectWindow.isSelectPressed()) {
+                    final LegalEntity selected = selectWindow.getSelected();
+                    selectField.setConvertedValue(selected);
+                }
+            });
+            selectWindow.showModal();
 
-                    @Override
-                    public void windowClose(final Window.CloseEvent e) {
-                        if (selectWindow.isSelectPressed()) {
-                            final LegalEntity selected = selectWindow.getSelected();
-                            selectField.setConvertedValue(selected);
-                        }
-                    }
-                });
-                selectWindow.showModal();
-
-            }
         });
-        searchBtn.addStyleName("icon-search-outline");
-        searchBtn.addStyleName("icon-only");
+        searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+        searchBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         nameLay.addComponent(searchBtn);
-        nameLay.setComponentAlignment(searchBtn, Alignment.BOTTOM_LEFT);
 
-        viewBtn = new Button("Просмотр", new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent event) {
-                final BeanItem<LegalEntity> beanItem;
-                beanItem = new BeanItem<>((LegalEntity) selectField.getConvertedValue());
-                beanItem.expandProperty("actualAddress");
+        viewBtn = new Button("Просмотр", event -> {
+            final LegalEntity bean = (LegalEntity) selectField.getConvertedValue();
 
-                final String edFormCaption = "Просмотр/Редактирование юр. лица";
-                final LegalEntityEditForm editWin = new LegalEntityEditForm(edFormCaption, beanItem);
-                editWin.setModified(true);
+            final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
+            editWin.setModified(true);
 
-                editWin.addCloseListener(new Window.CloseListener() {
-
-                    @Override
-                    public void windowClose(final Window.CloseEvent e) {
-                        if (editWin.isSaved()) {
-                            refreshFields(beanItem.getBean());
-                        }
-                    }
-                });
-                editWin.showModal();
-            }
+            editWin.addCloseFormListener(event1 -> {
+                if (editWin.isSaved()) {
+                    refreshFields(bean);
+                }
+            });
+            FormUtils.showModalWin(editWin);
         });
-        viewBtn.addStyleName("icon-edit-3");
-        viewBtn.addStyleName("icon-only");
+        viewBtn.setIcon(Fontello.EDIT_3);
+        viewBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         nameLay.addComponent(viewBtn);
-        nameLay.setComponentAlignment(viewBtn, Alignment.BOTTOM_LEFT);
         container.addComponent(nameLay);
 
         HorizontalLayout fieldsContainer = new HorizontalLayout();

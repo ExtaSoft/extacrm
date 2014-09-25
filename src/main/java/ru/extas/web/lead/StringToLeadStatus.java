@@ -28,8 +28,8 @@ public class StringToLeadStatus extends String2EnumConverter<Lead.Status> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected BiMap<Lead.Status, String> createEnum2StringMap() {
-		BiMap<Lead.Status, String> map = HashBiMap.create();
+	protected HashBiMap<Lead.Status, String> createEnum2StringMap() {
+        HashBiMap<Lead.Status, String> map = HashBiMap.create();
 		map.put(Lead.Status.NEW, "Новый");
 		map.put(Lead.Status.QUALIFIED, "Квалифицирован");
 		map.put(Lead.Status.CLOSED, "Закрыт");

@@ -37,14 +37,14 @@ public enum UserRole {
      * @param name a {@link java.lang.String} object.
      * @return a {@link ru.extas.model.security.UserRole} object.
      */
-    public static UserRole getRoleByName(String name) {
-        for (UserRole role : UserRole.values())
+    public static UserRole getRoleByName(final String name) {
+        for (final UserRole role : UserRole.values())
             if (role.getName().equals(name))
                 return role;
         throw new IllegalArgumentException("There's no user role for name: " + name);
     }
 
-    private UserRole(String name) {
+    private UserRole(final String name) {
         this.name = name;
     }
 

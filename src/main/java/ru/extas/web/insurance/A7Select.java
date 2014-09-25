@@ -42,7 +42,7 @@ public class A7Select extends ComboBox {
 
         // Преконфигурация
         setDescription(description);
-        setInputPrompt("Выберите из реестра БСО");
+        setInputPrompt("Выберите...");
         setWidth(20, Unit.EM);
         setImmediate(true);
         setNullSelectionAllowed(false);

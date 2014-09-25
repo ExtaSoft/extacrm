@@ -15,10 +15,12 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Contact;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -32,7 +34,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @since 0.3
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class CompanyEditForm extends AbstractEditForm<Company> {
+public class CompanyEditForm extends ExtaEditForm<Company> {
 
     private static final long serialVersionUID = -7787385620289376599L;
     private final static Logger logger = LoggerFactory.getLogger(CompanyEditForm.class);
@@ -48,13 +50,13 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     private EditField emailField;
     @PropertyId("www")
     private EditField wwwField;
-    @PropertyId("actualAddress.region")
+    @PropertyId("regAddress.region")
     private ComboBox regionField;
-    @PropertyId("actualAddress.city")
+    @PropertyId("regAddress.city")
     private ComboBox cityField;
-    @PropertyId("actualAddress.postIndex")
+    @PropertyId("regAddress.postIndex")
     private EditField postIndexField;
-    @PropertyId("actualAddress.streetBld")
+    @PropertyId("regAddress.streetBld")
     private TextArea streetBldField;
 
     // Вкладка - "Владельцы"
@@ -74,42 +76,44 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
     private ContactEmployeeField employeeField;
 
 
-    /**
-     * <p>Constructor for CompanyEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public CompanyEditForm(final String caption, final BeanItem<Company> obj) {
-        super(caption, obj);
+    public CompanyEditForm(Company company) {
+        super(company.isNew() ?
+                "Ввод новой компании в систему" :
+                String.format("Редактирование компании: %s", company.getName()));
+        final BeanItem<Company> beanItem = new BeanItem<>(company);
+        beanItem.expandProperty("regAddress");
+
+        initForm(beanItem);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initObject(final Company obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
-        if (obj.getActualAddress() == null)
-            obj.setActualAddress(new AddressInfo());
+        if (obj.getRegAddress() == null)
+            obj.setRegAddress(new AddressInfo());
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected void saveObject(final Company obj) {
+    protected Company saveObject(final Company obj) {
         logger.debug("Saving contact data...");
         final CompanyRepository contactRepository = lookup(CompanyRepository.class);
         contactRepository.secureSave(obj);
-        Notification.show("Компания сохранена", Notification.Type.TRAY_NOTIFICATION);
+        NotificationUtil.showSuccess("Компания сохранена");
+        return obj;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final Company obj) {
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields(final Company obj) {
         TabSheet tabsheet = new TabSheet();
@@ -120,7 +124,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
         tabsheet.addTab(mainForm).setCaption("Общие данные");
 
         // Вкладка - "Владельцы"
-        final FormLayout ownerForm = createOwnerForm();
+        final Component ownerForm = createOwnerForm();
         tabsheet.addTab(ownerForm).setCaption("Владельцы");
 
         // Вкладка - "Юр. лица"
@@ -131,16 +135,13 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
         // Вкладка - "Торговые точки"
         final Component salePointsForm = createSalePointsForm(obj);
         tabsheet.addTab(salePointsForm).setCaption("Торговые точки");
-        tabsheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
-            @Override
-            public void selectedTabChange(final TabSheet.SelectedTabChangeEvent event) {
-                if (event.getTabSheet().getSelectedTab() == salePointsForm)
-                    legalsField.commit();
-            }
+        tabsheet.addSelectedTabChangeListener(event -> {
+            if (event.getTabSheet().getSelectedTab() == salePointsForm)
+                legalsField.commit();
         });
 
         // Вкладка - "Сотрудники"
-        final FormLayout employesForm = createEmployesForm();
+        final Component employesForm = createEmployesForm();
         tabsheet.addTab(employesForm).setCaption("Сотрудники");
 
         return tabsheet;
@@ -148,38 +149,26 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
 
     private Component createLegalsForm(final Company obj) {
         legalsField = new LegalEntitiesField(obj);
-
         return legalsField;
     }
 
-    private FormLayout createEmployesForm() {
-        final FormLayout formLayout = new FormLayout();
-        formLayout.setMargin(true);
-
+    private Component createEmployesForm() {
         employeeField = new ContactEmployeeField();
-        formLayout.addComponent(employeeField);
-
-        return formLayout;
+        return employeeField;
     }
 
     private Component createSalePointsForm(final Company obj) {
         salePointsField = new SalePointsField(obj);
-
         return salePointsField;
     }
 
-    private FormLayout createOwnerForm() {
-        final FormLayout formLayout = new FormLayout();
-        formLayout.setMargin(true);
-
+    private Component createOwnerForm() {
         ownersField = new CompanyOwnersField();
-        formLayout.addComponent(ownersField);
-
-        return formLayout;
+        return ownersField;
     }
 
     private FormLayout createMainForm(final Contact obj) {
-        final FormLayout formLayout = new FormLayout();
+        final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
         nameField = new EditField("Название");
@@ -204,32 +193,22 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
 
         regionField = new RegionSelect();
         regionField.setDescription("Укажите регион регистрации");
-        regionField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newRegion = (String) event.getProperty().getValue();
-                final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
-                if (city != null)
-                    cityField.setValue(city);
-            }
+        regionField.addValueChangeListener(event -> {
+            final String newRegion = (String) event.getProperty().getValue();
+            final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+            if (city != null)
+                cityField.setValue(city);
         });
         formLayout.addComponent(regionField);
 
         cityField = new CitySelect();
         cityField.setDescription("Введите город регистрации");
-        if (obj.getActualAddress().getCity() != null) cityField.addItem(obj.getActualAddress().getCity());
-        cityField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                final String newCity = (String) event.getProperty().getValue();
-                final String region = lookup(SupplementService.class).findRegionByCity(newCity);
-                if (region != null)
-                    regionField.setValue(region);
-            }
+        if (obj.getRegAddress().getCity() != null) cityField.addItem(obj.getRegAddress().getCity());
+        cityField.addValueChangeListener(event -> {
+            final String newCity = (String) event.getProperty().getValue();
+            final String region = lookup(SupplementService.class).findRegionByCity(newCity);
+            if (region != null)
+                regionField.setValue(region);
         });
         formLayout.addComponent(cityField);
 
@@ -241,7 +220,7 @@ public class CompanyEditForm extends AbstractEditForm<Company> {
 
         streetBldField = new TextArea("Адрес");
         streetBldField.setColumns(30);
-        streetBldField.setRows(5);
+        streetBldField.setRows(2);
         streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
         streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
         streetBldField.setNullRepresentation("");

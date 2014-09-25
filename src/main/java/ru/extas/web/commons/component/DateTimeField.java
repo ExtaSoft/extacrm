@@ -6,6 +6,9 @@ package ru.extas.web.commons.component;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.PopupDateField;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Преднастроенный компонент ввода даты
@@ -24,7 +27,7 @@ public class DateTimeField extends PopupDateField {
      * @param caption     заголовок
      * @param description описание
      */
-    public DateTimeField(String caption, String description) {
+    public DateTimeField(final String caption, final String description) {
         super(caption);
 
         setImmediate(true);
@@ -33,6 +36,7 @@ public class DateTimeField extends PopupDateField {
         setInputPrompt("ДД.ММ.ГГГГ ЧЧ:ММ:СС");
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setDateFormat("dd.MM.yyyy HH:mm:ss");
+        setTimeZone(lookup(DateTimeZone.class).toTimeZone());
         setResolution(Resolution.SECOND);
         setConverter(DateTime.class);
         setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ ЧЧ:ММ:СС");

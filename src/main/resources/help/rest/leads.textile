@@ -24,8 +24,8 @@ table(tableborders).
 |@motorModel@|<>Нет|@String@|Модельь техники|
 |@price@|<>Нет|@Float@|Цена техники|
 |@delerRegion@|<>Нет|@String@|Регион покупки техники. Список доступных регионов можно получить через сервис *"/service/ref/regions":/service/ref/*.|
-|@dealer@|<>Нет|@String@|Название дилера. Не имеет смысла, если задано свойство @dealerId@. Информацию о диллере можно получить через сервис *"/service/salepoint":/service/salepoint*|
-|@dealerId@|<>Нет|@String@|Идентификатор дилера. Информацию о диллере (включая идентификатор) можно получить через сервис *"/service/salepoint":/service/salepoint*|
+|@dealer@|<>Нет|@String@|Название дилера. Не имеет смысла, если задано свойство @dealerId@. Информацию о дилере можно получить через сервис *"/service/salepoint":/service/salepoint*|
+|@dealerId@|<>Нет|@String@|Идентификатор дилера. Информацию о дилере (включая идентификатор) можно получить через сервис *"/service/salepoint":/service/salepoint*|
 |@comment@|<>Нет|@String@|Дополнительная информация о лиде|
 
 _Пример входных данных:_

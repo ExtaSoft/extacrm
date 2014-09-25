@@ -5,9 +5,11 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdInstallments;
 import ru.extas.server.sale.ProdInstallmentsRepository;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.CompanySelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -21,7 +23,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments> {
+public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 
 	// Компоненты редактирования
 	@PropertyId("name")
@@ -37,41 +39,33 @@ public class ProdInstallmentsEditForm extends AbstractEditForm<ProdInstallments>
 	@PropertyId("comment")
 	private TextArea commentField;
 
-	/**
-	 * <p>Constructor for ProdInstallmentsEditForm.</p>
-	 *
-	 * @param caption a {@link java.lang.String} object.
-	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
-	 */
-	public ProdInstallmentsEditForm(final String caption, final BeanItem<ProdInstallments> obj) {
-		super(caption, obj);
-	}
+    public ProdInstallmentsEditForm(ProdInstallments prodInstallments) {
+        super(prodInstallments.isNew() ?
+                "Новый продукт \"Рассрочка\"" :
+                "Редактировать продукт",
+                new BeanItem(prodInstallments));
+    }
 
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected void initObject(final ProdInstallments obj) {
-		if (obj.getId() == null) {
+		if (obj.isNew()) {
 			obj.setActive(true);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void saveObject(final ProdInstallments obj) {
-		lookup(ProdInstallmentsRepository.class).save(obj);
-		Notification.show("Продукт сохранен", Notification.Type.TRAY_NOTIFICATION);
-	}
+	protected ProdInstallments saveObject(ProdInstallments obj) {
+        obj = lookup(ProdInstallmentsRepository.class).save(obj);
+        NotificationUtil.showSuccess("Продукт сохранен");
+        return obj;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected void checkBeforeSave(final ProdInstallments obj) {
-
-	}
-
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdInstallments obj) {
-		final FormLayout form = new FormLayout();
+		final FormLayout form = new ExtaFormLayout();
 
 		nameField = new EditField("Название продукта", "Введите название продукта");
 		nameField.setColumns(30);

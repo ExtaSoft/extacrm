@@ -22,7 +22,7 @@
         <property name="initParameters">
             <props>
                 <prop key="UIProvider">ru.extas.web.MyUIProvider</prop>
-                <prop key="productionMode">true</prop>
+                <!--<prop key="productionMode">true</prop>-->
                 <prop key="closeIdleSessions">true</prop>
                 <prop key="widgetset">ru.extas.web.AppWidgetSet</prop>
                 <prop key="heartbeatInterval">300</prop>

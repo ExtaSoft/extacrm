@@ -6,6 +6,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.LegalEntity;
@@ -17,11 +18,14 @@ import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.server.insurance.InsuranceRepository;
 import ru.extas.server.insurance.PolicyRepository;
 import ru.extas.server.security.UserManagementService;
-import ru.extas.web.commons.DocFilesEditor;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.FilesManageField;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.window.AbstractEditForm;
 import ru.extas.web.contacts.LegalEntitySelect;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
@@ -41,7 +45,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3.0
  */
-public class InsuranceEditForm extends AbstractEditForm<Insurance> {
+public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
     private static final long serialVersionUID = 9510268415882116L;
     // Компоненты редактирования
@@ -85,73 +89,41 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     @PropertyId("dealer")
     private SalePointSelect dealerField;
     @PropertyId("files")
-    private DocFilesEditor docFilesEditor;
+    private FilesManageField docFilesEditor;
     @PropertyId("docComplete")
     private CheckBox docCompleteField;
 
     private Label tarifField;
     private ObjectProperty<BigDecimal> tarifDataSource;
 
-    /**
-     * <p>Constructor for InsuranceEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public InsuranceEditForm(final String caption, final BeanItem<Insurance> obj) {
-        super(caption, obj);
+
+    public InsuranceEditForm(Insurance insurance) {
+        super(insurance.isNew() ?
+                        "Новый полис" :
+                        "Редактировать полис",
+                new BeanItem<>(insurance));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields(final Insurance obj) {
-        TabSheet tabsheet = new TabSheet();
-        tabsheet.setSizeUndefined();
+        final FormLayout form = new ExtaFormLayout();
+        form.setMargin(true);
 
-        final FormLayout polyceForm = createPolyceForm(obj);
-        tabsheet.addTab(polyceForm).setCaption("Данные полиса");
-
-        final Component docsForm = createDocsForm();
-        tabsheet.addTab(docsForm).setCaption("Документы");
-
-        return tabsheet;
-    }
-
-    private Component createDocsForm() {
-        VerticalLayout layout = new VerticalLayout();
-        layout.setSpacing(true);
-
-        docFilesEditor = new DocFilesEditor(InsuranceFileContainer.class);
-        layout.addComponent(docFilesEditor);
-
-        docCompleteField = new CheckBox("Полный комплект документов");
-        docCompleteField.setDescription("Укажите когда все документы загружены");
-        layout.addComponent(docCompleteField);
-
-        return layout;
-    }
-
-    private FormLayout createPolyceForm(Insurance obj) {
-        final FormLayout form = new FormLayout();
-
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Полис"));
         regNumField = new PolicySelect("Номер полиса",
                 "Введите номер полиса страхования. Выбирается из справочника БСО.", obj.getRegNum());
         regNumField.setRequired(true);
-        // regNumField.setConverter(String.class);
-        regNumField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                if (event.getProperty().getType() == Policy.class) {
-                    final Object selItemId = event.getProperty().getValue();
-                    if (selItemId != null) {
-                        final BeanItem<Policy> policy = (BeanItem<Policy>) regNumField.getItem(selItemId);
-                        // Зарезервировать полис в БСО
-                        lookup(PolicyRepository.class).bookPolicy(policy.getBean());
-                    }
-
+        regNumField.addValueChangeListener(event -> {
+            if (event.getProperty().getType() == Policy.class) {
+                final Object selItemId = event.getProperty().getValue();
+                if (selItemId != null) {
+                    final BeanItem<Policy> policy = (BeanItem<Policy>) regNumField.getItem(selItemId);
+                    // Зарезервировать полис в БСО
+                    lookup(PolicyRepository.class).bookPolicy(policy.getBean());
                 }
             }
         });
@@ -165,7 +137,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         dateField = new LocalDateField("Дата договора", "Введите дату оформления договора страхования");
         dateField.setRequired(true);
         dateField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID1 = 1L;
 
             @Override
             public void valueChange(final ValueChangeEvent event) {
@@ -177,15 +149,14 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         });
         form.addComponent(dateField);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Страхователь/выгодопреобретатель"));
         boolean isLegalEntity = obj.getClient() != null && obj.getClient() instanceof LegalEntity;
         isLegalEntityField = new CheckBox("Страхователь Юр.лицо", isLegalEntity);
         isLegalEntityField.setDescription("Отметте флаг, если страхователь является юр.лицом");
-        isLegalEntityField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                Boolean isLegalEntity1 = isLegalEntityField.getValue();
-                createAndBindClientNameField(isLegalEntity1, form);
-            }
+        isLegalEntityField.addValueChangeListener(event -> {
+            Boolean isLegalEntity1 = isLegalEntityField.getValue();
+            createAndBindClientNameField(isLegalEntity1, form);
         });
         form.addComponent(isLegalEntityField);
 
@@ -199,14 +170,13 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         fillBeneficiariesChoice(clientNameField.getPropertyDataSource() != null ? clientNameField.getValue() : obj.getClient());
         form.addComponent(beneficiaryField);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Техника"));
         usedMotorField = new CheckBox("Б/у техника");
         usedMotorField.setDescription("Признак бывшей в употреблении техники");
-        usedMotorField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                calculatePremium();
-                updateTarifField();
-            }
+        usedMotorField.addValueChangeListener(event -> {
+            calculatePremium();
+            updateTarifField();
         });
         form.addComponent(usedMotorField);
 
@@ -216,12 +186,9 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
         motorBrandField = new MotorBrandSelect();
         motorBrandField.setRequired(true);
-        motorBrandField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                calculatePremium();
-                updateTarifField();
-            }
+        motorBrandField.addValueChangeListener(event -> {
+            calculatePremium();
+            updateTarifField();
         });
         motorBrandField.linkToType(motorTypeField);
         form.addComponent(motorBrandField);
@@ -251,15 +218,10 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         saleDateField.setRequired(true);
         form.addComponent(saleDateField);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Параметры страхования"));
         riskSumField = new EditField("Страховая сумма", "Введите сумму возмещения в рублях");
-        riskSumField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                calculatePremium();
-            }
-        });
+        riskSumField.addValueChangeListener(event -> calculatePremium());
         riskSumField.setRequired(true);
         form.addComponent(riskSumField);
 
@@ -273,13 +235,10 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
         coverTimeField.setNewItemsAllowed(false);
         coverTimeField.setImmediate(true);
         ComponentUtil.fillSelectByEnum(coverTimeField, Insurance.PeriodOfCover.class);
-        coverTimeField.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                calculatePremium();
-                calcEndDate();
-                updateTarifField();
-            }
+        coverTimeField.addValueChangeListener(event -> {
+            calculatePremium();
+            calcEndDate();
+            updateTarifField();
         });
         form.addComponent(coverTimeField);
 
@@ -289,40 +248,39 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
 
         paymentDateField = new LocalDateField("Дата оплаты", "Введите дату оплаты страховой премии");
         paymentDateField.setRequired(true);
-        paymentDateField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                // пересчитать дату начала действия договора
-                final LocalDate newDate = (LocalDate) paymentDateField.getConvertedValue();
-                final LocalDate startDate = ((LocalDate) startDateField.getConvertedValue());
-                if (newDate != null && startDate != null && newDate.isAfter(startDate))
-                    startDateField.setConvertedValue(newDate.plusDays(1));
-            }
+        paymentDateField.addValueChangeListener(event -> {
+            // пересчитать дату начала действия договора
+            final LocalDate newDate = (LocalDate) paymentDateField.getConvertedValue();
+            final LocalDate startDate = ((LocalDate) startDateField.getConvertedValue());
+            if (newDate != null && startDate != null && newDate.isAfter(startDate))
+                startDateField.setConvertedValue(newDate.plusDays(1));
         });
         form.addComponent(paymentDateField);
 
         startDateField = new LocalDateField("Дата начала договора", "Введите дату начала действия страхового договора");
         startDateField.setRequired(true);
-        startDateField.addValueChangeListener(new ValueChangeListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void valueChange(final ValueChangeEvent event) {
-                calcEndDate();
-
-            }
-        });
+        startDateField.addValueChangeListener(event -> calcEndDate());
         form.addComponent(startDateField);
 
         endDateField = new LocalDateField("Дата окончания договора", "Введите дату окончания");
         endDateField.setRequired(true);
         form.addComponent(endDateField);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Точка продажи"));
         dealerField = new SalePointSelect("Точка продажи", "Название мотосалона где продана страховка", null);
         // dealerField.setRequired(true);
         form.addComponent(dealerField);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Документы"));
+        docFilesEditor = new FilesManageField(InsuranceFileContainer.class);
+        form.addComponent(docFilesEditor);
+
+        docCompleteField = new CheckBox("Полный комплект документов");
+        docCompleteField.setDescription("Укажите когда все документы загружены");
+        form.addComponent(docCompleteField);
+
         return form;
     }
 
@@ -340,7 +298,7 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
      * <p>createAndBindClientNameField.</p>
      *
      * @param isLegalEntity a {@link java.lang.Boolean} object.
-     * @param form a {@link com.vaadin.ui.FormLayout} object.
+     * @param form          a {@link com.vaadin.ui.FormLayout} object.
      */
     protected void createAndBindClientNameField(Boolean isLegalEntity, FormLayout form) {
         AbstractField<? extends Contact> select;
@@ -352,14 +310,11 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
             select = new PersonSelect(caption);
         }
         select.setRequired(true);
-        select.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                Contact contact = clientNameField.getValue();
-                if (beneficiaryField.getPropertyDataSource() != null && contact != null) {
-                    fillBeneficiariesChoice(contact);
-                    beneficiaryField.setValue(contact.getName());
-                }
+        select.addValueChangeListener(event -> {
+            Contact contact = clientNameField.getValue();
+            if (beneficiaryField.getPropertyDataSource() != null && contact != null) {
+                fillBeneficiariesChoice(contact);
+                beneficiaryField.setValue(contact.getName());
             }
         });
 
@@ -403,11 +358,13 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initObject(final Insurance obj) {
-        if (obj.getId() == null) {
-            final LocalDate now = LocalDate.now();
+        if (obj.isNew()) {
+            final LocalDate now = LocalDate.now(lookup(DateTimeZone.class));
             obj.setDate(now);
             obj.setPaymentDate(now);
             obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
@@ -415,23 +372,21 @@ public class InsuranceEditForm extends AbstractEditForm<Insurance> {
             obj.setEndDate(obj.getStartDate().plusYears(1).minusDays(1));
             UserManagementService userService = lookup(UserManagementService.class);
             Person user = userService.getCurrentUserContact();
-            if(user != null) {
-                if(!isEmpty(user.getWorkPlaces()))
+            if (user != null) {
+                if (!isEmpty(user.getWorkPlaces()))
                     obj.setDealer(user.getWorkPlaces().iterator().next());
             }
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected void saveObject(final Insurance obj) {
-        lookup(InsuranceRepository.class).saveAndIssue(obj);
-        Notification.show("Полис сохранен", Notification.Type.TRAY_NOTIFICATION);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final Insurance obj) {
+    protected Insurance saveObject(Insurance obj) {
+        obj = lookup(InsuranceRepository.class).saveAndIssue(obj);
+        NotificationUtil.showSuccess("Полис сохранен");
+        return obj;
     }
 
     /**

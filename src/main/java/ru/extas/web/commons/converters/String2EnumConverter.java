@@ -1,6 +1,7 @@
 package ru.extas.web.commons.converters;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
 
 import java.util.Locale;
@@ -15,7 +16,7 @@ import java.util.Locale;
  * @since 0.3
  */
 public abstract class String2EnumConverter<TEnum> implements Converter<String, TEnum> {
-	protected final BiMap<TEnum, String> enum2StringMap;
+	protected final HashBiMap<TEnum, String> enum2StringMap;
 	private final Class<TEnum> enumClass;
 
 	/**
@@ -23,14 +24,14 @@ public abstract class String2EnumConverter<TEnum> implements Converter<String, T
 	 *
 	 * @return a {@link com.google.common.collect.BiMap} object.
 	 */
-	protected abstract BiMap<TEnum, String> createEnum2StringMap();
+	protected abstract HashBiMap<TEnum, String> createEnum2StringMap();
 
 	/**
 	 * <p>Constructor for String2EnumConverter.</p>
 	 *
 	 * @param enumClass a {@link java.lang.Class} object.
 	 */
-	protected String2EnumConverter(Class<TEnum> enumClass) {
+	protected String2EnumConverter(final Class<TEnum> enumClass) {
 		this.enumClass = enumClass;
 		enum2StringMap = createEnum2StringMap();
 	}

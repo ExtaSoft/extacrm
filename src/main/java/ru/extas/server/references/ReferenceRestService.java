@@ -27,7 +27,7 @@ import java.util.Collection;
 @Controller
 @RequestMapping("/service/ref")
 public class ReferenceRestService {
-    private Logger logger = LoggerFactory.getLogger(ReferenceRestService.class);
+    private final Logger logger = LoggerFactory.getLogger(ReferenceRestService.class);
 
     @Inject private SupplementService supplementService;
     @Inject private MotorBrandRepository motorBrandRepository;
@@ -71,9 +71,9 @@ public class ReferenceRestService {
      */
     @RequestMapping(method = RequestMethod.GET)
     public HttpEntity<String> info() throws IOException {
-        String help = HelpContent.loadMarkDown("/help/rest/references.textile");
+        final String help = HelpContent.loadMarkDown("/help/rest/references.textile");
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
         return new HttpEntity(help, headers);
     }
@@ -87,9 +87,9 @@ public class ReferenceRestService {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ResponseBody
-    public HttpEntity<String> handleIOException(Throwable ex) {
+    public HttpEntity<String> handleIOException(final Throwable ex) {
         logger.error("Ошибка обработки запроса", ex);
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
         return new HttpEntity(ex.getMessage(), headers);
     }

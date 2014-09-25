@@ -1,23 +1,22 @@
 package ru.extas.web.tasks;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.CustomTable;
-import com.vaadin.ui.Window;
-import org.activiti.engine.RuntimeService;
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.ui.*;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.joda.time.LocalDate;
-import ru.extas.model.lead.Lead;
 import ru.extas.model.security.UserRole;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.converters.StringToDateTimeConverter;
 
 import java.util.List;
-import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -31,7 +30,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class TasksGrid extends ExtaGrid {
+public class TasksGrid extends ExtaGrid<Task> {
 	private static final long serialVersionUID = 4876073256421755574L;
 	private final Period period;
 
@@ -48,7 +47,7 @@ public class TasksGrid extends ExtaGrid {
 	 * @param period a {@link ru.extas.web.tasks.TasksGrid.Period} object.
 	 */
 	public TasksGrid(Period period) {
-		super(false);
+		super(Task.class, false);
 		this.period = period;
 		initialize();
 	}
@@ -57,42 +56,6 @@ public class TasksGrid extends ExtaGrid {
 	@Override
 	protected GridDataDecl createDataDecl() {
 		return new TaskDataDecl();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void initTable(Mode mode) {
-		super.initTable(mode);
-		table.addGeneratedColumn("clientName", new CustomTable.ColumnGenerator() {
-			@Override
-			public Object generateCell(CustomTable source, Object itemId, Object columnId) {
-				String clientName = null;
-				Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
-				RuntimeService runtimeService = lookup(RuntimeService.class);
-				Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
-				if (processVariables.containsKey("lead")) {
-					Lead lead = (Lead) processVariables.get("lead");
-					clientName = lead.getContactName();
-				}
-				return clientName;
-			}
-		});
-		table.setColumnHeader("clientName", "Клиент");
-		table.addGeneratedColumn("dealerName", new CustomTable.ColumnGenerator() {
-			@Override
-			public Object generateCell(CustomTable source, Object itemId, Object columnId) {
-				String clientName = null;
-				Task task = ((BeanItem<Task>) container.getItem(itemId)).getBean();
-				RuntimeService runtimeService = lookup(RuntimeService.class);
-				Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
-				if (processVariables.containsKey("lead")) {
-					Lead lead = (Lead) processVariables.get("lead");
-					clientName = lead.getPointOfSale();
-				}
-				return clientName;
-			}
-		});
-		table.setColumnHeader("dealerName", "Мотосалон");
 	}
 
 	/** {@inheritDoc} */
@@ -140,7 +103,7 @@ public class TasksGrid extends ExtaGrid {
 	protected List<UIAction> createActions() {
 		List<UIAction> actions = newArrayList();
 
-//        actions.add(new UIAction("Новый", "Ввод новой задачи", "icon-doc-new") {
+//        actions.add(new UIAction("Новый", "Ввод новой задачи", Fontello.DOC_NEW) {
 //            @Override
 //            public void fire(Object itemId) {
 //                TaskService taskService = lookup(TaskService.class);
@@ -163,31 +126,9 @@ public class TasksGrid extends ExtaGrid {
 //            }
 //        });
 
-		actions.add(new DefaultAction("Открыть", "Открыть выделенную в списке задачу", "icon-edit-3") {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
+		actions.add(new EditObjectAction("Открыть", "Открыть выделенную в списке задачу"));
 
-				final TaskEditForm editWin = new TaskEditForm("Редактирование задачи", curObj);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							//((JPAContainer) container).refreshItem(itemId);
-						}
-						if (editWin.isTaskCompleted()) {
-							refreshContainer();
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
-
-		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", "icon-sitemap") {
+		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", Fontello.SITEMAP) {
 			@Override
 			public void fire(Object itemId) {
 				final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
@@ -205,5 +146,47 @@ public class TasksGrid extends ExtaGrid {
 	protected void refreshContainer() {
 		fillDataContainer((BeanItemContainer<Task>) container);
 	}
+
+    @Override
+    public ExtaEditForm<Task> createEditForm(Task task, boolean isInsert) {
+        return new TaskEditForm(task);
+    }
+
+    @Override
+    protected CustomTable.ColumnGenerator createDetailColumnGenerator(final UIAction defAction) {
+        return new CustomTable.ColumnGenerator() {
+
+            private StringToDateTimeConverter dtConverter;
+            {
+                dtConverter = lookup(StringToDateTimeConverter.class);
+                dtConverter.setPattern("EEE, dd MMM, HH:mm");
+            }
+
+            @Override
+            public Object generateCell(CustomTable source, final Object itemId, Object columnId) {
+                Item item = source.getItem(itemId);
+                Task task = GridItem.extractBean(item);
+
+                Button titleLink = new Button();
+                titleLink.addStyleName(ExtaTheme.BUTTON_LINK);
+                titleLink.setCaption(task.getName());
+                titleLink.setDescription(defAction.getDescription());
+                titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+                titleLink.addClickListener(event -> defAction.fire(itemId));
+
+                VerticalLayout panel = new VerticalLayout();
+                panel.addComponent(titleLink);
+
+                Label desc = new Label(task.getDescription());
+                panel.addComponent(desc);
+
+                Label dueTime = new Label(item.getItemProperty("dueDate"));
+                dueTime.setConverter(dtConverter);
+                panel.addComponent(dueTime);
+
+                return panel;
+            }
+        };
+    }
 
 }

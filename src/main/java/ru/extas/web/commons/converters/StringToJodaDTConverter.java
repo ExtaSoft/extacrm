@@ -2,10 +2,14 @@ package ru.extas.web.commons.converters;
 
 import com.vaadin.data.util.converter.Converter;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.Locale;
 
 /**
@@ -19,12 +23,18 @@ import java.util.Locale;
 public class StringToJodaDTConverter implements Converter<String, DateTime> {
     private static final long serialVersionUID = 6275343643194858906L;
 
+    @Inject @Named("clientTimeZone")
+    private DateTimeZone clientTimeZone;
+
+    @Inject
+    private Locale locale;
+
     transient private DateTimeFormatter formatter;
-    private final String pattern;
+    private String pattern;
 
     private DateTimeFormatter getFormatter() {
         if (formatter == null)
-            formatter = DateTimeFormat.forPattern(pattern);
+            formatter = DateTimeFormat.forPattern(pattern).withZone(clientTimeZone);
         return formatter;
     }
 
@@ -43,6 +53,14 @@ public class StringToJodaDTConverter implements Converter<String, DateTime> {
      * @param pattern шаблон преобразования
      */
     public StringToJodaDTConverter(final String pattern) {
+        this.pattern = pattern;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
         this.pattern = pattern;
     }
 
@@ -65,7 +83,7 @@ public class StringToJodaDTConverter implements Converter<String, DateTime> {
         if (value == null || value.isEmpty())
             return null;
         if (locale == null)
-            locale = Locale.getDefault();
+            locale = this.locale;
         return getFormatter().withLocale(locale).parseDateTime(value);
     }
 
@@ -77,7 +95,7 @@ public class StringToJodaDTConverter implements Converter<String, DateTime> {
             return null;
 
         if (locale == null)
-            locale = Locale.getDefault();
+            locale = this.locale;
 
         return getFormatter().withLocale(locale).print(value);
     }

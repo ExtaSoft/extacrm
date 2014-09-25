@@ -7,6 +7,7 @@ import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.OnDemandFileDownloader;
 
 import java.io.ByteArrayInputStream;
@@ -37,11 +38,11 @@ public class DownloadFileWindow extends Window {
 	 * @param fileName a {@link java.lang.String} object.
 	 * @param fileName a {@link java.lang.String} object.
 	 */
-	public DownloadFileWindow(final byte[] file, String fileName) {
+	public DownloadFileWindow(final byte[] file, final String fileName) {
 		initWindow("Файл готов к загрузке...", file, fileName);
 	}
 
-	private void initWindow(String caption, final byte[] file, String fileName) {
+	private void initWindow(final String caption, final byte[] file, final String fileName) {
 
 		setCaption(caption);
 
@@ -55,22 +56,14 @@ public class DownloadFileWindow extends Window {
 		final HorizontalLayout toolbar = new HorizontalLayout();
 		toolbar.setSpacing(true);
 
-		final Button downloadBtn = new Button("Скачать");
-		downloadBtn.setStyleName("icon-download");
+		final Button downloadBtn = new Button("Скачать", Fontello.DOWNLOAD);
 		createDownloader(file, fileName).extend(downloadBtn);
 		toolbar.addComponent(downloadBtn);
 
-		final Button viewBtn = new Button("Посмотреть");
-		viewBtn.setStyleName("icon-search-1");
-		BrowserWindowOpener opener =
+		final Button viewBtn = new Button("Посмотреть", Fontello.SEARCH_1);
+		final BrowserWindowOpener opener =
 				new BrowserWindowOpener(new StreamResource(
-						new StreamResource.StreamSource() {
-							@Override
-							public InputStream getStream() {
-								return new ByteArrayInputStream(file);
-							}
-
-						}, encodeWebFileName(fileName)));
+                        () -> new ByteArrayInputStream(file), encodeWebFileName(fileName)));
 		opener.extend(viewBtn);
 		toolbar.addComponent(viewBtn);
 
@@ -80,7 +73,7 @@ public class DownloadFileWindow extends Window {
 		setContent(contentContainer);
 	}
 
-	private FileDownloader createDownloader(final byte[] file, String fileName) {
+	private FileDownloader createDownloader(final byte[] file, final String fileName) {
 
 		// Подготовить имя файла
 		final String webFileName = encodeWebFileName(fileName);
@@ -112,7 +105,7 @@ public class DownloadFileWindow extends Window {
 			return URLEncoder.encode(fileName
 					.replaceAll(" ", ".").replaceAll("/", "-")
 					, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			logger.error("Can't convert file name to web URI", e);
 			throw Throwables.propagate(e);
 		}

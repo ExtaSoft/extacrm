@@ -18,7 +18,7 @@ public class EmailField extends EditField {
      * @param caption a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
      */
-    public EmailField(String caption, String description) {
+    public EmailField(final String caption, final String description) {
         super(caption, description);
         initField();
     }
@@ -28,13 +28,13 @@ public class EmailField extends EditField {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public EmailField(String caption) {
+    public EmailField(final String caption) {
         super(caption);
         initField();
     }
 
     private void initField() {
-        setColumns(20);
+//        setColumns(20);
         setDescription("Введите имя e-mail контакта который будет использоваться для связи");
         setInputPrompt("e-mail");
         addValidator(new EmailValidator("{0} не является допустимым адресом электронной почты."));

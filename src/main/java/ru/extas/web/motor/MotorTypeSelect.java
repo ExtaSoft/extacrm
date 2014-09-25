@@ -21,18 +21,17 @@ public class MotorTypeSelect extends ComboBox {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public MotorTypeSelect(String caption) {
+    public MotorTypeSelect(final String caption) {
         super(caption);
         setDescription("Укажите тип техники");
-        setInputPrompt("Выберите или начните ввод...");
+        setInputPrompt("Выберите...");
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setImmediate(true);
         setNullSelectionAllowed(false);
         setNewItemsAllowed(false);
         setFilteringMode(FilteringMode.CONTAINS);
         setWidth(13, Unit.EM);
-        for (final String item : lookup(MotorTypeRepository.class).loadAllNames())
-            addItem(item);
+        lookup(MotorTypeRepository.class).loadAllNames().forEach((final String item) -> addItem(item));
     }
 
     /**

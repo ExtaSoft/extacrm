@@ -2,6 +2,8 @@ package ru.extas.web.users;
 
 import ru.extas.model.security.UserGroup;
 import ru.extas.web.commons.DefaultAction;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
@@ -31,7 +33,7 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
      */
     public UserGroupSelectWindow(String caption) {
         super(caption);
-        addStyleName("base-view");
+        addStyleName(ExtaTheme.BASE_VIEW);
         setContent(new UserGroupGrid() {
 
 //            @Override
@@ -44,7 +46,7 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
             protected List<UIAction> createActions() {
                 List<UIAction> actions = newArrayList();
 
-                actions.add(new DefaultAction("Выбрать", "Выбрать выделенную в списке группу и закрыть окно", "icon-check") {
+                actions.add(new DefaultAction("Выбрать", "Выбрать выделенную в списке группу и закрыть окно", Fontello.CHECK) {
                     @Override
                     public void fire(final Object itemId) {
 

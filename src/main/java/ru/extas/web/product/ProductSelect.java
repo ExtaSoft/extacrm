@@ -42,7 +42,7 @@ public class ProductSelect extends ComboBox {
 
 		// Преконфигурация
 		setDescription(description);
-		setInputPrompt("Выберите продукт");
+		setInputPrompt("Выберите продукт...");
 		setWidth(20, Unit.EM);
 		setImmediate(true);
 		setNullSelectionAllowed(false);

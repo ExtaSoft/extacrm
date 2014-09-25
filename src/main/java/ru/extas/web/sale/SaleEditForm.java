@@ -5,17 +5,27 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.SaleComment;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.CommentsField;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
 
+import javax.persistence.EntityManager;
+
+import java.text.MessageFormat;
+
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static ru.extas.model.common.ModelUtils.evictCache;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -25,7 +35,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SaleEditForm extends AbstractEditForm<Sale> {
+public class SaleEditForm extends ExtaEditForm<Sale> {
 
     private static final long serialVersionUID = 9510268415882116L;
     // Компоненты редактирования
@@ -54,31 +64,28 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     private TextArea commentField;
     @PropertyId("productInSales")
     private ProductInSaleGrid productInSaleField;
+    @PropertyId("comments")
+    private CommentsField<SaleComment> commentsField;
 
-    /**
-     * <p>Constructor for SaleEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public SaleEditForm(final String caption, final BeanItem<Sale> obj) {
-        super(caption, obj);
+    public SaleEditForm(Sale sale) {
+        super(sale.isNew() ? "Ввод новой продажи в систему" :
+                MessageFormat.format("Редактирование продажи № {0}", sale.getNum()), new BeanItem(sale));
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Sale obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Клиент"));
         clientField = new PersonSelect("Клиент", "Введите имя клиента");
         clientField.setRequired(true);
         clientField.setRequiredError("Имя контакта не может быть пустым.");
         form.addComponent(clientField);
 
-        regionField = new RegionSelect();
-        regionField.setDescription("Укажите регион услуги");
-        form.addComponent(regionField);
-
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Техника"));
         motorTypeField = new MotorTypeSelect();
         form.addComponent(motorTypeField);
 
@@ -92,16 +99,31 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
         mototPriceField = new EditField("Цена техники");
         form.addComponent(mototPriceField);
 
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Дилер"));
+        regionField = new RegionSelect();
+        regionField.setDescription("Укажите регион услуги");
+        form.addComponent(regionField);
+
         dealerField = new SalePointSelect("Мотосалон", "Введите точку продаж", null);
         form.addComponent(dealerField);
 
-        commentField = new TextArea("Комментарий");
-        commentField.setColumns(25);
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Дополнительно"));
+        commentField = new TextArea("Примечание");
+        commentField.setRows(3);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);
 
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Продукты"));
         productInSaleField = new ProductInSaleGrid("Продукты в продаже", obj);
         form.addComponent(productInSaleField);
+
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Коментарии"));
+        commentsField = new CommentsField<>(SaleComment.class);
+        form.addComponent(commentsField);
 
         return form;
     }
@@ -110,7 +132,7 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final Sale obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             obj.setStatus(Sale.Status.NEW);
             UserManagementService userService = lookup(UserManagementService.class);
             Person user = userService.getCurrentUserContact();
@@ -124,16 +146,14 @@ public class SaleEditForm extends AbstractEditForm<Sale> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final Sale obj) {
+    protected Sale saveObject(final Sale obj) {
         final SaleRepository leadService = lookup(SaleRepository.class);
-        leadService.secureSave(obj);
-        Notification.show("Продажа сохранена", Notification.Type.TRAY_NOTIFICATION);
+        Sale sale = leadService.secureSave(obj);
+        if (sale.getNum() == null)
+            evictCache(sale);
+        NotificationUtil.showSuccess("Продажа сохранена");
+        return sale;
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final Sale obj) {
-    }
 
 }

@@ -4,6 +4,7 @@ import ru.extas.model.common.FileContainer;
 import ru.extas.model.sale.ProdCredit;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.util.List;
 import java.util.Set;
 
@@ -29,15 +30,62 @@ public class LegalEntity extends Contact{
 
     // ОГРН/ОГРИП
     @Column(name = "OGRN_OGRIP", length = 15)
+    @Max(15)
     private String ogrnOgrip;
 
     // ИНН
     @Column(name = "INN", length = 15)
+    @Max(15)
     private String inn;
+
+    // КПП
+    @Column(name = "KPP", length = 15)
+    @Max(15)
+    private String kpp;
+
+    // Расчетный счет в рублях
+    @Column(name = "SETTLEMENT_ACCOUNT", length = 25)
+    @Max(25)
+    private String settlementAccount;
+
+    // Корреспондентский счет
+    @Column(name = "LORO_ACCOUNT", length = 150)
+    @Max(150)
+    private String loroAccount;
+
+    // Полное наименование банка
+    @Column(name = "BANK_NAME", length = NAME_LENGTH)
+    @Max(NAME_LENGTH)
+    private String bankName;
+
+    // БИК банка
+    @Column(name = "BIC", length = 15)
+    @Max(15)
+    private String bic;
+
+    // Фактический адрес совпадает с юридическим
+    @Column(name = "REG_N_PST_IS_SAME")
+    private boolean regNpstIsSame;
+
+    // Почтовый адрес
+    @Embedded()
+    @AttributeOverrides({
+            @AttributeOverride(name = "region", column = @Column(name = "PST_REGION")),
+            @AttributeOverride(name = "city", column = @Column(name = "PST_CITY")),
+            @AttributeOverride(name = "postIndex", column = @Column(name = "PST_POST_INDEX")),
+            @AttributeOverride(name = "streetBld", column = @Column(name = "PST_STREET_BLD")),
+            @AttributeOverride(name = "realtyKind", column = @Column(name = "PST_REALTY_KIND")),
+            @AttributeOverride(name = "periodOfResidence", column = @Column(name = "PST_PERIOD_OF_RESIDENCE"))
+    })
+    private AddressInfo postAddress = new AddressInfo();
 
     // Генеральный директор
     @OneToOne(cascade = CascadeType.REFRESH)
     private Person director;
+
+    // Главный бухгалтер
+    @OneToOne(cascade = CascadeType.REFRESH)
+    private Person accountant;
 
     // Банки и кредитные продукты
     @ManyToMany(cascade = CascadeType.REFRESH)
@@ -56,6 +104,69 @@ public class LegalEntity extends Contact{
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
     private List<LegalEntityFile> files = newArrayList();
 
+    public boolean isRegNpstIsSame() {
+        return regNpstIsSame;
+    }
+
+    public void setRegNpstIsSame(boolean regNpstIsSame) {
+        this.regNpstIsSame = regNpstIsSame;
+    }
+
+    public Person getAccountant() {
+        return accountant;
+    }
+
+    public void setAccountant(Person accountant) {
+        this.accountant = accountant;
+    }
+
+    public String getKpp() {
+        return kpp;
+    }
+
+    public void setKpp(String kpp) {
+        this.kpp = kpp;
+    }
+
+    public String getSettlementAccount() {
+        return settlementAccount;
+    }
+
+    public void setSettlementAccount(String settlementAccount) {
+        this.settlementAccount = settlementAccount;
+    }
+
+    public String getLoroAccount() {
+        return loroAccount;
+    }
+
+    public void setLoroAccount(String loroAccount) {
+        this.loroAccount = loroAccount;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBic() {
+        return bic;
+    }
+
+    public void setBic(String bik) {
+        this.bic = bik;
+    }
+
+    public AddressInfo getPostAddress() {
+        return postAddress;
+    }
+
+    public void setPostAddress(AddressInfo postAddress) {
+        this.postAddress = postAddress;
+    }
 
     /**
      * <p>Getter for the field <code>ogrnOgrip</code>.</p>

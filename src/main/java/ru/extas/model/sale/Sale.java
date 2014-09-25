@@ -1,12 +1,18 @@
 package ru.extas.model.sale;
 
+import ru.extas.model.common.Comment;
+import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.PersonFileContainer;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.lead.Lead;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Модель данных для продажи
@@ -21,77 +27,73 @@ import java.util.List;
 @Table(name = "SALE")
 public class Sale extends SecuredObject {
 
-	/**
-	 * Статусы продажи
-	 */
-	public enum Status {
-		NEW,
-		CANCELED,
-		FINISHED
-	}
-
-	/**
-	 * Результат завершения продажи
-	 */
-	public enum Result {
-		/**
-		 * Успешное выполнение (кредит получен).
-		 */
-		SUCCESSFUL,
-		/**
-		 * Отказ контрагента (отказ банка).
-		 */
-		VENDOR_REJECTED,
-		/**
-		 * Отказ клиента.
-		 */
-		CLIENT_REJECTED
-	}
-
-	// Клиент
+    @Column(unique = true, columnDefinition = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE")
+    private Long num;
+    // Клиент
 	@OneToOne(cascade = CascadeType.REFRESH)
 	private Person client;
-
 	@Enumerated(EnumType.STRING)
 	private Status status;
-
 	// Регион покупки техники
 	@Column(name = "REGION")
 	private String region;
-
 	// Тип техники
 	@Column(name = "MOTOR_TYPE")
 	private String motorType;
-
 	// Марка техники
 	@Column(name = "MOTOR_BRAND")
 	private String motorBrand;
-
 	// Модель техники
 	@Column(name = "MOTOR_MODEL")
 	private String motorModel;
-
 	// Стоимость техники
 	@Column(name = "MOTOR_PRICE", precision = 32, scale = 4)
 	private BigDecimal motorPrice;
-
 	// Мотосалон
 	@OneToOne(cascade = CascadeType.REFRESH)
 	private SalePoint dealer;
-
 	@Column(name = "COMMENT")
 	private String comment;
-
 	@Column(name = "PROCESS_ID")
 	private String processId;
-
 	@Enumerated(EnumType.STRING)
 	private Result result;
-
 	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<ProductInSale> productInSales;
 
-	/**
+    @OneToOne(cascade = CascadeType.REFRESH)
+    private Lead lead;
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = Comment.OWNER_ID_COLUMN)
+    @OrderBy("createdAt")
+    private List<SaleComment> comments = newArrayList();
+
+    public List<SaleComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<SaleComment> comments) {
+        this.comments = comments;
+    }
+
+    public Lead getLead() {
+        return lead;
+    }
+
+    public void setLead(Lead lead) {
+        this.lead = lead;
+    }
+
+    public Long getNum() {
+        return num;
+    }
+
+    public void setNum(Long num) {
+        this.num = num;
+    }
+
+    /**
 	 * <p>Getter for the field <code>result</code>.</p>
 	 *
 	 * @return a {@link ru.extas.model.sale.Sale.Result} object.
@@ -305,5 +307,32 @@ public class Sale extends SecuredObject {
 	 */
 	public void setProductInSales(final List<ProductInSale> productInSales) {
 		this.productInSales = productInSales;
+	}
+
+    /**
+	 * Статусы продажи
+	 */
+	public enum Status {
+		NEW,
+		CANCELED,
+		FINISHED
+	}
+
+	/**
+	 * Результат завершения продажи
+	 */
+	public enum Result {
+		/**
+		 * Успешное выполнение (кредит получен).
+		 */
+		SUCCESSFUL,
+		/**
+		 * Отказ контрагента (банка, дилера).
+		 */
+		VENDOR_REJECTED,
+		/**
+		 * Отказ клиента.
+		 */
+		CLIENT_REJECTED
 	}
 }

@@ -39,7 +39,7 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      * @param region a {@link java.lang.String} object.
      * @return a long.
      */
-    @Query("select count(s) from SalePoint s where s.actualAddress.region = :region")
+    @Query("select count(s) from SalePoint s where s.regAddress.region = :region")
     long countByRegion(@Param("region") String region);
 
     /**
@@ -48,6 +48,6 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      * @param region a {@link java.lang.String} object.
      * @return a {@link java.util.List} object.
      */
-    @Query("select s from SalePoint s where s.actualAddress.region = :region")
+    @Query("select s from SalePoint s where s.regAddress.region = :region")
     List<SalePoint> findByRegion(@Param("region") String region);
 }

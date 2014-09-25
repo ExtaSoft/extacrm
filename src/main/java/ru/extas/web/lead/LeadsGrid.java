@@ -1,24 +1,17 @@
 package ru.extas.web.lead;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Window;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
 
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * <p>LeadsGrid class.</p>
@@ -29,7 +22,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.3
  */
-public class LeadsGrid extends ExtaGrid {
+public class LeadsGrid extends ExtaGrid<Lead> {
 	private static final long serialVersionUID = 4876073256421755574L;
 	private final static Logger logger = LoggerFactory.getLogger(LeadsGrid.class);
 	private final Lead.Status status;
@@ -40,18 +33,29 @@ public class LeadsGrid extends ExtaGrid {
 	 * @param status a {@link ru.extas.model.lead.Lead.Status} object.
 	 */
 	public LeadsGrid(Lead.Status status) {
-		super(false);
+		super(Lead.class, false);
 		this.status = status;
 		initialize();
 	}
 
-	/** {@inheritDoc} */
+    public Lead.Status getStatus() {
+        return status;
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
-		return new LeadDataDecl();
+		return new LeadDataDecl(this);
 	}
 
-	/** {@inheritDoc} */
+    @Override
+    public ExtaEditForm<Lead> createEditForm(Lead lead, boolean isInsert) {
+        final LeadEditForm editForm = new LeadEditForm(lead, isInsert && status == Lead.Status.QUALIFIED);
+        editForm.setReadOnly(status != Lead.Status.NEW && !isInsert);
+        return editForm;
+    }
+
+    /** {@inheritDoc} */
 	@Override
 	protected void initTable(Mode mode) {
 		super.initTable(mode);
@@ -79,96 +83,56 @@ public class LeadsGrid extends ExtaGrid {
 		List<UIAction> actions = newArrayList();
 
 		if (status == Lead.Status.NEW || status == Lead.Status.QUALIFIED) {
-			actions.add(new UIAction("Новый", "Ввод нового лида", "icon-doc-new") {
-				@Override
-				public void fire(Object itemId) {
-					final BeanItem<Lead> newObj = new BeanItem<>(new Lead());
-
-					final LeadEditForm editWin = new LeadEditForm("Ввод нового лида в систему", newObj, status == Lead.Status.QUALIFIED);
-					editWin.addCloseListener(new Window.CloseListener() {
-
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (editWin.isSaved()) {
-								refreshContainer();
-							}
-						}
-					});
-					editWin.showModal();
-				}
-			});
+			actions.add(new NewObjectAction("Новый", "Ввод нового лида"));
 		}
 
-		actions.add(new DefaultAction("Изменить", "Редактировать выделенный в списке лид", "icon-edit-3") {
-			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<Lead> curObj = new GridItem<>(table.getItem(itemId));
-
-				final LeadEditForm editWin = new LeadEditForm("Редактирование лида", curObj, false);
-				editWin.addCloseListener(new Window.CloseListener() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void windowClose(final Window.CloseEvent e) {
-						if (editWin.isSaved()) {
-							refreshContainerItem(itemId);
-						}
-					}
-				});
-				editWin.showModal();
-			}
-		});
+		actions.add(new EditObjectAction(status == Lead.Status.NEW ? "Изменить" : "Просмотреть", "Редактировать выделенный в списке лид"));
 
 		if (status == Lead.Status.NEW) {
-			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", "icon-doc-new") {
+			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {
 				@Override
 				public void fire(final Object itemId) {
-					final BeanItem<Lead> curObj = new GridItem<>(table.getItem(itemId));
-
-					final LeadEditForm editWin = new LeadEditForm("Квалификация лида", curObj, true);
-					editWin.addCloseListener(new Window.CloseListener() {
-
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (editWin.isSaved()) {
-								refreshContainerItem(itemId);
-							}
-						}
-					});
-					editWin.showModal();
+                    doQualifyLead(itemId);
 				}
 			});
 		}
 
-		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязан текущий Лид", "icon-sitemap") {
-			@Override
-			public void fire(Object itemId) {
-				final Lead curObj = extractBean(table.getItem(itemId));
-
-				// Ищем процесс к которому привязана текущая продажа
-				RuntimeService runtimeService = lookup(RuntimeService.class);
-				ProcessInstance process =
-						runtimeService.createProcessInstanceQuery()
-								.includeProcessVariables()
-								.variableValueEquals("lead", curObj)
-								.singleResult();
-
-				if (process != null) {
-					// Показать статус выполнения процесса
-					BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
-					statusForm.showModal();
-				} else {
-					Notification.show("Нет бизнес процесса с которым связан текущий Лид.");
-				}
-			}
-		});
+//		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязан текущий Лид", Fontello.SITEMAP) {
+//			@Override
+//			public void fire(Object itemId) {
+//				final Lead curObj = extractBean(table.getItem(itemId));
+//
+//				// Ищем процесс к которому привязана текущая продажа
+//				RuntimeService runtimeService = lookup(RuntimeService.class);
+//				ProcessInstance process =
+//						runtimeService.createProcessInstanceQuery()
+//								.includeProcessVariables()
+//								.variableValueEquals("lead", curObj)
+//								.singleResult();
+//
+//				if (process != null) {
+//					// Показать статус выполнения процесса
+//					BPStatusForm statusForm = new BPStatusForm(process.getProcessInstanceId());
+//					statusForm.showModal();
+//				} else {
+//                    NotificationUtil.showWarning("Нет бизнес процесса с которым связан текущий Лид.");
+//				}
+//			}
+//		});
 
 		return actions;
 	}
+
+    public void doQualifyLead(Object itemId) {
+        final Lead curObj = GridItem.extractBean(table.getItem(itemId));
+
+        final LeadEditForm editWin = new LeadEditForm(curObj, true);
+        editWin.addCloseFormListener(event -> {
+            if (editWin.isSaved()) {
+                refreshContainerItem(itemId);
+            }
+        });
+        FormUtils.showModalWin(editWin);
+    }
 
 }

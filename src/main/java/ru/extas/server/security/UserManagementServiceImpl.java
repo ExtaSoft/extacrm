@@ -178,4 +178,15 @@ public class UserManagementServiceImpl implements UserManagementService {
         return subject.isPermitted(new ExtaPermission(domain, target));
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public boolean isPermitted(final ExtaDomain domain, final SecureTarget target, final SecureAction action) {
+        checkNotNull(domain);
+        checkNotNull(action);
+
+        Subject subject = SecurityUtils.getSubject();
+
+        return subject.isPermitted(new ExtaPermission(domain, action, target));
+    }
+
 }

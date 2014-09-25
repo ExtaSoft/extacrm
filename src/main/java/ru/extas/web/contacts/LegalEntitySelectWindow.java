@@ -5,9 +5,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
-import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaDataContainer;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
@@ -40,8 +38,8 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 	public LegalEntitySelectWindow(final String caption, final Company company) {
 		super(caption);
 		this.company = company;
-		addStyleName("base-view");
-		setContent(new SelectGrid());
+        setWidth(800, Unit.PIXELS);
+        setContent(new SelectGrid());
 	}
 
 	/**
@@ -68,14 +66,14 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
                         itemContainer.addBean(item);
                     }
                 }
-                itemContainer.addNestedContainerProperty("actualAddress.region");
+                itemContainer.addNestedContainerProperty("regAddress.region");
                 itemContainer.addNestedContainerProperty("company.name");
                 return itemContainer;
             } else {
                 final ExtaDataContainer<LegalEntity> container = new ExtaDataContainer<>(LegalEntity.class);
                 if (company != null)
                     container.addContainerFilter(new Compare.Equal("company", company));
-                container.addNestedContainerProperty("actualAddress.region");
+                container.addNestedContainerProperty("regAddress.region");
                 container.addNestedContainerProperty("company.name");
                 return container;
             }
@@ -85,7 +83,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 		protected List<UIAction> createActions() {
 			List<UIAction> actions = newArrayList();
 
-			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", "icon-check") {
+			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
 				@Override
 				public void fire(final Object itemId) {
 

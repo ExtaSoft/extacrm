@@ -52,8 +52,8 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
     /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectRegions(Company company) {
-        if(company.getActualAddress() != null && !isNullOrEmpty(company.getActualAddress().getRegion()))
-            return newHashSet(company.getActualAddress().getRegion());
+        if(company.getRegAddress() != null && !isNullOrEmpty(company.getRegAddress().getRegion()))
+            return newHashSet(company.getRegAddress().getRegion());
         return null;
     }
 

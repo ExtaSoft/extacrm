@@ -2,8 +2,6 @@ package ru.extas.web.commons;
 
 import com.vaadin.server.*;
 import com.vaadin.server.StreamResource.StreamSource;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 
 import java.io.IOException;
 
@@ -44,7 +42,7 @@ public class OnDemandFileDownloader extends FileDownloader {
 
             @Override
             public void error(com.vaadin.server.ErrorEvent event) {
-                Notification.show("Ошибка печати файла", event.getThrowable().getMessage(), Type.ERROR_MESSAGE);
+                NotificationUtil.showError("Ошибка печати файла", event.getThrowable().getMessage());
             }
         });
 

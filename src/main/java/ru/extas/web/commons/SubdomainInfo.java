@@ -6,13 +6,13 @@
  * @version $Id: $Id
  * @since 0.3
  */
-package ru.extas.web.commons.component;
+package ru.extas.web.commons;
 
-import com.vaadin.ui.Component;
 import ru.extas.model.security.ExtaDomain;
+import ru.extas.web.commons.ExtaGrid;
 
 import java.io.Serializable;
-public interface TabInfo extends Serializable {
+public interface SubdomainInfo extends Serializable {
 
     /**
      * <p>getCaption.</p>
@@ -22,11 +22,11 @@ public interface TabInfo extends Serializable {
     public String getCaption();
 
     /**
-     * <p>createComponent.</p>
+     * <p>createGrid.</p>
      *
      * @return a {@link com.vaadin.ui.Component} object.
      */
-    public Component createComponent();
+    public ExtaGrid createGrid();
 
 	/**
 	 * <p>getDomain.</p>
@@ -34,4 +34,6 @@ public interface TabInfo extends Serializable {
 	 * @return a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
 	ExtaDomain getDomain();
+
+    boolean isEditInPage();
 }

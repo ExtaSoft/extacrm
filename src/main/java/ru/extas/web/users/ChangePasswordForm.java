@@ -14,7 +14,8 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.component.ExtaFormLayout;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -25,7 +26,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
+public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
 
     private static final long serialVersionUID = -6196099478095832935L;
     private final static Logger logger = LoggerFactory.getLogger(ChangePasswordForm.class);
@@ -51,7 +52,7 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final UserProfile obj) {
+    protected UserProfile saveObject(UserProfile obj) {
         logger.debug("Saving changed password...");
 
         // Шифруем пароль
@@ -60,20 +61,18 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
         obj.setChangePassword(false);
 
         final UserRegistry userService = lookup(UserRegistry.class);
-        userService.save(obj);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final UserProfile obj) {
+        obj = userService.save(obj);
+        return obj;
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final UserProfile obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         passField = new PasswordField("Пароль");
+//        passField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        passField.setIcon(Fontello.LOCK);
         passField.setImmediate(true);
         passField.setDescription("Введите пароль для входа в систему");
         passField.setInputPrompt("Пароль");
@@ -83,6 +82,8 @@ public class ChangePasswordForm extends AbstractEditForm<UserProfile> {
         form.addComponent(passField);
 
         passConfField = new PasswordField("Подтверждение пароля");
+//        passConfField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        passConfField.setIcon(Fontello.LOCK);
         passConfField.setImmediate(true);
         passConfField.setDescription("Введите повторно пароль для для его подтвержедения");
         passConfField.setInputPrompt("Подтверждение пароля");

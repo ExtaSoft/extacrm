@@ -2,6 +2,8 @@ package ru.extas.web.product;
 
 import ru.extas.model.sale.Product;
 import ru.extas.web.commons.DefaultAction;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
@@ -30,8 +32,8 @@ public class ProductSelectWindow extends CloseOnlylWindow {
 	 */
 	public ProductSelectWindow(final String caption) {
 		super(caption);
-		addStyleName("base-view");
-		setContent(new SelectGrid());
+        setWidth(800, Unit.PIXELS);
+        setContent(new SelectGrid());
 	}
 
 	/**
@@ -48,7 +50,7 @@ public class ProductSelectWindow extends CloseOnlylWindow {
 		protected List<UIAction> createActions() {
 			List<UIAction> actions = newArrayList();
 
-			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", "icon-check") {
+			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
 				@Override
 				public void fire(final Object itemId) {
 

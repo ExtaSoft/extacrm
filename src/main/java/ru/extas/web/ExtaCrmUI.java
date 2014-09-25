@@ -6,17 +6,13 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.server.Page;
-import com.vaadin.server.ThemeResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.MenuBar.Command;
-import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
+import com.vaadin.ui.themes.ValoTheme;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -28,6 +24,7 @@ import org.springframework.stereotype.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.*;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
@@ -56,7 +53,7 @@ import static ru.extas.web.UiUtils.initUi;
  */
 @Component
 @Scope("session")
-@Theme("extacrm")
+@Theme(ExtaTheme.NAME)
 @Title("Extreme Assistance CRM")
 //@Push(PushMode.AUTOMATIC)
 public class ExtaCrmUI extends UI {
@@ -66,24 +63,21 @@ public class ExtaCrmUI extends UI {
     private static final long serialVersionUID = -6733655391417975375L;
     private static final int POLLING_INTERVAL = 3000;
 
-    private final CssLayout root = new CssLayout();
-
-    private VerticalLayout loginLayout;
+    RootLayout root = new RootLayout();
+    ComponentContainer viewDisplay = root.getContentContainer();
+    CssLayout menu = new CssLayout();
 
     private ExtaMainMenu mainMenu;
-    private final CssLayout content = new CssLayout();
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void init(final VaadinRequest request) {
 
         initUi(this);
 
         setPollInterval(POLLING_INTERVAL);
-
-        setContent(root);
-        root.addStyleName("root");
-        root.setSizeFull();
 
         if (lookup(UserManagementService.class).isUserAuthenticated())
             buildMainView();
@@ -93,73 +87,29 @@ public class ExtaCrmUI extends UI {
     }
 
     private void buildLoginView(final boolean exit) {
-        if (exit) {
-            root.removeAllComponents();
-        }
 
-
-        // Unfortunate to use an actual widget here, but since CSS generated
-        // elements can't be transitioned yet, we must
-        final Label bg = new Label();
-        bg.setSizeUndefined();
-        bg.addStyleName("login-bg");
-        root.addComponent(bg);
-
-        addStyleName("login");
-
-        loginLayout = new VerticalLayout();
-        loginLayout.setSizeFull();
-        loginLayout.addStyleName("login-layout");
-        root.addComponent(loginLayout);
-
-        final CssLayout loginPanel = new CssLayout();
-        loginPanel.addStyleName("login-panel");
-
-        final HorizontalLayout labels = new HorizontalLayout();
-        labels.setWidth("100%");
-        labels.setMargin(true);
-        labels.addStyleName("labels");
-        loginPanel.addComponent(labels);
-
-        final Label welcome = new Label("Добро пожаловать");
-        welcome.setSizeUndefined();
-        welcome.addStyleName("h4");
-        labels.addComponent(welcome);
-        labels.setComponentAlignment(welcome, Alignment.MIDDLE_LEFT);
-
-        final Label title = new Label("Экстрим Ассистанс CRM");
-        title.setSizeUndefined();
-        title.addStyleName("h2");
-        title.addStyleName("light");
-        labels.addComponent(title);
-        labels.setComponentAlignment(title, Alignment.MIDDLE_RIGHT);
-
-//        final HorizontalLayout fields = new HorizontalLayout();
-//        fields.setSpacing(true);
-//        fields.setMargin(true);
-//        fields.addStyleName("fields");
+        final Panel loginPanel = new Panel("Экстрим Ассистанс CRM");
+        loginPanel.setSizeUndefined();
 
         final TextField username = new TextField("Пользователь");
+//        username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        username.setIcon(Fontello.AT);
         username.setColumns(20);
         username.focus();
 
         final PasswordField password = new PasswordField("Пароль");
+//        password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        password.setIcon(Fontello.LOCK);
         password.setColumns(20);
 
         final Button signin = new Button("Войти");
-        signin.addStyleName("default");
+        signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         FormLayout loginForm = new FormLayout(username, password, signin);
+        loginForm.setSizeUndefined();
         loginForm.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
-        //fields.addComponent(loginForm);
-
 
         final ShortcutListener enter = new ShortcutListener("Войти", KeyCode.ENTER, null) {
-            /**
-             *
-             */
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void handleAction(final Object sender, final Object target) {
                 signin.click();
@@ -167,11 +117,6 @@ public class ExtaCrmUI extends UI {
         };
 
         signin.addClickListener(new ClickListener() {
-            /**
-             *
-             */
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void buttonClick(final ClickEvent event) {
                 UserManagementService userService = lookup(UserManagementService.class);
@@ -189,19 +134,14 @@ public class ExtaCrmUI extends UI {
                             // Поменять пароль
                             final ChangePasswordForm form = new ChangePasswordForm(new BeanItem<>(
                                     currentUserProfile));
-                            form.addCloseListener(new CloseListener() {
-                                private static final long serialVersionUID = 1L;
-
-                                @Override
-                                public void windowClose(final CloseEvent e) {
-                                    if (form.isSaved()) {
-                                        closeLoginAndBuildMain();
-                                    } else {
-                                        lookup(UserManagementService.class).logout();
-                                    }
+                            form.addCloseFormListener(event1 -> {
+                                if (form.isSaved()) {
+                                    closeLoginAndBuildMain();
+                                } else {
+                                    lookup(UserManagementService.class).logout();
                                 }
                             });
-                            form.showModal();
+                            FormUtils.showModalWin(form);
                         } else {
                             closeLoginAndBuildMain();
                         }
@@ -225,170 +165,108 @@ public class ExtaCrmUI extends UI {
                     errMessage = "Задайте имя пользователя и пароль";
                 }
                 if (!userService.isUserAuthenticated()) {
-                    if (loginPanel.getComponentCount() > 2) {
-                        // Remove the previous error message
-                        loginPanel.removeComponent(loginPanel.getComponent(2));
-                    }
-                    // Add new error message
-                    final Label error = new Label(
-                            errMessage
-                                    + " <br/><span>Проверьте правильность пары пользователь/пароль или обратитесь к администратору</span>",
-                            ContentMode.HTML
-                    );
-                    error.addStyleName("error");
-                    error.setSizeUndefined();
-                    error.addStyleName("light");
-                    // Add animation
-                    error.addStyleName("v-animate-reveal");
-                    loginPanel.addComponent(error);
+                    // Show new error message
+                    String message = MessageFormat.format(
+                            "{0} <br/><span>Проверьте правильность пары пользователь/пароль или обратитесь к администратору</span>", errMessage);
+                    NotificationUtil.showError("Ошибка при проверке пользователя", message);
                     username.focus();
                 }
             }
 
             private void closeLoginAndBuildMain() {
                 signin.removeShortcutListener(enter);
-                removeStyleName("login");
-                root.removeComponent(loginLayout);
                 buildMainView();
             }
         });
 
         signin.addShortcutListener(enter);
 
-        loginPanel.addComponent(loginForm);
+        loginPanel.setContent(loginForm);
 
-        loginLayout.addComponent(loginPanel);
-        loginLayout.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
+        VerticalLayout loginRoot = new VerticalLayout();
+        loginRoot.setSizeFull();
+        loginRoot.setPrimaryStyleName(ExtaTheme.LOGIN_VIEW);
+        loginRoot.addComponent(loginPanel);
+        loginRoot.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
+        setContent(loginRoot);
     }
 
     private void buildMainView() {
 
         logger.info("Entering main view");
-        root.addComponent(new HorizontalLayout() {
-            private static final long serialVersionUID = 1L;
-
+        // Branding element
+        final CssLayout branding = new CssLayout() {
             {
-                setSizeFull();
-                addStyleName("main-view");
-                addComponent(new VerticalLayout() {
-                    private static final long serialVersionUID = 1L;
-
-                    // Sidebar
-                    {
-                        addStyleName("sidebar");
-                        setWidth(null);
-                        setHeight("100%");
-
-                        // Branding element
-                        addComponent(new CssLayout() {
-                            {
-                                String appVersion = lookup("application.version", String.class);
-                                String appBuildTm = lookup("application.build.timestamp", String.class);
-                                addStyleName("branding");
-                                final String brandText = MessageFormat.format("<span>Экстрим Ассистанс</span> CRM <br/><span>(ver.{0})</span>", appVersion);
-                                final Label logo = new Label(brandText, ContentMode.HTML);
-                                logo.setSizeUndefined();
-                                final String logoDesc = MessageFormat.format("Версия {0}, собрано {1}", appVersion, appBuildTm);
-                                logo.setDescription(logoDesc);
-                                addComponent(logo);
-                                // addComponent(new Image(null, new
-                                // ThemeResource(
-                                // "img/branding.png")));
-                            }
-                        });
-
-                        // Main menu
-                        mainMenu = new ExtaMainMenu(ExtaCrmUI.this, content);
-                        addComponent(mainMenu);
-                        setExpandRatio(mainMenu, 1);
-
-                        // User menu
-                        addComponent(new VerticalLayout() {
-                            private static final long serialVersionUID = 1L;
-
-                            {
-                                setSizeUndefined();
-                                addStyleName("user");
-                                final Image profilePic = new Image(null, new ThemeResource("img/profile-pic.png"));
-                                profilePic.setWidth("34px");
-                                addComponent(profilePic);
-                                String login = lookup(UserManagementService.class).getCurrentUserLogin();
-                                final Label userName = new Label(new ObjectProperty(login));
-                                userName.setSizeUndefined();
-                                userName.setConverter(lookup(LoginToUserNameConverter.class));
-                                addComponent(userName);
-
-                                final Command cmd = new Command() {
-                                    private static final long serialVersionUID = 1L;
-
-                                    @Override
-                                    public void menuSelected(final MenuItem selectedItem) {
-                                        Notification.show("Не реализовано пока");
-                                    }
-                                };
-                                final MenuBar settings = new MenuBar();
-                                final MenuItem settingsMenu = settings.addItem("", null);
-                                settingsMenu.setStyleName("icon-cog");
-                                settingsMenu.addItem("Настройки", cmd);
-                                settingsMenu.addSeparator();
-                                settingsMenu.addItem("Профиль", cmd);
-                                addComponent(settings);
-
-                                final Button exit = new NativeButton("Выход");
-                                exit.addStyleName("icon-cancel");
-                                exit.setDescription("Выход из системы");
-                                addComponent(exit);
-                                exit.addClickListener(new ClickListener() {
-                                    private static final long serialVersionUID = 1L;
-
-                                    @Override
-                                    public void buttonClick(final ClickEvent event) {
-                                        lookup(UserManagementService.class).logout();
-                                        // Close the VaadinServiceSession
-                                        getUI().getSession().close();
-                                        // Redirect to avoid keeping the removed
-                                        // UI open in the browser
-                                        getUI().getPage().setLocation("/");
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-                // Content
-                addComponent(content);
-                content.setSizeFull();
-                content.addStyleName("view-content");
-                setExpandRatio(content, 1);
+                String appVersion = lookup("application.version", String.class);
+                String appBuildTm = lookup("application.build.timestamp", String.class);
+                final String brandText = MessageFormat.format("<strong>Экстрим Ассистанс CRM</strong><br/><i>Версия {0}</i>", appVersion);
+                final Label logo = new Label(brandText, ContentMode.HTML);
+                final String logoDesc = MessageFormat.format("Версия {0}, собрано {1}", appVersion, appBuildTm);
+                logo.setDescription(logoDesc);
+                addComponent(logo);
             }
+        };
+        root.addBranding(branding);
 
+        // Main menu
+        mainMenu = new ExtaMainMenu(ExtaCrmUI.this, viewDisplay);
+        root.addMenu(mainMenu);
+
+        // User menu
+        final VerticalLayout userMenu = new VerticalLayout();
+        userMenu.setSizeUndefined();
+        final Button profilePic = new Button(FontAwesome.USER);
+        profilePic.addStyleName(ValoTheme.BUTTON_LINK);
+        profilePic.addStyleName(ExtaTheme.AVATAR);
+        String login = lookup(UserManagementService.class).getCurrentUserLogin();
+        final Label userName = new Label(new ObjectProperty(login));
+        userName.setSizeUndefined();
+        userName.setConverter(lookup(LoginToUserNameConverter.class));
+        final HorizontalLayout userData = new HorizontalLayout(profilePic, userName);
+        //userData.setSizeUndefined();
+        userMenu.addComponent(userData);
+
+        Button exit = new Button("Выход", FontAwesome.SIGN_OUT);
+        exit.setDescription("Выход из системы");
+        exit.addStyleName(ValoTheme.BUTTON_LINK);
+        exit.addClickListener(event -> {
+            lookup(UserManagementService.class).logout();
+            // Close the VaadinServiceSession
+            getUI().getSession().close();
+            // Redirect to avoid keeping the removed
+            // UI open in the browser
+            getUI().getPage().setLocation("/");
         });
+        userMenu.addComponent(exit);
+
+        root.addUserBadge(userMenu);
 
         // -------------------------------------------------------------
         // Создаем кнопки основного меню
-        mainMenu.addChapter("Рабочий стол", "Начальный экран приложения", "icon-home",
+        mainMenu.addChapter("Рабочий стол", "Начальный экран приложения", Fontello.HOME,
                 HomeView.class, ExtaDomain.DASHBOARD);
-        mainMenu.addChapter("Задачи", "Мои задачи", "icon-check",
+        mainMenu.addChapter("Задачи", "Мои задачи", Fontello.CHECK,
                 TasksView.class, EnumSet.of(ExtaDomain.TASKS_TODAY, ExtaDomain.TASKS_WEEK, ExtaDomain.TASKS_MONTH, ExtaDomain.TASKS_ALL));
-        mainMenu.addChapter("Контакты", "Клиенты, контрагенты и сотрудники", "icon-contacts",
+        mainMenu.addChapter("Контакты", "Клиенты, контрагенты и сотрудники", Fontello.CONTACTS,
                 ContactsView.class, EnumSet.of(ExtaDomain.PERSON, ExtaDomain.COMPANY, ExtaDomain.LEGAL_ENTITY, ExtaDomain.SALE_POINT));
-        mainMenu.addChapter("Лиды", "Входящие лиды", "icon-inbox-alt",
+        mainMenu.addChapter("Лиды", "Входящие лиды", Fontello.INBOX_ALT,
                 LeadsView.class, EnumSet.of(ExtaDomain.LEADS_NEW, ExtaDomain.LEADS_QUAL, ExtaDomain.LEADS_CLOSED));
-        mainMenu.addChapter("Продажи", "Раздел управления продажами", "icon-dollar",
+        mainMenu.addChapter("Продажи", "Раздел управления продажами", Fontello.DOLLAR,
                 SalesView.class, EnumSet.of(ExtaDomain.SALES_OPENED, ExtaDomain.SALES_SUCCESSFUL, ExtaDomain.SALES_CANCELED));
-        mainMenu.addChapter("Страхование", "Раздел посвященный страхованию", "icon-umbrella-1",
+        mainMenu.addChapter("Страхование", "Раздел посвященный страхованию", Fontello.UMBRELLA_1,
                 InsuranceView.class, EnumSet.of(ExtaDomain.INSURANCE_PROP, ExtaDomain.INSURANCE_BSO, ExtaDomain.INSURANCE_A_7, ExtaDomain.INSURANCE_TRANSFER));
-        mainMenu.addChapter("Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", "icon-basket",
+        mainMenu.addChapter("Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", Fontello.BASKET,
                 ProductView.class, EnumSet.of(ExtaDomain.PROD_CREDIT, ExtaDomain.PROD_INSURANCE, ExtaDomain.PROD_INSTALL));
-        mainMenu.addChapter("Техника", "Раздел посвященный информации о технике", "icon-cog",
+        mainMenu.addChapter("Техника", "Раздел посвященный информации о технике", Fontello.COG,
                 MotorView.class, EnumSet.of(ExtaDomain.MOTOR_MODEL, ExtaDomain.MOTOR_BRAND, ExtaDomain.MOTOR_TYPE));
-        mainMenu.addChapter("Пользователи", "Управление ползователями и правами доступа", "icon-users-3",
+        mainMenu.addChapter("Пользователи", "Управление ползователями и правами доступа", Fontello.USERS_3,
                 UsersView.class, EnumSet.of(ExtaDomain.USERS, ExtaDomain.USER_GROUPS));
-        mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", "icon-cog-alt",
+        mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", Fontello.COG_ALT,
                 ConfigView.class, ExtaDomain.SETTINGS);
 
-        mainMenu.processURI(Page.getCurrent().getUriFragment());
+        mainMenu.processURI(null, true);
 
+        setContent(root);
     }
 
 }

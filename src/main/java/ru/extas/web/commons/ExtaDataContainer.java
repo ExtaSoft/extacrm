@@ -39,10 +39,10 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
      *
      * @param entityClass a {@link java.lang.Class} object.
      */
-    public ExtaDataContainer(Class<TEntityType> entityClass) {
+    public ExtaDataContainer(final Class<TEntityType> entityClass) {
         super(entityClass);
         // We need an entity provider to create a container
-        CachingLocalEntityProvider<TEntityType> entityProvider =
+        final CachingLocalEntityProvider<TEntityType> entityProvider =
                 new ExtaLocalEntityProvider<>(entityClass);
 
         //entityProvider.setCacheEnabled(false);

@@ -5,14 +5,18 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditDoc;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.vaadin.ui.Button.*;
 
 /**
  * Поле редактирования комплекта документов для кредитного продукта
@@ -38,7 +42,9 @@ public class ProdCredDocsField extends CustomField<List> {
 	 */
 	public ProdCredDocsField(String caption, final String description, ProdCredit product) {
 		this.product = product;
-		setCaption(caption);
+        setWidth(400, Unit.PIXELS);
+        setHeight(300, Unit.PIXELS);
+        setCaption(caption);
 		setDescription(description);
 	}
 
@@ -46,84 +52,41 @@ public class ProdCredDocsField extends CustomField<List> {
 	@Override
 	protected Component initContent() {
 		final VerticalLayout fieldLayout = new VerticalLayout();
-		fieldLayout.setSpacing(true);
+        fieldLayout.setSizeFull();
+        fieldLayout.setSpacing(true);
+        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
 
-		if (!isReadOnly()) {
-			final HorizontalLayout commandBar = new HorizontalLayout();
-			commandBar.addStyleName("configure");
-			commandBar.setSpacing(true);
+        if (!isReadOnly()) {
+            final MenuBar commandBar = new MenuBar();
+            commandBar.setAutoOpen(true);
+            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
 
-			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
-
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					final BeanItem<ProdCreditDoc> newObj = container.addBean(new ProdCreditDoc(product));
-					docTable.select(newObj.getBean());
-
-//					final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Новая процентная ставка", newObj);
-//					editWin.addCloseListener(new Window.CloseListener() {
-//
-//						@Override
-//						public void windowClose(final Window.CloseEvent e) {
-//							if (editWin.isSaved()) {
-//								container.addBean(newObj.getBean());
-//								Notification.show("Процентная ставка добавлена", Notification.Type.TRAY_NOTIFICATION);
-//							}
-//						}
-//					});
-//					editWin.showModal();
-				}
-			});
+            final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
+                final BeanItem<ProdCreditDoc> newObj = container.addBean(new ProdCreditDoc(product));
+                docTable.select(newObj.getBean());
+            });
 			addProdBtn.setDescription("Добавить процентную стаквку в продукт");
-			addProdBtn.addStyleName("icon-doc-new");
-			commandBar.addComponent(addProdBtn);
+			addProdBtn.setIcon(Fontello.DOC_NEW);
 
-//			final Button edtProdBtn = new Button("Изменить", new Button.ClickListener() {
-//				@Override
-//				public void buttonClick(final Button.ClickEvent event) {
-//					if (docTable.getValue() != null) {
-//						final BeanItem<ProdCreditDoc> docItem = (BeanItem<ProdCreditDoc>) docTable.getValue();
-//						final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Редактирование процентной ставки", docItem);
-//						editWin.addCloseListener(new Window.CloseListener() {
-//
-//							@Override
-//							public void windowClose(final Window.CloseEvent e) {
-//								if (editWin.isSaved()) {
-//									Notification.show("Продукт изменен", Notification.Type.TRAY_NOTIFICATION);
-//								}
-//							}
-//						});
-//						editWin.showModal();
-//					}
-//				}
-//			});
-//			edtProdBtn.setDescription("Изменить выделенную в списке процентную ставку");
-//			edtProdBtn.addStyleName("icon-edit-3");
-//			commandBar.addComponent(edtProdBtn);
 
-			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (docTable.getValue() != null) {
-						docTable.removeItem(docTable.getValue());
-					}
-				}
-			});
+			final MenuBar.MenuItem delProdBtn = commandBar.addItem("Удалить", event -> {
+                if (docTable.getValue() != null) {
+                    docTable.removeItem(docTable.getValue());
+                }
+            });
 			delProdBtn.setDescription("Удалить процентную ставку из продукта");
-			delProdBtn.addStyleName("icon-trash");
-			commandBar.addComponent(delProdBtn);
+			delProdBtn.setIcon(Fontello.TRASH);
 
 			fieldLayout.addComponent(commandBar);
 		}
 
 		docTable = new Table();
-		docTable.setRequired(true);
-		docTable.setSelectable(true);
-		docTable.setHeight(10, Unit.EM);
-		docTable.setWidth(25, Unit.EM);
-		docTable.addStyleName("components-inside");
+        docTable.setSizeFull();
+        docTable.addStyleName(ExtaTheme.TABLE_SMALL);
+        docTable.addStyleName(ExtaTheme.TABLE_COMPACT);
+        docTable.setRequired(true);
+        docTable.setSelectable(true);
 		final Property dataSource = getPropertyDataSource();
 		final List<ProdCreditDoc> docList = dataSource != null ? (List<ProdCreditDoc>) dataSource.getValue() : new ArrayList<ProdCreditDoc>();
 		container = new BeanItemContainer<>(ProdCreditDoc.class);
@@ -133,35 +96,32 @@ public class ProdCredDocsField extends CustomField<List> {
 			}
 		}
 		docTable.setContainerDataSource(container);
-		docTable.addItemSetChangeListener(new Container.ItemSetChangeListener() {
-			@Override
-			public void containerItemSetChange(final Container.ItemSetChangeEvent event) {
-				setValue(newArrayList(docTable.getItemIds()));
-			}
-		});
+		docTable.addItemSetChangeListener(event -> setValue(newArrayList(docTable.getItemIds())));
 		// Колонки таблицы
 		docTable.setVisibleColumns("name", "required");
 		docTable.setColumnHeader("name", "Документ");
 		docTable.setColumnHeader("required", "Обязательный");
 		docTable.setEditable(true);
-		docTable.setTableFieldFactory(new TableFieldFactory() {
-			@Override
-			public Field<?> createField(final Container container, final Object itemId, final Object propertyId, final Component uiContext) {
-				if ("name".equals(propertyId)) {
-					final DocumentSelect field = new DocumentSelect("Документ");
-					field.setPropertyDataSource(container.getItem(itemId).getItemProperty(propertyId));
-					return field;
-				} else if ("required".equals(propertyId)) {
-					final CheckBox checkBox = new CheckBox();
-					checkBox.setPropertyDataSource(container.getItem(itemId).getItemProperty(propertyId));
-					return checkBox;
-				}
-				return null;
-			}
-		});
+		docTable.setTableFieldFactory((container1, itemId, propertyId, uiContext) -> {
+            if ("name".equals(propertyId)) {
+                final DocumentSelect field = new DocumentSelect("Документ");
+                field.addStyleName(ExtaTheme.COMBOBOX_SMALL);
+                field.addStyleName(ExtaTheme.COMBOBOX_BORDERLESS);
+                field.setWidth(100, Unit.PERCENTAGE);
+                field.setPropertyDataSource(container1.getItem(itemId).getItemProperty(propertyId));
+                return field;
+            } else if ("required".equals(propertyId)) {
+                final CheckBox checkBox = new CheckBox();
+                checkBox.setPropertyDataSource(container1.getItem(itemId).getItemProperty(propertyId));
+                checkBox.addStyleName(ExtaTheme.CHECKBOX_SMALL);
+                return checkBox;
+            }
+            return null;
+        });
 		fieldLayout.addComponent(docTable);
+        fieldLayout.setExpandRatio(docTable, 1);
 
-		return fieldLayout;
+        return fieldLayout;
 	}
 
 	/** {@inheritDoc} */

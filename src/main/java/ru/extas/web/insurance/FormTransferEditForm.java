@@ -4,13 +4,15 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupDateField;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import ru.extas.model.insurance.FormTransfer;
 import ru.extas.server.insurance.FormTransferRepository;
+import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.LocalDateField;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.PersonSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -22,7 +24,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
+public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
 
     private static final long serialVersionUID = 9510268415882116L;
     // Компоненты редактирования
@@ -35,21 +37,17 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
     @PropertyId("formNums")
     private A7NumListEdit formNums;
 
-    /**
-     * <p>Constructor for FormTransferEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public FormTransferEditForm(final String caption, final BeanItem<FormTransfer> obj) {
-        super(caption, obj);
-
+    public FormTransferEditForm(FormTransfer formTransfer) {
+        super(formTransfer.isNew() ?
+                        "Новый акт приема/передачи" :
+                        "Редактировать акт приема/передачи",
+                new BeanItem(formTransfer));
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final FormTransfer obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
         fromContactField = new PersonSelect("От кого");
@@ -75,8 +73,8 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
     /** {@inheritDoc} */
     @Override
     protected void initObject(final FormTransfer obj) {
-        if (obj.getId() == null) {
-            final LocalDate now = LocalDate.now();
+        if (obj.isNew()) {
+            final LocalDate now = LocalDate.now(lookup(DateTimeZone.class));
             obj.setTransferDate(now);
             // TODO: Инициализировать поле "От" текущим пользователем
         }
@@ -84,14 +82,10 @@ public class FormTransferEditForm extends AbstractEditForm<FormTransfer> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final FormTransfer obj) {
-        lookup(FormTransferRepository.class).saveAndChangeOwner(obj);
-        Notification.show("Акт приема/передачи сохранен", Notification.Type.TRAY_NOTIFICATION);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final FormTransfer obj) {
+    protected FormTransfer saveObject(FormTransfer obj) {
+        obj = lookup(FormTransferRepository.class).saveAndChangeOwner(obj);
+        NotificationUtil.showSuccess("Акт приема/передачи сохранен");
+        return obj;
     }
 
 }

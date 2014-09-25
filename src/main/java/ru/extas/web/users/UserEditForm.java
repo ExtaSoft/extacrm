@@ -14,7 +14,9 @@ import ru.extas.model.security.UserProfile;
 import ru.extas.model.security.UserRole;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
@@ -29,7 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class UserEditForm extends AbstractEditForm<UserProfile> {
+public class UserEditForm extends ExtaEditForm<UserProfile> {
 
     private static final long serialVersionUID = -5016687382646391930L;
     private final static Logger logger = LoggerFactory.getLogger(UserEditForm.class);
@@ -59,22 +61,19 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     @PropertyId("permissions")
     private ExtaPermissionField permissionsField;
 
-    /**
-     * <p>Constructor for UserEditForm.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    public UserEditForm(final String caption, final BeanItem<UserProfile> obj) {
 
-        super(caption, obj);
-        initialPassword = obj.getBean().getPassword();
+    public UserEditForm(UserProfile userProfile) {
+        super(userProfile.isNew() ?
+                "Ввод нового пользователя в систему" :
+                "Редактирование данных пользователя",
+                new BeanItem<>(userProfile));
+        initialPassword = userProfile.getPassword();
     }
 
     /** {@inheritDoc} */
     @Override
     protected void initObject(final UserProfile obj) {
-        if (obj.getId() == null) {
+        if (obj.isNew()) {
             // Инициализируем новый объект
             obj.setRole(UserRole.USER);
             obj.setChangePassword(true);
@@ -83,12 +82,13 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 
     /** {@inheritDoc} */
     @Override
-    protected void saveObject(final UserProfile obj) {
+    protected UserProfile saveObject(UserProfile obj) {
         logger.debug("Saving user profile...");
         securePassword(obj);
         final UserRegistry userService = lookup(UserRegistry.class);
-        userService.save(obj);
-        Notification.show("Пользователь сохранен", Notification.Type.TRAY_NOTIFICATION);
+        obj = userService.save(obj);
+        NotificationUtil.showSuccess("Пользователь сохранен");
+        return obj;
     }
 
     /**
@@ -99,11 +99,6 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         if (!passField.getValue().equals(initialPassword)) {
             UserRealm.securePassword(user);
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void checkBeforeSave(final UserProfile obj) {
     }
 
     /** {@inheritDoc} */
@@ -133,7 +128,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     }
 
     private Component createPermissionTab(UserProfile obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         brandsField = new MotorBrandMultiselect("Доступные бренды");
         form.addComponent(brandsField);
@@ -149,7 +144,7 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
     }
 
     private FormLayout getMainTab(UserProfile obj) {
-        final FormLayout form = new FormLayout();
+        final FormLayout form = new ExtaFormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками
         nameField = new PersonSelect("Имя");
@@ -162,7 +157,9 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
 
         // FIXME Проверить уникальность логина
         loginField = new TextField("Логин (e-mail)");
-        loginField.setReadOnly(obj.getId() != null);
+//        loginField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        loginField.setIcon(Fontello.AT);
+        loginField.setReadOnly(!obj.isNew());
         loginField.setImmediate(true);
         loginField.setWidth(40, Unit.EX);
         loginField.setDescription("Введите имя e-mail пользователя который будет использоваться для входа в систему");
@@ -175,6 +172,8 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         form.addComponent(loginField);
 
         passField = new PasswordField("Пароль");
+//        passField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        passField.setIcon(Fontello.LOCK);
         passField.setImmediate(true);
         passField.setDescription("Введите пароль для входа в систему");
         passField.setInputPrompt("Пароль");
@@ -184,6 +183,8 @@ public class UserEditForm extends AbstractEditForm<UserProfile> {
         form.addComponent(passField);
 
         passConfField = new PasswordField("Подтверждение пароля");
+//        passConfField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        passConfField.setIcon(Fontello.LOCK);
         passConfField.setImmediate(true);
         passConfField.setDescription("Введите повторно пароль для для его подтвержедения");
         passConfField.setInputPrompt("Подтверждение пароля");

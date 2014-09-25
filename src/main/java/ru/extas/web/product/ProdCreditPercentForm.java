@@ -4,11 +4,12 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
 import ru.extas.model.sale.ProdCreditPercent;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.window.AbstractEditForm;
+import ru.extas.web.commons.ExtaEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -21,7 +22,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdCreditPercentForm extends AbstractEditForm<ProdCreditPercent> {
+public class ProdCreditPercentForm extends ExtaEditForm<ProdCreditPercent> {
 
 	@PropertyId("percent")
 	private EditField percentField;
@@ -48,20 +49,15 @@ public class ProdCreditPercentForm extends AbstractEditForm<ProdCreditPercent> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void saveObject(final ProdCreditPercent obj) {
-		Notification.show("Процентная ставка сохранена", Notification.Type.TRAY_NOTIFICATION);
-	}
+	protected ProdCreditPercent saveObject(final ProdCreditPercent obj) {
+        NotificationUtil.showSuccess("Процентная ставка сохранена");
+        return obj;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected void checkBeforeSave(final ProdCreditPercent obj) {
-
-	}
-
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
 	@Override
 	protected ComponentContainer createEditFields(final ProdCreditPercent obj) {
-		final FormLayout form = new FormLayout();
+		final FormLayout form = new ExtaFormLayout();
 
 		percentField = new EditField("Процентная ставка", "Введите процентную ставку");
 		percentField.setConverter(lookup(StringToPercentConverter.class));

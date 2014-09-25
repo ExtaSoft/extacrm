@@ -5,9 +5,14 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 
 import java.util.List;
 
@@ -35,7 +40,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 	 */
 	public ProductInSaleGrid(final Sale sale) {
 		this("Продукты в продаже", sale);
-	}
+    }
 
 	/**
 	 * <p>Constructor for ProductInSaleGrid.</p>
@@ -45,81 +50,67 @@ public class ProductInSaleGrid extends CustomField<List> {
 	 */
 	public ProductInSaleGrid(final String caption, final Sale sale) {
 		this.sale = sale;
-		setCaption(caption);
+        setWidth(500, Unit.PIXELS);
+        setHeight(200, Unit.PIXELS);
+        setCaption(caption);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
 		final VerticalLayout fieldLayout = new VerticalLayout();
-		fieldLayout.setSpacing(true);
+        fieldLayout.setSizeFull();
+        fieldLayout.setSpacing(true);
+        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
 
-		if (!isReadOnly()) {
-			final HorizontalLayout commandBar = new HorizontalLayout();
-			commandBar.addStyleName("configure");
-			commandBar.setSpacing(true);
+        if (!isReadOnly()) {
+            final MenuBar commandBar = new MenuBar();
+            commandBar.setAutoOpen(true);
+            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_SMALL);
 
-			final Button addProdBtn = new Button("Добавить", new Button.ClickListener() {
+            final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
+                final BeanItem<ProductInSale> newObj = new BeanItem<>(new ProductInSale(sale));
 
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					final BeanItem<ProductInSale> newObj = new BeanItem<>(new ProductInSale(sale));
-
-					final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", newObj);
-					editWin.addCloseListener(new Window.CloseListener() {
-
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void windowClose(final Window.CloseEvent e) {
-							if (editWin.isSaved()) {
-								container.addBean(newObj.getBean());
-							}
-						}
-					});
-					editWin.showModal();
-				}
-			});
+                final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", newObj);
+                editWin.addCloseFormListener(event1 -> {
+                    if (editWin.isSaved()) {
+                        container.addBean(newObj.getBean());
+                    }
+                });
+                FormUtils.showModalWin(editWin);
+            });
 			addProdBtn.setDescription("Добавить продукт в продажу");
-			addProdBtn.addStyleName("icon-doc-new");
-			commandBar.addComponent(addProdBtn);
+			addProdBtn.setIcon(Fontello.DOC_NEW);
 
-			final Button edtProdBtn = new Button("Изменить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (productTable.getValue() != null) {
-						final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getItem(productTable.getValue());
-						final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem);
-						editWin.showModal();
-					}
-				}
-			});
+			final MenuBar.MenuItem edtProdBtn = commandBar.addItem("Изменить", event -> {
+                if (productTable.getValue() != null) {
+                    final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getItem(productTable.getValue());
+                    final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem);
+                    FormUtils.showModalWin(editWin);
+                }
+            });
 			edtProdBtn.setDescription("Изменить выделенный в списке продукт");
-			edtProdBtn.addStyleName("icon-edit-3");
-			commandBar.addComponent(edtProdBtn);
+			edtProdBtn.setIcon(Fontello.EDIT_3);
 
-			final Button delProdBtn = new Button("Удалить", new Button.ClickListener() {
-				@Override
-				public void buttonClick(final Button.ClickEvent event) {
-					if (productTable.getValue() != null) {
-						productTable.removeItem(productTable.getValue());
-					}
-				}
-			});
+			final MenuBar.MenuItem delProdBtn = commandBar.addItem("Удалить", event -> {
+                if (productTable.getValue() != null) {
+                    productTable.removeItem(productTable.getValue());
+                }
+            });
 			delProdBtn.setDescription("Удалить продукт из продажи");
-			delProdBtn.addStyleName("icon-trash");
-			commandBar.addComponent(delProdBtn);
+			delProdBtn.setIcon(Fontello.TRASH);
 
 			fieldLayout.addComponent(commandBar);
 		}
 
 		productTable = new Table();
-		productTable.setRequired(true);
+        productTable.setSizeFull();
+        productTable.addStyleName(ExtaTheme.TABLE_SMALL);
+        productTable.addStyleName(ExtaTheme.TABLE_COMPACT);
+        productTable.setRequired(true);
 		productTable.setSelectable(true);
-		productTable.setHeight(10, Unit.EM);
-		productTable.setWidth(35, Unit.EM);
 		final Property dataSource = getPropertyDataSource();
 		final List<ProductInSale> productInSaleList = dataSource != null ? (List<ProductInSale>) dataSource.getValue() : sale.getProductInSales();
 		container = new BeanItemContainer<>(ProductInSale.class);
@@ -130,20 +121,16 @@ public class ProductInSaleGrid extends CustomField<List> {
 			}
 		}
 		productTable.setContainerDataSource(container);
-		productTable.addItemSetChangeListener(new Container.ItemSetChangeListener() {
-			@Override
-			public void containerItemSetChange(final Container.ItemSetChangeEvent event) {
-				setValue(newArrayList(productTable.getItemIds()));
-			}
-		});
+		productTable.addItemSetChangeListener(event -> setValue(newArrayList(productTable.getItemIds())));
 		// Колонки таблицы
 		productTable.setVisibleColumns("product.name", "summ", "period");
 		productTable.setColumnHeader("product.name", "Продукт");
 		productTable.setColumnHeader("summ", "Сумма");
 		productTable.setColumnHeader("period", "Срок");
 		fieldLayout.addComponent(productTable);
+        fieldLayout.setExpandRatio(productTable, 1);
 
-		return fieldLayout;
+        return fieldLayout;
 	}
 
 	/** {@inheritDoc} */

@@ -65,7 +65,7 @@ public abstract class AuditedObject extends IdentifiedObject {
      *
      * @param createdBy the createdBy to set
      */
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(final String createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -83,7 +83,7 @@ public abstract class AuditedObject extends IdentifiedObject {
      *
      * @param createdAt the createdAt to set
      */
-    public void setCreatedAt(DateTime createdAt) {
+    public void setCreatedAt(final DateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -101,7 +101,7 @@ public abstract class AuditedObject extends IdentifiedObject {
      *
      * @param modifiedBy the modifiedBy to set
      */
-    public void setModifiedBy(String modifiedBy) {
+    public void setModifiedBy(final String modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
 
@@ -119,7 +119,7 @@ public abstract class AuditedObject extends IdentifiedObject {
      *
      * @param modifiedAt the modifiedAt to set
      */
-    public void setModifiedAt(DateTime modifiedAt) {
+    public void setModifiedAt(final DateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 

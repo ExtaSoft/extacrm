@@ -43,8 +43,8 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
     @Override
     protected Collection<String> getObjectRegions(LegalEntity legalEntity) {
         Set<String> regions = newHashSet();
-        if(legalEntity.getActualAddress() != null && !isNullOrEmpty(legalEntity.getActualAddress().getRegion()))
-            regions.add(legalEntity.getActualAddress().getRegion());
+        if(legalEntity.getRegAddress() != null && !isNullOrEmpty(legalEntity.getRegAddress().getRegion()))
+            regions.add(legalEntity.getRegAddress().getRegion());
         return regions;
     }
 
