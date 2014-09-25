@@ -146,7 +146,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 		stepField.setRequired(true);
 		form.addComponent(stepField);
 
-		dealerSubsidyField = new EditField("Субсидия дилера", "Введите процент субсидии диллера (процент от суммы кредита)");
+		dealerSubsidyField = new EditField("Субсидия дилера", "Введите процент субсидии дилера (процент от суммы кредита)");
 		dealerSubsidyField.setRequired(true);
 		dealerSubsidyField.setConverter(lookup(StringToPercentConverter.class));
 		form.addComponent(dealerSubsidyField);

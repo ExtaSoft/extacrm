@@ -185,7 +185,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         form.addComponent(mototPriceField);
 
         ////////////////////////////////////////////////////////////////////////////
-        form.addComponent(new FormGroupHeader("Диллер"));
+        form.addComponent(new FormGroupHeader("Дилер"));
         if (obj.getStatus() == Lead.Status.NEW) {
             if (qualifyForm) {
                 if (obj.getVendor() == null) {

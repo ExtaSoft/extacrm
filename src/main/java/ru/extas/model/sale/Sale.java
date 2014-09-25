@@ -327,7 +327,7 @@ public class Sale extends SecuredObject {
 		 */
 		SUCCESSFUL,
 		/**
-		 * Отказ контрагента (банка, диллера).
+		 * Отказ контрагента (банка, дилера).
 		 */
 		VENDOR_REJECTED,
 		/**

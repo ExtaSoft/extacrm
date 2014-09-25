@@ -100,7 +100,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         form.addComponent(mototPriceField);
 
         ////////////////////////////////////////////////////////////////////////////
-        form.addComponent(new FormGroupHeader("Диллер"));
+        form.addComponent(new FormGroupHeader("Дилер"));
         regionField = new RegionSelect();
         regionField.setDescription("Укажите регион услуги");
         form.addComponent(regionField);

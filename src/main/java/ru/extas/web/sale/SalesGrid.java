@@ -106,7 +106,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
                 @Override
                 protected List<UIAction> makeActionsGroup() {
                     List<UIAction> group = newArrayList();
-                    group.add(new ItemAction("Отказ контрагента (банка, диллера)", "Отказ банка или диллера в предоставлении услуги", FontAwesome.BANK) {
+                    group.add(new ItemAction("Отказ контрагента (банка, дилера)", "Отказ банка или дилера в предоставлении услуги", FontAwesome.BANK) {
                         @Override
                         public void fire(Object itemId) {
                             final Sale sale = GridItem.extractBean(table.getItem(itemId));
