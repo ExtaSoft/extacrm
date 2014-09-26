@@ -104,7 +104,6 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
         final BeanItem<LegalEntity> beanItem = new BeanItem<>(legalEntity);
         beanItem.expandProperty("regAddress");
-        beanItem.expandProperty("actualAddress");
         beanItem.expandProperty("postAddress");
 
         this.legalEntity = legalEntity;
