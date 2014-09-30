@@ -3,6 +3,7 @@ package ru.extas.web.commons;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.server.security.UserManagementService;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -79,7 +80,11 @@ public abstract class SubdomainView extends ExtaAbstractView {
             }
 
             // Создаем закладки в соответствии с описанием
-            subdomainInfo.forEach(info -> tabs.add(tabsheet.addTab(new SubdomainUI(info), info.getCaption())));
+            UserManagementService userService = lookup(UserManagementService.class);
+            subdomainInfo.forEach(info -> {
+                if (userService.isPermittedDomain(info.getDomain())) {
+                    tabs.add(tabsheet.addTab(new SubdomainUI(info), info.getCaption()));
+            }});
             // Create tab content dynamically when tab is selected
             tabsheet.addSelectedTabChangeListener(event -> {
                 final SubdomainUI subdomainUI = (SubdomainUI) tabsheet.getSelectedTab();
