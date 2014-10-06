@@ -125,7 +125,7 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
         CriteriaQuery cq = cb.createQuery();
         Root<TEntityType> root = cq.from(getEntityClass());
         Predicate predicate = createPredicate4Target(cb, cq, target);
-        cq.where(cb.or(cb.equal(root.get(IdentifiedObject_.id), itemId), predicate));
+        cq.where(cb.and(cb.equal(root.get(IdentifiedObject_.id), itemId), predicate));
         cq.select(cb.countDistinct(root.get(IdentifiedObject_.id)));
 
         Query qry = em.createQuery(cq);
