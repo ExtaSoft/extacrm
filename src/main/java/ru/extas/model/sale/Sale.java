@@ -61,6 +61,10 @@ public class Sale extends SecuredObject {
 	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<ProductInSale> productInSales;
 
+    // Ответственный
+    @OneToOne(cascade = CascadeType.REFRESH)
+    private Person responsible;
+
     @OneToOne(cascade = CascadeType.REFRESH)
     private Lead lead;
 
@@ -68,6 +72,14 @@ public class Sale extends SecuredObject {
     @JoinColumn(name = Comment.OWNER_ID_COLUMN)
     @OrderBy("createdAt")
     private List<SaleComment> comments = newArrayList();
+
+    public Person getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(Person responsible) {
+        this.responsible = responsible;
+    }
 
     public List<SaleComment> getComments() {
         return comments;

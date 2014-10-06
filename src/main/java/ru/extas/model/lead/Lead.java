@@ -110,6 +110,10 @@ public class Lead extends SecuredObject {
 	@OneToOne(cascade = CascadeType.REFRESH)
 	private SalePoint vendor;
 
+    // Ответственный
+    @OneToOne(cascade = CascadeType.REFRESH)
+    private Person responsible;
+
 	@Enumerated(EnumType.STRING)
 	private Status status = Status.NEW;
 
@@ -119,6 +123,13 @@ public class Lead extends SecuredObject {
 	@Enumerated(EnumType.STRING)
 	private Result result;
 
+    public Person getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(Person responsible) {
+        this.responsible = responsible;
+    }
 
     public Long getNum() {
         return num;

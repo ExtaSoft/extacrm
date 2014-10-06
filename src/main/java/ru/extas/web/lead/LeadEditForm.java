@@ -78,6 +78,10 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private PersonSelect clientField;
     @PropertyId("vendor")
     private SalePointSelect vendorField;
+
+    @PropertyId("responsible")
+    private UserContactSelectField responsibleField;
+
     @PropertyId("comment")
     private TextArea commentField;
 
@@ -187,20 +191,20 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
         if (obj.getStatus() == Lead.Status.NEW) {
-            if (qualifyForm) {
-                if (obj.getVendor() == null) {
+            if (obj.getVendor() == null) {
+                if (qualifyForm) {
                     Component vendorPanel = createVendorPanel(obj);
                     form.addComponent(vendorPanel);
                 } else {
-                    createVendorSelectField(form);
+                    regionField = new RegionSelect();
+                    regionField.setDescription("Укажите регион услуги");
+                    form.addComponent(regionField);
+
+                    pointOfSaleField = new EditField("Мотосалон");
+                    form.addComponent(pointOfSaleField);
                 }
             } else {
-                regionField = new RegionSelect();
-                regionField.setDescription("Укажите регион услуги");
-                form.addComponent(regionField);
-
-                pointOfSaleField = new EditField("Мотосалон");
-                form.addComponent(pointOfSaleField);
+                createVendorSelectField(form);
             }
         } else {
             createVendorSelectField(form);
@@ -208,6 +212,10 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дополнительно"));
+        responsibleField = new UserContactSelectField("Ответственный");
+        responsibleField.setRequired(obj.getStatus() != Lead.Status.NEW || qualifyForm);
+        form.addComponent(responsibleField);
+
         commentField = new TextArea("Примечание");
         commentField.setRows(3);
         commentField.setNullRepresentation("");
@@ -449,6 +457,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                     obj.setPointOfSale(salePoint.getName());
                 }
             }
+            final Person userContact = lookup(UserManagementService.class).getCurrentUserContact();
+            obj.setResponsible(userContact);
         }
     }
 

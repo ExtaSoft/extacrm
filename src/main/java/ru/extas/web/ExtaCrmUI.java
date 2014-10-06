@@ -56,7 +56,7 @@ import static ru.extas.web.UiUtils.initUi;
 @Theme(ExtaTheme.NAME)
 @Title("Extreme Assistance CRM")
 //@Push(PushMode.AUTOMATIC)
-public class ExtaCrmUI extends UI {
+public class  ExtaCrmUI extends UI {
 
     private final static Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
 

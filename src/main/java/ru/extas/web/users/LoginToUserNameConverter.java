@@ -1,14 +1,11 @@
 package ru.extas.web.users;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.Person;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.contacts.NameUtils;
 
-import javax.inject.Inject;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -65,15 +62,7 @@ public class LoginToUserNameConverter implements Converter<String, String> {
         Person userContact = lookup(UserManagementService.class).findUserContactByLogin(login);
         if (userContact != null) {
             final String name = userContact.getName();
-            final List<String> nameParts = Splitter.on(' ')
-                    .trimResults()
-                    .omitEmptyStrings()
-                    .splitToList(name);
-            String shortName;
-            if (nameParts.size() > 1)
-                shortName = Joiner.on(' ').join(nameParts.get(0), nameParts.get(1));
-            else
-                shortName = name;
+            String shortName = NameUtils.getShortName(name);
             nameCache.put(login, shortName);
         }
     }
