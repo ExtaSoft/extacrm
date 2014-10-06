@@ -106,6 +106,7 @@ public class  ExtaCrmUI extends UI {
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         FormLayout loginForm = new FormLayout(username, password, signin);
+        loginForm.setMargin(true);
         loginForm.setSizeUndefined();
         loginForm.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 
