@@ -18,7 +18,7 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 @Entity
 @Table(name = "USER_GROUP")
-public class UserGroup extends AuditedObject implements Cloneable{
+public class UserGroup extends AuditedObject {
 
     private static final long serialVersionUID = 4149728748291041330L;
 
@@ -45,14 +45,12 @@ public class UserGroup extends AuditedObject implements Cloneable{
      * Список разрешений группы
      */
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ExtaPermission> permissions;
+    private Set<ExtaPermission> permissions = newHashSet();
 
-    @ManyToMany(mappedBy = "groupList")
-    private Set<UserProfile> users;
+    @ManyToMany(mappedBy = "groupList", cascade = {CascadeType.REFRESH})
+    private Set<UserProfile> users = newHashSet();
 
-    /** {@inheritDoc} */
-    @Override
-    public UserGroup clone() {
+    public UserGroup createCopy() {
         UserGroup clone = new UserGroup();
 
         clone.setName(getName());
@@ -61,7 +59,7 @@ public class UserGroup extends AuditedObject implements Cloneable{
         clone.setPermitBrands(newHashSet(getPermitBrands()));
         HashSet<ExtaPermission> perms = newHashSet();
         for (ExtaPermission perm : getPermissions()) {
-            ExtaPermission permission = perm.clone();
+            ExtaPermission permission = perm.createCopy();
             permission.setGroup(clone);
             perms.add(permission);
         }

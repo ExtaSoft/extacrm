@@ -29,7 +29,7 @@ public class UserProfile extends AuditedObject {
     private String login;
 
     // Ссылка на контакт
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person contact;
 
     // Password (hash)
