@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.security.AccessRole;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorTypeRepository;
@@ -352,7 +354,7 @@ public class LeadRestService {
         if (user == null)
             user = userService.findUserContactByLogin("admin");
 
-        newLead = leadRepository.permitAndSave(newLead, user);
+        newLead = leadRepository.permitAndSave(newLead, new ImmutablePair<>(user, AccessRole.OWNER));
         evictCache(entityManager, newLead);
     }
 

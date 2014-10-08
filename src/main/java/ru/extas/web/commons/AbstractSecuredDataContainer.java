@@ -3,7 +3,6 @@ package ru.extas.web.commons;
 import com.vaadin.addon.jpacontainer.util.DefaultQueryModifierDelegate;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.common.IdentifiedObject_;
-import ru.extas.model.common.SecuredObject;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.SecureAction;
@@ -70,6 +69,7 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
         UserManagementService securityService = lookup(UserManagementService.class);
         Person curUserContact = securityService.getCurrentUserContact();
 
+        beginSecurityFilter();
         // Определить область видимости и Наложить фильтр в соответствии с областью видимости
         if (securityService.isPermittedTarget(domain, SecureTarget.ALL)) {
             // Доступно все, ничего не делаем кроме общего фильтра
@@ -88,7 +88,16 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
                     predicate = cb.or(predicate, spPredicate);
             }
         }
+        endSecurityFilter();
         return predicate;
+    }
+
+    protected void endSecurityFilter() {
+
+    }
+
+    protected void beginSecurityFilter() {
+
     }
 
     protected abstract Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target);
@@ -120,6 +129,8 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
     }
 
     public boolean isItemFromTarget(String itemId, SecureTarget target) {
+        beginSecurityFilter();
+
         EntityManager em = lookup(EntityManager.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -130,6 +141,8 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
 
         Query qry = em.createQuery(cq);
         Long results = (Long) qry.getSingleResult();
+
+        endSecurityFilter();
         return results != 0;
     }
 }

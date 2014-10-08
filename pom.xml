@@ -58,7 +58,7 @@
                 <extacrm.ssl.pattern>NONE</extacrm.ssl.pattern>
 
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
-                <jpa.logging.level>INFO</jpa.logging.level>
+                <jpa.logging.level>FINE</jpa.logging.level>
                 <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
                 <!--<jpa.ddl-generation>none</jpa.ddl-generation>-->
                 <!--<jpa.generation.output-mode>both</jpa.generation.output-mode>-->
@@ -178,6 +178,12 @@
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>${jasperreports.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>eclipse</groupId>
+                    <artifactId>jdtcore</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
@@ -457,7 +463,19 @@
                         <groupId>net.sf.jasperreports</groupId>
                         <artifactId>jasperreports</artifactId>
                         <version>${jasperreports.version}</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>eclipse</groupId>
+                                <artifactId>jdtcore</artifactId>
+                            </exclusion>
+                        </exclusions>
                     </dependency>
+                    <!--<dependency>-->
+                        <!--<groupId>org.eclipse.jdt</groupId>-->
+                        <!--<artifactId>core</artifactId>-->
+                        <!--<version>3.1.1</version>-->
+                    <!--</dependency>-->
+
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-all</artifactId>
@@ -574,8 +592,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>2.10.1</version>
                 <configuration>
+                    <defaultAuthor>Valery Orlov</defaultAuthor>
+                    <ignoreClirr>true</ignoreClirr>
                     <additionalJOption>-Xdoclint:none</additionalJOption>
                 </configuration>
             </plugin>

@@ -1,4 +1,4 @@
-package ru.extas.model.common;
+package ru.extas.model.security;
 
 
 import ru.extas.model.security.SecureAction;

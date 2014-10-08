@@ -4,7 +4,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.security.AccessRole;
+import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Person;
 import ru.extas.security.SecuredRepository;
 import ru.extas.server.contacts.CompanyRepository;
@@ -70,9 +71,10 @@ public class PermissionServiceImpl implements PermissionService {
     protected <Entity extends SecuredObject> void permitObjects(List<Entity> entities, SecuredRepository<Entity> repository) {
         for(Entity entity : entities) {
             Person createdBy = userService.findUserContactByLogin(entity.getCreatedBy());
-            repository.permitAndSave(entity, createdBy);
             Person modifiedBy = userService.findUserContactByLogin(entity.getModifiedBy());
-            repository.permitAndSave(entity, modifiedBy);
+            entity.addSecurityUserAccess(createdBy, AccessRole.OWNER);
+            entity.addSecurityUserAccess(modifiedBy, AccessRole.EDITOR);
+            repository.secureSave(entity);
         }
     }
 

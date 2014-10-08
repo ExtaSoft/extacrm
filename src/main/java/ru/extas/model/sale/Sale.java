@@ -1,10 +1,8 @@
 package ru.extas.model.sale;
 
 import ru.extas.model.common.Comment;
-import ru.extas.model.common.FileContainer;
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.PersonFileContainer;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 

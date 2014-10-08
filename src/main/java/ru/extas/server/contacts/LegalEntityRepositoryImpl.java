@@ -1,19 +1,26 @@
 package ru.extas.server.contacts;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -31,7 +38,7 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
 
     @Inject private LegalEntityRepository legalEntityRepository;
     @Inject private PersonRepository personRepository;
-    //@Inject private CompanyRepository companyRepository;
+    @Inject private CompanyRepository companyRepository;
 
     /** {@inheritDoc} */
     @Override
@@ -48,24 +55,30 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
         return regions;
     }
 
+    @Override
+    protected Collection<Pair<Person, AccessRole>> getObjectUsers(LegalEntity legalEntity) {
+        final ArrayList<Pair<Person, AccessRole>> users = newArrayList();
+
+        // Текущий пользователь как Владелец или Редактор
+        users.add(getCurUserAccess(legalEntity));
+
+        return users;
+    }
+
+    @Override
+    protected Collection<Company> getObjectCompanies(LegalEntity legalEntity) {
+        return null;
+    }
+
+    @Override
+    protected Collection<SalePoint> getObjectSalePoints(LegalEntity legalEntity) {
+        return null;
+    }
+
     /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectBrands(LegalEntity legalEntity) {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @Transactional
-    @Override
-    public LegalEntity permitAndSave(LegalEntity legalEntity, Person userContact, Collection<String> regions, Collection<String> brands) {
-        if (legalEntity != null) {
-            legalEntity = super.permitAndSave(legalEntity, userContact, regions, brands);
-            // При этом необходимо сделать “видимыми” все связанные объекты юр.лица:
-            // Компания
-            //companyRepository.permitAndSave(legalEntity.getCompany(), userContact, regions, brands);
-            // Директор
-            personRepository.permitAndSave(legalEntity.getDirector(), userContact, regions, brands);
-        }
-        return legalEntity;
-    }
 }

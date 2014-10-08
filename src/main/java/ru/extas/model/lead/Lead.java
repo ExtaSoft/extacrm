@@ -1,7 +1,6 @@
 package ru.extas.model.lead;
 
-import org.eclipse.persistence.annotations.ReturnInsert;
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 

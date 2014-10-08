@@ -2,7 +2,7 @@ package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.FileContainer;
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.SalePoint;
 
