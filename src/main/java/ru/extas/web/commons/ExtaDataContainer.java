@@ -65,6 +65,19 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
         }
 
         @Override
+        public TEntityType refreshEntity(TEntityType entity) {
+            final Object[] res = new Object[1];
+            runInTransaction(() -> res[0] = super.refreshEntity(entity));
+            return (TEntityType) res[0];
+        }
+
+        @Override
+        protected void runInTransaction(Runnable operation) {
+            lookup(SpringEntityManagerProvider.class)
+                    .runInTransaction(() -> super.runInTransaction(operation));
+        }
+
+        @Override
         protected int doGetEntityCount(EntityContainer<TEntityType> container, Filter filter) {
             String entityIdPropertyName = getEntityClassMetadata()
                     .getIdentifierProperty().getName();

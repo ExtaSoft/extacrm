@@ -58,7 +58,7 @@
                 <extacrm.ssl.pattern>NONE</extacrm.ssl.pattern>
 
                 <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
-                <jpa.logging.level>FINEST</jpa.logging.level>
+                <jpa.logging.level>FINE</jpa.logging.level>
                 <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
                 <!--<jpa.ddl-generation>none</jpa.ddl-generation>-->
                 <!--<jpa.generation.output-mode>both</jpa.generation.output-mode>-->
