@@ -28,7 +28,7 @@ public class Sale extends SecuredObject {
     @Column(unique = true, columnDefinition = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE")
     private Long num;
     // Клиент
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Person client;
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -48,7 +48,7 @@ public class Sale extends SecuredObject {
 	@Column(name = "MOTOR_PRICE", precision = 32, scale = 4)
 	private BigDecimal motorPrice;
 	// Мотосалон
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private SalePoint dealer;
 	@Column(name = "COMMENT")
 	private String comment;
@@ -60,10 +60,10 @@ public class Sale extends SecuredObject {
 	private List<ProductInSale> productInSales;
 
     // Ответственный
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person responsible;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Lead lead;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

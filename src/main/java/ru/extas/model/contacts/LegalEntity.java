@@ -25,7 +25,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class LegalEntity extends Contact{
 
     // Компания
-    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
+    @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Company company;
 
     // ОГРН/ОГРИП
@@ -80,15 +80,15 @@ public class LegalEntity extends Contact{
     private AddressInfo postAddress = new AddressInfo();
 
     // Генеральный директор
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person director;
 
     // Главный бухгалтер
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person accountant;
 
     // Банки и кредитные продукты
-    @ManyToMany(cascade = CascadeType.REFRESH)
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "LEGAL_ENTITY_PROD_CREDIT",
             joinColumns = {@JoinColumn(name = "LEGAL_ENTITY_ID", referencedColumnName = "ID")},

@@ -115,10 +115,10 @@ public class Person extends Contact {
     @Max(10)
     private String passIssuedByNum;
 
-    @ManyToMany(mappedBy = "employees", cascade = CascadeType.REFRESH)
+    @ManyToMany(mappedBy = "employees", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Set<Company> employers;
 
-    @ManyToMany(mappedBy = "employees", cascade = CascadeType.REFRESH)
+    @ManyToMany(mappedBy = "employees", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Set<SalePoint> workPlaces;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

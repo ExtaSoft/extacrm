@@ -78,6 +78,8 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
                 SetJoin<ObjectSecurityRule, Company> companiesRoot = getSecurityRoleJoin(objectRoot)
                         .join(ObjectSecurityRule_.companies, JoinType.LEFT);
                 Set<Company> companies = curUserContact.getEmployers();
+                Set<SalePoint> workPlaces = curUserContact.getWorkPlaces();
+                workPlaces.forEach(p -> companies.add(p.getCompany()));
                 if (companies.isEmpty()) {
                     Company company = new Company();
                     company.setId("00-00");

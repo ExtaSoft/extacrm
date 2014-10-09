@@ -47,7 +47,7 @@ public class UserGroup extends AuditedObject {
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ExtaPermission> permissions = newHashSet();
 
-    @ManyToMany(mappedBy = "groupList", cascade = {CascadeType.REFRESH})
+    @ManyToMany(mappedBy = "groupList", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Set<UserProfile> users = newHashSet();
 
     public UserGroup createCopy() {

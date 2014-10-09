@@ -102,15 +102,15 @@ public class Lead extends SecuredObject {
 	// -----------------------------------
 
 	// Клиент
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Person client;
 
 	// Продавец (дилер, страх. компания)
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private SalePoint vendor;
 
     // Ответственный
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person responsible;
 
 	@Enumerated(EnumType.STRING)

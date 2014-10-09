@@ -5,6 +5,7 @@ import com.vaadin.addon.jpacontainer.EntityManagerProvider;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.addon.jpacontainer.filter.util.FilterConverter;
 import com.vaadin.addon.jpacontainer.provider.CachingLocalEntityProvider;
+import com.vaadin.addon.jpacontainer.provider.MutableLocalEntityProvider;
 import com.vaadin.addon.jpacontainer.util.CollectionUtil;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.server.SpringEntityManagerProvider;
@@ -42,15 +43,7 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
     public ExtaDataContainer(final Class<TEntityType> entityClass) {
         super(entityClass);
         // We need an entity provider to create a container
-        final CachingLocalEntityProvider<TEntityType> entityProvider =
-                new ExtaLocalEntityProvider<>(entityClass);
-
-        //entityProvider.setCacheEnabled(false);
-        entityProvider.setEntitiesDetached(false);
-
-        entityProvider.setEntityManagerProvider(new InjectEntityManagerProvider());
-
-        setEntityProvider(entityProvider);
+        setEntityProvider(new ExtaLocalEntityProvider<>(entityClass));
     }
 
 
@@ -61,9 +54,14 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
         }
     }
 
-    private static class ExtaLocalEntityProvider<TEntityType extends IdentifiedObject> extends CachingLocalEntityProvider<TEntityType> {
+    private static class ExtaLocalEntityProvider<TEntityType extends IdentifiedObject> extends MutableLocalEntityProvider<TEntityType> {
+
         public ExtaLocalEntityProvider(Class<TEntityType> entityClass) {
             super(entityClass);
+            setTransactionsHandledByProvider(false);
+            setEntitiesDetached(false);
+
+            setEntityManagerProvider(new InjectEntityManagerProvider());
         }
 
         @Override

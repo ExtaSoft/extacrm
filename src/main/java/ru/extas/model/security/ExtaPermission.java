@@ -34,10 +34,10 @@ public class ExtaPermission extends AuditedObject implements Permission {
     @Column(name = "TARGET")
     private SecureTarget target;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private UserProfile user;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private UserGroup group;
 
 
