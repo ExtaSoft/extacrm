@@ -115,7 +115,7 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
 
         // Проверить, входит ли элемент в "собственные объекты"
         if (isItemFromTarget(itemId, SecureTarget.OWNONLY))
-            return securityService.isPermitted(domain, SecureTarget.OWNONLY, action);
+            return isPermitted4OwnedObj(itemId, action);
 
         // Проверить, входит ли элемент в "объекты торговой точки"
         if (isItemFromTarget(itemId, SecureTarget.SALE_POINT))
@@ -126,6 +126,10 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
             return securityService.isPermitted(domain, SecureTarget.CORPORATE, action);
 
         return false;
+    }
+
+    public boolean isPermitted4OwnedObj(String itemId, SecureAction action) {
+        return true;
     }
 
     public boolean isItemFromTarget(String itemId, SecureTarget target) {

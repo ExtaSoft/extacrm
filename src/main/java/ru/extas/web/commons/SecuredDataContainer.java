@@ -1,5 +1,6 @@
 package ru.extas.web.commons;
 
+import ru.extas.model.common.IdentifiedObject_;
 import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
@@ -8,6 +9,8 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.*;
 import ru.extas.server.security.UserManagementService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.util.Set;
 
@@ -132,5 +135,36 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
             predicate = predicate == null ? brPredicate : cb.and(predicate, brPredicate);
         }
         return predicate;
+    }
+
+    @Override
+    public boolean isPermitted4OwnedObj(String itemId, SecureAction action) {
+        Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
+
+        EntityManager em = lookup(EntityManager.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<TEntityType> root = cq.from(getEntityClass());
+
+        final MapJoin<ObjectSecurityRule, Person, UserObjectAccess> join = getSecurityRoleJoin(root)
+                .join(ObjectSecurityRule_.users, JoinType.LEFT);
+        cq.where(cb.and(
+                cb.equal(join.join(UserObjectAccess_.user, JoinType.LEFT), curUserContact),
+                cb.equal(root.get(IdentifiedObject_.id), itemId)));
+        cq.select(join.value().get(UserObjectAccess_.role));
+
+        Query qry = em.createQuery(cq);
+        AccessRole result = (AccessRole) qry.getSingleResult();
+        if(result != null){
+            switch (result) {
+                case READER:
+                    return action == SecureAction.VIEW;
+                case EDITOR:
+                    return action != SecureAction.DELETE;
+                case OWNER:
+                    return true;
+            }
+        }
+        return false;
     }
 }

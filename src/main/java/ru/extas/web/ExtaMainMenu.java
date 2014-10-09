@@ -14,6 +14,7 @@ import com.vaadin.server.Resource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import ru.extas.ExtaException;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.ExtaTheme;
@@ -153,6 +154,9 @@ public class ExtaMainMenu extends CssLayout implements Page.UriFragmentChangedLi
             uriFragment = getDefaultUriFragment();
         } else
             uriFragment = uri.toString();
+
+        if(isNullOrEmpty(uriFragment))
+            throw new ExtaException("Не определен раздел для перехода. Возможно не заданы права доступа к разделу системы.");
 
         Button selButton = fragmentToButton.get(uri.getDomainPrefix());
         if (selButton != null)
