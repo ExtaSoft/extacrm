@@ -2,6 +2,7 @@ package ru.extas.model.contacts;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.FileContainer;
+import ru.extas.model.security.UserProfile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -28,6 +29,9 @@ public class Person extends Contact {
     public static final int CITIZENSHIP_LENGTH = 60;
     public static final int INN_LENGTH = 10;
     public static final int SCOPE_OF_ACTIVITY_LENGHT = 30;
+
+    @OneToOne(mappedBy = "contact", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    private UserProfile userProfile;
 
     // Дата рождения
     private LocalDate birthday;
@@ -111,10 +115,10 @@ public class Person extends Contact {
     @Max(10)
     private String passIssuedByNum;
 
-    @ManyToMany(mappedBy = "employees", cascade = CascadeType.REFRESH)
+    @ManyToMany(mappedBy = "employees", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Set<Company> employers;
 
-    @ManyToMany(mappedBy = "employees", cascade = CascadeType.REFRESH)
+    @ManyToMany(mappedBy = "employees", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Set<SalePoint> workPlaces;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

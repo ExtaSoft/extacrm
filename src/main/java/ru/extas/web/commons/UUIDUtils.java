@@ -17,7 +17,7 @@ public class UUIDUtils {
     public static String toUrl(String uuidStr) {
 
         // Обрабатываем "старые" гугловые айдишники
-        if(uuidStr.length() == OLD_ID_LENGHT) {
+        if(uuidStr.length() >= OLD_ID_LENGHT) {
             return uuidStr;
         }
 
@@ -28,7 +28,7 @@ public class UUIDUtils {
 
     public static String fromUrl(String base64idStr) {
         // Обрабатываем "старые" гугловые айдишники
-        if (base64idStr.length() == OLD_ID_LENGHT) {
+        if (base64idStr.length() >= OLD_ID_LENGHT) {
             return base64idStr;
         }
         byte[] uuidBin = Base64.getUrlDecoder().decode(base64idStr);

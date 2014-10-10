@@ -13,6 +13,7 @@ import com.vaadin.server.ExternalResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -21,6 +22,7 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.security.AccessRole;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.lead.LeadRepository;
@@ -388,7 +390,7 @@ public class LeadInputFormUI extends UI {
         if (user == null)
             user = userService.findUserContactByLogin("admin");
 
-        leadRepository.permitAndSave(lead, user);
+        leadRepository.permitAndSave(lead, new ImmutablePair<>(user, AccessRole.OWNER));
     }
 
 

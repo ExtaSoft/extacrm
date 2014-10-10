@@ -20,11 +20,11 @@ import static com.google.common.collect.Sets.newHashSet;
 public class SalePoint extends Contact {
 
 	// Компания
-	@ManyToOne(optional = false, cascade = CascadeType.REFRESH)
+	@ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Company company;
 
 	// Юр. лица работающие на торговой точке
-	@ManyToMany(targetEntity = LegalEntity.class, cascade = CascadeType.REFRESH)
+	@ManyToMany(targetEntity = LegalEntity.class, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinTable(
 			name = "SALEPOINT_LEGALENTITY",
 			joinColumns = {@JoinColumn(name = "SALEPOINT_ID", referencedColumnName = "ID")},
@@ -32,7 +32,7 @@ public class SalePoint extends Contact {
 	private Set<LegalEntity> legalEntities = newHashSet();
 
 	// Сотрудники
-	@ManyToMany(targetEntity = Person.class, cascade = CascadeType.REFRESH)
+	@ManyToMany(targetEntity = Person.class, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinTable(
 			name = "CONTACT_EMPLOYEE",
 			joinColumns = {@JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")},

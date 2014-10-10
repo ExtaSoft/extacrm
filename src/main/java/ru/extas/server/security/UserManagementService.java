@@ -112,4 +112,12 @@ public interface UserManagementService {
      * @return true если запроценные целевые объекты доступны
      */
     boolean isPermitted(ExtaDomain domain, SecureTarget target, SecureAction action);
+
+    /**
+     * Проверяет разрешен ли пользователю доступ к указанному домену
+     *
+     * @param domain проверяемый домен
+     * @return true если доступ разрешен
+     */
+    boolean isPermittedDomain(ExtaDomain domain);
 }
