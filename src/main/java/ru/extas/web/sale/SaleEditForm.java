@@ -4,6 +4,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.server.sale.SaleRepository;
@@ -16,6 +17,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.contacts.PersonSelect;
 import ru.extas.web.contacts.SalePointSelect;
+import ru.extas.web.contacts.UserContactSelectField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
@@ -42,9 +44,6 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     // Имя клиента
     @PropertyId("client")
     private PersonSelect clientField;
-    // Регион покупки техники
-    @PropertyId("region")
-    private RegionSelect regionField;
     // Тип техники
     @PropertyId("motorType")
     private ComboBox motorTypeField;
@@ -64,6 +63,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private TextArea commentField;
     @PropertyId("productInSales")
     private ProductInSaleGrid productInSaleField;
+    @PropertyId("responsible")
+    private UserContactSelectField responsibleField;
     @PropertyId("comments")
     private CommentsField<SaleComment> commentsField;
 
@@ -87,29 +88,34 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Техника"));
         motorTypeField = new MotorTypeSelect();
+        motorTypeField.setRequired(true);
         form.addComponent(motorTypeField);
 
         motorBrandField = new MotorBrandSelect();
+        motorBrandField.setRequired(true);
         form.addComponent(motorBrandField);
 
         motorModelField = new EditField("Модель техники", "Введите модель техники");
         motorModelField.setColumns(15);
+        motorModelField.setRequired(true);
         form.addComponent(motorModelField);
 
         mototPriceField = new EditField("Цена техники");
+        mototPriceField.setRequired(true);
         form.addComponent(mototPriceField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
-        regionField = new RegionSelect();
-        regionField.setDescription("Укажите регион услуги");
-        form.addComponent(regionField);
-
         dealerField = new SalePointSelect("Мотосалон", "Введите точку продаж", null);
+        dealerField.setRequired(true);
         form.addComponent(dealerField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дополнительно"));
+        responsibleField = new UserContactSelectField("Ответственный");
+        responsibleField.setRequired(true);
+        form.addComponent(responsibleField);
+
         commentField = new TextArea("Примечание");
         commentField.setRows(3);
         commentField.setNullRepresentation("");
@@ -118,6 +124,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
         productInSaleField = new ProductInSaleGrid("Продукты в продаже", obj);
+        productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
 
         ////////////////////////////////////////////////////////////////////////////
@@ -140,6 +147,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
                 if(!isEmpty(user.getWorkPlaces()))
                     obj.setDealer(user.getWorkPlaces().iterator().next());
             }
+            final Person userContact = lookup(UserManagementService.class).getCurrentUserContact();
+            obj.setResponsible(userContact);
         }
     }
 

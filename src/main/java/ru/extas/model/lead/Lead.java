@@ -1,7 +1,6 @@
 package ru.extas.model.lead;
 
-import org.eclipse.persistence.annotations.ReturnInsert;
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 
@@ -103,12 +102,16 @@ public class Lead extends SecuredObject {
 	// -----------------------------------
 
 	// Клиент
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Person client;
 
 	// Продавец (дилер, страх. компания)
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private SalePoint vendor;
+
+    // Ответственный
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    private Person responsible;
 
 	@Enumerated(EnumType.STRING)
 	private Status status = Status.NEW;
@@ -119,6 +122,13 @@ public class Lead extends SecuredObject {
 	@Enumerated(EnumType.STRING)
 	private Result result;
 
+    public Person getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(Person responsible) {
+        this.responsible = responsible;
+    }
 
     public Long getNum() {
         return num;

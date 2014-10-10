@@ -23,7 +23,7 @@ public class MotorBrand  extends AuditedObject {
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.REFRESH, targetEntity = MotorType.class)
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH}, targetEntity = MotorType.class)
     @JoinTable(
             name = "BRAND_TYPE",
             joinColumns = {@JoinColumn(name = "BRAND_ID", referencedColumnName = "ID")},

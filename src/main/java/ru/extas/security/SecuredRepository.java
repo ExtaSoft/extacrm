@@ -1,8 +1,12 @@
 package ru.extas.security;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.security.AccessRole;
+import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Person;
 
 import java.util.Collection;
@@ -36,37 +40,49 @@ public interface SecuredRepository<Entity extends SecuredObject> {
     Entity secureSave(Entity entity);
 
     /**
-     * <p>permitAndSave.</p>
      *
-     *  @param entity a Entity object.
-     * @param userContact a {@link ru.extas.model.contacts.Person} object.
-     * @param regions a {@link java.util.Collection} object.
-     * @param brands a {@link java.util.Collection} object.
-     * @return a Entity object.
+     * @param entity
+     * @param users
+     * @param salePoints
+     * @param companies
+     * @param regions
+     * @param brands
+     * @return
      */
     @Transactional
-    Entity permitAndSave(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands);
+    Entity permitAndSave(Entity entity,
+                         Collection<Pair<Person, AccessRole>> users,
+                         Collection<SalePoint> salePoints,
+                         Collection<Company> companies,
+                         Collection<String> regions,
+                         Collection<String> brands);
+
+    /**
+     *
+     * @param entities
+     * @param users
+     * @param salePoints
+     * @param companies
+     * @param regions
+     * @param brands
+     * @return
+     */
+    @Transactional
+    List<Entity> permitAndSave(Collection<Entity> entities,
+                               Collection<Pair<Person, AccessRole>> users,
+                               Collection<SalePoint> salePoints,
+                               Collection<Company> companies,
+                               Collection<String> regions,
+                               Collection<String> brands);
 
     /**
      * <p>permitAndSave.</p>
      *
-     *  @param entities a {@link java.util.Collection} object.
-     * @param userContact a {@link ru.extas.model.contacts.Person} object.
-     * @param regions a {@link java.util.Collection} object.
-     * @param brands a {@link java.util.Collection} object.
-     * @return a {@link java.util.List} object.
-     */
-    @Transactional
-    List<Entity> permitAndSave(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands);
-
-    /**
-     * <p>permitAndSave.</p>
-     *
      *  @param entity a Entity object.
      * @param userContact a {@link ru.extas.model.contacts.Person} object.
      * @return a Entity object.
      */
     @Transactional
-    Entity permitAndSave(Entity entity, Person userContact);
+    Entity permitAndSave(Entity entity, Pair<Person, AccessRole> user);
 
 }

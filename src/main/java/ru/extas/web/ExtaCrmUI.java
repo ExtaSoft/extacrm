@@ -56,7 +56,7 @@ import static ru.extas.web.UiUtils.initUi;
 @Theme(ExtaTheme.NAME)
 @Title("Extreme Assistance CRM")
 //@Push(PushMode.AUTOMATIC)
-public class ExtaCrmUI extends UI {
+public class  ExtaCrmUI extends UI {
 
     private final static Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
 
@@ -106,6 +106,7 @@ public class ExtaCrmUI extends UI {
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         FormLayout loginForm = new FormLayout(username, password, signin);
+        loginForm.setMargin(true);
         loginForm.setSizeUndefined();
         loginForm.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 

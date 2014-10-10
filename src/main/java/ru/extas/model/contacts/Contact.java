@@ -4,7 +4,7 @@
 package ru.extas.model.contacts;
 
 
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;

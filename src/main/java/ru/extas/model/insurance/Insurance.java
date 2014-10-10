@@ -2,7 +2,7 @@ package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.FileContainer;
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.SalePoint;
 
@@ -50,7 +50,7 @@ public class Insurance extends SecuredObject {
     private LocalDate date;
 
     // Клиент может быть физ. или юр. лицом
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Contact client;
 
     @Column(name = "BENEFICIARY", length = Contact.NAME_LENGTH)
@@ -110,7 +110,7 @@ public class Insurance extends SecuredObject {
     @Column(name = "END_DATE")
     private LocalDate endDate;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private SalePoint dealer;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

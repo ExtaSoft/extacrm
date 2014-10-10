@@ -1,5 +1,6 @@
 package ru.extas.server.contacts;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,12 +8,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 
 import javax.inject.Inject;
 import java.util.Collection;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -43,6 +47,21 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
         return companyRepository;
     }
 
+    @Override
+    protected Collection<Pair<Person, AccessRole>> getObjectUsers(Company company) {
+        return newArrayList(getCurUserAccess(company));
+    }
+
+    @Override
+    protected Collection<Company> getObjectCompanies(Company company) {
+        return null;
+    }
+
+    @Override
+    protected Collection<SalePoint> getObjectSalePoints(Company company) {
+        return null;
+    }
+
     /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectBrands(Company company) {
@@ -60,18 +79,24 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public Company permitAndSave(Company company, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public Company permitAndSave(Company company,
+                                 Collection<Pair<Person, AccessRole>> users,
+                                 Collection<SalePoint> salePoints,
+                                 Collection<Company> companies,
+                                 Collection<String> regions,
+                                 Collection<String> brands) {
         if (company != null) {
-            company = super.permitAndSave(company, userContact, regions, brands);
+            company = super.permitAndSave(company, users, salePoints, companies, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты компании:
             // Собственник(и) Компании
-            personRepository.permitAndSave(company.getOwners(), userContact, regions, brands);
+            final Collection<Pair<Person, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            personRepository.permitAndSave(company.getOwners(), readers, salePoints, companies, regions, brands);
             // Сотрудники компании
-            personRepository.permitAndSave(company.getEmployees(), userContact, regions, brands);
+            personRepository.permitAndSave(company.getEmployees(), readers, salePoints, companies, regions, brands);
             // Юридические лица компании
-            legEntRepository.permitAndSave(company.getLegalEntities(), userContact, regions, brands);
+            legEntRepository.permitAndSave(company.getLegalEntities(), readers, salePoints, companies, regions, brands);
             // Торговые точки компании
-            salePointRepository.permitAndSave(company.getSalePoints(), userContact, regions, brands);
+            salePointRepository.permitAndSave(company.getSalePoints(), readers, salePoints, companies, regions, brands);
         }
         return company;
     }

@@ -28,13 +28,13 @@ public class FormTransfer extends AuditedObject {
     /**
      * Контакт от которого принимаются бланки
      */
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person fromContact;
 
     /**
      * Контакт которому передются бланки
      */
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person toContact;
 
     /**

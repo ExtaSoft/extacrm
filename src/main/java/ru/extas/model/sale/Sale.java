@@ -1,10 +1,8 @@
 package ru.extas.model.sale;
 
 import ru.extas.model.common.Comment;
-import ru.extas.model.common.FileContainer;
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.PersonFileContainer;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 
@@ -30,7 +28,7 @@ public class Sale extends SecuredObject {
     @Column(unique = true, columnDefinition = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE")
     private Long num;
     // Клиент
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Person client;
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -50,7 +48,7 @@ public class Sale extends SecuredObject {
 	@Column(name = "MOTOR_PRICE", precision = 32, scale = 4)
 	private BigDecimal motorPrice;
 	// Мотосалон
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private SalePoint dealer;
 	@Column(name = "COMMENT")
 	private String comment;
@@ -61,13 +59,25 @@ public class Sale extends SecuredObject {
 	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<ProductInSale> productInSales;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    // Ответственный
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    private Person responsible;
+
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Lead lead;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = Comment.OWNER_ID_COLUMN)
     @OrderBy("createdAt")
     private List<SaleComment> comments = newArrayList();
+
+    public Person getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(Person responsible) {
+        this.responsible = responsible;
+    }
 
     public List<SaleComment> getComments() {
         return comments;

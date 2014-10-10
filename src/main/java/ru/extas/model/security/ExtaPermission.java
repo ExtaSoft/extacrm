@@ -22,7 +22,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  */
 @Entity
 @Table(name = "ACCESS_PERMISSION")
-public class ExtaPermission extends AuditedObject implements Permission, Cloneable {
+public class ExtaPermission extends AuditedObject implements Permission {
 
     @Column(name = "DOMAIN")
     private ExtaDomain domain;
@@ -34,10 +34,10 @@ public class ExtaPermission extends AuditedObject implements Permission, Cloneab
     @Column(name = "TARGET")
     private SecureTarget target;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private UserProfile user;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private UserGroup group;
 
 
@@ -96,8 +96,7 @@ public class ExtaPermission extends AuditedObject implements Permission, Cloneab
     }
 
     /** {@inheritDoc} */
-    @Override
-    public ExtaPermission clone() {
+    public ExtaPermission createCopy() {
         ExtaPermission clone = new ExtaPermission();
 
         clone.setDomain(getDomain());

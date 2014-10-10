@@ -1,7 +1,12 @@
 package ru.extas.security;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.common.SecuredObject;
+import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.security.AccessRole;
+import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Person;
 import ru.extas.server.security.UserManagementService;
 
@@ -10,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
@@ -26,13 +33,33 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
     @Inject
     protected UserManagementService userService;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public Entity secureSave(Entity entity) {
-        Person userContact = userService.getCurrentUserContact();
-        return permitAndSave(entity, userContact, getObjectRegions(entity), getObjectBrands(entity));
+        return permitAndSave(entity, getObjectUsers(entity), getObjectSalePoints(entity), getObjectCompanies(entity), getObjectRegions(entity), getObjectBrands(entity));
     }
+
+    protected abstract Collection<Pair<Person, AccessRole>> getObjectUsers(Entity entity);
+
+    protected Pair<Person, AccessRole> getCurUserAccess(Entity entity) {
+        Person currentUserContact = userService.getCurrentUserContact();
+        return new ImmutablePair<>(currentUserContact, entity.isNew() ? AccessRole.OWNER : AccessRole.EDITOR);
+    }
+
+    protected Collection<Pair<Person, AccessRole>> reassigneRole(Collection<Pair<Person, AccessRole>> users, AccessRole role) {
+        List<Pair<Person, AccessRole>> newUsers = newArrayListWithCapacity(users.size());
+
+        users.forEach(p -> newUsers.add(new ImmutablePair<>(p.getLeft(), role)));
+
+        return newUsers;
+    }
+
+    protected abstract Collection<Company> getObjectCompanies(Entity entity);
+
+    protected abstract Collection<SalePoint> getObjectSalePoints(Entity entity);
 
     /**
      * <p>getObjectBrands.</p>
@@ -50,44 +77,64 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
      */
     protected abstract Collection<String> getObjectRegions(Entity entity);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
-    public Entity permitAndSave(Entity entity, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public Entity permitAndSave(Entity entity,
+                                Collection<Pair<Person, AccessRole>> users,
+                                Collection<SalePoint> salePoints,
+                                Collection<Company> companies,
+                                Collection<String> regions,
+                                Collection<String> brands) {
         if (entity != null) {
-            // Доступ пользователя к объекту
-            entity.getAssociateUsers().add(userContact);
+            // Доступ пользователей к объекту
+            entity.addSecurityUserAccess(users);
+            // Видимость объекта в разрезе Торговых точек
+            entity.addSecuritySalePoints(salePoints);
+            // Видимость объекта в разрезе Компаний
+            entity.addSecurityCompanies(companies);
             // Видимость объекта в разрезе регионов
-            if (!isEmpty(regions))
-                entity.getAssociateRegions().addAll(regions);
+            entity.addSecurityRegions(regions);
             // Видимость объекта в разрезе брендов
-            if (!isEmpty(brands))
-                entity.getAssociateBrands().addAll(brands);
+            entity.addSecurityBrands(brands);
             return getEntityRepository().save(entity);
         }
         return entity;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
-    public List<Entity> permitAndSave(Collection<Entity> entities, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public List<Entity> permitAndSave(Collection<Entity> entities,
+                                      Collection<Pair<Person, AccessRole>> users,
+                                      Collection<SalePoint> salePoints,
+                                      Collection<Company> companies,
+                                      Collection<String> regions,
+                                      Collection<String> brands) {
         List<Entity> result = new ArrayList<>();
         if (!isEmpty(entities)) {
             if (!isEmpty(entities)) {
-                for(Entity entity : entities)
-                    result.add(permitAndSave(entity, userContact, regions, brands));
+                for (Entity entity : entities)
+                    result.add(permitAndSave(entity, users, salePoints, companies, regions, brands));
             }
         }
         return result;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
-    public Entity permitAndSave(Entity entity, Person userContact) {
+    public Entity permitAndSave(Entity entity, Pair<Person, AccessRole> user) {
         if (entity != null) {
-            return permitAndSave(entity, userContact, getObjectRegions(entity), getObjectBrands(entity));
+            final ArrayList<Pair<Person, AccessRole>> users = newArrayList(user);
+            users.addAll(getObjectUsers(entity));
+            return permitAndSave(entity, users, getObjectSalePoints(entity), getObjectCompanies(entity), getObjectRegions(entity), getObjectBrands(entity));
         }
         return entity;
     }

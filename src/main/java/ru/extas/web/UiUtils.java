@@ -1,5 +1,6 @@
 package ru.extas.web;
 
+import com.google.common.base.Throwables;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.server.DefaultErrorHandler;
@@ -8,11 +9,13 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.ExtaException;
 import ru.extas.web.commons.NotificationUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Locale;
+import java.util.Optional;
 
 import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.NotificationUtil.showWarning;
@@ -53,15 +56,22 @@ public class UiUtils {
         @Override
         public void error(final com.vaadin.server.ErrorEvent event) {
             // Протоколируем ошибку
-            logger.error("", event.getThrowable());
+            final Throwable throwable = event.getThrowable();
+            Throwable rootThrowable = Throwables.getRootCause(throwable);
+            Optional<Throwable> appThrowable = Throwables.getCausalChain(throwable).stream().filter(t -> t instanceof ExtaException).findFirst();
+            logger.error("", throwable);
 
-            final StringWriter strWr = new StringWriter();
-            strWr.append("<div class='exceptionStackTraceBox'><pre>");
-            event.getThrowable().printStackTrace(new PrintWriter(strWr, true));
-            strWr.append("</pre></div>");
+            if (appThrowable.isPresent()){
+                NotificationUtil.showError("Ошибка при работе прилоения", appThrowable.get().getLocalizedMessage());
+            }else {
+                final StringWriter strWr = new StringWriter();
+                strWr.append("<div class='exceptionStackTraceBox'><pre>");
+                rootThrowable.printStackTrace(new PrintWriter(strWr, true));
+                strWr.append("</pre></div>");
 
-            // Display the error message in a custom fashion
-            NotificationUtil.showError("Непредусмотренная ошибка", strWr.toString());
+                // Display the error message in a custom fashion
+                NotificationUtil.showError("Непредусмотренная ошибка", strWr.toString());
+            }
         }
     }
 

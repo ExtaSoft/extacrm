@@ -38,7 +38,6 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
     protected Container createContainer() {
         // Запрос данных
         final ExtaDataContainer<UserGroup> container = new ExtaDataContainer<>(UserGroup.class);
-//        container.addNestedContainerProperty("contact.name");
         return container;
     }
 
@@ -55,7 +54,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
             public void fire(final Object itemId) {
                 final UserGroup curObj = GridItem.extractBean(table.getItem(itemId));
 
-                UserGroup copy = curObj.clone();
+                UserGroup copy = curObj.createCopy();
                 copy.setName("Копия - " + curObj.getName());
                 doEditNewObject(copy);
             }

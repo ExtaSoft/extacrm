@@ -1,6 +1,7 @@
 package ru.extas.server;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,7 +18,7 @@ import javax.persistence.PersistenceContextType;
  */
 @Service
 public class SpringEntityManagerProvider {
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     private EntityManager em;
 
     /**
@@ -28,4 +29,10 @@ public class SpringEntityManagerProvider {
     public EntityManager getEntityManager() {
         return em;
     }
+
+    @Transactional
+    public void runInTransaction(Runnable operation) {
+        operation.run();
+    }
+
 }

@@ -1,5 +1,7 @@
 package ru.extas.server.sale;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -7,19 +9,26 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
+import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
+import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.lead.LeadRepository;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -35,34 +44,42 @@ import static com.google.common.collect.Sets.newHashSet;
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implements SaleService {
 
-	private final static Logger logger = LoggerFactory.getLogger(SaleRepositoryImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(SaleRepositoryImpl.class);
 
-	@Inject private SaleRepository saleRepository;
-    @Inject private PersonRepository personRepository;
-    @Inject private SalePointRepository salePointRepository;
-    @Inject private LeadRepository leadRepository;
+    @Inject
+    private SaleRepository saleRepository;
+    @Inject
+    private PersonRepository personRepository;
+    @Inject
+    private SalePointRepository salePointRepository;
+    @Inject
+    private CompanyRepository companyRepository;
+    @Inject
+    private LeadRepository leadRepository;
 
-	/** {@inheritDoc} */
-	@Transactional
-	@Override
-	public Sale ctreateSaleByLead(Lead lead) {
-		Sale sale = new Sale();
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public Sale ctreateSaleByLead(Lead lead) {
+        Sale sale = new Sale();
 
-		sale.setClient(lead.getClient());
-		sale.setStatus(Sale.Status.NEW);
-		sale.setRegion(lead.getRegion());
-		sale.setMotorType(lead.getMotorType());
-		sale.setMotorBrand(lead.getMotorBrand());
-		sale.setMotorModel(lead.getMotorModel());
-		sale.setMotorPrice(lead.getMotorPrice());
-		sale.setDealer(lead.getVendor());
-		sale.setComment(lead.getComment());
-		sale.setProcessId(lead.getProcessId());
+        sale.setClient(lead.getClient());
+        sale.setStatus(Sale.Status.NEW);
+        sale.setRegion(lead.getRegion());
+        sale.setMotorType(lead.getMotorType());
+        sale.setMotorBrand(lead.getMotorBrand());
+        sale.setMotorModel(lead.getMotorModel());
+        sale.setMotorPrice(lead.getMotorPrice());
+        sale.setDealer(lead.getVendor());
+        sale.setComment(lead.getComment());
+        sale.setProcessId(lead.getProcessId());
         sale.setLead(lead);
 
-		return saleRepository.secureSave(sale);
+        return saleRepository.secureSave(sale);
 
-	}
+    }
 
     @Transactional
     @Override
@@ -86,54 +103,101 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         }
         sale = secureSave(sale);
         Lead lead = sale.getLead();
-        if(lead != null)
+        if (lead != null)
             leadRepository.finishLead(lead, leadResult);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpaRepository<Sale, ?> getEntityRepository() {
         return saleRepository;
     }
 
-    /** {@inheritDoc} */
+    @Override
+    protected Collection<Pair<Person, AccessRole>> getObjectUsers(Sale sale) {
+        final ArrayList<Pair<Person, AccessRole>> users = newArrayList();
+
+        // Текущий пользователь как Владелец
+        users.add(getCurUserAccess(sale));
+        // Ответственный пользователь как Редактор
+        if (sale.getResponsible() != null)
+            users.add(new ImmutablePair<>(sale.getResponsible(), AccessRole.EDITOR));
+
+        return users;
+    }
+
+    @Override
+    protected Collection<Company> getObjectCompanies(Sale sale) {
+        List<Company> companies = newArrayList();
+
+        // Добавляем в область видимости компании дилера
+        if(sale.getDealer() != null)
+            companies.add(sale.getDealer().getCompany());
+
+        return companies;
+    }
+
+    @Override
+    protected Collection<SalePoint> getObjectSalePoints(Sale sale) {
+        List<SalePoint> salePoints = newArrayList();
+
+        // Добавляем в область видимости торговой точки
+        if (sale.getDealer() != null)
+            salePoints.add(sale.getDealer());
+
+        return salePoints;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Collection<String> getObjectBrands(Sale sale) {
-        if(!isNullOrEmpty(sale.getMotorBrand()))
-            newHashSet(sale.getMotorBrand());
+        // Бренд техники
+        if (!isNullOrEmpty(sale.getMotorBrand()))
+            return newHashSet(sale.getMotorBrand());
 
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Collection<String> getObjectRegions(Sale sale) {
         Set<String> regions = newHashSet();
-        if(sale.getClient() != null
-                && sale.getClient().getRegAddress() != null
-                && !isNullOrEmpty(sale.getClient().getRegAddress().getRegion()))
-            regions.add(sale.getClient().getRegAddress().getRegion());
-        if(sale.getDealer() != null
+        // Область видимости в регионе дилера
+        if (sale.getDealer() != null
                 && sale.getDealer().getRegAddress() != null
                 && !isNullOrEmpty(sale.getDealer().getRegAddress().getRegion()))
             regions.add(sale.getDealer().getRegAddress().getRegion());
         return regions;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
-    public Sale permitAndSave(Sale sale, Person userContact, Collection<String> regions, Collection<String> brands) {
+    public Sale permitAndSave(Sale sale,
+                              Collection<Pair<Person, AccessRole>> users,
+                              Collection<SalePoint> salePoints,
+                              Collection<Company> companies,
+                              Collection<String> regions,
+                              Collection<String> brands) {
         if (sale != null) {
-            sale = super.permitAndSave(sale, userContact, regions, brands);
+            sale = super.permitAndSave(sale, users, salePoints, companies, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты лида:
             // Клиент
-//            if(lead.getClient() instanceof Person)
-            personRepository.permitAndSave(sale.getClient(), userContact, regions, brands);
-//            else
-//                companyRepository.permitAndSave((Company) lead.getClient(), userContact, regions, brands);
+            final Collection<Pair<Person, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            personRepository.permitAndSave(sale.getClient(), readers, salePoints, companies, regions, brands);
             // Продавец (торговая точка или компания)
-            salePointRepository.permitAndSave(sale.getDealer(), userContact, regions, brands);
+            salePointRepository.permitAndSave(sale.getDealer(), readers, salePoints, companies, regions, brands);
+            // Компания продавца
+            if (sale.getDealer() != null)
+                companyRepository.permitAndSave(sale.getDealer().getCompany(), readers, salePoints, companies, regions, brands);
         }
         return sale;
     }

@@ -78,13 +78,13 @@ public class TasksGrid extends ExtaGrid<Task> {
 		TaskQuery query = taskService.createTaskQuery();
 		switch (period) {
 			case TODAY:
-				query.dueBefore(LocalDate.now().plusDays(1).toDate());
+				query.taskDueBefore(LocalDate.now().plusDays(1).toDate());
 				break;
 			case WEEK:
-				query.dueBefore(LocalDate.now().plusWeeks(1).toDate());
+				query.taskDueBefore(LocalDate.now().plusWeeks(1).toDate());
 				break;
 			case MONTH:
-				query.dueBefore(LocalDate.now().plusMonths(1).toDate());
+				query.taskDueBefore(LocalDate.now().plusMonths(1).toDate());
 				break;
 			case ALL:
 				break;
@@ -94,7 +94,7 @@ public class TasksGrid extends ExtaGrid<Task> {
 			String currentUser = userService.getCurrentUserLogin();
 			query.taskAssignee(currentUser);
 		}
-		query.orderByTaskPriority().desc().orderByDueDate().asc();
+		query.orderByTaskPriority().desc().orderByTaskDueDate().asc();
 		return query.list();
 	}
 
