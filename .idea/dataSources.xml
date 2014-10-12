@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="880606671">
+  <component name="DataSourceManagerImpl" format="xml" hash="213447380">
     <data-source source="LOCAL" name="LocalMySql" uuid="5c42dca0-ad6e-40b7-a5b9-c8db19f4f902">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
@@ -16,32 +16,6 @@
           <url>jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.26/mysql-connector-java-5.1.26.jar!/</url>
         </library>
       </libraries>
-    </data-source>
-    <data-source source="LOCAL" name="ProdMySQL" uuid="06abee6f-6c4b-4790-b02a-acb704751d66">
-      <driver-ref>mysql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://mysql-extacrm-prod.jelastic.regruhosting.ru:3306/extacrm</jdbc-url>
-      <user-name>root</user-name>
-      <user-password>dfeddff3dff8dfd0dfe4dff3dfe3dfc9df98df9c</user-password>
-      <driver-properties>
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-      </driver-properties>
-      <libraries />
-    </data-source>
-    <data-source source="LOCAL" name="UatMySQL" uuid="03d7e2c6-7d5c-41ff-afb8-36fd821d3c9d">
-      <driver-ref>mysql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://mysql-extacrm-uat.jelastic.regruhosting.ru:3306/extacrm</jdbc-url>
-      <user-name>root</user-name>
-      <user-password>dfe1dff2dfe3dfc4df92df9adff0dfeddfd3dfe6</user-password>
-      <driver-properties>
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-      </driver-properties>
-      <libraries />
     </data-source>
   </component>
 </project>

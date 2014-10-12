@@ -15,6 +15,7 @@ import ru.extas.model.security.*;
 import javax.inject.Inject;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -38,6 +39,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     /** {@inheritDoc} */
     @Override
     public UserProfile findUserByLogin(String login) {
+        checkArgument(login != null);
         logger.debug("Finding user by login: {}...", login);
         if (login.equals(SUPERUSER_LOGIN)) {
             logger.debug("Returning superuser profile...");

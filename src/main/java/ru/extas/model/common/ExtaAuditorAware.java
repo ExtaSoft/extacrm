@@ -17,11 +17,14 @@ import javax.inject.Inject;
 public class ExtaAuditorAware implements AuditorAware<String> {
 
     @Inject
-    private UserManagementService userManagementService;
+    private UserManagementService userService;
 
     /** {@inheritDoc} */
     @Override
     public String getCurrentAuditor() {
-        return userManagementService.getCurrentUserLogin();
+        if (userService.isUserAuthenticated())
+            return userService.getCurrentUserLogin();
+        else
+            return "admin";
     }
 }
