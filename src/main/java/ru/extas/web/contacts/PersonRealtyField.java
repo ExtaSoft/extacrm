@@ -126,7 +126,6 @@ public class PersonRealtyField extends CustomField<List> {
         // Адрес объекта недвижимости
         TextArea adressField = new TextArea("Адрес объекта");
         adressField.setRows(2);
-        adressField.setColumns(20);
         adressField.setInputPrompt("Город, Улица, Дом ...");
         adressField.setNullRepresentation("");
         adressField.addStyleName(ExtaTheme.TEXTFIELD_SMALL);

@@ -219,7 +219,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         formLayout.addComponent(postIndexField);
 
         streetBldField = new TextArea("Адрес");
-        streetBldField.setColumns(30);
         streetBldField.setRows(2);
         streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
         streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");

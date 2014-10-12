@@ -78,6 +78,11 @@
     </bean>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
+    <!--Bean Validation config-->
+    <bean id="validator"
+          class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- JPA Configuration -->
     <context:property-placeholder location="classpath:persistence.properties" ignore-unresolvable="true"/>
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

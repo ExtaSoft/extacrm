@@ -1,6 +1,7 @@
 package ru.extas.model.common;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 /**
  * Модель данных для хранения файлов прикрепляемых к объектам системы
@@ -24,14 +25,17 @@ public abstract class FileContainer extends AuditedObject {
 
     // Описание файла
     @Column
+    @Size(max = 255)
     private String description;
 
     // Имя файла
     @Column
+    @Size(max = 255)
     private String name;
 
     // Тип
     @Column
+    @Size(max = 255)
     private String mimeType;
 
     // Размер

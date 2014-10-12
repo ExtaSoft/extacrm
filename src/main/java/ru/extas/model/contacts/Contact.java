@@ -7,8 +7,10 @@ package ru.extas.model.contacts;
 import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Контактное лицо контрагента, клиент физик или сотрудник
@@ -35,27 +37,28 @@ public abstract class Contact extends SecuredObject{
 
 	// Адрес Регистрации
 	@Embedded()
+    @Valid
 	private AddressInfo regAddress = new AddressInfo();
 
 	// Имя контакта
 	@Column(length = NAME_LENGTH)
-	@Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
 	@NotNull
 	private String name;
 
 	// Телефон
 	@Column(name = "CELL_PHONE", length = PHONE_LINGHT)
-	@Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
 	private String phone;
 
 	// Эл. почта
 	@Column(length = 50)
-	@Max(50)
+	@Size(max = 50)
 	private String email;
 
 	// Сайт
 	@Column(length = 50)
-	@Max(50)
+	@Size(max = 50)
 	private String www;
 
 	// Вышестоящая организация

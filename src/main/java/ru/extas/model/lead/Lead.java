@@ -5,6 +5,7 @@ import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -56,18 +57,22 @@ public class Lead extends SecuredObject {
 
 	// Регион покупки техники
 	@Column(name = "REGION")
+    @Size(max = 255)
 	private String region;
 
 	// Тип техники
 	@Column(name = "MOTOR_TYPE")
+    @Size(max = 255)
 	private String motorType;
 
 	// Марка техники
 	@Column(name = "MOTOR_BRAND")
+    @Size(max = 255)
 	private String motorBrand;
 
 	// Модель техники
 	@Column(name = "MOTOR_MODEL")
+    @Size(max = 255)
 	private String motorModel;
 
 	// Стоимость техники
@@ -76,9 +81,11 @@ public class Lead extends SecuredObject {
 
 	// Мотосалон
 	@Column(name = "POINT_OF_SALE")
+    @Size(max = 255)
 	private String pointOfSale;
 
 	@Column(name = "COMMENT")
+    @Size(max = 255)
 	private String comment;
 
 	//    Персональные данные
@@ -86,15 +93,19 @@ public class Lead extends SecuredObject {
 
 	// Имя контакта
 	@Column(name = "CONTACT_NAME")
+    @Size(max = 255)
 	private String contactName;
 	// Телефон
 	@Column(name = "CONTACT_PHONE")
+    @Size(max = 255)
 	private String contactPhone;
 	// Эл. почта
 	@Column(name = "CONTACT_EMAIL")
+    @Size(max = 255)
 	private String contactEmail;
     // Регион проживания.
     @Column(name = "CONTACT_REGION")
+    @Size(max = 255)
     private String contactRegion;
 
 
@@ -117,6 +128,7 @@ public class Lead extends SecuredObject {
 	private Status status = Status.NEW;
 
 	@Column(name = "PROCESS_ID")
+    @Size(max = 255)
 	private String processId;
 
 	@Enumerated(EnumType.STRING)

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -22,7 +23,7 @@ public class PersonIncome extends IdentifiedObject {
 
     // Тип дохода (Основная зарплата, Зарплата по совместительству, Прочие)
     @Column(length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String type;
     // Клиент
     @Column(precision = 32, scale = 4)

@@ -4,7 +4,9 @@ import ru.extas.model.common.FileContainer;
 import ru.extas.model.sale.ProdCredit;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Set;
 
@@ -30,37 +32,37 @@ public class LegalEntity extends Contact{
 
     // ОГРН/ОГРИП
     @Column(name = "OGRN_OGRIP", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String ogrnOgrip;
 
     // ИНН
     @Column(name = "INN", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String inn;
 
     // КПП
     @Column(name = "KPP", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String kpp;
 
     // Расчетный счет в рублях
     @Column(name = "SETTLEMENT_ACCOUNT", length = 25)
-    @Max(25)
+    @Size(max = 25)
     private String settlementAccount;
 
     // Корреспондентский счет
     @Column(name = "LORO_ACCOUNT", length = 150)
-    @Max(150)
+    @Size(max = 150)
     private String loroAccount;
 
     // Полное наименование банка
     @Column(name = "BANK_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String bankName;
 
     // БИК банка
     @Column(name = "BIC", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String bic;
 
     // Фактический адрес совпадает с юридическим
@@ -77,6 +79,7 @@ public class LegalEntity extends Contact{
             @AttributeOverride(name = "realtyKind", column = @Column(name = "PST_REALTY_KIND")),
             @AttributeOverride(name = "periodOfResidence", column = @Column(name = "PST_PERIOD_OF_RESIDENCE"))
     })
+    @Valid
     private AddressInfo postAddress = new AddressInfo();
 
     // Генеральный директор

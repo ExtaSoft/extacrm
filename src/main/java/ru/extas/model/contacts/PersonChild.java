@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author Valery Orlov
@@ -20,7 +21,7 @@ import javax.validation.constraints.NotNull;
 public class PersonChild extends IdentifiedObject {
 
     @Column(length = Person.NAME_LENGTH)
-    @Max(Person.NAME_LENGTH)
+    @Size(max = Person.NAME_LENGTH)
     @NotNull
     private String name;
 

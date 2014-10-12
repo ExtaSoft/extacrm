@@ -200,7 +200,6 @@ public class LeadInputFormUI extends UI {
 
         commentField = new TextArea("Примечание");
         commentField.setInputPrompt("Укажите любую дополнительную информацию");
-        commentField.setColumns(25);
         commentField.setRows(6);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);

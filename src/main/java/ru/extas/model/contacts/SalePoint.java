@@ -1,6 +1,7 @@
 package ru.extas.model.contacts;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -19,7 +20,8 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "SALE_POINT")
 public class SalePoint extends Contact {
 
-	// Компания
+    private static final int CODE_LENGTH = 15;
+    // Компания
 	@ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Company company;
 
@@ -42,19 +44,23 @@ public class SalePoint extends Contact {
 	// Идентификация:
 
 	//  - Код Экстрим Ассистанс
-	@Column(name = "EXTA_CODE", length = 15)
+	@Column(name = "EXTA_CODE", length = CODE_LENGTH)
+    @Size(max = CODE_LENGTH)
 	private String extaCode;
 
 	//  - Код Альфа Банка
-	@Column(name = "ALPHA_CODE", length = 15)
+	@Column(name = "ALPHA_CODE", length = CODE_LENGTH)
+    @Size(max = CODE_LENGTH)
 	private String alphaCode;
 
 	//  - Код HomeCredit Банка
-	@Column(name = "HOME_CODE", length = 15)
+	@Column(name = "HOME_CODE", length = CODE_LENGTH)
+    @Size(max = CODE_LENGTH)
 	private String homeCode;
 
 	//  - Код Банка СЕТЕЛЕМ
-	@Column(name = "SETELEM_CODE", length = 15)
+	@Column(name = "SETELEM_CODE", length = CODE_LENGTH)
+    @Size(max = CODE_LENGTH)
 	private String setelemCode;
 
 	/**

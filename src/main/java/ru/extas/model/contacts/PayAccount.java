@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 
 /**
  * Платежные реквизиты контрагента
@@ -26,22 +27,22 @@ public class PayAccount extends AuditedObject {
 
     // Наименование банка
     @Column(name = "BANK_NAME", length = Contact.NAME_LENGTH)
-    @Max(Contact.NAME_LENGTH)
+    @Size(max = Contact.NAME_LENGTH)
     private String bankName;
 
     // БИК
     @Column(name = "BANK_CODE", length = 35)
-    @Max(35)
+    @Size(max = 35)
     private String bankCode;
 
     // Корреспондентский счет
     @Column(name = "LORO_ACCOUNT", length = 35)
-    @Max(35)
+    @Size(max = 35)
     private String loroAccount;
 
     // Номер расчетного счета
     @Column(name = "SETTLEMENT_ACCOUNT", length = 35)
-    @Max(35)
+    @Size(max = 35)
     private String settlementAccount;
 
     // Контакт которому относится счет

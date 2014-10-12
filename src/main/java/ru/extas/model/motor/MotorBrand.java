@@ -3,6 +3,7 @@ package ru.extas.model.motor;
 import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -21,6 +22,7 @@ import static com.google.common.collect.Sets.newHashSet;
 public class MotorBrand  extends AuditedObject {
 
     @Column(nullable = false)
+    @Size(max = 255)
     private String name;
 
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH}, targetEntity = MotorType.class)

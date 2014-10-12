@@ -92,7 +92,6 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 		commentField.setDescription("Дополнительная информация о продукте");
 		commentField.setNullRepresentation("");
 		commentField.setInputPrompt("Дополнительная информация о продукте");
-		commentField.setColumns(30);
 		commentField.setRows(5);
 		form.addComponent(commentField);
 

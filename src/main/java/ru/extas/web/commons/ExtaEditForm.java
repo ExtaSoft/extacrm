@@ -3,6 +3,7 @@
  */
 package ru.extas.web.commons;
 
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItem;
@@ -36,7 +37,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     private final String caption;
     protected boolean saved = false;
     private HorizontalLayout buttonsPanel;
-    private FieldGroup fieldGroup;
+    private BeanFieldGroup<TEditObject> fieldGroup;
     private boolean modified;
     private TEditObject bean;
     private Button okBtn;
@@ -130,7 +131,8 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         final ComponentContainer form = createEditFields(bean);
 
         // Now create a binder
-        fieldGroup = new FieldGroup(beanItem);
+        fieldGroup = new BeanFieldGroup<>((Class<TEditObject>)bean.getClass());
+        fieldGroup.setItemDataSource(beanItem);
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
 

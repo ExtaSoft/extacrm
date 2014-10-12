@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -33,7 +34,7 @@ public class Policy extends AuditedObject {
 
     // Номер полиса
     @Column(name = "REG_NUM", length = REG_NUM_LENGTH, unique = true)
-    @Max(REG_NUM_LENGTH)
+    @Size(max = REG_NUM_LENGTH)
     private String regNum;
 
     // Время бронирования полиса

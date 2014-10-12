@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 /**
  * Необходимый документ в кредитном продукте.
@@ -31,6 +32,7 @@ public class ProdCreditDoc extends AuditedObject {
 	// водительское удостоверение
 	// СНИЛС
 	@Column(name = "NAME")
+    @Size(max = 255)
 	private String name;
 
 	// Признак обязательного документа

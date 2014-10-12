@@ -4,6 +4,7 @@ import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,9 +27,10 @@ public class UserGroup extends AuditedObject {
      * Имя группы
      */
     @Column(length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String name;
 
+    @Size(max = 255)
     private String description;
 
     @ElementCollection

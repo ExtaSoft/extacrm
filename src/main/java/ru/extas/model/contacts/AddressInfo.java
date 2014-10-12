@@ -6,6 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -24,23 +25,23 @@ public class AddressInfo implements Serializable {
 
     // Регион
     @Column(length = REGION_LENGTH)
-    @Max(REGION_LENGTH)
+    @Size(max = REGION_LENGTH)
     private String region;
 
     // Город
     @Column(length = CITY_LENGTH)
-    @Max(CITY_LENGTH)
+    @Size(max = CITY_LENGTH)
     private String city;
 
     // Индекс
     @Column(name = "POST_INDEX", length = 6)
-    @Max(6)
+    @Size(max = 6)
     @Pattern(regexp = "[0-9]*")
     private String postIndex;
 
     // Адрес (улица, дом и т.д.)
     @Column(name = "STREET_BLD", length = 255)
-    @Max(255)
+    @Size(max = 255)
     private String streetBld;
 
     @Enumerated(EnumType.STRING)

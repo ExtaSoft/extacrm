@@ -4,6 +4,7 @@ import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 
 /**
  * Коды контрагентов (ИНН, ОГРН...)
@@ -25,12 +26,12 @@ public class ContactCode extends AuditedObject {
 
     // Тип кода (ИНН, ОГРН...)
     @Column(length = 20)
-    @Max(20)
+    @Size(max = 20)
     private String type;
 
     // Значение кода
     @Column(length = 35)
-    @Max(35)
+    @Size(max = 35)
     private String code;
 
     // Контакт которому относится код

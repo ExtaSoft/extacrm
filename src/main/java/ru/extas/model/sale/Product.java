@@ -4,6 +4,7 @@ import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Company;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 /**
  * Модель данных для продукта
@@ -39,6 +40,7 @@ public abstract class Product extends AuditedObject {
 
 	// Наименование продукта
 	@Column(name = "NAME")
+    @Size(max = 255)
 	private String name;
 
 	// Поставщик продукта
@@ -51,6 +53,7 @@ public abstract class Product extends AuditedObject {
 
 	// Примечание к продукту
 	@Column(name = "COMMENT")
+    @Size(max = 255)
 	private String comment;
 
 	/**

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -23,14 +24,14 @@ public class PersonAuto extends IdentifiedObject {
 
     // Марка, модель
     @Column(name = "BRAND_MODEL", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String brandModel;
     // год выпуска
     @Column(name = "YEAR_OF_MANUFACTURE")
     private int yearOfManufacture;
     // Гос. рег. №
     @Column(name = "REG_NUM", length = 12)
-    @Max(12)
+    @Size(max = 12)
     private String regNum;
     // Покупная стоимость
     @Column(precision = 32, scale = 4)
@@ -40,7 +41,7 @@ public class PersonAuto extends IdentifiedObject {
     private LocalDate purchaseDate;
     // Способ приобретения (покупка, покупка с пробегом, автокредит, покупка по ген. довер.)
     @Column(name = "WAY_2_PURCHASE", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String way2purchase;
 
     @ManyToOne

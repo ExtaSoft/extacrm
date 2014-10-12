@@ -5,6 +5,7 @@ import ru.extas.model.contacts.Person;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class UserProfile extends AuditedObject {
 
     // Login/email
     @Column(length = LOGIN_LENGTH)
-    @Max(LOGIN_LENGTH)
+    @Size(max = LOGIN_LENGTH)
     private String login;
 
     // Ссылка на контакт
@@ -33,14 +34,16 @@ public class UserProfile extends AuditedObject {
     private Person contact;
 
     // Password (hash)
+    @Size(max = 255)
     private String password;
 
     // Ключ шифрования пароля
     @Column(name = "PASSWORD_SALT", length = 30)
+    @Size(max = 30)
     private String passwordSalt;
 
     // Требование сменить пароль при следующем входе
-    @Column(name = "CHANGE_PASSWORD", length = 50)
+    @Column(name = "CHANGE_PASSWORD")
     private boolean changePassword;
 
     // Основная роль пользователя

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -22,7 +23,7 @@ public class PersonExpense extends IdentifiedObject {
 
     // Тип расхода: Текущие расходы(на питание и одежду), Оплата кредитов, Прочие(указать)
     @Column(length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String type;
     // Сумма
     @Column(precision = 32, scale = 4)

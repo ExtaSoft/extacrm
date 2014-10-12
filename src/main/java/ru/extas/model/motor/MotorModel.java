@@ -5,6 +5,7 @@ import ru.extas.model.common.AuditedObject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 /**
  * Определяет модель техники
@@ -20,14 +21,18 @@ import javax.persistence.Table;
 public class MotorModel  extends AuditedObject {
 
     @Column(nullable = false)
+    @Size(max = 255)
     private String name;
 
+    @Size(max = 255)
     private String code;
 
     @Column(nullable = false)
+    @Size(max = 255)
     private String type;
 
     @Column(nullable = false)
+    @Size(max = 255)
     private String brand;
 
     /**

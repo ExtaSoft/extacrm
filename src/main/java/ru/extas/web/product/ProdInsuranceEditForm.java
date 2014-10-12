@@ -83,7 +83,6 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 		commentField.setDescription("Дополнительная информация о продукте");
 		commentField.setNullRepresentation("");
 		commentField.setInputPrompt("Дополнительная информация о продукте");
-		commentField.setColumns(30);
 		commentField.setRows(5);
 		form.addComponent(commentField);
 

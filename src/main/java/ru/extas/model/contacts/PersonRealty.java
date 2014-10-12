@@ -4,6 +4,7 @@ import ru.extas.model.common.IdentifiedObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -19,7 +20,7 @@ public class PersonRealty extends IdentifiedObject {
 
     // Тип недвижимости (Индивидуальный дом, Квартира, Дача, Земельный участок, Гараж, Другое имущество)
     @Column(length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String type;
     // Время владения (лет)
     @Column(name = "OWNING_PERIOD")
@@ -35,10 +36,11 @@ public class PersonRealty extends IdentifiedObject {
     @Column(name = "AREA_OF_LAND")
     private int areaOfLand;
     // Адрес объекта недвижимости
+    @Size(max = 255)
     private String adress;
     // Способ приобретения (покупка, наследство/дар, другое)
     @Column(name = "WAY_2_PURCHASE", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String way2purchase;
 
     @ManyToOne

@@ -8,6 +8,7 @@ import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -37,12 +38,12 @@ public class Insurance extends SecuredObject {
 
     // Номер полиса
     @Column(name = "REG_NUM", length = Policy.REG_NUM_LENGTH, unique = true)
-    @Max(Policy.REG_NUM_LENGTH)
+    @Size(max = Policy.REG_NUM_LENGTH)
     private String regNum;
 
     // Номер квитанции А-7
     @Column(name = "A7_NUM", length = A7Form.REG_NUM_LENGTH, unique = true)
-    @Max(A7Form.REG_NUM_LENGTH)
+    @Size(max = A7Form.REG_NUM_LENGTH)
     private String a7Num;
 
     // Дата заключения полиса
@@ -54,32 +55,32 @@ public class Insurance extends SecuredObject {
     private Contact client;
 
     @Column(name = "BENEFICIARY", length = Contact.NAME_LENGTH)
-    @Max(Contact.NAME_LENGTH)
+    @Size(max = Contact.NAME_LENGTH)
     private String beneficiary;
 
     // Предмет страхования - тип
     @Column(name = "MOTOR_TYPE", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String motorType;
 
     // Предмет страхования - марка
     @Column(name = "MOTOR_BRAND", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String motorBrand;
 
     // Предмет страхования - модель
     @Column(name = "MOTOR_MODEL", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String motorModel;
 
     // Серийный номер
     @Column(name = "MOTOR_VIN", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String motorVin;
 
     // Номер договора купли-продажи
     @Column(name = "SALE_NUM", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String saleNum;
 
     // Дата договора купли-продажи

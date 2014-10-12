@@ -5,7 +5,9 @@ import ru.extas.model.common.FileContainer;
 import ru.extas.model.security.UserProfile;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
@@ -37,18 +39,18 @@ public class Person extends Contact {
     private LocalDate birthday;
 
     @Column(name = "BIRTH_PLACE", length = BIRTH_PLACE_LENGTH)
-    @Max(BIRTH_PLACE_LENGTH)
+    @Size(max = BIRTH_PLACE_LENGTH)
     private String birthPlace;
 
     @Column(length = CITIZENSHIP_LENGTH)
-    @Max(CITIZENSHIP_LENGTH)
+    @Size(max = CITIZENSHIP_LENGTH)
     private String citizenship;
 
     @Column(name = "IS_CHANGE_NAME")
     private boolean changeName;
 
     @Column(name = "EX_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String exName;
 
     @Column(name = "CHANGE_NAME_DATE")
@@ -62,13 +64,13 @@ public class Person extends Contact {
     // Домашний телефон
     // Телефон
     @Column(name = "HOME_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String homePhone;
 
     // Рабочий телефон
     // Телефон
     @Column(name = "WORK_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String workPhone;
 
     @Column(name = "REG_N_ACT_IS_SAME")
@@ -83,6 +85,7 @@ public class Person extends Contact {
             @AttributeOverride(name = "realtyKind", column = @Column(name = "ACT_REALTY_KIND")),
             @AttributeOverride(name = "periodOfResidence", column = @Column(name = "ACT_PERIOD_OF_RESIDENCE"))
     })
+    @Valid
     private AddressInfo actualAddress = new AddressInfo();
 
     // Должность
@@ -92,13 +95,13 @@ public class Person extends Contact {
 
     // Департамент
     @Column(name = "JOB_DEPARTMENT", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String jobDepartment;
 
     // Паспортные данные:
     // номер
     @Column(name = "PASS_NUM", length = 30)
-    @Max(30)
+    @Size(max = 30)
     private String passNum;
 
     // дата выдачи
@@ -107,12 +110,12 @@ public class Person extends Contact {
 
     // кем выдан
     @Column(name = "PASS_ISSUED_BY", length = 255)
-    @Max(255)
+    @Size(max = 255)
     private String passIssuedBy;
 
     // код подразделения
     @Column(name = "PASS_ISSUED_BY_NUM", length = 10)
-    @Max(10)
+    @Size(max = 10)
     private String passIssuedByNum;
 
     @ManyToMany(mappedBy = "employees", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -126,20 +129,21 @@ public class Person extends Contact {
     private List<PersonFileContainer> files = newArrayList();
 
     @Column(name = "DL_NUM", length = 30)
-    @Max(30)
+    @Size(max = 30)
     private String dlNum;
 
     @Column(name = "DL_ISSUE_DATE")
     private LocalDate dlIssueDate;
 
     @Column(name = "DL_ISSUED_BY", length = 55)
-    @Max(55)
+    @Size(max = 55)
     private String dlIssuedBy;
 
     @Column(name = "PERIOD_OF_DRIVING")
     private int periodOfDriving;
 
     @Column(name = "DRIVING_CATEGORIES")
+    @Size(max = 255)
     private String drivingCategories;
 
     @Enumerated(EnumType.STRING)
@@ -158,18 +162,18 @@ public class Person extends Contact {
     private int dependants;
 
     @Column(name = "SPOUSE_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String spouseName;
 
     @Column(name = "SPOUSE_BIRTHDAY")
     private LocalDate spouseBirthday;
 
     @Column(name = "SPOUSE_BIRTH_PLACE", length = BIRTH_PLACE_LENGTH)
-    @Max(BIRTH_PLACE_LENGTH)
+    @Size(max = BIRTH_PLACE_LENGTH)
     private String spouseBirthPlace;
 
     @Column(length = CITIZENSHIP_LENGTH)
-    @Max(CITIZENSHIP_LENGTH)
+    @Size(max = CITIZENSHIP_LENGTH)
     private String spouseCitizenship;
 
     @Enumerated(EnumType.STRING)
@@ -180,15 +184,15 @@ public class Person extends Contact {
     private Integer eduFinish;
 
     @Column(name = "EDU_INST_NAME", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String eduInstName;
 
     @Column(name = "EDU_INST_INN", length = INN_LENGTH)
-    @Max(INN_LENGTH)
+    @Size(max = INN_LENGTH)
     private String eduInstINN;
 
     @Column(name = "SPECIALITY", length = 30)
-    @Max(30)
+    @Size(max = 30)
     private String speciality;
 
     @Enumerated(EnumType.STRING)
@@ -199,41 +203,43 @@ public class Person extends Contact {
     private int tempJobPeriod;
 
     @Column(name = "PRACTICE_TYPE", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String practiceType;
 
     @Column(name = "EMPLOYER_SCOPE", length = SCOPE_OF_ACTIVITY_LENGHT)
-    @Max(SCOPE_OF_ACTIVITY_LENGHT)
+    @Size(max = SCOPE_OF_ACTIVITY_LENGHT)
     private String employerScope;
 
     @Column(name = "EMPLOYER_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String employerName;
 
     @Column(name = "EMPLOYER_INN", length = INN_LENGTH)
-    @Max(INN_LENGTH)
+    @Size(max = INN_LENGTH)
     private String employerINN;
 
     @Column(name = "EMPLOYER_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String employerPhone;
 
     @Column(name = "OFFICE_POSITION", length = 30)
-    @Max(30)
+    @Size(max = 30)
     private String officePosition;
 
     @Column(name = "EMPLOYER_ADRESS")
+    @Size(max = 255)
     private String employerAdress;
 
     @Column(name = "EMPLOYER_WWW")
+    @Size(max = 255)
     private String employerWww;
 
     @Column(name = "EMPLOYER_DIRECTOR_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String employerDirectorName;
 
     @Column(name = "EMPLOYER_ACCOUNTANT_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String employerAccountantName;
 
     @Column(precision = 32, scale = 4)
@@ -252,19 +258,19 @@ public class Person extends Contact {
     private boolean businessOwner;
 
     @Column(name = "BUSINESS_SCOPE", length = SCOPE_OF_ACTIVITY_LENGHT)
-    @Max(SCOPE_OF_ACTIVITY_LENGHT)
+    @Size(max = SCOPE_OF_ACTIVITY_LENGHT)
     private String businessScope;
 
     @Column(name = "BUSINESS_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String businessName;
 
     @Column(name = "BUSINESS_INN", length = INN_LENGTH)
-    @Max(INN_LENGTH)
+    @Size(max = INN_LENGTH)
     private String businessINN;
 
     @Column(name = "BUSINESS_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String businessPhone;
 
     @Column(name = "BUSINESS_ADRESS")
@@ -287,11 +293,11 @@ public class Person extends Contact {
     private boolean anotherCredit;
 
     @Column(name = "ANOTHER_CREDIT_BANK", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String anotherCreditBank;
 
     @Column(name = "MARKETING_CHANNAL", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String marketingChannel;
 
     @Column(name = "ACCOUNTING_4_PSYCHIATRIST")
@@ -307,19 +313,19 @@ public class Person extends Contact {
 
 
     @Column(name = "CLOSE_RELATIVE_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String closeRelativeName;
 
     @Column(name = "CLOSE_RELATIVE_FILIATION", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String closeRelativeFiliation;
 
     @Column(name = "CLOSE_RELATIVE_MOB_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String closeRelativeMobPhone;
 
     @Column(name = "CLOSE_RELATIVE_HOME_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String closeRelativeHomePhone;
 
     @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

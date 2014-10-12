@@ -83,7 +83,6 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
         descriptionField.setDescription("Введите описание группы пользователей.");
         descriptionField.setInputPrompt("Описание группы пользователей");
         descriptionField.setNullRepresentation("");
-        descriptionField.setColumns(25);
         descriptionField.setRows(2);
         form.addComponent(descriptionField);
 

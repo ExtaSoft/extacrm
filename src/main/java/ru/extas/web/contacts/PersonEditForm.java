@@ -401,7 +401,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         personForm.addComponent(regPostIndexField);
 
         regStreetBldField = new TextArea("Адрес");
-        regStreetBldField.setColumns(20);
         regStreetBldField.setRows(2);
         regStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
         regStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
@@ -464,7 +463,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         personForm.addComponent(actPostIndexField);
 
         actStreetBldField = new TextArea("Адрес");
-        actStreetBldField.setColumns(20);
         actStreetBldField.setRows(2);
         actStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
         actStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
@@ -494,7 +492,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         passIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
         passIssuedByField.setNullRepresentation("");
         passIssuedByField.setRows(2);
-        passIssuedByField.setColumns(20);
         personForm.addComponent(passIssuedByField);
 
         passIssuedByNumField = new EditField("Код подразделения");
@@ -514,7 +511,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         dlIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
         dlIssuedByField.setNullRepresentation("");
         dlIssuedByField.setRows(2);
-        dlIssuedByField.setColumns(20);
         personForm.addComponent(dlIssuedByField);
 
         periodOfDrivingField = new EditField("Водительский стаж");

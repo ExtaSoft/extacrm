@@ -7,6 +7,7 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -34,15 +35,19 @@ public class Sale extends SecuredObject {
 	private Status status;
 	// Регион покупки техники
 	@Column(name = "REGION")
+    @Size(max = 255)
 	private String region;
 	// Тип техники
 	@Column(name = "MOTOR_TYPE")
+    @Size(max = 255)
 	private String motorType;
 	// Марка техники
 	@Column(name = "MOTOR_BRAND")
+    @Size(max = 255)
 	private String motorBrand;
 	// Модель техники
 	@Column(name = "MOTOR_MODEL")
+    @Size(max = 255)
 	private String motorModel;
 	// Стоимость техники
 	@Column(name = "MOTOR_PRICE", precision = 32, scale = 4)
@@ -51,8 +56,10 @@ public class Sale extends SecuredObject {
 	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private SalePoint dealer;
 	@Column(name = "COMMENT")
+    @Size(max = 255)
 	private String comment;
 	@Column(name = "PROCESS_ID")
+    @Size(max = 255)
 	private String processId;
 	@Enumerated(EnumType.STRING)
 	private Result result;

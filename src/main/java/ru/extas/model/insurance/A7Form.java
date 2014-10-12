@@ -11,6 +11,7 @@ import ru.extas.model.contacts.Person;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Данные о квитанции форма № А-7
@@ -58,7 +59,7 @@ public class A7Form extends AuditedObject {
      * Номер квитанции
      */
     @Column(name = "REG_NUM", length = REG_NUM_LENGTH, unique = true)
-    @Max(REG_NUM_LENGTH)
+    @Size(max = REG_NUM_LENGTH)
     @NotNull
     private String regNum;
 
