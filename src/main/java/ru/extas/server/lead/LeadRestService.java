@@ -344,17 +344,7 @@ public class LeadRestService {
             dirtyData.append(lead.getComment());
         newLead.setComment(dirtyData.toString());
 
-        // Определить потенциального пользователя
-        Person user = null;
-        if (newLead.getVendor() != null) {
-            Set<Person> employees = newLead.getVendor().getEmployees();
-            if (!isEmpty(employees))
-                user = employees.iterator().next();
-        }
-        if (user == null)
-            user = userService.findUserContactByLogin("admin");
-
-        newLead = leadRepository.permitAndSave(newLead, new ImmutablePair<>(user, AccessRole.OWNER));
+        newLead = leadRepository.secureSave(newLead);
         evictCache(entityManager, newLead);
     }
 
