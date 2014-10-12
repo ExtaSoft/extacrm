@@ -45,7 +45,12 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
     protected abstract Collection<Pair<Person, AccessRole>> getObjectUsers(Entity entity);
 
     protected Pair<Person, AccessRole> getCurUserAccess(Entity entity) {
-        Person currentUserContact = userService.getCurrentUserContact();
+        Person currentUserContact;
+        if (userService.isUserAuthenticated())
+            currentUserContact = userService.getCurrentUserContact();
+        else
+            currentUserContact = userService.findUserContactByLogin("admin");
+
         return new ImmutablePair<>(currentUserContact, entity.isNew() ? AccessRole.OWNER : AccessRole.EDITOR);
     }
 
