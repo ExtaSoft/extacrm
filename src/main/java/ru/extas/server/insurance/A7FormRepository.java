@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.contacts.Contact;
+import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.A7Form;
 
 import java.util.List;
@@ -34,9 +35,9 @@ public interface A7FormRepository extends JpaRepository<A7Form, String>, A7FormS
     /**
      * <p>findByOwnerAndStatus.</p>
      *
-     * @param owner  a {@link ru.extas.model.contacts.Contact} object.
+     * @param owner  a {@link ru.extas.model.contacts.Person} object.
      * @param status a {@link ru.extas.model.insurance.A7Form.Status} object.
      * @return a {@link java.util.List} object.
      */
-    List<A7Form> findByOwnerAndStatus(Contact owner, A7Form.Status status);
+    List<A7Form> findByOwnerAndStatus(Person owner, A7Form.Status status);
 }

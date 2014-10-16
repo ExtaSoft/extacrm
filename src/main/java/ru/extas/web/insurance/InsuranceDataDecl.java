@@ -32,8 +32,8 @@ class InsuranceDataDecl extends GridDataDecl {
         addMapping("regNum", "Номер полиса");
         addMapping("a7Num", "Квитанция А-7", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("date", "Дата договора");
-        addMapping("client.name", "Клиент");
-        addMapping("client.phone", "Телефон", EnumSet.of(PresentFlag.COLLAPSED), PhoneConverter.class);
+        addMapping("clientName", "Клиент");
+        addMapping("clientPhone", "Телефон", EnumSet.of(PresentFlag.COLLAPSED), PhoneConverter.class);
         addMapping(CLIENT_BIRTHDAY, "Дата рождения", new ClientBirthdayGenerator(), EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("beneficiary", "Выгодопреобретатель", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("usedMotor", "Б/у", EnumSet.of(PresentFlag.COLLAPSED));
@@ -72,8 +72,8 @@ class InsuranceDataDecl extends GridDataDecl {
             Property itemProperty = null;
             if (CLIENT_BIRTHDAY.equals(columnId)) {
                 final Insurance ins = GridItem.extractBean(item);
-                if (ins.getClient() != null && ins.getClient() instanceof Person) {
-                    BeanItem<Person> personItem = new BeanItem<>((Person) ins.getClient());
+                if (ins.getClientPP() != null) {
+                    BeanItem<Person> personItem = new BeanItem<>(ins.getClientPP());
                     itemProperty = personItem.getItemProperty("birthday");
                 }
             }

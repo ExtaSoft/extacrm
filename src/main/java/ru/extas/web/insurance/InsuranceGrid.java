@@ -72,8 +72,6 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
     protected Container createContainer() {
         // Запрос данных
         final ExtaDataContainer<Insurance> container = new SecuredDataContainer<>(Insurance.class, ExtaDomain.INSURANCE_PROP);
-        container.addNestedContainerProperty("client.name");
-        container.addNestedContainerProperty("client.phone");
         container.addNestedContainerProperty("dealer.name");
         container.sort(new Object[]{"createdAt"}, new boolean[]{false});
         return container;
@@ -93,7 +91,8 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
 
                 Insurance insurance = createEntity();
                 // Копируем все необходимые данные из истекшего(истекающего) договора
-                insurance.setClient(oldIns.getClient());
+                insurance.setClientPP(oldIns.getClientPP());
+                insurance.setClientLE(oldIns.getClientLE());
                 insurance.setBeneficiary(oldIns.getBeneficiary());
                 insurance.setUsedMotor(true);
                 insurance.setMotorType(oldIns.getMotorType());
@@ -190,7 +189,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
             final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outDoc);
 
-            final String clientName = insurance.getClient().getName();
+            final String clientName = insurance.getClientName();
             final String policyNum = insurance.getRegNum();
             final String policyFileName = MessageFormat.format("Полис {0} {1} {2}.pdf", policyNum, clientName, new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
 
@@ -224,7 +223,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
             final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outDoc);
 
-            final String clientName = insurance.getClient().getName();
+            final String clientName = insurance.getClientName();
             final String regNum = insurance.getRegNum();
             final String invoiceFileName = MessageFormat.format("Счет {0} {1} {2}.pdf", regNum, clientName, new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
 

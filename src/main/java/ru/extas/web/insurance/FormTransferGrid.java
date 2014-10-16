@@ -133,16 +133,16 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
         actions.add(new NewObjectAction("Новый", "Ввод нового акта приема/передачи"));
         actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке акта приема/передачи"));
 
-        actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", Fontello.PRINT_2) {
-            @Override
-            public void fire(Object itemId) {
-                printFormTransfer(itemId);
-            }
-        });
+//        actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", Fontello.PRINT_2) {
+//            @Override
+//            public void fire(Object itemId) {
+//                printFormTransfer(itemId);
+//            }
+//        });
         return actions;
     }
 
-    private void printFormTransfer(final Object itemId) {
+//    private void printFormTransfer(final Object itemId) {
 //		final FormTransfer formTransfer = extractBean(table.getItem(itemId));
 //		checkNotNull(formTransfer, "Нечего печатать", "Нет выбранной записи.");
 //
@@ -188,27 +188,27 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
 //			logger.error("Print Form Transfer error", e);
 //			throw Throwables.propagate(e);
 //		}
-    }
-
-    private boolean canPrintForm(FormTransfer formTransfer) {
-        final Person fromContact = formTransfer.getFromContact();
-        final Person toContact = formTransfer.getToContact();
-
-        List<String> messages = newArrayList();
-        if (fromContact.getAffiliation() == null)
-            messages.add(MessageFormat.format("У конткта \"{0}\" нет информации о компании (организации).", fromContact.getName()));
-        if (toContact.getPassNum() == null)
-            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Номер паспорта\".", toContact.getName()));
-        if (toContact.getPassIssueDate() == null)
-            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Дата выдачи паспорта\".", toContact.getName()));
-        if (toContact.getPassIssuedBy() == null)
-            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Кем выдан паспорт\".", toContact.getName()));
-
-        if (!messages.isEmpty()) {
-            NotificationUtil.showErrors("Недостаточно информации для печати", messages);
-            return false;
-        }
-        return true;
-    }
+//    }
+//
+//    private boolean canPrintForm(FormTransfer formTransfer) {
+//        final Person fromContact = formTransfer.getFromContact();
+//        final Person toContact = formTransfer.getToContact();
+//
+//        List<String> messages = newArrayList();
+//        if (fromContact.getAffiliation() == null)
+//            messages.add(MessageFormat.format("У конткта \"{0}\" нет информации о компании (организации).", fromContact.getName()));
+//        if (toContact.getPassNum() == null)
+//            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Номер паспорта\".", toContact.getName()));
+//        if (toContact.getPassIssueDate() == null)
+//            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Дата выдачи паспорта\".", toContact.getName()));
+//        if (toContact.getPassIssuedBy() == null)
+//            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Кем выдан паспорт\".", toContact.getName()));
+//
+//        if (!messages.isEmpty()) {
+//            NotificationUtil.showErrors("Недостаточно информации для печати", messages);
+//            return false;
+//        }
+//        return true;
+//    }
 
 }

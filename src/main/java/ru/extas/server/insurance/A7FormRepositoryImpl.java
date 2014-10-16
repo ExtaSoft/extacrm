@@ -81,7 +81,7 @@ public class A7FormRepositoryImpl implements A7FormService {
         logger.debug("Requesting available A-7 forms...");
 
         // Поиск контакта пользователя
-        final Contact owner = userService.getCurrentUserContact();
+        final Person owner = userService.getCurrentUserContact();
 
         Status status = Status.NEW;
         final List<A7Form> forms = formRepository.findByOwnerAndStatus(owner, status);

@@ -2,6 +2,8 @@ package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.FileContainer;
+import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.Person;
 import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.SalePoint;
@@ -52,7 +54,11 @@ public class Insurance extends SecuredObject {
 
     // Клиент может быть физ. или юр. лицом
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Contact client;
+    @JoinColumn(name = "CLIENT_PP", referencedColumnName = "ID")
+    private Person clientPP;
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "CLIENT_LE", referencedColumnName = "ID")
+    private LegalEntity clientLE;
 
     @Column(name = "BENEFICIARY", length = Contact.NAME_LENGTH)
     @Size(max = Contact.NAME_LENGTH)
@@ -121,9 +127,25 @@ public class Insurance extends SecuredObject {
     @Column(name = "IS_DOC_COMPLETE")
     private boolean docComplete;
 
+    public String getClientPhone() {
+        if (clientPP != null)
+            return clientPP.getPhone();
+        if (clientLE != null)
+            return clientLE.getPhone();
+        return null;
+    }
+
+    public String getClientName() {
+        if(clientPP != null)
+            return clientPP.getName();
+        if(clientLE != null)
+            return clientLE.getName();
+        return null;
+    }
+
     public enum PeriodOfCover {
         YEAR,
-        HALF_A_YEAR;
+        HALF_A_YEAR
     }
 
     /**
@@ -146,7 +168,7 @@ public class Insurance extends SecuredObject {
      *
      * @param coverTime a {@link ru.extas.model.insurance.Insurance.PeriodOfCover} object.
      */
-    public void setCoverTime(PeriodOfCover coverTime) {
+    public void setCoverTime(final PeriodOfCover coverTime) {
         this.coverTime = coverTime;
     }
 
@@ -158,7 +180,7 @@ public class Insurance extends SecuredObject {
      * @param coverPeriod a {@link ru.extas.model.insurance.Insurance.PeriodOfCover} object.
      * @param usedMotor   a boolean.
      */
-    public Insurance(String motorBrand, BigDecimal riskSum, PeriodOfCover coverPeriod, boolean usedMotor) {
+    public Insurance(final String motorBrand, final BigDecimal riskSum, final PeriodOfCover coverPeriod, final boolean usedMotor) {
         this.motorBrand = motorBrand;
         this.riskSum = riskSum;
         this.coverTime = coverPeriod;
@@ -179,7 +201,7 @@ public class Insurance extends SecuredObject {
      *
      * @param regNum the regNum to set
      */
-    public final void setRegNum(String regNum) {
+    public final void setRegNum(final String regNum) {
         this.regNum = regNum;
     }
 
@@ -197,7 +219,7 @@ public class Insurance extends SecuredObject {
      *
      * @param motorType the motorType to set
      */
-    public final void setMotorType(String motorType) {
+    public final void setMotorType(final String motorType) {
         this.motorType = motorType;
     }
 
@@ -215,7 +237,7 @@ public class Insurance extends SecuredObject {
      *
      * @param motorBrand the motorBrand to set
      */
-    public final void setMotorBrand(String motorBrand) {
+    public final void setMotorBrand(final String motorBrand) {
         this.motorBrand = motorBrand;
     }
 
@@ -233,7 +255,7 @@ public class Insurance extends SecuredObject {
      *
      * @param motorModel the motorModel to set
      */
-    public final void setMotorModel(String motorModel) {
+    public final void setMotorModel(final String motorModel) {
         this.motorModel = motorModel;
     }
 
@@ -251,7 +273,7 @@ public class Insurance extends SecuredObject {
      *
      * @param riskSum the riskSum to set
      */
-    public final void setRiskSum(BigDecimal riskSum) {
+    public final void setRiskSum(final BigDecimal riskSum) {
         this.riskSum = riskSum;
     }
 
@@ -269,7 +291,7 @@ public class Insurance extends SecuredObject {
      *
      * @param premium the premium to set
      */
-    public final void setPremium(BigDecimal premium) {
+    public final void setPremium(final BigDecimal premium) {
         this.premium = premium;
     }
 
@@ -287,26 +309,24 @@ public class Insurance extends SecuredObject {
      *
      * @param date the date to set
      */
-    public void setDate(LocalDate date) {
+    public void setDate(final LocalDate date) {
         this.date = date;
     }
 
-    /**
-     * <p>Getter for the field <code>client</code>.</p>
-     *
-     * @return the client
-     */
-    public Contact getClient() {
-        return client;
+    public Person getClientPP() {
+        return clientPP;
     }
 
-    /**
-     * <p>Setter for the field <code>client</code>.</p>
-     *
-     * @param client the client to set
-     */
-    public void setClient(Contact client) {
-        this.client = client;
+    public void setClientPP(final Person clientPP) {
+        this.clientPP = clientPP;
+    }
+
+    public LegalEntity getClientLE() {
+        return clientLE;
+    }
+
+    public void setClientLE(final LegalEntity clientLE) {
+        this.clientLE = clientLE;
     }
 
     /**
@@ -323,7 +343,7 @@ public class Insurance extends SecuredObject {
      *
      * @param paymentDate the paymentDate to set
      */
-    public void setPaymentDate(LocalDate paymentDate) {
+    public void setPaymentDate(final LocalDate paymentDate) {
         this.paymentDate = paymentDate;
     }
 
@@ -341,7 +361,7 @@ public class Insurance extends SecuredObject {
      *
      * @param startDate the startDate to set
      */
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(final LocalDate startDate) {
         this.startDate = startDate;
     }
 
@@ -359,7 +379,7 @@ public class Insurance extends SecuredObject {
      *
      * @param endDate the endDate to set
      */
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(final LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -395,7 +415,7 @@ public class Insurance extends SecuredObject {
      *
      * @param dealer a {@link ru.extas.model.contacts.SalePoint} object.
      */
-    public void setDealer(SalePoint dealer) {
+    public void setDealer(final SalePoint dealer) {
         this.dealer = dealer;
     }
 
@@ -449,7 +469,7 @@ public class Insurance extends SecuredObject {
      *
      * @param used a boolean.
      */
-    public void setUsedMotor(boolean used) {
+    public void setUsedMotor(final boolean used) {
         this.usedMotor = used;
     }
 
@@ -467,7 +487,7 @@ public class Insurance extends SecuredObject {
      *
      * @param motorVin a {@link java.lang.String} object.
      */
-    public void setMotorVin(String motorVin) {
+    public void setMotorVin(final String motorVin) {
         this.motorVin = motorVin;
     }
 
@@ -485,7 +505,7 @@ public class Insurance extends SecuredObject {
      *
      * @param beneficiary a {@link java.lang.String} object.
      */
-    public void setBeneficiary(String beneficiary) {
+    public void setBeneficiary(final String beneficiary) {
         this.beneficiary = beneficiary;
     }
 
@@ -503,7 +523,7 @@ public class Insurance extends SecuredObject {
      *
      * @param files a {@link java.util.List} object.
      */
-    public void setFiles(List<InsuranceFileContainer> files) {
+    public void setFiles(final List<InsuranceFileContainer> files) {
         this.files = files;
     }
 
@@ -521,7 +541,7 @@ public class Insurance extends SecuredObject {
      *
      * @param docComplete a boolean.
      */
-    public void setDocComplete(boolean docComplete) {
+    public void setDocComplete(final boolean docComplete) {
         this.docComplete = docComplete;
     }
 }

@@ -56,8 +56,10 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     @PropertyId("date")
     private PopupDateField dateField;
     private CheckBox isLegalEntityField;
-    @PropertyId("client")
-    private AbstractField<? extends Contact> clientNameField;
+    @PropertyId("clientPP")
+    private PersonSelect clientPPField;
+    @PropertyId("clientLE")
+    private LegalEntitySelect clientLEField;
     @PropertyId("beneficiary")
     private ComboBox beneficiaryField;
     @PropertyId("usedMotor")
@@ -97,7 +99,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     private ObjectProperty<BigDecimal> tarifDataSource;
 
 
-    public InsuranceEditForm(Insurance insurance) {
+    public InsuranceEditForm(final Insurance insurance) {
         super(insurance.isNew() ?
                         "Новый полис" :
                         "Редактировать полис",
@@ -151,23 +153,42 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Страхователь/выгодопреобретатель"));
-        boolean isLegalEntity = obj.getClient() != null && obj.getClient() instanceof LegalEntity;
+        final boolean isLegalEntity = obj.getClientLE() != null && obj.getClientPP() == null;
         isLegalEntityField = new CheckBox("Страхователь Юр.лицо", isLegalEntity);
         isLegalEntityField.setDescription("Отметте флаг, если страхователь является юр.лицом");
         isLegalEntityField.addValueChangeListener(event -> {
-            Boolean isLegalEntity1 = isLegalEntityField.getValue();
-            createAndBindClientNameField(isLegalEntity1, form);
+            final Boolean isLE = isLegalEntityField.getValue();
+            bindClientFieldState(isLE, form);
         });
         form.addComponent(isLegalEntityField);
 
-        createAndBindClientNameField(isLegalEntity, form);
+        final String caption = "Страхователь";
+        clientLEField = new LegalEntitySelect(caption);
+        clientLEField.addValueChangeListener(event -> {
+            final LegalEntity legalEntity = clientLEField.getValue();
+            if (beneficiaryField.getPropertyDataSource() != null && legalEntity != null) {
+                fillBeneficiariesChoice(legalEntity.getName());
+                beneficiaryField.setValue(legalEntity.getName());
+            }
+        });
+        form.addComponent(clientLEField);
+        clientPPField = new PersonSelect(caption);
+        clientPPField.addValueChangeListener(event -> {
+            final Person person = clientPPField.getValue();
+            if (beneficiaryField.getPropertyDataSource() != null && person != null) {
+                fillBeneficiariesChoice(person.getName());
+                beneficiaryField.setValue(person.getName());
+            }
+        });
+        form.addComponent(clientPPField);
+        bindClientFieldState(isLegalEntity, form);
 
         beneficiaryField = new ComboBox("Выгодопреобретатель");
         beneficiaryField.setDescription("Введите имя выгодопреобретателя по данному договору страхования");
         beneficiaryField.setNewItemsAllowed(true);
         beneficiaryField.setRequired(true);
         beneficiaryField.setWidth(25, Unit.EM);
-        fillBeneficiariesChoice(clientNameField.getPropertyDataSource() != null ? clientNameField.getValue() : obj.getClient());
+        fillBeneficiariesChoice(obj.getClientName());
         form.addComponent(beneficiaryField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -284,50 +305,36 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         return form;
     }
 
-    private void fillBeneficiariesChoice(Contact client) {
+    private void fillBeneficiariesChoice(final String clientName) {
         // Очищаем все
         beneficiaryField.removeAllItems();
-        if (client != null)
-            beneficiaryField.addItem(client.getName());
+        if (clientName != null)
+            beneficiaryField.addItem(clientName);
         // Добавляем заданных выгодопреобретателей
         beneficiaryField.addItem("ВТБ24 (ЗАО)");
         beneficiaryField.addItem("ООО \"Финпрайд\"");
     }
 
     /**
-     * <p>createAndBindClientNameField.</p>
+     * <p>bindClientFieldState.</p>
      *
      * @param isLegalEntity a {@link java.lang.Boolean} object.
      * @param form          a {@link com.vaadin.ui.FormLayout} object.
      */
-    protected void createAndBindClientNameField(Boolean isLegalEntity, FormLayout form) {
-        AbstractField<? extends Contact> select;
-        String caption = "Страхователь";
-        // FIXME Ограничить выбор контакта только клиентами
+    protected void bindClientFieldState(final Boolean isLegalEntity, final FormLayout form) {
         if (isLegalEntity) {
-            select = new LegalEntitySelect(caption);
+            clientLEField.setRequired(true);
+            clientLEField.setVisible(true);
+            clientPPField.setRequired(false);
+            clientPPField.setVisible(false);
+            clientPPField.setValue(null);
         } else {
-            select = new PersonSelect(caption);
+            clientPPField.setRequired(true);
+            clientPPField.setVisible(true);
+            clientLEField.setRequired(false);
+            clientLEField.setVisible(false);
+            clientLEField.setValue(null);
         }
-        select.setRequired(true);
-        select.addValueChangeListener(event -> {
-            Contact contact = clientNameField.getValue();
-            if (beneficiaryField.getPropertyDataSource() != null && contact != null) {
-                fillBeneficiariesChoice(contact);
-                beneficiaryField.setValue(contact.getName());
-            }
-        });
-
-        if (clientNameField != null) {
-            clientNameField.getPropertyDataSource().setValue(null);
-            getFieldGroup().unbind(clientNameField);
-            getFieldGroup().bind(select, "client");
-            form.replaceComponent(clientNameField, select);
-        } else {
-            form.addComponent(select);
-        }
-
-        clientNameField = select;
     }
 
     private void updateTarifField() {
@@ -336,7 +343,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
                 usedMotorField.getPropertyDataSource() != null) {
             final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
             final String motorBrand = (String) motorBrandField.getValue();
-            Boolean isUsed = usedMotorField.getValue();
+            final Boolean isUsed = usedMotorField.getValue();
             if (coverPeriod != null && motorBrand != null && isUsed != null) {
                 final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
                 final BigDecimal premium = calc.findTarif(motorBrand, coverPeriod, isUsed);
@@ -370,8 +377,8 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
             obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
             obj.setStartDate(obj.getPaymentDate().plusDays(1));
             obj.setEndDate(obj.getStartDate().plusYears(1).minusDays(1));
-            UserManagementService userService = lookup(UserManagementService.class);
-            Person user = userService.getCurrentUserContact();
+            final UserManagementService userService = lookup(UserManagementService.class);
+            final Person user = userService.getCurrentUserContact();
             if (user != null) {
                 if (!isEmpty(user.getWorkPlaces()))
                     obj.setDealer(user.getWorkPlaces().iterator().next());
@@ -400,7 +407,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
             final Insurance.PeriodOfCover coverPeriod = (Insurance.PeriodOfCover) coverTimeField.getConvertedValue();
             final BigDecimal riskSum = (BigDecimal) riskSumField.getConvertedValue();
             final String motorBrand = (String) motorBrandField.getValue();
-            boolean isUsedMotor = usedMotorField.getValue();
+            final boolean isUsedMotor = usedMotorField.getValue();
             if (riskSum != null && motorBrand != null) {
                 final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
                 final BigDecimal premium = calc.calcPropInsPremium(new Insurance(motorBrand, riskSum, coverPeriod, isUsedMotor));

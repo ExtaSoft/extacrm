@@ -515,6 +515,7 @@
       <exported-key name="FK_FORM_TRANSFER_FROMCONTACT_ID" table="form_transfer" schema="" catalog="extacrm" columns="FROMCONTACT_ID"/>
       <exported-key name="FK_FORM_TRANSFER_TOCONTACT_ID" table="form_transfer" schema="" catalog="extacrm" columns="TOCONTACT_ID"/>
       <exported-key name="FK_INSURANCE_CLIENT_ID" table="insurance" schema="" catalog="extacrm" columns="CLIENT_ID"/>
+      <exported-key name="FK_INSURANCE_CLIENT_LE" table="insurance" schema="" catalog="extacrm" columns="CLIENT_LE"/>
       <exported-key name="FK_INSURANCE_DEALER_ID" table="insurance" schema="" catalog="extacrm" columns="DEALER_ID"/>
       <exported-key name="FK_LEAD_CLIENT_ID" table="lead" schema="" catalog="extacrm" columns="CLIENT_ID"/>
       <exported-key name="FK_LEAD_VENDOR_ID" table="lead" schema="" catalog="extacrm" columns="VENDOR_ID"/>
@@ -628,12 +629,16 @@
       <column name="BENEFICIARY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="IS_DOC_COMPLETE" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
       <column name="SECURITY_RULE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="CLIENT_LE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="CLIENT_PP" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_INSURANCE_CLIENT_ID" columns="CLIENT_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_INSURANCE_CLIENT_LE" columns="CLIENT_LE" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_INSURANCE_DEALER_ID" columns="DEALER_ID" ref-table="contact" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_INSURANCE_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="FK_INSURANCE_FILE_OWNER_ID" table="insurance_file" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <index name="FK_INSURANCE_CLIENT_ID" unique="false" columns="CLIENT_ID"/>
+      <index name="FK_INSURANCE_CLIENT_LE" unique="false" columns="CLIENT_LE"/>
       <index name="FK_INSURANCE_DEALER_ID" unique="false" columns="DEALER_ID"/>
       <index name="FK_INSURANCE_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
       <index name="INDEX_INSURANCE_A7_NUM" unique="false" columns="A7_NUM"/>

@@ -135,10 +135,10 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
             // При этом необходимо сделать “видимыми” все связанные объекты страховки:
             // Клиент
             final Collection<Pair<Person, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
-            if (insurance.getClient() instanceof Person)
-                personRepository.permitAndSave((Person) insurance.getClient(), readers, salePoints, companies, regions, brands);
-            else
-                legalEntityRepository.permitAndSave((LegalEntity) insurance.getClient(), readers, salePoints, companies, regions, brands);
+            if (insurance.getClientPP() != null)
+                personRepository.permitAndSave((Person) insurance.getClientPP(), readers, salePoints, companies, regions, brands);
+            else if(insurance.getClientLE() != null)
+                legalEntityRepository.permitAndSave((LegalEntity) insurance.getClientLE(), readers, salePoints, companies, regions, brands);
             // Продавец (торговая точка или компания)
             salePointRepository.permitAndSave(insurance.getDealer(), readers, salePoints, companies, regions, brands);
             // Компания продавца

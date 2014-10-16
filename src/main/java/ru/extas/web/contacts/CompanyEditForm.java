@@ -167,7 +167,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         return ownersField;
     }
 
-    private FormLayout createMainForm(final Contact obj) {
+    private FormLayout createMainForm(final Company obj) {
         final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
 
