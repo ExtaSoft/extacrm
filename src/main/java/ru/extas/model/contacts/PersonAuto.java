@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -50,7 +49,7 @@ public class PersonAuto extends IdentifiedObject {
     public PersonAuto() {
     }
 
-    public PersonAuto(Person owner) {
+    public PersonAuto(final Person owner) {
         this.owner = owner;
     }
 
@@ -58,7 +57,7 @@ public class PersonAuto extends IdentifiedObject {
         return brandModel;
     }
 
-    public void setBrandModel(String brandModel) {
+    public void setBrandModel(final String brandModel) {
         this.brandModel = brandModel;
     }
 
@@ -66,7 +65,7 @@ public class PersonAuto extends IdentifiedObject {
         return yearOfManufacture;
     }
 
-    public void setYearOfManufacture(int yearOfManufacture) {
+    public void setYearOfManufacture(final int yearOfManufacture) {
         this.yearOfManufacture = yearOfManufacture;
     }
 
@@ -74,7 +73,7 @@ public class PersonAuto extends IdentifiedObject {
         return regNum;
     }
 
-    public void setRegNum(String regNum) {
+    public void setRegNum(final String regNum) {
         this.regNum = regNum;
     }
 
@@ -82,7 +81,7 @@ public class PersonAuto extends IdentifiedObject {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(final BigDecimal price) {
         this.price = price;
     }
 
@@ -90,7 +89,7 @@ public class PersonAuto extends IdentifiedObject {
         return purchaseDate;
     }
 
-    public void setPurchaseDate(LocalDate purchaseDate) {
+    public void setPurchaseDate(final LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
@@ -98,7 +97,7 @@ public class PersonAuto extends IdentifiedObject {
         return way2purchase;
     }
 
-    public void setWay2purchase(String way2purchase) {
+    public void setWay2purchase(final String way2purchase) {
         this.way2purchase = way2purchase;
     }
 
@@ -106,7 +105,7 @@ public class PersonAuto extends IdentifiedObject {
         return owner;
     }
 
-    public void setOwner(Person owner) {
+    public void setOwner(final Person owner) {
         this.owner = owner;
     }
 }

@@ -14,13 +14,13 @@ public class InternalizationUtils {
 
     public DateTimeZone getClientTimeZone() {
 
-        UI ui = UI.getCurrent();
+        final UI ui = UI.getCurrent();
         if (ui != null) {
-            Page page = ui.getPage();
+            final Page page = ui.getPage();
             if (page != null) {
-                WebBrowser br = page.getWebBrowser();
+                final WebBrowser br = page.getWebBrowser();
                 if (br != null) {
-                    int timezoneOffset = br.getRawTimezoneOffset();
+                    final int timezoneOffset = br.getRawTimezoneOffset();
                     return DateTimeZone.forOffsetMillis(timezoneOffset);
                 }
             }

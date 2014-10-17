@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.security.*;
 
 import javax.inject.Inject;
@@ -38,7 +38,7 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     /** {@inheritDoc} */
     @Override
-    public UserProfile findUserByLogin(String login) {
+    public UserProfile findUserByLogin(final String login) {
         checkArgument(login != null);
         logger.debug("Finding user by login: {}...", login);
         if (login.equals(SUPERUSER_LOGIN)) {
@@ -46,7 +46,7 @@ public class UserManagementServiceImpl implements UserManagementService {
             return getSuperuser();
         }
 
-        UserProfile result = userRegistry.findByLogin(login);
+        final UserProfile result = userRegistry.findByLogin(login);
         if (result != null) {
             logger.debug("Found user with login name {}", login);
             return result;
@@ -58,20 +58,20 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     /** {@inheritDoc} */
     @Override
-    public Person findUserContactByLogin(final String login) {
+    public Employee findUserEmployeeByLogin(final String login) {
         final UserProfile currentUser = findUserByLogin(login);
-        return currentUser != null ? currentUser.getContact() : null;
+        return currentUser != null ? currentUser.getEmployee() : null;
     }
 
     /** {@inheritDoc} */
     @Override
     public UserProfile getSuperuser() {
-        UserProfile user = new UserProfile();
+        final UserProfile user = new UserProfile();
         user.setLogin(SUPERUSER_LOGIN);
-        Person contact = getSuperuserContact();
-        user.setContact(contact);
+        final Employee contact = getSuperuserContact();
+        user.setEmployee(contact);
         user.setLogin(SUPERUSER_LOGIN);
-        String is_dev_env = System.getProperty("IS_DEV_ENV");
+        final String is_dev_env = System.getProperty("IS_DEV_ENV");
         if (is_dev_env != null && is_dev_env.equalsIgnoreCase("true")) {
             user.setPassword("y+ajXewM2qsaZBocksvfYKIlMzQBPW9SXORl4npgLWc=");
             user.setPasswordSalt("YM8hMeHtHyPOa3eY+JmSVg==");
@@ -88,10 +88,10 @@ public class UserManagementServiceImpl implements UserManagementService {
      *
      * @return a {@link ru.extas.model.contacts.Person} object.
      */
-    protected Person getSuperuserContact() {
-        Person contact = findUserContactByLogin("orlov@extremeassist.ru");
+    protected Employee getSuperuserContact() {
+        Employee contact = findUserEmployeeByLogin("orlov@extremeassist.ru");
         if(contact == null) {
-            contact = new Person();
+            contact = new Employee();
             contact.setName("Global Superuser");
         }
         return contact;
@@ -106,7 +106,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     /** {@inheritDoc} */
     @Override
     public String getCurrentUserLogin() {
-        Subject subject = SecurityUtils.getSubject();
+        final Subject subject = SecurityUtils.getSubject();
         // TODO: Кинуть исключение если нет авторизованного пользователя
         return (String) subject.getPrincipal();
     }
@@ -117,29 +117,29 @@ public class UserManagementServiceImpl implements UserManagementService {
      * Получить контакт текущего пользователя
      */
     @Override
-    public Person getCurrentUserContact() {
+    public Employee getCurrentUserEmployee() {
         final UserProfile currentUser = getCurrentUser();
-        return currentUser != null ? currentUser.getContact() : null;
+        return currentUser != null ? currentUser.getEmployee() : null;
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isUserAuthenticated() {
-        Subject subject = SecurityUtils.getSubject();
+        final Subject subject = SecurityUtils.getSubject();
         return subject.isAuthenticated();
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean isCurUserHasRole(UserRole role) {
-        Subject subject = SecurityUtils.getSubject();
+    public boolean isCurUserHasRole(final UserRole role) {
+        final Subject subject = SecurityUtils.getSubject();
         return subject.hasRole(role.getName());
     }
 
     /** {@inheritDoc} */
     @Override
-    public void authenticate(String login, String password) {
-        Subject subject = SecurityUtils.getSubject();
+    public void authenticate(final String login, final String password) {
+        final Subject subject = SecurityUtils.getSubject();
         final UsernamePasswordToken token = new UsernamePasswordToken(login, password);
         subject.login(token);
 
@@ -150,7 +150,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     /** {@inheritDoc} */
     @Override
     public void logout() {
-        Subject subject = SecurityUtils.getSubject();
+        final Subject subject = SecurityUtils.getSubject();
         subject.logout();
         // Activiti logout
         Authentication.setAuthenticatedUserId(null);
@@ -161,8 +161,8 @@ public class UserManagementServiceImpl implements UserManagementService {
     public boolean isPermittedOneOf(final Set<ExtaDomain> domains) {
         checkNotNull(domains);
 
-        Subject subject = SecurityUtils.getSubject();
-        for (ExtaDomain domain : domains)
+        final Subject subject = SecurityUtils.getSubject();
+        for (final ExtaDomain domain : domains)
             if (subject.isPermitted(new ExtaPermission(domain)))
                 return true;
 
@@ -175,7 +175,7 @@ public class UserManagementServiceImpl implements UserManagementService {
         checkNotNull(domain);
         checkNotNull(target);
 
-        Subject subject = SecurityUtils.getSubject();
+        final Subject subject = SecurityUtils.getSubject();
 
         return subject.isPermitted(new ExtaPermission(domain, target));
     }
@@ -186,16 +186,16 @@ public class UserManagementServiceImpl implements UserManagementService {
         checkNotNull(domain);
         checkNotNull(action);
 
-        Subject subject = SecurityUtils.getSubject();
+        final Subject subject = SecurityUtils.getSubject();
 
         return subject.isPermitted(new ExtaPermission(domain, action, target));
     }
 
     @Override
-    public boolean isPermittedDomain(ExtaDomain domain) {
+    public boolean isPermittedDomain(final ExtaDomain domain) {
         checkNotNull(domain);
 
-        Subject subject = SecurityUtils.getSubject();
+        final Subject subject = SecurityUtils.getSubject();
 
         return subject.isPermitted(new ExtaPermission(domain));
     }

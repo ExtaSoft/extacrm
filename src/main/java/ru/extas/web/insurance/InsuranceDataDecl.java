@@ -58,22 +58,22 @@ class InsuranceDataDecl extends GridDataDecl {
     private class ClientBirthdayGenerator implements GridColumnGenerator {
 
         @Override
-        public Object generateCell(Object columnId, Item item, Object itemId) {
-            Property itemProperty = getCellProperty(columnId, item);
+        public Object generateCell(final Object columnId, final Item item, final Object itemId) {
+            final Property itemProperty = getCellProperty(columnId, item);
             if (itemProperty != null) {
-                Label value = new Label(itemProperty);
+                final Label value = new Label(itemProperty);
                 return value;
             }
             return null;
         }
 
         @Override
-        public Property getCellProperty(Object columnId, Item item) {
+        public Property getCellProperty(final Object columnId, final Item item) {
             Property itemProperty = null;
             if (CLIENT_BIRTHDAY.equals(columnId)) {
                 final Insurance ins = GridItem.extractBean(item);
                 if (ins.getClientPP() != null) {
-                    BeanItem<Person> personItem = new BeanItem<>(ins.getClientPP());
+                    final BeanItem<Person> personItem = new BeanItem<>(ins.getClientPP());
                     itemProperty = personItem.getItemProperty("birthday");
                 }
             }

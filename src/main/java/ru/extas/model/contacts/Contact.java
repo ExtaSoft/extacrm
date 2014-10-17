@@ -6,36 +6,33 @@ package ru.extas.model.contacts;
 
 import ru.extas.model.security.SecuredObject;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.MappedSuperclass;
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Контактное лицо контрагента, клиент физик или сотрудник
+ * Общие данные для контактов
  *
  * @author Valery Orlov
  * @version $Id: $Id
  * @since 0.3
  */
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "TYPE")
-@Table(name = "CONTACT", indexes = {
-		@Index(columnList = "NAME"),
-		@Index(columnList = "TYPE, NAME")
-})
+@MappedSuperclass
 public abstract class Contact extends SecuredObject{
 
 	private static final long serialVersionUID = -2543373135823969745L;
 
-	/** Constant <code>NAME_LENGTH=50</code> */
+    /** Constant <code>NAME_LENGTH=50</code> */
 	public static final int NAME_LENGTH = 50;
 	/** Constant <code>PHONE_LINGHT=20</code> */
 	public static final int PHONE_LINGHT = 20;
+    public static final int EMAIL_LENGTH = 50;
+    public static final int WWW_LENGTH = 50;
 
-	// Адрес Регистрации
+    // Адрес Регистрации
 	@Embedded()
     @Valid
 	private AddressInfo regAddress = new AddressInfo();
@@ -52,36 +49,14 @@ public abstract class Contact extends SecuredObject{
 	private String phone;
 
 	// Эл. почта
-	@Column(length = 50)
-	@Size(max = 50)
+	@Column(length = EMAIL_LENGTH)
+	@Size(max = EMAIL_LENGTH)
 	private String email;
 
 	// Сайт
-	@Column(length = 50)
-	@Size(max = 50)
+	@Column(length = WWW_LENGTH)
+	@Size(max = WWW_LENGTH)
 	private String www;
-
-	// Вышестоящая организация
-	@OneToOne
-	private Company affiliation;
-
-	/**
-	 * <p>Getter for the field <code>affiliation</code>.</p>
-	 *
-	 * @return a {@link ru.extas.model.contacts.Company} object.
-	 */
-	public Company getAffiliation() {
-		return affiliation;
-	}
-
-	/**
-	 * <p>Setter for the field <code>affiliation</code>.</p>
-	 *
-	 * @param affiliation a {@link ru.extas.model.contacts.Company} object.
-	 */
-	public void setAffiliation(final Company affiliation) {
-		this.affiliation = affiliation;
-	}
 
 	/**
 	 * <p>Getter for the field <code>name</code>.</p>

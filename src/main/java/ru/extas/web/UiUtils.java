@@ -57,8 +57,8 @@ public class UiUtils {
         public void error(final com.vaadin.server.ErrorEvent event) {
             // Протоколируем ошибку
             final Throwable throwable = event.getThrowable();
-            Throwable rootThrowable = Throwables.getRootCause(throwable);
-            Optional<Throwable> appThrowable = Throwables.getCausalChain(throwable).stream().filter(t -> t instanceof ExtaException).findFirst();
+            final Throwable rootThrowable = Throwables.getRootCause(throwable);
+            final Optional<Throwable> appThrowable = Throwables.getCausalChain(throwable).stream().filter(t -> t instanceof ExtaException).findFirst();
             logger.error("", throwable);
 
             if (appThrowable.isPresent()){

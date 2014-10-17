@@ -24,7 +24,10 @@ import org.springframework.stereotype.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
@@ -105,7 +108,7 @@ public class  ExtaCrmUI extends UI {
         final Button signin = new Button("Войти");
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        FormLayout loginForm = new FormLayout(username, password, signin);
+        final FormLayout loginForm = new FormLayout(username, password, signin);
         loginForm.setMargin(true);
         loginForm.setSizeUndefined();
         loginForm.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
@@ -120,7 +123,7 @@ public class  ExtaCrmUI extends UI {
         signin.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent event) {
-                UserManagementService userService = lookup(UserManagementService.class);
+                final UserManagementService userService = lookup(UserManagementService.class);
 
                 final String user = username.getValue();
                 final String pass = password.getValue();
@@ -167,7 +170,7 @@ public class  ExtaCrmUI extends UI {
                 }
                 if (!userService.isUserAuthenticated()) {
                     // Show new error message
-                    String message = MessageFormat.format(
+                    final String message = MessageFormat.format(
                             "{0} <br/><span>Проверьте правильность пары пользователь/пароль или обратитесь к администратору</span>", errMessage);
                     NotificationUtil.showError("Ошибка при проверке пользователя", message);
                     username.focus();
@@ -184,7 +187,7 @@ public class  ExtaCrmUI extends UI {
 
         loginPanel.setContent(loginForm);
 
-        VerticalLayout loginRoot = new VerticalLayout();
+        final VerticalLayout loginRoot = new VerticalLayout();
         loginRoot.setSizeFull();
         loginRoot.setPrimaryStyleName(ExtaTheme.LOGIN_VIEW);
         loginRoot.addComponent(loginPanel);
@@ -198,8 +201,8 @@ public class  ExtaCrmUI extends UI {
         // Branding element
         final CssLayout branding = new CssLayout() {
             {
-                String appVersion = lookup("application.version", String.class);
-                String appBuildTm = lookup("application.build.timestamp", String.class);
+                final String appVersion = lookup("application.version", String.class);
+                final String appBuildTm = lookup("application.build.timestamp", String.class);
                 final String brandText = MessageFormat.format("<strong>Экстрим Ассистанс CRM</strong><br/><i>Версия {0}</i>", appVersion);
                 final Label logo = new Label(brandText, ContentMode.HTML);
                 final String logoDesc = MessageFormat.format("Версия {0}, собрано {1}", appVersion, appBuildTm);
@@ -219,7 +222,7 @@ public class  ExtaCrmUI extends UI {
         final Button profilePic = new Button(FontAwesome.USER);
         profilePic.addStyleName(ValoTheme.BUTTON_LINK);
         profilePic.addStyleName(ExtaTheme.AVATAR);
-        String login = lookup(UserManagementService.class).getCurrentUserLogin();
+        final String login = lookup(UserManagementService.class).getCurrentUserLogin();
         final Label userName = new Label(new ObjectProperty(login));
         userName.setSizeUndefined();
         userName.setConverter(lookup(LoginToUserNameConverter.class));
@@ -227,7 +230,7 @@ public class  ExtaCrmUI extends UI {
         //userData.setSizeUndefined();
         userMenu.addComponent(userData);
 
-        Button exit = new Button("Выход", FontAwesome.SIGN_OUT);
+        final Button exit = new Button("Выход", FontAwesome.SIGN_OUT);
         exit.setDescription("Выход из системы");
         exit.addStyleName(ValoTheme.BUTTON_LINK);
         exit.addClickListener(event -> {

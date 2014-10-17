@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -12,10 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
-import ru.extas.model.security.AccessRole;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorTypeRepository;
@@ -30,11 +27,9 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
-import java.util.Set;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.System.lineSeparator;
-import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.model.common.ModelUtils.evictCache;
 
 /**
@@ -113,7 +108,7 @@ public class LeadRestService {
             return name;
         }
 
-        public void setName(String name) {
+        public void setName(final String name) {
             this.name = name;
         }
 
@@ -121,7 +116,7 @@ public class LeadRestService {
             return phone;
         }
 
-        public void setPhone(String phone) {
+        public void setPhone(final String phone) {
             this.phone = phone;
         }
 
@@ -129,7 +124,7 @@ public class LeadRestService {
             return email;
         }
 
-        public void setEmail(String email) {
+        public void setEmail(final String email) {
             this.email = email;
         }
 
@@ -137,7 +132,7 @@ public class LeadRestService {
             return clientRegion;
         }
 
-        public void setClientRegion(String clientRegion) {
+        public void setClientRegion(final String clientRegion) {
             this.clientRegion = clientRegion;
         }
 
@@ -145,7 +140,7 @@ public class LeadRestService {
             return motorType;
         }
 
-        public void setMotorType(String motorType) {
+        public void setMotorType(final String motorType) {
             this.motorType = motorType;
         }
 
@@ -153,7 +148,7 @@ public class LeadRestService {
             return motorBrand;
         }
 
-        public void setMotorBrand(String motorBrand) {
+        public void setMotorBrand(final String motorBrand) {
             this.motorBrand = motorBrand;
         }
 
@@ -161,7 +156,7 @@ public class LeadRestService {
             return motorModel;
         }
 
-        public void setMotorModel(String motorModel) {
+        public void setMotorModel(final String motorModel) {
             this.motorModel = motorModel;
         }
 
@@ -169,7 +164,7 @@ public class LeadRestService {
             return price;
         }
 
-        public void setPrice(String price) {
+        public void setPrice(final String price) {
             this.price = price;
         }
 
@@ -177,7 +172,7 @@ public class LeadRestService {
             return delerRegion;
         }
 
-        public void setDelerRegion(String delerRegion) {
+        public void setDelerRegion(final String delerRegion) {
             this.delerRegion = delerRegion;
         }
 
@@ -185,7 +180,7 @@ public class LeadRestService {
             return dealer;
         }
 
-        public void setDealer(String dealer) {
+        public void setDealer(final String dealer) {
             this.dealer = dealer;
         }
 
@@ -193,7 +188,7 @@ public class LeadRestService {
             return dealerId;
         }
 
-        public void setDealerId(String dealerId) {
+        public void setDealerId(final String dealerId) {
             this.dealerId = dealerId;
         }
 
@@ -201,7 +196,7 @@ public class LeadRestService {
             return comment;
         }
 
-        public void setComment(String comment) {
+        public void setComment(final String comment) {
             this.comment = comment;
         }
     }
@@ -214,9 +209,9 @@ public class LeadRestService {
      */
     @RequestMapping(method = RequestMethod.GET)
     public HttpEntity<String> info() throws IOException {
-        String help = HelpContent.loadMarkDown("/help/rest/leads.textile");
+        final String help = HelpContent.loadMarkDown("/help/rest/leads.textile");
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
         return new HttpEntity(help, headers);
     }
@@ -228,11 +223,11 @@ public class LeadRestService {
      */
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     @ResponseBody
-    public void newLead(@RequestBody RestLead lead) {
+    public void newLead(@RequestBody final RestLead lead) {
         Lead newLead = new Lead();
         newLead.setStatus(Lead.Status.NEW);
 
-        StringBuilder dirtyData = new StringBuilder();
+        final StringBuilder dirtyData = new StringBuilder();
 
         // Проверяем входные данные и копируем их в лид:
         // Имя клиента.
@@ -243,15 +238,15 @@ public class LeadRestService {
         // Телефон
         if (isNullOrEmpty(lead.getPhone()))
             throw new IllegalArgumentException("Телефон клиента не может быть пустым");
-        String dirtyPhone = lead.getPhone();
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        final String dirtyPhone = lead.getPhone();
+        final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
         Phonenumber.PhoneNumber phone = null;
         try {
             phone = phoneUtil.parse(dirtyPhone, "RU");
-        } catch (NumberParseException e) {
+        } catch (final NumberParseException e) {
         }
         if (phone != null) {
-            String clearPhone = phoneUtil.format(phone, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            final String clearPhone = phoneUtil.format(phone, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
             newLead.setContactPhone(clearPhone);
         } else {
             dirtyData.append("Телефон: ").append(dirtyPhone).append(lineSeparator());
@@ -263,7 +258,7 @@ public class LeadRestService {
         // Регион проживания.
         final String dirtyClientRegion = lead.getClientRegion();
         if (!isNullOrEmpty(dirtyClientRegion)) {
-            String clearClientRegion = supplementService.clarifyRegion(dirtyClientRegion);
+            final String clearClientRegion = supplementService.clarifyRegion(dirtyClientRegion);
             if (isNullOrEmpty(clearClientRegion))
                 dirtyData.append("Регион проживания: ").append(dirtyClientRegion).append(lineSeparator());
             else
@@ -296,7 +291,7 @@ public class LeadRestService {
         // Цена техники.
         if (!isNullOrEmpty(lead.getPrice())) {
             final String dirtyPrice = lead.getPrice().trim().replace(" ", "").replace("'", "");
-            DecimalFormat format = new DecimalFormat();
+            final DecimalFormat format = new DecimalFormat();
             format.setParseBigDecimal(true);
             format.setDecimalFormatSymbols(new DecimalFormatSymbols(){
                 {
@@ -306,7 +301,7 @@ public class LeadRestService {
             BigDecimal clearPrice = null;
             try {
                 clearPrice = (BigDecimal) format.parse(dirtyPrice);
-            } catch (ParseException e) {
+            } catch (final ParseException e) {
             }
             if(clearPrice == null)
                 dirtyData.append("Цена техники: ").append(dirtyPrice).append(lineSeparator());
@@ -317,7 +312,7 @@ public class LeadRestService {
         // Регион покупки.
         final String dirtyDealRegion = lead.getDelerRegion();
         if (!isNullOrEmpty(dirtyDealRegion)) {
-            String clearDealRegion = supplementService.clarifyRegion(dirtyDealRegion);
+            final String clearDealRegion = supplementService.clarifyRegion(dirtyDealRegion);
             if (isNullOrEmpty(clearDealRegion))
                 dirtyData.append("Регион покупки: ").append(dirtyDealRegion).append(lineSeparator());
             else
@@ -327,7 +322,7 @@ public class LeadRestService {
         // Мотосалон (название или id).
         if (!isNullOrEmpty(lead.getDealerId())) {
             // Найти точку продаж по Id
-            SalePoint salePoint = salePointRepository.findOne(lead.getDealerId());
+            final SalePoint salePoint = salePointRepository.findOne(lead.getDealerId());
             if (salePoint == null)
                 throw new IllegalArgumentException("Id торговой точки не действителен (не найден)");
             else {
@@ -357,9 +352,9 @@ public class LeadRestService {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ResponseBody
-    public HttpEntity<String> handleIOException(Throwable ex) {
+    public HttpEntity<String> handleIOException(final Throwable ex) {
         logger.error("Ошибка обработки запроса", ex);
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
         return new HttpEntity(ex.getMessage(), headers);
     }

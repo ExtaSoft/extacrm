@@ -49,7 +49,7 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
-	protected <PRESENTATION, MODEL> Converter<PRESENTATION, MODEL> findConverter(Class<PRESENTATION> presentationType, Class<MODEL> modelType) {
+	protected <PRESENTATION, MODEL> Converter<PRESENTATION, MODEL> findConverter(final Class<PRESENTATION> presentationType, final Class<MODEL> modelType) {
 
 		// Конверторы дат
 		if (presentationType == Date.class && modelType == DateTime.class)
@@ -90,10 +90,6 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 		// Конвертируем Квитанцию А-7 в строку (номер квитанции)
 		if (presentationType == String.class && modelType == A7Form.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToA7FormConverter.class);
-
-		// Конвертер должностей
-		if (presentationType == String.class && modelType == Person.Position.class)
-			return (Converter<PRESENTATION, MODEL>) lookup(StringToPersonPosition.class);
 
 		// Конвертер статусов А-7
 		if (presentationType == String.class && modelType == A7Form.Status.class)

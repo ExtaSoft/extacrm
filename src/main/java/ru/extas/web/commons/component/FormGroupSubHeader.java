@@ -17,12 +17,12 @@ public class FormGroupSubHeader extends Label {
         initialize();
     }
 
-    public FormGroupSubHeader(String content) {
+    public FormGroupSubHeader(final String content) {
         super(content);
         initialize();
     }
 
-    public FormGroupSubHeader(String content, ContentMode contentMode) {
+    public FormGroupSubHeader(final String content, final ContentMode contentMode) {
         super(content, contentMode);
         initialize();
     }

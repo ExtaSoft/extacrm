@@ -13,10 +13,10 @@ import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.LegalEntityFile;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
-import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.motor.BrandsField;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
@@ -97,7 +97,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     @PropertyId("biс")
     private EditField biсField;
 
-    public LegalEntityEditForm(LegalEntity legalEntity) {
+    public LegalEntityEditForm(final LegalEntity legalEntity) {
         super(legalEntity.isNew() ?
                 "Ввод нового юр. лица в систему" :
                 String.format("Редактирование юр. лица: %s", legalEntity.getName()));
@@ -332,7 +332,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         return formLayout;
     }
 
-    private void setPostAdressStatus(Boolean isRegIsAct) {
+    private void setPostAdressStatus(final Boolean isRegIsAct) {
         pstRegionField.setVisible(!isRegIsAct);
         pstCityField.setVisible(!isRegIsAct);
         pstPostIndexField.setVisible(!isRegIsAct);

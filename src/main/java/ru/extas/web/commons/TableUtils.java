@@ -155,12 +155,12 @@ public class TableUtils {
         initTableColumnConverters(table, dataDecl);
     }
 
-    private static void addGeneratedColumns(Table table, GridDataDecl dataDecl) {
+    private static void addGeneratedColumns(final Table table, final GridDataDecl dataDecl) {
 
         for (final DataDeclMapping prop : dataDecl.getMappings())
             if (prop.getGenerator() != null)
                 table.addGeneratedColumn(prop.getPropName(), (source, itemId, columnId) -> {
-                    Item item = source.getItem(itemId);
+                    final Item item = source.getItem(itemId);
                     return prop.getGenerator().generateCell(columnId, item, itemId);
                 });
     }
@@ -171,7 +171,7 @@ public class TableUtils {
      * @param table    таблица
      * @param dataDecl метаописание столбцов
      */
-    public static void fullInitTable(FilterTable table, GridDataDecl dataDecl) {
+    public static void fullInitTable(final FilterTable table, final GridDataDecl dataDecl) {
         addGeneratedColumns(table, dataDecl);
         initTableColumnHeaders(table, dataDecl);
         initTableVisibleColumns(table, dataDecl);
@@ -179,19 +179,19 @@ public class TableUtils {
         initTableColumnConverters(table, dataDecl);
     }
 
-    private static void addGeneratedColumns(final FilterTable table, GridDataDecl dataDecl) {
+    private static void addGeneratedColumns(final FilterTable table, final GridDataDecl dataDecl) {
         for (final DataDeclMapping prop : dataDecl.getMappings())
             if (prop.getGenerator() != null)
                 table.addGeneratedColumn(prop.getPropName(), new CustomTableExportableColumnGenerator() {
                     @Override
-                    public Object generateCell(CustomTable source, Object itemId, Object columnId) {
-                        Item item = source.getItem(itemId);
+                    public Object generateCell(final CustomTable source, final Object itemId, final Object columnId) {
+                        final Item item = source.getItem(itemId);
                         return prop.getGenerator().generateCell(columnId, item, itemId);
                     }
 
                     @Override
-                    public Property getGeneratedProperty(Object itemId, Object columnId) {
-                        Item item = table.getItem(itemId);
+                    public Property getGeneratedProperty(final Object itemId, final Object columnId) {
+                        final Item item = table.getItem(itemId);
                         return prop.getGenerator().getCellProperty(columnId, item);
                     }
 

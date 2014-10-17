@@ -27,27 +27,27 @@ public class MotorBrandEditForm extends ExtaEditForm<MotorBrand> {
     @PropertyId("brandTypes")
     private MotorTypeObjMultiselect typesField;
 
-    public MotorBrandEditForm(MotorBrand motorBrand) {
+    public MotorBrandEditForm(final MotorBrand motorBrand) {
         super(motorBrand.isNew() ? "Новый бренд" : "Редактировать бренд", new BeanItem(motorBrand));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(MotorBrand obj) {
+    protected void initObject(final MotorBrand obj) {
     }
 
     /** {@inheritDoc} */
     @Override
-    protected MotorBrand saveObject(MotorBrand obj) {
-        MotorBrand loc = lookup(MotorBrandRepository.class).save(obj);
+    protected MotorBrand saveObject(final MotorBrand obj) {
+        final MotorBrand loc = lookup(MotorBrandRepository.class).save(obj);
         NotificationUtil.showSuccess("Марка сохранена");
         return loc;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(MotorBrand obj) {
+    protected ComponentContainer createEditFields(final MotorBrand obj) {
         final FormLayout form = new ExtaFormLayout();
 
         nameField = new EditField("Название марки техники", "Введите название марки техники");

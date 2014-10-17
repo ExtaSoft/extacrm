@@ -62,7 +62,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
     private ExtaPermissionField permissionsField;
 
 
-    public UserEditForm(UserProfile userProfile) {
+    public UserEditForm(final UserProfile userProfile) {
         super(userProfile.isNew() ?
                 "Ввод нового пользователя в систему" :
                 "Редактирование данных пользователя",
@@ -104,7 +104,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final UserProfile obj) {
-        TabSheet tabsheet = new TabSheet();
+        final TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"
@@ -127,7 +127,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         return groupField;
     }
 
-    private Component createPermissionTab(UserProfile obj) {
+    private Component createPermissionTab(final UserProfile obj) {
         final FormLayout form = new ExtaFormLayout();
 
         brandsField = new MotorBrandMultiselect("Доступные бренды");
@@ -143,7 +143,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         return form;
     }
 
-    private FormLayout getMainTab(UserProfile obj) {
+    private FormLayout getMainTab(final UserProfile obj) {
         final FormLayout form = new ExtaFormLayout();
 
         // FIXME Ограничить выбор контакта только сотрудниками

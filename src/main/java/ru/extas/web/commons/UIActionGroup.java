@@ -15,7 +15,7 @@ public abstract class UIActionGroup extends UIAction{
 
     private final List<UIAction> actionsGroup;
 
-    protected UIActionGroup(String name, String description, Resource icon) {
+    protected UIActionGroup(final String name, final String description, final Resource icon) {
         super(name, description, icon);
         actionsGroup = makeActionsGroup();
     }
@@ -27,7 +27,7 @@ public abstract class UIActionGroup extends UIAction{
     abstract protected List<UIAction> makeActionsGroup();
 
     @Override
-    public void fire(Object itemId) {
+    public void fire(final Object itemId) {
 
     }
 }

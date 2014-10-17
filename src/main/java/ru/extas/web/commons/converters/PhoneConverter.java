@@ -22,16 +22,16 @@ public class PhoneConverter implements Converter<String, String> {
 
     /** {@inheritDoc} */
     @Override
-    public String convertToModel(String value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+    public String convertToModel(final String value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
         if (value == null)
             return null;
 
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        String country = locale == null ? "RU" : locale.getCountry();
+        final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        final String country = locale == null ? "RU" : locale.getCountry();
         Phonenumber.PhoneNumber phone = null;
         try {
             phone = phoneUtil.parse(value, country);
-        } catch (NumberParseException e) {
+        } catch (final NumberParseException e) {
             throw new ConversionException("Неправильный формат телефона", e);
         }
 
@@ -40,16 +40,16 @@ public class PhoneConverter implements Converter<String, String> {
 
     /** {@inheritDoc} */
     @Override
-    public String convertToPresentation(String value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+    public String convertToPresentation(final String value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
         if (value == null)
             return null;
 
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        String country = locale == null ? "RU" : locale.getCountry();
+        final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        final String country = locale == null ? "RU" : locale.getCountry();
         Phonenumber.PhoneNumber phone = null;
         try {
             phone = phoneUtil.parse(value, country);
-        } catch (NumberParseException e) {
+        } catch (final NumberParseException e) {
             throw new ConversionException("Неправильный формат телефона", e);
         }
 

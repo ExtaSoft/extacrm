@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -38,7 +37,7 @@ public class PersonIncome extends IdentifiedObject {
     public PersonIncome() {
     }
 
-    public PersonIncome(Person owner) {
+    public PersonIncome(final Person owner) {
         this.owner = owner;
     }
 
@@ -46,7 +45,7 @@ public class PersonIncome extends IdentifiedObject {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -54,7 +53,7 @@ public class PersonIncome extends IdentifiedObject {
         return income;
     }
 
-    public void setIncome(BigDecimal income) {
+    public void setIncome(final BigDecimal income) {
         this.income = income;
     }
 
@@ -62,7 +61,7 @@ public class PersonIncome extends IdentifiedObject {
         return spouseIncome;
     }
 
-    public void setSpouseIncome(BigDecimal spouseIncome) {
+    public void setSpouseIncome(final BigDecimal spouseIncome) {
         this.spouseIncome = spouseIncome;
     }
 
@@ -70,7 +69,7 @@ public class PersonIncome extends IdentifiedObject {
         return owner;
     }
 
-    public void setOwner(Person owner) {
+    public void setOwner(final Person owner) {
         this.owner = owner;
     }
 }

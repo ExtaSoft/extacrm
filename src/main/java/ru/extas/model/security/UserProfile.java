@@ -1,10 +1,9 @@
 package ru.extas.model.security;
 
 import ru.extas.model.common.AuditedObject;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +30,7 @@ public class UserProfile extends AuditedObject {
 
     // Ссылка на контакт
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Person contact;
+    private Employee employee;
 
     // Password (hash)
     @Size(max = 255)
@@ -87,7 +86,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param groupList the groupList to set
      */
-    public void setGroupList(Set<UserGroup> groupList) {
+    public void setGroupList(final Set<UserGroup> groupList) {
         this.groupList = groupList;
     }
 
@@ -96,7 +95,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param role the role to set
      */
-    public void setRole(UserRole role) {
+    public void setRole(final UserRole role) {
         this.role = role;
     }
 
@@ -114,7 +113,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param login the login to set
      */
-    public void setLogin(String login) {
+    public void setLogin(final String login) {
         this.login = login;
     }
 
@@ -132,7 +131,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param password the password to set
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -150,8 +149,8 @@ public class UserProfile extends AuditedObject {
      *
      * @return the contact
      */
-    public Person getContact() {
-        return contact;
+    public Employee getEmployee() {
+        return employee;
     }
 
     /**
@@ -159,8 +158,8 @@ public class UserProfile extends AuditedObject {
      *
      * @param contact the contact to set
      */
-    public void setContact(Person contact) {
-        this.contact = contact;
+    public void setEmployee(final Employee employee) {
+        this.employee = employee;
     }
 
     /**
@@ -177,7 +176,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param changePassword the changePassword to set
      */
-    public void setChangePassword(boolean changePassword) {
+    public void setChangePassword(final boolean changePassword) {
         this.changePassword = changePassword;
     }
 
@@ -195,7 +194,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param blocked the blocked to set
      */
-    public void setBlocked(boolean blocked) {
+    public void setBlocked(final boolean blocked) {
         this.blocked = blocked;
     }
 
@@ -213,7 +212,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param passwordSalt the passwordSalt to set
      */
-    public void setPasswordSalt(String passwordSalt) {
+    public void setPasswordSalt(final String passwordSalt) {
         this.passwordSalt = passwordSalt;
     }
 
@@ -231,7 +230,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param permitRegions a {@link java.util.Set} object.
      */
-    public void setPermitRegions(Set<String> permitRegions) {
+    public void setPermitRegions(final Set<String> permitRegions) {
         this.permitRegions = permitRegions;
     }
 
@@ -249,7 +248,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param permitBrands a {@link java.util.Set} object.
      */
-    public void setPermitBrands(Set<String> permitBrands) {
+    public void setPermitBrands(final Set<String> permitBrands) {
         this.permitBrands = permitBrands;
     }
 
@@ -267,7 +266,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param permissions a {@link java.util.Set} object.
      */
-    public void setPermissions(Set<ExtaPermission> permissions) {
+    public void setPermissions(final Set<ExtaPermission> permissions) {
         this.permissions = permissions;
     }
 }

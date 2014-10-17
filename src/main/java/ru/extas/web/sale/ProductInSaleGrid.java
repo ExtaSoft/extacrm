@@ -1,6 +1,5 @@
 package ru.extas.web.sale;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
@@ -9,7 +8,6 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
-import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;

@@ -5,7 +5,10 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.DefaultAction;
+import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
@@ -60,7 +63,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 		protected Container createContainer() {
             if (company != null) {
                 final Set<LegalEntity> list = company.getLegalEntities();
-                BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
+                final BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
                 if (list != null) {
                     for (final LegalEntity item : list) {
                         itemContainer.addBean(item);
@@ -81,7 +84,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 
 		@Override
 		protected List<UIAction> createActions() {
-			List<UIAction> actions = newArrayList();
+			final List<UIAction> actions = newArrayList();
 
 			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
 				@Override

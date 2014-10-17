@@ -21,7 +21,7 @@ public class BpmUser implements User {
      *
      * @param userProfile a {@link ru.extas.model.security.UserProfile} object.
      */
-    public BpmUser(UserProfile userProfile) {
+    public BpmUser(final UserProfile userProfile) {
         this.userProfile = userProfile;
     }
 
@@ -33,40 +33,40 @@ public class BpmUser implements User {
 
     /** {@inheritDoc} */
     @Override
-    public void setId(String id) {
+    public void setId(final String id) {
     }
 
     /** {@inheritDoc} */
     @Override
     public String getFirstName() {
-        return userProfile.getContact().getName();
+        return userProfile.getEmployee().getName();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
     }
 
     /** {@inheritDoc} */
     @Override
     public String getLastName() {
-        return userProfile.getContact().getName();
+        return userProfile.getEmployee().getName();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
     }
 
     /** {@inheritDoc} */
     @Override
     public String getEmail() {
-        return userProfile.getContact().getEmail();
+        return userProfile.getEmployee().getEmail();
     }
 
     /** {@inheritDoc} */
@@ -77,6 +77,6 @@ public class BpmUser implements User {
 
     /** {@inheritDoc} */
     @Override
-    public void setPassword(String string) {
+    public void setPassword(final String string) {
     }
 }

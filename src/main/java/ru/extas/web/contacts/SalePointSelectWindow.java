@@ -4,7 +4,10 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.DefaultAction;
+import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
@@ -63,7 +66,7 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 
         @Override
 		protected List<UIAction> createActions() {
-			List<UIAction> actions = newArrayList();
+			final List<UIAction> actions = newArrayList();
 
 			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
 				@Override

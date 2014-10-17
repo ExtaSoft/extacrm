@@ -24,7 +24,7 @@ public class ProductsGrid extends ExtaGrid<Product> {
     }
 
     @Override
-    public ExtaEditForm<Product> createEditForm(Product product, boolean isInsert) {
+    public ExtaEditForm<Product> createEditForm(final Product product, final boolean isInsert) {
         return null;
     }
 

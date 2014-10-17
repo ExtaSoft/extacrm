@@ -47,7 +47,7 @@ public class Russian extends AbstractNumeral {
 
     /** {@inheritDoc} */
     @Override
-    public String format(Number number) {
+    public String format(final Number number) {
         // check number type
         checkSupported(number);
         // 
@@ -58,29 +58,29 @@ public class Russian extends AbstractNumeral {
         if ("0".equals(text)) {
             return EDINICHI[0];
         }
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         if (text.startsWith("-")) {
             sb.append("минус ");
             text = text.substring(1);
         }
 
-        byte n[][] = Util.groups(text, 3);
+        final byte[][] n = Util.groups(text, 3);
 
 
         for (int i = 0; i < n.length; ++i) {
             // 1 = 1000, 2 = 1 000 000
-            int k = n.length - i - 1;
+            final int k = n.length - i - 1;
 
-            int h = n[i][0]; // сотни
-            int t = n[i][1]; // десятки
-            int u = n[i][2]; // единицы
+            final int h = n[i][0]; // сотни
+            final int t = n[i][1]; // десятки
+            final int u = n[i][2]; // единицы
             if (h == 0 && t == 0 && u == 0) {
                 // этих вобще 
                 continue;
             }
             // есть сотенные...
             if (h > 0) {
-                String sotni = SOTNI[h];
+                final String sotni = SOTNI[h];
                 sb.append(sotni);
                 sb.append(" ");
             }
@@ -141,9 +141,9 @@ public class Russian extends AbstractNumeral {
         return sb.toString().trim();
     }
 
-    private static char lastNonWhitespace(CharSequence sb) {
+    private static char lastNonWhitespace(final CharSequence sb) {
         for (int i = sb.length() - 1; i >= 0; i--) {
-            char ch = sb.charAt(i);
+            final char ch = sb.charAt(i);
             if (!Character.isWhitespace(ch)) {
                 return ch;
             }
@@ -151,8 +151,8 @@ public class Russian extends AbstractNumeral {
         return 0;
     }
 
-    static String lions(int h, int t, int u, int k) {
-        StringBuilder sb = new StringBuilder();
+    static String lions(final int h, final int t, final int u, final int k) {
+        final StringBuilder sb = new StringBuilder();
         sb.append(LIONS[k]);
 
         if (t == 0 || t > 1) {
@@ -176,7 +176,7 @@ public class Russian extends AbstractNumeral {
         return sb.toString();
     }
 
-    static String tisyachi(int h, int t, int u) {
+    static String tisyachi(final int h, final int t, final int u) {
         String result = "тысяч";
         // от 0 до 9 или h*100
         if (t == 0 || t > 1) {
@@ -200,23 +200,23 @@ public class Russian extends AbstractNumeral {
      * Сумма прописью: Семьсот семьдесят семь рублей 77 копеек
      */
     @Override
-    public String amount(BigDecimal bi) {
-        String txt = bi.toPlainString();
+    public String amount(final BigDecimal bi) {
+        final String txt = bi.toPlainString();
 
-        int point = txt.indexOf('.');
-        StringBuilder sb = new StringBuilder();
+        final int point = txt.indexOf('.');
+        final StringBuilder sb = new StringBuilder();
         String rubli = txt;
         if (point > 0) {
             rubli = txt.substring(0, point);
         }
-        String celaya = formatImpl(rubli);
+        final String celaya = formatImpl(rubli);
         sb.append(celaya);
         sb.append(" ");
-        String currency = rubley(bi);
+        final String currency = rubley(bi);
 
         sb.append(currency);
         sb.append(" ");
-        int k = roundKopeyki(bi);
+        final int k = roundKopeyki(bi);
         assert (k >= 0 && k < 100);
 
         if (k < 10) {
@@ -234,16 +234,16 @@ public class Russian extends AbstractNumeral {
 
     private static int roundKopeyki(BigDecimal b) {
         b = b.abs();
-        int k = b.multiply(BigDecimal.valueOf(100)).remainder(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).intValue();
+        final int k = b.multiply(BigDecimal.valueOf(100)).remainder(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).intValue();
         return k;
     }
 
-    private static String kopeyki(int k) {
+    private static String kopeyki(final int k) {
         String result = "копеек";
         if (k > 10 && k < 20) {
             result = "копеек";
         } else {
-            int last = k % 10;
+            final int last = k % 10;
             switch (last) {
                 case 1:
                     result = "копейка";
@@ -260,14 +260,14 @@ public class Russian extends AbstractNumeral {
         return result;
     }
 
-    private static String rubley(BigDecimal amount) {
+    private static String rubley(final BigDecimal amount) {
         BigInteger r = amount.setScale(0, RoundingMode.DOWN).toBigInteger();
         String result = "рублей";
         r = r.remainder(BigInteger.valueOf(100));
         if (r.compareTo(BigInteger.TEN) > 0 && r.compareTo(BigInteger.valueOf(20)) < 0) {
             result = "рублей";
         } else {
-            int last = r.remainder(BigInteger.TEN).intValue();
+            final int last = r.remainder(BigInteger.TEN).intValue();
             switch (last) {
                 case 1:
                     result = "рубль";

@@ -8,10 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.LegalEntity;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.*;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
@@ -80,19 +77,19 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
     }
 
     @Override
-    protected Collection<Pair<Person, AccessRole>> getObjectUsers(Insurance insurance) {
+    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final Insurance insurance) {
         return newArrayList(getCurUserAccess(insurance));
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(Insurance insurance) {
+    protected Collection<Company> getObjectCompanies(final Insurance insurance) {
         if (insurance.getDealer() != null)
             return newArrayList(insurance.getDealer().getCompany());
         return null;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(Insurance insurance) {
+    protected Collection<SalePoint> getObjectSalePoints(final Insurance insurance) {
         return null;
     }
 
@@ -100,7 +97,7 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
      * {@inheritDoc}
      */
     @Override
-    protected Collection<String> getObjectBrands(Insurance insurance) {
+    protected Collection<String> getObjectBrands(final Insurance insurance) {
         if (!isNullOrEmpty(insurance.getMotorBrand()))
             return newHashSet(insurance.getMotorBrand());
         return null;
@@ -110,8 +107,8 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
      * {@inheritDoc}
      */
     @Override
-    protected Collection<String> getObjectRegions(Insurance insurance) {
-        Set<String> regions = newHashSet();
+    protected Collection<String> getObjectRegions(final Insurance insurance) {
+        final Set<String> regions = newHashSet();
         if (insurance.getDealer() != null
                 && insurance.getDealer().getRegAddress() != null
                 && !isNullOrEmpty(insurance.getDealer().getRegAddress().getRegion()))
@@ -125,16 +122,16 @@ public class InsuranceRepositoryImpl extends AbstractSecuredRepository<Insurance
     @Transactional
     @Override
     public Insurance permitAndSave(Insurance insurance,
-                                   Collection<Pair<Person, AccessRole>> users,
-                                   Collection<SalePoint> salePoints,
-                                   Collection<Company> companies,
-                                   Collection<String> regions,
-                                   Collection<String> brands) {
+                                   final Collection<Pair<Employee, AccessRole>> users,
+                                   final Collection<SalePoint> salePoints,
+                                   final Collection<Company> companies,
+                                   final Collection<String> regions,
+                                   final Collection<String> brands) {
         if (insurance != null) {
             insurance = super.permitAndSave(insurance, users, salePoints, companies, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты страховки:
             // Клиент
-            final Collection<Pair<Person, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            final Collection<Pair<Employee, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
             if (insurance.getClientPP() != null)
                 personRepository.permitAndSave((Person) insurance.getClientPP(), readers, salePoints, companies, regions, brands);
             else if(insurance.getClientLE() != null)

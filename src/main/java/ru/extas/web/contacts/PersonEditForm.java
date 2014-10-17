@@ -5,8 +5,6 @@ package ru.extas.web.contacts;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Chars;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.converter.Converter;
@@ -24,7 +22,9 @@ import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 import ru.extas.web.util.ComponentUtil;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -240,12 +240,12 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private PersonExpensesField expensesField;
 
 
-    public PersonEditForm(Person person) {
+    public PersonEditForm(final Person person) {
         super(person.isNew() ?
                 "Ввод нового контакта в систему" :
                 String.format("Редактирование контакта: %s", person.getName()));
 
-        BeanItem<Person> beanItem = new BeanItem<>(person);
+        final BeanItem<Person> beanItem = new BeanItem<>(person);
         beanItem.expandProperty("regAddress");
         beanItem.expandProperty("actualAddress");
         initForm(beanItem);
@@ -266,7 +266,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
             // TODO: Инициализировать клиента в соответствии с локацией текущего
             // пользователя (регион, город)
             obj.setSex(Person.Sex.MALE);
-            obj.setJobPosition(Person.Position.EMPLOYEE);
         }
     }
 
@@ -800,7 +799,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         return personForm;
     }
 
-    private void setBusinessInfoStatus(Boolean isOwner) {
+    private void setBusinessInfoStatus(final Boolean isOwner) {
         businessScopeField.setVisible(isOwner);
         businessNameField.setVisible(isOwner);
         businessINNField.setVisible(isOwner);
@@ -812,10 +811,10 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         businessYearlySalesField.setVisible(isOwner);
     }
 
-    private void setWorkInfoStatus(TypeOfEmployment type) {
-        boolean jobPeriodVisible = type == TypeOfEmployment.TEMPORARY;
-        boolean practiceTypeVisible = type == TypeOfEmployment.PRACTICE;
-        boolean jobInfoVisible = type != null && type != TypeOfEmployment.UNEMPLOYED;
+    private void setWorkInfoStatus(final TypeOfEmployment type) {
+        final boolean jobPeriodVisible = type == TypeOfEmployment.TEMPORARY;
+        final boolean practiceTypeVisible = type == TypeOfEmployment.PRACTICE;
+        final boolean jobInfoVisible = type != null && type != TypeOfEmployment.UNEMPLOYED;
         tempJobPeriodField.setVisible(jobPeriodVisible);
         practiceTypeField.setVisible(practiceTypeVisible);
         employerScopeField.setVisible(jobInfoVisible);
@@ -833,8 +832,8 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         jobsFor3yearsField.setVisible(jobInfoVisible);
     }
 
-    private void setMaritalStatusUI(MaritalStatus maritalStatus) {
-        boolean hasntFamily = maritalStatus == null || maritalStatus == MaritalStatus.SINGLE;
+    private void setMaritalStatusUI(final MaritalStatus maritalStatus) {
+        final boolean hasntFamily = maritalStatus == null || maritalStatus == MaritalStatus.SINGLE;
         marriageСontractField.setVisible(!hasntFamily);
         childrenField.setVisible(!hasntFamily);
         livingTogetherField.setVisible(!hasntFamily);
@@ -846,7 +845,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         spouseHeader.setVisible(!hasntFamily);
     }
 
-    private void setActualAdressStatus(Boolean isRegIsAct) {
+    private void setActualAdressStatus(final Boolean isRegIsAct) {
         actRegionField.setVisible(!isRegIsAct);
         actCityField.setVisible(!isRegIsAct);
         actPostIndexField.setVisible(!isRegIsAct);
@@ -865,17 +864,17 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private static class DrivingCategoriesConverter implements Converter<Object, String> {
 
         @Override
-        public String convertToModel(Object value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+        public String convertToModel(final Object value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
             String s = null;
             if (value != null) {
-                Set<Character> set = (Set<Character>) value;
+                final Set<Character> set = (Set<Character>) value;
                 s = String.valueOf(Chars.toArray(set));
             }
             return s;
         }
 
         @Override
-        public Object convertToPresentation(String value, Class<?> targetType, Locale locale) throws ConversionException {
+        public Object convertToPresentation(final String value, final Class<?> targetType, final Locale locale) throws ConversionException {
             if (value != null) {
                 final HashSet hashSet = new HashSet(Lists.charactersOf(value));
                 return hashSet;

@@ -3,7 +3,6 @@ package ru.extas.model.security;
 import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,15 +52,15 @@ public class UserGroup extends AuditedObject {
     private Set<UserProfile> users = newHashSet();
 
     public UserGroup createCopy() {
-        UserGroup clone = new UserGroup();
+        final UserGroup clone = new UserGroup();
 
         clone.setName(getName());
         clone.setDescription(getDescription());
         clone.setPermitRegions(newHashSet(getPermitRegions()));
         clone.setPermitBrands(newHashSet(getPermitBrands()));
-        HashSet<ExtaPermission> perms = newHashSet();
-        for (ExtaPermission perm : getPermissions()) {
-            ExtaPermission permission = perm.createCopy();
+        final HashSet<ExtaPermission> perms = newHashSet();
+        for (final ExtaPermission perm : getPermissions()) {
+            final ExtaPermission permission = perm.createCopy();
             permission.setGroup(clone);
             perms.add(permission);
         }
@@ -84,7 +83,7 @@ public class UserGroup extends AuditedObject {
      *
      * @param name the name to set
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -102,7 +101,7 @@ public class UserGroup extends AuditedObject {
      *
      * @param permissions a {@link java.util.Set} object.
      */
-    public void setPermissions(Set<ExtaPermission> permissions) {
+    public void setPermissions(final Set<ExtaPermission> permissions) {
         this.permissions = permissions;
     }
 
@@ -120,7 +119,7 @@ public class UserGroup extends AuditedObject {
      *
      * @param description a {@link java.lang.String} object.
      */
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -138,7 +137,7 @@ public class UserGroup extends AuditedObject {
      *
      * @param users a {@link java.util.Set} object.
      */
-    public void setUsers(Set<UserProfile> users) {
+    public void setUsers(final Set<UserProfile> users) {
         this.users = users;
     }
 
@@ -156,7 +155,7 @@ public class UserGroup extends AuditedObject {
      *
      * @param permitRegions a {@link java.util.Set} object.
      */
-    public void setPermitRegions(Set<String> permitRegions) {
+    public void setPermitRegions(final Set<String> permitRegions) {
         this.permitRegions = permitRegions;
     }
 
@@ -174,7 +173,7 @@ public class UserGroup extends AuditedObject {
      *
      * @param permitBrands a {@link java.util.Set} object.
      */
-    public void setPermitBrands(Set<String> permitBrands) {
+    public void setPermitBrands(final Set<String> permitBrands) {
         this.permitBrands = permitBrands;
     }
 }

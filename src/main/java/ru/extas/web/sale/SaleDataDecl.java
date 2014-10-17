@@ -1,7 +1,6 @@
 package ru.extas.web.sale;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItem;
 import ru.extas.model.sale.Sale;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
@@ -22,7 +21,7 @@ class SaleDataDecl extends GridDataDecl {
 	public SaleDataDecl() {
         addMapping("num", "№", new NumColumnGenerator() {
             @Override
-            public void fireClick(Item item) {
+            public void fireClick(final Item item) {
                 final Sale curObj = GridItem.extractBean(item);
 
                 final SaleEditForm editWin = new SaleEditForm(curObj);

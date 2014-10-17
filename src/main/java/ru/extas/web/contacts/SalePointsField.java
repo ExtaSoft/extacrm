@@ -44,12 +44,12 @@ public class SalePointsField extends CustomField<Set> {
 	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
-		SalePointsGrid grid = new SalePointsGrid(company) {
+		final SalePointsGrid grid = new SalePointsGrid(company) {
 			@Override
 			protected Container createContainer() {
 				final Property dataSource = getPropertyDataSource();
 				final Set<SalePoint> list = dataSource != null ? (Set<SalePoint>) dataSource.getValue() : new HashSet<SalePoint>();
-				BeanItemContainer<SalePoint> itemContainer = new BeanItemContainer<>(SalePoint.class);
+				final BeanItemContainer<SalePoint> itemContainer = new BeanItemContainer<>(SalePoint.class);
 				if (list != null) {
 					for (final SalePoint item : list) {
 						itemContainer.addBean(item);
@@ -62,11 +62,11 @@ public class SalePointsField extends CustomField<Set> {
 
 			@Override
 			protected List<UIAction> createActions() {
-				List<UIAction> actions = newArrayList();
+				final List<UIAction> actions = newArrayList();
 
 				actions.add(new UIAction("Новый", "Ввод новой торговой точки в систему", Fontello.DOC_NEW) {
 					@Override
-					public void fire(Object itemId) {
+					public void fire(final Object itemId) {
 						final SalePoint entity = new SalePoint();
 						entity.setCompany(company);
 

@@ -39,7 +39,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 	}
 
     @Override
-    public ExtaEditForm<SalePoint> createEditForm(SalePoint salePoint, boolean isInsert) {
+    public ExtaEditForm<SalePoint> createEditForm(final SalePoint salePoint, final boolean isInsert) {
         return new SalePointEditForm(salePoint);
     }
 
@@ -71,7 +71,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 		actions.add(new NewObjectAction("Новый", "Ввод нового Контакта в систему"));
         actions.add(new EditObjectAction("Изменить", "Редактирование контактных данных"));

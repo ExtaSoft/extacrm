@@ -34,7 +34,7 @@ public class UsersGrid extends ExtaGrid<UserProfile> {
 	}
 
     @Override
-    public ExtaEditForm<UserProfile> createEditForm(UserProfile userProfile, boolean isInsert) {
+    public ExtaEditForm<UserProfile> createEditForm(final UserProfile userProfile, final boolean isInsert) {
         return new UserEditForm(userProfile);
     }
 
@@ -56,7 +56,7 @@ public class UsersGrid extends ExtaGrid<UserProfile> {
 	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 		actions.add(new NewObjectAction("Новый", "Ввод нового пользователя в систему", Fontello.USER_ADD));
 		actions.add(new EditObjectAction("Изменить", "Редактирование данных пользователя", Fontello.USER_1));

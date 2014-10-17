@@ -93,14 +93,14 @@ public class IdentifiedObject implements Serializable {
 
     /** {@inheritDoc} */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        IdentifiedObject other = (IdentifiedObject) obj;
+        final IdentifiedObject other = (IdentifiedObject) obj;
         if (id == null || other.id == null) {
             return super.equals(other);
         } else

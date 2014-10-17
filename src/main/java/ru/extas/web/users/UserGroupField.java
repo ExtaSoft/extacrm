@@ -5,8 +5,6 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Window;
 import ru.extas.model.security.UserGroup;
 import ru.extas.web.commons.*;
 
@@ -43,7 +41,7 @@ public class UserGroupField extends CustomField<Set> {
     /** {@inheritDoc} */
     @Override
     protected Component initContent() {
-        UserGroupGrid grid = new UserGroupGrid(){
+        final UserGroupGrid grid = new UserGroupGrid(){
             @Override
             protected Container createContainer() {
                 final Property dataSource = getPropertyDataSource();
@@ -59,11 +57,11 @@ public class UserGroupField extends CustomField<Set> {
 
             @Override
             protected List<UIAction> createActions() {
-                List<UIAction> actions = newArrayList();
+                final List<UIAction> actions = newArrayList();
 
                 actions.add(new UIAction("Добавить", "Добавить пользователя в группу", Fontello.USER_ADD) {
                     @Override
-                    public void fire(Object itemId) {
+                    public void fire(final Object itemId) {
                         final UserGroupSelectWindow selectWindow = new UserGroupSelectWindow("Выберите группу");
                         selectWindow.addCloseListener(e -> {
                             if (selectWindow.isSelectPressed()) {

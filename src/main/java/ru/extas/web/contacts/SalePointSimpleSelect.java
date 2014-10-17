@@ -1,8 +1,11 @@
 package ru.extas.web.contacts;
 
+import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.filter.Compare;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.web.commons.ExtaDataContainer;
 
 /**
  * Выбор контакта - юр. лица
@@ -15,7 +18,10 @@ import ru.extas.model.contacts.SalePoint;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SalePointSimpleSelect extends AbstractContactSelect<SalePoint> {
+public class SalePointSimpleSelect extends com.vaadin.ui.ComboBox {
+
+    private static final long serialVersionUID = -8005905898383483037L;
+    protected ExtaDataContainer<SalePoint> container;
 
     /**
      * <p>Constructor for CompanySelect.</p>
@@ -23,7 +29,7 @@ public class SalePointSimpleSelect extends AbstractContactSelect<SalePoint> {
      * @param caption a {@link java.lang.String} object.
      */
     public SalePointSimpleSelect(final String caption) {
-        super(caption, SalePoint.class);
+        this(caption, "Выберите существующий контакт или введите новый");
     }
 
     /**
@@ -33,7 +39,27 @@ public class SalePointSimpleSelect extends AbstractContactSelect<SalePoint> {
      * @param description a {@link java.lang.String} object.
      */
     public SalePointSimpleSelect(final String caption, final String description) {
-        super(caption, description, SalePoint.class);
+        super(caption);
+
+        // Преконфигурация
+        setDescription(description);
+        setInputPrompt("контакт...");
+        setWidth(25, Unit.EM);
+        setImmediate(true);
+
+        // Инициализация контейнера
+        container = new ExtaDataContainer<>(SalePoint.class);
+
+        // Устанавливаем контент выбора
+        setFilteringMode(FilteringMode.CONTAINS);
+        setContainerDataSource(container);
+        setItemCaptionMode(ItemCaptionMode.PROPERTY);
+        setItemCaptionPropertyId("name");
+        setConverter(new SingleSelectConverter<SalePoint>(this));
+
+        // Функционал добавления нового контакта
+        setNullSelectionAllowed(false);
+        setNewItemsAllowed(false);
     }
 
     /**
@@ -49,5 +75,12 @@ public class SalePointSimpleSelect extends AbstractContactSelect<SalePoint> {
         if (region != null)
             container.addContainerFilter(new Compare.Equal("regAddress.region", region));
         refreshContainer();
+    }
+
+    /**
+     * <p>refreshContainer.</p>
+     */
+    public void refreshContainer() {
+        container.refresh();
     }
 }

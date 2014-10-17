@@ -5,7 +5,6 @@ package ru.extas.web.commons;
 
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.shared.ui.MarginInfo;
@@ -136,7 +135,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
 
-        Button cancelBtn = new Button("Отмена", new Button.ClickListener() {
+        final Button cancelBtn = new Button("Отмена", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override

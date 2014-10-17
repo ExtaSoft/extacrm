@@ -1,6 +1,5 @@
 package ru.extas.web.product;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
@@ -9,7 +8,6 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditPercent;
-import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -43,7 +41,7 @@ public class ProdCredPercentField extends CustomField<List> {
      * @param description a {@link java.lang.String} object.
      * @param product     a {@link ru.extas.model.sale.ProdCredit} object.
      */
-    public ProdCredPercentField(String caption, final String description, ProdCredit product) {
+    public ProdCredPercentField(final String caption, final String description, final ProdCredit product) {
         this.product = product;
         setWidth(400, Unit.PIXELS);
         setHeight(200, Unit.PIXELS);

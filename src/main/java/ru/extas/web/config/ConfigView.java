@@ -36,7 +36,7 @@ public class ConfigView extends ExtaAbstractView {
         title.setSizeUndefined();
         title.addStyleName(ExtaTheme.VIEW_TITLE);
                 title.setIcon(Fontello.WRENCH_1);
-        HorizontalLayout l = new HorizontalLayout(title);
+        final HorizontalLayout l = new HorizontalLayout(title);
         //l.addComponent(updateBtn);
         l.setSizeFull();
         l.setComponentAlignment(title, Alignment.MIDDLE_CENTER);

@@ -24,7 +24,7 @@ public class LeadField extends CustomField<Lead> {
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 */
-	public LeadField(String caption) {
+	public LeadField(final String caption) {
 		setCaption(caption);
 	}
 
@@ -38,7 +38,7 @@ public class LeadField extends CustomField<Lead> {
 	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
-		VerticalLayout container = new VerticalLayout();
+		final VerticalLayout container = new VerticalLayout();
 		container.setSpacing(true);
 
 		final Lead lead = (Lead) getPropertyDataSource().getValue();
@@ -46,30 +46,30 @@ public class LeadField extends CustomField<Lead> {
 
 		// Открытие формы ввода/редактирования
 		final Button.ClickListener openLeadFormListener = event -> {
-            LeadEditForm form = new LeadEditForm(lead, false);
+            final LeadEditForm form = new LeadEditForm(lead, false);
 FormUtils.showModalWin(form);
         };
-		Button openBtn = new Button("Нажмите для просмотра/редактирования лида...", openLeadFormListener);
+		final Button openBtn = new Button("Нажмите для просмотра/редактирования лида...", openLeadFormListener);
 		openBtn.addStyleName(ExtaTheme.BUTTON_LINK);
                 container.addComponent(openBtn);
 
-		HorizontalLayout fieldsContainer = new HorizontalLayout();
+		final HorizontalLayout fieldsContainer = new HorizontalLayout();
 		fieldsContainer.setSpacing(true);
 		fieldsContainer.addStyleName(ExtaTheme.BORDERED_ITEMS);
 		// Тип техники
-		Label motorTypeField = new Label(leadItem.getItemProperty("motorType"));
+		final Label motorTypeField = new Label(leadItem.getItemProperty("motorType"));
 		motorTypeField.setCaption("Тип техники");
 		fieldsContainer.addComponent(motorTypeField);
 		// Бренд техники
-		Label motorBrandField = new Label(leadItem.getItemProperty("motorBrand"));
+		final Label motorBrandField = new Label(leadItem.getItemProperty("motorBrand"));
 		motorBrandField.setCaption("Марка");
 		fieldsContainer.addComponent(motorBrandField);
 		// Модель техники
-		Label motorModelField = new Label(leadItem.getItemProperty("motorModel"));
+		final Label motorModelField = new Label(leadItem.getItemProperty("motorModel"));
 		motorModelField.setCaption("Марка");
 		fieldsContainer.addComponent(motorModelField);
 		// Стоимость
-		Label sumField = new Label(leadItem.getItemProperty("motorPrice"));
+		final Label sumField = new Label(leadItem.getItemProperty("motorPrice"));
 		sumField.setCaption("Сумма");
 		fieldsContainer.addComponent(sumField);
 

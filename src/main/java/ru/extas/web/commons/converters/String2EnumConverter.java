@@ -1,6 +1,5 @@
 package ru.extas.web.commons.converters;
 
-import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
 

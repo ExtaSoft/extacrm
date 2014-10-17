@@ -11,12 +11,12 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -73,7 +73,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     private SalePoint salePoint;
 
-    public SalePointEditForm(SalePoint salePoint) {
+    public SalePointEditForm(final SalePoint salePoint) {
         super(salePoint.isNew() ? "Ввод новой торговой точки в систему" : "Редактирование данных торговой точки");
         final BeanItem beanItem = new BeanItem<>(salePoint);
         beanItem.expandProperty("regAddress");
@@ -130,7 +130,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final SalePoint obj) {
-        TabSheet tabsheet = new TabSheet();
+        final TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"

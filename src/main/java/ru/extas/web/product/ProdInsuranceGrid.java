@@ -24,7 +24,7 @@ public class ProdInsuranceGrid extends ExtaGrid<ProdInsurance> {
     }
 
     @Override
-    public ExtaEditForm<ProdInsurance> createEditForm(ProdInsurance prodInsurance, boolean isInsert) {
+    public ExtaEditForm<ProdInsurance> createEditForm(final ProdInsurance prodInsurance, final boolean isInsert) {
         return new ProdInsuranceEditForm(prodInsurance);
     }
 
@@ -47,7 +47,7 @@ public class ProdInsuranceGrid extends ExtaGrid<ProdInsurance> {
 	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 		actions.add(new NewObjectAction("Новый", "Ввод нового страхового продукта"));
 		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке страховой продукт"));

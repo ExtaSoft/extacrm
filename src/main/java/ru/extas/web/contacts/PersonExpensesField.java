@@ -34,7 +34,7 @@ public class PersonExpensesField extends CustomField<List> {
     private VerticalLayout root;
     private Table table;
 
-    public PersonExpensesField(Person person) {
+    public PersonExpensesField(final Person person) {
         this.person = person;
         addStyleName(ExtaTheme.NO_CAPTION_COMPLEX_FIELD);
     }
@@ -51,7 +51,7 @@ public class PersonExpensesField extends CustomField<List> {
         root.setMargin(new MarginInfo(true, false, true, false));
         root.setSpacing(true);
 
-        Button addBtn = new Button("Добавить", Fontello.PLUS);
+        final Button addBtn = new Button("Добавить", Fontello.PLUS);
         addBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         addBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         addBtn.addClickListener(click -> itemContainer.addBean(new PersonExpense(person)));
@@ -90,7 +90,7 @@ public class PersonExpensesField extends CustomField<List> {
                 final Object value = container.getContainerProperty(itemId, propertyId).getValue();
                 if (value != null)
                     options.add((String) value);
-                ComboBox typeField = new ComboBox("Статья расхода", options);
+                final ComboBox typeField = new ComboBox("Статья расхода", options);
                 typeField.setWidth(100, Unit.PERCENTAGE);
                 typeField.setNullSelectionAllowed(false);
                 typeField.setNewItemsAllowed(true);
@@ -99,7 +99,7 @@ public class PersonExpensesField extends CustomField<List> {
                 typeField.addValueChangeListener(e -> updateValue(false));
                 return typeField;
             } else if ("expense".equals(propertyId)) {
-                EditField incomeField = new EditField("Расход");
+                final EditField incomeField = new EditField("Расход");
                 incomeField.setWidth(100, Unit.PERCENTAGE);
                 incomeField.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
                 incomeField.addStyleName(ExtaTheme.TEXTFIELD_BORDERLESS);
@@ -118,17 +118,17 @@ public class PersonExpensesField extends CustomField<List> {
         return root;
     }
 
-    private void updateTableValue(List<PersonExpense> list, boolean isItemSetChanged) {
-        BigDecimal expenseSum = getExpenseSum(list, PersonExpense::getExpense);
+    private void updateTableValue(final List<PersonExpense> list, final boolean isItemSetChanged) {
+        final BigDecimal expenseSum = getExpenseSum(list, PersonExpense::getExpense);
         table.setColumnFooter("expense", lookup(StringToMoneyConverter.class).convertToPresentation(expenseSum, null));
 
         // Adjust the table height a bit
         table.setPageLength(table.size());
     }
 
-    private BigDecimal getExpenseSum(List<PersonExpense> list, Function<PersonExpense, BigDecimal> func) {
+    private BigDecimal getExpenseSum(final List<PersonExpense> list, final Function<PersonExpense, BigDecimal> func) {
         BigDecimal expenseSum = BigDecimal.ZERO;
-        for (PersonExpense expense : list) {
+        for (final PersonExpense expense : list) {
             final BigDecimal augend = func.apply(expense);
             if (augend != null)
                 expenseSum = expenseSum.add(augend);
@@ -141,8 +141,8 @@ public class PersonExpensesField extends CustomField<List> {
         return List.class;
     }
 
-    private void updateValue(boolean isItemSetChanged) {
-        List<PersonExpense> list = newArrayList(itemContainer.getItemIds());
+    private void updateValue(final boolean isItemSetChanged) {
+        final List<PersonExpense> list = newArrayList(itemContainer.getItemIds());
         setValue(list);
         updateTableValue(list, isItemSetChanged);
     }

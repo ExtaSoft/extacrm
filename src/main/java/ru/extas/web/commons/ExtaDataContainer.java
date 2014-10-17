@@ -4,7 +4,6 @@ import com.vaadin.addon.jpacontainer.EntityContainer;
 import com.vaadin.addon.jpacontainer.EntityManagerProvider;
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.addon.jpacontainer.filter.util.FilterConverter;
-import com.vaadin.addon.jpacontainer.provider.CachingLocalEntityProvider;
 import com.vaadin.addon.jpacontainer.provider.MutableLocalEntityProvider;
 import com.vaadin.addon.jpacontainer.util.CollectionUtil;
 import ru.extas.model.common.IdentifiedObject;
@@ -56,7 +55,7 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
 
     private static class ExtaLocalEntityProvider<TEntityType extends IdentifiedObject> extends MutableLocalEntityProvider<TEntityType> {
 
-        public ExtaLocalEntityProvider(Class<TEntityType> entityClass) {
+        public ExtaLocalEntityProvider(final Class<TEntityType> entityClass) {
             super(entityClass);
             setTransactionsHandledByProvider(false);
             setEntitiesDetached(false);
@@ -65,30 +64,30 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
         }
 
         @Override
-        public TEntityType refreshEntity(TEntityType entity) {
+        public TEntityType refreshEntity(final TEntityType entity) {
             final Object[] res = new Object[1];
             runInTransaction(() -> res[0] = super.refreshEntity(entity));
             return (TEntityType) res[0];
         }
 
         @Override
-        protected void runInTransaction(Runnable operation) {
+        protected void runInTransaction(final Runnable operation) {
             lookup(SpringEntityManagerProvider.class)
                     .runInTransaction(() -> super.runInTransaction(operation));
         }
 
         @Override
-        protected int doGetEntityCount(EntityContainer<TEntityType> container, Filter filter) {
-            String entityIdPropertyName = getEntityClassMetadata()
+        protected int doGetEntityCount(final EntityContainer<TEntityType> container, final Filter filter) {
+            final String entityIdPropertyName = getEntityClassMetadata()
                     .getIdentifierProperty().getName();
 
-            CriteriaBuilder cb = doGetEntityManager().getCriteriaBuilder();
-            CriteriaQuery<Long> query = cb.createQuery(Long.class);
-            Root<TEntityType> root = query.from(getEntityClassMetadata().getMappedClass());
+            final CriteriaBuilder cb = doGetEntityManager().getCriteriaBuilder();
+            final CriteriaQuery<Long> query = cb.createQuery(Long.class);
+            final Root<TEntityType> root = query.from(getEntityClassMetadata().getMappedClass());
 
             tellDelegateQueryWillBeBuilt(container, cb, query);
 
-            List<Predicate> predicates = new ArrayList<Predicate>();
+            final List<Predicate> predicates = new ArrayList<Predicate>();
             if (filter != null) {
                 predicates.add(FilterConverter.convertFilter(filter, cb, root));
             }
@@ -114,13 +113,13 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
                 query.select(cb.countDistinct(root.get(entityIdPropertyName)));
             }
             tellDelegateQueryHasBeenBuilt(container, cb, query);
-            TypedQuery<Long> tq = doGetEntityManager().createQuery(query);
+            final TypedQuery<Long> tq = doGetEntityManager().createQuery(query);
             return tq.getSingleResult().intValue();
         }
         // QueryModifierDelegate helper methods
 
-        private void tellDelegateQueryWillBeBuilt(EntityContainer<TEntityType> container,
-                                                  CriteriaBuilder cb, CriteriaQuery<?> query) {
+        private void tellDelegateQueryWillBeBuilt(final EntityContainer<TEntityType> container,
+                                                  final CriteriaBuilder cb, final CriteriaQuery<?> query) {
             if (getQueryModifierDelegate() != null) {
                 getQueryModifierDelegate().queryWillBeBuilt(cb, query);
             } else if (container.getQueryModifierDelegate() != null) {
@@ -128,8 +127,8 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
             }
         }
 
-        private void tellDelegateQueryHasBeenBuilt(EntityContainer<TEntityType> container,
-                                                   CriteriaBuilder cb, CriteriaQuery<?> query) {
+        private void tellDelegateQueryHasBeenBuilt(final EntityContainer<TEntityType> container,
+                                                   final CriteriaBuilder cb, final CriteriaQuery<?> query) {
             if (getQueryModifierDelegate() != null) {
                 getQueryModifierDelegate().queryHasBeenBuilt(cb, query);
             } else if (container.getQueryModifierDelegate() != null) {
@@ -137,9 +136,9 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
             }
         }
 
-        private void tellDelegateFiltersWillBeAdded(EntityContainer<TEntityType> container,
-                                                    CriteriaBuilder cb, CriteriaQuery<?> query,
-                                                    List<Predicate> predicates) {
+        private void tellDelegateFiltersWillBeAdded(final EntityContainer<TEntityType> container,
+                                                    final CriteriaBuilder cb, final CriteriaQuery<?> query,
+                                                    final List<Predicate> predicates) {
             if (getQueryModifierDelegate() != null) {
                 getQueryModifierDelegate().filtersWillBeAdded(cb, query, predicates);
             } else if (container.getQueryModifierDelegate() != null) {
@@ -148,8 +147,8 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
             }
         }
 
-        private void tellDelegateFiltersWereAdded(EntityContainer<TEntityType> container,
-                                                  CriteriaBuilder cb, CriteriaQuery<?> query) {
+        private void tellDelegateFiltersWereAdded(final EntityContainer<TEntityType> container,
+                                                  final CriteriaBuilder cb, final CriteriaQuery<?> query) {
             if (getQueryModifierDelegate() != null) {
                 getQueryModifierDelegate().filtersWereAdded(cb, query);
             } else if (container.getQueryModifierDelegate() != null) {

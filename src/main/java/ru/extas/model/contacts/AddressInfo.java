@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -65,7 +64,7 @@ public class AddressInfo implements Serializable {
      * @param postIndex a {@link java.lang.String} object.
      * @param streetBld a {@link java.lang.String} object.
      */
-    public AddressInfo(String region, String city, String postIndex, String streetBld) {
+    public AddressInfo(final String region, final String city, final String postIndex, final String streetBld) {
         this.region = region;
         this.city = city;
         this.postIndex = postIndex;
@@ -148,7 +147,7 @@ public class AddressInfo implements Serializable {
         return realtyKind;
     }
 
-    public void setRealtyKind(RealtyKind realtyKind) {
+    public void setRealtyKind(final RealtyKind realtyKind) {
         this.realtyKind = realtyKind;
     }
 
@@ -156,7 +155,7 @@ public class AddressInfo implements Serializable {
         return periodOfResidence;
     }
 
-    public void setPeriodOfResidence(PeriodOfResidence periodOfResidence) {
+    public void setPeriodOfResidence(final PeriodOfResidence periodOfResidence) {
         this.periodOfResidence = periodOfResidence;
     }
 }

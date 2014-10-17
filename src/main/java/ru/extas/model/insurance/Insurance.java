@@ -2,14 +2,16 @@ package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.FileContainer;
+import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
-import ru.extas.model.security.SecuredObject;
-import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.motor.MotorBrand;
+import ru.extas.model.motor.MotorModel;
+import ru.extas.model.motor.MotorType;
+import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
@@ -65,18 +67,18 @@ public class Insurance extends SecuredObject {
     private String beneficiary;
 
     // Предмет страхования - тип
-    @Column(name = "MOTOR_TYPE", length = 50)
-    @Size(max = 50)
+    @Column(name = "MOTOR_TYPE", length = MotorType.NAME_LENGTH)
+    @Size(max = MotorType.NAME_LENGTH)
     private String motorType;
 
     // Предмет страхования - марка
-    @Column(name = "MOTOR_BRAND", length = 50)
-    @Size(max = 50)
+    @Column(name = "MOTOR_BRAND", length = MotorBrand.NAME_LENGTH)
+    @Size(max = MotorBrand.NAME_LENGTH)
     private String motorBrand;
 
     // Предмет страхования - модель
-    @Column(name = "MOTOR_MODEL", length = 50)
-    @Size(max = 50)
+    @Column(name = "MOTOR_MODEL", length = MotorModel.NAME_LENGTH)
+    @Size(max = MotorModel.NAME_LENGTH)
     private String motorModel;
 
     // Серийный номер

@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
@@ -62,8 +62,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
      */
     @Transactional
     @Override
-    public Sale ctreateSaleByLead(Lead lead) {
-        Sale sale = new Sale();
+    public Sale ctreateSaleByLead(final Lead lead) {
+        final Sale sale = new Sale();
 
         sale.setClient(lead.getClient());
         sale.setStatus(Sale.Status.NEW);
@@ -83,7 +83,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 
     @Transactional
     @Override
-    public void finishSale(Sale sale, Sale.Result result) {
+    public void finishSale(Sale sale, final Sale.Result result) {
         Lead.Result leadResult = Lead.Result.SUCCESSFUL;
         sale.setResult(result);
 
@@ -102,7 +102,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
                 break;
         }
         sale = secureSave(sale);
-        Lead lead = sale.getLead();
+        final Lead lead = sale.getLead();
         if (lead != null)
             leadRepository.finishLead(lead, leadResult);
     }
@@ -116,8 +116,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     }
 
     @Override
-    protected Collection<Pair<Person, AccessRole>> getObjectUsers(Sale sale) {
-        final ArrayList<Pair<Person, AccessRole>> users = newArrayList();
+    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final Sale sale) {
+        final ArrayList<Pair<Employee, AccessRole>> users = newArrayList();
 
         // Текущий пользователь как Владелец
         users.add(getCurUserAccess(sale));
@@ -129,8 +129,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(Sale sale) {
-        List<Company> companies = newArrayList();
+    protected Collection<Company> getObjectCompanies(final Sale sale) {
+        final List<Company> companies = newArrayList();
 
         // Добавляем в область видимости компании дилера
         if(sale.getDealer() != null)
@@ -140,8 +140,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(Sale sale) {
-        List<SalePoint> salePoints = newArrayList();
+    protected Collection<SalePoint> getObjectSalePoints(final Sale sale) {
+        final List<SalePoint> salePoints = newArrayList();
 
         // Добавляем в область видимости торговой точки
         if (sale.getDealer() != null)
@@ -154,7 +154,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
      * {@inheritDoc}
      */
     @Override
-    protected Collection<String> getObjectBrands(Sale sale) {
+    protected Collection<String> getObjectBrands(final Sale sale) {
         // Бренд техники
         if (!isNullOrEmpty(sale.getMotorBrand()))
             return newHashSet(sale.getMotorBrand());
@@ -166,8 +166,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
      * {@inheritDoc}
      */
     @Override
-    protected Collection<String> getObjectRegions(Sale sale) {
-        Set<String> regions = newHashSet();
+    protected Collection<String> getObjectRegions(final Sale sale) {
+        final Set<String> regions = newHashSet();
         // Область видимости в регионе дилера
         if (sale.getDealer() != null
                 && sale.getDealer().getRegAddress() != null
@@ -182,16 +182,16 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     @Transactional
     @Override
     public Sale permitAndSave(Sale sale,
-                              Collection<Pair<Person, AccessRole>> users,
-                              Collection<SalePoint> salePoints,
-                              Collection<Company> companies,
-                              Collection<String> regions,
-                              Collection<String> brands) {
+                              final Collection<Pair<Employee, AccessRole>> users,
+                              final Collection<SalePoint> salePoints,
+                              final Collection<Company> companies,
+                              final Collection<String> regions,
+                              final Collection<String> brands) {
         if (sale != null) {
             sale = super.permitAndSave(sale, users, salePoints, companies, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты лида:
             // Клиент
-            final Collection<Pair<Person, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            final Collection<Pair<Employee, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
             personRepository.permitAndSave(sale.getClient(), readers, salePoints, companies, regions, brands);
             // Продавец (торговая точка или компания)
             salePointRepository.permitAndSave(sale.getDealer(), readers, salePoints, companies, regions, brands);

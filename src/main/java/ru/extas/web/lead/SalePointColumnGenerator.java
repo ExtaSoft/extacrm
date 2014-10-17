@@ -24,16 +24,16 @@ public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenera
     private String salePointNamePropId;
     private String regionPropId;
 
-    public SalePointColumnGenerator(String salePointPropId, String salePointNamePropId, String regionPropId) {
+    public SalePointColumnGenerator(final String salePointPropId, final String salePointNamePropId, final String regionPropId) {
         this.salePointPropId = salePointPropId;
         this.salePointNamePropId = salePointNamePropId;
         this.regionPropId = regionPropId;
     }
 
     @Override
-    public Object generateCell(Object columnId, Item item, Object itemId) {
+    public Object generateCell(final Object columnId, final Item item, final Object itemId) {
         String region = "";
-        Button link = new Button();
+        final Button link = new Button();
         link.addStyleName(ExtaTheme.BUTTON_LINK);
         final SalePoint salePoint = (SalePoint) item.getItemProperty(salePointPropId).getValue();
         if (salePoint != null) {
@@ -52,7 +52,7 @@ public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenera
             link.setCaption(nullToEmpty((String) item.getItemProperty(salePointNamePropId).getValue()));
             link.setEnabled(false);
         }
-        VerticalLayout cell = new VerticalLayout();
+        final VerticalLayout cell = new VerticalLayout();
         cell.addComponent(new Label(region));
         cell.addComponent(link);
         return cell;

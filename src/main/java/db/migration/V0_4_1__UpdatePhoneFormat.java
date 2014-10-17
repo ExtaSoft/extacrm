@@ -1,6 +1,5 @@
 package db.migration;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;

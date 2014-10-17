@@ -3,7 +3,6 @@
  */
 package ru.extas.web.contacts;
 
-import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.RealtyKind;
@@ -29,7 +28,7 @@ public class StringToRealtyKind extends String2EnumConverter<RealtyKind> {
 	/** {@inheritDoc} */
 	@Override
 	protected HashBiMap<RealtyKind, String> createEnum2StringMap() {
-        HashBiMap<RealtyKind, String> map = HashBiMap.create();
+        final HashBiMap<RealtyKind, String> map = HashBiMap.create();
 		map.put(RealtyKind.PROPERTY, "Собственность");
 		map.put(RealtyKind.PART_PROPERTY, "Долевая собственность");
 		map.put(RealtyKind.SOCIAL, "Социальный найм");

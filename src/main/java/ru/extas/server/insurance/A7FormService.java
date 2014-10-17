@@ -1,7 +1,6 @@
 package ru.extas.server.insurance;
 
-import ru.extas.model.contacts.Contact;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.insurance.A7Form;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public interface A7FormService {
      *  @param formNums Список номеров квитанций
      * @param owner    Новый владелец
      */
-    void changeOwner(List<String> formNums, Person owner);
+    void changeOwner(List<String> formNums, Employee owner);
 
     /**
      * Сменить статус для набора квитанций

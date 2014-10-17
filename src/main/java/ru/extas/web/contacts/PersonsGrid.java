@@ -29,7 +29,7 @@ public class PersonsGrid extends ExtaGrid<Person> {
     }
 
     @Override
-    public ExtaEditForm<Person> createEditForm(Person person, boolean isInsert) {
+    public ExtaEditForm<Person> createEditForm(final Person person, final boolean isInsert) {
         return new PersonEditForm(person);
     }
 
@@ -56,7 +56,7 @@ public class PersonsGrid extends ExtaGrid<Person> {
      */
     @Override
     protected List<UIAction> createActions() {
-        List<UIAction> actions = newArrayList();
+        final List<UIAction> actions = newArrayList();
 
         actions.add(new NewObjectAction("Новый", "Ввод нового Контакта в систему", Fontello.USER_ADD_1));
         actions.add(new EditObjectAction("Изменить", "Редактирование контактных данных", Fontello.USER_2));

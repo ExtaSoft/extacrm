@@ -21,8 +21,10 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "MOTOR_BRAND")
 public class MotorBrand  extends AuditedObject {
 
-    @Column(nullable = false)
-    @Size(max = 255)
+    public static final int NAME_LENGTH = 50;
+
+    @Column(nullable = false, length = NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String name;
 
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH}, targetEntity = MotorType.class)
@@ -46,7 +48,7 @@ public class MotorBrand  extends AuditedObject {
      *
      * @param name a {@link java.lang.String} object.
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -64,7 +66,7 @@ public class MotorBrand  extends AuditedObject {
      *
      * @param brandTypes a {@link java.util.Set} object.
      */
-    public void setBrandTypes(Set<MotorType> brandTypes) {
+    public void setBrandTypes(final Set<MotorType> brandTypes) {
         this.brandTypes = brandTypes;
     }
 }

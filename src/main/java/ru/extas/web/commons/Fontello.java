@@ -282,7 +282,7 @@ public enum Fontello implements FontIcon {
     private static final String fontFamily = "fontello";
     private int codepoint;
 
-    Fontello(int codepoint) {
+    Fontello(final int codepoint) {
         this.codepoint = codepoint;
     }
 

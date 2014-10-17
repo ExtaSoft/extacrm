@@ -9,8 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.contacts.Contact;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.insurance.A7Form;
 import ru.extas.model.insurance.A7Form.Status;
 import ru.extas.server.security.UserManagementService;
@@ -50,8 +49,8 @@ public class A7FormRepositoryImpl implements A7FormService {
     /** {@inheritDoc} */
     @Transactional
     @Override
-    public void changeOwner(final List<String> formNums, final Person owner) {
-        for (String num : formNums) {
+    public void changeOwner(final List<String> formNums, final Employee owner) {
+        for (final String num : formNums) {
             A7Form form = formRepository.findByRegNum(num);
             if (form != null) {
                 form.setOwner(owner);
@@ -81,9 +80,9 @@ public class A7FormRepositoryImpl implements A7FormService {
         logger.debug("Requesting available A-7 forms...");
 
         // Поиск контакта пользователя
-        final Person owner = userService.getCurrentUserContact();
+        final Employee owner = userService.getCurrentUserEmployee();
 
-        Status status = Status.NEW;
+        final Status status = Status.NEW;
         final List<A7Form> forms = formRepository.findByOwnerAndStatus(owner, status);
 
         logger.debug("Retrieved {} available A-7 forms", forms.size());

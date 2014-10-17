@@ -2,7 +2,7 @@ package ru.extas.model.security;
 
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
@@ -49,7 +49,7 @@ public class ObjectSecurityRule extends AuditedObject {
     // Привязка объекта к пользователям
     @OneToMany(mappedBy = "securityRule", orphanRemoval = true, cascade = CascadeType.ALL)
     @MapKey(name = "user")
-    private Map<Person, UserObjectAccess> users = newHashMap();
+    private Map<Employee, UserObjectAccess> users = newHashMap();
 
     // Привязка обхекта к регионам
     @ElementCollection
@@ -74,7 +74,7 @@ public class ObjectSecurityRule extends AuditedObject {
         return salePoints;
     }
 
-    public void setSalePoints(Set<SalePoint> salePoints) {
+    public void setSalePoints(final Set<SalePoint> salePoints) {
         this.salePoints = salePoints;
     }
 
@@ -82,15 +82,15 @@ public class ObjectSecurityRule extends AuditedObject {
         return companies;
     }
 
-    public void setCompanies(Set<Company> companies) {
+    public void setCompanies(final Set<Company> companies) {
         this.companies = companies;
     }
 
-    public Map<Person, UserObjectAccess> getUsers() {
+    public Map<Employee, UserObjectAccess> getUsers() {
         return users;
     }
 
-    public void setUsers(Map<Person, UserObjectAccess> users) {
+    public void setUsers(final Map<Employee, UserObjectAccess> users) {
         this.users = users;
     }
 
@@ -98,7 +98,7 @@ public class ObjectSecurityRule extends AuditedObject {
         return regions;
     }
 
-    public void setRegions(Set<String> regions) {
+    public void setRegions(final Set<String> regions) {
         this.regions = regions;
     }
 
@@ -106,7 +106,7 @@ public class ObjectSecurityRule extends AuditedObject {
         return brands;
     }
 
-    public void setBrands(Set<String> brands) {
+    public void setBrands(final Set<String> brands) {
         this.brands = brands;
     }
 }

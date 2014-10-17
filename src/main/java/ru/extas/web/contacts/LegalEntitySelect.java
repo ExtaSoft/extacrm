@@ -1,10 +1,11 @@
 package ru.extas.web.contacts;
 
-import com.vaadin.data.Property;
+import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.LegalEntity;
-import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -55,10 +56,10 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
     /** {@inheritDoc} */
     @Override
     protected Component initContent() {
-        VerticalLayout container = new VerticalLayout();
+        final VerticalLayout container = new VerticalLayout();
         container.setSpacing(true);
 
-        CssLayout nameLay = new CssLayout();
+        final CssLayout nameLay = new CssLayout();
         nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
         selectField = new LESelectField("", "Введите или выберите название юридического лица");
@@ -89,7 +90,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         selectField.addValueChangeListener(event -> refreshFields((LegalEntity) selectField.getConvertedValue()));
         nameLay.addComponent(selectField);
 
-        Button searchBtn = new Button("Поиск", event -> {
+        final Button searchBtn = new Button("Поиск", event -> {
 
             final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите ЮЛ или введите новое", null);
             selectWindow.addCloseListener(e -> {
@@ -123,7 +124,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         nameLay.addComponent(viewBtn);
         container.addComponent(nameLay);
 
-        HorizontalLayout fieldsContainer = new HorizontalLayout();
+        final HorizontalLayout fieldsContainer = new HorizontalLayout();
         fieldsContainer.setSpacing(true);
         // Телефон
         phoneField = new Label();
@@ -154,7 +155,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         } else
             viewBtn.setEnabled(true);
 
-        BeanItem<LegalEntity> beanItem = new BeanItem<>(legalEntity);
+        final BeanItem<LegalEntity> beanItem = new BeanItem<>(legalEntity);
         // Телефон
         phoneField.setPropertyDataSource(beanItem.getItemProperty("phone"));
         // Мыло
@@ -163,14 +164,44 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         innField.setPropertyDataSource(beanItem.getItemProperty("inn"));
     }
 
-    private class LESelectField extends AbstractContactSelect<LegalEntity> {
+    private class LESelectField extends ComboBox {
+
+        private static final long serialVersionUID = -8005905898383483037L;
+        protected ExtaDataContainer<LegalEntity> container;
 
         protected LESelectField(final String caption) {
-            super(caption, LegalEntity.class);
+            this(caption, "Выберите существующий контакт или введите новый");
         }
 
         protected LESelectField(final String caption, final String description) {
-            super(caption, description, LegalEntity.class);
+            super(caption);
+
+            // Преконфигурация
+            setDescription(description);
+            setInputPrompt("контакт...");
+            setWidth(25, Unit.EM);
+            setImmediate(true);
+
+            // Инициализация контейнера
+            container = new ExtaDataContainer<>(LegalEntity.class);
+
+            // Устанавливаем контент выбора
+            setFilteringMode(FilteringMode.CONTAINS);
+            setContainerDataSource(container);
+            setItemCaptionMode(ItemCaptionMode.PROPERTY);
+            setItemCaptionPropertyId("name");
+            setConverter(new SingleSelectConverter<LegalEntity>(this));
+
+            // Функционал добавления нового контакта
+            setNullSelectionAllowed(false);
+            setNewItemsAllowed(false);
+        }
+
+        /**
+         * <p>refreshContainer.</p>
+         */
+        public void refreshContainer() {
+            container.refresh();
         }
     }
 

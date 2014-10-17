@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -35,7 +34,7 @@ public class PersonChild extends IdentifiedObject {
     public PersonChild() {
     }
 
-    public PersonChild(Person person) {
+    public PersonChild(final Person person) {
         parent = person;
     }
 
@@ -43,7 +42,7 @@ public class PersonChild extends IdentifiedObject {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -51,7 +50,7 @@ public class PersonChild extends IdentifiedObject {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(final LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -59,7 +58,7 @@ public class PersonChild extends IdentifiedObject {
         return parent;
     }
 
-    public void setParent(Person parent) {
+    public void setParent(final Person parent) {
         this.parent = parent;
     }
 }

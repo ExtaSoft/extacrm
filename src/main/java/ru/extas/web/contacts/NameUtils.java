@@ -20,8 +20,8 @@ public class NameUtils {
       * @param name полное имя (ФИО)
      * @return фамилия и имя
      */
-    public static String getShortName(String name) {
-        String shortName;
+    public static String getShortName(final String name) {
+        final String shortName;
         final List<String> nameParts = Splitter.on(' ')
                 .trimResults()
                 .omitEmptyStrings()

@@ -5,7 +5,6 @@ package ru.extas.web.dashboard;
 
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
-import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,21 +35,21 @@ public class HomeView extends ExtaAbstractView {
     protected Component createContent() {
         logger.info("Creating view content...");
 
-        VerticalSplitPanel verticalSplitPanel = new VerticalSplitPanel();
+        final VerticalSplitPanel verticalSplitPanel = new VerticalSplitPanel();
         verticalSplitPanel.setSizeFull();
         verticalSplitPanel.setSplitPosition(65);
 
-        TabSheet saleSheet = new TabSheet();
+        final TabSheet saleSheet = new TabSheet();
         saleSheet.setSizeFull();
         saleSheet.addTab(new LeadsGrid(Lead.Status.NEW), "Новые Лиды", Fontello.INBOX_ALT);
         saleSheet.addTab(new SalesGrid(ExtaDomain.SALES_OPENED), "Мои Продажи", Fontello.DOLLAR);
         verticalSplitPanel.setFirstComponent(saleSheet);
 
-        HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
+        final HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
         horizontalSplitPanel.setSizeFull();
         horizontalSplitPanel.setSplitPosition(50);
 
-        TabSheet sheet = new TabSheet();
+        final TabSheet sheet = new TabSheet();
         sheet.setSizeFull();
 
         sheet.addTab(getChart(), "Мои Продажи", Fontello.CHART_LINE);
@@ -60,7 +59,7 @@ public class HomeView extends ExtaAbstractView {
         final TasksGrid tasksGrid = new TasksGrid(TasksGrid.Period.TODAY);
         tasksGrid.setToolbarVisible(false);
         tasksGrid.setMode(ExtaGrid.Mode.DETAIL_LIST);
-        Panel taskPanel = new Panel("Задачи");
+        final Panel taskPanel = new Panel("Задачи");
         taskPanel.setSizeFull();
         taskPanel.setContent(tasksGrid);
         horizontalSplitPanel.setSecondComponent(taskPanel);
@@ -70,10 +69,10 @@ public class HomeView extends ExtaAbstractView {
     }
 
     protected Component getChart() {
-        Chart chart = new Chart();
+        final Chart chart = new Chart();
         chart.setSizeFull();
 
-        Configuration configuration = new Configuration();
+        final Configuration configuration = new Configuration();
         configuration.getChart().setType(ChartType.LINE);
 //        configuration.getChart().setMarginRight(130);
 //        configuration.getChart().setMarginBottom(25);
@@ -83,7 +82,7 @@ public class HomeView extends ExtaAbstractView {
 
         configuration.getxAxis().setCategories("Янв", "Фев.", "Мар", "Апр","Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Нов", "Дек");
 
-        Axis yAxis = configuration.getyAxis();
+        final Axis yAxis = configuration.getyAxis();
 //        yAxis.setMin(-5d);
         yAxis.setTitle(new Title("Количество (шт.)"));
         yAxis.getTitle().setVerticalAlign(VerticalAlign.HIGH);
@@ -91,11 +90,11 @@ public class HomeView extends ExtaAbstractView {
         configuration
                 .getTooltip()
                 .setFormatter("''+ this.series.name +' ' + this.x +': '+ this.y +'шт.'");
-        PlotOptionsLine plotOptions = new PlotOptionsLine();
+        final PlotOptionsLine plotOptions = new PlotOptionsLine();
         plotOptions.setDataLabels(new Labels(true));
         configuration.setPlotOptions(plotOptions);
 
-        Legend legend = configuration.getLegend();
+        final Legend legend = configuration.getLegend();
         legend.setLayout(LayoutDirection.VERTICAL);
         legend.setHorizontalAlign(HorizontalAlign.RIGHT);
         legend.setVerticalAlign(VerticalAlign.TOP);

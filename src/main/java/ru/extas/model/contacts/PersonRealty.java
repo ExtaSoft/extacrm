@@ -2,8 +2,10 @@ package ru.extas.model.contacts;
 
 import ru.extas.model.common.IdentifiedObject;
 
-import javax.persistence.*;
-import javax.validation.constraints.Max;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -49,7 +51,7 @@ public class PersonRealty extends IdentifiedObject {
     public PersonRealty() {
     }
 
-    public PersonRealty(Person owner) {
+    public PersonRealty(final Person owner) {
         this.owner = owner;
     }
 
@@ -57,7 +59,7 @@ public class PersonRealty extends IdentifiedObject {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -65,7 +67,7 @@ public class PersonRealty extends IdentifiedObject {
         return owningPeriod;
     }
 
-    public void setOwningPeriod(int owningPeriod) {
+    public void setOwningPeriod(final int owningPeriod) {
         this.owningPeriod = owningPeriod;
     }
 
@@ -73,7 +75,7 @@ public class PersonRealty extends IdentifiedObject {
         return part;
     }
 
-    public void setPart(BigDecimal part) {
+    public void setPart(final BigDecimal part) {
         this.part = part;
     }
 
@@ -81,7 +83,7 @@ public class PersonRealty extends IdentifiedObject {
         return areaOfHouse;
     }
 
-    public void setAreaOfHouse(int areaOfHouse) {
+    public void setAreaOfHouse(final int areaOfHouse) {
         this.areaOfHouse = areaOfHouse;
     }
 
@@ -89,7 +91,7 @@ public class PersonRealty extends IdentifiedObject {
         return areaOfLand;
     }
 
-    public void setAreaOfLand(int areaOfLand) {
+    public void setAreaOfLand(final int areaOfLand) {
         this.areaOfLand = areaOfLand;
     }
 
@@ -97,7 +99,7 @@ public class PersonRealty extends IdentifiedObject {
         return adress;
     }
 
-    public void setAdress(String adress) {
+    public void setAdress(final String adress) {
         this.adress = adress;
     }
 
@@ -105,7 +107,7 @@ public class PersonRealty extends IdentifiedObject {
         return way2purchase;
     }
 
-    public void setWay2purchase(String way2purchase) {
+    public void setWay2purchase(final String way2purchase) {
         this.way2purchase = way2purchase;
     }
 
@@ -113,7 +115,7 @@ public class PersonRealty extends IdentifiedObject {
         return owner;
     }
 
-    public void setOwner(Person owner) {
+    public void setOwner(final Person owner) {
         this.owner = owner;
     }
 }

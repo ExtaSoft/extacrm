@@ -38,7 +38,7 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
 	}
 
     @Override
-    public ExtaEditForm<LegalEntity> createEditForm(LegalEntity legalEntity, boolean isInsert) {
+    public ExtaEditForm<LegalEntity> createEditForm(final LegalEntity legalEntity, final boolean isInsert) {
         return new LegalEntityEditForm(legalEntity);
     }
 
@@ -70,7 +70,7 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
     /** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 		actions.add(new NewObjectAction("Новый", "Ввод нового Юридического лица в систему"));
 		actions.add(new EditObjectAction("Изменить", "Редактирование контактных данных"));

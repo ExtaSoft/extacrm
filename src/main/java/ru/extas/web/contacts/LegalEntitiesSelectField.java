@@ -34,7 +34,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 	 *
 	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
-	public LegalEntitiesSelectField(Company company) {
+	public LegalEntitiesSelectField(final Company company) {
 		this.company = company;
 		setBuffered(true);
 		setWidth(600, Unit.PIXELS);
@@ -44,12 +44,12 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
-		LegalEntitiesGrid grid = new LegalEntitiesGrid(company) {
+		final LegalEntitiesGrid grid = new LegalEntitiesGrid(company) {
 			@Override
 			protected Container createContainer() {
 				final Property dataSource = getPropertyDataSource();
 				final Set<LegalEntity> list = dataSource != null ? (Set<LegalEntity>) dataSource.getValue() : new HashSet<LegalEntity>();
-				BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
+				final BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
 				if (list != null) {
 					for (final LegalEntity item : list) {
 						itemContainer.addBean(item);
@@ -62,11 +62,11 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 
 			@Override
 			protected List<UIAction> createActions() {
-				List<UIAction> actions = newArrayList();
+				final List<UIAction> actions = newArrayList();
 
 				actions.add(new UIAction("Добавить", "Выбрать юридическое лицо осуществляющуе деятельность на торговой точке", Fontello.DOC_NEW) {
 					@Override
-					public void fire(Object itemId) {
+					public void fire(final Object itemId) {
 						final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите юридическое лицо", company);
 						selectWindow.addCloseListener(e -> {
                             if (selectWindow.isSelectPressed()) {

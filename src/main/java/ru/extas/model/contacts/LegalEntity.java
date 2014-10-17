@@ -5,7 +5,6 @@ import ru.extas.model.sale.ProdCredit;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Set;
@@ -22,8 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @since 0.3
  */
 @Entity
-@DiscriminatorValue("LEGAL_ENTITY")
-@Table(name = "LEGAL_ENTITY")
+@Table(name = "LEGAL_ENTITY", indexes = {@Index(columnList = "NAME")})
 public class LegalEntity extends Contact{
 
     // Компания
@@ -84,11 +82,11 @@ public class LegalEntity extends Contact{
 
     // Генеральный директор
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Person director;
+    private Employee director;
 
     // Главный бухгалтер
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Person accountant;
+    private Employee accountant;
 
     // Банки и кредитные продукты
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -111,15 +109,15 @@ public class LegalEntity extends Contact{
         return regNpstIsSame;
     }
 
-    public void setRegNpstIsSame(boolean regNpstIsSame) {
+    public void setRegNpstIsSame(final boolean regNpstIsSame) {
         this.regNpstIsSame = regNpstIsSame;
     }
 
-    public Person getAccountant() {
+    public Employee getAccountant() {
         return accountant;
     }
 
-    public void setAccountant(Person accountant) {
+    public void setAccountant(final Employee accountant) {
         this.accountant = accountant;
     }
 
@@ -127,7 +125,7 @@ public class LegalEntity extends Contact{
         return kpp;
     }
 
-    public void setKpp(String kpp) {
+    public void setKpp(final String kpp) {
         this.kpp = kpp;
     }
 
@@ -135,7 +133,7 @@ public class LegalEntity extends Contact{
         return settlementAccount;
     }
 
-    public void setSettlementAccount(String settlementAccount) {
+    public void setSettlementAccount(final String settlementAccount) {
         this.settlementAccount = settlementAccount;
     }
 
@@ -143,7 +141,7 @@ public class LegalEntity extends Contact{
         return loroAccount;
     }
 
-    public void setLoroAccount(String loroAccount) {
+    public void setLoroAccount(final String loroAccount) {
         this.loroAccount = loroAccount;
     }
 
@@ -151,7 +149,7 @@ public class LegalEntity extends Contact{
         return bankName;
     }
 
-    public void setBankName(String bankName) {
+    public void setBankName(final String bankName) {
         this.bankName = bankName;
     }
 
@@ -159,7 +157,7 @@ public class LegalEntity extends Contact{
         return bic;
     }
 
-    public void setBic(String bik) {
+    public void setBic(final String bik) {
         this.bic = bik;
     }
 
@@ -167,7 +165,7 @@ public class LegalEntity extends Contact{
         return postAddress;
     }
 
-    public void setPostAddress(AddressInfo postAddress) {
+    public void setPostAddress(final AddressInfo postAddress) {
         this.postAddress = postAddress;
     }
 
@@ -212,7 +210,7 @@ public class LegalEntity extends Contact{
      *
      * @return a {@link ru.extas.model.contacts.Person} object.
      */
-    public Person getDirector() {
+    public Employee getDirector() {
         return director;
     }
 
@@ -221,7 +219,7 @@ public class LegalEntity extends Contact{
      *
      * @param director a {@link ru.extas.model.contacts.Person} object.
      */
-    public void setDirector(final Person director) {
+    public void setDirector(final Employee director) {
         this.director = director;
     }
 
@@ -294,7 +292,7 @@ public class LegalEntity extends Contact{
      *
      * @param files a {@link java.util.List} object.
      */
-    public void setFiles(List<LegalEntityFile> files) {
+    public void setFiles(final List<LegalEntityFile> files) {
         this.files = files;
     }
 }

@@ -8,7 +8,7 @@ import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
-import ru.extas.model.contacts.Contact;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.Insurance;
@@ -35,7 +35,6 @@ import ru.extas.web.util.ComponentUtil;
 
 import java.math.BigDecimal;
 
-import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -378,10 +377,10 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
             obj.setStartDate(obj.getPaymentDate().plusDays(1));
             obj.setEndDate(obj.getStartDate().plusYears(1).minusDays(1));
             final UserManagementService userService = lookup(UserManagementService.class);
-            final Person user = userService.getCurrentUserContact();
+            final Employee user = userService.getCurrentUserEmployee();
             if (user != null) {
-                if (!isEmpty(user.getWorkPlaces()))
-                    obj.setDealer(user.getWorkPlaces().iterator().next());
+                if (user.getWorkPlace() != null)
+                    obj.setDealer(user.getWorkPlace());
             }
         }
     }

@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
 
@@ -59,7 +58,7 @@ public class Policy extends AuditedObject {
      *
      * @param regNum the regNum to set
      */
-    public void setRegNum(String regNum) {
+    public void setRegNum(final String regNum) {
         this.regNum = regNum;
     }
 
@@ -77,7 +76,7 @@ public class Policy extends AuditedObject {
      *
      * @param bookTime the bookTime to set
      */
-    public void setBookTime(DateTime bookTime) {
+    public void setBookTime(final DateTime bookTime) {
         this.bookTime = bookTime;
     }
 
@@ -95,7 +94,7 @@ public class Policy extends AuditedObject {
      *
      * @param issueDate the issueDate to set
      */
-    public void setIssueDate(DateTime issueDate) {
+    public void setIssueDate(final DateTime issueDate) {
         this.issueDate = issueDate;
     }
 }

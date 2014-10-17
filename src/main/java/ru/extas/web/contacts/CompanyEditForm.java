@@ -3,24 +3,20 @@
  */
 package ru.extas.web.contacts;
 
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Contact;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -50,14 +46,10 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     private EditField emailField;
     @PropertyId("www")
     private EditField wwwField;
-    @PropertyId("regAddress.region")
+    @PropertyId("region")
     private ComboBox regionField;
-    @PropertyId("regAddress.city")
+    @PropertyId("city")
     private ComboBox cityField;
-    @PropertyId("regAddress.postIndex")
-    private EditField postIndexField;
-    @PropertyId("regAddress.streetBld")
-    private TextArea streetBldField;
 
     // Вкладка - "Владельцы"
     @PropertyId("owners")
@@ -76,12 +68,11 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     private ContactEmployeeField employeeField;
 
 
-    public CompanyEditForm(Company company) {
+    public CompanyEditForm(final Company company) {
         super(company.isNew() ?
                 "Ввод новой компании в систему" :
                 String.format("Редактирование компании: %s", company.getName()));
         final BeanItem<Company> beanItem = new BeanItem<>(company);
-        beanItem.expandProperty("regAddress");
 
         initForm(beanItem);
     }
@@ -95,8 +86,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
-        if (obj.getRegAddress() == null)
-            obj.setRegAddress(new AddressInfo());
     }
 
     /**
@@ -116,7 +105,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
      */
     @Override
     protected ComponentContainer createEditFields(final Company obj) {
-        TabSheet tabsheet = new TabSheet();
+        final TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeUndefined();
 
         // Вкладка - "Общая информация"
@@ -203,7 +192,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
         cityField = new CitySelect();
         cityField.setDescription("Введите город регистрации");
-        if (obj.getRegAddress().getCity() != null) cityField.addItem(obj.getRegAddress().getCity());
+        if (obj.getCity() != null) cityField.addItem(obj.getCity());
         cityField.addValueChangeListener(event -> {
             final String newCity = (String) event.getProperty().getValue();
             final String region = lookup(SupplementService.class).findRegionByCity(newCity);
@@ -212,18 +201,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         });
         formLayout.addComponent(cityField);
 
-        postIndexField = new EditField("Почтовый индекс");
-        postIndexField.setColumns(8);
-        postIndexField.setInputPrompt("Индекс");
-        postIndexField.setNullRepresentation("");
-        formLayout.addComponent(postIndexField);
-
-        streetBldField = new TextArea("Адрес");
-        streetBldField.setRows(2);
-        streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
-        streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
-        streetBldField.setNullRepresentation("");
-        formLayout.addComponent(streetBldField);
         return formLayout;
     }
 }

@@ -11,7 +11,6 @@ import ru.extas.web.commons.*;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * <p>LeadsGrid class.</p>
@@ -32,7 +31,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 	 *
 	 * @param status a {@link ru.extas.model.lead.Lead.Status} object.
 	 */
-	public LeadsGrid(Lead.Status status) {
+	public LeadsGrid(final Lead.Status status) {
 		super(Lead.class, false);
 		this.status = status;
 		initialize();
@@ -49,7 +48,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 	}
 
     @Override
-    public ExtaEditForm<Lead> createEditForm(Lead lead, boolean isInsert) {
+    public ExtaEditForm<Lead> createEditForm(final Lead lead, final boolean isInsert) {
         final LeadEditForm editForm = new LeadEditForm(lead, isInsert && status == Lead.Status.QUALIFIED);
         editForm.setReadOnly(status != Lead.Status.NEW && !isInsert);
         return editForm;
@@ -57,7 +56,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 
     /** {@inheritDoc} */
 	@Override
-	protected void initTable(Mode mode) {
+	protected void initTable(final Mode mode) {
 		super.initTable(mode);
 		// Покозываем колонку результата в закрытых
 		if (status == Lead.Status.CLOSED)
@@ -80,7 +79,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 		if (status == Lead.Status.NEW || status == Lead.Status.QUALIFIED) {
 			actions.add(new NewObjectAction("Новый", "Ввод нового лида"));
@@ -123,7 +122,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 		return actions;
 	}
 
-    public void doQualifyLead(Object itemId) {
+    public void doQualifyLead(final Object itemId) {
         final Lead curObj = GridItem.extractBean(table.getItem(itemId));
 
         final LeadEditForm editWin = new LeadEditForm(curObj, true);

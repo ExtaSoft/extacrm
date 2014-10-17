@@ -6,12 +6,10 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
-import org.vaadin.data.collectioncontainer.CollectionContainer;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.PersonIncome;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
-import ru.extas.web.commons.component.CardPanel;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.converters.StringToMoneyConverter;
 
@@ -38,7 +36,7 @@ public class PersonIncomeField extends CustomField<List> {
     private VerticalLayout root;
     private Table table;
 
-    public PersonIncomeField(Person person) {
+    public PersonIncomeField(final Person person) {
         this.person = person;
         addStyleName(ExtaTheme.NO_CAPTION_COMPLEX_FIELD);
     }
@@ -55,7 +53,7 @@ public class PersonIncomeField extends CustomField<List> {
         root.setMargin(new MarginInfo(true, false, true, false));
         root.setSpacing(true);
 
-        Button addBtn = new Button("Добавить", Fontello.PLUS);
+        final Button addBtn = new Button("Добавить", Fontello.PLUS);
         addBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         addBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         addBtn.addClickListener(click -> itemContainer.addBean(new PersonIncome(person)));
@@ -72,7 +70,7 @@ public class PersonIncomeField extends CustomField<List> {
 
         table.setEditable(true);
         table.addGeneratedColumn("overallIncome", (source, itemId, columnId) -> {
-                    PersonIncome income = ((BeanItem<PersonIncome>) source.getItem(itemId)).getBean();
+                    final PersonIncome income = ((BeanItem<PersonIncome>) source.getItem(itemId)).getBean();
                     BigDecimal incomeSum = BigDecimal.ZERO;
                     if (income.getIncome() != null)
                         incomeSum = incomeSum.add(income.getIncome());
@@ -104,7 +102,7 @@ public class PersonIncomeField extends CustomField<List> {
                 final Object value = container.getContainerProperty(itemId, propertyId).getValue();
                 if (value != null)
                     options.add((String) value);
-                ComboBox typeField = new ComboBox("Тип дохода", options);
+                final ComboBox typeField = new ComboBox("Тип дохода", options);
                 typeField.setWidth(100, Unit.PERCENTAGE);
                 typeField.setNullSelectionAllowed(false);
                 typeField.setNewItemsAllowed(true);
@@ -113,14 +111,14 @@ public class PersonIncomeField extends CustomField<List> {
                 typeField.addValueChangeListener(e -> updateValue(false));
                 return typeField;
             } else if ("income".equals(propertyId)) {
-                EditField incomeField = new EditField("Доход");
+                final EditField incomeField = new EditField("Доход");
                 incomeField.setWidth(100, Unit.PERCENTAGE);
                 incomeField.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
                 incomeField.addStyleName(ExtaTheme.TEXTFIELD_BORDERLESS);
                 incomeField.addValueChangeListener(e -> updateValue(false));
                 return incomeField;
             } else if ("spouseIncome".equals(propertyId)) {
-                EditField spouseIncomeField = new EditField("Доход супруги(а)");
+                final EditField spouseIncomeField = new EditField("Доход супруги(а)");
                 spouseIncomeField.setWidth(100, Unit.PERCENTAGE);
                 spouseIncomeField.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
                 spouseIncomeField.addStyleName(ExtaTheme.TEXTFIELD_BORDERLESS);
@@ -139,9 +137,9 @@ public class PersonIncomeField extends CustomField<List> {
         return root;
     }
 
-    private void updateTableValue(List<PersonIncome> list, boolean isItemSetChanged) {
-        BigDecimal incomeSum = getIncomSum(list, PersonIncome::getIncome);
-        BigDecimal spouseIncomeSum = getIncomSum(list, PersonIncome::getSpouseIncome);
+    private void updateTableValue(final List<PersonIncome> list, final boolean isItemSetChanged) {
+        final BigDecimal incomeSum = getIncomSum(list, PersonIncome::getIncome);
+        final BigDecimal spouseIncomeSum = getIncomSum(list, PersonIncome::getSpouseIncome);
         table.setColumnFooter("income", lookup(StringToMoneyConverter.class).convertToPresentation(incomeSum, null));
         table.setColumnFooter("spouseIncome", lookup(StringToMoneyConverter.class).convertToPresentation(spouseIncomeSum, null));
         table.setColumnFooter("overallIncome", lookup(StringToMoneyConverter.class).convertToPresentation(spouseIncomeSum.add(incomeSum), null));
@@ -150,9 +148,9 @@ public class PersonIncomeField extends CustomField<List> {
         table.setPageLength(table.size());
     }
 
-    private BigDecimal getIncomSum(List<PersonIncome> list, Function<PersonIncome, BigDecimal> func) {
+    private BigDecimal getIncomSum(final List<PersonIncome> list, final Function<PersonIncome, BigDecimal> func) {
         BigDecimal incomeSum = BigDecimal.ZERO;
-        for (PersonIncome income : list) {
+        for (final PersonIncome income : list) {
             final BigDecimal augend = func.apply(income);
             if (augend != null)
                 incomeSum = incomeSum.add(augend);
@@ -165,8 +163,8 @@ public class PersonIncomeField extends CustomField<List> {
         return List.class;
     }
 
-    private void updateValue(boolean isItemSetChanged) {
-        List<PersonIncome> list = newArrayList(itemContainer.getItemIds());
+    private void updateValue(final boolean isItemSetChanged) {
+        final List<PersonIncome> list = newArrayList(itemContainer.getItemIds());
         setValue(list);
         updateTableValue(list, isItemSetChanged);
     }

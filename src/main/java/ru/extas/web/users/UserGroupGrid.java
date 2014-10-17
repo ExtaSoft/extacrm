@@ -23,7 +23,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
     }
 
     @Override
-    public ExtaEditForm<UserGroup> createEditForm(UserGroup userGroup, boolean isInsert) {
+    public ExtaEditForm<UserGroup> createEditForm(final UserGroup userGroup, final boolean isInsert) {
         return new UserGroupEditForm(userGroup);
     }
 
@@ -44,7 +44,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
     /** {@inheritDoc} */
     @Override
     protected List<UIAction> createActions() {
-        List<UIAction> actions = newArrayList();
+        final List<UIAction> actions = newArrayList();
 
         actions.add(new NewObjectAction("Новая", "Ввод новой группы пользователей в систему", Fontello.USER_ADD));
         actions.add(new EditObjectAction("Изменить", "Редактирование группы", Fontello.USER_1));
@@ -54,7 +54,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
             public void fire(final Object itemId) {
                 final UserGroup curObj = GridItem.extractBean(table.getItem(itemId));
 
-                UserGroup copy = curObj.createCopy();
+                final UserGroup copy = curObj.createCopy();
                 copy.setName("Копия - " + curObj.getName());
                 doEditNewObject(copy);
             }

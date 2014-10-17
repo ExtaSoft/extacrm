@@ -34,14 +34,14 @@ public class OnDemandFileDownloader extends FileDownloader {
      *
      * @param onDemandStreamResource a {@link ru.extas.web.commons.OnDemandFileDownloader.OnDemandStreamResource} object.
      */
-    public OnDemandFileDownloader(OnDemandStreamResource onDemandStreamResource) {
+    public OnDemandFileDownloader(final OnDemandStreamResource onDemandStreamResource) {
         super(new StreamResource(onDemandStreamResource, "some.file.ext"));
         this.onDemandStreamResource = checkNotNull(onDemandStreamResource, "The given on-demand stream resource may never be null!");
         setErrorHandler(new ErrorHandler() {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public void error(com.vaadin.server.ErrorEvent event) {
+            public void error(final com.vaadin.server.ErrorEvent event) {
                 NotificationUtil.showError("Ошибка печати файла", event.getThrowable().getMessage());
             }
         });
@@ -50,7 +50,7 @@ public class OnDemandFileDownloader extends FileDownloader {
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleConnectorRequest(VaadinRequest request, VaadinResponse response, String path) throws IOException {
+    public boolean handleConnectorRequest(final VaadinRequest request, final VaadinResponse response, final String path) throws IOException {
         getResource().setFilename(onDemandStreamResource.getFilename());
         return super.handleConnectorRequest(request, response, path);
     }

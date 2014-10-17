@@ -1,10 +1,8 @@
 package ru.extas.web.commons;
 
 import ru.extas.model.common.IdentifiedObject_;
-import ru.extas.model.security.SecuredObject;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.Person_;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.*;
 import ru.extas.server.security.UserManagementService;
@@ -47,14 +45,14 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
     }
 
     @Override
-    protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
+    protected Predicate createPredicate4Target(final CriteriaBuilder cb, final CriteriaQuery<?> cq, final SecureTarget target) {
         Predicate predicate = null;
-        Root<TEntityType> objectRoot = (Root<TEntityType>) getFirst(cq.getRoots(), null);
-        Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
+        final Root<TEntityType> objectRoot = (Root<TEntityType>) getFirst(cq.getRoots(), null);
+        final Employee curUserContact = lookup(UserManagementService.class).getCurrentUserEmployee();
 
         switch (target) {
             case OWNONLY: {
-                Join<UserObjectAccess, Person> usersRoot =
+                final Join<UserObjectAccess, Employee> usersRoot =
                         getSecurityRoleJoin(objectRoot)
                                 .join(ObjectSecurityRule_.users, JoinType.LEFT)
                                 .join(UserObjectAccess_.user, JoinType.LEFT);
@@ -62,12 +60,13 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
                 break;
             }
             case SALE_POINT: {
-                SetJoin<ObjectSecurityRule, SalePoint> salePointsRoot =
+                final SetJoin<ObjectSecurityRule, SalePoint> salePointsRoot =
                         getSecurityRoleJoin(objectRoot)
                                 .join(ObjectSecurityRule_.salePoints, JoinType.LEFT);
-                Set<SalePoint> workPlaces = curUserContact.getWorkPlaces();
+                final Set<SalePoint> workPlaces = newHashSet();
+                workPlaces.add(curUserContact.getWorkPlace());
                 if (workPlaces.isEmpty()) {
-                    SalePoint salePoint = new SalePoint();
+                    final SalePoint salePoint = new SalePoint();
                     salePoint.setId("00-00");
                     workPlaces.add(salePoint);
                 }
@@ -75,13 +74,15 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
                 break;
             }
             case CORPORATE: {
-                SetJoin<ObjectSecurityRule, Company> companiesRoot = getSecurityRoleJoin(objectRoot)
+                final SetJoin<ObjectSecurityRule, Company> companiesRoot = getSecurityRoleJoin(objectRoot)
                         .join(ObjectSecurityRule_.companies, JoinType.LEFT);
-                Set<Company> companies = curUserContact.getEmployers();
-                Set<SalePoint> workPlaces = curUserContact.getWorkPlaces();
+                final Set<Company> companies = newHashSet();
+                companies.add(curUserContact.getCompany());
+                final Set<SalePoint> workPlaces = newHashSet();
+                workPlaces.add(curUserContact.getWorkPlace());
                 workPlaces.forEach(p -> companies.add(p.getCompany()));
                 if (companies.isEmpty()) {
-                    Company company = new Company();
+                    final Company company = new Company();
                     company.setId("00-00");
                     companies.add(company);
                 }
@@ -95,7 +96,7 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
         return predicate;
     }
 
-    private Join<TEntityType, ObjectSecurityRule> getSecurityRoleJoin(Root<TEntityType> objectRoot) {
+    private Join<TEntityType, ObjectSecurityRule> getSecurityRoleJoin(final Root<TEntityType> objectRoot) {
         if (securityRuleJoin == null)
             securityRuleJoin = objectRoot.join(SecuredObject_.securityRule, JoinType.LEFT);
         return securityRuleJoin;
@@ -111,26 +112,26 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
         securityRuleJoin = null;
     }
 
-    private Predicate composeWithAreaFilter(CriteriaBuilder cb, Root<TEntityType> objectRoot, Predicate predicate) {
-        UserProfile curUserProfile = lookup(UserManagementService.class).getCurrentUser();
-        Set<String> permitRegions = newHashSet(curUserProfile.getPermitRegions());
-        Set<String> permitBrands = newHashSet(curUserProfile.getPermitBrands());
-        Set<UserGroup> groups = curUserProfile.getGroupList();
+    private Predicate composeWithAreaFilter(final CriteriaBuilder cb, final Root<TEntityType> objectRoot, Predicate predicate) {
+        final UserProfile curUserProfile = lookup(UserManagementService.class).getCurrentUser();
+        final Set<String> permitRegions = newHashSet(curUserProfile.getPermitRegions());
+        final Set<String> permitBrands = newHashSet(curUserProfile.getPermitBrands());
+        final Set<UserGroup> groups = curUserProfile.getGroupList();
         if (groups != null) {
-            for (UserGroup group : groups) {
+            for (final UserGroup group : groups) {
                 permitBrands.addAll(group.getPermitBrands());
                 permitRegions.addAll(group.getPermitRegions());
             }
         }
         if (!permitRegions.isEmpty()) {
-            Predicate regPredicate =
+            final Predicate regPredicate =
                     getSecurityRoleJoin(objectRoot)
                             .join(ObjectSecurityRule_.regions, JoinType.LEFT)
                             .in(permitRegions);
             predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
         }
         if (!permitBrands.isEmpty()) {
-            Predicate brPredicate =
+            final Predicate brPredicate =
                     getSecurityRoleJoin(objectRoot)
                             .join(ObjectSecurityRule_.brands, JoinType.LEFT)
                             .in(permitBrands);
@@ -140,23 +141,23 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
     }
 
     @Override
-    public boolean isPermitted4OwnedObj(String itemId, SecureAction action) {
-        Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
+    public boolean isPermitted4OwnedObj(final String itemId, final SecureAction action) {
+        final Employee curUserContact = lookup(UserManagementService.class).getCurrentUserEmployee();
 
-        EntityManager em = lookup(EntityManager.class);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery cq = cb.createQuery();
-        Root<TEntityType> root = cq.from(getEntityClass());
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery cq = cb.createQuery();
+        final Root<TEntityType> root = cq.from(getEntityClass());
 
-        final MapJoin<ObjectSecurityRule, Person, UserObjectAccess> join = getSecurityRoleJoin(root)
+        final MapJoin<ObjectSecurityRule, Employee, UserObjectAccess> join = getSecurityRoleJoin(root)
                 .join(ObjectSecurityRule_.users, JoinType.LEFT);
         cq.where(cb.and(
                 cb.equal(join.join(UserObjectAccess_.user, JoinType.LEFT), curUserContact),
                 cb.equal(root.get(IdentifiedObject_.id), itemId)));
         cq.select(join.value().get(UserObjectAccess_.role));
 
-        Query qry = em.createQuery(cq);
-        AccessRole result = (AccessRole) qry.getSingleResult();
+        final Query qry = em.createQuery(cq);
+        final AccessRole result = (AccessRole) qry.getSingleResult();
         if(result != null){
             switch (result) {
                 case READER:

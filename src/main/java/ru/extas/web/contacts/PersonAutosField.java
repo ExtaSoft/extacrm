@@ -5,7 +5,6 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
-import org.joda.time.LocalDate;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.PersonAuto;
 import ru.extas.web.commons.ExtaTheme;
@@ -14,17 +13,12 @@ import ru.extas.web.commons.component.CardPanel;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.component.YearField;
-import ru.extas.web.commons.converters.StringToPercentConverter;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Max;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * @author Valery Orlov
@@ -37,7 +31,7 @@ public class PersonAutosField extends CustomField<List> {
     private BeanItemContainer<PersonAuto> itemContainer;
     private VerticalLayout root;
 
-    public PersonAutosField(Person person) {
+    public PersonAutosField(final Person person) {
         this.person = person;
         addStyleName(ExtaTheme.NO_CAPTION_COMPLEX_FIELD);
     }
@@ -52,7 +46,7 @@ public class PersonAutosField extends CustomField<List> {
         root.setMargin(new MarginInfo(true, false, true, false));
         root.setSpacing(true);
 
-        Button addBtn = new Button("Добавить", Fontello.PLUS);
+        final Button addBtn = new Button("Добавить", Fontello.PLUS);
         addBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         addBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         addBtn.addClickListener(click -> {
@@ -61,16 +55,16 @@ public class PersonAutosField extends CustomField<List> {
         });
         root.addComponent(addBtn);
 
-        for (PersonAuto auto : list)
+        for (final PersonAuto auto : list)
             addAuto(auto);
 
         return root;
     }
 
-    private void addAuto(PersonAuto auto) {
-        BeanItem<PersonAuto> autoItem = itemContainer.addBean(auto);
+    private void addAuto(final PersonAuto auto) {
+        final BeanItem<PersonAuto> autoItem = itemContainer.addBean(auto);
 
-        ComponentContainer dataLine = new FormLayout();
+        final ComponentContainer dataLine = new FormLayout();
         dataLine.addStyleName(ExtaTheme.FORMLAYOUT_LIGHT);
 
         final Button delItemBtn = new Button("Удалить");
@@ -87,37 +81,37 @@ public class PersonAutosField extends CustomField<List> {
         });
 
         // Марка, модель
-        EditField brandModelField = new EditField("Марка, модель");
+        final EditField brandModelField = new EditField("Марка, модель");
         brandModelField.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         brandModelField.setPropertyDataSource(autoItem.getItemProperty("brandModel"));
         brandModelField.addValueChangeListener(event -> updateValue());
         dataLine.addComponent(brandModelField);
         // год выпуска
-        YearField yearOfManufactureField = new YearField("Год выпуска");
+        final YearField yearOfManufactureField = new YearField("Год выпуска");
         yearOfManufactureField.addStyleName(ExtaTheme.DATEFIELD_SMALL);
         yearOfManufactureField.setPropertyDataSource(autoItem.getItemProperty("yearOfManufacture"));
         yearOfManufactureField.addValueChangeListener(event -> updateValue());
         dataLine.addComponent(yearOfManufactureField);
         // Гос. рег. №
-        EditField regNumField = new EditField("Гос. рег. №");
+        final EditField regNumField = new EditField("Гос. рег. №");
         regNumField.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         regNumField.setPropertyDataSource(autoItem.getItemProperty("regNum"));
         regNumField.addValueChangeListener(event -> updateValue());
         dataLine.addComponent(regNumField);
         // Покупная стоимость
-        EditField priceField = new EditField("Покупная стоимость");
+        final EditField priceField = new EditField("Покупная стоимость");
         priceField.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         priceField.setPropertyDataSource(autoItem.getItemProperty("price"));
         priceField.addValueChangeListener(event -> updateValue());
         dataLine.addComponent(priceField);
         // Дата приобретения
-        LocalDateField purchaseDateField = new LocalDateField("Дата приобретения");
+        final LocalDateField purchaseDateField = new LocalDateField("Дата приобретения");
         purchaseDateField.addStyleName(ExtaTheme.DATEFIELD_SMALL);
         purchaseDateField.setPropertyDataSource(autoItem.getItemProperty("purchaseDate"));
         purchaseDateField.addValueChangeListener(event -> updateValue());
         dataLine.addComponent(purchaseDateField);
         // Способ приобретения (покупка, покупка с пробегом, автокредит, покупка по ген. довер.)
-        ComboBox way2purchaseField = new ComboBox("Способ приобретения",
+        final ComboBox way2purchaseField = new ComboBox("Способ приобретения",
                 newArrayList("Покупка", "Ппокупка с пробегом", "Автокредит", "Покупка по ген. довер."));
         way2purchaseField.setWidth(15, Unit.EM);
         way2purchaseField.setNullSelectionAllowed(false);

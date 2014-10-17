@@ -31,7 +31,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
      *
      * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
      */
-    public SalesGrid(ExtaDomain domain) {
+    public SalesGrid(final ExtaDomain domain) {
         super(Sale.class, false);
         this.domain = domain;
         initialize();
@@ -46,7 +46,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     }
 
     @Override
-    public ExtaEditForm<Sale> createEditForm(Sale sale, boolean isInsert) {
+    public ExtaEditForm<Sale> createEditForm(final Sale sale, final boolean isInsert) {
         final SaleEditForm saleEditForm = new SaleEditForm(sale);
         saleEditForm.setReadOnly(domain != ExtaDomain.SALES_OPENED);
         return saleEditForm;
@@ -56,7 +56,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
      * {@inheritDoc}
      */
     @Override
-    protected void initTable(Mode mode) {
+    protected void initTable(final Mode mode) {
         super.initTable(mode);
         if (domain == ExtaDomain.SALES_CANCELED)
             table.setColumnCollapsed("result", false);
@@ -84,7 +84,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
      */
     @Override
     protected List<UIAction> createActions() {
-        List<UIAction> actions = newArrayList();
+        final List<UIAction> actions = newArrayList();
 
         if (domain == ExtaDomain.SALES_OPENED)
             actions.add(new NewObjectAction("Новый", "Ввод новой продажи"));
@@ -94,7 +94,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
         if (domain == ExtaDomain.SALES_OPENED) {
             actions.add(new ItemAction("Завершить", "Успешное завершение продажи", FontAwesome.FLAG_CHECKERED) {
                 @Override
-                public void fire(Object itemId) {
+                public void fire(final Object itemId) {
                     final Sale sale = GridItem.extractBean(table.getItem(itemId));
                     lookup(SaleRepository.class).finishSale(sale, Sale.Result.SUCCESSFUL);
                     refreshContainer();
@@ -105,10 +105,10 @@ public class SalesGrid extends ExtaGrid<Sale> {
             actions.add(new UIActionGroup("Отменить", "Отмена продажи", Fontello.CANCEL) {
                 @Override
                 protected List<UIAction> makeActionsGroup() {
-                    List<UIAction> group = newArrayList();
+                    final List<UIAction> group = newArrayList();
                     group.add(new ItemAction("Отказ контрагента (банка, дилера)", "Отказ банка или дилера в предоставлении услуги", FontAwesome.BANK) {
                         @Override
-                        public void fire(Object itemId) {
+                        public void fire(final Object itemId) {
                             final Sale sale = GridItem.extractBean(table.getItem(itemId));
                             lookup(SaleRepository.class).finishSale(sale, Sale.Result.VENDOR_REJECTED);
                             refreshContainer();
@@ -118,7 +118,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
 
                     group.add(new ItemAction("Отказ клиента", "Отказ клиента от услуги", FontAwesome.USER) {
                         @Override
-                        public void fire(Object itemId) {
+                        public void fire(final Object itemId) {
                             final Sale sale = GridItem.extractBean(table.getItem(itemId));
                             lookup(SaleRepository.class).finishSale(sale, Sale.Result.CLIENT_REJECTED);
                             refreshContainer();

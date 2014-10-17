@@ -1,8 +1,11 @@
 package ru.extas.web.contacts;
 
+import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -56,14 +59,14 @@ public class PersonSelect extends CustomField<Person> {
     @Override
     protected Component initContent() {
 
-        VerticalLayout container = new VerticalLayout();
+        final VerticalLayout container = new VerticalLayout();
         container.setSpacing(true);
 
-        CssLayout nameLay = new CssLayout();
+        final CssLayout nameLay = new CssLayout();
         nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
         if (!isReadOnly()) {
-            PersonSelectField personSelectField = new PersonSelectField("", "Введите или выберите имя контакта");
+            final PersonSelectField personSelectField = new PersonSelectField("", "Введите или выберите имя контакта");
             personSelectField.setInputPrompt("Фамилия Имя Отчество");
             personSelectField.setPropertyDataSource(getPropertyDataSource());
             personSelectField.setNewItemsAllowed(true);
@@ -92,7 +95,7 @@ public class PersonSelect extends CustomField<Person> {
             personSelectField.addValueChangeListener(event -> refreshFields((Person) personSelectField.getConvertedValue()));
             nameLay.addComponent(personSelectField);
 
-            Button searchBtn = new Button("Поиск", event -> {
+            final Button searchBtn = new Button("Поиск", event -> {
 
                 final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
                 selectWindow.addCloseListener(e -> {
@@ -126,8 +129,8 @@ public class PersonSelect extends CustomField<Person> {
             nameLay.addComponent(viewBtn);
 
         } else {
-            Label name = new Label();
-            Person person = (Person) getPropertyDataSource().getValue();
+            final Label name = new Label();
+            final Person person = (Person) getPropertyDataSource().getValue();
             if(person != null)
                 name.setValue(person.getName());
             nameLay.addComponent(name);
@@ -135,7 +138,7 @@ public class PersonSelect extends CustomField<Person> {
 
         container.addComponent(nameLay);
 
-        HorizontalLayout fieldsContainer = new HorizontalLayout();
+        final HorizontalLayout fieldsContainer = new HorizontalLayout();
         fieldsContainer.setSpacing(true);
         // Дата рождения
         birthdayField = new Label();
@@ -167,7 +170,7 @@ public class PersonSelect extends CustomField<Person> {
             person = new Person();
         }
 
-        BeanItem<Person> personItem = new BeanItem<>(person);
+        final BeanItem<Person> personItem = new BeanItem<>(person);
         // Дата рождения
         birthdayField.setPropertyDataSource(personItem.getItemProperty("birthday"));
         // Телефон
@@ -184,14 +187,44 @@ public class PersonSelect extends CustomField<Person> {
         return Person.class;
     }
 
-    private class PersonSelectField extends AbstractContactSelect<Person> {
+    private class PersonSelectField extends ComboBox {
+
+        private static final long serialVersionUID = -8005905898383483037L;
+        protected ExtaDataContainer<Person> container;
 
         protected PersonSelectField(final String caption) {
-            super(caption, Person.class);
+            this(caption, "Выберите существующий контакт или введите новый");
         }
 
         protected PersonSelectField(final String caption, final String description) {
-            super(caption, description, Person.class);
+                super(caption);
+
+                // Преконфигурация
+                setDescription(description);
+                setInputPrompt("контакт...");
+                setWidth(25, Unit.EM);
+                setImmediate(true);
+
+                // Инициализация контейнера
+                container = new ExtaDataContainer<>(Person.class);
+
+                // Устанавливаем контент выбора
+                setFilteringMode(FilteringMode.CONTAINS);
+                setContainerDataSource(container);
+                setItemCaptionMode(ItemCaptionMode.PROPERTY);
+                setItemCaptionPropertyId("name");
+                setConverter(new SingleSelectConverter<Person>(this));
+
+                // Функционал добавления нового контакта
+                setNullSelectionAllowed(false);
+                setNewItemsAllowed(false);
+            }
+
+            /**
+             * <p>refreshContainer.</p>
+             */
+        public void refreshContainer() {
+            container.refresh();
         }
     }
 }

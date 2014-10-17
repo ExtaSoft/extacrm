@@ -34,12 +34,12 @@ public class ExtaUserEntityManager extends UserEntityManager {
 
     /** {@inheritDoc} */
     @Override
-    public UserEntity findUserById(String userId) {
-        UserProfile user = lookup(UserManagementService.class).findUserByLogin(userId);
-        UserEntity userEntity = new UserEntity(user.getLogin());
-        userEntity.setEmail(user.getContact().getEmail());
-        userEntity.setFirstName(user.getContact().getName());
-        userEntity.setLastName(user.getContact().getName());
+    public UserEntity findUserById(final String userId) {
+        final UserProfile user = lookup(UserManagementService.class).findUserByLogin(userId);
+        final UserEntity userEntity = new UserEntity(user.getLogin());
+        userEntity.setEmail(user.getEmployee().getEmail());
+        userEntity.setFirstName(user.getEmployee().getName());
+        userEntity.setLastName(user.getEmployee().getName());
         // TODO: Добавить группы пользователей и роль
         return userEntity;
     }
@@ -47,31 +47,31 @@ public class ExtaUserEntityManager extends UserEntityManager {
     /** {@inheritDoc} */
     @Override
     public UserQuery createNewUserQuery() {
-        ExtaUserQuery query = new ExtaUserQuery();
+        final ExtaUserQuery query = new ExtaUserQuery();
         return query;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Boolean checkPassword(String userId, String password) {
+    public Boolean checkPassword(final String userId, final String password) {
         return Boolean.TRUE;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void insertUser(User user) {
+    public void insertUser(final User user) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(User updatedUser) {
+    public void updateUser(final User updatedUser) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void deleteUser(String userId) {
+    public void deleteUser(final String userId) {
         throw new UnsupportedOperationException();
     }
 
@@ -91,55 +91,55 @@ public class ExtaUserEntityManager extends UserEntityManager {
 
     /** {@inheritDoc} */
     @Override
-    public User createNewUser(String userId) {
+    public User createNewUser(final String userId) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<User> findUserByQueryCriteria(UserQueryImpl query, Page page) {
+    public List<User> findUserByQueryCriteria(final UserQueryImpl query, final Page page) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public long findUserCountByQueryCriteria(UserQueryImpl query) {
+    public long findUserCountByQueryCriteria(final UserQueryImpl query) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<Group> findGroupsByUser(String userId) {
+    public List<Group> findGroupsByUser(final String userId) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public IdentityInfoEntity findUserInfoByUserIdAndKey(String userId, String key) {
+    public IdentityInfoEntity findUserInfoByUserIdAndKey(final String userId, final String key) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<String> findUserInfoKeysByUserIdAndType(String userId, String type) {
+    public List<String> findUserInfoKeysByUserIdAndType(final String userId, final String type) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<User> findPotentialStarterUsers(String proceDefId) {
+    public List<User> findPotentialStarterUsers(final String proceDefId) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<User> findUsersByNativeQuery(Map<String, Object> parameterMap, int firstResult, int maxResults) {
+    public List<User> findUsersByNativeQuery(final Map<String, Object> parameterMap, final int firstResult, final int maxResults) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     @Override
-    public long findUserCountByNativeQuery(Map<String, Object> parameterMap) {
+    public long findUserCountByNativeQuery(final Map<String, Object> parameterMap) {
         throw new UnsupportedOperationException();
     }
 }

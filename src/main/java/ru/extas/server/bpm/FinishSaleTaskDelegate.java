@@ -31,21 +31,21 @@ public class FinishSaleTaskDelegate implements JavaDelegate {
 /** {@inheritDoc} */
 @Transactional
 @Override
-public void execute(DelegateExecution execution) throws Exception {
+public void execute(final DelegateExecution execution) throws Exception {
 
-	Map<String, Object> processVariables = execution.getVariables();
+	final Map<String, Object> processVariables = execution.getVariables();
 	if (processVariables.containsKey("lead")) {
-		Lead lead = (Lead) processVariables.get("lead");
+		final Lead lead = (Lead) processVariables.get("lead");
 		lead.setStatus(Lead.Status.CLOSED);
 		lead.setResult(Lead.Result.SUCCESSFUL);
-		LeadRepository leadRepository = lookup(LeadRepository.class);
+		final LeadRepository leadRepository = lookup(LeadRepository.class);
 		leadRepository.secureSave(lead);
 	}
 	if (processVariables.containsKey("sale")) {
-		Sale sale = (Sale) processVariables.get("sale");
+		final Sale sale = (Sale) processVariables.get("sale");
 		sale.setStatus(Sale.Status.FINISHED);
 		sale.setResult(Sale.Result.SUCCESSFUL);
-		SaleRepository saleRepository = lookup(SaleRepository.class);
+		final SaleRepository saleRepository = lookup(SaleRepository.class);
 		saleRepository.secureSave(sale);
 	}
 

@@ -20,19 +20,23 @@ import javax.validation.constraints.Size;
 @Table(name = "MOTOR_MODEL")
 public class MotorModel  extends AuditedObject {
 
-    @Column(nullable = false)
-    @Size(max = 255)
+    public static final int NAME_LENGTH = 100;
+    public static final int CODE_LENGTH = 50;
+
+    @Column(nullable = false, length = NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String name;
 
-    @Size(max = 255)
+    @Column(length = CODE_LENGTH)
+    @Size(max = CODE_LENGTH)
     private String code;
 
-    @Column(nullable = false)
-    @Size(max = 255)
+    @Column(nullable = false, length = MotorType.NAME_LENGTH)
+    @Size(max = MotorType.NAME_LENGTH)
     private String type;
 
-    @Column(nullable = false)
-    @Size(max = 255)
+    @Column(nullable = false, length = MotorBrand.NAME_LENGTH)
+    @Size(max = MotorBrand.NAME_LENGTH)
     private String brand;
 
     /**
@@ -49,7 +53,7 @@ public class MotorModel  extends AuditedObject {
      *
      * @param name a {@link java.lang.String} object.
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -67,7 +71,7 @@ public class MotorModel  extends AuditedObject {
      *
      * @param code a {@link java.lang.String} object.
      */
-    public void setCode(String code) {
+    public void setCode(final String code) {
         this.code = code;
     }
 
@@ -85,7 +89,7 @@ public class MotorModel  extends AuditedObject {
      *
      * @param type a {@link java.lang.String} object.
      */
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -103,7 +107,7 @@ public class MotorModel  extends AuditedObject {
      *
      * @param brand a {@link java.lang.String} object.
      */
-    public void setBrand(String brand) {
+    public void setBrand(final String brand) {
         this.brand = brand;
     }
 }

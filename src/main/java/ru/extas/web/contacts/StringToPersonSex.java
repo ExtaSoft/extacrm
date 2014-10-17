@@ -3,7 +3,6 @@
  */
 package ru.extas.web.contacts;
 
-import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.Person;
@@ -30,7 +29,7 @@ public class StringToPersonSex extends String2EnumConverter<Person.Sex> {
 	/** {@inheritDoc} */
 	@Override
 	protected HashBiMap<Sex, String> createEnum2StringMap() {
-        HashBiMap<Sex, String> map = HashBiMap.create();
+        final HashBiMap<Sex, String> map = HashBiMap.create();
 		map.put(Person.Sex.MALE, "Мужской");
 		map.put(Person.Sex.FEMALE, "Женский");
 		return map;

@@ -1,13 +1,10 @@
 package ru.extas.web.contacts;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
-import org.joda.time.LocalDate;
-import org.vaadin.data.collectioncontainer.CollectionContainer;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.PersonChild;
 import ru.extas.web.commons.ExtaTheme;
@@ -32,7 +29,7 @@ public class PersonChildrenField extends CustomField<List> {
     private BeanItemContainer<PersonChild> itemContainer;
     private VerticalLayout root;
 
-    public PersonChildrenField(String caption, Person person) {
+    public PersonChildrenField(final String caption, final Person person) {
         setCaption(caption);
         this.person = person;
     }
@@ -47,7 +44,7 @@ public class PersonChildrenField extends CustomField<List> {
         root.setMargin(new MarginInfo(true, false, true, false));
         root.setSpacing(true);
 
-        Button addBtn = new Button("Добавить", Fontello.PLUS);
+        final Button addBtn = new Button("Добавить", Fontello.PLUS);
         addBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         addBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         addBtn.addClickListener(click -> {
@@ -56,19 +53,19 @@ public class PersonChildrenField extends CustomField<List> {
         });
         root.addComponent(addBtn);
 
-        for (PersonChild child : list)
+        for (final PersonChild child : list)
             addChild(child);
 
         return root;
     }
 
-    private void addChild(PersonChild child) {
-        BeanItem<PersonChild> childItem = itemContainer.addBean(child);
+    private void addChild(final PersonChild child) {
+        final BeanItem<PersonChild> childItem = itemContainer.addBean(child);
 
-        CssLayout dataLine = new CssLayout();
+        final CssLayout dataLine = new CssLayout();
         dataLine.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
-        LocalDateField birthday = new LocalDateField();
+        final LocalDateField birthday = new LocalDateField();
         birthday.setInputPrompt("Дата рождения");
         birthday.addStyleName(ExtaTheme.INLINE_DATEFIELD);
         birthday.addStyleName(ExtaTheme.DATEFIELD_SMALL);
@@ -76,7 +73,7 @@ public class PersonChildrenField extends CustomField<List> {
         birthday.addValueChangeListener(event -> updateValue());
         dataLine.addComponent(birthday);
 
-        EditField name = new EditField();
+        final EditField name = new EditField();
         name.setInputPrompt("Ф.И.О.");
         name.setColumns(15);
         name.addStyleName(ExtaTheme.TEXTFIELD_SMALL);

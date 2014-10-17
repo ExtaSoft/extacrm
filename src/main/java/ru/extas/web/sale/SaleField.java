@@ -1,9 +1,11 @@
 package ru.extas.web.sale;
 
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.sale.Sale;
-import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
 
@@ -34,7 +36,7 @@ public class SaleField extends CustomField<Sale> {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public SaleField(String caption) {
+    public SaleField(final String caption) {
         setCaption(caption);
     }
 
@@ -47,11 +49,11 @@ public class SaleField extends CustomField<Sale> {
         final Sale sale = (Sale) getPropertyDataSource().getValue();
         saleItem = new BeanItem<>(sale);
 
-        VerticalLayout container = new VerticalLayout();
+        final VerticalLayout container = new VerticalLayout();
         container.setSpacing(true);
 
         // Открытие формы ввода/редактирования
-        Button openBtn = new Button("Нажмите для просмотра/редактирования продажи...", event -> {
+        final Button openBtn = new Button("Нажмите для просмотра/редактирования продажи...", event -> {
             final SaleEditForm form = new SaleEditForm(sale);
             form.addCloseFormListener(event1 -> {
                 if (form.isSaved())
@@ -69,7 +71,7 @@ public class SaleField extends CustomField<Sale> {
     }
 
     private ProductInSaleGrid createProdInSale(final Sale sale) {
-        ProductInSaleGrid productInSale = new ProductInSaleGrid("Продукты в продаже", sale);
+        final ProductInSaleGrid productInSale = new ProductInSaleGrid("Продукты в продаже", sale);
         productInSale.setReadOnly(true);
         productInSale.setPropertyDataSource(saleItem.getItemProperty("productInSales"));
         return productInSale;

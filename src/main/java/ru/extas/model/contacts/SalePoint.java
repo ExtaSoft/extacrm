@@ -16,8 +16,7 @@ import static com.google.common.collect.Sets.newHashSet;
  * @since 0.3
  */
 @Entity
-@DiscriminatorValue("SALEPOINT")
-@Table(name = "SALE_POINT")
+@Table(name = "SALE_POINT", indexes = {@Index(columnList = "NAME")})
 public class SalePoint extends Contact {
 
     private static final int CODE_LENGTH = 15;
@@ -34,12 +33,8 @@ public class SalePoint extends Contact {
 	private Set<LegalEntity> legalEntities = newHashSet();
 
 	// Сотрудники
-	@ManyToMany(targetEntity = Person.class, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-	@JoinTable(
-			name = "CONTACT_EMPLOYEE",
-			joinColumns = {@JoinColumn(name = "CONTACT_ID", referencedColumnName = "ID")},
-			inverseJoinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")})
-	private Set<Person> employees = newHashSet();
+	@OneToMany(mappedBy = "workPlace", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	private Set<Employee> employees = newHashSet();
 
 	// Идентификация:
 
@@ -86,7 +81,7 @@ public class SalePoint extends Contact {
 	 *
 	 * @return a {@link java.util.List} object.
 	 */
-	public Set<Person> getEmployees() {
+	public Set<Employee> getEmployees() {
 		return employees;
 	}
 
@@ -95,7 +90,7 @@ public class SalePoint extends Contact {
 	 *
 	 * @param employes a {@link java.util.List} object.
 	 */
-	public void setEmployees(final Set<Person> employes) {
+	public void setEmployees(final Set<Employee> employes) {
 		this.employees = employes;
 	}
 

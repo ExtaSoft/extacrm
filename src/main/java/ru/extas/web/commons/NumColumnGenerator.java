@@ -8,7 +8,7 @@ import com.vaadin.ui.VerticalLayout;
 import ru.extas.web.commons.converters.StringToJodaDTConverter;
 
 import static ru.extas.server.ServiceLocator.lookup;
-import static ru.extas.web.commons.GridDataDecl.*;
+import static ru.extas.web.commons.GridDataDecl.ComponentColumnGenerator;
 
 /**
 * @author Valery Orlov
@@ -32,10 +32,10 @@ public abstract class NumColumnGenerator extends ComponentColumnGenerator {
     }
 
     @Override
-    public Object generateCell(Object columnId, final Item item, Object itemId) {
-        Property numProp = item.getItemProperty(numProperty);
-        VerticalLayout cell = new VerticalLayout();
-        Button link = new Button(String.valueOf(numProp.getValue()));
+    public Object generateCell(final Object columnId, final Item item, final Object itemId) {
+        final Property numProp = item.getItemProperty(numProperty);
+        final VerticalLayout cell = new VerticalLayout();
+        final Button link = new Button(String.valueOf(numProp.getValue()));
         link.addClickListener(event -> fireClick(item));
         link.addStyleName(ExtaTheme.BUTTON_LINK);
         cell.addComponent(link);

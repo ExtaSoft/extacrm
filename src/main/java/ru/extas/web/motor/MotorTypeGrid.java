@@ -24,7 +24,7 @@ public class MotorTypeGrid extends ExtaGrid<MotorType> {
     }
 
     @Override
-    public ExtaEditForm<MotorType> createEditForm(MotorType motorType, boolean isInsert) {
+    public ExtaEditForm<MotorType> createEditForm(final MotorType motorType, final boolean isInsert) {
         return new MotorTypeEditForm(motorType);
     }
 
@@ -46,7 +46,7 @@ public class MotorTypeGrid extends ExtaGrid<MotorType> {
 	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 		actions.add(new NewObjectAction("Новый", "Ввод нового типа техники"));
 		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке страховой продукт"));

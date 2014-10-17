@@ -47,7 +47,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private MenuBar.MenuItem tableModeBtn;
     private MenuBar.MenuItem detailModeBtn;
 
-    public void selectObject(Object objectId) {
+    public void selectObject(final Object objectId) {
         if (table != null && objectId != null && table.containsId(objectId))
             table.select(objectId);
     }
@@ -68,12 +68,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     public static class ModalPopupFormService implements FormService {
         private final ExtaGrid grid;
 
-        public ModalPopupFormService(ExtaGrid grid) {
+        public ModalPopupFormService(final ExtaGrid grid) {
             this.grid = grid;
         }
 
         @Override
-        public void open4Edit(ExtaEditForm form) {
+        public void open4Edit(final ExtaEditForm form) {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
                     grid.refreshContainerItem(form.getObjectId());
@@ -84,7 +84,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         }
 
         @Override
-        public void open4Insert(ExtaEditForm form) {
+        public void open4Insert(final ExtaEditForm form) {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
                     grid.refreshContainer();
@@ -118,7 +118,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         return formService;
     }
 
-    public void setFormService(FormService formService) {
+    public void setFormService(final FormService formService) {
         this.formService = formService;
     }
 
@@ -156,8 +156,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         formService.open4Edit(form);
     }
 
-    public void doEditNewObject(TEntity init) {
-        TEntity entity = init == null ? createEntity() : init;
+    public void doEditNewObject(final TEntity init) {
+        final TEntity entity = init == null ? createEntity() : init;
 
         if (GridUtils.isPermitInsert(container)) {
             final ExtaEditForm<TEntity> form = createEditForm(entity, true);
@@ -180,7 +180,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         initContent(Mode.TABLE);
     }
 
-    private void initContent(Mode mode) {
+    private void initContent(final Mode mode) {
         currentMode = mode;
         setSizeFull();
 
@@ -209,7 +209,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             tableFilterBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             tableFilterBtn.setCheckable(true);
 
-            MenuBar.Command modeCommand = selectedItem -> {
+            final MenuBar.Command modeCommand = selectedItem -> {
                 if (selectedItem == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
                     setMode(Mode.TABLE);
                 } else if (currentMode == Mode.TABLE) {
@@ -244,7 +244,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         setCompositionRoot(panel);
     }
 
-    public void setMode(Mode mode) {
+    public void setMode(final Mode mode) {
         initContent(mode);
         detailModeBtn.setChecked(mode == Mode.DETAIL_LIST);
         tableModeBtn.setChecked(mode == Mode.TABLE);
@@ -258,11 +258,11 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         return toolbarVisible;
     }
 
-    public void setToolbarVisible(boolean toolbarVisible) {
+    public void setToolbarVisible(final boolean toolbarVisible) {
         this.toolbarVisible = toolbarVisible;
     }
 
-    private MenuBar createGridToolbar(Mode mode) {
+    private MenuBar createGridToolbar(final Mode mode) {
         final MenuBar commandBar = new MenuBar();
         commandBar.setAutoOpen(true);
         commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
@@ -277,7 +277,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         return commandBar;
     }
 
-    private void fillGridTollbarItem(final UIAction action, MenuBar.MenuItem menuItem) {
+    private void fillGridTollbarItem(final UIAction action, final MenuBar.MenuItem menuItem) {
         menuItem.setDescription(action.getDescription());
 
         if (action instanceof UIActionGroup) {
@@ -286,9 +286,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                 fillGridTollbarItem(subAction, menuItem.addItem(subAction.getName(), subAction.getIcon(), null));
             }
         } else {
-            MenuBar.Command command = selectedItem -> {
+            final MenuBar.Command command = selectedItem -> {
                 if (action instanceof ItemAction) {
-                    Object item = table.getValue();
+                    final Object item = table.getValue();
                     refreshContainerItem(item);
                     action.fire(checkNotNull(item, "No selected row"));
                 } else
@@ -311,7 +311,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      *
      * @param mode a {@link ru.extas.web.commons.ExtaGrid.Mode} object.
      */
-    protected void initTable(Mode mode) {
+    protected void initTable(final Mode mode) {
 
         // Создаем таблицу
         table = new FilterTable();
@@ -329,8 +329,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         if (defAction != null) {
             table.addActionHandler(new Action.Handler() {
                 @Override
-                public Action[] getActions(Object target, Object sender) {
-                    Action[] actionsArr = new Action[actions.size()];
+                public Action[] getActions(final Object target, final Object sender) {
+                    final Action[] actionsArr = new Action[actions.size()];
                     int i = 0;
                     for (final UIAction a : actions) {
                         actionsArr[i] = new Action(a.getName());
@@ -340,8 +340,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                 }
 
                 @Override
-                public void handleAction(final Action action, Object sender, Object target) {
-                    UIAction firedAction = Iterables.find(actions, input -> input.getName().equals(action.getCaption()));
+                public void handleAction(final Action action, final Object sender, final Object target) {
+                    final UIAction firedAction = Iterables.find(actions, input -> input.getName().equals(action.getCaption()));
                     firedAction.fire(table.getValue());
                 }
             });
@@ -358,12 +358,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                 if (event.isDoubleClick())
                     defAction.fire(event.getItemId());
             });
-            for (MenuBar.MenuItem btn : needCurrentMenu)
+            for (final MenuBar.MenuItem btn : needCurrentMenu)
                 btn.setVisible(true);
             // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
             table.addValueChangeListener(event -> {
                 final boolean enableBtb = event.getProperty().getValue() != null;
-                for (MenuBar.MenuItem btn : needCurrentMenu)
+                for (final MenuBar.MenuItem btn : needCurrentMenu)
                     btn.setEnabled(enableBtb);
             });
 
@@ -375,7 +375,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         table.addGeneratedColumn(OVERALL_COLUMN, createDetailColumnGenerator(defAction));
         table.setColumnHeader(OVERALL_COLUMN, "Общая информация");
         table.setVisibleColumns(OVERALL_COLUMN);
-        for (MenuBar.MenuItem btn : needCurrentMenu)
+        for (final MenuBar.MenuItem btn : needCurrentMenu)
             btn.setVisible(false);
     }
 
@@ -384,13 +384,13 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     }
 
     private HorizontalLayout createItemToolbar(final Object itemId) {
-        HorizontalLayout actionToolbar = new HorizontalLayout();
+        final HorizontalLayout actionToolbar = new HorizontalLayout();
         actionToolbar.addStyleName(ExtaTheme.ITEM_TOOLBAR);
         actionToolbar.setSpacing(true);
         actionToolbar.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
         for (final UIAction a : actions)
             if (a instanceof ItemAction && !(a instanceof DefaultAction)) {
-                Component command = a.createButton();
+                final Component command = a.createButton();
                 if (command instanceof Button) {
                     ((Button) command).addClickListener(event -> a.fire(itemId));
                 }
@@ -399,9 +399,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         return actionToolbar;
     }
 
-    private UIAction getDefaultAction(List<UIAction> actions) {
+    private UIAction getDefaultAction(final List<UIAction> actions) {
         UIAction defAction = null;
-        for (UIAction a : actions)
+        for (final UIAction a : actions)
             if (a instanceof DefaultAction) {
                 defAction = a;
                 break;
@@ -413,7 +413,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      * <p>refreshContainer.</p>
      */
     protected void refreshContainer() {
-        Object itemId = table.getValue();
+        final Object itemId = table.getValue();
         if (container instanceof ExtaDataContainer)
             ((ExtaDataContainer) container).refresh();
         else if (container instanceof RefreshBeanContainer)
@@ -461,30 +461,30 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private class DefaultDetailGenerator implements CustomTable.ColumnGenerator {
         private final UIAction defAction;
 
-        public DefaultDetailGenerator(UIAction defAction) {
+        public DefaultDetailGenerator(final UIAction defAction) {
             this.defAction = defAction;
         }
 
         @Override
-        public Object generateCell(final CustomTable source, final Object itemId, Object columnId) {
-            Item item = source.getItem(itemId);
+        public Object generateCell(final CustomTable source, final Object itemId, final Object columnId) {
+            final Item item = source.getItem(itemId);
 
-            Iterator<DataDeclMapping> mapIterator = dataDecl.getMappings().iterator();
+            final Iterator<DataDeclMapping> mapIterator = dataDecl.getMappings().iterator();
             DataDeclMapping titleMap = mapIterator.next();
             if (titleMap.getPropName().equals("id"))
                 titleMap = mapIterator.next();
-            VerticalLayout panel = new VerticalLayout();
+            final VerticalLayout panel = new VerticalLayout();
 
             // Основная строка данных
-            AbstractComponent titleComp;
+            final AbstractComponent titleComp;
             if (defAction == null) {
-                Label titleLbl = new Label(item.getItemProperty(titleMap.getPropName()));
+                final Label titleLbl = new Label(item.getItemProperty(titleMap.getPropName()));
                 if (titleMap.getConverter() != null)
                     titleLbl.setConverter(titleMap.getConverter());
                 titleLbl.setDescription(titleMap.getCaption());
                 titleComp = titleLbl;
             } else {
-                Button titleLink = new Button();
+                final Button titleLink = new Button();
                 titleLink.addStyleName(ExtaTheme.BUTTON_LINK);
                 titleLink.setCaption((String) item.getItemProperty(titleMap.getPropName()).getValue());
                 titleLink.setDescription(defAction.getDescription());
@@ -500,12 +500,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 //                panel.addComponent(header);
 
             // Дополнительные данные
-            HorizontalLayout details = new HorizontalLayout();
+            final HorizontalLayout details = new HorizontalLayout();
             details.setSpacing(true);
             while (mapIterator.hasNext()) {
-                DataDeclMapping prop = mapIterator.next();
+                final DataDeclMapping prop = mapIterator.next();
                 if (!prop.isCollapsed()) {
-                    Label detail = new Label(item.getItemProperty(prop.getPropName()));
+                    final Label detail = new Label(item.getItemProperty(prop.getPropName()));
                     detail.addStyleName(ExtaTheme.LABEL_H3);
                     detail.setDescription(prop.getCaption());
                     details.addComponent(detail);
@@ -514,7 +514,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             panel.addComponent(details);
 
             // Кнопки действий
-            HorizontalLayout actionToolbar = createItemToolbar(itemId);
+            final HorizontalLayout actionToolbar = createItemToolbar(itemId);
             if (actionToolbar.getComponentCount() > 0)
                 panel.addComponent(actionToolbar);
 
@@ -532,32 +532,32 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     }
 
     protected class NewObjectAction extends UIAction {
-        public NewObjectAction(String caption, String description, Fontello icon) {
+        public NewObjectAction(final String caption, final String description, final Fontello icon) {
             super(caption, description, icon);
         }
 
-        public NewObjectAction(String caption, String description) {
+        public NewObjectAction(final String caption, final String description) {
             super(caption, description, Fontello.DOC_NEW);
         }
 
         @Override
-        public void fire(Object itemId) {
+        public void fire(final Object itemId) {
             doEditNewObject(null);
         }
     }
 
     protected class EditObjectAction extends DefaultAction {
-        public EditObjectAction(String caption, String description, Fontello icon) {
+        public EditObjectAction(final String caption, final String description, final Fontello icon) {
             super(caption, description, icon);
         }
 
-        public EditObjectAction(String caption, String description) {
+        public EditObjectAction(final String caption, final String description) {
             super(caption, description, Fontello.EDIT_3);
         }
 
         @Override
         public void fire(final Object itemId) {
-            TEntity entity = GridItem.extractBean(table.getItem(itemId));
+            final TEntity entity = GridItem.extractBean(table.getItem(itemId));
             doEditObject(entity);
         }
     }

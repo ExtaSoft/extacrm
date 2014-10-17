@@ -5,7 +5,10 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.PopupDateField;
+import com.vaadin.ui.TextField;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.PolicyRepository;
 import ru.extas.web.commons.ExtaEditForm;
@@ -35,7 +38,7 @@ public class PolicyEditForm extends ExtaEditForm<Policy> {
     @PropertyId("issueDate")
     private PopupDateField issueDateField;
 
-    public PolicyEditForm(Policy policy) {
+    public PolicyEditForm(final Policy policy) {
         super(policy.isNew() ?
                 "Новый бланк" :
                 "Редактировать бланк", new BeanItem(policy));

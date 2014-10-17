@@ -10,6 +10,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.AddressInfo;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
@@ -19,19 +20,15 @@ import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
-import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.*;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
 
-import javax.persistence.EntityManager;
 import java.text.MessageFormat;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
-import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.model.common.ModelUtils.evictCache;
 import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.GridItem.extractBean;
@@ -89,7 +86,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private ExtaDataContainer<SalePoint> vendorsContainer;
     private ExtaDataContainer<Person> clientsContainer;
 
-    public LeadEditForm(Lead lead, boolean qualifyForm) {
+    public LeadEditForm(final Lead lead, final boolean qualifyForm) {
         super(lead.isNew() ? "Ввод нового лида в систему" :
                 qualifyForm ? MessageFormat.format("Квалификация лида № {0}", lead.getNum()) :
                         MessageFormat.format("Редактирование лида № {0}", lead.getNum()));
@@ -119,8 +116,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 //        commentField.setReadOnly(qualifyForm);
     }
 
-    private Person createPersonFromLead(Lead lead) {
-        Person person = new Person();
+    private Person createPersonFromLead(final Lead lead) {
+        final Person person = new Person();
         person.setName(lead.getContactName());
         person.setPhone(lead.getContactPhone());
         person.setEmail(lead.getContactEmail());
@@ -129,8 +126,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
     }
 
-    private SalePoint createSalePointFromLead(Lead lead) {
-        SalePoint salePoint = new SalePoint();
+    private SalePoint createSalePointFromLead(final Lead lead) {
+        final SalePoint salePoint = new SalePoint();
         salePoint.setName(lead.getPointOfSale());
         salePoint.setRegAddress(new AddressInfo(lead.getRegion(), null, null, null));
         return salePoint;
@@ -148,7 +145,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         form.addComponent(new FormGroupHeader("Клиент"));
         if (obj.getStatus() == Lead.Status.NEW) {
             if (qualifyForm) {
-                Component clientPanel = createClientPanel(obj);
+                final Component clientPanel = createClientPanel(obj);
                 form.addComponent(clientPanel);
             } else {
                 contactNameField = new EditField("Имя", "Введите имя клиента");
@@ -193,7 +190,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         if (obj.getStatus() == Lead.Status.NEW) {
             if (obj.getVendor() == null) {
                 if (qualifyForm) {
-                    Component vendorPanel = createVendorPanel(obj);
+                    final Component vendorPanel = createVendorPanel(obj);
                     form.addComponent(vendorPanel);
                 } else {
                     regionField = new RegionSelect();
@@ -224,14 +221,14 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         return form;
     }
 
-    private void createVendorSelectField(FormLayout form) {
+    private void createVendorSelectField(final FormLayout form) {
         vendorField = new SalePointSelect("Мотосалон", "Название мотосалона", null);
         vendorField.setRequired(true);
         form.addComponent(vendorField);
     }
 
     private Component createVendorPanel(final Lead lead) {
-        VerticalLayout layout = new VerticalLayout();
+        final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
         layout.setSpacing(true);
 
@@ -242,14 +239,14 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         vendorsContainer.addNestedContainerProperty("regAddress.region");
         setVendorsFilter(lead.getPointOfSale(), lead.getRegion());
 
-        Label info = new Label(Fontello.INFO_CIRCLED.getHtml() +
+        final Label info = new Label(Fontello.INFO_CIRCLED.getHtml() +
                 " Выберите подходящую точку продаж из списка или введите новую.<br/>Для поиска существующей торговой точки используйте поля фильтра.");
         info.setContentMode(ContentMode.HTML);
         info.addStyleName(ExtaTheme.LABEL_SMALL);
         info.addStyleName(ExtaTheme.LABEL_LIGHT);
         layout.addComponent(info);
 
-        Button newBtn = new Button("Новая точка продаж");
+        final Button newBtn = new Button("Новая точка продаж");
         newBtn.setIcon(Fontello.DOC_NEW);
         newBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         newBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
@@ -269,12 +266,12 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         });
         layout.addComponent(newBtn);
 
-        EditField name = new EditField("Название");
+        final EditField name = new EditField("Название");
         name.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         name.setIcon(Fontello.FILTER);
         name.setValue(lead.getPointOfSale());
 
-        EditField region = new EditField("Регион");
+        final EditField region = new EditField("Регион");
         region.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         region.setIcon(Fontello.FILTER);
         region.setValue(lead.getRegion());
@@ -298,7 +295,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.addStyleName(ExtaTheme.TABLE_SMALL);
         // Настройка столбцов таблицы
         table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
-        GridDataDecl dataDecl = new ContactDataDecl();
+        final GridDataDecl dataDecl = new ContactDataDecl();
         initTableColumns(table, dataDecl);
         table.setColumnCollapsed("phone", true);
         table.setColumnCollapsed("email", true);
@@ -316,9 +313,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         return components;
     }
 
-    private void setVendorsFilter(String name, String region) {
+    private void setVendorsFilter(final String name, final String region) {
         vendorsContainer.removeAllContainerFilters();
-        List<Container.Filter> filters = newArrayListWithCapacity(2);
+        final List<Container.Filter> filters = newArrayListWithCapacity(2);
         if (!Strings.isNullOrEmpty(name))
             filters.add(new Like("name", MessageFormat.format("%{0}%", name), false));
         if (!Strings.isNullOrEmpty(region)) {
@@ -329,7 +326,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     }
 
     private Component createClientPanel(final Lead lead) {
-        VerticalLayout layout = new VerticalLayout();
+        final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
         layout.setSpacing(true);
         layout.setSizeFull();
@@ -337,7 +334,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         final Table table = new Table();
         table.setRequired(true);
 
-        Label info = new Label(Fontello.INFO_CIRCLED.getHtml() +
+        final Label info = new Label(Fontello.INFO_CIRCLED.getHtml() +
                 " Выберите подходящего клиента из списка или введите нового.<br/>Для поиска существующего клиента используйте поля фильтра.");
         info.setContentMode(ContentMode.HTML);
         info.addStyleName(ExtaTheme.LABEL_SMALL);
@@ -349,7 +346,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         clientsContainer.addNestedContainerProperty("regAddress.region");
         setClientsFilter(lead.getContactName(), lead.getContactPhone(), lead.getContactEmail());
 
-        Button newBtn = new Button("Новый клиент");
+        final Button newBtn = new Button("Новый клиент");
         newBtn.setIcon(Fontello.DOC_NEW);
         newBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         newBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
@@ -369,17 +366,17 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         });
         layout.addComponent(newBtn);
 
-        EditField name = new EditField("Имя");
+        final EditField name = new EditField("Имя");
         name.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         name.setIcon(Fontello.FILTER);
         name.setValue(lead.getContactName());
 
-        EditField phone = new PhoneField("Телефон");
+        final EditField phone = new PhoneField("Телефон");
         phone.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         phone.setIcon(Fontello.FILTER);
         phone.setValue(lead.getContactPhone());
 
-        EditField email = new EditField("E-mail");
+        final EditField email = new EditField("E-mail");
         email.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         email.setIcon(Fontello.FILTER);
         email.setValue(lead.getContactEmail());
@@ -404,7 +401,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.addStyleName(ExtaTheme.TABLE_SMALL);
         // Настройка столбцов таблицы
         table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
-        GridDataDecl dataDecl = new PersonDataDecl();
+        final GridDataDecl dataDecl = new PersonDataDecl();
         initTableColumns(table, dataDecl);
         table.setColumnCollapsed("sex", true);
 //        table.setColumnCollapsed("birthday", true);
@@ -424,9 +421,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         return components;
     }
 
-    private void setClientsFilter(String name, String email, String cellPhone) {
+    private void setClientsFilter(final String name, final String email, final String cellPhone) {
         clientsContainer.removeAllContainerFilters();
-        List<Container.Filter> filters = newArrayListWithCapacity(3);
+        final List<Container.Filter> filters = newArrayListWithCapacity(3);
         if (!Strings.isNullOrEmpty(name)) {
             filters.add(new Like("name", MessageFormat.format("%{0}%", name), false));
         }
@@ -448,16 +445,16 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     protected void initObject(final Lead obj) {
         if (obj.isNew()) {
             obj.setStatus(Lead.Status.NEW);
-            UserManagementService userService = lookup(UserManagementService.class);
-            Person user = userService.getCurrentUserContact();
+            final UserManagementService userService = lookup(UserManagementService.class);
+            final Employee user = userService.getCurrentUserEmployee();
             if (user != null) {
-                if (!isEmpty(user.getWorkPlaces())) {
-                    SalePoint salePoint = user.getWorkPlaces().iterator().next();
+                if (user.getWorkPlace() != null) {
+                    final SalePoint salePoint = user.getWorkPlace();
                     obj.setVendor(salePoint);
                     obj.setPointOfSale(salePoint.getName());
                 }
             }
-            final Person userContact = lookup(UserManagementService.class).getCurrentUserContact();
+            final Employee userContact = lookup(UserManagementService.class).getCurrentUserEmployee();
             obj.setResponsible(userContact);
         }
     }
@@ -468,7 +465,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
      */
     @Override
     protected Lead saveObject(Lead obj) {
-        LeadRepository leadRepository = lookup(LeadRepository.class);
+        final LeadRepository leadRepository = lookup(LeadRepository.class);
         if (qualifyForm) {
             obj = leadRepository.qualify(obj);
             NotificationUtil.showSuccess("Лид квалифицирован");
@@ -480,7 +477,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         // Решаем проблему с автоинкрементами базы о  которых не знает JPA
         if (obj.getNum() == null)
             evictCache(obj);
-        Sale sale = lookup(SaleRepository.class).findByLead(obj);
+        final Sale sale = lookup(SaleRepository.class).findByLead(obj);
         if (sale != null && sale.getNum() == null)
             evictCache(sale);
 

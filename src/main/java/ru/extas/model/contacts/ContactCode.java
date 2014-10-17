@@ -3,7 +3,6 @@ package ru.extas.model.contacts;
 import ru.extas.model.common.AuditedObject;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
 /**

@@ -16,13 +16,13 @@ import java.util.Locale;
  */
 public class YearField extends PopupDateField {
 
-    public YearField(String caption) {
+    public YearField(final String caption) {
         setInputPrompt("Год");
         setResolution(Resolution.YEAR);
         setWidth(5, Unit.EM);
         setConverter(new Converter<Date, Integer>() {
             @Override
-            public Integer convertToModel(Date value, Class<? extends Integer> targetType, Locale locale) throws ConversionException {
+            public Integer convertToModel(final Date value, final Class<? extends Integer> targetType, final Locale locale) throws ConversionException {
                 if (value != null) {
                     return new LocalDate(value).getYear();
                 }
@@ -30,7 +30,7 @@ public class YearField extends PopupDateField {
             }
 
             @Override
-            public Date convertToPresentation(Integer value, Class<? extends Date> targetType, Locale locale) throws ConversionException {
+            public Date convertToPresentation(final Integer value, final Class<? extends Date> targetType, final Locale locale) throws ConversionException {
                 if (value != null) {
                     return new LocalDate(value, 1, 1).toDate();
                 }

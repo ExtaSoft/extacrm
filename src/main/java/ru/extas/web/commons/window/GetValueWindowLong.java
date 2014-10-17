@@ -34,7 +34,7 @@ public class GetValueWindowLong extends ExtaEditForm<GetValueWindowLong.ValueCon
      * @param caption a {@link java.lang.String} object.
      * @param defaultValue a {@link java.lang.Long} object.
      */
-    public GetValueWindowLong(final String caption, Long defaultValue) {
+    public GetValueWindowLong(final String caption, final Long defaultValue) {
         super(caption, new BeanItem<>(new ValueContainer(defaultValue)));
     }
 

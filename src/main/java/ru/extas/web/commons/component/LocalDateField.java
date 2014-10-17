@@ -3,7 +3,6 @@
  */
 package ru.extas.web.commons.component;
 
-import com.vaadin.server.Sizeable;
 import com.vaadin.ui.PopupDateField;
 import org.joda.time.LocalDate;
 

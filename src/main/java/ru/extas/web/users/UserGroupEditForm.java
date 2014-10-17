@@ -4,7 +4,6 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.security.UserGroup;
 import ru.extas.server.security.UserGroupRegistry;
@@ -42,7 +41,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
     @PropertyId("permissions")
     private ExtaPermissionField permissionsField;
 
-    public UserGroupEditForm(UserGroup userGroup) {
+    public UserGroupEditForm(final UserGroup userGroup) {
         super(userGroup.isNew() ?
         "Ввод новой группы пользователей" :
         "Редактирование группы", new BeanItem<>(userGroup));
@@ -50,7 +49,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(UserGroup obj) {
+    protected void initObject(final UserGroup obj) {
         if (obj.isNew()) {
             // Инициализируем новый объект
         }
@@ -67,7 +66,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(UserGroup obj) {
+    protected ComponentContainer createEditFields(final UserGroup obj) {
         final FormLayout form = new ExtaFormLayout();
 
         nameField = new EditField("Название");

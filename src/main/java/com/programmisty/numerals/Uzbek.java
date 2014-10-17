@@ -26,7 +26,7 @@ public class Uzbek extends AbstractNumeral {
 
 	/** {@inheritDoc} */
 	@Override
-	public String format(Number number) {
+	public String format(final Number number) {
 		// check number type
 		checkSupported(number);
 		//
@@ -37,19 +37,19 @@ public class Uzbek extends AbstractNumeral {
 		if ("0".equals(text)) {
 			return EDINICHI[0];
 		}
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		if (text.startsWith("-")) {
 			sb.append("minus ");
 			text = text.substring(1);
 		}
 
-		byte n[][] = Util.groups(text, 3);
+		final byte[][] n = Util.groups(text, 3);
 
 		for (int i = 0; i < n.length; ++i) {
 
-			int h = n[i][0]; // сотни
-			int t = n[i][1]; // десятки
-			int u = n[i][2]; // единицы
+			final int h = n[i][0]; // сотни
+			final int t = n[i][1]; // десятки
+			final int u = n[i][2]; // единицы
 			if (h == 0 && t == 0 && u == 0) {
 				// этих вобще
 				continue;
@@ -57,11 +57,11 @@ public class Uzbek extends AbstractNumeral {
 			// есть сотенные...
 			if (h > 0) {
 				if (h == 1 && t == 0 && u == 0) {
-					String sotni = SOTNI[h];
+					final String sotni = SOTNI[h];
 					sb.append(sotni);
 					sb.append(" ");
 				} else {
-					String sotni = SOTNI[h];
+					final String sotni = SOTNI[h];
 
 					sb.append("bir " + sotni);
 					sb.append(" ");
@@ -91,22 +91,22 @@ public class Uzbek extends AbstractNumeral {
 	 * Сумма прописью: Семьсот семьдесят семь рублей 77 копеек
 	 */
 	@Override
-	public String amount(BigDecimal bi) {
-		String txt = bi.toPlainString();
+	public String amount(final BigDecimal bi) {
+		final String txt = bi.toPlainString();
 
-		int point = txt.indexOf('.');
-		StringBuilder sb = new StringBuilder();
+		final int point = txt.indexOf('.');
+		final StringBuilder sb = new StringBuilder();
 		String rubli = txt;
 		if (point > 0) {
 			rubli = txt.substring(0, point);
 		}
 
-		String celaya = formatImpl(rubli);
+		final String celaya = formatImpl(rubli);
 		sb.append(celaya);
 		sb.append(" so'm");
 		sb.append(" ");
 
-		int k = roundKopeyki(bi);
+		final int k = roundKopeyki(bi);
 		assert (k >= 0 && k < 100);
 		
 		sb.append(String.valueOf(k)+" tiyin");
@@ -116,7 +116,7 @@ public class Uzbek extends AbstractNumeral {
 
 	private static int roundKopeyki(BigDecimal b) {
 		b = b.abs();
-		int k = b.multiply(BigDecimal.valueOf(100))
+		final int k = b.multiply(BigDecimal.valueOf(100))
 				.remainder(BigDecimal.valueOf(100))
 				.setScale(0, RoundingMode.HALF_UP).intValue();
 		return k;

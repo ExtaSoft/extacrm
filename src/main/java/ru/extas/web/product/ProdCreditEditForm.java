@@ -2,7 +2,10 @@ package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.TextArea;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.server.sale.ProdCreditRepository;
 import ru.extas.web.commons.ExtaEditForm;
@@ -71,7 +74,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
-    public ProdCreditEditForm(ProdCredit prodCredit) {
+    public ProdCreditEditForm(final ProdCredit prodCredit) {
         super(prodCredit.isNew() ? "Новый продукт" : "Редактировать продукт", new BeanItem(prodCredit));
     }
 
@@ -85,8 +88,8 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected ProdCredit saveObject(ProdCredit obj) {
-		ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
+	protected ProdCredit saveObject(final ProdCredit obj) {
+		final ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
         NotificationUtil.showSuccess("Продукт сохранен");
         return loc;
     }

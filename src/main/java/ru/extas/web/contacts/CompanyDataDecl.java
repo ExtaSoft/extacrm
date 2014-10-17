@@ -24,7 +24,7 @@ public class CompanyDataDecl extends GridDataDecl {
 		addMapping("phone", "Телефон", PhoneConverter.class);
 		addMapping("email", "E-Mail");
 		addMapping("www", "WWW");
-		addMapping("regAddress.region", "Регион");
+		addMapping("region", "Регион");
 		super.addDefaultMappings();
 	}
 

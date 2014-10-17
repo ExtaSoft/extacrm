@@ -2,7 +2,10 @@ package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.TextArea;
 import ru.extas.model.sale.ProdInsurance;
 import ru.extas.server.sale.ProdInsuranceRepository;
 import ru.extas.web.commons.ExtaEditForm;
@@ -37,7 +40,7 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
-    public ProdInsuranceEditForm(ProdInsurance prodInsurance) {
+    public ProdInsuranceEditForm(final ProdInsurance prodInsurance) {
         super(prodInsurance.isNew() ? "Новая страховая программа" : "Редактировать страховую программу", new BeanItem(prodInsurance));
     }
 

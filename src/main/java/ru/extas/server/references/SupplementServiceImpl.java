@@ -3,9 +3,6 @@
  */
 package ru.extas.server.references;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.context.annotation.Scope;
@@ -16,7 +13,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Iterables.tryFind;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
@@ -155,13 +151,13 @@ public class SupplementServiceImpl implements SupplementService {
 
     /** {@inheritDoc} */
     @Override
-    public String findCityByRegion(String region) {
+    public String findCityByRegion(final String region) {
         return getRegionCapitals().get(region);
     }
 
     /** {@inheritDoc} */
     @Override
-    public String findRegionByCity(String city) {
+    public String findRegionByCity(final String city) {
 
         return getRegionCapitals().inverse().get(city);
     }
@@ -176,7 +172,7 @@ public class SupplementServiceImpl implements SupplementService {
     @Override
     public String clarifyRegion(String dirtyClientRegion) {
         dirtyClientRegion = dirtyClientRegion.trim();
-        Collection<String> regions = loadRegions();
+        final Collection<String> regions = loadRegions();
         final String finalDirtyClientRegion = dirtyClientRegion;
         return tryFind(regions, input -> containsIgnoreCase(input, finalDirtyClientRegion)).orNull();
     }

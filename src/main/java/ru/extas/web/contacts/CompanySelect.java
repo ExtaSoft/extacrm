@@ -1,7 +1,10 @@
 package ru.extas.web.contacts;
 
+import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
+import com.vaadin.shared.ui.combobox.FilteringMode;
+import com.vaadin.ui.ComboBox;
 import ru.extas.model.contacts.Company;
-import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.FormUtils;
 
 /**
@@ -15,16 +18,17 @@ import ru.extas.web.commons.FormUtils;
  * @version $Id: $Id
  * @since 0.3
  */
-public class CompanySelect extends AbstractContactSelect<Company> {
+public class CompanySelect extends ComboBox {
 
-	/**
+    protected ExtaDataContainer<Company> container;
+
+    /**
 	 * <p>Constructor for CompanySelect.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 */
 	public CompanySelect(final String caption) {
-		super(caption, Company.class);
-		addNewItemFeature();
+		this(caption, caption);
 	}
 
 	/**
@@ -34,8 +38,31 @@ public class CompanySelect extends AbstractContactSelect<Company> {
 	 * @param description a {@link java.lang.String} object.
 	 */
 	public CompanySelect(final String caption, final String description) {
-		super(caption, description, Company.class);
-		addNewItemFeature();
+        super(caption);
+
+        // Преконфигурация
+        setDescription(description);
+        setInputPrompt("контакт...");
+        setWidth(25, Unit.EM);
+        setImmediate(true);
+
+        // Инициализация контейнера
+        container = new ExtaDataContainer<>(Company.class);
+//        if (filter != null) {
+//            container.addContainerFilter(filter);
+//        }
+
+        // Устанавливаем контент выбора
+        setFilteringMode(FilteringMode.CONTAINS);
+        setContainerDataSource(container);
+        setItemCaptionMode(ItemCaptionMode.PROPERTY);
+        setItemCaptionPropertyId("name");
+        setConverter(new SingleSelectConverter<Company>(this));
+
+        // Функционал добавления нового контакта
+        setNullSelectionAllowed(false);
+        setNewItemsAllowed(false);
+        addNewItemFeature();
 	}
 
 	private void addNewItemFeature() {

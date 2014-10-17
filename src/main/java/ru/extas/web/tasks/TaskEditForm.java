@@ -21,10 +21,10 @@ import ru.extas.model.security.UserProfile;
 import ru.extas.model.security.UserRole;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.contacts.PersonField;
 import ru.extas.web.lead.LeadField;
 import ru.extas.web.sale.SaleField;
@@ -86,21 +86,21 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         formsContainer = new VerticalLayout();
         //formsContainer.setSpacing(true);
 
-        FormService formService = lookup(FormService.class);
+        final FormService formService = lookup(FormService.class);
 
-        TaskFormData taskData = formService.getTaskFormData(obj.getId());
-        List<FormProperty> formProps = taskData.getFormProperties();
-        Optional<FormProperty> result = Iterators.tryFind(formProps.iterator(), input -> input.getId().equals("result"));
-        HorizontalLayout finishToolBar = new HorizontalLayout();
+        final TaskFormData taskData = formService.getTaskFormData(obj.getId());
+        final List<FormProperty> formProps = taskData.getFormProperties();
+        final Optional<FormProperty> result = Iterators.tryFind(formProps.iterator(), input -> input.getId().equals("result"));
+        final HorizontalLayout finishToolBar = new HorizontalLayout();
         finishToolBar.setSpacing(true);
         finishToolBar.setMargin(true);
         if (result.isPresent()) {
             // Кнопки завершения задачи
-            FormType resultType = result.get().getType();
-            Map<String, String> resultValues = (Map<String, String>) resultType.getInformation("values");
-            for (Map.Entry<String, String> resultValue : resultValues.entrySet()) {
-                Button btn = new Button(resultValue.getValue(), event -> {
-                    String curValue = (String) event.getButton().getData();
+            final FormType resultType = result.get().getType();
+            final Map<String, String> resultValues = (Map<String, String>) resultType.getInformation("values");
+            for (final Map.Entry<String, String> resultValue : resultValues.entrySet()) {
+                final Button btn = new Button(resultValue.getValue(), event -> {
+                    final String curValue = (String) event.getButton().getData();
                     completeTask(curValue, obj);
                 });
                 btn.setData(resultValue.getKey());
@@ -108,7 +108,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
                 finishToolBar.addComponent(btn);
             }
         } else {
-            Button btn = new Button("Завершить", event -> completeTask(null, obj));
+            final Button btn = new Button("Завершить", event -> completeTask(null, obj));
             finishToolBar.addComponent(btn);
         }
         formsContainer.addComponent(new Panel("Завершить задачу", finishToolBar));
@@ -147,13 +147,13 @@ public class TaskEditForm extends ExtaEditForm<Task> {
             profileSelect = new UserProfileSelect("Ответственный", "Ответственный за выполнение задачи");
             profileSelect.setWidth(25, Unit.EM);
             profileSelect.addValueChangeListener(event -> {
-                UserProfile profile = (UserProfile) profileSelect.getConvertedValue();
+                final UserProfile profile = (UserProfile) profileSelect.getConvertedValue();
                 if (profile != null) {
                     assigneeField.setValue(profile.getLogin());
                 }
             });
             if (obj.getAssignee() != null) {
-                UserProfile profile = lookup(UserManagementService.class).findUserByLogin(obj.getAssignee());
+                final UserProfile profile = lookup(UserManagementService.class).findUserByLogin(obj.getAssignee());
                 profileSelect.setConvertedValue(profile);
             }
             form.addComponent(profileSelect);
@@ -185,7 +185,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         final Person person = queryPerson(processId);
 
         if (person != null) {
-            PersonField personField = new PersonField("Клиент");
+            final PersonField personField = new PersonField("Клиент");
             personField.setPropertyDataSource(new ObjectProperty(person));
             return personField;
         } else {
@@ -196,7 +196,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
     }
 
     private Person queryPerson(final String processId) {
-        Lead lead = queryLead(processId);
+        final Lead lead = queryLead(processId);
         return lead != null ? lead.getClient() : null;
     }
 
@@ -212,7 +212,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         final Sale sale = querySale(processId);
 
         if (sale != null) {
-            SaleField saleField = new SaleField("Продажа");
+            final SaleField saleField = new SaleField("Продажа");
             saleField.setPropertyDataSource(new ObjectProperty(sale));
             return saleField;
         } else {
@@ -232,7 +232,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         final Lead lead = queryLead(processId);
 
         if (lead != null) {
-            LeadField leadField = new LeadField("Лид");
+            final LeadField leadField = new LeadField("Лид");
             leadField.setPropertyDataSource(new ObjectProperty(lead));
             return leadField;
         } else {
@@ -243,8 +243,8 @@ public class TaskEditForm extends ExtaEditForm<Task> {
     }
 
     private Lead queryLead(final String processId) {
-        RuntimeService runtimeService = lookup(RuntimeService.class);
-        Map<String, Object> processVariables = runtimeService.getVariables(processId);
+        final RuntimeService runtimeService = lookup(RuntimeService.class);
+        final Map<String, Object> processVariables = runtimeService.getVariables(processId);
         Lead lead = null;
         if (processVariables.containsKey("lead")) {
             lead = (Lead) processVariables.get("lead");
@@ -253,8 +253,8 @@ public class TaskEditForm extends ExtaEditForm<Task> {
     }
 
     private Sale querySale(final String processId) {
-        RuntimeService runtimeService = lookup(RuntimeService.class);
-        Map<String, Object> processVariables = runtimeService.getVariables(processId);
+        final RuntimeService runtimeService = lookup(RuntimeService.class);
+        final Map<String, Object> processVariables = runtimeService.getVariables(processId);
         Sale sale = null;
         if (processVariables.containsKey("sale")) {
             sale = (Sale) processVariables.get("sale");
@@ -265,7 +265,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
 
     private void completeTask(final String result, final Task obj) {
         if (result != null) {
-            Map<String, String> submitFormProps = newHashMap();
+            final Map<String, String> submitFormProps = newHashMap();
             submitFormProps.put("result", result);
             lookup(FormService.class).submitTaskFormData(obj.getId(), submitFormProps);
         } else {
@@ -276,7 +276,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         NotificationUtil.showSuccess("Задача выполнена");
         closeForm();
         // Показать статус выполнения процесса
-        BPStatusForm statusForm = new BPStatusForm(obj.getProcessInstanceId());
+        final BPStatusForm statusForm = new BPStatusForm(obj.getProcessInstanceId());
         statusForm.showModal();
     }
 
@@ -297,8 +297,8 @@ public class TaskEditForm extends ExtaEditForm<Task> {
     /** {@inheritDoc} */
     @Override
     protected Task saveObject(final Task obj) {
-        TaskService taskService = lookup(TaskService.class);
-        Task task = taskService.createTaskQuery().taskId(obj.getId()).singleResult();
+        final TaskService taskService = lookup(TaskService.class);
+        final Task task = taskService.createTaskQuery().taskId(obj.getId()).singleResult();
 
         task.setName(obj.getName());
         task.setDescription(obj.getDescription());
