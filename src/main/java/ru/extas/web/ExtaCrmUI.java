@@ -252,7 +252,7 @@ public class  ExtaCrmUI extends UI {
         mainMenu.addChapter("Задачи", "Мои задачи", Fontello.CHECK,
                 TasksView.class, EnumSet.of(ExtaDomain.TASKS_TODAY, ExtaDomain.TASKS_WEEK, ExtaDomain.TASKS_MONTH, ExtaDomain.TASKS_ALL));
         mainMenu.addChapter("Контакты", "Клиенты, контрагенты и сотрудники", Fontello.CONTACTS,
-                ContactsView.class, EnumSet.of(ExtaDomain.PERSON, ExtaDomain.COMPANY, ExtaDomain.LEGAL_ENTITY, ExtaDomain.SALE_POINT));
+                ContactsView.class, EnumSet.of(ExtaDomain.PERSON, ExtaDomain.COMPANY, ExtaDomain.LEGAL_ENTITY, ExtaDomain.SALE_POINT, ExtaDomain.EMPLOYEE));
         mainMenu.addChapter("Лиды", "Входящие лиды", Fontello.INBOX_ALT,
                 LeadsView.class, EnumSet.of(ExtaDomain.LEADS_NEW, ExtaDomain.LEADS_QUAL, ExtaDomain.LEADS_CLOSED));
         mainMenu.addChapter("Продажи", "Раздел управления продажами", Fontello.DOLLAR,

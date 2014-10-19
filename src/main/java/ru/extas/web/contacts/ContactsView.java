@@ -37,38 +37,33 @@ public class ContactsView extends SubdomainView {
 	protected List<SubdomainInfo> getSubdomainInfo() {
 		final ArrayList<SubdomainInfo> ret = newArrayList();
 		ret.add(new SubdomainInfoImpl("Физ. лица", ExtaDomain.PERSON, true) {
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public ExtaGrid createGrid() {
 				return new PersonsGrid();
 			}
-
-
 		});
 		ret.add(new SubdomainInfoImpl("Компании", ExtaDomain.COMPANY) {
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public ExtaGrid createGrid() {
 				return new CompaniesGrid();
 			}
-
         });
 		ret.add(new SubdomainInfoImpl("Юридические лица", ExtaDomain.LEGAL_ENTITY, true) {
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public ExtaGrid createGrid() {
 				return new LegalEntitiesGrid(null);
 			}
 		});
 		ret.add(new SubdomainInfoImpl("Торговые точки", ExtaDomain.SALE_POINT) {
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public ExtaGrid createGrid() {
 				return new SalePointsGrid(null);
+			}
+		});
+		ret.add(new SubdomainInfoImpl("Сотрудники", ExtaDomain.EMPLOYEE) {
+			@Override
+			public ExtaGrid createGrid() {
+				return new EmployeesGrid();
 			}
 		});
 		return ret;

@@ -38,6 +38,7 @@ public class StringToExtaDomainConverter extends String2EnumConverter<ExtaDomain
         map.put(ExtaDomain.COMPANY, "КОНТАКТЫ/КОМПАНИИ");
         map.put(ExtaDomain.LEGAL_ENTITY, "КОНТАКТЫ/ЮРИДИЧЕСКИЕ ЛИЦА");
         map.put(ExtaDomain.SALE_POINT, "КОНТАКТЫ/ТОРГОВЫЕ ТОЧКИ");
+        map.put(ExtaDomain.EMPLOYEE, "КОНТАКТЫ/СОТРУДНИКИ");
         map.put(ExtaDomain.LEADS_NEW, "ЛИДЫ/НОВЫЕ");
         map.put(ExtaDomain.LEADS_QUAL, "ЛИДЫ/КВАЛИФИЦИРОВАННЫЕ");
         map.put(ExtaDomain.LEADS_CLOSED, "ЛИДЫ/ЗАКРЫТЫЕ");

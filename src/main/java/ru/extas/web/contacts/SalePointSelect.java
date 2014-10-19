@@ -2,6 +2,7 @@ package ru.extas.web.contacts;
 
 import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
@@ -11,6 +12,8 @@ import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
+
+import java.util.Objects;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -30,6 +33,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
     private Label phoneField;
     private Label adressField;
     private Company company;
+    private SalePointComboBox contactSelect;
 
     /**
      * <p>Constructor for SalePointSelect.</p>
@@ -60,7 +64,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
         nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
 
         if (!isReadOnly()) {
-            final SalePointComboBox contactSelect = new SalePointComboBox();
+            contactSelect = new SalePointComboBox();
             contactSelect.setPropertyDataSource(getPropertyDataSource());
             contactSelect.setNewItemsAllowed(true);
             contactSelect.setNewItemHandler(new AbstractSelect.NewItemHandler() {
@@ -181,7 +185,14 @@ public class SalePointSelect extends CustomField<SalePoint> {
         return SalePoint.class;
     }
 
-    private static class SalePointComboBox extends ComboBox {
+    public void setCompany(Company company) {
+        if (!Objects.equals(this.company, company)) {
+            this.company = company;
+            contactSelect.refreshContainer();
+        }
+    }
+
+    private class SalePointComboBox extends ComboBox {
         private static final long serialVersionUID = -8005905898383483037L;
         protected ExtaDataContainer<SalePoint> container;
 
@@ -194,12 +205,14 @@ public class SalePointSelect extends CustomField<SalePoint> {
 
             // Преконфигурация
             setDescription(description);
-            setInputPrompt("контакт...");
+            setInputPrompt("Торговая точка...");
             setWidth(25, Unit.EM);
             setImmediate(true);
 
             // Инициализация контейнера
             container = new ExtaDataContainer<>(SalePoint.class);
+            container.sort(new Object[]{"name"}, new boolean[]{true});
+            setContainerFilter();
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);
@@ -217,7 +230,17 @@ public class SalePointSelect extends CustomField<SalePoint> {
          * <p>refreshContainer.</p>
          */
         public void refreshContainer() {
+            setContainerFilter();
             container.refresh();
+            if (company != null && !Objects.equals(getConvertedValue(), company))
+                setConvertedValue(null);
         }
+
+        protected void setContainerFilter() {
+            container.removeAllContainerFilters();
+            if (company != null)
+                container.addContainerFilter(new Compare.Equal("company", company));
+        }
+
     }
 }

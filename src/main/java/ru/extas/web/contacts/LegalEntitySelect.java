@@ -2,14 +2,18 @@ package ru.extas.web.contacts;
 
 import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
+import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.converters.PhoneConverter;
+
+import java.util.Objects;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -30,6 +34,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
     private Label innField;
     private Label phoneField;
     private Button viewBtn;
+    private Company company;
 
     /**
      * <p>Constructor for LegalEntitySelect.</p>
@@ -37,7 +42,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
      * @param caption a {@link java.lang.String} object.
      */
     public LegalEntitySelect(final String caption) {
-        this(caption, "");
+        this(caption, "", null);
     }
 
     /**
@@ -46,11 +51,12 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
      * @param caption a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
      */
-    public LegalEntitySelect(final String caption, final String description) {
+    public LegalEntitySelect(final String caption, final String description, final Company company) {
         setCaption(caption);
         setDescription(description);
         setBuffered(true);
         addStyleName(ExtaTheme.BORDERED_COMPONENT);
+        this.company = company;
     }
 
     /** {@inheritDoc} */
@@ -164,6 +170,13 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         innField.setPropertyDataSource(beanItem.getItemProperty("inn"));
     }
 
+    public void setCompany(Company company) {
+        if (!Objects.equals(this.company, company)) {
+            this.company = company;
+            selectField.refreshContainer();
+        }
+    }
+
     private class LESelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
@@ -184,6 +197,7 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
 
             // Инициализация контейнера
             container = new ExtaDataContainer<>(LegalEntity.class);
+            setContainerFilter();
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);
@@ -201,8 +215,18 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
          * <p>refreshContainer.</p>
          */
         public void refreshContainer() {
+            setContainerFilter();
             container.refresh();
+            if(company != null && !Objects.equals(getConvertedValue(), company))
+                setConvertedValue(null);
         }
+
+        protected void setContainerFilter() {
+            container.removeAllContainerFilters();
+            if (company != null)
+                container.addContainerFilter(new Compare.Equal("company", company));
+        }
+
     }
 
     /** {@inheritDoc} */

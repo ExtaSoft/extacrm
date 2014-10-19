@@ -8,6 +8,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 /**
  * Адресные данные контакта
  *
@@ -157,5 +159,12 @@ public class AddressInfo implements Serializable {
 
     public void setPeriodOfResidence(final PeriodOfResidence periodOfResidence) {
         this.periodOfResidence = periodOfResidence;
+    }
+
+    public boolean isEmpty() {
+        return isNullOrEmpty(region) &&
+                isNullOrEmpty(city) &&
+                isNullOrEmpty(postIndex)&&
+                isNullOrEmpty(streetBld);
     }
 }
