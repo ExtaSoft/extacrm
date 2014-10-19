@@ -7,10 +7,13 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Objects;
@@ -29,12 +32,9 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class LegalEntitySelect extends CustomField<LegalEntity> {
 
-    private LESelectField selectField;
-    private Label emailField;
-    private Label innField;
-    private Label phoneField;
-    private Button viewBtn;
     private Company company;
+    private PopupView popupView;
+    private PopupLegalEntityContent entityContent;
 
     /**
      * <p>Constructor for LegalEntitySelect.</p>
@@ -55,125 +55,26 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         setCaption(caption);
         setDescription(description);
         setBuffered(true);
-        addStyleName(ExtaTheme.BORDERED_COMPONENT);
         this.company = company;
     }
 
     /** {@inheritDoc} */
     @Override
     protected Component initContent() {
-        final VerticalLayout container = new VerticalLayout();
-        container.setSpacing(true);
-
-        final CssLayout nameLay = new CssLayout();
-        nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
-
-        selectField = new LESelectField("", "Введите или выберите название юридического лица");
-        selectField.setInputPrompt("ООО \"Рога и Копыта\"");
-        selectField.setPropertyDataSource(getPropertyDataSource());
-        selectField.setNewItemsAllowed(true);
-        selectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-            private static final long serialVersionUID = 1L;
-
-            @SuppressWarnings({"unchecked"})
-            @Override
-            public void addNewItem(final String newItemCaption) {
-                final LegalEntity newObj = new LegalEntity();
-                newObj.setName(newItemCaption);
-
-                final LegalEntityEditForm editWin = new LegalEntityEditForm(newObj);
-                editWin.setModified(true);
-
-                editWin.addCloseFormListener(event -> {
-                    if (editWin.isSaved()) {
-                        selectField.refreshContainer();
-                        selectField.setValue(editWin.getObjectId());
-                    }
-                });
-                FormUtils.showModalWin(editWin);
-            }
-        });
-        selectField.addValueChangeListener(event -> refreshFields((LegalEntity) selectField.getConvertedValue()));
-        nameLay.addComponent(selectField);
-
-        final Button searchBtn = new Button("Поиск", event -> {
-
-            final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите ЮЛ или введите новое", null);
-            selectWindow.addCloseListener(e -> {
-                if (selectWindow.isSelectPressed()) {
-                    final LegalEntity selected = selectWindow.getSelected();
-                    selectField.setConvertedValue(selected);
-                }
-            });
-            selectWindow.showModal();
-
-        });
-        searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
-        searchBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-        nameLay.addComponent(searchBtn);
-
-        viewBtn = new Button("Просмотр", event -> {
-            final LegalEntity bean = (LegalEntity) selectField.getConvertedValue();
-
-            final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
-            editWin.setModified(true);
-
-            editWin.addCloseFormListener(event1 -> {
-                if (editWin.isSaved()) {
-                    refreshFields(bean);
-                }
-            });
-            FormUtils.showModalWin(editWin);
-        });
-        viewBtn.setIcon(Fontello.EDIT_3);
-        viewBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-        nameLay.addComponent(viewBtn);
-        container.addComponent(nameLay);
-
-        final HorizontalLayout fieldsContainer = new HorizontalLayout();
-        fieldsContainer.setSpacing(true);
-        // Телефон
-        phoneField = new Label();
-        phoneField.setCaption("Телефон");
-        phoneField.setConverter(lookup(PhoneConverter.class));
-        fieldsContainer.addComponent(phoneField);
-        // Мыло
-        emailField = new Label();
-        emailField.setCaption("E-Mail");
-        fieldsContainer.addComponent(emailField);
-
-        // ИНН
-        innField = new Label();
-        innField.setCaption("ИНН");
-        fieldsContainer.addComponent(innField);
-        container.addComponent(fieldsContainer);
-
-        refreshFields((LegalEntity) getPropertyDataSource().getValue());
-        return container;
-    }
-
-    private void refreshFields(LegalEntity legalEntity) {
-        setValue(legalEntity);
-
-        if (legalEntity == null) {
-            viewBtn.setEnabled(false);
-            legalEntity = new LegalEntity();
-        } else
-            viewBtn.setEnabled(true);
-
-        final BeanItem<LegalEntity> beanItem = new BeanItem<>(legalEntity);
-        // Телефон
-        phoneField.setPropertyDataSource(beanItem.getItemProperty("phone"));
-        // Мыло
-        emailField.setPropertyDataSource(beanItem.getItemProperty("email"));
-        // ИНН
-        innField.setPropertyDataSource(beanItem.getItemProperty("inn"));
+        entityContent = new PopupLegalEntityContent();
+        popupView = new PopupView(entityContent);
+        popupView.setHideOnMouseOut(false);
+        return popupView;
     }
 
     public void setCompany(Company company) {
         if (!Objects.equals(this.company, company)) {
             this.company = company;
-            selectField.refreshContainer();
+            final LegalEntity legalEntity = getValue();
+            if (legalEntity != null && company != null && !legalEntity.getCompany().equals(company)) {
+                entityContent.refreshFields(null);
+                markAsDirtyRecursive();
+            }
         }
     }
 
@@ -183,20 +84,21 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
         protected ExtaDataContainer<LegalEntity> container;
 
         protected LESelectField(final String caption) {
-            this(caption, "Выберите существующий контакт или введите новый");
+            this(caption, "Выберите существующее юр. лицо или введите новое");
         }
 
         protected LESelectField(final String caption, final String description) {
             super(caption);
 
             // Преконфигурация
+            setWidth(15, Unit.EM);
             setDescription(description);
-            setInputPrompt("контакт...");
-            setWidth(25, Unit.EM);
+            setInputPrompt("ООО \"Рога и Копыта\"");
             setImmediate(true);
 
             // Инициализация контейнера
             container = new ExtaDataContainer<>(LegalEntity.class);
+            container.sort(new Object[]{"name"}, new boolean[]{true});
             setContainerFilter();
 
             // Устанавливаем контент выбора
@@ -233,5 +135,133 @@ public class LegalEntitySelect extends CustomField<LegalEntity> {
     @Override
     public Class<? extends LegalEntity> getType() {
         return LegalEntity.class;
+    }
+
+    private class PopupLegalEntityContent implements PopupView.Content {
+        private LESelectField selectField;
+        private Label emailField;
+        private Label innField;
+        private Label phoneField;
+        private Button viewBtn;
+
+        @Override
+        public String getMinimizedValueAsHTML() {
+            final LegalEntity legalEntity = getValue();
+            if (legalEntity != null)
+                return legalEntity.getName();
+            else
+                return "Нажмите для выбора или ввода юр. лица...";
+        }
+
+        @Override
+        public Component getPopupComponent() {
+
+            final ExtaFormLayout formLayout = new ExtaFormLayout();
+            formLayout.setSpacing(true);
+
+            formLayout.addComponent(new FormGroupHeader("Юридическое лицо"));
+
+            selectField = new LESelectField("Название", "Введите или выберите название юридического лица");
+            selectField.setPropertyDataSource(getPropertyDataSource());
+            selectField.setNewItemsAllowed(true);
+            selectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+                private static final long serialVersionUID = 1L;
+
+                @SuppressWarnings({"unchecked"})
+                @Override
+                public void addNewItem(final String newItemCaption) {
+                    final LegalEntity newObj = new LegalEntity();
+                    newObj.setName(newItemCaption);
+
+                    final LegalEntityEditForm editWin = new LegalEntityEditForm(newObj);
+                    editWin.setModified(true);
+
+                    editWin.addCloseFormListener(event -> {
+                        if (editWin.isSaved()) {
+                            selectField.refreshContainer();
+                            selectField.setValue(editWin.getObjectId());
+                        }
+                    });
+                    FormUtils.showModalWin(editWin);
+                }
+            });
+            selectField.addValueChangeListener(event -> refreshFields((LegalEntity) selectField.getConvertedValue()));
+            formLayout.addComponent(selectField);
+
+            // Телефон
+            phoneField = new Label();
+            phoneField.setCaption("Телефон");
+            phoneField.setConverter(lookup(PhoneConverter.class));
+            formLayout.addComponent(phoneField);
+            // Мыло
+            emailField = new Label();
+            emailField.setCaption("E-Mail");
+            formLayout.addComponent(emailField);
+
+            // ИНН
+            innField = new Label();
+            innField.setCaption("ИНН");
+            formLayout.addComponent(innField);
+
+            HorizontalLayout toolbar = new HorizontalLayout();
+            viewBtn = new Button("Просмотр", event -> {
+                final LegalEntity bean = (LegalEntity) selectField.getConvertedValue();
+
+                final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
+                editWin.setModified(true);
+
+                editWin.addCloseFormListener(event1 -> {
+                    if (editWin.isSaved()) {
+                        refreshFields(bean);
+                    }
+                });
+                FormUtils.showModalWin(editWin);
+            });
+            viewBtn.setDescription("Открыть форму ввода/редактирования юр. лица");
+            viewBtn.setIcon(Fontello.EDIT_3);
+            viewBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+            viewBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
+            toolbar.addComponent(viewBtn);
+
+            final Button searchBtn = new Button("Поиск", event -> {
+                final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите юр. лицо или введите новое", null);
+                selectWindow.addCloseListener(e -> {
+                    if (selectWindow.isSelectPressed()) {
+                        final LegalEntity selected = selectWindow.getSelected();
+                        selectField.setConvertedValue(selected);
+                    }
+                });
+                selectWindow.showModal();
+
+            });
+            searchBtn.setDescription("Открыть форму для поиска и выбора юр. лица");
+            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+            searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+            searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
+            toolbar.addComponent(searchBtn);
+
+            formLayout.addComponent(toolbar);
+
+            refreshFields((LegalEntity) getPropertyDataSource().getValue());
+            return formLayout;
+        }
+
+        public void refreshFields(LegalEntity legalEntity) {
+            setValue(legalEntity);
+
+            if (legalEntity == null) {
+                viewBtn.setEnabled(false);
+                legalEntity = new LegalEntity();
+            } else
+                viewBtn.setEnabled(true);
+
+            final BeanItem<LegalEntity> beanItem = new BeanItem<>(legalEntity);
+            // Телефон
+            if (phoneField != null) phoneField.setPropertyDataSource(beanItem.getItemProperty("phone"));
+            // Мыло
+            if (emailField != null) emailField.setPropertyDataSource(beanItem.getItemProperty("email"));
+            // ИНН
+            if (innField != null) innField.setPropertyDataSource(beanItem.getItemProperty("inn"));
+        }
     }
 }

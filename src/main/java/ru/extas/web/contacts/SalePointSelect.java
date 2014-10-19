@@ -11,6 +11,8 @@ import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Objects;
@@ -28,12 +30,10 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class SalePointSelect extends CustomField<SalePoint> {
 
-    private Button viewBtn;
-    private Label companyField;
-    private Label phoneField;
-    private Label adressField;
     private Company company;
-    private SalePointComboBox contactSelect;
+
+    private PopupView popupView;
+    private PopupSalePointContent salePointContent;
 
     /**
      * <p>Constructor for SalePointSelect.</p>
@@ -48,7 +48,6 @@ public class SalePointSelect extends CustomField<SalePoint> {
         setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setBuffered(true);
-        addStyleName(ExtaTheme.BORDERED_COMPONENT);
     }
 
     /**
@@ -56,125 +55,10 @@ public class SalePointSelect extends CustomField<SalePoint> {
      */
     @Override
     protected Component initContent() {
-
-        final VerticalLayout container = new VerticalLayout();
-        container.setSpacing(true);
-
-        final CssLayout nameLay = new CssLayout();
-        nameLay.addStyleName(ExtaTheme.LAYOUT_COMPONENT_GROUP);
-
-        if (!isReadOnly()) {
-            contactSelect = new SalePointComboBox();
-            contactSelect.setPropertyDataSource(getPropertyDataSource());
-            contactSelect.setNewItemsAllowed(true);
-            contactSelect.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-                private static final long serialVersionUID = 1L;
-
-                @SuppressWarnings({"unchecked"})
-                @Override
-                public void addNewItem(final String newItemCaption) {
-                    final SalePoint defNewObj = new SalePoint();
-                    if (defNewObj.getName() == null) {
-                        defNewObj.setName(newItemCaption);
-                    }
-                    defNewObj.setCompany(company);
-
-                    final SalePointEditForm editWin = new SalePointEditForm(defNewObj);
-                    editWin.setModified(true);
-
-                    editWin.addCloseFormListener(event -> {
-                        if (editWin.isSaved()) {
-                            contactSelect.refreshContainer();
-                            contactSelect.setValue(editWin.getObjectId());
-                        }
-                    });
-                    FormUtils.showModalWin(editWin);
-                }
-            });
-            contactSelect.addValueChangeListener(event -> refreshFields((SalePoint) contactSelect.getConvertedValue()));
-            nameLay.addComponent(contactSelect);
-
-            final Button searchBtn = new Button("Поиск", event -> {
-
-                final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите клиента или введите нового", company);
-                selectWindow.addCloseListener(e -> {
-                    if (selectWindow.isSelectPressed()) {
-                        contactSelect.setConvertedValue(selectWindow.getSelected());
-                    }
-                });
-                selectWindow.showModal();
-
-            });
-            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-            nameLay.addComponent(searchBtn);
-
-            viewBtn = new Button("Просмотр", event -> {
-                final SalePoint salePoint = (SalePoint) getPropertyDataSource().getValue();
-
-                final SalePointEditForm editWin = new SalePointEditForm(salePoint);
-
-                editWin.addCloseFormListener(e -> {
-                    if (editWin.isSaved()) {
-                        refreshFields(salePoint);
-                    }
-                });
-                FormUtils.showModalWin(editWin);
-            });
-            viewBtn.setIcon(Fontello.EDIT_3);
-            viewBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-            nameLay.addComponent(viewBtn);
-
-        } else {
-            final Label name = new Label();
-            final SalePoint salePoint = (SalePoint) getPropertyDataSource().getValue();
-            if (salePoint != null)
-                name.setValue(salePoint.getName());
-            nameLay.addComponent(name);
-        }
-
-        container.addComponent(nameLay);
-
-        final HorizontalLayout fieldsContainer = new HorizontalLayout();
-        fieldsContainer.setSpacing(true);
-        // Компания
-        companyField = new Label();
-        companyField.setCaption("Компания");
-        fieldsContainer.addComponent(companyField);
-        // Телефон
-        phoneField = new Label();
-        phoneField.setCaption("Телефон");
-        phoneField.setConverter(lookup(PhoneConverter.class));
-        fieldsContainer.addComponent(phoneField);
-        // Адрес
-        adressField = new Label();
-        adressField.setCaption("Адрес");
-        fieldsContainer.addComponent(adressField);
-        refreshFields((SalePoint) getPropertyDataSource().getValue());
-
-        container.addComponent(fieldsContainer);
-
-        return container;
-    }
-
-    private void refreshFields(SalePoint salePoint) {
-        setValue(salePoint);
-        if (viewBtn != null) {
-            viewBtn.setEnabled(salePoint != null);
-        }
-        if (salePoint == null) {
-            salePoint = new SalePoint();
-        }
-
-        final BeanItem<SalePoint> personItem = new BeanItem<>(salePoint);
-        personItem.addNestedProperty("company.name");
-        personItem.addNestedProperty("regAddress.streetBld");
-        // Компания
-        companyField.setPropertyDataSource(personItem.getItemProperty("company.name"));
-        // Телефон
-        phoneField.setPropertyDataSource(personItem.getItemProperty("phone"));
-        // Адрес
-        adressField.setPropertyDataSource(personItem.getItemProperty("regAddress.streetBld"));
+        salePointContent = new PopupSalePointContent();
+        popupView = new PopupView(salePointContent);
+        popupView.setHideOnMouseOut(false);
+        return popupView;
     }
 
     /**
@@ -188,7 +72,11 @@ public class SalePointSelect extends CustomField<SalePoint> {
     public void setCompany(Company company) {
         if (!Objects.equals(this.company, company)) {
             this.company = company;
-            contactSelect.refreshContainer();
+            final SalePoint salePoint = getValue();
+            if (salePoint != null && company != null && !salePoint.getCompany().equals(company)) {
+                salePointContent.refreshFields(null);
+            }
+            markAsDirtyRecursive();
         }
     }
 
@@ -197,7 +85,11 @@ public class SalePointSelect extends CustomField<SalePoint> {
         protected ExtaDataContainer<SalePoint> container;
 
         public SalePointComboBox() {
-            this("", "Введите или выберите название торговой точки");
+            this("Название");
+        }
+
+        public SalePointComboBox(String caption) {
+            this(caption, "Введите или выберите название торговой точки");
         }
 
         protected SalePointComboBox(final String caption, final String description) {
@@ -206,7 +98,7 @@ public class SalePointSelect extends CustomField<SalePoint> {
             // Преконфигурация
             setDescription(description);
             setInputPrompt("Торговая точка...");
-            setWidth(25, Unit.EM);
+            setWidth(15, Unit.EM);
             setImmediate(true);
 
             // Инициализация контейнера
@@ -242,5 +134,140 @@ public class SalePointSelect extends CustomField<SalePoint> {
                 container.addContainerFilter(new Compare.Equal("company", company));
         }
 
+    }
+
+    private class PopupSalePointContent implements PopupView.Content {
+
+        private Button viewBtn;
+        private Label companyField;
+        private Label phoneField;
+        private Label addressField;
+        private SalePointComboBox contactSelect;
+        private Label cityField;
+
+        @Override
+        public String getMinimizedValueAsHTML() {
+            final SalePoint salePoint = getValue();
+            if (salePoint != null)
+                return salePoint.getName();
+            else
+                return "Нажмите для выбора или ввода торговой точки...";
+        }
+
+        @Override
+        public Component getPopupComponent() {
+            final ExtaFormLayout container = new ExtaFormLayout();
+            container.setSpacing(true);
+
+            container.addComponent(new FormGroupHeader("Торговая точка"));
+            if (!isReadOnly()) {
+                contactSelect = new SalePointComboBox();
+                contactSelect.setPropertyDataSource(getPropertyDataSource());
+                contactSelect.setNewItemsAllowed(true);
+                contactSelect.setNewItemHandler(newItemCaption -> {
+                    final SalePoint defNewObj = new SalePoint();
+                    if (defNewObj.getName() == null) {
+                        defNewObj.setName(newItemCaption);
+                    }
+                    defNewObj.setCompany(company);
+
+                    final SalePointEditForm editWin = new SalePointEditForm(defNewObj);
+                    editWin.setModified(true);
+
+                    editWin.addCloseFormListener(event -> {
+                        if (editWin.isSaved()) {
+                            contactSelect.refreshContainer();
+                            contactSelect.setValue(editWin.getObjectId());
+                        }
+                    });
+                    FormUtils.showModalWin(editWin);
+                });
+                contactSelect.addValueChangeListener(event -> refreshFields((SalePoint) contactSelect.getConvertedValue()));
+                container.addComponent(contactSelect);
+            } else {
+                final Label name = new Label();
+                final SalePoint salePoint = getValue();
+                if (salePoint != null)
+                    name.setValue(salePoint.getName());
+                container.addComponent(name);
+            }
+
+            // Компания
+            companyField = new Label();
+            companyField.setCaption("Компания");
+            container.addComponent(companyField);
+            // Телефон
+            phoneField = new Label();
+            phoneField.setCaption("Телефон");
+            phoneField.setConverter(lookup(PhoneConverter.class));
+            container.addComponent(phoneField);
+            // Адрес
+            cityField = new Label();
+            cityField.setCaption("Город");
+            container.addComponent(cityField);
+
+            addressField = new Label();
+            addressField.setCaption("Адрес");
+            container.addComponent(addressField);
+            refreshFields(getValue());
+
+            HorizontalLayout toolbar = new HorizontalLayout();
+            viewBtn = new Button("Просмотр", event -> {
+                final SalePoint salePoint = (SalePoint) getPropertyDataSource().getValue();
+                final SalePointEditForm editWin = new SalePointEditForm(salePoint);
+                editWin.addCloseFormListener(e -> {
+                    if (editWin.isSaved()) {
+                        refreshFields(salePoint);
+                    }
+                });
+                FormUtils.showModalWin(editWin);
+            });
+            viewBtn.setDescription("Открыть форму ввода/редактирования торговой точки");
+            viewBtn.setIcon(Fontello.EDIT_3);
+            viewBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+            viewBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
+            toolbar.addComponent(viewBtn);
+
+            final Button searchBtn = new Button("Поиск", event -> {
+                final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите торговую точку или введите новую", company);
+                selectWindow.addCloseListener(e -> {
+                    if (selectWindow.isSelectPressed()) {
+                        contactSelect.setConvertedValue(selectWindow.getSelected());
+                    }
+                });
+                selectWindow.showModal();
+
+            });
+            searchBtn.setDescription("Открыть форму для поиска и выбора торговой точки");
+            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+            searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+            searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
+            toolbar.addComponent(searchBtn);
+
+            container.addComponent(toolbar);
+            return container;
+        }
+
+        public void refreshFields(SalePoint salePoint) {
+            setValue(salePoint);
+            if (viewBtn != null) {
+                viewBtn.setEnabled(salePoint != null);
+            }
+            if (salePoint == null) {
+                salePoint = new SalePoint();
+            }
+
+            final BeanItem<SalePoint> personItem = new BeanItem<>(salePoint);
+            personItem.addNestedProperty("company.name");
+            personItem.addNestedProperty("regAddress.city");
+            personItem.addNestedProperty("regAddress.streetBld");
+            // Компания
+            if (companyField != null) companyField.setPropertyDataSource(personItem.getItemProperty("company.name"));
+            // Телефон
+            if (phoneField != null) phoneField.setPropertyDataSource(personItem.getItemProperty("phone"));
+            // Адрес
+            if (cityField != null) cityField.setPropertyDataSource(personItem.getItemProperty("regAddress.city"));
+            if (addressField != null) addressField.setPropertyDataSource(personItem.getItemProperty("regAddress.streetBld"));
+        }
     }
 }

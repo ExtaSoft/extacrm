@@ -41,6 +41,9 @@ public class AddressInfoField extends CustomField<AddressInfo> {
 
     public AddressInfoField(String caption) {
         setCaption(caption);
+        setDescription("Введите полный почтовый адрес");
+        setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
+        setBuffered(true);
     }
 
     @Override
@@ -58,13 +61,13 @@ public class AddressInfoField extends CustomField<AddressInfo> {
     private class PopupAddressInfoContent implements PopupView.Content {
 
         @PropertyId("region")
-        private RegionSelect regRegionField;
+        private RegionSelect regionField;
         @PropertyId("city")
-        private CitySelect regCityField;
+        private CitySelect cityField;
         @PropertyId("postIndex")
-        private EditField regPostIndexField;
+        private EditField postIndexField;
         @PropertyId("streetBld")
-        private TextArea regStreetBldField;
+        private TextArea streetBldField;
 
 
         @Override
@@ -92,40 +95,40 @@ public class AddressInfoField extends CustomField<AddressInfo> {
 
             final AddressInfo addressInfo = getValue();
 
-            regRegionField = new RegionSelect();
-            regRegionField.setDescription("Укажите регион проживания");
-            regRegionField.addValueChangeListener(event -> {
+            regionField = new RegionSelect();
+            regionField.setDescription("Укажите регион проживания");
+            regionField.addValueChangeListener(event -> {
                 final String newRegion = (String) event.getProperty().getValue();
                 final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
                 if (city != null)
-                    regCityField.setValue(city);
+                    cityField.setValue(city);
             });
-            formLayout.addComponent(regRegionField);
+            formLayout.addComponent(regionField);
 
-            regCityField = new CitySelect();
-            regCityField.setDescription("Введите город проживания контакта");
+            cityField = new CitySelect();
+            cityField.setDescription("Введите город проживания контакта");
             if (addressInfo.getCity() != null)
-                regCityField.addItem(addressInfo.getCity());
-            regCityField.addValueChangeListener(event -> {
+                cityField.addItem(addressInfo.getCity());
+            cityField.addValueChangeListener(event -> {
                 final String newCity = (String) event.getProperty().getValue();
                 final String region = lookup(SupplementService.class).findRegionByCity(newCity);
                 if (region != null)
-                    regRegionField.setValue(region);
+                    regionField.setValue(region);
             });
-            formLayout.addComponent(regCityField);
+            formLayout.addComponent(cityField);
 
-            regPostIndexField = new EditField("Почтовый индекс");
-            regPostIndexField.setColumns(8);
-            regPostIndexField.setInputPrompt("Индекс");
-            regPostIndexField.setNullRepresentation("");
-            formLayout.addComponent(regPostIndexField);
+            postIndexField = new EditField("Почтовый индекс");
+            postIndexField.setColumns(8);
+            postIndexField.setInputPrompt("Индекс");
+            postIndexField.setNullRepresentation("");
+            formLayout.addComponent(postIndexField);
 
-            regStreetBldField = new TextArea("Адрес");
-            regStreetBldField.setRows(2);
-            regStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
-            regStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
-            regStreetBldField.setNullRepresentation("");
-            formLayout.addComponent(regStreetBldField);
+            streetBldField = new TextArea("Адрес");
+            streetBldField.setRows(2);
+            streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
+            streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
+            streetBldField.setNullRepresentation("");
+            formLayout.addComponent(streetBldField);
 
             final BeanFieldGroup<AddressInfo> fieldGroup = new BeanFieldGroup<>(AddressInfo.class);
             fieldGroup.setItemDataSource(new BeanItem<>(addressInfo));

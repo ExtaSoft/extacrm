@@ -7,11 +7,9 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.contacts.*;
 import ru.extas.server.contacts.EmployeeRepository;
-import ru.extas.server.contacts.PersonRepository;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
-import ru.extas.web.reference.CitySelect;
 
 import java.text.MessageFormat;
 
@@ -99,6 +97,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Общие данные"));
         nameField = new EditField("Имя");
+        nameField.setColumns(15);
         nameField.setDescription("Введите имя (ФИО) сотрудника");
         nameField.setInputPrompt("Фамилия Имя (Отчество)");
         nameField.setRequired(true);
@@ -119,6 +118,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Работодатель"));
         companyField = new CompanySelect("Компания");
+        companyField.setRequired(true);
         companyField.addValueChangeListener(e -> {
             final Company company = (Company) companyField.getConvertedValue();
             workPlaceField.setCompany(company);
