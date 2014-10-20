@@ -4,6 +4,8 @@
 package ru.extas.model.contacts;
 
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.URL;
 import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.Column;
@@ -51,11 +53,13 @@ public abstract class Contact extends SecuredObject{
 	// Эл. почта
 	@Column(length = EMAIL_LENGTH)
 	@Size(max = EMAIL_LENGTH)
+    @Email
 	private String email;
 
 	// Сайт
 	@Column(length = WWW_LENGTH)
 	@Size(max = WWW_LENGTH)
+    @URL
 	private String www;
 
 	/**

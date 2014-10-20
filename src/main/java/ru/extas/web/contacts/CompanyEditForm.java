@@ -13,10 +13,7 @@ import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.component.EmailField;
-import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.component.PhoneField;
+import ru.extas.web.commons.component.*;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -40,12 +37,8 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     // Вкладка - "Общая информация"
     @PropertyId("name")
     private EditField nameField;
-    @PropertyId("phone")
-    private PhoneField phoneField;
-    @PropertyId("email")
-    private EditField emailField;
     @PropertyId("www")
-    private EditField wwwField;
+    private WebSiteLinkField wwwField;
     @PropertyId("region")
     private ComboBox regionField;
     @PropertyId("city")
@@ -163,21 +156,14 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         nameField = new EditField("Название");
         nameField.setRequired(true);
         nameField.setImmediate(true);
-        nameField.setColumns(30);
+        nameField.setColumns(20);
         nameField.setDescription("Введите Название компании");
         nameField.setInputPrompt("Рога и Копыта");
         nameField.setRequiredError("Название компании не может быть пустым.");
         nameField.setNullRepresentation("");
         formLayout.addComponent(nameField);
 
-        phoneField = new PhoneField("Телефон");
-        formLayout.addComponent(phoneField);
-
-        emailField = new EmailField("E-Mail");
-        formLayout.addComponent(emailField);
-
-        wwwField = new EditField("WWW", "Введите адрес сайта компании");
-        wwwField.setColumns(20);
+        wwwField = new WebSiteLinkField("WWW", "Введите адрес сайта компании");
         formLayout.addComponent(wwwField);
 
         regionField = new RegionSelect();

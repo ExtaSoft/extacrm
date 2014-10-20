@@ -3,7 +3,9 @@
  */
 package ru.extas.web.contacts;
 
+import ru.extas.web.commons.EmailLinkColumnGen;
 import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.UrlLinkColumnGen;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 /**
@@ -22,8 +24,8 @@ public class ContactDataDecl extends GridDataDecl {
 		super();
 		addMapping("name", "Имя");
 		addMapping("phone", "Телефон", PhoneConverter.class);
-		addMapping("email", "E-Mail");
-		addMapping("www", "WWW");
+		addMapping("email", "E-Mail", new EmailLinkColumnGen());
+		addMapping("www", "WWW", new UrlLinkColumnGen());
 		addMapping("regAddress.region", "Регион");
 		super.addDefaultMappings();
 	}

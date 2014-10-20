@@ -1,48 +1,37 @@
 package ru.extas.web.commons.component;
 
-import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.data.Property;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.*;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 
-import java.text.MessageFormat;
-
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
- * Поле ввода адреса электронной почты
+ * Поле ввода ссылки
  *
  * @author Valery Orlov
- *         Date: 23.10.13
- *         Time: 13:15
- * @version $Id: $Id
- * @since 0.3
+ *         Date: 20.10.2014
+ *         Time: 13:40
  */
-public class EmailField extends CustomField<String> {
+public class WebSiteLinkField extends CustomField<String> {
 
     private Link link;
     private EditField linkEdit;
     private Button editBtn;
 
-    /**
-     * <p>Constructor for EmailField.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     * @param description a {@link java.lang.String} object.
-     */
-    public EmailField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
+    public WebSiteLinkField() {
     }
 
-    /**
-     * <p>Constructor for EmailField.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
-     */
-    public EmailField(final String caption) {
-        this(caption, "Введите имя e-mail контакта который будет использоваться для связи");
+    public WebSiteLinkField(String caption) {
+        this(caption, "Введите ввылку на web страницу");
+    }
+
+    public WebSiteLinkField(String caption, String description) {
+        setCaption(caption);
+        setDescription(description);
     }
 
     @Override
@@ -54,16 +43,16 @@ public class EmailField extends CustomField<String> {
         linkEdit.addStyleName(ExtaTheme.TEXTFIELD_BORDERLESS);
         linkEdit.setWidth(100, Unit.PERCENTAGE);
         linkEdit.setNullRepresentation("");
-        linkEdit.setInputPrompt("e-mail");
+        linkEdit.setInputPrompt("http://...");
         linkEdit.setPropertyDataSource(getPropertyDataSource());
         linkEdit.addValueChangeListener(e -> setValue((String) e.getProperty().getValue()));
         linkEdit.addBlurListener(e -> {
-            if (!linkEdit.isModified())
+            if(!linkEdit.isModified())
                 refreshFieldState(getValue());
         });
 
         editBtn = new Button("Изменить", Fontello.EDIT_1);
-        editBtn.setDescription("Нажмите чтобы изменить адрес электронной почты");
+        editBtn.setDescription("Нажмите чтобы изменить ссылку");
         editBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         editBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         editBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
@@ -94,7 +83,7 @@ public class EmailField extends CustomField<String> {
             linkEdit.setVisible(!isReadOnly());
         } else {
             link.setVisible(true);
-            link.setResource(new ExternalResource(MessageFormat.format("mailto:{0}", newFieldValue)));
+            link.setResource(new ExternalResource(newFieldValue));
             link.setCaption(newFieldValue);
             editBtn.setVisible(!isReadOnly());
             linkEdit.setVisible(false);

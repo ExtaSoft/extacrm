@@ -3,6 +3,7 @@
  */
 package ru.extas.web.contacts;
 
+import ru.extas.web.commons.EmailLinkColumnGen;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.converters.PhoneConverter;
 
@@ -24,7 +25,7 @@ public class PersonDataDecl extends GridDataDecl {
 		addMapping("birthday", "Дата рождения"/* , StringToJodaLDConverter.class */);
 		addMapping("sex", "Пол");
 		addMapping("phone", "Мобильный телефон", PhoneConverter.class);
-		addMapping("email", "E-Mail");
+		addMapping("email", "E-Mail", new EmailLinkColumnGen());
 		addMapping("regAddress.region", "Регион");
 		super.addDefaultMappings();
 	}

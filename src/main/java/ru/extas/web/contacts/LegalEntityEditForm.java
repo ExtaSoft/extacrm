@@ -50,9 +50,9 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     @PropertyId("phone")
     private PhoneField phoneField;
     @PropertyId("email")
-    private EditField emailField;
+    private EmailField emailField;
     @PropertyId("www")
-    private EditField wwwField;
+    private WebSiteLinkField wwwField;
     @PropertyId("regAddress.region")
     private ComboBox regionField;
     @PropertyId("regAddress.city")
@@ -202,8 +202,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         emailField = new EmailField("E-Mail");
         formLayout.addComponent(emailField);
 
-        wwwField = new EditField("WWW", "Введите адрес сайта юридического лица");
-        wwwField.setColumns(20);
+        wwwField = new WebSiteLinkField("WWW", "Введите адрес сайта юридического лица");
         formLayout.addComponent(wwwField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

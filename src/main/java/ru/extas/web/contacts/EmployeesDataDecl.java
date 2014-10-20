@@ -1,6 +1,7 @@
 package ru.extas.web.contacts;
 
 import ru.extas.web.commons.DataDeclMapping;
+import ru.extas.web.commons.EmailLinkColumnGen;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.converters.PhoneConverter;
 
@@ -19,7 +20,7 @@ public class EmployeesDataDecl extends GridDataDecl {
         addMapping("name", "Имя");
         addMapping("company.name", "Компания");
         addMapping("phone", "Телефон", PhoneConverter.class);
-        addMapping("email", "E-Mail");
+        addMapping("email", "E-Mail", new EmailLinkColumnGen());
         super.addDefaultMappings();
     }
 }

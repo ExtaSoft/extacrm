@@ -13,10 +13,7 @@ import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.component.EmailField;
-import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.component.PhoneField;
+import ru.extas.web.commons.component.*;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
@@ -46,9 +43,9 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     @PropertyId("phone")
     private PhoneField phoneField;
     @PropertyId("email")
-    private EditField emailField;
+    private EmailField emailField;
     @PropertyId("www")
-    private EditField wwwField;
+    private WebSiteLinkField wwwField;
     @PropertyId("regAddress.region")
     private ComboBox regionField;
     @PropertyId("regAddress.city")
@@ -209,8 +206,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         emailField = new EmailField("E-Mail");
         formLayout.addComponent(emailField);
 
-        wwwField = new EditField("WWW", "Введите адрес сайта торговой точки");
-        wwwField.setColumns(20);
+        wwwField = new WebSiteLinkField("WWW", "Введите адрес сайта торговой точки");
         formLayout.addComponent(wwwField);
 
         regionField = new RegionSelect();

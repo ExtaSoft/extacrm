@@ -13,6 +13,7 @@ import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.component.WebSiteLinkField;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -108,7 +109,7 @@ public class CompanySelect extends CustomField<Company> {
     private class PopupCompanyContent implements PopupView.Content {
 
         private CompanyComboBox select;
-        private Link wwwField;
+        private WebSiteLinkField wwwField;
         private Label regionField;
         private Label cityField;
         private Button viewBtn;
@@ -158,9 +159,8 @@ public class CompanySelect extends CustomField<Company> {
             }
 
             // Сайт
-            wwwField = new Link();
-            wwwField.setTargetName("_blank");
-            wwwField.setCaption("www");
+            wwwField = new WebSiteLinkField("Сайт");
+            wwwField.setReadOnly(true);
             container.addComponent(wwwField);
             // Регион
             regionField = new Label();
@@ -222,8 +222,7 @@ public class CompanySelect extends CustomField<Company> {
             final BeanItem<Company> beanItem = new BeanItem<>(company);
 
             if (wwwField != null) {
-                wwwField.setCaption(company.getWww());
-                wwwField.setResource(new ExternalResource(company.getWww()));
+                wwwField.setPropertyDataSource(beanItem.getItemProperty("www"));
             }
             if (regionField != null) regionField.setPropertyDataSource(beanItem.getItemProperty("region"));
             if (cityField != null) cityField.setPropertyDataSource(beanItem.getItemProperty("city"));
