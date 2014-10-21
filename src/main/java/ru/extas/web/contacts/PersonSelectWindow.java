@@ -35,6 +35,7 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 	public PersonSelectWindow(final String caption) {
 		super(caption);
         setWidth(800, Unit.PIXELS);
+        setHeight(600, Unit.PIXELS);
         setContent(new SelectGrid());
 	}
 

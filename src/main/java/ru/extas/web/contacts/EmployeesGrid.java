@@ -1,6 +1,8 @@
 package ru.extas.web.contacts;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.util.filter.Compare;
+import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.*;
@@ -18,18 +20,29 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class EmployeesGrid extends ExtaGrid<Employee> {
 
+    private final Company company;
+
     public EmployeesGrid() {
-        super(Employee.class);
+        this(null);
+    }
+
+    public EmployeesGrid(Company company) {
+        super(Employee.class, false);
+        this.company = company;
+        initialize();
     }
 
     @Override
     public ExtaEditForm<Employee> createEditForm(Employee employee, boolean isInsert) {
-        return new EmployeeEditForm(employee);
+        return new EmployeeEditForm(employee, company);
     }
 
     @Override
     protected GridDataDecl createDataDecl() {
-        return new EmployeesDataDecl();
+        final EmployeesDataDecl dataDecl = new EmployeesDataDecl();
+        if(company != null)
+            dataDecl.setColumnCollapsed("company.name", true);
+        return dataDecl;
     }
 
     @Override
@@ -38,8 +51,8 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
         final ExtaDataContainer<Employee> container = new SecuredDataContainer<>(Employee.class, ExtaDomain.EMPLOYEE);
         container.addNestedContainerProperty("company.name");
         container.sort(new Object[]{"company.name", "name"}, new boolean[]{true, true});
-//        if (company != null)
-//            container.addContainerFilter(new Compare.Equal("company", company));
+        if (company != null)
+            container.addContainerFilter(new Compare.Equal("company", company));
         return container;
     }
 

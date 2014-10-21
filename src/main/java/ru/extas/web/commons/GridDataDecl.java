@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -30,6 +31,12 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @since 0.3
  */
 public class GridDataDecl implements Serializable {
+
+    public void setColumnCollapsed(String column, boolean collapsed) {
+        Optional<DataDeclMapping> mapping = getMappings().stream().filter(m -> m.getPropName().equals(column)).findFirst();
+        if(mapping.isPresent())
+            mapping.get().setCollapsed(collapsed);
+    }
 
     public interface GridColumnGenerator extends Serializable {
         Object generateCell(Object columnId, Item item, Object itemId);

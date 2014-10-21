@@ -58,7 +58,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
     // Вкладка - "Сотрудники"
     @PropertyId("employees")
-    private ContactEmployeeField employeeField;
+    private CompanyEmployeesField employeeField;
 
 
     public CompanyEditForm(final Company company) {
@@ -66,6 +66,9 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
                 "Ввод новой компании в систему" :
                 String.format("Редактирование компании: %s", company.getName()));
         final BeanItem<Company> beanItem = new BeanItem<>(company);
+
+        setWinWidth(800, Unit.PIXELS);
+        setWinHeight(600, Unit.PIXELS);
 
         initForm(beanItem);
     }
@@ -99,59 +102,71 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     @Override
     protected ComponentContainer createEditFields(final Company obj) {
         final TabSheet tabsheet = new TabSheet();
-        tabsheet.setSizeUndefined();
+        tabsheet.setSizeFull();
 
+//        tabsheet.addSelectedTabChangeListener(e -> {
+//            // Сохранить объект перед тем как переключаться на сложную вкладку
+//            final Component tab = tabsheet.getSelectedTab();
+//            if (getObject().isNew() && tabsheet.getTabPosition(tabsheet.getTab(tab)) != 0) {
+//                tabsheet.setSelectedTab(tabsheet.getTab(0));
+////                ConfirmDialog.show(UI.getCurrent(),
+////                        "Необходимо сохранить объект...",
+////                        "Необходимо сохранить компанию прежде чем продолжить редактирование. Сохранить сейчас?",
+////                        "Сохранить", "Отменить",
+////                        dialog -> {
+////                            if (dialog.isConfirmed()) {
+////                                save();
+////                                tabsheet.setSelectedTab(tab);
+////                            }
+////                        });
+//            }
+//        });
+//
         // Вкладка - "Общая информация"
-        final FormLayout mainForm = createMainForm(obj);
-        tabsheet.addTab(mainForm).setCaption("Общие данные");
-
-        // Вкладка - "Владельцы"
-        final Component ownerForm = createOwnerForm();
-        tabsheet.addTab(ownerForm).setCaption("Владельцы");
-
-        // Вкладка - "Юр. лица"
-        final Component legalsForm = createLegalsForm(obj);
-        tabsheet.addTab(legalsForm).setCaption("Юридические лица");
-
-
+        tabsheet.addTab(createMainForm(obj), "Общие данные");
         // Вкладка - "Торговые точки"
-        final Component salePointsForm = createSalePointsForm(obj);
-        tabsheet.addTab(salePointsForm).setCaption("Торговые точки");
-        tabsheet.addSelectedTabChangeListener(event -> {
-            if (event.getTabSheet().getSelectedTab() == salePointsForm)
-                legalsField.commit();
-        });
-
+        tabsheet.addTab(createSalePointsForm(), "Торговые точки");
         // Вкладка - "Сотрудники"
-        final Component employesForm = createEmployesForm();
-        tabsheet.addTab(employesForm).setCaption("Сотрудники");
-
+        tabsheet.addTab(createEmployesForm(), "Сотрудники");
+        // Вкладка - "Юр. лица"
+        tabsheet.addTab(createLegalsForm(), "Юридические лица");
+        // Вкладка - "Владельцы"
+        tabsheet.addTab(createOwnerForm(), "Владельцы");
         return tabsheet;
     }
 
-    private Component createLegalsForm(final Company obj) {
+    private Component createLegalsForm() {
+        final Company obj = getObject();
         legalsField = new LegalEntitiesField(obj);
+        legalsField.setSizeFull();
         return legalsField;
     }
 
     private Component createEmployesForm() {
-        employeeField = new ContactEmployeeField();
+        final Company obj = getObject();
+        employeeField = new CompanyEmployeesField(obj);
+        employeeField.setSizeFull();
         return employeeField;
     }
 
-    private Component createSalePointsForm(final Company obj) {
+    private Component createSalePointsForm() {
+        final Company obj = getObject();
         salePointsField = new SalePointsField(obj);
+        salePointsField.setSizeFull();
         return salePointsField;
     }
 
     private Component createOwnerForm() {
-        ownersField = new CompanyOwnersField();
+        final Company obj = getObject();
+        ownersField = new CompanyOwnersField(obj);
+        ownersField.setSizeFull();
         return ownersField;
     }
 
     private FormLayout createMainForm(final Company obj) {
         final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
+        formLayout.setSizeFull();
 
         nameField = new EditField("Название");
         nameField.setRequired(true);

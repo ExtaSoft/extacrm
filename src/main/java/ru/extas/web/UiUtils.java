@@ -17,6 +17,7 @@ import java.io.StringWriter;
 import java.util.Locale;
 import java.util.Optional;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.NotificationUtil.showWarning;
 
@@ -61,9 +62,9 @@ public class UiUtils {
             final Optional<Throwable> appThrowable = Throwables.getCausalChain(throwable).stream().filter(t -> t instanceof ExtaException).findFirst();
             logger.error("", throwable);
 
-            if (appThrowable.isPresent()){
+            if (appThrowable.isPresent()) {
                 NotificationUtil.showError("Ошибка при работе прилоения", appThrowable.get().getLocalizedMessage());
-            }else {
+            } else {
                 final StringWriter strWr = new StringWriter();
                 strWr.append("<div class='exceptionStackTraceBox'><pre>");
                 rootThrowable.printStackTrace(new PrintWriter(strWr, true));
@@ -78,18 +79,31 @@ public class UiUtils {
     /**
      * <p>showValidationError.</p>
      *
-     * @param caption a {@link java.lang.String} object.
+     * @param caption    a {@link java.lang.String} object.
      * @param fieldGroup a {@link com.vaadin.data.fieldgroup.FieldGroup} object.
      */
     public static void showValidationError(final String caption, final FieldGroup fieldGroup) {
         final StringBuilder msg = new StringBuilder();
-        msg.append("<ul>");
+        msg.append("<ul style = { text-align: left; }>");
         for (final Field<?> field : fieldGroup.getFields()) {
             try {
                 field.validate();
             } catch (final Validator.InvalidValueException e) {
+                final String message = "Неизвестная ошибка.";
+
                 msg.append("<li>");
-                msg.append(e.getLocalizedMessage());
+                msg.append("Ошибка в поле '");
+                msg.append(field.getCaption());
+                msg.append("': ");
+
+                if (!isNullOrEmpty(e.getLocalizedMessage()))
+                    msg.append(e.getLocalizedMessage());
+
+                for (Validator.InvalidValueException ce : e.getCauses()) {
+                    msg.append("<li>");
+                    msg.append(ce.getLocalizedMessage());
+                    msg.append("</li>");
+                }
                 msg.append("</li>");
             }
         }

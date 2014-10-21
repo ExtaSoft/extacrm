@@ -9,6 +9,7 @@ import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.AddressInfo;
+import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.LegalEntityFile;
 import ru.extas.server.contacts.LegalEntityRepository;
@@ -97,7 +98,13 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     @PropertyId("biс")
     private EditField biсField;
 
+    private Company company;
+
     public LegalEntityEditForm(final LegalEntity legalEntity) {
+        this(legalEntity, null);
+    }
+
+    public LegalEntityEditForm(LegalEntity legalEntity, Company company) {
         super(legalEntity.isNew() ?
                 "Ввод нового юр. лица в систему" :
                 String.format("Редактирование юр. лица: %s", legalEntity.getName()));
@@ -106,8 +113,10 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         beanItem.expandProperty("regAddress");
         beanItem.expandProperty("postAddress");
 
+        this.company = company;
         this.legalEntity = legalEntity;
         initForm(beanItem);
+        setWinWidth(860, Unit.PIXELS);
     }
 
     /**
@@ -138,7 +147,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     protected void initObject(final LegalEntity obj) {
         if (obj.isNew()) {
             // Инициализируем новый объект
-            // TODO: Инициализировать клиента в соответствии с локацией текущего
+            obj.setCompany(company);
         }
         if (obj.getRegAddress() == null)
             obj.setRegAddress(new AddressInfo());

@@ -40,7 +40,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 
     @Override
     public ExtaEditForm<SalePoint> createEditForm(final SalePoint salePoint, final boolean isInsert) {
-        return new SalePointEditForm(salePoint);
+        return new SalePointEditForm(salePoint, company);
     }
 
     @Override

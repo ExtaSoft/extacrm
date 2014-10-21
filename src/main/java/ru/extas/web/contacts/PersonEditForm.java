@@ -249,6 +249,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         beanItem.expandProperty("regAddress");
         beanItem.expandProperty("actualAddress");
         initForm(beanItem);
+        setWinWidth(930, Unit.PIXELS);
     }
 
 

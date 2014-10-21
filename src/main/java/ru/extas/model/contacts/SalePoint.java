@@ -30,11 +30,13 @@ public class SalePoint extends Contact {
 			name = "SALEPOINT_LEGALENTITY",
 			joinColumns = {@JoinColumn(name = "SALEPOINT_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = {@JoinColumn(name = "LEGALENTITY_ID", referencedColumnName = "ID")})
-	private Set<LegalEntity> legalEntities = newHashSet();
+    @OrderBy("name ASC")
+    private Set<LegalEntity> legalEntities = newHashSet();
 
 	// Сотрудники
 	@OneToMany(mappedBy = "workPlace", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-	private Set<Employee> employees = newHashSet();
+    @OrderBy("name ASC")
+    private Set<Employee> employees = newHashSet();
 
 	// Идентификация:
 

@@ -94,6 +94,7 @@ public class LegalEntity extends Contact{
             name = "LEGAL_ENTITY_PROD_CREDIT",
             joinColumns = {@JoinColumn(name = "LEGAL_ENTITY_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "PROD_CREDIT_ID", referencedColumnName = "ID")})
+    @OrderBy("name ASC")
     private List<ProdCredit> credProducts;
 
     // Дилерство
@@ -103,6 +104,7 @@ public class LegalEntity extends Contact{
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    @OrderBy("name ASC")
     private List<LegalEntityFile> files = newArrayList();
 
     public boolean isRegNpstIsSame() {

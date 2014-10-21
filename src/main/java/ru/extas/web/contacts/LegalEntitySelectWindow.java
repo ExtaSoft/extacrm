@@ -42,6 +42,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 		super(caption);
 		this.company = company;
         setWidth(800, Unit.PIXELS);
+        setHeight(600, Unit.PIXELS);
         setContent(new SelectGrid());
 	}
 

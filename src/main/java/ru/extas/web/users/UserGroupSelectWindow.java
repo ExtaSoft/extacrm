@@ -34,6 +34,8 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
     public UserGroupSelectWindow(final String caption) {
         super(caption);
         addStyleName(ExtaTheme.BASE_VIEW);
+        setWidth(800, Unit.PIXELS);
+        setHeight(600, Unit.PIXELS);
         setContent(new UserGroupGrid() {
 
 //            @Override

@@ -24,6 +24,8 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class EmployeeEditForm extends ExtaEditForm<Employee> {
 
+    private final Company company;
+
     // Общие данные
     @PropertyId("name")
     private EditField nameField;
@@ -66,10 +68,11 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     @PropertyId("regAddress")
     private AddressInfoField regAddressField;
 
-    public EmployeeEditForm(Employee employee) {
+    public EmployeeEditForm(Employee employee, Company company) {
         super(employee.isNew() ?
                 "Новый сотрудник" :
                 MessageFormat.format("Сотрудник: {0}", employee.getName()));
+        this.company = company;
 
         final BeanItem<Employee> beanItem = new BeanItem<>(employee);
         initForm(beanItem);
@@ -79,6 +82,8 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     protected void initObject(Employee obj) {
         if (obj.getRegAddress() == null)
             obj.setRegAddress(new AddressInfo());
+        if(company != null)
+            obj.setCompany(company);
     }
 
     @Override
@@ -124,6 +129,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
             workPlaceField.setCompany(company);
             legalWorkPlaceField.setCompany(company);
         });
+        companyField.setVisible(company == null);
         formLayout.addComponent(companyField);
 
         workPlaceField = new SalePointSelect("Торговая точка", "Укажите торговую точку сотрудника", obj.getCompany());

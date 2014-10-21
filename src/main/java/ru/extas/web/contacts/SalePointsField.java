@@ -6,6 +6,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.*;
 
@@ -28,8 +29,9 @@ import static com.google.common.collect.Sets.newHashSet;
 public class SalePointsField extends CustomField<Set> {
 
 	private final Company company;
+    private BeanItemContainer<SalePoint> itemContainer;
 
-	/**
+    /**
 	 * <p>Constructor for SalePointsField.</p>
 	 *
 	 * @param company a {@link ru.extas.model.contacts.Company} object.
@@ -37,8 +39,6 @@ public class SalePointsField extends CustomField<Set> {
 	public SalePointsField(final Company company) {
 		this.company = company;
 		setBuffered(true);
-        setWidth(600, Unit.PIXELS);
-        setHeight(300, Unit.PIXELS);
 	}
 
 	/** {@inheritDoc} */
@@ -47,68 +47,33 @@ public class SalePointsField extends CustomField<Set> {
 		final SalePointsGrid grid = new SalePointsGrid(company) {
 			@Override
 			protected Container createContainer() {
-				final Property dataSource = getPropertyDataSource();
-				final Set<SalePoint> list = dataSource != null ? (Set<SalePoint>) dataSource.getValue() : new HashSet<SalePoint>();
-				final BeanItemContainer<SalePoint> itemContainer = new BeanItemContainer<>(SalePoint.class);
-				if (list != null) {
-					for (final SalePoint item : list) {
-						itemContainer.addBean(item);
-					}
-				}
+				final Set<SalePoint> set = getValue() != null ? getValue() : newHashSet();
+                itemContainer = new BeanItemContainer<>(SalePoint.class);
 				itemContainer.addNestedContainerProperty("regAddress.region");
                 itemContainer.addNestedContainerProperty("company.name");
-				return itemContainer;
+                itemContainer.addAll(set);
+                return itemContainer;
 			}
 
-			@Override
-			protected List<UIAction> createActions() {
-				final List<UIAction> actions = newArrayList();
-
-				actions.add(new UIAction("Новый", "Ввод новой торговой точки в систему", Fontello.DOC_NEW) {
-					@Override
-					public void fire(final Object itemId) {
-						final SalePoint entity = new SalePoint();
-						entity.setCompany(company);
-
-						final SalePointEditForm editWin = new SalePointEditForm(entity) {
-							@Override
-							protected SalePoint saveObject(final SalePoint obj) {
-								((BeanItemContainer<SalePoint>) container).addBean(obj);
-								setValue(newHashSet(((BeanItemContainer<SalePoint>) container).getItemIds()));
-                                return obj;
-                            }
-						};
-                        FormUtils.showModalWin(editWin);
-					}
-				});
-
-				actions.add(new DefaultAction("Изменить", "Редактирование торговой точки", Fontello.EDIT_3) {
-					@Override
-					public void fire(final Object itemId) {
-						final SalePoint salePoint = GridItem.extractBean(table.getItem(itemId));
-						final SalePointEditForm editWin = new SalePointEditForm(salePoint) {
-							@Override
-							protected SalePoint saveObject(final SalePoint obj) {
-								setValue(newHashSet(((BeanItemContainer<SalePoint>) container).getItemIds()));
-                                return obj;
-                            }
-						};
-                        FormUtils.showModalWin(editWin);
-					}
-				});
-				actions.add(new ItemAction("Удалить", "Удалить торговую точку", Fontello.TRASH) {
-					@Override
-					public void fire(final Object itemId) {
-						container.removeItem(itemId);
-						setValue(newHashSet(((BeanItemContainer<SalePoint>) container).getItemIds()));
-					}
-				});
-				return actions;
-			}
-		};
+            @Override
+            public ExtaEditForm<SalePoint> createEditForm(SalePoint salePoint, boolean isInsert) {
+                final SalePointEditForm form = new SalePointEditForm(salePoint, company) {
+                    @Override
+                    protected SalePoint saveObject(SalePoint obj) {
+                        if (isInsert)
+                            itemContainer.addBean(obj);
+                        setValue(newHashSet(itemContainer.getItemIds()));
+                        return obj;
+                    }
+                };
+                form.setReadOnly(isReadOnly());
+                return form;
+            }
+        };
 		grid.setSizeFull();
+        grid.setReadOnly(isReadOnly());
 
-		return grid;
+        return grid;
 	}
 
 	/** {@inheritDoc} */

@@ -32,6 +32,7 @@ public class ProductSelectWindow extends CloseOnlylWindow {
 	public ProductSelectWindow(final String caption) {
 		super(caption);
         setWidth(800, Unit.PIXELS);
+        setHeight(600, Unit.PIXELS);
         setContent(new SelectGrid());
 	}
 

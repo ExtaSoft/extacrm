@@ -15,11 +15,16 @@ import java.util.UUID;
  *         Time: 18:49
  */
 public class FormUtils {
+
     public static void showModalWin(final ExtaEditForm<?> editWin) {
 
         final Window window = new Window(editWin.getCaption(), editWin);
         window.setClosable(true);
         window.setModal(true);
+
+        window.setHeight(editWin.getWinHeight(), editWin.getWinHeightUnit());
+        window.setWidth(editWin.getWinWidth(), editWin.getWinWidthUnit());
+
         window.addCloseListener(event -> editWin.closeForm());
         editWin.addCloseFormListener(event -> window.close());
 

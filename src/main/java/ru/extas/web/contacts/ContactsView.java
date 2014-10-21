@@ -36,7 +36,7 @@ public class ContactsView extends SubdomainView {
 	@Override
 	protected List<SubdomainInfo> getSubdomainInfo() {
 		final ArrayList<SubdomainInfo> ret = newArrayList();
-		ret.add(new SubdomainInfoImpl("Физ. лица", ExtaDomain.PERSON, true) {
+		ret.add(new SubdomainInfoImpl("Физ. лица", ExtaDomain.PERSON) {
 			@Override
 			public ExtaGrid createGrid() {
 				return new PersonsGrid();
@@ -48,7 +48,7 @@ public class ContactsView extends SubdomainView {
 				return new CompaniesGrid();
 			}
         });
-		ret.add(new SubdomainInfoImpl("Юридические лица", ExtaDomain.LEGAL_ENTITY, true) {
+		ret.add(new SubdomainInfoImpl("Юридические лица", ExtaDomain.LEGAL_ENTITY) {
 			@Override
 			public ExtaGrid createGrid() {
 				return new LegalEntitiesGrid(null);

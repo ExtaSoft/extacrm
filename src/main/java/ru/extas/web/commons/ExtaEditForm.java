@@ -7,7 +7,9 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.util.ReflectTools;
@@ -40,6 +42,37 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     private boolean modified;
     private TEditObject bean;
     private Button okBtn;
+
+    private float winWidth = 600;
+    private float winHeight = SIZE_UNDEFINED;
+    private Unit winWidthUnit = Unit.PIXELS;
+    private Unit winHeightUnit = Unit.PIXELS;
+
+    public float getWinWidth() {
+        return winWidth;
+    }
+
+    public void setWinWidth(float winWidth, Unit unit) {
+        this.winWidth = winWidth;
+        this.winWidthUnit = unit;
+    }
+
+    public float getWinHeight() {
+        return winHeight;
+    }
+
+    public void setWinHeight(float winHeight, Unit unit) {
+        this.winHeight = winHeight;
+        this.winHeightUnit = unit;
+    }
+
+    public Unit getWinWidthUnit() {
+        return winWidthUnit;
+    }
+
+    public Unit getWinHeightUnit() {
+        return winHeightUnit;
+    }
 
     public Object getObjectId() {
         if (bean != null) {
@@ -130,7 +163,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         final ComponentContainer form = createEditFields(bean);
 
         // Now create a binder
-        fieldGroup = new BeanFieldGroup<>((Class<TEditObject>)bean.getClass());
+        fieldGroup = new BeanFieldGroup<>((Class<TEditObject>) bean.getClass());
         fieldGroup.setItemDataSource(beanItem);
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
@@ -146,35 +179,20 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
             }
         });
         cancelBtn.setIcon(Fontello.CANCEL);
+        cancelBtn.setDisableOnClick(true);
         cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 
-        okBtn = new Button("Сохранить", new Button.ClickListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void buttonClick(final ClickEvent event) {
-
-                if (isModified()) {
-                    if (fieldGroup.isValid()) {
-                        try {
-                            fieldGroup.commit();
-                            bean = saveObject(bean);
-                            saved = true;
-                            modified = false;
-                        } catch (final Throwable e) {
-                            logger.error("Can't apply form changes", e);
-                            NotificationUtil.showError("Невозможно сохранить изменения!", e.getLocalizedMessage());
-                            return;
-                        }
-                        closeForm();
-                    } else
-                        showValidationError("Невозможно сохранить изменения!", fieldGroup);
-                }
+        okBtn = new Button("Сохранить", event -> {
+            try {
+                if (save())
+                    closeForm();
+            } finally {
+                okBtn.setEnabled(true);
             }
-
         });
         okBtn.addStyleName(ExtaTheme.BUTTON_PRIMARY);
         okBtn.setIcon(Fontello.OK);
+        okBtn.setDisableOnClick(true);
         okBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
 
         final Label footerText = new Label("");
@@ -189,10 +207,32 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         setDefaultFocus(form);
         setContent(form);
 
-        addAttachListener(e->{
+        addAttachListener(e -> {
             fieldGroup.setReadOnly(isReadOnly());
             okBtn.setEnabled(!isReadOnly());
         });
+    }
+
+    protected boolean save() {
+        boolean success = true;
+        if (isModified()) {
+            if (fieldGroup.isValid()) {
+                try {
+                    fieldGroup.commit();
+                    bean = saveObject(bean);
+                    saved = true;
+                    modified = false;
+                } catch (final Throwable e) {
+                    logger.error("Can't apply form changes", e);
+                    NotificationUtil.showError("Невозможно сохранить изменения!", e.getLocalizedMessage());
+                    success = false;
+                }
+            } else {
+                success = false;
+                showValidationError("Невозможно сохранить изменения!", fieldGroup);
+            }
+        }
+        return success;
     }
 
     /**
@@ -230,11 +270,28 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
 
     public void setContent(Component content) {
         if (content != null) {
-            final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
-            contentContainer.setSizeUndefined();
-            contentContainer.setMargin(new MarginInfo(false, true, false, true));
-            contentContainer.setSpacing(true);
-            content = contentContainer;
+            VerticalLayout root = new VerticalLayout();
+
+            if(content instanceof TabSheet) {
+                content.addStyleName(ExtaTheme.TABSHEET_PADDED_TABBAR);
+            } else {
+                Panel panel = new Panel();
+                panel.setSizeFull();
+                panel.addStyleName(ExtaTheme.PANEL_BORDERLESS);
+                panel.addStyleName(ExtaTheme.PANEL_SCROLL_DIVIDER);
+                VerticalLayout panelLayout = new VerticalLayout();
+                panelLayout.addComponent(content);
+                panelLayout.setMargin(true);
+                panel.setContent(panelLayout);
+                content = panel;
+            }
+            content.setSizeFull();
+            root.addComponent(content);
+            root.addComponent(buttonsPanel);
+            root.setSizeFull();
+            root.setExpandRatio(content, 1);
+            setSizeFull();
+            content = root;
         }
         super.setCompositionRoot(content);
     }

@@ -103,6 +103,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
                         "Новый полис" :
                         "Редактировать полис",
                 new BeanItem<>(insurance));
+        setWinWidth(930, Unit.PIXELS);
     }
 
     /**

@@ -63,19 +63,23 @@ public class Company extends SecuredObject {
 			name = "COMPANY_OWNER",
 			joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = {@JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")})
-	private Set<Employee> owners = newHashSet();
+    @OrderBy("name ASC")
+    private Set<Employee> owners = newHashSet();
 
 	// Сотрудники компании
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("name ASC")
 	private Set<Employee> employees = newHashSet();
 
 	// Юридические лица компании
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<LegalEntity> legalEntities = newHashSet();
+    @OrderBy("name ASC")
+    private Set<LegalEntity> legalEntities = newHashSet();
 
 	// Торговые точки компании
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<SalePoint> salePoints = newHashSet();
+    @OrderBy("name ASC")
+    private Set<SalePoint> salePoints = newHashSet();
 
 	/**
 	 * <p>Constructor for Company.</p>

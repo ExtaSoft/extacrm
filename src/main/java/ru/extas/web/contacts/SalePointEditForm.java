@@ -32,6 +32,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     private static final long serialVersionUID = -7787385620289376599L;
     private final static Logger logger = LoggerFactory.getLogger(LegalEntityEditForm.class);
+    private final Company company;
 
     // Компоненты редактирования
 
@@ -57,7 +58,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     @PropertyId("legalEntities")
     private LegalEntitiesSelectField legalsField;
     @PropertyId("employees")
-    private ContactEmployeeField employeeField;
+    private CompanyEmployeesField employeeField;
 
     @PropertyId("alphaCode")
     private EditField alphaCodeField;
@@ -71,10 +72,15 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     private SalePoint salePoint;
 
     public SalePointEditForm(final SalePoint salePoint) {
+        this(salePoint, null);
+    }
+
+    public SalePointEditForm(SalePoint salePoint, Company company) {
         super(salePoint.isNew() ? "Ввод новой торговой точки в систему" : "Редактирование данных торговой точки");
         final BeanItem beanItem = new BeanItem<>(salePoint);
         beanItem.expandProperty("regAddress");
 
+        this.company = company;
         initForm(beanItem);
     }
 
@@ -104,7 +110,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     protected void initObject(final SalePoint obj) {
         if (obj.isNew()) {
             // Инициализируем новый объект
-            // TODO: Инициализировать клиента в соответствии с локацией текущего
+            obj.setCompany(company);
         }
         if (obj.getRegAddress() == null)
             obj.setRegAddress(new AddressInfo());
@@ -179,7 +185,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     }
 
     private Component createEmployesForm() {
-        return employeeField = new ContactEmployeeField();
+        return employeeField = new CompanyEmployeesField(null);
     }
 
     private FormLayout createMainForm(final SalePoint obj) {

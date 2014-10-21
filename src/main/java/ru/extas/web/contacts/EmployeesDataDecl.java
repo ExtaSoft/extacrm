@@ -19,6 +19,7 @@ public class EmployeesDataDecl extends GridDataDecl {
     public EmployeesDataDecl() {
         addMapping("name", "Имя");
         addMapping("company.name", "Компания");
+        addMapping("jobPosition", "Должность");
         addMapping("phone", "Телефон", PhoneConverter.class);
         addMapping("email", "E-Mail", new EmailLinkColumnGen());
         super.addDefaultMappings();

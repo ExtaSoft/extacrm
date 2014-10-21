@@ -192,7 +192,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         panel.setRowExpandRatio(1, 1);
         panel.setColumnExpandRatio(0, 1);
         panel.setColumnExpandRatio(1, 0);
-        panel.setMargin(new MarginInfo(true, false, true, false));
+        panel.setMargin(true);
 
         if (toolbarVisible) {
             panel.setSpacing(true);
@@ -322,6 +322,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         table.setColumnCollapsingAllowed(true);
         table.setColumnReorderingAllowed(true);
         table.setNullSelectionAllowed(false);
+        table.setSizeFull();
         table.setSizeFull();
 
         // Ищем действие по умолчанию

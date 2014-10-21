@@ -2,6 +2,7 @@ package ru.extas.web.commons.window;
 
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import ru.extas.web.commons.ExtaGrid;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 
@@ -42,14 +43,9 @@ public class CloseOnlylWindow extends Window {
     }
 
     private void initInputWindow() {
-        closeBtn = new Button("Закрыть", new Button.ClickListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void buttonClick(final ClickEvent event) {
-                CloseOnlylWindow.this.okPressed = true;
-                close();
-            }
+        closeBtn = new Button("Закрыть", event -> {
+            CloseOnlylWindow.this.okPressed = true;
+            close();
         });
         closeBtn.setIcon(Fontello.OK);
         closeBtn.addStyleName(ExtaTheme.BUTTON_PRIMARY);
@@ -64,15 +60,34 @@ public class CloseOnlylWindow extends Window {
         buttonsPanel.setSpacing(true);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setContent(Component content) {
         if (content != null) {
-            final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
-            contentContainer.setMargin(true);
-            contentContainer.setSpacing(true);
-            contentContainer.setComponentAlignment(this.buttonsPanel, Alignment.MIDDLE_RIGHT);
-            content = contentContainer;
+            VerticalLayout root = new VerticalLayout();
+
+            if (content instanceof TabSheet) {
+                content.addStyleName(ExtaTheme.TABSHEET_PADDED_TABBAR);
+            } else if (content instanceof ExtaGrid) {
+            } else {
+                Panel panel = new Panel();
+                panel.setSizeFull();
+                panel.addStyleName(ExtaTheme.PANEL_BORDERLESS);
+                panel.addStyleName(ExtaTheme.PANEL_SCROLL_DIVIDER);
+                VerticalLayout panelLayout = new VerticalLayout();
+                panelLayout.addComponent(content);
+                panelLayout.setMargin(true);
+                panel.setContent(panelLayout);
+                content = panel;
+            }
+            content.setSizeFull();
+            root.addComponent(content);
+            root.addComponent(buttonsPanel);
+            root.setSizeFull();
+            root.setExpandRatio(content, 1);
+            content = root;
         }
         super.setContent(content);
     }

@@ -37,6 +37,7 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 	public SalePointSelectWindow(final String caption, final Company company) {
 		super(caption);
         setWidth(800, Unit.PIXELS);
+        setHeight(600, Unit.PIXELS);
         setContent(new SelectGrid(company));
 	}
 
