@@ -13,7 +13,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.contacts.CompanySelect;
+import ru.extas.web.contacts.company.CompanySelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 

@@ -8,6 +8,11 @@ import ru.extas.web.commons.ExtaGrid;
 import ru.extas.web.commons.SubdomainInfo;
 import ru.extas.web.commons.SubdomainInfoImpl;
 import ru.extas.web.commons.SubdomainView;
+import ru.extas.web.contacts.company.CompaniesGrid;
+import ru.extas.web.contacts.employee.EmployeesGrid;
+import ru.extas.web.contacts.legalentity.LegalEntitiesGrid;
+import ru.extas.web.contacts.person.PersonsGrid;
+import ru.extas.web.contacts.salepoint.SalePointsGrid;
 
 import java.util.ArrayList;
 import java.util.List;

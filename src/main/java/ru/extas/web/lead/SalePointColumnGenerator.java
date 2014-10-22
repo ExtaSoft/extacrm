@@ -9,7 +9,7 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.contacts.SalePointEditForm;
+import ru.extas.web.contacts.salepoint.SalePointEditForm;
 
 import static com.google.common.base.Strings.nullToEmpty;
 

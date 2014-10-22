@@ -17,7 +17,7 @@ import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.contacts.PersonSelect;
+import ru.extas.web.contacts.person.PersonSelect;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 import ru.extas.web.util.ComponentUtil;

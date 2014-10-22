@@ -13,7 +13,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.LocalDateField;
-import ru.extas.web.contacts.PersonSelect;
+import ru.extas.web.contacts.person.PersonSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 

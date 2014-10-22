@@ -17,9 +17,9 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
-import ru.extas.web.contacts.PersonSelect;
-import ru.extas.web.contacts.SalePointSelect;
-import ru.extas.web.contacts.UserContactSelectField;
+import ru.extas.web.contacts.person.PersonSelect;
+import ru.extas.web.contacts.salepoint.SalePointSelect;
+import ru.extas.web.contacts.employee.UserContactSelectField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 

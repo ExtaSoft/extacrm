@@ -25,7 +25,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.contacts.PersonField;
+import ru.extas.web.contacts.person.PersonField;
 import ru.extas.web.lead.LeadField;
 import ru.extas.web.sale.SaleField;
 import ru.extas.web.users.LoginToUserNameConverter;
