@@ -13,7 +13,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.contacts.company.CompanySelect;
+import ru.extas.web.contacts.company.CompanyField;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -32,7 +32,7 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 	@PropertyId("name")
 	private EditField nameField;
 	@PropertyId("vendor")
-	private CompanySelect vendorField;
+	private CompanyField vendorField;
 	@PropertyId("percent")
 	private EditField percentField;
 	@PropertyId("active")
@@ -70,7 +70,7 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 		nameField.setRequired(true);
 		form.addComponent(nameField);
 
-		vendorField = new CompanySelect("Страховщик");
+		vendorField = new CompanyField("Страховщик");
 		form.addComponent(vendorField);
 
 		percentField = new EditField("Процент страх.премии", "Введите процент страховой премии по продукту");

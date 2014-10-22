@@ -11,9 +11,9 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.AddressInfoField;
-import ru.extas.web.contacts.legalentity.LegalEntitySelect;
-import ru.extas.web.contacts.salepoint.SalePointSelect;
-import ru.extas.web.contacts.company.CompanySelect;
+import ru.extas.web.contacts.company.CompanyField;
+import ru.extas.web.contacts.legalentity.LegalEntityField;
+import ru.extas.web.contacts.salepoint.SalePointField;
 
 import java.text.MessageFormat;
 
@@ -44,15 +44,15 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
 
     // Работодатель
     @PropertyId("company")
-    private CompanySelect companyField;
+    private CompanyField companyField;
     @PropertyId("workPlace")
-    private SalePointSelect workPlaceField;
+    private SalePointField workPlaceField;
     @PropertyId("jobPosition")
     private EditField jobPositionField;
     @PropertyId("jobDepartment")
     private EditField jobDepartmentField;
     @PropertyId("legalWorkPlace")
-    private LegalEntitySelect legalWorkPlaceField;
+    private LegalEntityField legalWorkPlaceField;
 
     // Паспортные данные
     @PropertyId("birthday")
@@ -126,7 +126,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Работодатель"));
-        companyField = new CompanySelect("Компания");
+        companyField = new CompanyField("Компания");
         companyField.setRequired(true);
         companyField.addValueChangeListener(e -> {
             final Company company = (Company) companyField.getConvertedValue();
@@ -136,7 +136,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         companyField.setVisible(company == null);
         formLayout.addComponent(companyField);
 
-        workPlaceField = new SalePointSelect("Торговая точка", "Укажите торговую точку сотрудника", obj.getCompany());
+        workPlaceField = new SalePointField("Торговая точка", "Укажите торговую точку сотрудника", obj.getCompany());
         workPlaceField.addValueChangeListener(e -> {
             final SalePoint salePoint = (SalePoint) e.getProperty().getValue();
             if (salePoint != null)
@@ -147,7 +147,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
 //        jobDepartmentField = new;
 //        formLayout.addComponent(jobDepartmentField);
 
-        legalWorkPlaceField = new LegalEntitySelect("Юр. лицо", "Укажите Юридическое лицо в котором оформлен сотрудник", obj.getCompany());
+        legalWorkPlaceField = new LegalEntityField("Юр. лицо", "Укажите Юридическое лицо в котором оформлен сотрудник", obj.getCompany());
         legalWorkPlaceField.addValueChangeListener(e -> {
             final LegalEntity legalEntity = (LegalEntity) e.getProperty().getValue();
             if (legalEntity != null)

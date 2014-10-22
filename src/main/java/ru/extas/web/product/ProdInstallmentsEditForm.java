@@ -13,7 +13,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.contacts.company.CompanySelect;
+import ru.extas.web.contacts.company.CompanyField;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -32,7 +32,7 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 	@PropertyId("name")
 	private EditField nameField;
 	@PropertyId("vendor")
-	private CompanySelect vendorField;
+	private CompanyField vendorField;
 	@PropertyId("maxPeroid")
 	private EditField maxPeroidField;
 	@PropertyId("minDownpayment")
@@ -75,7 +75,7 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 		nameField.setRequired(true);
 		form.addComponent(nameField);
 
-		vendorField = new CompanySelect("Поставщик");
+		vendorField = new CompanyField("Поставщик");
 		form.addComponent(vendorField);
 
 		maxPeroidField = new EditField("Max период рассрочки", "Введите максимальный период рассрочки по продукту");

@@ -45,7 +45,10 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
     /** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
-		return new LegalEntityDataDecl();
+        final LegalEntityDataDecl dataDecl = new LegalEntityDataDecl();
+        if (company != null)
+            dataDecl.setColumnCollapsed("company.name", true);
+        return dataDecl;
 	}
 
 	/** {@inheritDoc} */
@@ -73,7 +76,7 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
 		final List<UIAction> actions = newArrayList();
 
 		actions.add(new NewObjectAction("Новый", "Ввод нового Юридического лица в систему"));
-		actions.add(new EditObjectAction("Изменить", "Редактирование контактных данных"));
+		actions.add(new EditObjectAction("Изменить", "Редактирование данных Юридического лица"));
 
 		return actions;
 	}

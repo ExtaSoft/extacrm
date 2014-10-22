@@ -5,6 +5,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
@@ -12,6 +13,8 @@ import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.WebSiteLinkField;
+
+import java.util.Optional;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -25,16 +28,16 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class CompanySelect extends CustomField<Company> {
+public class CompanyField extends CustomField<Company> {
 
     private PopupView popupView;
     private PopupCompanyContent companyContent;
 
-    public CompanySelect(final String caption) {
+    public CompanyField(final String caption) {
         this(caption, "Введите или укажите компанию");
     }
 
-    public CompanySelect(final String caption, final String description) {
+    public CompanyField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
@@ -117,7 +120,7 @@ public class CompanySelect extends CustomField<Company> {
             if (company != null)
                 return company.getName();
             else
-                return "Нажмите для выбора или ввода компании...";
+                return "Нажмите для выбора или ввода...";
         }
 
         @Override
@@ -209,18 +212,10 @@ public class CompanySelect extends CustomField<Company> {
 
         public void refreshFields(Company company) {
             setValue(company);
-            if (viewBtn != null) {
-                viewBtn.setEnabled(company != null);
-            }
-            if (company == null) {
-                company = new Company();
-            }
 
-            final BeanItem<Company> beanItem = new BeanItem<>(company);
-
-            if (wwwField != null) {
-                wwwField.setPropertyDataSource(beanItem.getItemProperty("www"));
-            }
+            final BeanItem<Company> beanItem = new BeanItem<>(Optional.ofNullable(company).orElse(new Company()));
+            if (viewBtn != null) viewBtn.setEnabled(company != null);
+            if (wwwField != null) wwwField.setPropertyDataSource(beanItem.getItemProperty("www"));
             if (regionField != null) regionField.setPropertyDataSource(beanItem.getItemProperty("region"));
             if (cityField != null) cityField.setPropertyDataSource(beanItem.getItemProperty("city"));
         }

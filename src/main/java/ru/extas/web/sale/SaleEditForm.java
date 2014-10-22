@@ -18,7 +18,7 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.contacts.person.PersonSelect;
-import ru.extas.web.contacts.salepoint.SalePointSelect;
+import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.contacts.employee.UserContactSelectField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
@@ -56,7 +56,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private EditField mototPriceField;
     // Мотосалон
     @PropertyId("dealer")
-    private SalePointSelect dealerField;
+    private SalePointField dealerField;
     @PropertyId("comment")
     private TextArea commentField;
     @PropertyId("productInSales")
@@ -104,7 +104,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
-        dealerField = new SalePointSelect("Мотосалон", "Введите точку продаж", null);
+        dealerField = new SalePointField("Мотосалон", "Введите точку продаж", null);
         dealerField.setRequired(true);
         form.addComponent(dealerField);
 

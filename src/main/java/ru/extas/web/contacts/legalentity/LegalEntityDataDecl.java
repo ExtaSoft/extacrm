@@ -26,10 +26,11 @@ public class LegalEntityDataDecl extends GridDataDecl {
 	public LegalEntityDataDecl() {
 		super();
 		addMapping("name", "Имя");
-		addMapping("company.name", "Компания", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
+        addMapping("inn", "ИНН");
+        addMapping("company.name", "Компания");
 		addMapping("phone", "Телефон", PhoneConverter.class);
-		addMapping("email", "E-Mail", new EmailLinkColumnGen());
-		addMapping("www", "WWW", new UrlLinkColumnGen());
+		addMapping("email", "E-Mail", new EmailLinkColumnGen(), EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
+		addMapping("www", "WWW", new UrlLinkColumnGen(), EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 		addMapping("regAddress.region", "Регион");
 		super.addDefaultMappings();
 	}

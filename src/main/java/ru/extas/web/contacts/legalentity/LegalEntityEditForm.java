@@ -8,21 +8,16 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.contacts.AddressInfo;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.LegalEntity;
-import ru.extas.model.contacts.LegalEntityFile;
+import ru.extas.model.contacts.*;
 import ru.extas.server.contacts.LegalEntityRepository;
-import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
-import ru.extas.web.contacts.company.CompanySelect;
-import ru.extas.web.contacts.person.PersonSelect;
+import ru.extas.web.contacts.AddressInfoField;
+import ru.extas.web.contacts.company.CompanyField;
+import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.motor.BrandsField;
-import ru.extas.web.reference.CitySelect;
-import ru.extas.web.reference.RegionSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -43,7 +38,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
     // Вкладка - "Общая информация"
     @PropertyId("company")
-    private CompanySelect companyField;
+    private CompanyField companyField;
     @PropertyId("name")
     private EditField nameField;
     @PropertyId("ogrnOgrip")
@@ -56,18 +51,12 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     private EmailField emailField;
     @PropertyId("www")
     private WebSiteLinkField wwwField;
-    @PropertyId("regAddress.region")
-    private ComboBox regionField;
-    @PropertyId("regAddress.city")
-    private ComboBox cityField;
-    @PropertyId("regAddress.postIndex")
-    private EditField postIndexField;
-    @PropertyId("regAddress.streetBld")
-    private TextArea streetBldField;
+    @PropertyId("regAddress")
+    private AddressInfoField regAddressField;
     @PropertyId("director")
-    private PersonSelect directorField;
+    private EmployeeField directorField;
     @PropertyId("accountant")
-    private PersonSelect accountantField;
+    private EmployeeField accountantField;
     @PropertyId("credProducts")
     private LegalProductsField productsField;
     @PropertyId("motorBrands")
@@ -75,21 +64,13 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     @PropertyId("files")
     private FilesManageField docFilesEditor;
 
-    private LegalEntity legalEntity;
-
     @PropertyId("kpp")
     private EditField kppField;
 
     @PropertyId("regNpstIsSame")
     private CheckBox regNpstIsSameField;
-    @PropertyId("postAddress.region")
-    private RegionSelect pstRegionField;
-    @PropertyId("postAddress.city")
-    private CitySelect pstCityField;
-    @PropertyId("postAddress.postIndex")
-    private EditField pstPostIndexField;
-    @PropertyId("postAddress.streetBld")
-    private TextArea pstStreetBldField;
+    @PropertyId("postAddress")
+    private AddressInfoField postAddressField;
 
     @PropertyId("settlementAccount")
     private EditField settlementAccountField;
@@ -116,7 +97,6 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         beanItem.expandProperty("postAddress");
 
         this.company = company;
-        this.legalEntity = legalEntity;
         initForm(beanItem);
         setWinWidth(860, Unit.PIXELS);
     }
@@ -128,14 +108,14 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     public void attach() {
         super.attach();
 
-        if (legalEntity.getCompany() == null) {
+        if (getObject().getCompany() == null) {
             companyField.setReadOnly(false);
             companyField.setVisible(true);
             companyField.setRequired(true);
         } else {
             companyField.setReadOnly(true);
             companyField.getPropertyDataSource().setReadOnly(true);
-            if (legalEntity.getCompany().isNew()) {
+            if (getObject().getCompany().isNew()) {
                 companyField.setVisible(false);
                 companyField.setRequired(false);
             }
@@ -194,15 +174,34 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         nameField.setNullRepresentation("");
         formLayout.addComponent(nameField);
 
-        companyField = new CompanySelect("Компания", "Введите или выберите компанию которой принадлежит юридическое лицо");
+        companyField = new CompanyField("Компания", "Введите или выберите компанию которой принадлежит юридическое лицо");
         companyField.setRequired(true);
+        companyField.addValueChangeListener(e -> {
+            final Company cmp = (Company) companyField.getConvertedValue();
+            directorField.setCompany(cmp);
+            accountantField.setCompany(cmp);
+        });
         formLayout.addComponent(companyField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Ответственные лица"));
-        directorField = new PersonSelect("Генеральный директор", "Выберите или введите геннерального деректора юридического лица");
+        directorField = new EmployeeField("Генеральный директор",
+                "Выберите или введите геннерального деректора юридического лица", companyField.getValue());
+        directorField.addValueChangeListener(e -> {
+            Employee emp = directorField.getValue();
+            Company cmp = companyField.getValue();
+            if(cmp == null)
+                companyField.setValue(emp.getCompany());
+        });
         formLayout.addComponent(directorField);
-        accountantField = new PersonSelect("Главный бухгалтер", "Выберите или введите главного бухгалтера юридического лица");
+        accountantField = new EmployeeField("Главный бухгалтер",
+                "Выберите или введите главного бухгалтера юридического лица", companyField.getValue());
+        accountantField.addValueChangeListener(e -> {
+            Employee emp = accountantField.getValue();
+            Company cmp = companyField.getValue();
+            if (cmp == null)
+                companyField.setValue(emp.getCompany());
+        });
         formLayout.addComponent(accountantField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,39 +217,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Юридический адрес"));
-        regionField = new RegionSelect();
-        regionField.setDescription("Укажите регион регистрации");
-        regionField.addValueChangeListener(event -> {
-            final String newRegion = (String) event.getProperty().getValue();
-            final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
-            if (city != null)
-                cityField.setValue(city);
-        });
-        formLayout.addComponent(regionField);
-
-        cityField = new CitySelect();
-        cityField.setDescription("Введите город регистрации");
-        if (obj.getRegAddress().getCity() != null) cityField.addItem(obj.getRegAddress().getCity());
-        cityField.addValueChangeListener(event -> {
-            final String newCity = (String) event.getProperty().getValue();
-            final String region = lookup(SupplementService.class).findRegionByCity(newCity);
-            if (region != null)
-                regionField.setValue(region);
-        });
-        formLayout.addComponent(cityField);
-
-        postIndexField = new EditField("Почтовый индекс");
-        postIndexField.setColumns(8);
-        postIndexField.setInputPrompt("Индекс");
-        postIndexField.setNullRepresentation("");
-        formLayout.addComponent(postIndexField);
-
-        streetBldField = new TextArea("Адрес");
-        streetBldField.setRows(2);
-        streetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
-        streetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
-        streetBldField.setNullRepresentation("");
-        formLayout.addComponent(streetBldField);
+        regAddressField = new AddressInfoField();
+        formLayout.addComponent(regAddressField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Почтовый адрес"));
@@ -259,42 +227,12 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
             Boolean isRegIsAct = (Boolean) event.getProperty().getValue();
             if (isRegIsAct == null)
                 isRegIsAct = false;
-            setPostAdressStatus(isRegIsAct);
+            setPostAddressStatus(isRegIsAct);
         });
         formLayout.addComponent(regNpstIsSameField);
 
-        pstRegionField = new RegionSelect();
-        pstRegionField.addValueChangeListener(event -> {
-            final String newRegion = (String) event.getProperty().getValue();
-            final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
-            if (city != null)
-                pstCityField.setValue(city);
-        });
-        formLayout.addComponent(pstRegionField);
-
-        pstCityField = new CitySelect();
-        if (obj.getRegAddress().getCity() != null)
-            pstCityField.addItem(obj.getRegAddress().getCity());
-        pstCityField.addValueChangeListener(event -> {
-            final String newCity = (String) event.getProperty().getValue();
-            final String region = lookup(SupplementService.class).findRegionByCity(newCity);
-            if (region != null)
-                pstRegionField.setValue(region);
-        });
-        formLayout.addComponent(pstCityField);
-
-        pstPostIndexField = new EditField("Почтовый индекс");
-        pstPostIndexField.setColumns(8);
-        pstPostIndexField.setInputPrompt("Индекс");
-        pstPostIndexField.setNullRepresentation("");
-        formLayout.addComponent(pstPostIndexField);
-
-        pstStreetBldField = new TextArea("Адрес");
-        pstStreetBldField.setRows(2);
-        pstStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
-        pstStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
-        pstStreetBldField.setNullRepresentation("");
-        formLayout.addComponent(pstStreetBldField);
+        postAddressField = new AddressInfoField();
+        formLayout.addComponent(postAddressField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Идентификация"));
@@ -310,16 +248,20 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Банковские реквизиты"));
         // Расчетный счет в рублях
-        settlementAccountField = new EditField("Расчетный счет", "Введите Расчетный счет юридического лицав рублях");;
+        settlementAccountField = new EditField("Расчетный счет", "Введите Расчетный счет юридического лицав рублях");
+        ;
         formLayout.addComponent(settlementAccountField);
         // Корреспондентский счет
-        loroAccountField = new EditField("Корреспондентский счет", "Введите Корреспондентский счет юридического лица");;
+        loroAccountField = new EditField("Корреспондентский счет", "Введите Корреспондентский счет юридического лица");
+        ;
         formLayout.addComponent(loroAccountField);
         // Полное наименование банка
-        bankNameField = new EditField("Наименование банка", "Введите наименование банка юридического лица");;
+        bankNameField = new EditField("Наименование банка", "Введите наименование банка юридического лица");
+        ;
         formLayout.addComponent(bankNameField);
         // БИК банка
-        biсField = new EditField("БИК банка", "Введите БИК банка юридического лица");;
+        biсField = new EditField("БИК банка", "Введите БИК банка юридического лица");
+        ;
         formLayout.addComponent(biсField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -342,11 +284,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         return formLayout;
     }
 
-    private void setPostAdressStatus(final Boolean isRegIsAct) {
-        pstRegionField.setVisible(!isRegIsAct);
-        pstCityField.setVisible(!isRegIsAct);
-        pstPostIndexField.setVisible(!isRegIsAct);
-        pstStreetBldField.setVisible(!isRegIsAct);
+    private void setPostAddressStatus(final Boolean isRegIsAct) {
+        postAddressField.setVisible(!isRegIsAct);
     }
 
 }

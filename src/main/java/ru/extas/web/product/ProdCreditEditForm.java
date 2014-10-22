@@ -13,7 +13,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.contacts.company.CompanySelect;
+import ru.extas.web.contacts.company.CompanyField;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -33,7 +33,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 	private EditField nameField;
 
 	@PropertyId("vendor")
-	private CompanySelect vendorField;
+	private CompanyField vendorField;
 
 	@PropertyId("programType")
 	private ProdCredProgSelect programTypeField;
@@ -108,7 +108,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 		nameField.setRequired(true);
 		form.addComponent(nameField);
 
-		vendorField = new CompanySelect("Банк");
+		vendorField = new CompanyField("Банк");
 		vendorField.setWidth(30, Unit.EM);
 		form.addComponent(vendorField);
 

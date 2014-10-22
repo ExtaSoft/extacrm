@@ -26,9 +26,9 @@ import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.contacts.legalentity.LegalEntitySelect;
+import ru.extas.web.contacts.legalentity.LegalEntityField;
 import ru.extas.web.contacts.person.PersonSelect;
-import ru.extas.web.contacts.salepoint.SalePointSelect;
+import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.util.ComponentUtil;
@@ -58,7 +58,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     @PropertyId("clientPP")
     private PersonSelect clientPPField;
     @PropertyId("clientLE")
-    private LegalEntitySelect clientLEField;
+    private LegalEntityField clientLEField;
     @PropertyId("beneficiary")
     private ComboBox beneficiaryField;
     @PropertyId("usedMotor")
@@ -88,7 +88,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     @PropertyId("endDate")
     private PopupDateField endDateField;
     @PropertyId("dealer")
-    private SalePointSelect dealerField;
+    private SalePointField dealerField;
     @PropertyId("files")
     private FilesManageField docFilesEditor;
     @PropertyId("docComplete")
@@ -163,7 +163,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         form.addComponent(isLegalEntityField);
 
         final String caption = "Страхователь";
-        clientLEField = new LegalEntitySelect(caption);
+        clientLEField = new LegalEntityField(caption);
         clientLEField.addValueChangeListener(event -> {
             final LegalEntity legalEntity = clientLEField.getValue();
             if (beneficiaryField.getPropertyDataSource() != null && legalEntity != null) {
@@ -289,7 +289,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Точка продажи"));
-        dealerField = new SalePointSelect("Точка продажи", "Название мотосалона где продана страховка", null);
+        dealerField = new SalePointField("Точка продажи", "Название мотосалона где продана страховка", null);
         // dealerField.setRequired(true);
         form.addComponent(dealerField);
 

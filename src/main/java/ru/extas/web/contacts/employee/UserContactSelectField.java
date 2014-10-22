@@ -41,7 +41,7 @@ public class UserContactSelectField extends CustomField<Employee> {
             if (person != null)
                 return NameUtils.getShortName(person.getName());
             else
-                return "Нажмите для выбора пользователя...";
+                return "Нажмите для выбора или ввода...";
         }
 
         @Override

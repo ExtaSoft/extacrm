@@ -17,6 +17,7 @@ import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -93,7 +94,7 @@ public class AddressInfoField extends CustomField<AddressInfo> {
             final FormLayout formLayout = new ExtaFormLayout();
             formLayout.setMargin(true);
 
-            final AddressInfo addressInfo = getValue();
+            final AddressInfo addressInfo = Optional.ofNullable(getValue()).orElse(new AddressInfo());
 
             regionField = new RegionSelect();
             regionField.setDescription("Укажите регион проживания");
@@ -107,7 +108,7 @@ public class AddressInfoField extends CustomField<AddressInfo> {
 
             cityField = new CitySelect();
             cityField.setDescription("Введите город проживания контакта");
-            if (addressInfo.getCity() != null)
+            if (addressInfo != null && addressInfo.getCity() != null)
                 cityField.addItem(addressInfo.getCity());
             cityField.addValueChangeListener(event -> {
                 final String newCity = (String) event.getProperty().getValue();

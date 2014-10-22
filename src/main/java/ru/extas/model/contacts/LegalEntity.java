@@ -25,7 +25,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class LegalEntity extends Contact{
 
     // Компания
-    @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Company company;
 
     // ОГРН/ОГРИП
@@ -81,11 +81,11 @@ public class LegalEntity extends Contact{
     private AddressInfo postAddress = new AddressInfo();
 
     // Генеральный директор
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Employee director;
 
     // Главный бухгалтер
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Employee accountant;
 
     // Банки и кредитные продукты
@@ -121,6 +121,10 @@ public class LegalEntity extends Contact{
 
     public void setAccountant(final Employee accountant) {
         this.accountant = accountant;
+        if (accountant != null) {
+            accountant.setLegalWorkPlace(this);
+            accountant.setJobPosition("Главный бухгалтер");
+        }
     }
 
     public String getKpp() {
@@ -223,6 +227,10 @@ public class LegalEntity extends Contact{
      */
     public void setDirector(final Employee director) {
         this.director = director;
+        if(director != null){
+            director.setLegalWorkPlace(this);
+            director.setJobPosition("Генеральный директор");
+        }
     }
 
 
@@ -278,6 +286,11 @@ public class LegalEntity extends Contact{
      */
     public void setCompany(final Company company) {
         this.company = company;
+        if(getDirector() != null && !getDirector().getCompany().equals(company))
+            setDirector(null);
+        if(getAccountant() != null && !getAccountant().getCompany().equals(company))
+            setAccountant(null);
+
     }
 
     /**

@@ -15,7 +15,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.company.CompanyEmployeesField;
-import ru.extas.web.contacts.company.CompanySelect;
+import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.legalentity.LegalEntitiesSelectField;
 import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
 import ru.extas.web.reference.CitySelect;
@@ -42,7 +42,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     // Вкладка - "Общая информация"
     @PropertyId("company")
-    private CompanySelect companyField;
+    private CompanyField companyField;
     @PropertyId("name")
     private EditField nameField;
     @PropertyId("phone")
@@ -206,7 +206,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         nameField.setNullRepresentation("");
         formLayout.addComponent(nameField);
 
-        companyField = new CompanySelect("Компания", "Введите или выберите компанию которой принадлежит торговая точка");
+        companyField = new CompanyField("Компания", "Введите или выберите компанию которой принадлежит торговая точка");
         companyField.setRequired(true);
         formLayout.addComponent(companyField);
 
