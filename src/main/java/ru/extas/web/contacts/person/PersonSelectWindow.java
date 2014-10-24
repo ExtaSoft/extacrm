@@ -36,10 +36,15 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 		super(caption);
         setWidth(800, Unit.PIXELS);
         setHeight(600, Unit.PIXELS);
-        setContent(new SelectGrid());
 	}
 
-	/**
+    @Override
+    public void attach() {
+        setContent(new SelectGrid());
+        super.attach();
+    }
+
+    /**
 	 * <p>isSelectPressed.</p>
 	 *
 	 * @return a boolean.

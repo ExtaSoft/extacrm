@@ -102,7 +102,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         super(insurance.isNew() ?
                         "Новый полис" :
                         "Редактировать полис",
-                new BeanItem<>(insurance));
+                insurance);
         setWinWidth(930, Unit.PIXELS);
     }
 
@@ -112,6 +112,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     @Override
     protected ComponentContainer createEditFields(final Insurance obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
         form.setMargin(true);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -289,7 +290,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Точка продажи"));
-        dealerField = new SalePointField("Точка продажи", "Название мотосалона где продана страховка", null);
+        dealerField = new SalePointField("Точка продажи", "Название мотосалона где продана страховка");
         // dealerField.setRequired(true);
         form.addComponent(dealerField);
 

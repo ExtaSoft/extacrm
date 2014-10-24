@@ -34,7 +34,7 @@ public class CompanyField extends CustomField<Company> {
     private PopupCompanyContent companyContent;
 
     public CompanyField(final String caption) {
-        this(caption, "Введите или укажите компанию");
+        this(caption, "Введите или выберите компанию");
     }
 
     public CompanyField(final String caption, final String description) {
@@ -145,13 +145,16 @@ public class CompanyField extends CustomField<Company> {
                             select.refreshContainer();
                             select.setValue(editWin.getObjectId());
                         }
+                        popupView.setPopupVisible(true);
                     });
+                    popupView.setPopupVisible(false);
                     FormUtils.showModalWin(editWin);
                 });
                 select.addValueChangeListener(event -> refreshFields((Company) select.getConvertedValue()));
                 container.addComponent(select);
             } else {
                 final Label name = new Label();
+                name.setCaption("Название");
                 final Company company = getValue();
                 if (company != null)
                     name.setValue(company.getName());
@@ -181,10 +184,12 @@ public class CompanyField extends CustomField<Company> {
                     if (editWin.isSaved()) {
                         refreshFields(company);
                     }
+                    popupView.setPopupVisible(true);
                 });
+                popupView.setPopupVisible(false);
                 FormUtils.showModalWin(editWin);
             });
-            viewBtn.setDescription("Открыть форму ввода/редактирования торговой точки");
+            viewBtn.setDescription("Открыть форму ввода/редактирования компании");
             viewBtn.setIcon(Fontello.EDIT_3);
             viewBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
             viewBtn.addStyleName(ExtaTheme.BUTTON_SMALL);

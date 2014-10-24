@@ -29,7 +29,7 @@ public class MotorTypeEditForm extends ExtaEditForm<MotorType> {
     private MotorBrandObjMultiselect brandsField;
 
     public MotorTypeEditForm(final MotorType motorType) {
-        super(motorType.isNew() ? "Новый тип техники" : "Редактировать тип техники", new BeanItem(motorType));
+        super(motorType.isNew() ? "Новый тип техники" : "Редактировать тип техники", motorType);
     }
 
     /** {@inheritDoc} */
@@ -50,6 +50,7 @@ public class MotorTypeEditForm extends ExtaEditForm<MotorType> {
     @Override
     protected ComponentContainer createEditFields(final MotorType obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         nameField = new EditField("Название типа техники", "Введите название типа техники");
         nameField.setColumns(20);

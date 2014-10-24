@@ -3,10 +3,7 @@ package ru.extas.model.contacts;
 import org.joda.time.LocalDate;
 import ru.extas.model.common.IdentifiedObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -28,7 +25,7 @@ public class PersonChild extends IdentifiedObject {
     @NotNull
     private LocalDate birthday;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person parent;
 
     public PersonChild() {

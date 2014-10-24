@@ -243,15 +243,19 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     public PersonEditForm(final Person person) {
         super(person.isNew() ?
                 "Ввод нового контакта в систему" :
-                String.format("Редактирование контакта: %s", person.getName()));
+                String.format("Редактирование контакта: %s", person.getName()), person);
 
-        final BeanItem<Person> beanItem = new BeanItem<>(person);
-        beanItem.expandProperty("regAddress");
-        beanItem.expandProperty("actualAddress");
-        initForm(beanItem);
         setWinWidth(930, Unit.PIXELS);
     }
 
+    @Override
+    protected BeanItem<Person> createBeanItem(Person bean) {
+        final BeanItem<Person> beanItem = new BeanItem<>(bean);
+        beanItem.expandProperty("regAddress");
+        beanItem.expandProperty("actualAddress");
+
+        return beanItem;
+    }
 
     /**
      * {@inheritDoc}
@@ -291,6 +295,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     protected ComponentContainer createEditFields(final Person obj) {
         // Форма редактирования персональных данных
         final FormLayout personForm = new ExtaFormLayout();
+        personForm.setSizeFull();
         personForm.setMargin(true);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

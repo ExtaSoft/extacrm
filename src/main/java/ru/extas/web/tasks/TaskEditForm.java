@@ -72,12 +72,10 @@ public class TaskEditForm extends ExtaEditForm<Task> {
     public TaskEditForm(final Task task) {
         super(isNullOrEmpty(task.getId()) ?
                 "Ввод новой задачи в систему" :
-                "Редактирование задачи");
+                "Редактирование задачи", task);
         // Может ли пользователь менять ответственного
         final UserManagementService userService = lookup(UserManagementService.class);
         canAssigne = userService.isCurUserHasRole(UserRole.ADMIN)/* || userService.isCurUserHasRole(UserRole.MANAGER)*/;
-
-        initForm(new BeanItem(task));
     }
 
     /** {@inheritDoc} */

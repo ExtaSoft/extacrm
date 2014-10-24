@@ -39,7 +39,7 @@ public class GetValueWindowLongRange extends ExtaEditForm<GetValueWindowLongRang
      * @param endValue a {@link java.lang.Long} object.
      */
     public GetValueWindowLongRange(final String caption, final Long startValue, final Long endValue) {
-        super(caption, new BeanItem<>(new ValueContainer(startValue, endValue)));
+        super(caption, new ValueContainer(startValue, endValue));
     }
 
     /**

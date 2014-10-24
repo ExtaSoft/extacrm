@@ -101,7 +101,7 @@ public class Person extends Contact {
     @Size(max = 10)
     private String passIssuedByNum;
 
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
     private List<PersonFileContainer> files = newArrayList();
 
@@ -130,7 +130,7 @@ public class Person extends Contact {
     @Column(name = "HAS_MARRIAGE_СONTRACT")
     private boolean marriageСontract;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PersonChild> children = newArrayList();
 
     @Column(name = "LIVING_TOGETHER")

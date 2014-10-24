@@ -6,6 +6,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
@@ -100,18 +101,18 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      *
      * @param initNow a boolean.
      */
-    public ExtaGrid(final Class<TEntity> entityClass, final boolean initNow) {
+    public ExtaGrid(final Class<TEntity> entityClass) {
         this.entityClass = entityClass;
         formService = new ModalPopupFormService(this);
-        if (initNow)
-            initialize();
+        // Must set a dummy root in constructor
+        setCompositionRoot(new Label(""));
     }
 
-    /**
-     * <p>Constructor for ExtaGrid.</p>
-     */
-    public ExtaGrid(final Class<TEntity> entityClass) {
-        this(entityClass, true);
+
+    @Override
+    public void attach() {
+        initialize();
+        super.attach();
     }
 
     public FormService getFormService() {
@@ -169,7 +170,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     /**
      * <p>initialize.</p>
      */
-    protected void initialize() {
+    private void initialize() {
         // Запрос данных
         container = createContainer();
         // Действия в таблице
@@ -208,6 +209,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             tableFilterBtn.setDescription("Показать строку фильтра таблицы");
             tableFilterBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             tableFilterBtn.setCheckable(true);
+
+            final MenuBar.MenuItem refreshBtn = modeSwitchBar.addItem("", FontAwesome.REFRESH, s -> refreshContainer());
+            refreshBtn.setDescription("Обновить данные в таблице");
+            refreshBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
 
             final MenuBar.Command modeCommand = selectedItem -> {
                 if (selectedItem == tableModeBtn && currentMode == Mode.DETAIL_LIST) {

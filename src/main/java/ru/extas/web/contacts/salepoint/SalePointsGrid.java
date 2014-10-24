@@ -8,6 +8,7 @@ import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.ExtaDomain;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
 import java.util.List;
@@ -25,28 +26,28 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 
 	private static final long serialVersionUID = 2299363623807745654L;
 
-	protected final Company company;
+    private SupplierSer<Company> companySupplier;
 
-	/**
+    /**
 	 * <p>Constructor for SalePointsGrid.</p>
 	 *
-	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
-	public SalePointsGrid(final Company company) {
-		super(SalePoint.class, false);
-		this.company = company;
-		initialize();
+	public SalePointsGrid() {
+		super(SalePoint.class);
 	}
 
     @Override
     public ExtaEditForm<SalePoint> createEditForm(final SalePoint salePoint, final boolean isInsert) {
-        return new SalePointEditForm(salePoint, company);
+        final SalePointEditForm form = new SalePointEditForm(salePoint);
+        form.setCompanySupplier(companySupplier);
+        return form;
     }
 
     @Override
     public SalePoint createEntity() {
         final SalePoint entity = super.createEntity();
-        entity.setCompany(company);
+        if(companySupplier != null)
+            entity.setCompany(companySupplier.get());
         return entity;
     }
 
@@ -62,9 +63,11 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 		// Запрос данных
 		final ExtaDataContainer<SalePoint> container = new SecuredDataContainer<>(SalePoint.class, ExtaDomain.SALE_POINT);
 		container.addNestedContainerProperty("regAddress.region");
+		container.addNestedContainerProperty("regAddress.city");
+		container.addNestedContainerProperty("regAddress.streetBld");
 		container.addNestedContainerProperty("company.name");
-		if (company != null)
-			container.addContainerFilter(new Compare.Equal("company", company));
+		if (companySupplier != null)
+			container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
 		return container;
 	}
 
@@ -78,4 +81,12 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 
         return actions;
 	}
+
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
+    }
 }

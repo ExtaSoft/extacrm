@@ -21,168 +21,176 @@ public class SalePoint extends Contact {
 
     private static final int CODE_LENGTH = 15;
     // Компания
-	@ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-	private Company company;
+    @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    private Company company;
 
-	// Юр. лица работающие на торговой точке
-	@ManyToMany(targetEntity = LegalEntity.class, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-	@JoinTable(
-			name = "SALEPOINT_LEGALENTITY",
-			joinColumns = {@JoinColumn(name = "SALEPOINT_ID", referencedColumnName = "ID")},
-			inverseJoinColumns = {@JoinColumn(name = "LEGALENTITY_ID", referencedColumnName = "ID")})
+    // Юр. лица работающие на торговой точке
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(
+            name = "SALEPOINT_LEGALENTITY",
+            joinColumns = {@JoinColumn(name = "SALEPOINT_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "LEGALENTITY_ID", referencedColumnName = "ID")})
     @OrderBy("name ASC")
     private Set<LegalEntity> legalEntities = newHashSet();
 
-	// Сотрудники
-	@OneToMany(mappedBy = "workPlace", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    // Сотрудники
+    @OneToMany(mappedBy = "workPlace", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @OrderBy("name ASC")
     private Set<Employee> employees = newHashSet();
 
-	// Идентификация:
+    // Идентификация:
 
-	//  - Код Экстрим Ассистанс
-	@Column(name = "EXTA_CODE", length = CODE_LENGTH)
+    //  - Код Экстрим Ассистанс
+    @Column(name = "EXTA_CODE", length = CODE_LENGTH)
     @Size(max = CODE_LENGTH)
-	private String extaCode;
+    private String extaCode;
 
-	//  - Код Альфа Банка
-	@Column(name = "ALPHA_CODE", length = CODE_LENGTH)
+    //  - Код Альфа Банка
+    @Column(name = "ALPHA_CODE", length = CODE_LENGTH)
     @Size(max = CODE_LENGTH)
-	private String alphaCode;
+    private String alphaCode;
 
-	//  - Код HomeCredit Банка
-	@Column(name = "HOME_CODE", length = CODE_LENGTH)
+    //  - Код HomeCredit Банка
+    @Column(name = "HOME_CODE", length = CODE_LENGTH)
     @Size(max = CODE_LENGTH)
-	private String homeCode;
+    private String homeCode;
 
-	//  - Код Банка СЕТЕЛЕМ
-	@Column(name = "SETELEM_CODE", length = CODE_LENGTH)
+    //  - Код Банка СЕТЕЛЕМ
+    @Column(name = "SETELEM_CODE", length = CODE_LENGTH)
     @Size(max = CODE_LENGTH)
-	private String setelemCode;
+    private String setelemCode;
 
-	/**
-	 * <p>Getter for the field <code>legalEntities</code>.</p>
-	 *
-	 * @return a {@link java.util.List} object.
-	 */
-	public Set<LegalEntity> getLegalEntities() {
-		return legalEntities;
-	}
+    /**
+     * <p>Getter for the field <code>legalEntities</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
+    public Set<LegalEntity> getLegalEntities() {
+        return legalEntities;
+    }
 
-	/**
-	 * <p>Setter for the field <code>legalEntities</code>.</p>
-	 *
-	 * @param legalEntities a {@link java.util.List} object.
-	 */
-	public void setLegalEntities(final Set<LegalEntity> legalEntities) {
-		this.legalEntities = legalEntities;
-	}
+    /**
+     * <p>Setter for the field <code>legalEntities</code>.</p>
+     *
+     * @param legalEntities a {@link java.util.List} object.
+     */
+    public void setLegalEntities(final Set<LegalEntity> legalEntities) {
+        this.legalEntities = legalEntities;
+    }
 
-	/**
-	 * <p>Getter for the field <code>employes</code>.</p>
-	 *
-	 * @return a {@link java.util.List} object.
-	 */
-	public Set<Employee> getEmployees() {
-		return employees;
-	}
+    /**
+     * <p>Getter for the field <code>employees</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
 
-	/**
-	 * <p>Setter for the field <code>employes</code>.</p>
-	 *
-	 * @param employes a {@link java.util.List} object.
-	 */
-	public void setEmployees(final Set<Employee> employes) {
-		this.employees = employes;
-	}
+    /**
+     * <p>Setter for the field <code>employees</code>.</p>
+     *
+     * @param employees a {@link java.util.List} object.
+     */
+    public void setEmployees(final Set<Employee> employees) {
+        // Обрываем сущесвующую связь
+        if (this.employees != null)
+            this.employees.forEach(e -> e.setWorkPlace(null));
+        // Устанавливаем новую связь
+        this.employees = employees;
+        if (this.employees != null)
+            this.employees.forEach(e -> e.setWorkPlace(this));
+    }
 
-	/**
-	 * <p>Getter for the field <code>extaCode</code>.</p>
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	public String getExtaCode() {
-		return extaCode;
-	}
+    /**
+     * <p>Getter for the field <code>extaCode</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
+    public String getExtaCode() {
+        return extaCode;
+    }
 
-	/**
-	 * <p>Setter for the field <code>extaCode</code>.</p>
-	 *
-	 * @param extaCode a {@link java.lang.String} object.
-	 */
-	public void setExtaCode(final String extaCode) {
-		this.extaCode = extaCode;
-	}
+    /**
+     * <p>Setter for the field <code>extaCode</code>.</p>
+     *
+     * @param extaCode a {@link java.lang.String} object.
+     */
+    public void setExtaCode(final String extaCode) {
+        this.extaCode = extaCode;
+    }
 
-	/**
-	 * <p>Getter for the field <code>alphaCode</code>.</p>
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	public String getAlphaCode() {
-		return alphaCode;
-	}
+    /**
+     * <p>Getter for the field <code>alphaCode</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
+    public String getAlphaCode() {
+        return alphaCode;
+    }
 
-	/**
-	 * <p>Setter for the field <code>alphaCode</code>.</p>
-	 *
-	 * @param alphaCode a {@link java.lang.String} object.
-	 */
-	public void setAlphaCode(final String alphaCode) {
-		this.alphaCode = alphaCode;
-	}
+    /**
+     * <p>Setter for the field <code>alphaCode</code>.</p>
+     *
+     * @param alphaCode a {@link java.lang.String} object.
+     */
+    public void setAlphaCode(final String alphaCode) {
+        this.alphaCode = alphaCode;
+    }
 
-	/**
-	 * <p>Getter for the field <code>homeCode</code>.</p>
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	public String getHomeCode() {
-		return homeCode;
-	}
+    /**
+     * <p>Getter for the field <code>homeCode</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
+    public String getHomeCode() {
+        return homeCode;
+    }
 
-	/**
-	 * <p>Setter for the field <code>homeCode</code>.</p>
-	 *
-	 * @param homeCode a {@link java.lang.String} object.
-	 */
-	public void setHomeCode(final String homeCode) {
-		this.homeCode = homeCode;
-	}
+    /**
+     * <p>Setter for the field <code>homeCode</code>.</p>
+     *
+     * @param homeCode a {@link java.lang.String} object.
+     */
+    public void setHomeCode(final String homeCode) {
+        this.homeCode = homeCode;
+    }
 
-	/**
-	 * <p>Getter for the field <code>setelemCode</code>.</p>
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	public String getSetelemCode() {
-		return setelemCode;
-	}
+    /**
+     * <p>Getter for the field <code>setelemCode</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
+    public String getSetelemCode() {
+        return setelemCode;
+    }
 
-	/**
-	 * <p>Setter for the field <code>setelemCode</code>.</p>
-	 *
-	 * @param setelemCode a {@link java.lang.String} object.
-	 */
-	public void setSetelemCode(final String setelemCode) {
-		this.setelemCode = setelemCode;
-	}
+    /**
+     * <p>Setter for the field <code>setelemCode</code>.</p>
+     *
+     * @param setelemCode a {@link java.lang.String} object.
+     */
+    public void setSetelemCode(final String setelemCode) {
+        this.setelemCode = setelemCode;
+    }
 
-	/**
-	 * <p>Getter for the field <code>company</code>.</p>
-	 *
-	 * @return a {@link ru.extas.model.contacts.Company} object.
-	 */
-	public Company getCompany() {
-		return company;
-	}
+    /**
+     * <p>Getter for the field <code>company</code>.</p>
+     *
+     * @return a {@link ru.extas.model.contacts.Company} object.
+     */
+    public Company getCompany() {
+        return company;
+    }
 
-	/**
-	 * <p>Setter for the field <code>company</code>.</p>
-	 *
-	 * @param company a {@link ru.extas.model.contacts.Company} object.
-	 */
-	public void setCompany(final Company company) {
-		this.company = company;
-	}
+    /**
+     * <p>Setter for the field <code>company</code>.</p>
+     *
+     * @param company a {@link ru.extas.model.contacts.Company} object.
+     */
+    public void setCompany(final Company company) {
+        this.company = company;
+        if (company != null)
+            company.getSalePoints().add(this);
+    }
 }

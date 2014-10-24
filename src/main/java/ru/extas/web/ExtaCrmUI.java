@@ -59,7 +59,7 @@ import static ru.extas.web.UiUtils.initUi;
 @Theme(ExtaTheme.NAME)
 @Title("Extreme Assistance CRM")
 //@Push(PushMode.AUTOMATIC)
-public class  ExtaCrmUI extends UI {
+public class ExtaCrmUI extends UI {
 
     private final static Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
 
@@ -136,8 +136,7 @@ public class  ExtaCrmUI extends UI {
                         final UserProfile currentUserProfile = userService.getCurrentUser();
                         if (currentUserProfile.isChangePassword()) {
                             // Поменять пароль
-                            final ChangePasswordForm form = new ChangePasswordForm(new BeanItem<>(
-                                    currentUserProfile));
+                            final ChangePasswordForm form = new ChangePasswordForm(currentUserProfile);
                             form.addCloseFormListener(event1 -> {
                                 if (form.isSaved()) {
                                     closeLoginAndBuildMain();

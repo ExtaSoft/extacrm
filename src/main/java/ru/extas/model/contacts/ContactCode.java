@@ -34,7 +34,7 @@ public class ContactCode extends AuditedObject {
     private String code;
 
     // Контакт которому относится код
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Company contact;
 
     /**

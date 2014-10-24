@@ -32,9 +32,8 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 	 * @param status a {@link ru.extas.model.lead.Lead.Status} object.
 	 */
 	public LeadsGrid(final Lead.Status status) {
-		super(Lead.class, false);
+		super(Lead.class);
 		this.status = status;
-		initialize();
 	}
 
     public Lead.Status getStatus() {

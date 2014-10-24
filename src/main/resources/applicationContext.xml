@@ -108,6 +108,8 @@
         </property>
     </bean>
 
+    <!--<bean class="javax.persistence.PersistenceUnitUtil" factory-bean="entityManagerFactory"-->
+          <!--factory-method="getPersistenceUnitUtil"/>-->
     <!-- Transaction config-->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>

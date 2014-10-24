@@ -5,6 +5,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 import ru.extas.web.contacts.employee.EmployeeSelectWindow;
 import ru.extas.web.contacts.employee.EmployeesGrid;
@@ -28,7 +29,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  */
 public class CompanyOwnersField extends CustomField<Set> {
 
-    private Company company;
+    private SupplierSer<Company> companySupplier;
     private EmployeesGrid grid;
     private BeanItemContainer<Employee> beanContainer;
 
@@ -37,8 +38,7 @@ public class CompanyOwnersField extends CustomField<Set> {
      *
      * @param company
      */
-    public CompanyOwnersField(Company company) {
-        this.company = company;
+    public CompanyOwnersField() {
     }
 
     /**
@@ -46,7 +46,7 @@ public class CompanyOwnersField extends CustomField<Set> {
      */
     @Override
     protected Component initContent() {
-        grid = new EmployeesGrid(company) {
+        grid = new EmployeesGrid() {
             @Override
             protected Container createContainer() {
                 final Set<Employee> list = getValue() != null ? getValue() : new HashSet<>();
@@ -72,7 +72,7 @@ public class CompanyOwnersField extends CustomField<Set> {
                     actions.add(new UIAction("Добавить", "Добавить сотрудника в список владельцев компании", Fontello.DOC_NEW) {
                         @Override
                         public void fire(Object itemId) {
-                            final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите владельца компании", company);
+                            final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите владельца компании", companySupplier);
                             selectWindow.addCloseListener(e -> {
                                 if (selectWindow.isSelectPressed()) {
                                     beanContainer.addBean(selectWindow.getSelected());
@@ -96,7 +96,7 @@ public class CompanyOwnersField extends CustomField<Set> {
                 return actions;
             }
         };
-
+        grid.setCompanySupplier(companySupplier);
         grid.setReadOnly(isReadOnly());
         return grid;
 
@@ -110,4 +110,11 @@ public class CompanyOwnersField extends CustomField<Set> {
         return Set.class;
     }
 
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
+    }
 }

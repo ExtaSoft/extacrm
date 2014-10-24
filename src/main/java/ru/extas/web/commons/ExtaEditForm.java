@@ -15,12 +15,14 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.util.ReflectTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.data.collectioncontainer.CollectionContainer;
 import ru.extas.model.common.IdentifiedObject;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static ru.extas.web.UiUtils.showValidationError;
 
 /**
@@ -132,38 +134,44 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    protected ExtaEditForm(final String caption) {
+    protected ExtaEditForm(final String caption, final TEditObject bean) {
         this.caption = caption;
+        this.bean = bean;
+        // Must set a dummy root in constructor
+        setCompositionRoot(new Label(""));
     }
 
-    /**
-     * <p>Constructor for AbstractEditForm.</p>
-     *
-     * @param caption  a {@link java.lang.String} object.
-     * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    protected ExtaEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
-        this(caption);
-
-        initForm(beanItem);
+    @Override
+    public void attach() {
+        initForm();
+        super.attach();
     }
 
     public String getCaption() {
         return caption;
     }
 
+//    public BeanItem<TEditObject> getBeanItem() {
+//        return beanItem;
+//    }
+
+//    public void setBeanItem(BeanItem<TEditObject> beanItem) {
+//        checkNotNull(beanItem);
+//        this.beanItem = beanItem;
+//        this.bean = beanItem.getBean();
+//    }
+
     /**
      * <p>initForm.</p>
-     *
-     * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
      */
-    protected void initForm(final BeanItem<TEditObject> beanItem) {
-        bean = beanItem.getBean();
+    private void initForm() {
+        checkNotNull(bean);
         initObject(bean);
         final ComponentContainer form = createEditFields(bean);
 
         // Now create a binder
         fieldGroup = new BeanFieldGroup<>((Class<TEditObject>) bean.getClass());
+        BeanItem<TEditObject> beanItem = createBeanItem(bean);
         fieldGroup.setItemDataSource(beanItem);
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
@@ -213,13 +221,19 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         });
     }
 
+    protected BeanItem<TEditObject> createBeanItem(TEditObject bean) {
+        return new BeanItem<TEditObject>(bean);
+    }
+
     protected boolean save() {
         boolean success = true;
-        if (isModified()) {
-            if (fieldGroup.isValid()) {
+        if (fieldGroup.isValid()) {
+            if (isModified()) {
                 try {
                     fieldGroup.commit();
                     bean = saveObject(bean);
+                    BeanItem<TEditObject> beanItem = createBeanItem(bean);
+                    fieldGroup.setItemDataSource(beanItem);
                     saved = true;
                     modified = false;
                 } catch (final Throwable e) {
@@ -227,10 +241,10 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
                     NotificationUtil.showError("Невозможно сохранить изменения!", e.getLocalizedMessage());
                     success = false;
                 }
-            } else {
-                success = false;
-                showValidationError("Невозможно сохранить изменения!", fieldGroup);
             }
+        } else {
+            success = false;
+            showValidationError("Невозможно сохранить изменения!", fieldGroup);
         }
         return success;
     }
@@ -272,7 +286,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         if (content != null) {
             VerticalLayout root = new VerticalLayout();
 
-            if(content instanceof TabSheet) {
+            if (content instanceof TabSheet) {
                 content.addStyleName(ExtaTheme.TABSHEET_PADDED_TABBAR);
             } else {
                 Panel panel = new Panel();

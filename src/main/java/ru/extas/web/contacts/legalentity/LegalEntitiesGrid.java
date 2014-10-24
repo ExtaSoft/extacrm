@@ -8,9 +8,11 @@ import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.security.ExtaDomain;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -23,30 +25,28 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
 
-	private static final long serialVersionUID = 2299363623807745654L;
-	private final Company company;
+    private SupplierSer<Company> companySupplier;
 
-	/**
+    /**
 	 * <p>Constructor for LegalEntitiesGrid.</p>
 	 *
-	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
-	public LegalEntitiesGrid(final Company company) {
-		super(LegalEntity.class, false);
-		this.company = company;
-		initialize();
+	public LegalEntitiesGrid() {
+		super(LegalEntity.class);
 	}
 
     @Override
     public ExtaEditForm<LegalEntity> createEditForm(final LegalEntity legalEntity, final boolean isInsert) {
-        return new LegalEntityEditForm(legalEntity, company);
+        final LegalEntityEditForm form = new LegalEntityEditForm(legalEntity);
+        form.setCompanySupplier(companySupplier);
+        return form;
     }
 
     /** {@inheritDoc} */
 	@Override
 	protected GridDataDecl createDataDecl() {
         final LegalEntityDataDecl dataDecl = new LegalEntityDataDecl();
-        if (company != null)
+        if (companySupplier != null)
             dataDecl.setColumnCollapsed("company.name", true);
         return dataDecl;
 	}
@@ -56,8 +56,8 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
 	protected Container createContainer() {
 		// Запрос данных
 		final ExtaDataContainer<LegalEntity> container = new SecuredDataContainer<>(LegalEntity.class, ExtaDomain.LEGAL_ENTITY);
-		if (company != null)
-			container.addContainerFilter(new Compare.Equal("company", company));
+		if (companySupplier != null)
+			container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
 		container.addNestedContainerProperty("regAddress.region");
 		container.addNestedContainerProperty("company.name");
 		return container;
@@ -66,7 +66,8 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
     @Override
     public LegalEntity createEntity() {
         final LegalEntity legalEntity = super.createEntity();
-        legalEntity.setCompany(company);
+        if(companySupplier != null)
+            legalEntity.setCompany(companySupplier.get());
         return legalEntity;
     }
 
@@ -80,4 +81,12 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
 
 		return actions;
 	}
+
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
+    }
 }

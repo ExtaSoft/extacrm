@@ -41,13 +41,14 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
         super(formTransfer.isNew() ?
                         "Новый акт приема/передачи" :
                         "Редактировать акт приема/передачи",
-                new BeanItem(formTransfer));
+                formTransfer);
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final FormTransfer obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
         fromContactField = new PersonSelect("От кого");

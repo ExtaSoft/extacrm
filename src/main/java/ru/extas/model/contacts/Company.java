@@ -67,17 +67,17 @@ public class Company extends SecuredObject {
     private Set<Employee> owners = newHashSet();
 
 	// Сотрудники компании
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     @OrderBy("name ASC")
 	private Set<Employee> employees = newHashSet();
 
 	// Юридические лица компании
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     private Set<LegalEntity> legalEntities = newHashSet();
 
 	// Торговые точки компании
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     private Set<SalePoint> salePoints = newHashSet();
 
@@ -120,7 +120,10 @@ public class Company extends SecuredObject {
 	 * @param salePointList a {@link java.util.List} object.
 	 */
 	public void setSalePoints(final Set<SalePoint> salePointList) {
-		this.salePoints = salePointList;
+        // Устанавливаем новую связь
+        this.salePoints = salePointList;
+        if (this.salePoints != null)
+            this.salePoints.forEach(e -> e.setCompany(this));
 	}
 
 	/**
@@ -138,7 +141,10 @@ public class Company extends SecuredObject {
 	 * @param employeeList a {@link java.util.List} object.
 	 */
 	public void setEmployees(final Set<Employee> employeeList) {
-		this.employees = employeeList;
+        this.employees = employeeList;
+        // Устанавливаем новую связь
+        if (this.employees != null)
+            this.employees.forEach(e -> e.setCompany(this));
 	}
 
 	/**
@@ -156,7 +162,10 @@ public class Company extends SecuredObject {
 	 * @param legalEntities a {@link java.util.List} object.
 	 */
 	public void setLegalEntities(final Set<LegalEntity> legalEntities) {
-		this.legalEntities = legalEntities;
+        // Устанавливаем новую связь
+        this.legalEntities = legalEntities;
+        if (this.legalEntities != null)
+            this.legalEntities.forEach(e -> e.setCompany(this));
 	}
 
     public String getName() {

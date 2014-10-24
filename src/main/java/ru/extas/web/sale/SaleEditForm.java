@@ -17,6 +17,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.person.PersonSelect;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.contacts.employee.UserContactSelectField;
@@ -62,19 +63,20 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     @PropertyId("productInSales")
     private ProductInSaleGrid productInSaleField;
     @PropertyId("responsible")
-    private UserContactSelectField responsibleField;
+    private EmployeeField responsibleField;
     @PropertyId("comments")
     private CommentsField<SaleComment> commentsField;
 
     public SaleEditForm(final Sale sale) {
         super(sale.isNew() ? "Ввод новой продажи в систему" :
-                MessageFormat.format("Редактирование продажи № {0}", sale.getNum()), new BeanItem(sale));
+                MessageFormat.format("Редактирование продажи № {0}", sale.getNum()), sale);
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Sale obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Клиент"));
@@ -104,13 +106,13 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
-        dealerField = new SalePointField("Мотосалон", "Введите точку продаж", null);
+        dealerField = new SalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
         form.addComponent(dealerField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дополнительно"));
-        responsibleField = new UserContactSelectField("Ответственный");
+        responsibleField = new EmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
         responsibleField.setRequired(true);
         form.addComponent(responsibleField);
 

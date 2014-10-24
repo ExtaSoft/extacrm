@@ -6,9 +6,11 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -24,7 +26,7 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 public class LegalEntitiesField extends CustomField<Set> {
 
-	private final Company company;
+    private SupplierSer<Company> companySupplier;
     private BeanItemContainer<LegalEntity> itemContainer;
 
     /**
@@ -32,40 +34,26 @@ public class LegalEntitiesField extends CustomField<Set> {
 	 *
 	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
-	public LegalEntitiesField(final Company company) {
-		this.company = company;
+	public LegalEntitiesField() {
 		setBuffered(true);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
-		final LegalEntitiesGrid grid = new LegalEntitiesGrid(company) {
-			@Override
-			protected Container createContainer() {
-				final Set<LegalEntity> list = getValue() != null ? getValue() : newHashSet();
-                itemContainer = new BeanItemContainer<>(LegalEntity.class);
-				itemContainer.addNestedContainerProperty("regAddress.region");
-                itemContainer.addNestedContainerProperty("company.name");
-                itemContainer.addAll(list);
-                return itemContainer;
-			}
-
+		final LegalEntitiesGrid grid = new LegalEntitiesGrid() {
             @Override
             public ExtaEditForm<LegalEntity> createEditForm(LegalEntity legalEntity, boolean isInsert) {
-                final LegalEntityEditForm form = new LegalEntityEditForm(legalEntity, company) {
-                    @Override
-                    protected LegalEntity saveObject(LegalEntity obj) {
-                        if (isInsert)
-                            itemContainer.addBean(obj);
-                        setValue(newHashSet(itemContainer.getItemIds()));
-                        return obj;
-                    }
-                };
+                final ExtaEditForm<LegalEntity> form = super.createEditForm(legalEntity, isInsert);
+                form.addCloseFormListener(e -> {
+                    if (form.isSaved() && isInsert)
+                        setValue(((ExtaDataContainer) container).getEntitiesSet());
+                });
                 form.setReadOnly(isReadOnly());
                 return form;
             }
         };
+        grid.setCompanySupplier(companySupplier);
 		grid.setSizeFull();
         grid.setReadOnly(isReadOnly());
 
@@ -77,4 +65,12 @@ public class LegalEntitiesField extends CustomField<Set> {
 	public Class<? extends Set> getType() {
 		return Set.class;
 	}
+
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
+    }
 }

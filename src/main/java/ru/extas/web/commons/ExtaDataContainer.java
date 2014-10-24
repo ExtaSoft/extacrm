@@ -18,7 +18,10 @@ import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -45,6 +48,13 @@ public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPA
         setEntityProvider(new ExtaLocalEntityProvider<>(entityClass));
     }
 
+    public List<TEntityType> getEntitiesList() {
+        return newArrayList(getItemIds().stream().map(id -> getItem(id).getEntity()).iterator());
+    }
+
+    public Set<TEntityType> getEntitiesSet() {
+        return newHashSet(getItemIds().stream().map(id -> getItem(id).getEntity()).iterator());
+    }
 
     protected static class InjectEntityManagerProvider implements EntityManagerProvider, Serializable {
         @Override

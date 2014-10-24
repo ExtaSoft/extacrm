@@ -3,10 +3,7 @@ package ru.extas.model.contacts;
 
 import ru.extas.model.common.AuditedObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
@@ -45,7 +42,7 @@ public class PayAccount extends AuditedObject {
     private String settlementAccount;
 
     // Контакт которому относится счет
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Company contact;
 
     /**

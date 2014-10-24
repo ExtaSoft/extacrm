@@ -28,7 +28,7 @@ public class MotorBrandEditForm extends ExtaEditForm<MotorBrand> {
     private MotorTypeObjMultiselect typesField;
 
     public MotorBrandEditForm(final MotorBrand motorBrand) {
-        super(motorBrand.isNew() ? "Новый бренд" : "Редактировать бренд", new BeanItem(motorBrand));
+        super(motorBrand.isNew() ? "Новый бренд" : "Редактировать бренд", motorBrand);
     }
 
 
@@ -49,6 +49,7 @@ public class MotorBrandEditForm extends ExtaEditForm<MotorBrand> {
     @Override
     protected ComponentContainer createEditFields(final MotorBrand obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         nameField = new EditField("Название марки техники", "Введите название марки техники");
         nameField.setColumns(20);

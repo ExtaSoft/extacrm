@@ -14,6 +14,7 @@ import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
+import ru.extas.web.contacts.employee.EmployeeFieldMulty;
 import ru.extas.web.contacts.legalentity.LegalEntitiesField;
 import ru.extas.web.contacts.salepoint.SalePointsField;
 import ru.extas.web.reference.CitySelect;
@@ -60,19 +61,17 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
     // Вкладка - "Сотрудники"
     @PropertyId("employees")
-    private CompanyEmployeesField employeeField;
+    private EmployeeFieldMulty employeeField;
 
 
     public CompanyEditForm(final Company company) {
         super(company.isNew() ?
                 "Ввод новой компании в систему" :
-                String.format("Редактирование компании: %s", company.getName()));
-        final BeanItem<Company> beanItem = new BeanItem<>(company);
+                String.format("Редактирование компании: %s", company.getName()), company);
 
         setWinWidth(800, Unit.PIXELS);
         setWinHeight(600, Unit.PIXELS);
 
-        initForm(beanItem);
     }
 
     /**
@@ -103,64 +102,48 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
      */
     @Override
     protected ComponentContainer createEditFields(final Company obj) {
-        final TabSheet tabsheet = new TabSheet();
+        final ConfirmTabSheet tabsheet = new ConfirmTabSheet(
+                () -> !getObject().isNew(),
+                () -> save());
         tabsheet.setSizeFull();
 
-//        tabsheet.addSelectedTabChangeListener(e -> {
-//            // Сохранить объект перед тем как переключаться на сложную вкладку
-//            final Component tab = tabsheet.getSelectedTab();
-//            if (getObject().isNew() && tabsheet.getTabPosition(tabsheet.getTab(tab)) != 0) {
-//                tabsheet.setSelectedTab(tabsheet.getTab(0));
-////                ConfirmDialog.show(UI.getCurrent(),
-////                        "Необходимо сохранить объект...",
-////                        "Необходимо сохранить компанию прежде чем продолжить редактирование. Сохранить сейчас?",
-////                        "Сохранить", "Отменить",
-////                        dialog -> {
-////                            if (dialog.isConfirmed()) {
-////                                save();
-////                                tabsheet.setSelectedTab(tab);
-////                            }
-////                        });
-//            }
-//        });
-//
         // Вкладка - "Общая информация"
         tabsheet.addTab(createMainForm(obj), "Общие данные");
         // Вкладка - "Торговые точки"
-        tabsheet.addTab(createSalePointsForm(), "Торговые точки");
+        tabsheet.addConfirmTab(createSalePointsForm(), "Торговые точки");
         // Вкладка - "Сотрудники"
-        tabsheet.addTab(createEmployesForm(), "Сотрудники");
+        tabsheet.addConfirmTab(createEmployeesForm(), "Сотрудники");
         // Вкладка - "Юр. лица"
-        tabsheet.addTab(createLegalsForm(), "Юридические лица");
+        tabsheet.addConfirmTab(createLegalsForm(), "Юридические лица");
         // Вкладка - "Владельцы"
-        tabsheet.addTab(createOwnerForm(), "Владельцы");
+        tabsheet.addConfirmTab(createOwnerForm(), "Владельцы");
         return tabsheet;
     }
 
     private Component createLegalsForm() {
-        final Company obj = getObject();
-        legalsField = new LegalEntitiesField(obj);
+        legalsField = new LegalEntitiesField();
+        legalsField.setCompanySupplier(super::getObject);
         legalsField.setSizeFull();
         return legalsField;
     }
 
-    private Component createEmployesForm() {
-        final Company obj = getObject();
-        employeeField = new CompanyEmployeesField(obj);
+    private Component createEmployeesForm() {
+        employeeField = new EmployeeFieldMulty();
+        employeeField.setCompanySupplier(super::getObject);
         employeeField.setSizeFull();
         return employeeField;
     }
 
     private Component createSalePointsForm() {
-        final Company obj = getObject();
-        salePointsField = new SalePointsField(obj);
+        salePointsField = new SalePointsField();
+        salePointsField.setCompanySupplier(super::getObject);
         salePointsField.setSizeFull();
         return salePointsField;
     }
 
     private Component createOwnerForm() {
-        final Company obj = getObject();
-        ownersField = new CompanyOwnersField(obj);
+        ownersField = new CompanyOwnersField();
+        ownersField.setCompanySupplier(super::getObject);
         ownersField.setSizeFull();
         return ownersField;
     }

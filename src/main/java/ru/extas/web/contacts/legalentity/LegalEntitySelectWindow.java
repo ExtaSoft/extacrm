@@ -5,6 +5,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.Fontello;
@@ -13,6 +14,7 @@ import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.web.commons.GridItem.extractBean;
@@ -28,25 +30,28 @@ import static ru.extas.web.commons.GridItem.extractBean;
  */
 public class LegalEntitySelectWindow extends CloseOnlylWindow {
 
-	private final Company company;
-	private LegalEntity selected;
+    private SupplierSer<Company> companySupplier;
+    private LegalEntity selected;
 	private boolean selectPressed;
 
 	/**
 	 * <p>Constructor for LegalEntitySelectWindow.</p>
 	 *
 	 * @param caption a {@link java.lang.String} object.
-	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
-	public LegalEntitySelectWindow(final String caption, final Company company) {
+	public LegalEntitySelectWindow(final String caption) {
 		super(caption);
-		this.company = company;
         setWidth(800, Unit.PIXELS);
         setHeight(600, Unit.PIXELS);
-        setContent(new SelectGrid());
 	}
 
-	/**
+    @Override
+    public void attach() {
+        setContent(new SelectGrid());
+        super.attach();
+    }
+
+    /**
 	 * <p>isSelectPressed.</p>
 	 *
 	 * @return a boolean.
@@ -57,31 +62,8 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 
 	private class SelectGrid extends LegalEntitiesGrid {
 		private SelectGrid() {
-			super(null);
+			super.setCompanySupplier(companySupplier);
 		}
-
-		@Override
-		protected Container createContainer() {
-            if (company != null) {
-                final Set<LegalEntity> list = company.getLegalEntities();
-                final BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
-                if (list != null) {
-                    for (final LegalEntity item : list) {
-                        itemContainer.addBean(item);
-                    }
-                }
-                itemContainer.addNestedContainerProperty("regAddress.region");
-                itemContainer.addNestedContainerProperty("company.name");
-                return itemContainer;
-            } else {
-                final ExtaDataContainer<LegalEntity> container = new ExtaDataContainer<>(LegalEntity.class);
-                if (company != null)
-                    container.addContainerFilter(new Compare.Equal("company", company));
-                container.addNestedContainerProperty("regAddress.region");
-                container.addNestedContainerProperty("company.name");
-                return container;
-            }
-        }
 
 		@Override
 		protected List<UIAction> createActions() {
@@ -111,4 +93,12 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 	public LegalEntity getSelected() {
 		return selected;
 	}
+
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
+    }
 }

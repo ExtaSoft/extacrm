@@ -17,6 +17,7 @@ import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.person.PersonSelect;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
@@ -37,8 +38,8 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
     private final static Logger logger = LoggerFactory.getLogger(UserEditForm.class);
     private final String initialPassword;
     // Компоненты редактирования
-    @PropertyId("contact")
-    private PersonSelect nameField;
+    @PropertyId("employee")
+    private EmployeeField nameField;
     @PropertyId("login")
     private TextField loginField;
     @PropertyId("role")
@@ -66,8 +67,12 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         super(userProfile.isNew() ?
                 "Ввод нового пользователя в систему" :
                 "Редактирование данных пользователя",
-                new BeanItem<>(userProfile));
+                userProfile);
         initialPassword = userProfile.getPassword();
+
+        setWinWidth(800, Unit.PIXELS);
+        setWinHeight(600, Unit.PIXELS);
+
     }
 
     /** {@inheritDoc} */
@@ -105,7 +110,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
     @Override
     protected ComponentContainer createEditFields(final UserProfile obj) {
         final TabSheet tabsheet = new TabSheet();
-        tabsheet.setSizeUndefined();
+        tabsheet.setSizeFull();
 
         // Вкладка - "Общая информация"
         final FormLayout mainTab = getMainTab(obj);
@@ -124,11 +129,13 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
     private Component createGroupTab() {
         groupField = new UserGroupField();
+        groupField.setSizeFull();
         return groupField;
     }
 
     private Component createPermissionTab(final UserProfile obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         brandsField = new MotorBrandMultiselect("Доступные бренды");
         form.addComponent(brandsField);
@@ -137,6 +144,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         form.addComponent(regionsField);
 
         permissionsField = new ExtaPermissionField(obj);
+        permissionsField.setWidth(100, Unit.PERCENTAGE);
         permissionsField.setCaption("Правила доступа пользователя");
         form.addComponent(permissionsField);
 
@@ -145,14 +153,11 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
     private FormLayout getMainTab(final UserProfile obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
-        // FIXME Ограничить выбор контакта только сотрудниками
-        nameField = new PersonSelect("Имя");
-        nameField.setImmediate(true);
-        //nameField.setWidth(50, Unit.EX);
-        nameField.setDescription("Введите имя (ФИО) пользователя");
+        nameField = new EmployeeField("Имя сотрудника", "Введите или выберете сотрудника которому предоставляется доступ к системе");
         nameField.setRequired(true);
-        nameField.setRequiredError("Имя пользователя не может быть пустым. Пожалуйста введите ФИО пользователя.");
+        nameField.setRequiredError("Сотрудник обязательно должен быть указан!");
         form.addComponent(nameField);
 
         // FIXME Проверить уникальность логина

@@ -32,9 +32,8 @@ public class SalesGrid extends ExtaGrid<Sale> {
      * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
      */
     public SalesGrid(final ExtaDomain domain) {
-        super(Sale.class, false);
+        super(Sale.class);
         this.domain = domain;
-        initialize();
     }
 
     /**

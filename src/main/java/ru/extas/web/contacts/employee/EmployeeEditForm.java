@@ -7,6 +7,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.contacts.*;
 import ru.extas.server.contacts.EmployeeRepository;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
@@ -16,6 +17,7 @@ import ru.extas.web.contacts.legalentity.LegalEntityField;
 import ru.extas.web.contacts.salepoint.SalePointField;
 
 import java.text.MessageFormat;
+import java.util.Optional;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -28,7 +30,9 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class EmployeeEditForm extends ExtaEditForm<Employee> {
 
-    private final Company company;
+    private SupplierSer<Company> companySupplier;
+    private SupplierSer<SalePoint> salePointSupplier;
+    private SupplierSer<LegalEntity> legalEntitySupplier;
 
     // Общие данные
     @PropertyId("name")
@@ -72,22 +76,23 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     @PropertyId("regAddress")
     private AddressInfoField regAddressField;
 
-    public EmployeeEditForm(Employee employee, Company company) {
+    public EmployeeEditForm(Employee employee) {
         super(employee.isNew() ?
                 "Новый сотрудник" :
-                MessageFormat.format("Сотрудник: {0}", employee.getName()));
-        this.company = company;
+                MessageFormat.format("Сотрудник: {0}", employee.getName()), employee);
 
-        final BeanItem<Employee> beanItem = new BeanItem<>(employee);
-        initForm(beanItem);
     }
 
     @Override
     protected void initObject(Employee obj) {
         if (obj.getRegAddress() == null)
             obj.setRegAddress(new AddressInfo());
-        if(company != null)
-            obj.setCompany(company);
+        if (companySupplier != null)
+            obj.setCompany(companySupplier.get());
+        if (salePointSupplier != null)
+            obj.setWorkPlace(salePointSupplier.get());
+        if (legalEntitySupplier != null)
+            obj.setLegalWorkPlace(legalEntitySupplier.get());
     }
 
     @Override
@@ -130,29 +135,33 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         companyField.setRequired(true);
         companyField.addValueChangeListener(e -> {
             final Company company = (Company) companyField.getConvertedValue();
-            workPlaceField.setCompany(company);
-            legalWorkPlaceField.setCompany(company);
+            workPlaceField.changeCompany();
+            legalWorkPlaceField.changeCompany();
         });
-        companyField.setVisible(company == null);
+        companyField.setVisible(companySupplier == null);
         formLayout.addComponent(companyField);
 
-        workPlaceField = new SalePointField("Торговая точка", "Укажите торговую точку сотрудника", obj.getCompany());
+        workPlaceField = new SalePointField("Торговая точка", "Укажите торговую точку сотрудника");
+        workPlaceField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
         workPlaceField.addValueChangeListener(e -> {
             final SalePoint salePoint = (SalePoint) e.getProperty().getValue();
             if (salePoint != null)
                 companyField.setValue(salePoint.getCompany());
         });
+        workPlaceField.setVisible(salePointSupplier == null);
         formLayout.addComponent(workPlaceField);
 
 //        jobDepartmentField = new;
 //        formLayout.addComponent(jobDepartmentField);
 
-        legalWorkPlaceField = new LegalEntityField("Юр. лицо", "Укажите Юридическое лицо в котором оформлен сотрудник", obj.getCompany());
+        legalWorkPlaceField = new LegalEntityField("Юр. лицо", "Укажите Юридическое лицо в котором оформлен сотрудник");
+        legalWorkPlaceField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
         legalWorkPlaceField.addValueChangeListener(e -> {
             final LegalEntity legalEntity = (LegalEntity) e.getProperty().getValue();
             if (legalEntity != null)
                 companyField.setValue(legalEntity.getCompany());
         });
+        legalWorkPlaceField.setVisible(legalEntitySupplier == null);
         formLayout.addComponent(legalWorkPlaceField);
 
         jobPositionField = new EditField("Должность", "Укажите должность сотрудника");
@@ -192,5 +201,29 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         formLayout.addComponent(regAddressField);
 
         return formLayout;
+    }
+
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
+    }
+
+    public SupplierSer<SalePoint> getSalePointSupplier() {
+        return salePointSupplier;
+    }
+
+    public void setSalePointSupplier(SupplierSer<SalePoint> salePointSupplier) {
+        this.salePointSupplier = salePointSupplier;
+    }
+
+    public SupplierSer<LegalEntity> getLegalEntitySupplier() {
+        return legalEntitySupplier;
+    }
+
+    public void setLegalEntitySupplier(SupplierSer<LegalEntity> legalEntitySupplier) {
+        this.legalEntitySupplier = legalEntitySupplier;
     }
 }

@@ -75,7 +75,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 	private TextArea commentField;
 
     public ProdCreditEditForm(final ProdCredit prodCredit) {
-        super(prodCredit.isNew() ? "Новый продукт" : "Редактировать продукт", new BeanItem(prodCredit));
+        super(prodCredit.isNew() ? "Новый продукт" : "Редактировать продукт", prodCredit);
     }
 
     /** {@inheritDoc} */
@@ -98,6 +98,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 	@Override
 	protected ComponentContainer createEditFields(final ProdCredit obj) {
 		final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
 		activeField = new CheckBox("Активный продукт");
 		activeField.setDescription("Укажите участвует ли продукт в продажах (учавствует если активен)");

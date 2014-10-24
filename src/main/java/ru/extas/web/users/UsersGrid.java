@@ -49,7 +49,7 @@ public class UsersGrid extends ExtaGrid<UserProfile> {
 	protected Container createContainer() {
 		// Запрос данных
 		final ExtaDataContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
-		container.addNestedContainerProperty("contact.name");
+		container.addNestedContainerProperty("employee.name");
 		return container;
 	}
 

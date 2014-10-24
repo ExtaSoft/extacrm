@@ -8,6 +8,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
@@ -18,6 +19,7 @@ import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -30,15 +32,16 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class EmployeeField extends CustomField<Employee> {
 
-    private Company company;
+    private SupplierSer<Company> companySupplier;
+    private SupplierSer<LegalEntity> legalEntitySupplier;
+
     private PopupView popupView;
     private PopupEmployeeContent entityContent;
 
-    public EmployeeField(String caption, String description, Company company) {
+    public EmployeeField(String caption, String description) {
         setCaption(caption);
         setDescription(description);
         setBuffered(true);
-        this.company = company;
     }
 
     @Override
@@ -49,13 +52,14 @@ public class EmployeeField extends CustomField<Employee> {
         return popupView;
     }
 
-    public void setCompany(Company company) {
-        if (!Objects.equals(this.company, company)) {
-            this.company = company;
+    public void changeCompany() {
+        if (companySupplier != null) {
             final Employee employee = getValue();
-            if (employee != null && company != null && !employee.getCompany().equals(company)) {
-                entityContent.refreshFields(null);
-                markAsDirtyRecursive();
+            if (employee != null) {
+                if (!Objects.equals(this.companySupplier.get(), employee.getCompany())) {
+                    entityContent.refreshFields(null);
+                    markAsDirtyRecursive();
+                }
             }
         }
     }
@@ -101,14 +105,14 @@ public class EmployeeField extends CustomField<Employee> {
         public void refreshContainer() {
             setContainerFilter();
             container.refresh();
-            if (company != null && !Objects.equals(getConvertedValue(), company))
+            if (companySupplier != null && !Objects.equals(getConvertedValue(), companySupplier.get()))
                 setConvertedValue(null);
         }
 
         protected void setContainerFilter() {
             container.removeAllContainerFilters();
-            if (company != null)
-                container.addContainerFilter(new Compare.Equal("company", company));
+            if (companySupplier != null)
+                container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
         }
 
     }
@@ -141,16 +145,16 @@ public class EmployeeField extends CustomField<Employee> {
             selectField.setPropertyDataSource(getPropertyDataSource());
             selectField.setNewItemsAllowed(true);
             selectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-                private static final long serialVersionUID = 1L;
-
-                @SuppressWarnings({"unchecked"})
                 @Override
                 public void addNewItem(final String newItemCaption) {
                     final Employee newObj = new Employee();
-                    newObj.setCompany(company);
+                    if(companySupplier != null)
+                        newObj.setCompany(companySupplier.get());
                     newObj.setName(newItemCaption);
 
-                    final EmployeeEditForm editWin = new EmployeeEditForm(newObj, company);
+                    final EmployeeEditForm editWin = new EmployeeEditForm(newObj);
+                    editWin.setCompanySupplier(companySupplier);
+                    editWin.setLegalEntitySupplier(legalEntitySupplier);
                     editWin.setModified(true);
 
                     editWin.addCloseFormListener(event -> {
@@ -158,8 +162,9 @@ public class EmployeeField extends CustomField<Employee> {
                             selectField.refreshContainer();
                             selectField.setValue(editWin.getObjectId());
                         }
-                        popupView.setPopupVisible(false);
+                        popupView.setPopupVisible(true);
                     });
+                    popupView.setPopupVisible(false);
                     FormUtils.showModalWin(editWin);
                 }
             });
@@ -185,14 +190,18 @@ public class EmployeeField extends CustomField<Employee> {
             viewBtn = new Button("Просмотр", event -> {
                 final Employee bean = (Employee) selectField.getConvertedValue();
 
-                final EmployeeEditForm editWin = new EmployeeEditForm(bean, company);
+                final EmployeeEditForm editWin = new EmployeeEditForm(bean);
+                editWin.setCompanySupplier(companySupplier);
+                editWin.setLegalEntitySupplier(legalEntitySupplier);
                 editWin.setModified(true);
 
                 editWin.addCloseFormListener(event1 -> {
                     if (editWin.isSaved()) {
                         refreshFields(bean);
                     }
+                    popupView.setPopupVisible(true);
                 });
+                popupView.setPopupVisible(false);
                 FormUtils.showModalWin(editWin);
             });
             viewBtn.setDescription("Открыть форму ввода/редактирования сотрудника");
@@ -202,13 +211,16 @@ public class EmployeeField extends CustomField<Employee> {
             toolbar.addComponent(viewBtn);
 
             final Button searchBtn = new Button("Поиск", event -> {
-                final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите сотрудника или введите нового", company);
+                final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите сотрудника или введите нового", companySupplier);
                 selectWindow.addCloseListener(e -> {
                     if (selectWindow.isSelectPressed()) {
                         final Employee selected = selectWindow.getSelected();
                         selectField.setConvertedValue(selected);
                     }
+                    popupView.setPopupVisible(true);
                 });
+
+                popupView.setPopupVisible(false);
                 selectWindow.showModal();
 
             });
@@ -220,7 +232,7 @@ public class EmployeeField extends CustomField<Employee> {
 
             formLayout.addComponent(toolbar);
 
-            refreshFields((Employee) getPropertyDataSource().getValue());
+            refreshFields(getValue());
             return formLayout;
         }
 
@@ -241,5 +253,21 @@ public class EmployeeField extends CustomField<Employee> {
     @Override
     public Class<? extends Employee> getType() {
         return Employee.class;
+    }
+
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
+    }
+
+    public SupplierSer<LegalEntity> getLegalEntitySupplier() {
+        return legalEntitySupplier;
+    }
+
+    public void setLegalEntitySupplier(SupplierSer<LegalEntity> legalEntitySupplier) {
+        this.legalEntitySupplier = legalEntitySupplier;
     }
 }

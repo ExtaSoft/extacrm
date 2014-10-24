@@ -44,7 +44,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
     public UserGroupEditForm(final UserGroup userGroup) {
         super(userGroup.isNew() ?
         "Ввод новой группы пользователей" :
-        "Редактирование группы", new BeanItem<>(userGroup));
+        "Редактирование группы", userGroup);
     }
 
     /** {@inheritDoc} */
@@ -68,6 +68,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
     @Override
     protected ComponentContainer createEditFields(final UserGroup obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         nameField = new EditField("Название");
         nameField.setImmediate(true);

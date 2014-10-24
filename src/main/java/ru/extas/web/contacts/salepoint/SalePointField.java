@@ -6,8 +6,10 @@ import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
@@ -32,7 +34,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class SalePointField extends CustomField<SalePoint> {
 
-    private Company company;
+    private SupplierSer<Company> companySupplier;
 
     private PopupView popupView;
     private PopupSalePointContent salePointContent;
@@ -44,8 +46,7 @@ public class SalePointField extends CustomField<SalePoint> {
      * @param description a {@link java.lang.String} object.
      * @param company     a {@link ru.extas.model.contacts.Company} object.
      */
-    public SalePointField(final String caption, final String description, final Company company) {
-        this.company = company;
+    public SalePointField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
@@ -71,14 +72,15 @@ public class SalePointField extends CustomField<SalePoint> {
         return SalePoint.class;
     }
 
-    public void setCompany(Company company) {
-        if (!Objects.equals(this.company, company)) {
-            this.company = company;
+    public void changeCompany() {
+        if (companySupplier != null) {
             final SalePoint salePoint = getValue();
-            if (salePoint != null && company != null && !salePoint.getCompany().equals(company)) {
-                salePointContent.refreshFields(null);
+            if (salePoint != null) {
+                if (!Objects.equals(this.companySupplier.get(), salePoint.getCompany())) {
+                    salePointContent.refreshFields(null);
+                    markAsDirtyRecursive();
+                }
             }
-            markAsDirtyRecursive();
         }
     }
 
@@ -126,14 +128,14 @@ public class SalePointField extends CustomField<SalePoint> {
         public void refreshContainer() {
             setContainerFilter();
             container.refresh();
-            if (company != null && !Objects.equals(getConvertedValue(), company))
+            if (companySupplier != null && !Objects.equals(getConvertedValue(), companySupplier.get()))
                 setConvertedValue(null);
         }
 
         protected void setContainerFilter() {
             container.removeAllContainerFilters();
-            if (company != null)
-                container.addContainerFilter(new Compare.Equal("company", company));
+            if (companySupplier != null)
+                container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
         }
 
     }
@@ -171,9 +173,9 @@ public class SalePointField extends CustomField<SalePoint> {
                     if (defNewObj.getName() == null) {
                         defNewObj.setName(newItemCaption);
                     }
-                    defNewObj.setCompany(company);
 
                     final SalePointEditForm editWin = new SalePointEditForm(defNewObj);
+                    editWin.setCompanySupplier(companySupplier);
                     editWin.setModified(true);
 
                     editWin.addCloseFormListener(event -> {
@@ -181,13 +183,16 @@ public class SalePointField extends CustomField<SalePoint> {
                             contactSelect.refreshContainer();
                             contactSelect.setValue(editWin.getObjectId());
                         }
+                        popupView.setPopupVisible(true);
                     });
+                    popupView.setPopupVisible(false);
                     FormUtils.showModalWin(editWin);
                 });
                 contactSelect.addValueChangeListener(event -> refreshFields((SalePoint) contactSelect.getConvertedValue()));
                 container.addComponent(contactSelect);
             } else {
                 final Label name = new Label();
+                name.setCaption("Название");
                 final SalePoint salePoint = getValue();
                 if (salePoint != null)
                     name.setValue(salePoint.getName());
@@ -221,7 +226,9 @@ public class SalePointField extends CustomField<SalePoint> {
                     if (editWin.isSaved()) {
                         refreshFields(salePoint);
                     }
+                    popupView.setPopupVisible(true);
                 });
+                popupView.setPopupVisible(false);
                 FormUtils.showModalWin(editWin);
             });
             viewBtn.setDescription("Открыть форму ввода/редактирования торговой точки");
@@ -231,12 +238,14 @@ public class SalePointField extends CustomField<SalePoint> {
             toolbar.addComponent(viewBtn);
 
             final Button searchBtn = new Button("Поиск", event -> {
-                final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите торговую точку или введите новую", company);
+                final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите торговую точку или введите новую", companySupplier);
                 selectWindow.addCloseListener(e -> {
                     if (selectWindow.isSelectPressed()) {
                         contactSelect.setConvertedValue(selectWindow.getSelected());
                     }
+                    popupView.setPopupVisible(true);
                 });
+                popupView.setPopupVisible(false);
                 selectWindow.showModal();
 
             });
@@ -267,5 +276,13 @@ public class SalePointField extends CustomField<SalePoint> {
             if (cityField != null) cityField.setPropertyDataSource(beanItem.getItemProperty("regAddress.city"));
             if (addressField != null) addressField.setPropertyDataSource(beanItem.getItemProperty("regAddress.streetBld"));
         }
+    }
+
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
     }
 }

@@ -6,7 +6,9 @@ import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
@@ -32,7 +34,8 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class LegalEntityField extends CustomField<LegalEntity> {
 
-    private Company company;
+    private SupplierSer<Company> companySupplier;
+
     private PopupView popupView;
     private PopupLegalEntityContent entityContent;
 
@@ -42,7 +45,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
      * @param caption a {@link java.lang.String} object.
      */
     public LegalEntityField(final String caption) {
-        this(caption, "", null);
+        this(caption, "");
     }
 
     /**
@@ -51,11 +54,10 @@ public class LegalEntityField extends CustomField<LegalEntity> {
      * @param caption     a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
      */
-    public LegalEntityField(final String caption, final String description, final Company company) {
+    public LegalEntityField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
         setBuffered(true);
-        this.company = company;
     }
 
     /**
@@ -69,13 +71,14 @@ public class LegalEntityField extends CustomField<LegalEntity> {
         return popupView;
     }
 
-    public void setCompany(Company company) {
-        if (!Objects.equals(this.company, company)) {
-            this.company = company;
+    public void changeCompany() {
+        if (companySupplier != null) {
             final LegalEntity legalEntity = getValue();
-            if (legalEntity != null && company != null && !legalEntity.getCompany().equals(company)) {
-                entityContent.refreshFields(null);
-                markAsDirtyRecursive();
+            if (legalEntity != null) {
+                if (!Objects.equals(this.companySupplier.get(), legalEntity.getCompany())) {
+                    entityContent.refreshFields(null);
+                    markAsDirtyRecursive();
+                }
             }
         }
     }
@@ -121,14 +124,14 @@ public class LegalEntityField extends CustomField<LegalEntity> {
         public void refreshContainer() {
             setContainerFilter();
             container.refresh();
-            if (company != null && !Objects.equals(getConvertedValue(), company))
+            if (companySupplier != null && !Objects.equals(getConvertedValue(), companySupplier.get()))
                 setConvertedValue(null);
         }
 
         protected void setContainerFilter() {
             container.removeAllContainerFilters();
-            if (company != null)
-                container.addContainerFilter(new Compare.Equal("company", company));
+            if (companySupplier != null)
+                container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
         }
 
     }
@@ -165,32 +168,43 @@ public class LegalEntityField extends CustomField<LegalEntity> {
 
             formLayout.addComponent(new FormGroupHeader("Юридическое лицо"));
 
-            selectField = new LESelectField("Название", "Введите или выберите название юридического лица");
-            selectField.setPropertyDataSource(getPropertyDataSource());
-            selectField.setNewItemsAllowed(true);
-            selectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-                private static final long serialVersionUID = 1L;
+            if (!isReadOnly()) {
+                selectField = new LESelectField("Название", "Введите или выберите название юридического лица");
+                selectField.setPropertyDataSource(getPropertyDataSource());
+                selectField.setNewItemsAllowed(true);
+                selectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+                    private static final long serialVersionUID = 1L;
 
-                @SuppressWarnings({"unchecked"})
-                @Override
-                public void addNewItem(final String newItemCaption) {
-                    final LegalEntity newObj = new LegalEntity();
-                    newObj.setName(newItemCaption);
+                    @SuppressWarnings({"unchecked"})
+                    @Override
+                    public void addNewItem(final String newItemCaption) {
+                        final LegalEntity newObj = new LegalEntity();
+                        newObj.setName(newItemCaption);
 
-                    final LegalEntityEditForm editWin = new LegalEntityEditForm(newObj);
-                    editWin.setModified(true);
+                        final LegalEntityEditForm editWin = new LegalEntityEditForm(newObj);
+                        editWin.setModified(true);
 
-                    editWin.addCloseFormListener(event -> {
-                        if (editWin.isSaved()) {
-                            selectField.refreshContainer();
-                            selectField.setValue(editWin.getObjectId());
-                        }
-                    });
-                    FormUtils.showModalWin(editWin);
-                }
-            });
-            selectField.addValueChangeListener(event -> refreshFields((LegalEntity) selectField.getConvertedValue()));
-            formLayout.addComponent(selectField);
+                        editWin.addCloseFormListener(event -> {
+                            if (editWin.isSaved()) {
+                                selectField.refreshContainer();
+                                selectField.setValue(editWin.getObjectId());
+                            }
+                            popupView.setPopupVisible(true);
+                        });
+                        popupView.setPopupVisible(false);
+                        FormUtils.showModalWin(editWin);
+                    }
+                });
+                selectField.addValueChangeListener(event -> refreshFields((LegalEntity) selectField.getConvertedValue()));
+                formLayout.addComponent(selectField);
+            } else {
+                final Label name = new Label();
+                name.setCaption("Название");
+                final LegalEntity legalEntity = getValue();
+                if (legalEntity != null)
+                    name.setValue(legalEntity.getName());
+                formLayout.addComponent(name);
+            }
 
             // Телефон
             phoneField = new Label();
@@ -218,7 +232,9 @@ public class LegalEntityField extends CustomField<LegalEntity> {
                     if (editWin.isSaved()) {
                         refreshFields(bean);
                     }
+                    popupView.setPopupVisible(true);
                 });
+                popupView.setPopupVisible(false);
                 FormUtils.showModalWin(editWin);
             });
             viewBtn.setDescription("Открыть форму ввода/редактирования юр. лица");
@@ -228,13 +244,16 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             toolbar.addComponent(viewBtn);
 
             final Button searchBtn = new Button("Поиск", event -> {
-                final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите юр. лицо или введите новое", null);
+                final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберете юр. лицо или введите новое");
                 selectWindow.addCloseListener(e -> {
                     if (selectWindow.isSelectPressed()) {
                         final LegalEntity selected = selectWindow.getSelected();
                         selectField.setConvertedValue(selected);
                     }
+                    popupView.setPopupVisible(true);
                 });
+                selectWindow.setCompanySupplier(companySupplier);
+                popupView.setPopupVisible(false);
                 selectWindow.showModal();
 
             });
@@ -263,5 +282,13 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             // ИНН
             if (innField != null) innField.setPropertyDataSource(beanItem.getItemProperty("inn"));
         }
+    }
+
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
     }
 }

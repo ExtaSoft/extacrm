@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.*;
 import ru.extas.server.contacts.LegalEntityRepository;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
@@ -18,6 +19,8 @@ import ru.extas.web.contacts.AddressInfoField;
 import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.motor.BrandsField;
+
+import java.util.Optional;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -81,23 +84,13 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     @PropertyId("biс")
     private EditField biсField;
 
-    private Company company;
+    private SupplierSer<Company> companySupplier;
 
     public LegalEntityEditForm(final LegalEntity legalEntity) {
-        this(legalEntity, null);
-    }
-
-    public LegalEntityEditForm(LegalEntity legalEntity, Company company) {
         super(legalEntity.isNew() ?
                 "Ввод нового юр. лица в систему" :
-                String.format("Редактирование юр. лица: %s", legalEntity.getName()));
+                String.format("Редактирование юр. лица: %s", legalEntity.getName()), legalEntity);
 
-        final BeanItem<LegalEntity> beanItem = new BeanItem<>(legalEntity);
-        beanItem.expandProperty("regAddress");
-        beanItem.expandProperty("postAddress");
-
-        this.company = company;
-        initForm(beanItem);
         setWinWidth(860, Unit.PIXELS);
     }
 
@@ -129,7 +122,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     protected void initObject(final LegalEntity obj) {
         if (obj.isNew()) {
             // Инициализируем новый объект
-            obj.setCompany(company);
+            if (companySupplier != null)
+                obj.setCompany(companySupplier.get());
         }
         if (obj.getRegAddress() == null)
             obj.setRegAddress(new AddressInfo());
@@ -178,24 +172,28 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         companyField.setRequired(true);
         companyField.addValueChangeListener(e -> {
             final Company cmp = (Company) companyField.getConvertedValue();
-            directorField.setCompany(cmp);
-            accountantField.setCompany(cmp);
+            directorField.changeCompany();
+            accountantField.changeCompany();
         });
         formLayout.addComponent(companyField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Ответственные лица"));
         directorField = new EmployeeField("Генеральный директор",
-                "Выберите или введите геннерального деректора юридического лица", companyField.getValue());
+                "Выберите или введите геннерального деректора юридического лица");
+        directorField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
+        directorField.setLegalEntitySupplier(super::getObject);
         directorField.addValueChangeListener(e -> {
             Employee emp = directorField.getValue();
             Company cmp = companyField.getValue();
-            if(cmp == null)
+            if (cmp == null)
                 companyField.setValue(emp.getCompany());
         });
         formLayout.addComponent(directorField);
         accountantField = new EmployeeField("Главный бухгалтер",
-                "Выберите или введите главного бухгалтера юридического лица", companyField.getValue());
+                "Выберите или введите главного бухгалтера юридического лица");
+        accountantField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
+        accountantField.setLegalEntitySupplier(super::getObject);
         accountantField.addValueChangeListener(e -> {
             Employee emp = accountantField.getValue();
             Company cmp = companyField.getValue();
@@ -288,4 +286,11 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         postAddressField.setVisible(!isRegIsAct);
     }
 
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
+    }
 }

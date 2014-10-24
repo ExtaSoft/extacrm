@@ -56,13 +56,13 @@ public class ContactsView extends SubdomainView {
 		ret.add(new SubdomainInfoImpl("Юридические лица", ExtaDomain.LEGAL_ENTITY) {
 			@Override
 			public ExtaGrid createGrid() {
-				return new LegalEntitiesGrid(null);
+				return new LegalEntitiesGrid();
 			}
 		});
 		ret.add(new SubdomainInfoImpl("Торговые точки", ExtaDomain.SALE_POINT) {
 			@Override
 			public ExtaGrid createGrid() {
-				return new SalePointsGrid(null);
+				return new SalePointsGrid();
 			}
 		});
 		ret.add(new SubdomainInfoImpl("Сотрудники", ExtaDomain.EMPLOYEE) {

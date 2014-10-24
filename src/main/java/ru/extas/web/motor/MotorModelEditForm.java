@@ -35,7 +35,7 @@ public class MotorModelEditForm extends ExtaEditForm<MotorModel> {
         super(motorModel.isNew() ?
                 "Новая модель техники" :
                 "Редактировать модель техники",
-                new BeanItem<>(motorModel));
+                motorModel);
     }
 
     /** {@inheritDoc} */
@@ -56,6 +56,7 @@ public class MotorModelEditForm extends ExtaEditForm<MotorModel> {
     @Override
     protected ComponentContainer createEditFields(final MotorModel obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         typeField = new MotorTypeSelect();
         typeField.setRequired(true);

@@ -46,7 +46,7 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
         super(prodInstallments.isNew() ?
                 "Новый продукт \"Рассрочка\"" :
                 "Редактировать продукт",
-                new BeanItem(prodInstallments));
+                prodInstallments);
     }
 
     /** {@inheritDoc} */
@@ -69,6 +69,7 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 	@Override
 	protected ComponentContainer createEditFields(final ProdInstallments obj) {
 		final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
 		nameField = new EditField("Название продукта", "Введите название продукта");
 		nameField.setColumns(30);

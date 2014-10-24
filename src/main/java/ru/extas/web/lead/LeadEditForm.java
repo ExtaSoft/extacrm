@@ -21,6 +21,7 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.*;
+import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.employee.UserContactSelectField;
 import ru.extas.web.contacts.person.PersonDataDecl;
 import ru.extas.web.contacts.person.PersonEditForm;
@@ -83,7 +84,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private SalePointField vendorField;
 
     @PropertyId("responsible")
-    private UserContactSelectField responsibleField;
+    private EmployeeField responsibleField;
 
     @PropertyId("comment")
     private TextArea commentField;
@@ -95,9 +96,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     public LeadEditForm(final Lead lead, final boolean qualifyForm) {
         super(lead.isNew() ? "Ввод нового лида в систему" :
                 qualifyForm ? MessageFormat.format("Квалификация лида № {0}", lead.getNum()) :
-                        MessageFormat.format("Редактирование лида № {0}", lead.getNum()));
+                        MessageFormat.format("Редактирование лида № {0}", lead.getNum()), lead);
         this.qualifyForm = qualifyForm;
-        initForm(new BeanItem<>(lead));
+        if(qualifyForm)setWinWidth(1000, Unit.PIXELS);
     }
 
     /**
@@ -146,6 +147,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @Override
     protected ComponentContainer createEditFields(final Lead obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Клиент"));
@@ -215,7 +217,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дополнительно"));
-        responsibleField = new UserContactSelectField("Ответственный");
+        responsibleField = new EmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
         responsibleField.setRequired(obj.getStatus() != Lead.Status.NEW || qualifyForm);
         form.addComponent(responsibleField);
 
@@ -228,7 +230,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     }
 
     private void createVendorSelectField(final FormLayout form) {
-        vendorField = new SalePointField("Мотосалон", "Название мотосалона", null);
+        vendorField = new SalePointField("Мотосалон", "Название мотосалона");
         vendorField.setRequired(true);
         form.addComponent(vendorField);
     }

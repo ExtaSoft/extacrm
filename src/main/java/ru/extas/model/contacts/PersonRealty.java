@@ -2,10 +2,7 @@ package ru.extas.model.contacts;
 
 import ru.extas.model.common.IdentifiedObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -45,7 +42,7 @@ public class PersonRealty extends IdentifiedObject {
     @Size(max = 50)
     private String way2purchase;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person owner;
 
     public PersonRealty() {

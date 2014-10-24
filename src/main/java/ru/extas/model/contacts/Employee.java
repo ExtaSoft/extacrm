@@ -168,6 +168,8 @@ public class Employee extends Contact {
 
     public void setCompany(final Company company) {
         this.company = company;
+        if(company != null)
+            company.getEmployees().add(this);
     }
 
     public SalePoint getWorkPlace() {

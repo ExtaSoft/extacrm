@@ -41,7 +41,7 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 	private TextArea commentField;
 
     public ProdInsuranceEditForm(final ProdInsurance prodInsurance) {
-        super(prodInsurance.isNew() ? "Новая страховая программа" : "Редактировать страховую программу", new BeanItem(prodInsurance));
+        super(prodInsurance.isNew() ? "Новая страховая программа" : "Редактировать страховую программу", prodInsurance);
     }
 
     /** {@inheritDoc} */
@@ -64,6 +64,7 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 	@Override
 	protected ComponentContainer createEditFields(final ProdInsurance obj) {
 		final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
 		nameField = new EditField("Название продукта", "Введите название продукта");
 		nameField.setColumns(30);

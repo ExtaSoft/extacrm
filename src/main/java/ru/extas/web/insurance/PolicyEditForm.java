@@ -41,7 +41,7 @@ public class PolicyEditForm extends ExtaEditForm<Policy> {
     public PolicyEditForm(final Policy policy) {
         super(policy.isNew() ?
                 "Новый бланк" :
-                "Редактировать бланк", new BeanItem(policy));
+                "Редактировать бланк", policy);
     }
 
     /** {@inheritDoc} */
@@ -64,6 +64,7 @@ public class PolicyEditForm extends ExtaEditForm<Policy> {
     @Override
     protected ComponentContainer createEditFields(final Policy obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         regNumField = new EditField("Номер полиса", "Введите номер полиса.");
         regNumField.setColumns(20);

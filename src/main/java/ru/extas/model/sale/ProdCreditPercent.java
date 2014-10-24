@@ -2,10 +2,7 @@ package ru.extas.model.sale;
 
 import ru.extas.model.common.AuditedObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 /**
@@ -31,7 +28,7 @@ public class ProdCreditPercent extends AuditedObject {
 	@Column(name = "DOWNPAYMENT", precision = 32, scale = 4)
 	private BigDecimal downpayment;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private ProdCredit product;
 
 	/**

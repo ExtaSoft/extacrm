@@ -69,12 +69,12 @@ public class ProductInSaleGrid extends CustomField<List> {
             commandBar.addStyleName(ExtaTheme.MENUBAR_SMALL);
 
             final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
-                final BeanItem<ProductInSale> newObj = new BeanItem<>(new ProductInSale(sale));
 
-                final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", newObj);
+                final ProductInSale productInSale = new ProductInSale(sale);
+                final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", productInSale);
                 editWin.addCloseFormListener(event1 -> {
                     if (editWin.isSaved()) {
-                        container.addBean(newObj.getBean());
+                        container.addBean(productInSale);
                     }
                 });
                 FormUtils.showModalWin(editWin);
@@ -85,7 +85,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 			final MenuBar.MenuItem edtProdBtn = commandBar.addItem("Изменить", event -> {
                 if (productTable.getValue() != null) {
                     final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getItem(productTable.getValue());
-                    final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem);
+                    final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem.getBean());
                     FormUtils.showModalWin(editWin);
                 }
             });

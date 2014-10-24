@@ -55,7 +55,9 @@ public class ExtaPermissionField extends CustomField<Set> {
         this.profile = profile;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Component initContent() {
 
@@ -128,7 +130,9 @@ public class ExtaPermissionField extends CustomField<Set> {
         return grid;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<? extends Set> getType() {
         return Set.class;
@@ -149,7 +153,7 @@ public class ExtaPermissionField extends CustomField<Set> {
             super(extaPermission.isNew() ?
                             "Ввод нового правила доступа в систему" :
                             "Редактирование правила доступа",
-                    new BeanItem<>(extaPermission));
+                    extaPermission);
         }
 
         @Override
@@ -160,6 +164,7 @@ public class ExtaPermissionField extends CustomField<Set> {
         @Override
         protected ComponentContainer createEditFields(final ExtaPermission obj) {
             final FormLayout form = new ExtaFormLayout();
+            form.setSizeFull();
 
             domainField = new ComboBox("Раздел системы");
             domainField.setDescription("Выберете раздел системы к которой предоставляется доступ");
@@ -184,12 +189,12 @@ public class ExtaPermissionField extends CustomField<Set> {
             actionsField.setRequired(true);
             actionsField.addValueChangeListener(event -> {
                 final Collection<SecureAction> selected = (Collection<SecureAction>) event.getProperty().getValue();
-                if(selected.contains(SecureAction.ALL)) {
+                if (selected.contains(SecureAction.ALL)) {
                     actionsField.setValue(EnumSet.of(SecureAction.ALL));
-                    for(final SecureAction action : EnumSet.complementOf(EnumSet.of(SecureAction.ALL)))
+                    for (final SecureAction action : EnumSet.complementOf(EnumSet.of(SecureAction.ALL)))
                         actionsField.setItemEnabled(action, false);
                 } else {
-                    for(final SecureAction action : EnumSet.allOf(SecureAction.class))
+                    for (final SecureAction action : EnumSet.allOf(SecureAction.class))
                         actionsField.setItemEnabled(action, true);
                 }
             });

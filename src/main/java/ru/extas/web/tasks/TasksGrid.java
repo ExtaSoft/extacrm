@@ -50,9 +50,8 @@ public class TasksGrid extends ExtaGrid<Task> {
 	 * @param period a {@link ru.extas.web.tasks.TasksGrid.Period} object.
 	 */
 	public TasksGrid(final Period period) {
-		super(Task.class, false);
+		super(Task.class);
 		this.period = period;
-		initialize();
 	}
 
 	/** {@inheritDoc} */
