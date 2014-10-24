@@ -17,11 +17,7 @@ WHERE EXISTS(SELECT
              WHERE p.ID = i.CLIENT_ID);
 
 # Удаляем старое поле
-ALTER TABLE INSURANCE DROP FOREIGN KEY FK_INSURANCE_CLIENT_ID;
-ALTER TABLE INSURANCE
-DROP COLUMN CLIENT_ID,
-DROP INDEX IX_INSURANCE_FK_INSURANCE_CLIENT_ID,
-DROP INDEX FK_INSURANCE_CLIENT_ID;
+ALTER TABLE INSURANCE DROP COLUMN CLIENT_ID;
 
 #######################################################################
 # Обновляем компании после удаления наследования
@@ -324,9 +320,9 @@ ALTER TABLE USER_PROFILE CHANGE ID ID VARCHAR(50);
 DROP TABLE CONTACT_EMPLOYEE;
 DROP TABLE CONTACT;
 
-SET foreign_key_checks = 1;
-
 #######################################################################
 # Удаляем сотрудников из физ.лиц
 #######################################################################
 DELETE p FROM PERSON p JOIN EMPLOYEE e ON p.ID = e.ID;
+
+SET foreign_key_checks = 1;
