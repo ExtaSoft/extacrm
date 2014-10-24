@@ -83,9 +83,9 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
             final BeanItem<TComment> item = container.getItem(itemId);
             final TComment comment = item.getBean();
 
-            if (isNew = comment.getCreatedAt() == null) {
+            if (isNew = comment.getCreatedDate() == null) {
                 comment.setCreatedBy(lookup(UserManagementService.class).getCurrentUserLogin());
-                comment.setCreatedAt(DateTime.now());
+                comment.setCreatedDate(DateTime.now());
             }
 
             final Label icon = new Label(FontAwesome.COMMENT_O.getHtml(), ContentMode.HTML);
@@ -94,7 +94,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
             user.addStyleName(ExtaTheme.LABEL_COLORED);
             user.addStyleName(ExtaTheme.LABEL_BOLD);
             user.setConverter(lookup(LoginToUserNameConverter.class));
-            final Label crTime = new Label(item.getItemProperty("createdAt"));
+            final Label crTime = new Label(item.getItemProperty("createdDate"));
             crTime.addStyleName(ExtaTheme.LABEL_COLORED);
 
             final String userLogin = lookup(UserManagementService.class).getCurrentUserLogin();

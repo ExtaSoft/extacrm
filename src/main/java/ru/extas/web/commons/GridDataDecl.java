@@ -132,15 +132,15 @@ public class GridDataDecl implements Serializable {
      * Добавляет маркеры создания/модификации записи
      */
     protected void addDefaultMappings() {
-	    addMapping("modifiedBy", "Кто изменил", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
-	    addMapping("modifiedAt", "Когда изменил", EnumSet.of(PresentFlag.COLLAPSED)/*
+	    addMapping("lastModifiedBy", "Кто изменил", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
+	    addMapping("lastModifiedDate", "Когда изменил", EnumSet.of(PresentFlag.COLLAPSED)/*
                                                                                      * ,
 																					 * StringToJodaDTConverter
 																					 * .
 																					 * class
 																					 */);
 	    addMapping("createdBy", "Кто создал", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
-	    addMapping("createdAt", "Когда создал", EnumSet.of(PresentFlag.COLLAPSED)/*
+	    addMapping("createdDate", "Когда создал", EnumSet.of(PresentFlag.COLLAPSED)/*
                                                                                  * ,
 																				 * StringToJodaDTConverter
 																				 * .

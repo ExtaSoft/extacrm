@@ -93,7 +93,7 @@ public class Sale extends SecuredObject {
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = Comment.OWNER_ID_COLUMN)
-    @OrderBy("createdAt")
+    @OrderBy("createdDate")
     private List<SaleComment> comments = newArrayList();
 
     public Employee getResponsible() {

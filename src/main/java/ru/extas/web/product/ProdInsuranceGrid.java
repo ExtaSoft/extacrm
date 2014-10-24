@@ -39,7 +39,7 @@ public class ProdInsuranceGrid extends ExtaGrid<ProdInsurance> {
 	protected Container createContainer() {
 		// Запрос данных
 		final ExtaDataContainer<ProdInsurance> container = new ExtaDataContainer<>(ProdInsurance.class);
-		container.sort(new Object[]{"createdAt"}, new boolean[]{false});
+		container.sort(new Object[]{"createdDate"}, new boolean[]{false});
 		container.addNestedContainerProperty("vendor.name");
 		return container;
 	}

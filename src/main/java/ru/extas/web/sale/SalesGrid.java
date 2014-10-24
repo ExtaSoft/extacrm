@@ -74,7 +74,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
         container.addContainerFilter(new Compare.Equal("status",
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
                         domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
-        container.sort(new Object[]{"createdAt"}, new boolean[]{false});
+        container.sort(new Object[]{"createdDate"}, new boolean[]{false});
         return container;
     }
 

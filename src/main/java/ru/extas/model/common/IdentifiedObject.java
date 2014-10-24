@@ -1,6 +1,7 @@
 package ru.extas.model.common;
 
 import org.eclipse.persistence.annotations.UuidGenerator;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,7 +20,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 @MappedSuperclass
 @Access(AccessType.FIELD)
 @UuidGenerator(name = "system-uuid")
-public class IdentifiedObject implements Serializable {
+public class IdentifiedObject implements Persistable<String> {
 
     private static final long serialVersionUID = 9098736299506726746L;
     /** Constant <code>ID_SIZE=50</code> */
@@ -28,10 +29,10 @@ public class IdentifiedObject implements Serializable {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @Column(name = "ID", length = ID_SIZE)
-    protected String id;
+    private String id;
 
     @Version
-    protected int version;
+    private int version;
 
     /**
      * <p>Constructor for IdentifiedObject.</p>
@@ -63,6 +64,7 @@ public class IdentifiedObject implements Serializable {
      *
      * @return ID объекта
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -107,6 +109,7 @@ public class IdentifiedObject implements Serializable {
             return id.equals(other.id);
     }
 
+    @Override
     public boolean isNew() {
         return isNullOrEmpty(getId());
     }

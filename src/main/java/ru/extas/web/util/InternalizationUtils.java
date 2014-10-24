@@ -20,7 +20,7 @@ public class InternalizationUtils {
             if (page != null) {
                 final WebBrowser br = page.getWebBrowser();
                 if (br != null) {
-                    final int timezoneOffset = br.getRawTimezoneOffset();
+                    final int timezoneOffset = br.getTimezoneOffset();
                     return DateTimeZone.forOffsetMillis(timezoneOffset);
                 }
             }

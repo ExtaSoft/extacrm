@@ -39,7 +39,7 @@ public abstract class NumColumnGenerator extends ComponentColumnGenerator {
         link.addClickListener(event -> fireClick(item));
         link.addStyleName(ExtaTheme.BUTTON_LINK);
         cell.addComponent(link);
-        final Label createdAt = new Label(item.getItemProperty("createdAt"));
+        final Label createdAt = new Label(item.getItemProperty("createdDate"));
         createdAt.setConverter(dtConverter);
         cell.addComponent(createdAt);
         return cell;

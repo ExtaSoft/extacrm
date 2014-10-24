@@ -71,7 +71,7 @@ public class PermissionServiceImpl implements PermissionService {
     protected <Entity extends SecuredObject> void permitObjects(final List<Entity> entities, final SecuredRepository<Entity> repository) {
         for(final Entity entity : entities) {
             final Employee createdBy = userService.findUserEmployeeByLogin(entity.getCreatedBy());
-            final Employee modifiedBy = userService.findUserEmployeeByLogin(entity.getModifiedBy());
+            final Employee modifiedBy = userService.findUserEmployeeByLogin(entity.getLastModifiedBy());
             entity.addSecurityUserAccess(createdBy, AccessRole.OWNER);
             entity.addSecurityUserAccess(modifiedBy, AccessRole.EDITOR);
             repository.secureSave(entity);
