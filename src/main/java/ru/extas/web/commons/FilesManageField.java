@@ -48,27 +48,30 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
 
     @Override
     protected Component initContent() {
-        final Property dataSource = getPropertyDataSource();
-        final List<TFileContainer> list = dataSource != null ? (List<TFileContainer>) dataSource.getValue() : new ArrayList<>();
+        final List<TFileContainer> list = getValue() != null ? getValue() : newArrayList();
         container = new BeanItemContainer<>(containerClass);
         if (list != null) {
             container.addAll(list);
         }
 
         final VerticalLayout root = new VerticalLayout();
+        root.setWidth(100, Unit.PERCENTAGE);
         root.addStyleName("drop-area");
 
         filesContainer = new ItemGrid();
+        filesContainer.setWidth(100, Unit.PERCENTAGE);
         filesContainer.setContainerDataSource(container);
         filesContainer.setItemGenerator((pSource, pItemId) -> getItemComponent((TFileContainer) pItemId));
         root.addComponent(filesContainer);
         setMode(Mode.LIST);
 
         final Label infoLabel = new Label("Перетащите файлы для загрузки сюда, или нажмите кнопку \"Добавить файлы...\"");
-//        infoLabel.setIcon(Fontello.INFO_CIRCLED);
+        //infoLabel.addStyleName(ExtaTheme.WRLABEL_LIGHT);
+        infoLabel.setWidth(100, Unit.PERCENTAGE);
         root.addComponent(infoLabel);
 
         progress = new ProgressBar();
+        progress.setWidth(100, Unit.PERCENTAGE);
         progress.setIndeterminate(true);
         progress.setVisible(false);
         root.addComponent(progress);
@@ -81,6 +84,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
             }
         };
         final FileUploader fileUploader = new FileUploader("Добавить файлы...", handler);
+        fileUploader.setWidth(100, Unit.PERCENTAGE);
         root.addComponent(fileUploader);
 
         return new FileDropBox(root);
@@ -205,6 +209,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
 
         public FileDropBox(final Component root) {
             super(root);
+            setWidth(100, Unit.PERCENTAGE);
             setDropHandler(this);
         }
 

@@ -28,6 +28,7 @@
         <class>ru.extas.model.contacts.Company</class>
         <class>ru.extas.model.contacts.Contact</class>
         <class>ru.extas.model.contacts.Employee</class>
+        <class>ru.extas.model.contacts.EmployeeFile</class>
         <class>ru.extas.model.contacts.SalePoint</class>
         <class>ru.extas.model.contacts.LegalEntity</class>
         <class>ru.extas.model.contacts.LegalEntityFile</class>

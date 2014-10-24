@@ -1,10 +1,14 @@
 package ru.extas.model.contacts;
 
 import org.joda.time.LocalDate;
+import ru.extas.model.common.FileContainer;
 import ru.extas.model.security.UserProfile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Сотрудник компании, торговой точки или юр. лица
@@ -81,6 +85,19 @@ public class Employee extends Contact {
     @Size(max = 10)
     private String passIssuedByNum;
 
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    @OrderBy("name ASC")
+    private List<EmployeeFile> files = newArrayList();
+
+
+    public List<EmployeeFile> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<EmployeeFile> files) {
+        this.files = files;
+    }
 
     public LocalDate getBirthday() {
         return birthday;

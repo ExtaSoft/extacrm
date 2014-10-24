@@ -189,6 +189,37 @@ INSERT INTO EMPLOYEE
         OR led.ID IS NOT NULL
         OR lea.ID IS NOT NULL;
 
+#######################################################################
+# Обновляем Сотрудников: проставляем торговую точку
+#######################################################################
+INSERT INTO EMPLOYEE_FILE
+(ID,
+ CREATED_AT,
+ CREATED_BY,
+ DESCRIPTION,
+ FILEDATA,
+ FILESIZE,
+ MIMETYPE,
+ MODIFIED_AT,
+ MODIFIED_BY,
+ `NAME`,
+ OWNER_ID,
+ VERSION)
+  SELECT
+    p.ID,
+    p.CREATED_AT,
+    p.CREATED_BY,
+    p.DESCRIPTION,
+    p.FILEDATA,
+    p.FILESIZE,
+    p.MIMETYPE,
+    p.MODIFIED_AT,
+    p.MODIFIED_BY,
+    p.`NAME`,
+    p.OWNER_ID,
+    p.VERSION
+  FROM PERSON_FILE p JOIN EMPLOYEE e ON p.OWNER_ID = e.ID;
+
 
 #######################################################################
 # Обновляем Сотрудников: проставляем торговую точку
@@ -323,6 +354,7 @@ DROP TABLE CONTACT;
 #######################################################################
 # Удаляем сотрудников из физ.лиц
 #######################################################################
+DELETE p FROM PERSON_FILE p JOIN EMPLOYEE_FILE e ON p.ID = e.ID;
 DELETE p FROM PERSON p JOIN EMPLOYEE e ON p.ID = e.ID;
 
 SET foreign_key_checks = 1;

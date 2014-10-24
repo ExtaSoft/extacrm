@@ -9,6 +9,7 @@ import ru.extas.model.contacts.*;
 import ru.extas.server.contacts.EmployeeRepository;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.AddressInfoField;
@@ -76,6 +77,10 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     @PropertyId("regAddress")
     private AddressInfoField regAddressField;
 
+    // Файлы
+    @PropertyId("files")
+    private FilesManageField docFilesEditor;
+
     public EmployeeEditForm(Employee employee) {
         super(employee.isNew() ?
                 "Новый сотрудник" :
@@ -106,6 +111,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     @Override
     protected ComponentContainer createEditFields(Employee obj) {
         final FormLayout formLayout = new ExtaFormLayout();
+        formLayout.setWidth(100, Unit.PERCENTAGE);
         formLayout.setMargin(true);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +205,12 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         formLayout.addComponent(new FormGroupHeader("Адрес регистрации"));
         regAddressField = new AddressInfoField();
         formLayout.addComponent(regAddressField);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        formLayout.addComponent(new FormGroupHeader("Файлы"));
+        docFilesEditor = new FilesManageField(EmployeeFile.class);
+        docFilesEditor.setWidth(100, Unit.PERCENTAGE);
+        formLayout.addComponent(docFilesEditor);
 
         return formLayout;
     }
