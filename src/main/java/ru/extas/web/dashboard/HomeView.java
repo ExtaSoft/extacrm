@@ -30,7 +30,9 @@ public class HomeView extends ExtaAbstractView {
     private static final long serialVersionUID = -1272779672761523416L;
     private final static Logger logger = LoggerFactory.getLogger(HomeView.class);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Component createContent() {
         logger.info("Creating view content...");
@@ -57,8 +59,10 @@ public class HomeView extends ExtaAbstractView {
         horizontalSplitPanel.setFirstComponent(sheet);
 
         final TasksGrid tasksGrid = new TasksGrid(TasksGrid.Period.TODAY);
-        tasksGrid.setToolbarVisible(false);
-        tasksGrid.setMode(ExtaGrid.Mode.DETAIL_LIST);
+        tasksGrid.addAttachListener(e -> {
+            tasksGrid.setToolbarVisible(false);
+            tasksGrid.setMode(ExtaGrid.Mode.DETAIL_LIST);
+        });
         final Panel taskPanel = new Panel("Задачи");
         taskPanel.setSizeFull();
         taskPanel.setContent(tasksGrid);
@@ -80,7 +84,7 @@ public class HomeView extends ExtaAbstractView {
         configuration.getTitle().setText("Подажи страховок и кредитов");
 //        configuration.getSubTitle().setText("Source: WorldClimate.com");
 
-        configuration.getxAxis().setCategories("Янв", "Фев.", "Мар", "Апр","Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Нов", "Дек");
+        configuration.getxAxis().setCategories("Янв", "Фев.", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Нов", "Дек");
 
         final Axis yAxis = configuration.getyAxis();
 //        yAxis.setMin(-5d);
@@ -115,7 +119,9 @@ public class HomeView extends ExtaAbstractView {
         return chart;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Component createTitle() {
         final Component title = new Label("Рабочий стол");
