@@ -50,6 +50,7 @@ public class UsersGrid extends ExtaGrid<UserProfile> {
 		// Запрос данных
 		final ExtaDataContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
 		container.addNestedContainerProperty("employee.name");
+        container.sort(new Object[]{"employee.name"}, new boolean[]{true});
 		return container;
 	}
 

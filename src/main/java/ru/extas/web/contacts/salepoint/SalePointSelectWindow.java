@@ -61,6 +61,8 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
         protected Container createContainer() {
             final ExtaDataContainer<SalePoint> container = new ExtaDataContainer<>(SalePoint.class);
             container.addNestedContainerProperty("regAddress.region");
+            container.addNestedContainerProperty("regAddress.city");
+            container.addNestedContainerProperty("regAddress.streetBld");
             container.addNestedContainerProperty("company.name");
             if (getCompanySupplier() != null)
                 container.addContainerFilter(new Compare.Equal("company", getCompanySupplier().get()));

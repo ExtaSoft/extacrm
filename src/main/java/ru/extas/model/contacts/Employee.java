@@ -6,9 +6,10 @@ import ru.extas.model.security.UserProfile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Сотрудник компании, торговой точки или юр. лица
@@ -212,4 +213,5 @@ public class Employee extends Contact {
     public void setUserProfile(final UserProfile userProfile) {
         this.userProfile = userProfile;
     }
+
 }

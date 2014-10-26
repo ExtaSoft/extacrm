@@ -49,7 +49,7 @@ public class CompanyOwnersField extends CustomField<Set> {
         grid = new EmployeesGrid() {
             @Override
             protected Container createContainer() {
-                final Set<Employee> list = getValue() != null ? getValue() : new HashSet<>();
+                final Set<Employee> list = getValue() != null ? getValue() : newHashSet();
                 beanContainer = new BeanItemContainer<>(Employee.class);
                 beanContainer.addNestedContainerProperty("company.name");
                 beanContainer.addAll(list);

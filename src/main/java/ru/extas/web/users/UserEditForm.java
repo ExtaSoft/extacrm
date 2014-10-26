@@ -5,9 +5,9 @@ package ru.extas.web.users;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
@@ -15,10 +15,11 @@ import ru.extas.model.security.UserRole;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.contacts.employee.EmployeeField;
-import ru.extas.web.contacts.person.PersonSelect;
+import ru.extas.web.contacts.salepoint.SalePointsSelectField;
 import ru.extas.web.motor.MotorBrandMultiselect;
 import ru.extas.web.reference.RegionMultiselect;
 import ru.extas.web.util.ComponentUtil;
@@ -62,11 +63,13 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
     @PropertyId("permissions")
     private ExtaPermissionField permissionsField;
 
+    @PropertyId("salePoints")
+    private SalePointsSelectField salePointsField;
 
     public UserEditForm(final UserProfile userProfile) {
         super(userProfile.isNew() ?
                 "Ввод нового пользователя в систему" :
-                "Редактирование данных пользователя",
+                String.format("Редактирование данных пользователя: %s", userProfile.getEmployee().getName()),
                 userProfile);
         initialPassword = userProfile.getPassword();
 
@@ -117,24 +120,25 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         tabsheet.addTab(mainTab).setCaption("Общие данные");
 
         // Вкладка - "Группы"
-        final Component groupTab = createGroupTab();
-        tabsheet.addTab(groupTab).setCaption("Группы");
+        groupField = new UserGroupField();
+        groupField.setSizeFull();
+        tabsheet.addTab(groupField, "Группы");
 
         // Вкладка - "Права доступа"
         final Component permissionTab = createPermissionTab(obj);
         tabsheet.addTab(permissionTab).setCaption("Права доступа");
 
-        return tabsheet;
-    }
+        // Вкладка - "Доступные торговые точки"
+        salePointsField = new SalePointsSelectField();
+        salePointsField.setSizeFull();
+        tabsheet.addTab(salePointsField, "Доступные торговые точки");
 
-    private Component createGroupTab() {
-        groupField = new UserGroupField();
-        groupField.setSizeFull();
-        return groupField;
+        return tabsheet;
     }
 
     private Component createPermissionTab(final UserProfile obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setMargin(true);
         form.setSizeFull();
 
         brandsField = new MotorBrandMultiselect("Доступные бренды");
@@ -153,6 +157,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
     private FormLayout getMainTab(final UserProfile obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setMargin(true);
         form.setSizeFull();
 
         nameField = new EmployeeField("Имя сотрудника", "Введите или выберете сотрудника которому предоставляется доступ к системе");

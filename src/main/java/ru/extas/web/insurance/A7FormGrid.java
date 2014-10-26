@@ -18,6 +18,7 @@ import ru.extas.web.commons.*;
 
 import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.collect.Iterables.getFirst;
@@ -75,9 +76,11 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
                     predicate = cb.equal(objectRoot.get(A7Form_.owner), curUserContact);
                     break;
                 case SALE_POINT: {
-                    Set<SalePoint> workPlaces = null;
-                    workPlaces = newHashSet();
+                    final Set<SalePoint> workPlaces = newHashSet();
                     workPlaces.add(curUserContact.getWorkPlace());
+                    Optional.ofNullable(curUserContact.getUserProfile())
+                            .map(p -> p.getSalePoints())
+                            .ifPresent(s -> workPlaces.addAll(s));
                     if (!isEmpty(workPlaces)) {
                         final Join<Employee, SalePoint> workPlaceRoot = objectRoot.join(A7Form_.owner, JoinType.LEFT).join(Employee_.workPlace, JoinType.LEFT);
                         predicate = workPlaceRoot.in(workPlaces);

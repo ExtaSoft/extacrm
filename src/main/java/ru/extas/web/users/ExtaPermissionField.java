@@ -100,8 +100,7 @@ public class ExtaPermissionField extends CustomField<Set> {
 
             @Override
             protected Container createContainer() {
-                final Property dataSource = getPropertyDataSource();
-                final Set<ExtaPermission> set = dataSource != null ? (Set<ExtaPermission>) dataSource.getValue() : new HashSet<ExtaPermission>();
+                final Set<ExtaPermission> set = getValue() != null ? getValue() : newHashSet();
                 final RefreshBeanContainer<ExtaPermission> itemContainer = new RefreshBeanContainer<>(ExtaPermission.class);
                 if (set != null) {
                     itemContainer.addAll(set);

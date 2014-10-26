@@ -2,6 +2,7 @@ package ru.extas.model.security;
 
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Sets.newLinkedHashSet;
 
 /**
  * Совокупная информация о пользователе
@@ -53,7 +55,8 @@ public class UserProfile extends AuditedObject {
     @JoinTable(name = "USER_GROUP_LINK",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")})
-    private Set<UserGroup> groupList = new HashSet<>();
+    @OrderBy("name ASC")
+    private Set<UserGroup> groupList = newHashSet();
 
     // Пользователь заблокирован
     private boolean blocked;
@@ -69,8 +72,24 @@ public class UserProfile extends AuditedObject {
     private Set<String> permitBrands = newHashSet();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("domain ASC")
     Set<ExtaPermission> permissions;
 
+    // Торговые точки к которым пользователь имеет доступ
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(name = "USER_SALE_POINT",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "SALE_POINT_ID", referencedColumnName = "ID")})
+    @OrderBy("name ASC")
+    private Set<SalePoint> salePoints = newLinkedHashSet();
+
+    public Set<SalePoint> getSalePoints() {
+        return salePoints;
+    }
+
+    public void setSalePoints(Set<SalePoint> salePoints) {
+        this.salePoints = salePoints;
+    }
 
     /**
      * <p>Getter for the field <code>groupList</code>.</p>
@@ -156,7 +175,7 @@ public class UserProfile extends AuditedObject {
     /**
      * <p>Setter for the field <code>contact</code>.</p>
      *
-     * @param contact the contact to set
+     * @param employee the contact to set
      */
     public void setEmployee(final Employee employee) {
         this.employee = employee;

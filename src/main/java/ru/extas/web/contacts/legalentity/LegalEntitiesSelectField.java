@@ -50,8 +50,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
         final LegalEntitiesGrid grid = new LegalEntitiesGrid() {
             @Override
             protected Container createContainer() {
-                final Property dataSource = getPropertyDataSource();
-                final Set<LegalEntity> list = dataSource != null ? (Set<LegalEntity>) dataSource.getValue() : new HashSet<LegalEntity>();
+                final Set<LegalEntity> list = getValue() != null ? getValue() : newHashSet();
                 final BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
                 if (list != null) {
                     for (final LegalEntity item : list) {

@@ -20,6 +20,7 @@ import ru.extas.web.commons.*;
 
 import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.collect.Iterables.getFirst;
@@ -81,6 +82,9 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
                 case SALE_POINT: {
                     final Set<SalePoint> workPlaces = newHashSet();
                     workPlaces.add(curUserContact.getWorkPlace());
+                    Optional.ofNullable(curUserContact.getUserProfile())
+                            .map(p -> p.getSalePoints())
+                            .ifPresent(s -> workPlaces.addAll(s));
                     if (!isEmpty(workPlaces)) {
                         final Join<Employee, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Employee_.workPlace, JoinType.LEFT);
                         final Join<Employee, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Employee_.workPlace, JoinType.LEFT);

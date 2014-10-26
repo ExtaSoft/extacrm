@@ -44,8 +44,7 @@ public class UserGroupField extends CustomField<Set> {
         final UserGroupGrid grid = new UserGroupGrid(){
             @Override
             protected Container createContainer() {
-                final Property dataSource = getPropertyDataSource();
-                final Set<UserGroup> list = dataSource != null ? (Set<UserGroup>) dataSource.getValue() : new HashSet<UserGroup>();
+                final Set<UserGroup> list = getValue() != null ? getValue() : newHashSet();
                 itemContainer = new BeanItemContainer<>(UserGroup.class);
                 if (list != null) {
                     for (final UserGroup item : list) {

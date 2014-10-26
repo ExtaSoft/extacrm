@@ -10,6 +10,7 @@ import ru.extas.server.security.UserManagementService;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.*;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.collect.Iterables.getFirst;
@@ -65,28 +66,16 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
                                 .join(ObjectSecurityRule_.salePoints, JoinType.LEFT);
                 final Set<SalePoint> workPlaces = newHashSet();
                 workPlaces.add(curUserContact.getWorkPlace());
-                if (workPlaces.isEmpty()) {
-                    final SalePoint salePoint = new SalePoint();
-                    salePoint.setId("00-00");
-                    workPlaces.add(salePoint);
-                }
+                Optional.ofNullable(curUserContact.getUserProfile())
+                        .map(p -> p.getSalePoints())
+                        .ifPresent(s -> workPlaces.addAll(s));
                 predicate = composeWithAreaFilter(cb, objectRoot, salePointsRoot.in(workPlaces));
                 break;
             }
             case CORPORATE: {
                 final SetJoin<ObjectSecurityRule, Company> companiesRoot = getSecurityRoleJoin(objectRoot)
                         .join(ObjectSecurityRule_.companies, JoinType.LEFT);
-                final Set<Company> companies = newHashSet();
-                companies.add(curUserContact.getCompany());
-                final Set<SalePoint> workPlaces = newHashSet();
-                workPlaces.add(curUserContact.getWorkPlace());
-                workPlaces.forEach(p -> companies.add(p.getCompany()));
-                if (companies.isEmpty()) {
-                    final Company company = new Company();
-                    company.setId("00-00");
-                    companies.add(company);
-                }
-                predicate = composeWithAreaFilter(cb, objectRoot, companiesRoot.in(companies));
+                predicate = composeWithAreaFilter(cb, objectRoot, cb.equal(companiesRoot, curUserContact.getCompany()));
                 break;
             }
             case ALL:

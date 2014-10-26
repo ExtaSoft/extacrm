@@ -76,8 +76,8 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 	protected List<UIAction> createActions() {
 		final List<UIAction> actions = newArrayList();
 
-		actions.add(new NewObjectAction("Новый", "Ввод нового Контакта в систему"));
-        actions.add(new EditObjectAction("Изменить", "Редактирование контактных данных"));
+		actions.add(new NewObjectAction("Новый", "Ввод новой торговой точки в систему"));
+        actions.add(new EditObjectAction("Изменить", "Редактирование данных торговой точки"));
 
         return actions;
 	}

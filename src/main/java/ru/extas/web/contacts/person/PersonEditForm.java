@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -882,7 +883,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         @Override
         public Object convertToPresentation(final String value, final Class<?> targetType, final Locale locale) throws ConversionException {
             if (value != null) {
-                final HashSet hashSet = new HashSet(Lists.charactersOf(value));
+                final HashSet hashSet = newHashSet(Lists.charactersOf(value));
                 return hashSet;
             }
             return null;

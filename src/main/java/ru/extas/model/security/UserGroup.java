@@ -17,7 +17,7 @@ import static com.google.common.collect.Sets.newHashSet;
  * @since 0.3
  */
 @Entity
-@Table(name = "USER_GROUP")
+@Table(name = "USER_GROUP", indexes = {@Index(columnList = "name")})
 public class UserGroup extends AuditedObject {
 
     private static final long serialVersionUID = 4149728748291041330L;

@@ -8,7 +8,47 @@
     <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
     <schema name="" catalog="extacrm"/>
     <schema name="" catalog="information_schema"/>
-    <table name="ACT_EVT_LOG" schema="" catalog="extacrm" type="TABLE">
+    <table name="a7_form" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="REG_NUM" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="STATUS" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_A7_FORM_OWNER_ID" columns="OWNER_ID" ref-table="employee" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_A7_FORM_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="INDEX_A7_FORM_OWNER_ID_STATUS_REG_NUM" unique="false" columns="OWNER_ID,STATUS,REG_NUM"/>
+      <index name="IX_A7_FORM_FK_A7_FORM_OWNER_ID" unique="false" columns="OWNER_ID"/>
+    </table>
+    <table name="access_permission" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="DOMAIN" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="TARGET" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="GROUP_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="USER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_ACCESS_PERMISSION_GROUP_ID" columns="GROUP_ID" ref-table="user_group" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_ACCESS_PERMISSION_USER_ID" columns="USER_ID" ref-table="user_profile" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_ACCESS_PERMISSION_ACTION_ExtaPermission_ID" table="access_permission_action" schema="" catalog="extacrm" columns="ExtaPermission_ID"/>
+      <index name="IX_ACCESS_PERMISSION_FK_ACCESS_PERMISSION_GROUP_ID" unique="false" columns="GROUP_ID"/>
+      <index name="IX_ACCESS_PERMISSION_FK_ACCESS_PERMISSION_USER_ID" unique="false" columns="USER_ID"/>
+    </table>
+    <table name="access_permission_action" schema="" catalog="extacrm" type="TABLE">
+      <column name="ExtaPermission_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ACTIONS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <foreign-key name="FK_ACCESS_PERMISSION_ACTION_ExtaPermission_ID" columns="ExtaPermission_ID" ref-table="access_permission" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="CCSSPRMSSNCTIONFKCCSSPRMSSONACTIONExtaPermissionID" unique="false" columns="ExtaPermission_ID"/>
+    </table>
+    <table name="act_evt_log" schema="" catalog="extacrm" type="TABLE">
       <column name="LOG_NR_" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
       <column name="TYPE_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="PROC_DEF_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
@@ -23,7 +63,7 @@
       <column name="IS_PROCESSED_" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
       <primary-key name="PRIMARY" columns="LOG_NR_"/>
     </table>
-    <table name="ACT_GE_BYTEARRAY" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_ge_bytearray" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="NAME_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -31,20 +71,20 @@
       <column name="BYTES_" sqlType="LONGBLOB" precision="2147483647" scale="0" nullable="true" jdbcType="-4"/>
       <column name="GENERATED_" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <foreign-key name="ACT_FK_BYTEARR_DEPL" columns="DEPLOYMENT_ID_" ref-table="ACT_RE_DEPLOYMENT" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="ACT_FK_MODEL_SOURCE" table="ACT_RE_MODEL" schema="" catalog="extacrm" columns="EDITOR_SOURCE_VALUE_ID_"/>
-      <exported-key name="ACT_FK_MODEL_SOURCE_EXTRA" table="ACT_RE_MODEL" schema="" catalog="extacrm" columns="EDITOR_SOURCE_EXTRA_VALUE_ID_"/>
-      <exported-key name="ACT_FK_JOB_EXCEPTION" table="ACT_RU_JOB" schema="" catalog="extacrm" columns="EXCEPTION_STACK_ID_"/>
-      <exported-key name="ACT_FK_VAR_BYTEARRAY" table="ACT_RU_VARIABLE" schema="" catalog="extacrm" columns="BYTEARRAY_ID_"/>
+      <foreign-key name="ACT_FK_BYTEARR_DEPL" columns="DEPLOYMENT_ID_" ref-table="act_re_deployment" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="ACT_FK_MODEL_SOURCE" table="act_re_model" schema="" catalog="extacrm" columns="EDITOR_SOURCE_VALUE_ID_"/>
+      <exported-key name="ACT_FK_MODEL_SOURCE_EXTRA" table="act_re_model" schema="" catalog="extacrm" columns="EDITOR_SOURCE_EXTRA_VALUE_ID_"/>
+      <exported-key name="ACT_FK_JOB_EXCEPTION" table="act_ru_job" schema="" catalog="extacrm" columns="EXCEPTION_STACK_ID_"/>
+      <exported-key name="ACT_FK_VAR_BYTEARRAY" table="act_ru_variable" schema="" catalog="extacrm" columns="BYTEARRAY_ID_"/>
       <index name="ACT_FK_BYTEARR_DEPL" unique="false" columns="DEPLOYMENT_ID_"/>
     </table>
-    <table name="ACT_GE_PROPERTY" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_ge_property" schema="" catalog="extacrm" type="TABLE">
       <column name="NAME_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="VALUE_" sqlType="VARCHAR" precision="300" scale="0" nullable="true" jdbcType="12"/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="NAME_"/>
     </table>
-    <table name="ACT_HI_ACTINST" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_hi_actinst" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="PROC_DEF_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="PROC_INST_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
@@ -63,7 +103,7 @@
       <index name="ACT_IDX_HI_ACT_INST_EXEC" unique="false" columns="EXECUTION_ID_,ACT_ID_"/>
       <index name="ACT_IDX_HI_ACT_INST_PROCINST" unique="false" columns="PROC_INST_ID_,ACT_ID_"/>
     </table>
-    <table name="ACT_HI_ATTACHMENT" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_hi_attachment" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="USER_ID_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -76,7 +116,7 @@
       <column name="CONTENT_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID_"/>
     </table>
-    <table name="ACT_HI_COMMENT" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_hi_comment" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="TYPE_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="USER_ID_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -88,7 +128,7 @@
       <column name="TIME_" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="ID_"/>
     </table>
-    <table name="ACT_HI_DETAIL" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_hi_detail" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="TYPE_" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="PROC_INST_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
@@ -110,7 +150,7 @@
       <index name="ACT_IDX_HI_DETAIL_PROC_INST" unique="false" columns="PROC_INST_ID_"/>
       <index name="ACT_IDX_HI_DETAIL_TASK_ID" unique="false" columns="TASK_ID_"/>
     </table>
-    <table name="ACT_HI_IDENTITYLINK" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_hi_identitylink" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="GROUP_ID_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="TYPE_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -122,7 +162,7 @@
       <index name="ACT_IDX_HI_IDENT_LNK_TASK" unique="false" columns="TASK_ID_"/>
       <index name="ACT_IDX_HI_IDENT_LNK_USER" unique="false" columns="USER_ID_"/>
     </table>
-    <table name="ACT_HI_PROCINST" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_hi_procinst" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="PROC_INST_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="BUSINESS_KEY_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -141,7 +181,7 @@
       <index name="PROC_INST_ID_" unique="true" columns="PROC_INST_ID_"/>
       <index name="ACT_IDX_HI_PRO_I_BUSKEY" unique="false" columns="BUSINESS_KEY_"/>
     </table>
-    <table name="ACT_HI_TASKINST" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_hi_taskinst" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="PROC_DEF_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="TASK_DEF_KEY_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -164,7 +204,7 @@
       <column name="DUE_DATE_" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="ID_"/>
     </table>
-    <table name="ACT_HI_VARINST" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_hi_varinst" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="PROC_INST_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="EXECUTION_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
@@ -183,15 +223,15 @@
       <index name="ACT_IDX_HI_PROCVAR_NAME_TYPE" unique="false" columns="NAME_,VAR_TYPE_"/>
       <index name="ACT_IDX_HI_PROCVAR_PROC_INST" unique="false" columns="PROC_INST_ID_"/>
     </table>
-    <table name="ACT_ID_GROUP" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_id_group" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="NAME_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="TYPE_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <exported-key name="ACT_FK_MEMB_GROUP" table="ACT_ID_MEMBERSHIP" schema="" catalog="extacrm" columns="GROUP_ID_"/>
+      <exported-key name="ACT_FK_MEMB_GROUP" table="act_id_membership" schema="" catalog="extacrm" columns="GROUP_ID_"/>
     </table>
-    <table name="ACT_ID_INFO" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_id_info" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="USER_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
@@ -202,15 +242,15 @@
       <column name="PARENT_ID_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID_"/>
     </table>
-    <table name="ACT_ID_MEMBERSHIP" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_id_membership" schema="" catalog="extacrm" type="TABLE">
       <column name="USER_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="GROUP_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <primary-key name="PRIMARY" columns="USER_ID_,GROUP_ID_"/>
-      <foreign-key name="ACT_FK_MEMB_GROUP" columns="GROUP_ID_" ref-table="ACT_ID_GROUP" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_MEMB_USER" columns="USER_ID_" ref-table="ACT_ID_USER" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_MEMB_GROUP" columns="GROUP_ID_" ref-table="act_id_group" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_MEMB_USER" columns="USER_ID_" ref-table="act_id_user" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="ACT_FK_MEMB_GROUP" unique="false" columns="GROUP_ID_"/>
     </table>
-    <table name="ACT_ID_USER" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_id_user" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="FIRST_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -219,19 +259,19 @@
       <column name="PWD_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="PICTURE_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <exported-key name="ACT_FK_MEMB_USER" table="ACT_ID_MEMBERSHIP" schema="" catalog="extacrm" columns="USER_ID_"/>
+      <exported-key name="ACT_FK_MEMB_USER" table="act_id_membership" schema="" catalog="extacrm" columns="USER_ID_"/>
     </table>
-    <table name="ACT_RE_DEPLOYMENT" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_re_deployment" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="NAME_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="CATEGORY_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="TENANT_ID_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12" def="Jyc="/>
       <column name="DEPLOY_TIME_" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <exported-key name="ACT_FK_BYTEARR_DEPL" table="ACT_GE_BYTEARRAY" schema="" catalog="extacrm" columns="DEPLOYMENT_ID_"/>
-      <exported-key name="ACT_FK_MODEL_DEPLOYMENT" table="ACT_RE_MODEL" schema="" catalog="extacrm" columns="DEPLOYMENT_ID_"/>
+      <exported-key name="ACT_FK_BYTEARR_DEPL" table="act_ge_bytearray" schema="" catalog="extacrm" columns="DEPLOYMENT_ID_"/>
+      <exported-key name="ACT_FK_MODEL_DEPLOYMENT" table="act_re_model" schema="" catalog="extacrm" columns="DEPLOYMENT_ID_"/>
     </table>
-    <table name="ACT_RE_MODEL" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_re_model" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="NAME_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -246,14 +286,14 @@
       <column name="CREATE_TIME_" sqlType="TIMESTAMP" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="LAST_UPDATE_TIME_" sqlType="TIMESTAMP" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <foreign-key name="ACT_FK_MODEL_DEPLOYMENT" columns="DEPLOYMENT_ID_" ref-table="ACT_RE_DEPLOYMENT" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_MODEL_SOURCE" columns="EDITOR_SOURCE_VALUE_ID_" ref-table="ACT_GE_BYTEARRAY" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_MODEL_SOURCE_EXTRA" columns="EDITOR_SOURCE_EXTRA_VALUE_ID_" ref-table="ACT_GE_BYTEARRAY" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_MODEL_DEPLOYMENT" columns="DEPLOYMENT_ID_" ref-table="act_re_deployment" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_MODEL_SOURCE" columns="EDITOR_SOURCE_VALUE_ID_" ref-table="act_ge_bytearray" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_MODEL_SOURCE_EXTRA" columns="EDITOR_SOURCE_EXTRA_VALUE_ID_" ref-table="act_ge_bytearray" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="ACT_FK_MODEL_DEPLOYMENT" unique="false" columns="DEPLOYMENT_ID_"/>
       <index name="ACT_FK_MODEL_SOURCE" unique="false" columns="EDITOR_SOURCE_VALUE_ID_"/>
       <index name="ACT_FK_MODEL_SOURCE_EXTRA" unique="false" columns="EDITOR_SOURCE_EXTRA_VALUE_ID_"/>
     </table>
-    <table name="ACT_RE_PROCDEF" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_re_procdef" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="CATEGORY_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -268,12 +308,12 @@
       <column name="SUSPENSION_STATE_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="TENANT_ID_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12" def="Jyc="/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <exported-key name="ACT_FK_EXE_PROCDEF" table="ACT_RU_EXECUTION" schema="" catalog="extacrm" columns="PROC_DEF_ID_"/>
-      <exported-key name="ACT_FK_ATHRZ_PROCEDEF" table="ACT_RU_IDENTITYLINK" schema="" catalog="extacrm" columns="PROC_DEF_ID_"/>
-      <exported-key name="ACT_FK_TASK_PROCDEF" table="ACT_RU_TASK" schema="" catalog="extacrm" columns="PROC_DEF_ID_"/>
+      <exported-key name="ACT_FK_EXE_PROCDEF" table="act_ru_execution" schema="" catalog="extacrm" columns="PROC_DEF_ID_"/>
+      <exported-key name="ACT_FK_ATHRZ_PROCEDEF" table="act_ru_identitylink" schema="" catalog="extacrm" columns="PROC_DEF_ID_"/>
+      <exported-key name="ACT_FK_TASK_PROCDEF" table="act_ru_task" schema="" catalog="extacrm" columns="PROC_DEF_ID_"/>
       <index name="ACT_UNIQ_PROCDEF" unique="true" columns="KEY_,VERSION_,TENANT_ID_"/>
     </table>
-    <table name="ACT_RU_EVENT_SUBSCR" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_ru_event_subscr" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="EVENT_TYPE_" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
@@ -286,11 +326,11 @@
       <column name="PROC_DEF_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="CREATED_" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <foreign-key name="ACT_FK_EVENT_EXEC" columns="EXECUTION_ID_" ref-table="ACT_RU_EXECUTION" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_EVENT_EXEC" columns="EXECUTION_ID_" ref-table="act_ru_execution" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="ACT_FK_EVENT_EXEC" unique="false" columns="EXECUTION_ID_"/>
       <index name="ACT_IDX_EVENT_SUBSCR_CONFIG_" unique="false" columns="CONFIGURATION_"/>
     </table>
-    <table name="ACT_RU_EXECUTION" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_ru_execution" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="PROC_INST_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
@@ -308,26 +348,26 @@
       <column name="TENANT_ID_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12" def="Jyc="/>
       <column name="NAME_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <foreign-key name="ACT_FK_EXE_PARENT" columns="PARENT_ID_" ref-table="ACT_RU_EXECUTION" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_EXE_PROCDEF" columns="PROC_DEF_ID_" ref-table="ACT_RE_PROCDEF" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_EXE_PROCINST" columns="PROC_INST_ID_" ref-table="ACT_RU_EXECUTION" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="0" delete-rule="0" deferrability="2"/>
-      <foreign-key name="ACT_FK_EXE_SUPER" columns="SUPER_EXEC_" ref-table="ACT_RU_EXECUTION" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="ACT_FK_EVENT_EXEC" table="ACT_RU_EVENT_SUBSCR" schema="" catalog="extacrm" columns="EXECUTION_ID_"/>
-      <exported-key name="ACT_FK_EXE_PARENT" table="ACT_RU_EXECUTION" schema="" catalog="extacrm" columns="PARENT_ID_"/>
-      <exported-key name="ACT_FK_EXE_PROCINST" table="ACT_RU_EXECUTION" schema="" catalog="extacrm" columns="PROC_INST_ID_"/>
-      <exported-key name="ACT_FK_EXE_SUPER" table="ACT_RU_EXECUTION" schema="" catalog="extacrm" columns="SUPER_EXEC_"/>
-      <exported-key name="ACT_FK_IDL_PROCINST" table="ACT_RU_IDENTITYLINK" schema="" catalog="extacrm" columns="PROC_INST_ID_"/>
-      <exported-key name="ACT_FK_TASK_EXE" table="ACT_RU_TASK" schema="" catalog="extacrm" columns="EXECUTION_ID_"/>
-      <exported-key name="ACT_FK_TASK_PROCINST" table="ACT_RU_TASK" schema="" catalog="extacrm" columns="PROC_INST_ID_"/>
-      <exported-key name="ACT_FK_VAR_EXE" table="ACT_RU_VARIABLE" schema="" catalog="extacrm" columns="EXECUTION_ID_"/>
-      <exported-key name="ACT_FK_VAR_PROCINST" table="ACT_RU_VARIABLE" schema="" catalog="extacrm" columns="PROC_INST_ID_"/>
+      <foreign-key name="ACT_FK_EXE_PARENT" columns="PARENT_ID_" ref-table="act_ru_execution" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_EXE_PROCDEF" columns="PROC_DEF_ID_" ref-table="act_re_procdef" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_EXE_PROCINST" columns="PROC_INST_ID_" ref-table="act_ru_execution" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="0" delete-rule="0" deferrability="2"/>
+      <foreign-key name="ACT_FK_EXE_SUPER" columns="SUPER_EXEC_" ref-table="act_ru_execution" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="ACT_FK_EVENT_EXEC" table="act_ru_event_subscr" schema="" catalog="extacrm" columns="EXECUTION_ID_"/>
+      <exported-key name="ACT_FK_EXE_PARENT" table="act_ru_execution" schema="" catalog="extacrm" columns="PARENT_ID_"/>
+      <exported-key name="ACT_FK_EXE_PROCINST" table="act_ru_execution" schema="" catalog="extacrm" columns="PROC_INST_ID_"/>
+      <exported-key name="ACT_FK_EXE_SUPER" table="act_ru_execution" schema="" catalog="extacrm" columns="SUPER_EXEC_"/>
+      <exported-key name="ACT_FK_IDL_PROCINST" table="act_ru_identitylink" schema="" catalog="extacrm" columns="PROC_INST_ID_"/>
+      <exported-key name="ACT_FK_TASK_EXE" table="act_ru_task" schema="" catalog="extacrm" columns="EXECUTION_ID_"/>
+      <exported-key name="ACT_FK_TASK_PROCINST" table="act_ru_task" schema="" catalog="extacrm" columns="PROC_INST_ID_"/>
+      <exported-key name="ACT_FK_VAR_EXE" table="act_ru_variable" schema="" catalog="extacrm" columns="EXECUTION_ID_"/>
+      <exported-key name="ACT_FK_VAR_PROCINST" table="act_ru_variable" schema="" catalog="extacrm" columns="PROC_INST_ID_"/>
       <index name="ACT_FK_EXE_PARENT" unique="false" columns="PARENT_ID_"/>
       <index name="ACT_FK_EXE_PROCDEF" unique="false" columns="PROC_DEF_ID_"/>
       <index name="ACT_FK_EXE_PROCINST" unique="false" columns="PROC_INST_ID_"/>
       <index name="ACT_FK_EXE_SUPER" unique="false" columns="SUPER_EXEC_"/>
       <index name="ACT_IDX_EXEC_BUSKEY" unique="false" columns="BUSINESS_KEY_"/>
     </table>
-    <table name="ACT_RU_IDENTITYLINK" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_ru_identitylink" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="GROUP_ID_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -337,16 +377,16 @@
       <column name="PROC_INST_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="PROC_DEF_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <foreign-key name="ACT_FK_ATHRZ_PROCEDEF" columns="PROC_DEF_ID_" ref-table="ACT_RE_PROCDEF" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_IDL_PROCINST" columns="PROC_INST_ID_" ref-table="ACT_RU_EXECUTION" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_TSKASS_TASK" columns="TASK_ID_" ref-table="ACT_RU_TASK" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_ATHRZ_PROCEDEF" columns="PROC_DEF_ID_" ref-table="act_re_procdef" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_IDL_PROCINST" columns="PROC_INST_ID_" ref-table="act_ru_execution" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_TSKASS_TASK" columns="TASK_ID_" ref-table="act_ru_task" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="ACT_FK_IDL_PROCINST" unique="false" columns="PROC_INST_ID_"/>
       <index name="ACT_FK_TSKASS_TASK" unique="false" columns="TASK_ID_"/>
       <index name="ACT_IDX_ATHRZ_PROCEDEF" unique="false" columns="PROC_DEF_ID_"/>
       <index name="ACT_IDX_IDENT_LNK_GROUP" unique="false" columns="GROUP_ID_"/>
       <index name="ACT_IDX_IDENT_LNK_USER" unique="false" columns="USER_ID_"/>
     </table>
-    <table name="ACT_RU_JOB" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_ru_job" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="TYPE_" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
@@ -365,10 +405,10 @@
       <column name="LOCK_EXP_TIME_" sqlType="TIMESTAMP" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="DUEDATE_" sqlType="TIMESTAMP" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <foreign-key name="ACT_FK_JOB_EXCEPTION" columns="EXCEPTION_STACK_ID_" ref-table="ACT_GE_BYTEARRAY" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_JOB_EXCEPTION" columns="EXCEPTION_STACK_ID_" ref-table="act_ge_bytearray" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="ACT_FK_JOB_EXCEPTION" unique="false" columns="EXCEPTION_STACK_ID_"/>
     </table>
-    <table name="ACT_RU_TASK" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_ru_task" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="EXECUTION_ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
@@ -389,15 +429,15 @@
       <column name="DUE_DATE_" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="FORM_KEY_" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <foreign-key name="ACT_FK_TASK_EXE" columns="EXECUTION_ID_" ref-table="ACT_RU_EXECUTION" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_TASK_PROCDEF" columns="PROC_DEF_ID_" ref-table="ACT_RE_PROCDEF" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_TASK_PROCINST" columns="PROC_INST_ID_" ref-table="ACT_RU_EXECUTION" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="ACT_FK_TSKASS_TASK" table="ACT_RU_IDENTITYLINK" schema="" catalog="extacrm" columns="TASK_ID_"/>
+      <foreign-key name="ACT_FK_TASK_EXE" columns="EXECUTION_ID_" ref-table="act_ru_execution" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_TASK_PROCDEF" columns="PROC_DEF_ID_" ref-table="act_re_procdef" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_TASK_PROCINST" columns="PROC_INST_ID_" ref-table="act_ru_execution" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="ACT_FK_TSKASS_TASK" table="act_ru_identitylink" schema="" catalog="extacrm" columns="TASK_ID_"/>
       <index name="ACT_FK_TASK_EXE" unique="false" columns="EXECUTION_ID_"/>
       <index name="ACT_FK_TASK_PROCDEF" unique="false" columns="PROC_DEF_ID_"/>
       <index name="ACT_FK_TASK_PROCINST" unique="false" columns="PROC_INST_ID_"/>
     </table>
-    <table name="ACT_RU_VARIABLE" schema="" catalog="extacrm" type="TABLE">
+    <table name="act_ru_variable" schema="" catalog="extacrm" type="TABLE">
       <column name="ID_" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
       <column name="REV_" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="TYPE_" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
@@ -411,123 +451,13 @@
       <column name="TEXT_" sqlType="VARCHAR" precision="4000" scale="0" nullable="true" jdbcType="12"/>
       <column name="TEXT2_" sqlType="VARCHAR" precision="4000" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID_"/>
-      <foreign-key name="ACT_FK_VAR_BYTEARRAY" columns="BYTEARRAY_ID_" ref-table="ACT_GE_BYTEARRAY" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_VAR_EXE" columns="EXECUTION_ID_" ref-table="ACT_RU_EXECUTION" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="ACT_FK_VAR_PROCINST" columns="PROC_INST_ID_" ref-table="ACT_RU_EXECUTION" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_VAR_BYTEARRAY" columns="BYTEARRAY_ID_" ref-table="act_ge_bytearray" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_VAR_EXE" columns="EXECUTION_ID_" ref-table="act_ru_execution" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ACT_FK_VAR_PROCINST" columns="PROC_INST_ID_" ref-table="act_ru_execution" ref-schema="" ref-catalog="extacrm" ref-columns="ID_" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="ACT_FK_VAR_BYTEARRAY" unique="false" columns="BYTEARRAY_ID_"/>
       <index name="ACT_FK_VAR_EXE" unique="false" columns="EXECUTION_ID_"/>
       <index name="ACT_FK_VAR_PROCINST" unique="false" columns="PROC_INST_ID_"/>
       <index name="ACT_IDX_VARIABLE_TASK_ID" unique="false" columns="TASK_ID_"/>
-    </table>
-    <table name="MOTOR_BRAND" schema="" catalog="extacrm" type="TABLE">
-      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <primary-key name="PRIMARY" columns="ID"/>
-      <exported-key name="FK_BRAND_TYPE_BRAND_ID" table="brand_type" schema="" catalog="extacrm" columns="BRAND_ID"/>
-    </table>
-    <table name="MOTOR_MODEL" schema="" catalog="extacrm" type="TABLE">
-      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="BRAND" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="CODE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="NAME" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
-      <column name="TYPE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <primary-key name="PRIMARY" columns="ID"/>
-    </table>
-    <table name="MOTOR_TYPE" schema="" catalog="extacrm" type="TABLE">
-      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <primary-key name="PRIMARY" columns="ID"/>
-      <exported-key name="FK_BRAND_TYPE_TYPE_ID" table="brand_type" schema="" catalog="extacrm" columns="TYPE_ID"/>
-    </table>
-    <table name="SECURITY_RULE" schema="" catalog="extacrm" type="TABLE">
-      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <primary-key name="PRIMARY" columns="ID"/>
-      <exported-key name="FK_COMPANY_SECURITY_RULE_ID" table="company" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_EMPLOYEE_SECURITY_RULE_ID" table="employee" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_INSURANCE_SECURITY_RULE_ID" table="insurance" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_LEAD_SECURITY_RULE_ID" table="lead" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_LEGAL_ENTITY_SECURITY_RULE_ID" table="legal_entity" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_PERSON_SECURITY_RULE_ID" table="person" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_SALE_SECURITY_RULE_ID" table="sale" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_SALE_POINT_SECURITY_RULE_ID" table="sale_point" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_SECURITY_RULE_BRAND_SECURITY_RULE_ID" table="security_rule_brand" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_SECURITY_RULE_COMPANY_SECURITY_RULE_ID" table="security_rule_company" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_SECURITY_RULE_REGION_SECURITY_RULE_ID" table="security_rule_region" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_SECURITY_RULE_SALE_POINT_SECURITY_RULE_ID" table="security_rule_sale_point" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-      <exported-key name="FK_SECURITY_RULE_USER_SECURITY_RULE_ID" table="security_rule_user" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
-    </table>
-    <table name="USER_GROUP" schema="" catalog="extacrm" type="TABLE">
-      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="DESCRIPTION" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <primary-key name="PRIMARY" columns="ID"/>
-      <exported-key name="FK_ACCESS_PERMISSION_GROUP_ID" table="access_permission" schema="" catalog="extacrm" columns="GROUP_ID"/>
-      <exported-key name="FK_USER_GROUP_BRAND_USER_ID" table="user_group_brand" schema="" catalog="extacrm" columns="USER_ID"/>
-      <exported-key name="FK_USER_GROUP_LINK_GROUP_ID" table="user_group_link" schema="" catalog="extacrm" columns="GROUP_ID"/>
-      <exported-key name="FK_USER_GROUP_REGION_USER_ID" table="user_group_region" schema="" catalog="extacrm" columns="USER_ID"/>
-    </table>
-    <table name="a7_form" schema="" catalog="extacrm" type="TABLE">
-      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
-      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="REG_NUM" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="STATUS" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <primary-key name="PRIMARY" columns="ID"/>
-      <foreign-key name="FK_A7_FORM_OWNER_ID" columns="OWNER_ID" ref-table="employee" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_A7_FORM_OWNER_ID" unique="false" columns="OWNER_ID"/>
-    </table>
-    <table name="access_permission" schema="" catalog="extacrm" type="TABLE">
-      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="DOMAIN" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="TARGET" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <column name="GROUP_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="USER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <primary-key name="PRIMARY" columns="ID"/>
-      <foreign-key name="FK_ACCESS_PERMISSION_GROUP_ID" columns="GROUP_ID" ref-table="user_group" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="FK_ACCESS_PERMISSION_USER_ID" columns="USER_ID" ref-table="user_profile" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="FK_ACCESS_PERMISSION_ACTION_ExtaPermission_ID" table="access_permission_action" schema="" catalog="extacrm" columns="ExtaPermission_ID"/>
-      <index name="FK_ACCESS_PERMISSION_GROUP_ID" unique="false" columns="GROUP_ID"/>
-      <index name="FK_ACCESS_PERMISSION_USER_ID" unique="false" columns="USER_ID"/>
-    </table>
-    <table name="access_permission_action" schema="" catalog="extacrm" type="TABLE">
-      <column name="ExtaPermission_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="ACTIONS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <foreign-key name="FK_ACCESS_PERMISSION_ACTION_ExtaPermission_ID" columns="ExtaPermission_ID" ref-table="access_permission" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_ACCESS_PERMISSION_ACTION_ExtaPermission_ID" unique="false" columns="ExtaPermission_ID"/>
     </table>
     <table name="brand_type" schema="" catalog="extacrm" type="TABLE">
       <column name="TYPE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -535,7 +465,8 @@
       <primary-key name="PRIMARY" columns="TYPE_ID,BRAND_ID"/>
       <foreign-key name="FK_BRAND_TYPE_BRAND_ID" columns="BRAND_ID" ref-table="motor_brand" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_BRAND_TYPE_TYPE_ID" columns="TYPE_ID" ref-table="motor_type" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_BRAND_TYPE_BRAND_ID" unique="false" columns="BRAND_ID"/>
+      <index name="IX_BRAND_TYPE_FK_BRAND_TYPE_BRAND_ID" unique="false" columns="BRAND_ID"/>
+      <index name="IX_BRAND_TYPE_FK_BRAND_TYPE_TYPE_ID" unique="false" columns="TYPE_ID"/>
     </table>
     <table name="company" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
@@ -562,15 +493,15 @@
       <exported-key name="FK_SALE_POINT_COMPANY_ID" table="sale_point" schema="" catalog="extacrm" columns="COMPANY_ID"/>
       <exported-key name="FK_SECURITY_RULE_COMPANY_COMPANY_ID" table="security_rule_company" schema="" catalog="extacrm" columns="COMPANY_ID"/>
       <index name="FK_COMPANY_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
-      <index name="qwe" unique="false" columns="WWW"/>
     </table>
     <table name="company_owner" schema="" catalog="extacrm" type="TABLE">
       <column name="COMPANY_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="COMPANY_ID,OWNER_ID"/>
       <foreign-key name="FK_COMPANY_OWNER_COMPANY_ID" columns="COMPANY_ID" ref-table="company" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="FK_COMPANY_OWNER_OWNER_ID" columns="OWNER_ID" ref-table="employee" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_COMPANY_OWNER_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="IX_COMPANY_OWNER_FK_COMPANY_OWNER_COMPANY_ID" unique="false" columns="COMPANY_ID"/>
+      <index name="IX_COMPANY_OWNER_FK_COMPANY_OWNER_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="contact_code" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
@@ -584,7 +515,9 @@
       <column name="CONTACT_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_CONTACT_CODE_CONTACT_ID" columns="CONTACT_ID" ref-table="company" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="INDEX_CONTACT_CODE_TYPE_CODE" unique="true" columns="TYPE,CODE"/>
       <index name="FK_CONTACT_CODE_CONTACT_ID" unique="false" columns="CONTACT_ID"/>
+      <index name="IX_CONTACT_CODE_FK_CONTACT_CODE_CONTACT_ID" unique="false" columns="CONTACT_ID"/>
     </table>
     <table name="employee" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -623,18 +556,16 @@
       <foreign-key name="FK_EMPLOYEE_SALE_POINT_ID" columns="SALE_POINT_ID" ref-table="sale_point" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_EMPLOYEE_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="FK_A7_FORM_OWNER_ID" table="a7_form" schema="" catalog="extacrm" columns="OWNER_ID"/>
-      <exported-key name="FK_COMPANY_OWNER_OWNER_ID" table="company_owner" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <exported-key name="FK_EMPLOYEE_FILE_OWNER_ID" table="employee_file" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <exported-key name="FK_FORM_TRANSFER_TOCONTACT_ID" table="form_transfer" schema="" catalog="extacrm" columns="TOCONTACT_ID"/>
-      <exported-key name="FK_LEAD_RESPONSIBLE_ID" table="lead" schema="" catalog="extacrm" columns="RESPONSIBLE_ID"/>
       <exported-key name="FK_LEGAL_ENTITY_ACCOUNTANT_ID" table="legal_entity" schema="" catalog="extacrm" columns="ACCOUNTANT_ID"/>
       <exported-key name="FK_LEGAL_ENTITY_DIRECTOR_ID" table="legal_entity" schema="" catalog="extacrm" columns="DIRECTOR_ID"/>
-      <exported-key name="FK_SECURITY_RULE_USER_USER_ID" table="security_rule_user" schema="" catalog="extacrm" columns="USER_ID"/>
       <exported-key name="FK_USER_PROFILE_EMPLOYEE_ID" table="user_profile" schema="" catalog="extacrm" columns="EMPLOYEE_ID"/>
-      <index name="FK_EMPLOYEE_COMPANY_ID" unique="false" columns="COMPANY_ID"/>
-      <index name="FK_EMPLOYEE_LEGAL_ENTITY_ID" unique="false" columns="LEGAL_ENTITY_ID"/>
-      <index name="FK_EMPLOYEE_SALE_POINT_ID" unique="false" columns="SALE_POINT_ID"/>
-      <index name="FK_EMPLOYEE_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
+      <index name="INDEX_EMPLOYEE_NAME" unique="false" columns="NAME"/>
+      <index name="IX_EMPLOYEE_FK_EMPLOYEE_COMPANY_ID" unique="false" columns="COMPANY_ID"/>
+      <index name="IX_EMPLOYEE_FK_EMPLOYEE_LEGAL_ENTITY_ID" unique="false" columns="LEGAL_ENTITY_ID"/>
+      <index name="IX_EMPLOYEE_FK_EMPLOYEE_SALE_POINT_ID" unique="false" columns="SALE_POINT_ID"/>
+      <index name="IX_EMPLOYEE_FK_EMPLOYEE_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
     </table>
     <table name="employee_file" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -666,13 +597,17 @@
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_FORM_TRANSFER_TOCONTACT_ID" columns="TOCONTACT_ID" ref-table="employee" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="FK_FORM_TRANSFER_NUMS_FORM_TRANSFER_ID" table="form_transfer_nums" schema="" catalog="extacrm" columns="FORM_TRANSFER_ID"/>
+      <index name="FK_FORM_TRANSFER_FROMCONTACT_ID" unique="false" columns="FROMCONTACT_ID"/>
       <index name="FK_FORM_TRANSFER_TOCONTACT_ID" unique="false" columns="TOCONTACT_ID"/>
+      <index name="IX_FORM_TRANSFER_FK_FORM_TRANSFER_FROMCONTACT_ID" unique="false" columns="FROMCONTACT_ID"/>
+      <index name="IX_FORM_TRANSFER_FK_FORM_TRANSFER_TOCONTACT_ID" unique="false" columns="TOCONTACT_ID"/>
     </table>
     <table name="form_transfer_nums" schema="" catalog="extacrm" type="TABLE">
       <column name="FORMNUMS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="FORM_TRANSFER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <foreign-key name="FK_FORM_TRANSFER_NUMS_FORM_TRANSFER_ID" columns="FORM_TRANSFER_ID" ref-table="form_transfer" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_FORM_TRANSFER_NUMS_FORM_TRANSFER_ID" unique="false" columns="FORM_TRANSFER_ID"/>
+      <index name="FORMTRANSFERNUMSFKFORMTRANSFERNUMSFORM_TRANSFER_ID" unique="false" columns="FORM_TRANSFER_ID"/>
+      <index name="INDEX_FORM_TRANSFER_NUMS_FORM_TRANSFER_ID_FORMNUMS" unique="false" columns="FORM_TRANSFER_ID,FORMNUMS"/>
     </table>
     <table name="insurance" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
@@ -710,7 +645,11 @@
       <exported-key name="FK_INSURANCE_FILE_OWNER_ID" table="insurance_file" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <index name="FK_INSURANCE_CLIENT_LE" unique="false" columns="CLIENT_LE"/>
       <index name="FK_INSURANCE_CLIENT_PP" unique="false" columns="CLIENT_PP"/>
+      <index name="FK_INSURANCE_DEALER_ID" unique="false" columns="DEALER_ID"/>
       <index name="FK_INSURANCE_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
+      <index name="INDEX_INSURANCE_A7_NUM" unique="false" columns="A7_NUM"/>
+      <index name="INDEX_INSURANCE_REG_NUM" unique="false" columns="REG_NUM"/>
+      <index name="IX_INSURANCE_FK_INSURANCE_DEALER_ID" unique="false" columns="DEALER_ID"/>
     </table>
     <table name="insurance_file" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -727,7 +666,7 @@
       <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_INSURANCE_FILE_OWNER_ID" columns="OWNER_ID" ref-table="insurance" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_INSURANCE_FILE_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="IX_INSURANCE_FILE_FK_INSURANCE_FILE_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="lead" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -756,13 +695,11 @@
       <column name="RESPONSIBLE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="SECURITY_RULE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
-      <foreign-key name="FK_LEAD_RESPONSIBLE_ID" columns="RESPONSIBLE_ID" ref-table="employee" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="FK_LEAD_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_LEAD_VENDOR_ID" columns="VENDOR_ID" ref-table="sale_point" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="NUM" unique="true" columns="NUM"/>
-      <index name="FK_LEAD_RESPONSIBLE_ID" unique="false" columns="RESPONSIBLE_ID"/>
-      <index name="FK_LEAD_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
-      <index name="FK_LEAD_VENDOR_ID" unique="false" columns="VENDOR_ID"/>
+      <index name="CLIENT_ID" unique="false" columns="CLIENT_ID"/>
+      <index name="IX_LEAD_FK_LEAD_CLIENT_ID" unique="false" columns="CLIENT_ID"/>
+      <index name="IX_LEAD_FK_LEAD_VENDOR_ID" unique="false" columns="VENDOR_ID"/>
     </table>
     <table name="legal_entity" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -811,9 +748,9 @@
       <exported-key name="FK_LEGAL_ENTITY_PROD_CREDIT_LEGAL_ENTITY_ID" table="legal_entity_prod_credit" schema="" catalog="extacrm" columns="LEGAL_ENTITY_ID"/>
       <exported-key name="FK_SALEPOINT_LEGALENTITY_LEGALENTITY_ID" table="salepoint_legalentity" schema="" catalog="extacrm" columns="LEGALENTITY_ID"/>
       <index name="FK_LEGAL_ENTITY_ACCOUNTANT_ID" unique="false" columns="ACCOUNTANT_ID"/>
-      <index name="FK_LEGAL_ENTITY_COMPANY_ID" unique="false" columns="COMPANY_ID"/>
-      <index name="FK_LEGAL_ENTITY_DIRECTOR_ID" unique="false" columns="DIRECTOR_ID"/>
       <index name="FK_LEGAL_ENTITY_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
+      <index name="IX_LEGAL_ENTITY_FK_LEGAL_ENTITY_COMPANY_ID" unique="false" columns="COMPANY_ID"/>
+      <index name="IX_LEGAL_ENTITY_FK_LEGAL_ENTITY_DIRECTOR_ID" unique="false" columns="DIRECTOR_ID"/>
     </table>
     <table name="legal_entity_file" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -830,13 +767,13 @@
       <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_LEGAL_ENTITY_FILE_OWNER_ID" columns="OWNER_ID" ref-table="legal_entity" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_LEGAL_ENTITY_FILE_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="IX_LEGAL_ENTITY_FILE_FK_LEGAL_ENTITY_FILE_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="legal_entity_motor_brand" schema="" catalog="extacrm" type="TABLE">
       <column name="LegalEntity_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="MOTORBRANDS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <foreign-key name="FK_LEGAL_ENTITY_MOTOR_BRAND_LegalEntity_ID" columns="LegalEntity_ID" ref-table="legal_entity" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_LEGAL_ENTITY_MOTOR_BRAND_LegalEntity_ID" unique="false" columns="LegalEntity_ID"/>
+      <index name="LGLNTTYMOTORBRANDFKLGLNTITYMOTORBRANDLegalEntityID" unique="false" columns="LegalEntity_ID"/>
     </table>
     <table name="legal_entity_prod_credit" schema="" catalog="extacrm" type="TABLE">
       <column name="LEGAL_ENTITY_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -844,7 +781,43 @@
       <primary-key name="PRIMARY" columns="LEGAL_ENTITY_ID,PROD_CREDIT_ID"/>
       <foreign-key name="FK_LEGAL_ENTITY_PROD_CREDIT_LEGAL_ENTITY_ID" columns="LEGAL_ENTITY_ID" ref-table="legal_entity" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_LEGAL_ENTITY_PROD_CREDIT_PROD_CREDIT_ID" columns="PROD_CREDIT_ID" ref-table="product" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_LEGAL_ENTITY_PROD_CREDIT_PROD_CREDIT_ID" unique="false" columns="PROD_CREDIT_ID"/>
+      <index name="LGLNTITYPRODCREDITFKLGLNTITYPRODCREDITPRODCREDITID" unique="false" columns="PROD_CREDIT_ID"/>
+      <index name="LGLNTTYPRODCREDITFKLGLNTITYPRODCREDITLEGALENTITYID" unique="false" columns="LEGAL_ENTITY_ID"/>
+    </table>
+    <table name="motor_brand" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <exported-key name="FK_BRAND_TYPE_BRAND_ID" table="brand_type" schema="" catalog="extacrm" columns="BRAND_ID"/>
+    </table>
+    <table name="motor_model" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="BRAND" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="CODE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="NAME" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="TYPE" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+    </table>
+    <table name="motor_type" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <exported-key name="FK_BRAND_TYPE_TYPE_ID" table="brand_type" schema="" catalog="extacrm" columns="TYPE_ID"/>
     </table>
     <table name="pay_account" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
@@ -861,6 +834,7 @@
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PAY_ACCOUNT_CONTACT_ID" columns="CONTACT_ID" ref-table="company" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="FK_PAY_ACCOUNT_CONTACT_ID" unique="false" columns="CONTACT_ID"/>
+      <index name="IX_PAY_ACCOUNT_FK_PAY_ACCOUNT_CONTACT_ID" unique="false" columns="CONTACT_ID"/>
     </table>
     <table name="person" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
@@ -961,8 +935,10 @@
       <exported-key name="FK_PERSON_AUTO_OWNER_ID" table="person_auto" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <exported-key name="FK_PERSON_CHILD_PARENT_ID" table="person_child" schema="" catalog="extacrm" columns="PARENT_ID"/>
       <exported-key name="FK_PERSON_EXPENSE_OWNER_ID" table="person_expense" schema="" catalog="extacrm" columns="OWNER_ID"/>
+      <exported-key name="FK_PERSON_FILE_OWNER_ID" table="person_file" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <exported-key name="FK_PERSON_INCOME_OWNER_ID" table="person_income" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <exported-key name="FK_PERSON_REALTY_OWNER_ID" table="person_realty" schema="" catalog="extacrm" columns="OWNER_ID"/>
+      <exported-key name="FK_SALE_CLIENT_ID" table="sale" schema="" catalog="extacrm" columns="CLIENT_ID"/>
       <index name="FK_PERSON_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
     </table>
     <table name="person_auto" schema="" catalog="extacrm" type="TABLE">
@@ -977,7 +953,7 @@
       <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PERSON_AUTO_OWNER_ID" columns="OWNER_ID" ref-table="person" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_PERSON_AUTO_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="IX_PERSON_AUTO_FK_PERSON_AUTO_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="person_child" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -987,7 +963,7 @@
       <column name="PARENT_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PERSON_CHILD_PARENT_ID" columns="PARENT_ID" ref-table="person" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_PERSON_CHILD_PARENT_ID" unique="false" columns="PARENT_ID"/>
+      <index name="IX_PERSON_CHILD_FK_PERSON_CHILD_PARENT_ID" unique="false" columns="PARENT_ID"/>
     </table>
     <table name="person_expense" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -997,7 +973,7 @@
       <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PERSON_EXPENSE_OWNER_ID" columns="OWNER_ID" ref-table="person" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_PERSON_EXPENSE_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="IX_PERSON_EXPENSE_FK_PERSON_EXPENSE_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="person_file" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1013,6 +989,8 @@
       <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_PERSON_FILE_OWNER_ID" columns="OWNER_ID" ref-table="person" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IX_PERSON_FILE_FK_PERSON_FILE_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="person_income" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1023,7 +1001,7 @@
       <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PERSON_INCOME_OWNER_ID" columns="OWNER_ID" ref-table="person" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_PERSON_INCOME_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="IX_PERSON_INCOME_FK_PERSON_INCOME_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="person_realty" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1038,7 +1016,7 @@
       <column name="OWNER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PERSON_REALTY_OWNER_ID" columns="OWNER_ID" ref-table="person" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_PERSON_REALTY_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="IX_PERSON_REALTY_FK_PERSON_REALTY_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="policy" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
@@ -1051,6 +1029,7 @@
       <column name="REG_NUM" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="ID"/>
+      <index name="INDEX_POLICY_ISSUE_DATE_BOOK_TIME_REG_NUM" unique="false" columns="ISSUE_DATE,BOOK_TIME,REG_NUM"/>
     </table>
     <table name="prod_credit" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1078,7 +1057,7 @@
       <column name="PRODUCT_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PROD_CREDIT_DOC_PRODUCT_ID" columns="PRODUCT_ID" ref-table="product" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_PROD_CREDIT_DOC_PRODUCT_ID" unique="false" columns="PRODUCT_ID"/>
+      <index name="IX_PROD_CREDIT_DOC_FK_PROD_CREDIT_DOC_PRODUCT_ID" unique="false" columns="PRODUCT_ID"/>
     </table>
     <table name="prod_credit_percent" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1093,7 +1072,7 @@
       <column name="PRODUCT_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PROD_CREDIT_PERCENT_PRODUCT_ID" columns="PRODUCT_ID" ref-table="product" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_PROD_CREDIT_PERCENT_PRODUCT_ID" unique="false" columns="PRODUCT_ID"/>
+      <index name="PRODCREDITPERCENTFK_PROD_CREDIT_PERCENT_PRODUCT_ID" unique="false" columns="PRODUCT_ID"/>
     </table>
     <table name="prod_installments" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1130,7 +1109,7 @@
       <exported-key name="FK_PROD_INSTALLMENTS_ID" table="prod_installments" schema="" catalog="extacrm" columns="ID"/>
       <exported-key name="FK_PROD_INSURANCE_ID" table="prod_insurance" schema="" catalog="extacrm" columns="ID"/>
       <exported-key name="FK_PRODUCT_IN_SALE_PRODUCT_ID" table="product_in_sale" schema="" catalog="extacrm" columns="PRODUCT_ID"/>
-      <index name="FK_PRODUCT_VENDOR_ID" unique="false" columns="VENDOR_ID"/>
+      <index name="IX_PRODUCT_FK_PRODUCT_VENDOR_ID" unique="false" columns="VENDOR_ID"/>
     </table>
     <table name="product_in_sale" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1147,8 +1126,8 @@
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_PRODUCT_IN_SALE_PRODUCT_ID" columns="PRODUCT_ID" ref-table="product" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_PRODUCT_IN_SALE_SALE_ID" columns="SALE_ID" ref-table="sale" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_PRODUCT_IN_SALE_PRODUCT_ID" unique="false" columns="PRODUCT_ID"/>
-      <index name="FK_PRODUCT_IN_SALE_SALE_ID" unique="false" columns="SALE_ID"/>
+      <index name="IX_PRODUCT_IN_SALE_FK_PRODUCT_IN_SALE_PRODUCT_ID" unique="false" columns="PRODUCT_ID"/>
+      <index name="IX_PRODUCT_IN_SALE_FK_PRODUCT_IN_SALE_SALE_ID" unique="false" columns="SALE_ID"/>
     </table>
     <table name="sale" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1173,13 +1152,15 @@
       <column name="RESPONSIBLE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="SECURITY_RULE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_SALE_CLIENT_ID" columns="CLIENT_ID" ref-table="person" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_SALE_DEALER_ID" columns="DEALER_ID" ref-table="sale_point" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_SALE_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="FK_PRODUCT_IN_SALE_SALE_ID" table="product_in_sale" schema="" catalog="extacrm" columns="SALE_ID"/>
       <exported-key name="FK_SALE_COMMENT_OWNER_ID" table="sale_comment" schema="" catalog="extacrm" columns="OWNER_ID"/>
       <index name="NUM" unique="true" columns="NUM"/>
-      <index name="FK_SALE_DEALER_ID" unique="false" columns="DEALER_ID"/>
       <index name="FK_SALE_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
+      <index name="IX_SALE_FK_SALE_CLIENT_ID" unique="false" columns="CLIENT_ID"/>
+      <index name="IX_SALE_FK_SALE_DEALER_ID" unique="false" columns="DEALER_ID"/>
     </table>
     <table name="sale_comment" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1192,7 +1173,7 @@
       <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_SALE_COMMENT_OWNER_ID" columns="OWNER_ID" ref-table="sale" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_SALE_COMMENT_OWNER_ID" unique="false" columns="OWNER_ID"/>
+      <index name="IX_SALE_COMMENT_FK_SALE_COMMENT_OWNER_ID" unique="false" columns="OWNER_ID"/>
     </table>
     <table name="sale_point" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1225,8 +1206,9 @@
       <exported-key name="FK_SALE_DEALER_ID" table="sale" schema="" catalog="extacrm" columns="DEALER_ID"/>
       <exported-key name="FK_SALEPOINT_LEGALENTITY_SALEPOINT_ID" table="salepoint_legalentity" schema="" catalog="extacrm" columns="SALEPOINT_ID"/>
       <exported-key name="FK_SECURITY_RULE_SALE_POINT_SALE_POINT_ID" table="security_rule_sale_point" schema="" catalog="extacrm" columns="SALE_POINT_ID"/>
-      <index name="FK_SALE_POINT_COMPANY_ID" unique="false" columns="COMPANY_ID"/>
+      <exported-key name="FK_USER_SALE_POINT_SALE_POINT_ID" table="user_sale_point" schema="" catalog="extacrm" columns="SALE_POINT_ID"/>
       <index name="FK_SALE_POINT_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
+      <index name="IX_SALE_POINT_FK_SALE_POINT_COMPANY_ID" unique="false" columns="COMPANY_ID"/>
     </table>
     <table name="salepoint_legalentity" schema="" catalog="extacrm" type="TABLE">
       <column name="SALEPOINT_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1234,7 +1216,8 @@
       <primary-key name="PRIMARY" columns="SALEPOINT_ID,LEGALENTITY_ID"/>
       <foreign-key name="FK_SALEPOINT_LEGALENTITY_LEGALENTITY_ID" columns="LEGALENTITY_ID" ref-table="legal_entity" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_SALEPOINT_LEGALENTITY_SALEPOINT_ID" columns="SALEPOINT_ID" ref-table="sale_point" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_SALEPOINT_LEGALENTITY_LEGALENTITY_ID" unique="false" columns="LEGALENTITY_ID"/>
+      <index name="SLPINTLEGALENTITYFKSLPOINTLEGALENTITYLEGALENTITYID" unique="false" columns="LEGALENTITY_ID"/>
+      <index name="SLPOINTLEGALENTITYFKSLEPOINTLEGALENTITYSALEPOINTID" unique="false" columns="SALEPOINT_ID"/>
     </table>
     <table name="schema_version" schema="" catalog="extacrm" type="TABLE">
       <column name="version_rank" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -1253,11 +1236,33 @@
       <index name="schema_version_s_idx" unique="false" columns="success"/>
       <index name="schema_version_vr_idx" unique="false" columns="version_rank"/>
     </table>
+    <table name="security_rule" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <exported-key name="FK_COMPANY_SECURITY_RULE_ID" table="company" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_EMPLOYEE_SECURITY_RULE_ID" table="employee" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_INSURANCE_SECURITY_RULE_ID" table="insurance" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_LEGAL_ENTITY_SECURITY_RULE_ID" table="legal_entity" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_PERSON_SECURITY_RULE_ID" table="person" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_SALE_SECURITY_RULE_ID" table="sale" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_SALE_POINT_SECURITY_RULE_ID" table="sale_point" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_SECURITY_RULE_BRAND_SECURITY_RULE_ID" table="security_rule_brand" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_SECURITY_RULE_COMPANY_SECURITY_RULE_ID" table="security_rule_company" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_SECURITY_RULE_REGION_SECURITY_RULE_ID" table="security_rule_region" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_SECURITY_RULE_SALE_POINT_SECURITY_RULE_ID" table="security_rule_sale_point" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+      <exported-key name="FK_SECURITY_RULE_USER_SECURITY_RULE_ID" table="security_rule_user" schema="" catalog="extacrm" columns="SECURITY_RULE_ID"/>
+    </table>
     <table name="security_rule_brand" schema="" catalog="extacrm" type="TABLE">
       <column name="SECURITY_RULE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="BRANDS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <foreign-key name="FK_SECURITY_RULE_BRAND_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_SECURITY_RULE_BRAND_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
+      <index name="INDEX_SECURITY_RULE_BRAND_SECURITY_RULE_ID_BRANDS" unique="false" columns="SECURITY_RULE_ID,BRANDS"/>
+      <index name="SECURITYRULEBRANDFKSECURITYRULEBRANDSECURITYRULEID" unique="false" columns="SECURITY_RULE_ID"/>
     </table>
     <table name="security_rule_company" schema="" catalog="extacrm" type="TABLE">
       <column name="SECURITY_RULE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1265,13 +1270,15 @@
       <primary-key name="PRIMARY" columns="SECURITY_RULE_ID,COMPANY_ID"/>
       <foreign-key name="FK_SECURITY_RULE_COMPANY_COMPANY_ID" columns="COMPANY_ID" ref-table="company" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_SECURITY_RULE_COMPANY_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_SECURITY_RULE_COMPANY_COMPANY_ID" unique="false" columns="COMPANY_ID"/>
+      <index name="SCRTYRULECOMPANYFKSCURITYRULECOMPANYSECURITYRULEID" unique="false" columns="SECURITY_RULE_ID"/>
+      <index name="SECURITYRULECOMPANYFKSECURITYRULECOMPANYCOMPANY_ID" unique="false" columns="COMPANY_ID"/>
     </table>
     <table name="security_rule_region" schema="" catalog="extacrm" type="TABLE">
       <column name="SECURITY_RULE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="REGIONS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <foreign-key name="FK_SECURITY_RULE_REGION_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_SECURITY_RULE_REGION_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
+      <index name="INDEX_SECURITY_RULE_REGION_SECURITY_RULE_ID_REGIONS" unique="false" columns="SECURITY_RULE_ID,REGIONS"/>
+      <index name="SCRITYRULEREGIONFKSECURITYRULEREGIONSECURITYRULEID" unique="false" columns="SECURITY_RULE_ID"/>
     </table>
     <table name="security_rule_sale_point" schema="" catalog="extacrm" type="TABLE">
       <column name="SECURITY_RULE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1279,7 +1286,8 @@
       <primary-key name="PRIMARY" columns="SECURITY_RULE_ID,SALE_POINT_ID"/>
       <foreign-key name="FK_SECURITY_RULE_SALE_POINT_SALE_POINT_ID" columns="SALE_POINT_ID" ref-table="sale_point" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_SECURITY_RULE_SALE_POINT_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_SECURITY_RULE_SALE_POINT_SALE_POINT_ID" unique="false" columns="SALE_POINT_ID"/>
+      <index name="SCRTYRLSALEPOINTFKSCRTYRULESALEPOINTSECURITYRULEID" unique="false" columns="SECURITY_RULE_ID"/>
+      <index name="SCRTYRULESALEPOINTFKSCRITYRULESALEPOINTSALEPOINTID" unique="false" columns="SALE_POINT_ID"/>
     </table>
     <table name="security_rule_user" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1293,15 +1301,29 @@
       <column name="USER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_SECURITY_RULE_USER_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="FK_SECURITY_RULE_USER_USER_ID" columns="USER_ID" ref-table="employee" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_SECURITY_RULE_USER_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
-      <index name="FK_SECURITY_RULE_USER_USER_ID" unique="false" columns="USER_ID"/>
+      <index name="SECURITY_RULE_USER_FK_SECURITY_RULE_USER_USER_ID" unique="false" columns="USER_ID"/>
+      <index name="SECURITYRULEUSERFKSECURITYRULEUSERSECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
+    </table>
+    <table name="user_group" schema="" catalog="extacrm" type="TABLE">
+      <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="CREATED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="CREATED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="DESCRIPTION" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="MODIFIED_AT" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="MODIFIED_BY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="VERSION" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <exported-key name="FK_ACCESS_PERMISSION_GROUP_ID" table="access_permission" schema="" catalog="extacrm" columns="GROUP_ID"/>
+      <exported-key name="FK_USER_GROUP_BRAND_USER_ID" table="user_group_brand" schema="" catalog="extacrm" columns="USER_ID"/>
+      <exported-key name="FK_USER_GROUP_LINK_GROUP_ID" table="user_group_link" schema="" catalog="extacrm" columns="GROUP_ID"/>
+      <exported-key name="FK_USER_GROUP_REGION_USER_ID" table="user_group_region" schema="" catalog="extacrm" columns="USER_ID"/>
     </table>
     <table name="user_group_brand" schema="" catalog="extacrm" type="TABLE">
       <column name="USER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="PERMITBRANDS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <foreign-key name="FK_USER_GROUP_BRAND_USER_ID" columns="USER_ID" ref-table="user_group" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_USER_GROUP_BRAND_USER_ID" unique="false" columns="USER_ID"/>
+      <index name="IX_USER_GROUP_BRAND_FK_USER_GROUP_BRAND_USER_ID" unique="false" columns="USER_ID"/>
     </table>
     <table name="user_group_link" schema="" catalog="extacrm" type="TABLE">
       <column name="GROUP_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1309,13 +1331,14 @@
       <primary-key name="PRIMARY" columns="GROUP_ID,USER_ID"/>
       <foreign-key name="FK_USER_GROUP_LINK_GROUP_ID" columns="GROUP_ID" ref-table="user_group" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_USER_GROUP_LINK_USER_ID" columns="USER_ID" ref-table="user_profile" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_USER_GROUP_LINK_USER_ID" unique="false" columns="USER_ID"/>
+      <index name="IX_USER_GROUP_LINK_FK_USER_GROUP_LINK_GROUP_ID" unique="false" columns="GROUP_ID"/>
+      <index name="IX_USER_GROUP_LINK_FK_USER_GROUP_LINK_USER_ID" unique="false" columns="USER_ID"/>
     </table>
     <table name="user_group_region" schema="" catalog="extacrm" type="TABLE">
       <column name="USER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="PERMITREGIONS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <foreign-key name="FK_USER_GROUP_REGION_USER_ID" columns="USER_ID" ref-table="user_group" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_USER_GROUP_REGION_USER_ID" unique="false" columns="USER_ID"/>
+      <index name="IX_USER_GROUP_REGION_FK_USER_GROUP_REGION_USER_ID" unique="false" columns="USER_ID"/>
     </table>
     <table name="user_profile" schema="" catalog="extacrm" type="TABLE">
       <column name="ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
@@ -1337,19 +1360,29 @@
       <exported-key name="FK_USER_GROUP_LINK_USER_ID" table="user_group_link" schema="" catalog="extacrm" columns="USER_ID"/>
       <exported-key name="FK_USER_PROFILE_BRAND_USER_ID" table="user_profile_brand" schema="" catalog="extacrm" columns="USER_ID"/>
       <exported-key name="FK_USER_PROFILE_REGION_USER_ID" table="user_profile_region" schema="" catalog="extacrm" columns="USER_ID"/>
+      <exported-key name="FK_USER_SALE_POINT_USER_ID" table="user_sale_point" schema="" catalog="extacrm" columns="USER_ID"/>
       <index name="FK_USER_PROFILE_EMPLOYEE_ID" unique="false" columns="EMPLOYEE_ID"/>
     </table>
     <table name="user_profile_brand" schema="" catalog="extacrm" type="TABLE">
       <column name="USER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="PERMITBRANDS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <foreign-key name="FK_USER_PROFILE_BRAND_USER_ID" columns="USER_ID" ref-table="user_profile" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_USER_PROFILE_BRAND_USER_ID" unique="false" columns="USER_ID"/>
+      <index name="USER_PROFILE_BRAND_FK_USER_PROFILE_BRAND_USER_ID" unique="false" columns="USER_ID"/>
     </table>
     <table name="user_profile_region" schema="" catalog="extacrm" type="TABLE">
       <column name="USER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="PERMITREGIONS" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <foreign-key name="FK_USER_PROFILE_REGION_USER_ID" columns="USER_ID" ref-table="user_profile" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_USER_PROFILE_REGION_USER_ID" unique="false" columns="USER_ID"/>
+      <index name="USER_PROFILE_REGION_FK_USER_PROFILE_REGION_USER_ID" unique="false" columns="USER_ID"/>
+    </table>
+    <table name="user_sale_point" schema="" catalog="extacrm" type="TABLE">
+      <column name="USER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="SALE_POINT_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="USER_ID,SALE_POINT_ID"/>
+      <foreign-key name="FK_USER_SALE_POINT_SALE_POINT_ID" columns="SALE_POINT_ID" ref-table="sale_point" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_USER_SALE_POINT_USER_ID" columns="USER_ID" ref-table="user_profile" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IX_USER_SALE_POINT_FK_USER_SALE_POINT_USER_ID" unique="false" columns="USER_ID"/>
+      <index name="USER_SALE_POINT_FK_USER_SALE_POINT_SALE_POINT_ID" unique="false" columns="SALE_POINT_ID"/>
     </table>
     <table name="CHARACTER_SETS" schema="" catalog="information_schema" type="SYSTEM TABLE">
       <column name="CHARACTER_SET_NAME" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12" def="Jyc="/>

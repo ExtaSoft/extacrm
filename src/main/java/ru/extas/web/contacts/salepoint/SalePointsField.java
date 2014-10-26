@@ -26,7 +26,6 @@ import static com.google.common.collect.Sets.newHashSet;
 public class SalePointsField extends CustomField<Set> {
 
     private SupplierSer<Company> companySupplier;
-    private BeanItemContainer<SalePoint> itemContainer;
 
     /**
 	 * <p>Constructor for SalePointsField.</p>
