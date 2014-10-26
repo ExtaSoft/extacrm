@@ -492,7 +492,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             } else {
                 final Button titleLink = new Button();
                 titleLink.addStyleName(ExtaTheme.BUTTON_LINK);
-                titleLink.setCaption((String) item.getItemProperty(titleMap.getPropName()).getValue());
+                titleLink.setCaption(item.getItemProperty(titleMap.getPropName()).getValue().toString());
                 titleLink.setDescription(defAction.getDescription());
                 titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
                 titleLink.addClickListener(event -> defAction.fire(itemId));
@@ -501,9 +501,6 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             titleComp.setImmediate(true);
             titleComp.addStyleName(ExtaTheme.MAIN_ITEM_TEXT);
             panel.addComponent(titleComp);
-//                final HorizontalLayout header = new HorizontalLayout(titleComp, createItemToolbar(itemId));
-//                header.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
-//                panel.addComponent(header);
 
             // Дополнительные данные
             final HorizontalLayout details = new HorizontalLayout();
