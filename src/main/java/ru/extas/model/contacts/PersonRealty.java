@@ -3,7 +3,7 @@ package ru.extas.model.contacts;
 import ru.extas.model.common.IdentifiedObject;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -19,7 +19,7 @@ public class PersonRealty extends IdentifiedObject {
 
     // Тип недвижимости (Индивидуальный дом, Квартира, Дача, Земельный участок, Гараж, Другое имущество)
     @Column(length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String type;
     // Время владения (лет)
     @Column(name = "OWNING_PERIOD")
@@ -35,19 +35,20 @@ public class PersonRealty extends IdentifiedObject {
     @Column(name = "AREA_OF_LAND")
     private int areaOfLand;
     // Адрес объекта недвижимости
+    @Size(max = 255)
     private String adress;
     // Способ приобретения (покупка, наследство/дар, другое)
     @Column(name = "WAY_2_PURCHASE", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String way2purchase;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person owner;
 
     public PersonRealty() {
     }
 
-    public PersonRealty(Person owner) {
+    public PersonRealty(final Person owner) {
         this.owner = owner;
     }
 
@@ -55,7 +56,7 @@ public class PersonRealty extends IdentifiedObject {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -63,7 +64,7 @@ public class PersonRealty extends IdentifiedObject {
         return owningPeriod;
     }
 
-    public void setOwningPeriod(int owningPeriod) {
+    public void setOwningPeriod(final int owningPeriod) {
         this.owningPeriod = owningPeriod;
     }
 
@@ -71,7 +72,7 @@ public class PersonRealty extends IdentifiedObject {
         return part;
     }
 
-    public void setPart(BigDecimal part) {
+    public void setPart(final BigDecimal part) {
         this.part = part;
     }
 
@@ -79,7 +80,7 @@ public class PersonRealty extends IdentifiedObject {
         return areaOfHouse;
     }
 
-    public void setAreaOfHouse(int areaOfHouse) {
+    public void setAreaOfHouse(final int areaOfHouse) {
         this.areaOfHouse = areaOfHouse;
     }
 
@@ -87,7 +88,7 @@ public class PersonRealty extends IdentifiedObject {
         return areaOfLand;
     }
 
-    public void setAreaOfLand(int areaOfLand) {
+    public void setAreaOfLand(final int areaOfLand) {
         this.areaOfLand = areaOfLand;
     }
 
@@ -95,7 +96,7 @@ public class PersonRealty extends IdentifiedObject {
         return adress;
     }
 
-    public void setAdress(String adress) {
+    public void setAdress(final String adress) {
         this.adress = adress;
     }
 
@@ -103,7 +104,7 @@ public class PersonRealty extends IdentifiedObject {
         return way2purchase;
     }
 
-    public void setWay2purchase(String way2purchase) {
+    public void setWay2purchase(final String way2purchase) {
         this.way2purchase = way2purchase;
     }
 
@@ -111,7 +112,7 @@ public class PersonRealty extends IdentifiedObject {
         return owner;
     }
 
-    public void setOwner(Person owner) {
+    public void setOwner(final Person owner) {
         this.owner = owner;
     }
 }

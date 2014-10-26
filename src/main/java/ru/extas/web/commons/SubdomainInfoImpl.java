@@ -16,7 +16,7 @@ public abstract class SubdomainInfoImpl implements SubdomainInfo {
 	private final ExtaDomain domain;
     private final boolean editInPage;
 
-    protected SubdomainInfoImpl(String caption, ExtaDomain domain) {
+    protected SubdomainInfoImpl(final String caption, final ExtaDomain domain) {
         this(caption, domain, false);
     }
 
@@ -26,7 +26,7 @@ public abstract class SubdomainInfoImpl implements SubdomainInfo {
 	 * @param caption a {@link java.lang.String} object.
 	 * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
 	 */
-	public SubdomainInfoImpl(final String caption, final ExtaDomain domain, boolean editInPage) {
+	public SubdomainInfoImpl(final String caption, final ExtaDomain domain, final boolean editInPage) {
 		this.caption = caption;
 		this.domain = domain;
         this.editInPage = editInPage;

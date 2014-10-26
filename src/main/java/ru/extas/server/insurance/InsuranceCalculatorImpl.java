@@ -52,25 +52,25 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
         fillBrandTarif(newHashSet("CFMOTO"), BigDecimal.valueOf(.045), BigDecimal.valueOf(.032), true);
     }
 
-    private static void fillBrandTarif(HashSet<String> brands, BigDecimal yearTarif, BigDecimal halfTarif) {
+    private static void fillBrandTarif(final HashSet<String> brands, final BigDecimal yearTarif, final BigDecimal halfTarif) {
         fillBrandTarif(brands, yearTarif, halfTarif, false);
 
     }
 
-    private static void fillBrandTarif(Set<String> brands, BigDecimal yearTarif, BigDecimal halfTarif, boolean isUsed) {
-        for (String brand : brands) {
+    private static void fillBrandTarif(final Set<String> brands, final BigDecimal yearTarif, final BigDecimal halfTarif, final boolean isUsed) {
+        for (final String brand : brands) {
             tarifTable.put(brand, getTarifKey(Insurance.PeriodOfCover.YEAR, isUsed), yearTarif);
             tarifTable.put(brand, getTarifKey(Insurance.PeriodOfCover.HALF_A_YEAR, isUsed), halfTarif);
         }
     }
 
-    private static String getTarifKey(Insurance.PeriodOfCover periodOfCover, boolean isUsed) {
+    private static String getTarifKey(final Insurance.PeriodOfCover periodOfCover, final boolean isUsed) {
         return periodOfCover.toString() + (isUsed ? "_used" : "");
     }
 
     /** {@inheritDoc} */
     @Override
-    public BigDecimal calcPropInsPremium(Insurance ins) {
+    public BigDecimal calcPropInsPremium(final Insurance ins) {
         checkArgument(ins != null, "Can't calculate premium. No insurance paramenets.");
         checkArgument(ins.getRiskSum() != null, "Can't calculate premium. No insurance risk sum.");
         checkArgument(ins.getMotorBrand() != null, "Can't calculate premium. No insurance motor brand.");
@@ -86,7 +86,7 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
 
     /** {@inheritDoc} */
     @Override
-    public BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime, boolean isUsed) {
+    public BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime, final boolean isUsed) {
         checkArgument(motorBrand != null, "Can't calculate premium. No insurance motor brand.");
         checkArgument(coverTime != null, "Can't calculate premium. No period of cover.");
 

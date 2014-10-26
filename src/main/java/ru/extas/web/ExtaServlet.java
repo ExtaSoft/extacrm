@@ -1,6 +1,7 @@
 package ru.extas.web;
 
-import com.vaadin.server.*;
+import com.vaadin.server.CustomizedSystemMessages;
+import com.vaadin.server.VaadinServlet;
 
 import javax.servlet.ServletException;
 

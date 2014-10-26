@@ -1,7 +1,6 @@
 package ru.extas.model.common;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 
 /**
  * Абстрактный комментарий
@@ -27,7 +26,7 @@ public abstract class Comment extends AuditedObject {
         return ownerId;
     }
 
-    public void setOwnerId(String ownerId) {
+    public void setOwnerId(final String ownerId) {
         this.ownerId = ownerId;
     }
 
@@ -35,7 +34,7 @@ public abstract class Comment extends AuditedObject {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 }

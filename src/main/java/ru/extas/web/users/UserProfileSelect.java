@@ -43,13 +43,13 @@ public class UserProfileSelect extends ComboBox {
 
 		// Инициализация контейнера
 		final ExtaDataContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
-		container.addNestedContainerProperty("contact.name");
+		container.addNestedContainerProperty("employee.name");
 
 		// Устанавливаем контент выбора
 		setFilteringMode(FilteringMode.CONTAINS);
 		setContainerDataSource(container);
 		setItemCaptionMode(ItemCaptionMode.PROPERTY);
-		setItemCaptionPropertyId("contact.name");
+		setItemCaptionPropertyId("employee.name");
 		setConverter(new SingleSelectConverter<UserProfile>(this));
 
 		// Функционал добавления нового контакта

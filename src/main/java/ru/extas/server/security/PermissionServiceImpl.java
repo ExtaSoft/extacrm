@@ -4,9 +4,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.security.AccessRole;
 import ru.extas.model.security.SecuredObject;
-import ru.extas.model.contacts.Person;
 import ru.extas.security.SecuredRepository;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.contacts.LegalEntityRepository;
@@ -68,10 +68,10 @@ public class PermissionServiceImpl implements PermissionService {
      * @param repository a {@link ru.extas.security.SecuredRepository} object.
      * @param <Entity> a Entity object.
      */
-    protected <Entity extends SecuredObject> void permitObjects(List<Entity> entities, SecuredRepository<Entity> repository) {
-        for(Entity entity : entities) {
-            Person createdBy = userService.findUserContactByLogin(entity.getCreatedBy());
-            Person modifiedBy = userService.findUserContactByLogin(entity.getModifiedBy());
+    protected <Entity extends SecuredObject> void permitObjects(final List<Entity> entities, final SecuredRepository<Entity> repository) {
+        for(final Entity entity : entities) {
+            final Employee createdBy = userService.findUserEmployeeByLogin(entity.getCreatedBy());
+            final Employee modifiedBy = userService.findUserEmployeeByLogin(entity.getLastModifiedBy());
             entity.addSecurityUserAccess(createdBy, AccessRole.OWNER);
             entity.addSecurityUserAccess(modifiedBy, AccessRole.EDITOR);
             repository.secureSave(entity);

@@ -24,7 +24,7 @@ public class ProductsGrid extends ExtaGrid<Product> {
     }
 
     @Override
-    public ExtaEditForm<Product> createEditForm(Product product, boolean isInsert) {
+    public ExtaEditForm<Product> createEditForm(final Product product, final boolean isInsert) {
         return null;
     }
 
@@ -39,7 +39,7 @@ public class ProductsGrid extends ExtaGrid<Product> {
 	protected Container createContainer() {
 		// Запрос данных
 		final ExtaDataContainer<Product> container = new ExtaDataContainer<>(Product.class);
-		container.sort(new Object[]{"createdAt"}, new boolean[]{false});
+		container.sort(new Object[]{"createdDate"}, new boolean[]{false});
 		container.addNestedContainerProperty("vendor.name");
 		return container;
 	}

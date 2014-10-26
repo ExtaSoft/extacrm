@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="213447380">
+  <component name="DataSourceManagerImpl" format="xml" hash="468893704">
     <data-source source="LOCAL" name="LocalMySql" uuid="5c42dca0-ad6e-40b7-a5b9-c8db19f4f902">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
@@ -8,12 +8,29 @@
       <jdbc-url>jdbc:mysql://localhost:3306/extacrm</jdbc-url>
       <user-name>root</user-name>
       <user-password>dfd8dfc5dfc5dfde</user-password>
-      <schema-pattern>extacrm.*</schema-pattern>
+      <schema-pattern>extacrm.* information_schema.*</schema-pattern>
       <default-schemas>extacrm.*</default-schemas>
       <default-dialect>MySQL</default-dialect>
       <libraries>
         <library>
           <url>jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.26/mysql-connector-java-5.1.26.jar!/</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="ProductionMySQL" uuid="2d4d24c3-1b7b-49e9-8bfc-063771f4f490">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://mysql-extacrm-prod.jelasticloud.com:3306/extacrm</jdbc-url>
+      <user-name>root</user-name>
+      <user-password>dfe0dfd2dfc5df9bdfe8dfd2dfcfdffcdfc0dfce</user-password>
+      <driver-properties>
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+      </driver-properties>
+      <libraries>
+        <library>
+          <url>file://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.26/mysql-connector-java-5.1.26.jar</url>
         </library>
       </libraries>
     </data-source>

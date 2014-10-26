@@ -3,22 +3,26 @@
  */
 package ru.extas.web.commons;
 
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.util.ReflectTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.data.collectioncontainer.CollectionContainer;
 import ru.extas.model.common.IdentifiedObject;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static ru.extas.web.UiUtils.showValidationError;
 
 /**
@@ -36,10 +40,41 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     private final String caption;
     protected boolean saved = false;
     private HorizontalLayout buttonsPanel;
-    private FieldGroup fieldGroup;
+    private BeanFieldGroup<TEditObject> fieldGroup;
     private boolean modified;
     private TEditObject bean;
     private Button okBtn;
+
+    private float winWidth = 600;
+    private float winHeight = SIZE_UNDEFINED;
+    private Unit winWidthUnit = Unit.PIXELS;
+    private Unit winHeightUnit = Unit.PIXELS;
+
+    public float getWinWidth() {
+        return winWidth;
+    }
+
+    public void setWinWidth(float winWidth, Unit unit) {
+        this.winWidth = winWidth;
+        this.winWidthUnit = unit;
+    }
+
+    public float getWinHeight() {
+        return winHeight;
+    }
+
+    public void setWinHeight(float winHeight, Unit unit) {
+        this.winHeight = winHeight;
+        this.winHeightUnit = unit;
+    }
+
+    public Unit getWinWidthUnit() {
+        return winWidthUnit;
+    }
+
+    public Unit getWinHeightUnit() {
+        return winHeightUnit;
+    }
 
     public Object getObjectId() {
         if (bean != null) {
@@ -99,42 +134,49 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    protected ExtaEditForm(final String caption) {
+    protected ExtaEditForm(final String caption, final TEditObject bean) {
         this.caption = caption;
+        this.bean = bean;
+        // Must set a dummy root in constructor
+        setCompositionRoot(new Label(""));
     }
 
-    /**
-     * <p>Constructor for AbstractEditForm.</p>
-     *
-     * @param caption  a {@link java.lang.String} object.
-     * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
-     */
-    protected ExtaEditForm(final String caption, final BeanItem<TEditObject> beanItem) {
-        this(caption);
-
-        initForm(beanItem);
+    @Override
+    public void attach() {
+        initForm();
+        super.attach();
     }
 
     public String getCaption() {
         return caption;
     }
 
+//    public BeanItem<TEditObject> getBeanItem() {
+//        return beanItem;
+//    }
+
+//    public void setBeanItem(BeanItem<TEditObject> beanItem) {
+//        checkNotNull(beanItem);
+//        this.beanItem = beanItem;
+//        this.bean = beanItem.getBean();
+//    }
+
     /**
      * <p>initForm.</p>
-     *
-     * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
      */
-    protected void initForm(final BeanItem<TEditObject> beanItem) {
-        bean = beanItem.getBean();
+    private void initForm() {
+        checkNotNull(bean);
         initObject(bean);
         final ComponentContainer form = createEditFields(bean);
 
         // Now create a binder
-        fieldGroup = new FieldGroup(beanItem);
+        fieldGroup = new BeanFieldGroup<>((Class<TEditObject>) bean.getClass());
+        BeanItem<TEditObject> beanItem = createBeanItem(bean);
+        fieldGroup.setItemDataSource(beanItem);
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
 
-        Button cancelBtn = new Button("Отмена", new Button.ClickListener() {
+        final Button cancelBtn = new Button("Отмена", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -145,35 +187,20 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
             }
         });
         cancelBtn.setIcon(Fontello.CANCEL);
+        cancelBtn.setDisableOnClick(true);
         cancelBtn.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
 
-        okBtn = new Button("Сохранить", new Button.ClickListener() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void buttonClick(final ClickEvent event) {
-
-                if (isModified()) {
-                    if (fieldGroup.isValid()) {
-                        try {
-                            fieldGroup.commit();
-                            bean = saveObject(bean);
-                            saved = true;
-                            modified = false;
-                        } catch (final Throwable e) {
-                            logger.error("Can't apply form changes", e);
-                            NotificationUtil.showError("Невозможно сохранить изменения!", e.getLocalizedMessage());
-                            return;
-                        }
-                        closeForm();
-                    } else
-                        showValidationError("Невозможно сохранить изменения!", fieldGroup);
-                }
+        okBtn = new Button("Сохранить", event -> {
+            try {
+                if (save())
+                    closeForm();
+            } finally {
+                okBtn.setEnabled(true);
             }
-
         });
         okBtn.addStyleName(ExtaTheme.BUTTON_PRIMARY);
         okBtn.setIcon(Fontello.OK);
+        okBtn.setDisableOnClick(true);
         okBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
 
         final Label footerText = new Label("");
@@ -188,10 +215,38 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         setDefaultFocus(form);
         setContent(form);
 
-        addAttachListener(e->{
+        addAttachListener(e -> {
             fieldGroup.setReadOnly(isReadOnly());
             okBtn.setEnabled(!isReadOnly());
         });
+    }
+
+    protected BeanItem<TEditObject> createBeanItem(TEditObject bean) {
+        return new BeanItem<TEditObject>(bean);
+    }
+
+    protected boolean save() {
+        boolean success = true;
+        if (fieldGroup.isValid()) {
+            if (isModified()) {
+                try {
+                    fieldGroup.commit();
+                    bean = saveObject(bean);
+                    BeanItem<TEditObject> beanItem = createBeanItem(bean);
+                    fieldGroup.setItemDataSource(beanItem);
+                    saved = true;
+                    modified = false;
+                } catch (final Throwable e) {
+                    logger.error("Can't apply form changes", e);
+                    NotificationUtil.showError("Невозможно сохранить изменения!", e.getLocalizedMessage());
+                    success = false;
+                }
+            }
+        } else {
+            success = false;
+            showValidationError("Невозможно сохранить изменения!", fieldGroup);
+        }
+        return success;
     }
 
     /**
@@ -229,11 +284,28 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
 
     public void setContent(Component content) {
         if (content != null) {
-            final VerticalLayout contentContainer = new VerticalLayout(content, this.buttonsPanel);
-            contentContainer.setSizeUndefined();
-            contentContainer.setMargin(new MarginInfo(false, true, false, true));
-            contentContainer.setSpacing(true);
-            content = contentContainer;
+            VerticalLayout root = new VerticalLayout();
+
+            if (content instanceof TabSheet) {
+                content.addStyleName(ExtaTheme.TABSHEET_PADDED_TABBAR);
+            } else {
+                Panel panel = new Panel();
+                panel.setSizeFull();
+                panel.addStyleName(ExtaTheme.PANEL_BORDERLESS);
+                panel.addStyleName(ExtaTheme.PANEL_SCROLL_DIVIDER);
+                VerticalLayout panelLayout = new VerticalLayout();
+                panelLayout.addComponent(content);
+                panelLayout.setMargin(true);
+                panel.setContent(panelLayout);
+                content = panel;
+            }
+            content.setSizeFull();
+            root.addComponent(content);
+            root.addComponent(buttonsPanel);
+            root.setSizeFull();
+            root.setExpandRatio(content, 1);
+            setSizeFull();
+            content = root;
         }
         super.setCompositionRoot(content);
     }

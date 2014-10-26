@@ -5,7 +5,7 @@ package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.AuditedObject;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 
 import javax.persistence.*;
 import java.util.List;
@@ -29,13 +29,13 @@ public class FormTransfer extends AuditedObject {
      * Контакт от которого принимаются бланки
      */
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Person fromContact;
+    private Employee fromContact;
 
     /**
      * Контакт которому передются бланки
      */
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Person toContact;
+    private Employee toContact;
 
     /**
      * Дата прередачи бланков
@@ -58,7 +58,7 @@ public class FormTransfer extends AuditedObject {
      *
      * @return the fromContact
      */
-    public Person getFromContact() {
+    public Employee getFromContact() {
         return fromContact;
     }
 
@@ -67,7 +67,7 @@ public class FormTransfer extends AuditedObject {
      *
      * @param fromContact the fromContact to set
      */
-    public void setFromContact(final Person fromContact) {
+    public void setFromContact(final Employee fromContact) {
         this.fromContact = fromContact;
     }
 
@@ -76,7 +76,7 @@ public class FormTransfer extends AuditedObject {
      *
      * @return the toContact
      */
-    public Person getToContact() {
+    public Employee getToContact() {
         return toContact;
     }
 
@@ -85,7 +85,7 @@ public class FormTransfer extends AuditedObject {
      *
      * @param toContact the toContact to set
      */
-    public void setToContact(final Person toContact) {
+    public void setToContact(final Employee toContact) {
         this.toContact = toContact;
     }
 

@@ -2,13 +2,12 @@ package ru.extas.model.contacts;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.FileContainer;
-import ru.extas.model.security.UserProfile;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -20,8 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @since 0.3
  */
 @Entity
-@DiscriminatorValue("PERSON")
-@Table(name = "PERSON")
+@Table(name = "PERSON", indexes = {@Index(columnList = "NAME")})
 public class Person extends Contact {
 
     private static final long serialVersionUID = -7891940552175345858L;
@@ -30,25 +28,22 @@ public class Person extends Contact {
     public static final int INN_LENGTH = 10;
     public static final int SCOPE_OF_ACTIVITY_LENGHT = 30;
 
-    @OneToOne(mappedBy = "contact", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private UserProfile userProfile;
-
     // Дата рождения
     private LocalDate birthday;
 
     @Column(name = "BIRTH_PLACE", length = BIRTH_PLACE_LENGTH)
-    @Max(BIRTH_PLACE_LENGTH)
+    @Size(max = BIRTH_PLACE_LENGTH)
     private String birthPlace;
 
     @Column(length = CITIZENSHIP_LENGTH)
-    @Max(CITIZENSHIP_LENGTH)
+    @Size(max = CITIZENSHIP_LENGTH)
     private String citizenship;
 
     @Column(name = "IS_CHANGE_NAME")
     private boolean changeName;
 
     @Column(name = "EX_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String exName;
 
     @Column(name = "CHANGE_NAME_DATE")
@@ -62,13 +57,13 @@ public class Person extends Contact {
     // Домашний телефон
     // Телефон
     @Column(name = "HOME_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String homePhone;
 
     // Рабочий телефон
     // Телефон
     @Column(name = "WORK_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String workPhone;
 
     @Column(name = "REG_N_ACT_IS_SAME")
@@ -83,22 +78,13 @@ public class Person extends Contact {
             @AttributeOverride(name = "realtyKind", column = @Column(name = "ACT_REALTY_KIND")),
             @AttributeOverride(name = "periodOfResidence", column = @Column(name = "ACT_PERIOD_OF_RESIDENCE"))
     })
+    @Valid
     private AddressInfo actualAddress = new AddressInfo();
-
-    // Должность
-    @Enumerated(EnumType.STRING)
-    @Column(name = "JOB_POSITION", length = 15)
-    private Position jobPosition;
-
-    // Департамент
-    @Column(name = "JOB_DEPARTMENT", length = 50)
-    @Max(50)
-    private String jobDepartment;
 
     // Паспортные данные:
     // номер
     @Column(name = "PASS_NUM", length = 30)
-    @Max(30)
+    @Size(max = 30)
     private String passNum;
 
     // дата выдачи
@@ -107,39 +93,34 @@ public class Person extends Contact {
 
     // кем выдан
     @Column(name = "PASS_ISSUED_BY", length = 255)
-    @Max(255)
+    @Size(max = 255)
     private String passIssuedBy;
 
     // код подразделения
     @Column(name = "PASS_ISSUED_BY_NUM", length = 10)
-    @Max(10)
+    @Size(max = 10)
     private String passIssuedByNum;
 
-    @ManyToMany(mappedBy = "employees", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Set<Company> employers;
-
-    @ManyToMany(mappedBy = "employees", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Set<SalePoint> workPlaces;
-
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
     private List<PersonFileContainer> files = newArrayList();
 
     @Column(name = "DL_NUM", length = 30)
-    @Max(30)
+    @Size(max = 30)
     private String dlNum;
 
     @Column(name = "DL_ISSUE_DATE")
     private LocalDate dlIssueDate;
 
     @Column(name = "DL_ISSUED_BY", length = 55)
-    @Max(55)
+    @Size(max = 55)
     private String dlIssuedBy;
 
     @Column(name = "PERIOD_OF_DRIVING")
     private int periodOfDriving;
 
     @Column(name = "DRIVING_CATEGORIES")
+    @Size(max = 255)
     private String drivingCategories;
 
     @Enumerated(EnumType.STRING)
@@ -149,7 +130,7 @@ public class Person extends Contact {
     @Column(name = "HAS_MARRIAGE_СONTRACT")
     private boolean marriageСontract;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PersonChild> children = newArrayList();
 
     @Column(name = "LIVING_TOGETHER")
@@ -158,18 +139,18 @@ public class Person extends Contact {
     private int dependants;
 
     @Column(name = "SPOUSE_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String spouseName;
 
     @Column(name = "SPOUSE_BIRTHDAY")
     private LocalDate spouseBirthday;
 
     @Column(name = "SPOUSE_BIRTH_PLACE", length = BIRTH_PLACE_LENGTH)
-    @Max(BIRTH_PLACE_LENGTH)
+    @Size(max = BIRTH_PLACE_LENGTH)
     private String spouseBirthPlace;
 
     @Column(length = CITIZENSHIP_LENGTH)
-    @Max(CITIZENSHIP_LENGTH)
+    @Size(max = CITIZENSHIP_LENGTH)
     private String spouseCitizenship;
 
     @Enumerated(EnumType.STRING)
@@ -180,15 +161,15 @@ public class Person extends Contact {
     private Integer eduFinish;
 
     @Column(name = "EDU_INST_NAME", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String eduInstName;
 
     @Column(name = "EDU_INST_INN", length = INN_LENGTH)
-    @Max(INN_LENGTH)
+    @Size(max = INN_LENGTH)
     private String eduInstINN;
 
     @Column(name = "SPECIALITY", length = 30)
-    @Max(30)
+    @Size(max = 30)
     private String speciality;
 
     @Enumerated(EnumType.STRING)
@@ -199,41 +180,43 @@ public class Person extends Contact {
     private int tempJobPeriod;
 
     @Column(name = "PRACTICE_TYPE", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String practiceType;
 
     @Column(name = "EMPLOYER_SCOPE", length = SCOPE_OF_ACTIVITY_LENGHT)
-    @Max(SCOPE_OF_ACTIVITY_LENGHT)
+    @Size(max = SCOPE_OF_ACTIVITY_LENGHT)
     private String employerScope;
 
     @Column(name = "EMPLOYER_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String employerName;
 
     @Column(name = "EMPLOYER_INN", length = INN_LENGTH)
-    @Max(INN_LENGTH)
+    @Size(max = INN_LENGTH)
     private String employerINN;
 
     @Column(name = "EMPLOYER_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String employerPhone;
 
     @Column(name = "OFFICE_POSITION", length = 30)
-    @Max(30)
+    @Size(max = 30)
     private String officePosition;
 
     @Column(name = "EMPLOYER_ADRESS")
+    @Size(max = 255)
     private String employerAdress;
 
     @Column(name = "EMPLOYER_WWW")
+    @Size(max = 255)
     private String employerWww;
 
     @Column(name = "EMPLOYER_DIRECTOR_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String employerDirectorName;
 
     @Column(name = "EMPLOYER_ACCOUNTANT_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String employerAccountantName;
 
     @Column(precision = 32, scale = 4)
@@ -252,19 +235,19 @@ public class Person extends Contact {
     private boolean businessOwner;
 
     @Column(name = "BUSINESS_SCOPE", length = SCOPE_OF_ACTIVITY_LENGHT)
-    @Max(SCOPE_OF_ACTIVITY_LENGHT)
+    @Size(max = SCOPE_OF_ACTIVITY_LENGHT)
     private String businessScope;
 
     @Column(name = "BUSINESS_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String businessName;
 
     @Column(name = "BUSINESS_INN", length = INN_LENGTH)
-    @Max(INN_LENGTH)
+    @Size(max = INN_LENGTH)
     private String businessINN;
 
     @Column(name = "BUSINESS_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String businessPhone;
 
     @Column(name = "BUSINESS_ADRESS")
@@ -287,11 +270,11 @@ public class Person extends Contact {
     private boolean anotherCredit;
 
     @Column(name = "ANOTHER_CREDIT_BANK", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String anotherCreditBank;
 
     @Column(name = "MARKETING_CHANNAL", length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String marketingChannel;
 
     @Column(name = "ACCOUNTING_4_PSYCHIATRIST")
@@ -307,19 +290,19 @@ public class Person extends Contact {
 
 
     @Column(name = "CLOSE_RELATIVE_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String closeRelativeName;
 
     @Column(name = "CLOSE_RELATIVE_FILIATION", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String closeRelativeFiliation;
 
     @Column(name = "CLOSE_RELATIVE_MOB_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String closeRelativeMobPhone;
 
     @Column(name = "CLOSE_RELATIVE_HOME_PHONE", length = PHONE_LINGHT)
-    @Max(PHONE_LINGHT)
+    @Size(max = PHONE_LINGHT)
     private String closeRelativeHomePhone;
 
     @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -345,7 +328,7 @@ public class Person extends Contact {
         return autos;
     }
 
-    public void setAutos(List<PersonAuto> autos) {
+    public void setAutos(final List<PersonAuto> autos) {
         this.autos = autos;
     }
 
@@ -353,7 +336,7 @@ public class Person extends Contact {
         return realties;
     }
 
-    public void setRealties(List<PersonRealty> realties) {
+    public void setRealties(final List<PersonRealty> realties) {
         this.realties = realties;
     }
 
@@ -361,7 +344,7 @@ public class Person extends Contact {
         return incomes;
     }
 
-    public void setIncomes(List<PersonIncome> incomes) {
+    public void setIncomes(final List<PersonIncome> incomes) {
         this.incomes = incomes;
     }
 
@@ -369,7 +352,7 @@ public class Person extends Contact {
         return expenses;
     }
 
-    public void setExpenses(List<PersonExpense> expenses) {
+    public void setExpenses(final List<PersonExpense> expenses) {
         this.expenses = expenses;
     }
 
@@ -377,7 +360,7 @@ public class Person extends Contact {
         return closeRelativeName;
     }
 
-    public void setCloseRelativeName(String closeRelativeName) {
+    public void setCloseRelativeName(final String closeRelativeName) {
         this.closeRelativeName = closeRelativeName;
     }
 
@@ -385,7 +368,7 @@ public class Person extends Contact {
         return closeRelativeFiliation;
     }
 
-    public void setCloseRelativeFiliation(String closeRelativeFiliation) {
+    public void setCloseRelativeFiliation(final String closeRelativeFiliation) {
         this.closeRelativeFiliation = closeRelativeFiliation;
     }
 
@@ -393,7 +376,7 @@ public class Person extends Contact {
         return closeRelativeMobPhone;
     }
 
-    public void setCloseRelativeMobPhone(String closeRelativeMobPhone) {
+    public void setCloseRelativeMobPhone(final String closeRelativeMobPhone) {
         this.closeRelativeMobPhone = closeRelativeMobPhone;
     }
 
@@ -401,7 +384,7 @@ public class Person extends Contact {
         return closeRelativeHomePhone;
     }
 
-    public void setCloseRelativeHomePhone(String closeRelativeHomePhone) {
+    public void setCloseRelativeHomePhone(final String closeRelativeHomePhone) {
         this.closeRelativeHomePhone = closeRelativeHomePhone;
     }
 
@@ -409,7 +392,7 @@ public class Person extends Contact {
         return marketingChannel;
     }
 
-    public void setMarketingChannel(String marketingChannel) {
+    public void setMarketingChannel(final String marketingChannel) {
         this.marketingChannel = marketingChannel;
     }
 
@@ -417,7 +400,7 @@ public class Person extends Contact {
         return accounting4Psychiatrist;
     }
 
-    public void setAccounting4Psychiatrist(boolean accounting4Psychiatrist) {
+    public void setAccounting4Psychiatrist(final boolean accounting4Psychiatrist) {
         this.accounting4Psychiatrist = accounting4Psychiatrist;
     }
 
@@ -425,7 +408,7 @@ public class Person extends Contact {
         return criminalLiability;
     }
 
-    public void setCriminalLiability(boolean criminalLiability) {
+    public void setCriminalLiability(final boolean criminalLiability) {
         this.criminalLiability = criminalLiability;
     }
 
@@ -433,7 +416,7 @@ public class Person extends Contact {
         return collateralProperty;
     }
 
-    public void setCollateralProperty(boolean collateralProperty) {
+    public void setCollateralProperty(final boolean collateralProperty) {
         this.collateralProperty = collateralProperty;
     }
 
@@ -441,7 +424,7 @@ public class Person extends Contact {
         return receivership;
     }
 
-    public void setReceivership(boolean receivership) {
+    public void setReceivership(final boolean receivership) {
         this.receivership = receivership;
     }
 
@@ -449,7 +432,7 @@ public class Person extends Contact {
         return anotherCredit;
     }
 
-    public void setAnotherCredit(boolean anotherCredit) {
+    public void setAnotherCredit(final boolean anotherCredit) {
         this.anotherCredit = anotherCredit;
     }
 
@@ -457,7 +440,7 @@ public class Person extends Contact {
         return anotherCreditBank;
     }
 
-    public void setAnotherCreditBank(String anotherCreditBank) {
+    public void setAnotherCreditBank(final String anotherCreditBank) {
         this.anotherCreditBank = anotherCreditBank;
     }
 
@@ -465,7 +448,7 @@ public class Person extends Contact {
         return businessOwner;
     }
 
-    public void setBusinessOwner(boolean businessOwner) {
+    public void setBusinessOwner(final boolean businessOwner) {
         this.businessOwner = businessOwner;
     }
 
@@ -473,7 +456,7 @@ public class Person extends Contact {
         return businessScope;
     }
 
-    public void setBusinessScope(String businessScope) {
+    public void setBusinessScope(final String businessScope) {
         this.businessScope = businessScope;
     }
 
@@ -481,7 +464,7 @@ public class Person extends Contact {
         return businessName;
     }
 
-    public void setBusinessName(String businessName) {
+    public void setBusinessName(final String businessName) {
         this.businessName = businessName;
     }
 
@@ -489,7 +472,7 @@ public class Person extends Contact {
         return businessINN;
     }
 
-    public void setBusinessINN(String businessINN) {
+    public void setBusinessINN(final String businessINN) {
         this.businessINN = businessINN;
     }
 
@@ -497,7 +480,7 @@ public class Person extends Contact {
         return businessPhone;
     }
 
-    public void setBusinessPhone(String businessPhone) {
+    public void setBusinessPhone(final String businessPhone) {
         this.businessPhone = businessPhone;
     }
 
@@ -505,7 +488,7 @@ public class Person extends Contact {
         return businessAdress;
     }
 
-    public void setBusinessAdress(String businessAdress) {
+    public void setBusinessAdress(final String businessAdress) {
         this.businessAdress = businessAdress;
     }
 
@@ -513,7 +496,7 @@ public class Person extends Contact {
         return businessPart;
     }
 
-    public void setBusinessPart(BigDecimal businessPart) {
+    public void setBusinessPart(final BigDecimal businessPart) {
         this.businessPart = businessPart;
     }
 
@@ -521,7 +504,7 @@ public class Person extends Contact {
         return businessMumbEmp;
     }
 
-    public void setBusinessMumbEmp(int businessMumbEmp) {
+    public void setBusinessMumbEmp(final int businessMumbEmp) {
         this.businessMumbEmp = businessMumbEmp;
     }
 
@@ -529,7 +512,7 @@ public class Person extends Contact {
         return businessBalance;
     }
 
-    public void setBusinessBalance(BigDecimal businessBalance) {
+    public void setBusinessBalance(final BigDecimal businessBalance) {
         this.businessBalance = businessBalance;
     }
 
@@ -537,7 +520,7 @@ public class Person extends Contact {
         return businessYearlySales;
     }
 
-    public void setBusinessYearlySales(BigDecimal businessYearlySales) {
+    public void setBusinessYearlySales(final BigDecimal businessYearlySales) {
         this.businessYearlySales = businessYearlySales;
     }
 
@@ -545,7 +528,7 @@ public class Person extends Contact {
         return officePosition;
     }
 
-    public void setOfficePosition(String officePosition) {
+    public void setOfficePosition(final String officePosition) {
         this.officePosition = officePosition;
     }
 
@@ -553,7 +536,7 @@ public class Person extends Contact {
         return typeOfEmployment;
     }
 
-    public void setTypeOfEmployment(TypeOfEmployment typeOfEmployment) {
+    public void setTypeOfEmployment(final TypeOfEmployment typeOfEmployment) {
         this.typeOfEmployment = typeOfEmployment;
     }
 
@@ -561,7 +544,7 @@ public class Person extends Contact {
         return tempJobPeriod;
     }
 
-    public void setTempJobPeriod(int tempJobPeriod) {
+    public void setTempJobPeriod(final int tempJobPeriod) {
         this.tempJobPeriod = tempJobPeriod;
     }
 
@@ -569,7 +552,7 @@ public class Person extends Contact {
         return practiceType;
     }
 
-    public void setPracticeType(String practiceType) {
+    public void setPracticeType(final String practiceType) {
         this.practiceType = practiceType;
     }
 
@@ -577,7 +560,7 @@ public class Person extends Contact {
         return employerScope;
     }
 
-    public void setEmployerScope(String employerScope) {
+    public void setEmployerScope(final String employerScope) {
         this.employerScope = employerScope;
     }
 
@@ -585,7 +568,7 @@ public class Person extends Contact {
         return employerName;
     }
 
-    public void setEmployerName(String employerName) {
+    public void setEmployerName(final String employerName) {
         this.employerName = employerName;
     }
 
@@ -593,7 +576,7 @@ public class Person extends Contact {
         return employerINN;
     }
 
-    public void setEmployerINN(String employerINN) {
+    public void setEmployerINN(final String employerINN) {
         this.employerINN = employerINN;
     }
 
@@ -601,7 +584,7 @@ public class Person extends Contact {
         return employerPhone;
     }
 
-    public void setEmployerPhone(String employerPhone) {
+    public void setEmployerPhone(final String employerPhone) {
         this.employerPhone = employerPhone;
     }
 
@@ -609,7 +592,7 @@ public class Person extends Contact {
         return employerAdress;
     }
 
-    public void setEmployerAdress(String employerAdress) {
+    public void setEmployerAdress(final String employerAdress) {
         this.employerAdress = employerAdress;
     }
 
@@ -617,7 +600,7 @@ public class Person extends Contact {
         return employerWww;
     }
 
-    public void setEmployerWww(String employerWww) {
+    public void setEmployerWww(final String employerWww) {
         this.employerWww = employerWww;
     }
 
@@ -625,7 +608,7 @@ public class Person extends Contact {
         return employerDirectorName;
     }
 
-    public void setEmployerDirectorName(String employerDirectorName) {
+    public void setEmployerDirectorName(final String employerDirectorName) {
         this.employerDirectorName = employerDirectorName;
     }
 
@@ -633,7 +616,7 @@ public class Person extends Contact {
         return employerAccountantName;
     }
 
-    public void setEmployerAccountantName(String employerAccountantName) {
+    public void setEmployerAccountantName(final String employerAccountantName) {
         this.employerAccountantName = employerAccountantName;
     }
 
@@ -641,7 +624,7 @@ public class Person extends Contact {
         return salary;
     }
 
-    public void setSalary(BigDecimal salary) {
+    public void setSalary(final BigDecimal salary) {
         this.salary = salary;
     }
 
@@ -649,7 +632,7 @@ public class Person extends Contact {
         return lastExperience;
     }
 
-    public void setLastExperience(int lastExperience) {
+    public void setLastExperience(final int lastExperience) {
         this.lastExperience = lastExperience;
     }
 
@@ -657,7 +640,7 @@ public class Person extends Contact {
         return genExperience;
     }
 
-    public void setGenExperience(int genExperience) {
+    public void setGenExperience(final int genExperience) {
         this.genExperience = genExperience;
     }
 
@@ -665,7 +648,7 @@ public class Person extends Contact {
         return jobsFor3years;
     }
 
-    public void setJobsFor3years(int jobsFor3years) {
+    public void setJobsFor3years(final int jobsFor3years) {
         this.jobsFor3years = jobsFor3years;
     }
 
@@ -673,7 +656,7 @@ public class Person extends Contact {
         return eduKind;
     }
 
-    public void setEduKind(EducationKind eduKind) {
+    public void setEduKind(final EducationKind eduKind) {
         this.eduKind = eduKind;
     }
 
@@ -681,7 +664,7 @@ public class Person extends Contact {
         return eduFinish;
     }
 
-    public void setEduFinish(Integer eduFinish) {
+    public void setEduFinish(final Integer eduFinish) {
         this.eduFinish = eduFinish;
     }
 
@@ -689,7 +672,7 @@ public class Person extends Contact {
         return eduInstName;
     }
 
-    public void setEduInstName(String eduInstName) {
+    public void setEduInstName(final String eduInstName) {
         this.eduInstName = eduInstName;
     }
 
@@ -697,7 +680,7 @@ public class Person extends Contact {
         return eduInstINN;
     }
 
-    public void setEduInstINN(String eduInstINN) {
+    public void setEduInstINN(final String eduInstINN) {
         this.eduInstINN = eduInstINN;
     }
 
@@ -705,7 +688,7 @@ public class Person extends Contact {
         return speciality;
     }
 
-    public void setSpeciality(String speciality) {
+    public void setSpeciality(final String speciality) {
         this.speciality = speciality;
     }
 
@@ -743,42 +726,6 @@ public class Person extends Contact {
      */
     public void setWorkPhone(final String workPhone) {
         this.workPhone = workPhone;
-    }
-
-    /**
-     * <p>Getter for the field <code>jobPosition</code>.</p>
-     *
-     * @return a {@link ru.extas.model.contacts.Person.Position} object.
-     */
-    public Position getJobPosition() {
-        return jobPosition;
-    }
-
-    /**
-     * <p>Setter for the field <code>jobPosition</code>.</p>
-     *
-     * @param jobPosition a {@link ru.extas.model.contacts.Person.Position} object.
-     */
-    public void setJobPosition(final Position jobPosition) {
-        this.jobPosition = jobPosition;
-    }
-
-    /**
-     * <p>Getter for the field <code>jobDepartment</code>.</p>
-     *
-     * @return a {@link java.lang.String} object.
-     */
-    public String getJobDepartment() {
-        return jobDepartment;
-    }
-
-    /**
-     * <p>Setter for the field <code>jobDepartment</code>.</p>
-     *
-     * @param jobDepartment a {@link java.lang.String} object.
-     */
-    public void setJobDepartment(final String jobDepartment) {
-        this.jobDepartment = jobDepartment;
     }
 
     /**
@@ -893,46 +840,6 @@ public class Person extends Contact {
         MALE, FEMALE
     }
 
-    public enum Position {
-        EMPLOYEE, DIRECTOR, ACCOUNTANT
-    }
-
-    /**
-     * <p>Getter for the field <code>employers</code>.</p>
-     *
-     * @return a {@link java.util.Set} object.
-     */
-    public Set<Company> getEmployers() {
-        return employers;
-    }
-
-    /**
-     * <p>Setter for the field <code>employers</code>.</p>
-     *
-     * @param employers a {@link java.util.Set} object.
-     */
-    public void setEmployers(Set<Company> employers) {
-        this.employers = employers;
-    }
-
-    /**
-     * <p>Getter for the field <code>workPlaces</code>.</p>
-     *
-     * @return a {@link java.util.Set} object.
-     */
-    public Set<SalePoint> getWorkPlaces() {
-        return workPlaces;
-    }
-
-    /**
-     * <p>Setter for the field <code>workPlaces</code>.</p>
-     *
-     * @param workPlaces a {@link java.util.Set} object.
-     */
-    public void setWorkPlaces(Set<SalePoint> workPlaces) {
-        this.workPlaces = workPlaces;
-    }
-
     /**
      * <p>Getter for the field <code>files</code>.</p>
      *
@@ -947,7 +854,7 @@ public class Person extends Contact {
      *
      * @param files a {@link java.util.List} object.
      */
-    public void setFiles(List<PersonFileContainer> files) {
+    public void setFiles(final List<PersonFileContainer> files) {
         this.files = files;
     }
 
@@ -955,7 +862,7 @@ public class Person extends Contact {
         return birthPlace;
     }
 
-    public void setBirthPlace(String birthPlace) {
+    public void setBirthPlace(final String birthPlace) {
         this.birthPlace = birthPlace;
     }
 
@@ -963,7 +870,7 @@ public class Person extends Contact {
         return citizenship;
     }
 
-    public void setCitizenship(String citizenship) {
+    public void setCitizenship(final String citizenship) {
         this.citizenship = citizenship;
     }
 
@@ -971,7 +878,7 @@ public class Person extends Contact {
         return changeName;
     }
 
-    public void setChangeName(boolean changeName) {
+    public void setChangeName(final boolean changeName) {
         this.changeName = changeName;
     }
 
@@ -979,7 +886,7 @@ public class Person extends Contact {
         return exName;
     }
 
-    public void setExName(String exName) {
+    public void setExName(final String exName) {
         this.exName = exName;
     }
 
@@ -987,7 +894,7 @@ public class Person extends Contact {
         return changeNameDate;
     }
 
-    public void setChangeNameDate(LocalDate changeNameDate) {
+    public void setChangeNameDate(final LocalDate changeNameDate) {
         this.changeNameDate = changeNameDate;
     }
 
@@ -995,7 +902,7 @@ public class Person extends Contact {
         return actualAddress;
     }
 
-    public void setActualAddress(AddressInfo actualAddress) {
+    public void setActualAddress(final AddressInfo actualAddress) {
         this.actualAddress = actualAddress;
     }
 
@@ -1003,7 +910,7 @@ public class Person extends Contact {
         return regNactIsSame;
     }
 
-    public void setRegNactIsSame(boolean regNactIsSame) {
+    public void setRegNactIsSame(final boolean regNactIsSame) {
         this.regNactIsSame = regNactIsSame;
     }
 
@@ -1011,7 +918,7 @@ public class Person extends Contact {
         return dlNum;
     }
 
-    public void setDlNum(String dlNum) {
+    public void setDlNum(final String dlNum) {
         this.dlNum = dlNum;
     }
 
@@ -1019,7 +926,7 @@ public class Person extends Contact {
         return dlIssueDate;
     }
 
-    public void setDlIssueDate(LocalDate dlIssueDate) {
+    public void setDlIssueDate(final LocalDate dlIssueDate) {
         this.dlIssueDate = dlIssueDate;
     }
 
@@ -1027,7 +934,7 @@ public class Person extends Contact {
         return dlIssuedBy;
     }
 
-    public void setDlIssuedBy(String dlIssuedBy) {
+    public void setDlIssuedBy(final String dlIssuedBy) {
         this.dlIssuedBy = dlIssuedBy;
     }
 
@@ -1035,7 +942,7 @@ public class Person extends Contact {
         return periodOfDriving;
     }
 
-    public void setPeriodOfDriving(int periodOfDriving) {
+    public void setPeriodOfDriving(final int periodOfDriving) {
         this.periodOfDriving = periodOfDriving;
     }
 
@@ -1043,7 +950,7 @@ public class Person extends Contact {
         return drivingCategories;
     }
 
-    public void setDrivingCategories(String drivingCategories) {
+    public void setDrivingCategories(final String drivingCategories) {
         this.drivingCategories = drivingCategories;
     }
 
@@ -1051,7 +958,7 @@ public class Person extends Contact {
         return maritalStatus;
     }
 
-    public void setMaritalStatus(MaritalStatus maritalStatus) {
+    public void setMaritalStatus(final MaritalStatus maritalStatus) {
         this.maritalStatus = maritalStatus;
     }
 
@@ -1059,7 +966,7 @@ public class Person extends Contact {
         return marriageСontract;
     }
 
-    public void setMarriageСontract(boolean marriageСontract) {
+    public void setMarriageСontract(final boolean marriageСontract) {
         this.marriageСontract = marriageСontract;
     }
 
@@ -1067,7 +974,7 @@ public class Person extends Contact {
         return children;
     }
 
-    public void setChildren(List<PersonChild> personChildren) {
+    public void setChildren(final List<PersonChild> personChildren) {
         this.children = personChildren;
     }
 
@@ -1075,7 +982,7 @@ public class Person extends Contact {
         return livingTogether;
     }
 
-    public void setLivingTogether(int livingTogether) {
+    public void setLivingTogether(final int livingTogether) {
         this.livingTogether = livingTogether;
     }
 
@@ -1083,7 +990,7 @@ public class Person extends Contact {
         return dependants;
     }
 
-    public void setDependants(int dependants) {
+    public void setDependants(final int dependants) {
         this.dependants = dependants;
     }
 
@@ -1091,7 +998,7 @@ public class Person extends Contact {
         return spouseName;
     }
 
-    public void setSpouseName(String spouseName) {
+    public void setSpouseName(final String spouseName) {
         this.spouseName = spouseName;
     }
 
@@ -1099,7 +1006,7 @@ public class Person extends Contact {
         return spouseBirthday;
     }
 
-    public void setSpouseBirthday(LocalDate spouseBirthday) {
+    public void setSpouseBirthday(final LocalDate spouseBirthday) {
         this.spouseBirthday = spouseBirthday;
     }
 
@@ -1107,7 +1014,7 @@ public class Person extends Contact {
         return spouseBirthPlace;
     }
 
-    public void setSpouseBirthPlace(String spouseBirthPlace) {
+    public void setSpouseBirthPlace(final String spouseBirthPlace) {
         this.spouseBirthPlace = spouseBirthPlace;
     }
 
@@ -1115,7 +1022,7 @@ public class Person extends Contact {
         return spouseCitizenship;
     }
 
-    public void setSpouseCitizenship(String spouseCitizenship) {
+    public void setSpouseCitizenship(final String spouseCitizenship) {
         this.spouseCitizenship = spouseCitizenship;
     }
 }

@@ -6,9 +6,9 @@ package ru.extas.web.lead;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainInfo;
 import ru.extas.web.commons.SubdomainInfoImpl;
 import ru.extas.web.commons.SubdomainView;
-import ru.extas.web.commons.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.AccessRole;
@@ -36,7 +36,7 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
-import ru.extas.web.contacts.SalePointSimpleSelect;
+import ru.extas.web.contacts.salepoint.SalePointSimpleSelect;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
@@ -106,7 +106,7 @@ public class LeadInputFormUI extends UI {
 
     /** {@inheritDoc} */
     @Override
-    protected void init(VaadinRequest request) {
+    protected void init(final VaadinRequest request) {
 
         initUi(this);
 
@@ -114,17 +114,17 @@ public class LeadInputFormUI extends UI {
         lead.setStatus(Lead.Status.NEW);
 
         // Прочитать параметры адресной строки
-        Map<String, String[]> params = request.getParameterMap();
+        final Map<String, String[]> params = request.getParameterMap();
         // Пользовательский стиль
-        String customCss = getParamValue("custom_css", params);
+        final String customCss = getParamValue("custom_css", params);
         if (!isNullOrEmpty(customCss))
             getPage().getStyles().add(new ExternalResource(customCss));
         if (initLead(lead, params)) return;
 
-        FormLayout form = new ExtaFormLayout();
+        final FormLayout form = new ExtaFormLayout();
         form.setSizeUndefined();
 
-        EditField contactNameField = new EditField("Имя", "Введите фамилию имя отчество");
+        final EditField contactNameField = new EditField("Имя", "Введите фамилию имя отчество");
         contactNameField.setInputPrompt("Фамилия Имя Отчество");
         contactNameField.setColumns(25);
         contactNameField.setRequired(true);
@@ -183,9 +183,9 @@ public class LeadInputFormUI extends UI {
         vendorField = new SalePointSimpleSelect("Мотосалон", "Выберите мотосалон");
         vendorField.setInputPrompt("Выберите мотосалон...");
         vendorField.addValueChangeListener(event -> {
-            Property property = event.getProperty();
+            final Property property = event.getProperty();
             if (property != null) {
-                Object value = property.getValue();
+                final Object value = property.getValue();
                 if (value != null) {
                     pointOfSaleField.setValue(((SalePoint) vendorField.getConvertedValue()).getName());
                     regionField.setValue(((SalePoint) vendorField.getConvertedValue()).getRegAddress().getRegion());
@@ -200,22 +200,21 @@ public class LeadInputFormUI extends UI {
 
         commentField = new TextArea("Примечание");
         commentField.setInputPrompt("Укажите любую дополнительную информацию");
-        commentField.setColumns(25);
         commentField.setRows(6);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);
 
         // Привязываем поля
-        BeanItem<Lead> beanItem = new BeanItem<>(lead);
+        final BeanItem<Lead> beanItem = new BeanItem<>(lead);
         fieldGroup = new FieldGroup(beanItem);
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
 
-        VerticalLayout panel = new VerticalLayout(form);
+        final VerticalLayout panel = new VerticalLayout(form);
         panel.setMargin(true);
 
         // Кнопка ввода
-        Button submitBtn = new Button("Отправить", new Button.ClickListener() {
+        final Button submitBtn = new Button("Отправить", new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -237,7 +236,7 @@ public class LeadInputFormUI extends UI {
                     }
                     close();
                 } else {
-                    String caption = "Невозможно отправить данные!";
+                    final String caption = "Невозможно отправить данные!";
                     showValidationError(caption, fieldGroup);
                 }
             }
@@ -253,13 +252,13 @@ public class LeadInputFormUI extends UI {
 
     }
 
-    private boolean initLead(Lead lead, Map<String, String[]> params) {
+    private boolean initLead(final Lead lead, final Map<String, String[]> params) {
         // Компания
-        String[] companyPrm = params.get("company");
+        final String[] companyPrm = params.get("company");
         if (companyPrm != null && companyPrm.length > 0) {
-            String companyId = companyPrm[0];
+            final String companyId = companyPrm[0];
             if (!isNullOrEmpty(companyId)) {
-                CompanyRepository companyRepository = lookup(CompanyRepository.class);
+                final CompanyRepository companyRepository = lookup(CompanyRepository.class);
                 company = companyRepository.findOne(companyId);
                 if (company == null) {
                     NotificationUtil.showError("Неверные параметры формы!",
@@ -272,12 +271,12 @@ public class LeadInputFormUI extends UI {
                 return true;
             }
         } else { // или торговая точка
-            String[] salePointPrm = params.get("salepoint");
+            final String[] salePointPrm = params.get("salepoint");
             if (salePointPrm != null && salePointPrm.length > 0) {
-                String salePointId = salePointPrm[0];
+                final String salePointId = salePointPrm[0];
                 if (!isNullOrEmpty(salePointId)) {
-                    SalePointRepository salePointRepository = lookup(SalePointRepository.class);
-                    SalePoint salePoint = salePointRepository.findOne(salePointId);
+                    final SalePointRepository salePointRepository = lookup(SalePointRepository.class);
+                    final SalePoint salePoint = salePointRepository.findOne(salePointId);
                     if (salePoint == null) {
                         NotificationUtil.showError("Неверные параметры формы!",
                                 "Неверно задан идентификатор торговой точки в параметре 'salepoint'.");
@@ -293,57 +292,57 @@ public class LeadInputFormUI extends UI {
         }
 
         // Имя клиента
-        String contactName = getParamValue("contactName", params);
+        final String contactName = getParamValue("contactName", params);
         if (!isNullOrEmpty(contactName))
             lead.setContactName(contactName);
         // Телефон клиента
-        String contactPhone = getParamValue("contactPhone", params);
+        final String contactPhone = getParamValue("contactPhone", params);
         if (!isNullOrEmpty(contactPhone))
             lead.setContactPhone(contactPhone);
         // Эл. почта
-        String contactEmail = getParamValue("contactEmail", params);
+        final String contactEmail = getParamValue("contactEmail", params);
         if (!isNullOrEmpty(contactEmail))
             lead.setContactEmail(contactEmail);
         // Регион проживания клиента
         String contactRegion = getParamValue("contactRegion", params);
         if (!isNullOrEmpty(contactRegion)) {
             contactRegion = contactRegion.trim();
-            SupplementService service = lookup(SupplementService.class);
-            Collection<String> regions = service.loadRegions();
+            final SupplementService service = lookup(SupplementService.class);
+            final Collection<String> regions = service.loadRegions();
             final String finalContactRegion = contactRegion;
-            Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalContactRegion));
+            final Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalContactRegion));
             lead.setContactRegion(trueRegion.orNull());
         }
         // Тип техники
         String motorType = getParamValue("motorType", params);
         if (!isNullOrEmpty(motorType)) {
             motorType = motorType.trim();
-            MotorTypeRepository repository = lookup(MotorTypeRepository.class);
-            List<String> types = repository.loadAllNames();
+            final MotorTypeRepository repository = lookup(MotorTypeRepository.class);
+            final List<String> types = repository.loadAllNames();
             final String finalMotorType = motorType;
-            Optional<String> trueType = Iterables.tryFind(types, input -> StringUtils.containsIgnoreCase(input, finalMotorType));
+            final Optional<String> trueType = Iterables.tryFind(types, input -> StringUtils.containsIgnoreCase(input, finalMotorType));
             lead.setMotorType(trueType.orNull());
         }
         // Марка техники
         String motorBrand = getParamValue("motorBrand", params);
         if (!isNullOrEmpty(motorBrand)) {
             motorBrand = motorBrand.trim();
-            MotorBrandRepository repository = lookup(MotorBrandRepository.class);
-            List<String> brands = repository.loadAllNames();
+            final MotorBrandRepository repository = lookup(MotorBrandRepository.class);
+            final List<String> brands = repository.loadAllNames();
             final String finalMotorBrand = motorBrand;
-            Optional<String> trueMotorBrand = Iterables.tryFind(brands, input -> StringUtils.containsIgnoreCase(input, finalMotorBrand));
+            final Optional<String> trueMotorBrand = Iterables.tryFind(brands, input -> StringUtils.containsIgnoreCase(input, finalMotorBrand));
             lead.setMotorBrand(trueMotorBrand.orNull());
         }
         // Модель техники
-        String motorModel = getParamValue("motorModel", params);
+        final String motorModel = getParamValue("motorModel", params);
         if (!isNullOrEmpty(motorModel))
             lead.setMotorModel(motorModel);
         // Стоимость техники
-        String motorPrice = getParamValue("motorPrice", params);
+        final String motorPrice = getParamValue("motorPrice", params);
         if (!isNullOrEmpty(motorPrice)) {
-            DecimalFormat format = (DecimalFormat) NumberFormat.getNumberInstance(lookup(Locale.class));
+            final DecimalFormat format = (DecimalFormat) NumberFormat.getNumberInstance(lookup(Locale.class));
             format.setParseBigDecimal(true);
-            BigDecimal price = (BigDecimal) format.parse(motorPrice, new ParsePosition(0));
+            final BigDecimal price = (BigDecimal) format.parse(motorPrice, new ParsePosition(0));
             if (price == null) {
                 NotificationUtil.showError("Неверные параметры формы!",
                         "Неверно задана сумма в параметре 'motorPrice'.");
@@ -355,40 +354,40 @@ public class LeadInputFormUI extends UI {
         String region = getParamValue("region", params);
         if (!isNullOrEmpty(region)) {
             region = region.trim();
-            SupplementService service = lookup(SupplementService.class);
-            Collection<String> regions = service.loadRegions();
+            final SupplementService service = lookup(SupplementService.class);
+            final Collection<String> regions = service.loadRegions();
             final String finalregion = region;
-            Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalregion));
+            final Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalregion));
             lead.setRegion(trueRegion.orNull());
         }
         // Примечание
-        String comment = getParamValue("comment", params);
+        final String comment = getParamValue("comment", params);
         if (!isNullOrEmpty(comment))
             lead.setComment(comment);
 
         return false;
     }
 
-    private String getParamValue(String prmName, Map<String, String[]> params) {
-        String[] contactNamePrm = params.get(prmName);
+    private String getParamValue(final String prmName, final Map<String, String[]> params) {
+        final String[] contactNamePrm = params.get(prmName);
         if (contactNamePrm != null && contactNamePrm.length > 0)
             return contactNamePrm[0];
         return null;
     }
 
-    private void saveObject(Lead lead) {
-        LeadRepository leadRepository = lookup(LeadRepository.class);
-        UserManagementService userService = lookup(UserManagementService.class);
+    private void saveObject(final Lead lead) {
+        final LeadRepository leadRepository = lookup(LeadRepository.class);
+        final UserManagementService userService = lookup(UserManagementService.class);
 
         // Определить потенциального пользователя
-        Person user = null;
+        Employee user = null;
         if (lead.getVendor() != null) {
-            Set<Person> employees = lead.getVendor().getEmployees();
+            final Set<Employee> employees = lead.getVendor().getEmployees();
             if (!isEmpty(employees))
                 user = employees.iterator().next();
         }
         if (user == null)
-            user = userService.findUserContactByLogin("admin");
+            user = userService.findUserEmployeeByLogin("admin");
 
         leadRepository.permitAndSave(lead, new ImmutablePair<>(user, AccessRole.OWNER));
     }

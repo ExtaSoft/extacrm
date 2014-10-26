@@ -10,15 +10,15 @@ public class ExtaException extends RuntimeException {
     public ExtaException() {
     }
 
-    public ExtaException(String message) {
+    public ExtaException(final String message) {
         super(message);
     }
 
-    public ExtaException(String message, Throwable cause) {
+    public ExtaException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public ExtaException(Throwable cause) {
+    public ExtaException(final Throwable cause) {
         super(cause);
     }
 }

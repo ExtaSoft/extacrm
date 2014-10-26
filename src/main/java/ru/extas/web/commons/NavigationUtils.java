@@ -12,7 +12,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  */
 public class NavigationUtils {
 
-    public static void setUriFragment(ExtaUri uri) {
+    public static void setUriFragment(final ExtaUri uri) {
         UI.getCurrent().getPage().setUriFragment("!" + uri.toString(), false);
     }
 

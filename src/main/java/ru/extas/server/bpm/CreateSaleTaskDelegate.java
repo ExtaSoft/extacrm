@@ -35,12 +35,12 @@ public class CreateSaleTaskDelegate implements JavaDelegate {
 /** {@inheritDoc} */
 @Transactional
 @Override
-public void execute(DelegateExecution execution) throws Exception {
-	Map<String, Object> processVariables = execution.getVariables();
+public void execute(final DelegateExecution execution) throws Exception {
+	final Map<String, Object> processVariables = execution.getVariables();
 	if (processVariables.containsKey("lead")) {
-		Lead lead = (Lead) processVariables.get("lead");
-        SaleRepository saleRepository = lookup(SaleRepository.class);
-		Sale sale = saleRepository.ctreateSaleByLead(lead);
+		final Lead lead = (Lead) processVariables.get("lead");
+        final SaleRepository saleRepository = lookup(SaleRepository.class);
+		final Sale sale = saleRepository.ctreateSaleByLead(lead);
 		execution.setVariable("sale", sale);
 	}
 }

@@ -1,7 +1,7 @@
 package ru.extas.web.lead;
 
 import com.vaadin.data.Item;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
 import ru.extas.model.lead.Lead;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
@@ -19,10 +19,10 @@ class LeadDataDecl extends GridDataDecl {
     /**
      * <p>Constructor for LeadDataDecl.</p>
      */
-    public LeadDataDecl(LeadsGrid grid) {
+    public LeadDataDecl(final LeadsGrid grid) {
         addMapping("num", "№", new NumColumnGenerator() {
             @Override
-            public void fireClick(Item item) {
+            public void fireClick(final Item item) {
                 final Lead curObj = GridItem.extractBean(item);
                 grid.doEditObject(curObj);
             }
@@ -38,7 +38,7 @@ class LeadDataDecl extends GridDataDecl {
         if (grid.getStatus() == Lead.Status.NEW) {
             addMapping("to_work", "", new ComponentColumnGenerator() {
                 @Override
-                public Object generateCell(Object columnId, Item item, Object itemId) {
+                public Object generateCell(final Object columnId, final Item item, final Object itemId) {
                     final Button button = new Button("В работу", Fontello.CHECK_2);
                     button.addStyleName(ExtaTheme.BUTTON_SMALL);
                     button.addClickListener(e -> grid.doQualifyLead(itemId));

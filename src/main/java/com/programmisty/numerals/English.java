@@ -53,10 +53,10 @@ public class English extends AbstractNumeral {
      * Max supported number: 1000000000000000000000000000000000000-1
      */
     @Override
-    public String format(Number number) {
+    public String format(final Number number) {
         // check number type
         checkSupported(number);
-        String text = number.toString();
+        final String text = number.toString();
         return formatImpl(text);
     }
 
@@ -64,19 +64,19 @@ public class English extends AbstractNumeral {
         if ("0".equals(text)) {
             return DECIMAL[0];
         }
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         if (text.startsWith("-")) {
             sb.append("minus ");
             text = text.substring(1);
         }
-        byte n[][] = Util.groups(text, 3);
+        final byte[][] n = Util.groups(text, 3);
         // [0,1,2],[3,5,6]
         for (int i = 0; i < n.length; ++i) {
-            int k = n.length - i - 1;
+            final int k = n.length - i - 1;
 
-            int h = n[i][0]; // сотни
-            int t = n[i][1]; // десятки
-            int u = n[i][2]; // единицы
+            final int h = n[i][0]; // сотни
+            final int t = n[i][1]; // десятки
+            final int u = n[i][2]; // единицы
 
             if (h > 0) {
                 sb.append(DECIMAL[h]);
@@ -117,18 +117,18 @@ public class English extends AbstractNumeral {
      * 123.17 One hundred twenty-three and 17/100
      */
     @Override
-     public String amount(BigDecimal bi) {
-        String txt = bi.toPlainString();
+     public String amount(final BigDecimal bi) {
+        final String txt = bi.toPlainString();
         
-        int point = txt.indexOf('.');
-        StringBuilder sb = new StringBuilder();
+        final int point = txt.indexOf('.');
+        final StringBuilder sb = new StringBuilder();
         String rubli = txt;
         String kopeyki = "";
         if (point > 0) {
             rubli = txt.substring(0, point);
             kopeyki = txt.substring(point+1);
         }
-        String celaya = formatImpl(rubli);
+        final String celaya = formatImpl(rubli);
         sb.append(celaya);
         if (point > 0) {
             sb.append(" and ");

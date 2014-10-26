@@ -1,6 +1,9 @@
 package ru.extas.web.commons;
 
-import com.vaadin.ui.*;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.VerticalLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.server.security.UserManagementService;
@@ -48,7 +51,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
             title.setValue(titleCaption);
         }
 
-        public void switchToForm(ExtaEditForm form) {
+        public void switchToForm(final ExtaEditForm form) {
             this.form = form;
             tabsheet.setVisible(false);
             form.setWidth(100, Unit.PERCENTAGE);
@@ -62,7 +65,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
      *
      * @param titleCaption a {@link java.lang.String} object.
      */
-    protected SubdomainView(String titleCaption) {
+    protected SubdomainView(final String titleCaption) {
         this.titleCaption = titleCaption;
     }
 
@@ -80,7 +83,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
             }
 
             // Создаем закладки в соответствии с описанием
-            UserManagementService userService = lookup(UserManagementService.class);
+            final UserManagementService userService = lookup(UserManagementService.class);
             subdomainInfo.forEach(info -> {
                 if (userService.isPermittedDomain(info.getDomain())) {
                     tabs.add(tabsheet.addTab(new SubdomainUI(info), info.getCaption()));
@@ -101,7 +104,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
         private final SubdomainInfo info;
         private ExtaGrid grid;
 
-        public SubdomainUI(SubdomainInfo info) {
+        public SubdomainUI(final SubdomainInfo info) {
             this.info = info;
             setSizeFull();
         }
@@ -121,8 +124,8 @@ public abstract class SubdomainView extends ExtaAbstractView {
                     grid.doEditNewObject(null);
                 } else if(uri.getMode() == ExtaUri.Mode.EDIT) {
                     if (!isNullOrEmpty(uri.getId())) {
-                        EntityManager em = lookup(EntityManager.class);
-                        Object obj = em.find(grid.getEntityClass(), uri.getId());
+                        final EntityManager em = lookup(EntityManager.class);
+                        final Object obj = em.find(grid.getEntityClass(), uri.getId());
                         if (obj != null) {
                             grid.doEditObject(obj);
                         } else {
@@ -154,12 +157,12 @@ public abstract class SubdomainView extends ExtaAbstractView {
         private class URIWrapFormService implements ExtaGrid.FormService {
             private final ExtaGrid.FormService wrappedService;
 
-            public URIWrapFormService(ExtaGrid.FormService wrappedService) {
+            public URIWrapFormService(final ExtaGrid.FormService wrappedService) {
                 this.wrappedService = wrappedService;
             }
 
             @Override
-            public void open4Edit(ExtaEditForm form) {
+            public void open4Edit(final ExtaEditForm form) {
                 final ExtaUri uri = new ExtaUri(info.getDomain(), ExtaUri.Mode.EDIT, form.getObjectId().toString());
                 NavigationUtils.setUriFragment(uri);
                 form.addCloseFormListener(event -> {
@@ -171,7 +174,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
             }
 
             @Override
-            public void open4Insert(ExtaEditForm form) {
+            public void open4Insert(final ExtaEditForm form) {
                 final ExtaUri uri = new ExtaUri(info.getDomain(), ExtaUri.Mode.NEW, null);
                 NavigationUtils.setUriFragment(uri);
                 form.addCloseFormListener(event -> {
@@ -189,7 +192,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
 
         private class PageFormService implements ExtaGrid.FormService {
             @Override
-            public void open4Edit(ExtaEditForm form) {
+            public void open4Edit(final ExtaEditForm form) {
                 form.addCloseFormListener(event -> {
                     if (form.isSaved()) {
                         grid.refreshContainerItem(form.getObjectId());
@@ -201,7 +204,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
             }
 
             @Override
-            public void open4Insert(ExtaEditForm form) {
+            public void open4Insert(final ExtaEditForm form) {
                 form.addCloseFormListener(event -> {
                     if (form.isSaved()) {
                         grid.refreshContainer();
@@ -223,7 +226,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
 
         initTabsheet();
         final ExtaUri uri = new ExtaUri();
-        TabSheet.Tab tabCandidat = getTab4Uri(uri).orElse(tabs.get(0));
+        final TabSheet.Tab tabCandidat = getTab4Uri(uri).orElse(tabs.get(0));
 
         // Делаем текущей нужную закладку
         final SubdomainUI selectedTab = (SubdomainUI) tabsheet.getSelectedTab();
@@ -235,7 +238,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
         return contentContainer;
     }
 
-    private Optional<TabSheet.Tab> getTab4Uri(ExtaUri uri) {
+    private Optional<TabSheet.Tab> getTab4Uri(final ExtaUri uri) {
         return tabs.stream()
                 .filter(tab -> ((SubdomainUI) tab.getComponent()).getInfo().getDomain() == uri.getDomain())
                 .findFirst();

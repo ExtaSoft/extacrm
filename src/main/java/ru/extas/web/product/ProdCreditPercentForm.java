@@ -5,11 +5,11 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import ru.extas.model.sale.ProdCreditPercent;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.ExtaEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -37,8 +37,8 @@ public class ProdCreditPercentForm extends ExtaEditForm<ProdCreditPercent> {
 	 * @param caption a {@link java.lang.String} object.
 	 * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
 	 */
-	protected ProdCreditPercentForm(final String caption, final BeanItem<ProdCreditPercent> beanItem) {
-		super(caption, beanItem);
+	protected ProdCreditPercentForm(final String caption, ProdCreditPercent bean) {
+		super(caption, bean);
 	}
 
 	/** {@inheritDoc} */
@@ -58,6 +58,7 @@ public class ProdCreditPercentForm extends ExtaEditForm<ProdCreditPercent> {
 	@Override
 	protected ComponentContainer createEditFields(final ProdCreditPercent obj) {
 		final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
 		percentField = new EditField("Процентная ставка", "Введите процентную ставку");
 		percentField.setConverter(lookup(StringToPercentConverter.class));

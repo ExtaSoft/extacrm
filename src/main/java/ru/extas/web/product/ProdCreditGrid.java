@@ -25,7 +25,7 @@ public class ProdCreditGrid extends ExtaGrid<ProdCredit> {
     }
 
     @Override
-    public ExtaEditForm<ProdCredit> createEditForm(ProdCredit prodCredit, boolean isInsert) {
+    public ExtaEditForm<ProdCredit> createEditForm(final ProdCredit prodCredit, final boolean isInsert) {
         return new ProdCreditEditForm(prodCredit);
     }
 
@@ -40,7 +40,7 @@ public class ProdCreditGrid extends ExtaGrid<ProdCredit> {
 	protected Container createContainer() {
 		// Запрос данных
 		final ExtaDataContainer<ProdCredit> container = new ExtaDataContainer<>(ProdCredit.class);
-		container.sort(new Object[]{"createdAt"}, new boolean[]{false});
+		container.sort(new Object[]{"createdDate"}, new boolean[]{false});
 		container.addNestedContainerProperty("vendor.name");
 		return container;
 	}
@@ -48,7 +48,7 @@ public class ProdCreditGrid extends ExtaGrid<ProdCredit> {
 	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 		actions.add(new NewObjectAction("Новый", "Ввод нового страхового продукта"));
 		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке страховой продукт"));

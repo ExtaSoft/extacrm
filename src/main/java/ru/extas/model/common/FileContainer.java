@@ -1,6 +1,7 @@
 package ru.extas.model.common;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 /**
  * Модель данных для хранения файлов прикрепляемых к объектам системы
@@ -24,14 +25,17 @@ public abstract class FileContainer extends AuditedObject {
 
     // Описание файла
     @Column
+    @Size(max = 255)
     private String description;
 
     // Имя файла
     @Column
+    @Size(max = 255)
     private String name;
 
     // Тип
     @Column
+    @Size(max = 255)
     private String mimeType;
 
     // Размер
@@ -58,7 +62,7 @@ public abstract class FileContainer extends AuditedObject {
      *
      * @param parentId a {@link java.lang.String} object.
      */
-    public void setOwnerId(String parentId) {
+    public void setOwnerId(final String parentId) {
         this.ownerId = parentId;
     }
 
@@ -76,7 +80,7 @@ public abstract class FileContainer extends AuditedObject {
      *
      * @param name a {@link java.lang.String} object.
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -94,7 +98,7 @@ public abstract class FileContainer extends AuditedObject {
      *
      * @param fileData an array of byte.
      */
-    public void setFileData(byte[] fileData) {
+    public void setFileData(final byte[] fileData) {
         this.fileData = fileData;
     }
 
@@ -112,7 +116,7 @@ public abstract class FileContainer extends AuditedObject {
      *
      * @param description a {@link java.lang.String} object.
      */
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -130,7 +134,7 @@ public abstract class FileContainer extends AuditedObject {
      *
      * @param mimeType a {@link java.lang.String} object.
      */
-    public void setMimeType(String mimeType) {
+    public void setMimeType(final String mimeType) {
         this.mimeType = mimeType;
     }
 
@@ -148,7 +152,7 @@ public abstract class FileContainer extends AuditedObject {
      *
      * @param fileSize a long.
      */
-    public void setFileSize(long fileSize) {
+    public void setFileSize(final long fileSize) {
         this.fileSize = fileSize;
     }
 }

@@ -3,10 +3,7 @@ package ru.extas.security;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.LegalEntity;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 
@@ -33,6 +30,7 @@ public class SecurityUtils {
         domain2Class.put(ExtaDomain.COMPANY, Company.class);
         domain2Class.put(ExtaDomain.LEGAL_ENTITY, LegalEntity.class);
         domain2Class.put(ExtaDomain.SALE_POINT, SalePoint.class);
+        domain2Class.put(ExtaDomain.EMPLOYEE, Employee.class);
         domain2Class.put(ExtaDomain.LEADS_NEW, Lead.class);
         domain2Class.put(ExtaDomain.LEADS_QUAL, Class.class);
         domain2Class.put(ExtaDomain.LEADS_CLOSED, Class.class);

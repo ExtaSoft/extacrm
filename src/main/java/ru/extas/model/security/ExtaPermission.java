@@ -49,7 +49,7 @@ public class ExtaPermission extends AuditedObject implements Permission {
      * @param action разрешенное действие, null чтобы разрешить все
      * @param target целевые объекты, null чтобы разрешить все
      */
-    public ExtaPermission(ExtaDomain domain, SecureAction action, SecureTarget target) {
+    public ExtaPermission(final ExtaDomain domain, final SecureAction action, final SecureTarget target) {
         this(domain, action == null ? null : newHashSet(action), target);
     }
 
@@ -61,7 +61,7 @@ public class ExtaPermission extends AuditedObject implements Permission {
      * @param actions разрешенные действия, null чтобы разрешить все
      * @param target  целевые объекты, null чтобы разрешить все
      */
-    public ExtaPermission(ExtaDomain domain, Set<SecureAction> actions, SecureTarget target) {
+    public ExtaPermission(final ExtaDomain domain, final Set<SecureAction> actions, final SecureTarget target) {
         checkNotNull(domain);
         this.domain = domain;
         this.actions = actions;
@@ -97,7 +97,7 @@ public class ExtaPermission extends AuditedObject implements Permission {
 
     /** {@inheritDoc} */
     public ExtaPermission createCopy() {
-        ExtaPermission clone = new ExtaPermission();
+        final ExtaPermission clone = new ExtaPermission();
 
         clone.setDomain(getDomain());
         clone.setActions(EnumSet.copyOf(actions));
@@ -108,13 +108,13 @@ public class ExtaPermission extends AuditedObject implements Permission {
 
     /** {@inheritDoc} */
     @Override
-    public boolean implies(Permission p) {
+    public boolean implies(final Permission p) {
         checkNotNull(p);
         if (!(p instanceof ExtaPermission)) {
             return false;
         }
 
-        ExtaPermission perm = (ExtaPermission) p;
+        final ExtaPermission perm = (ExtaPermission) p;
 
         if (domain == perm.getDomain()) {
             if (perm.getTarget() == null || target == perm.getTarget()) {
@@ -161,7 +161,7 @@ public class ExtaPermission extends AuditedObject implements Permission {
      *
      * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
      */
-    public void setDomain(ExtaDomain domain) {
+    public void setDomain(final ExtaDomain domain) {
         this.domain = domain;
     }
 
@@ -170,7 +170,7 @@ public class ExtaPermission extends AuditedObject implements Permission {
      *
      * @param actions a {@link java.util.Set} object.
      */
-    public void setActions(Set<SecureAction> actions) {
+    public void setActions(final Set<SecureAction> actions) {
         this.actions = actions;
     }
 
@@ -179,7 +179,7 @@ public class ExtaPermission extends AuditedObject implements Permission {
      *
      * @param target a {@link ru.extas.model.security.SecureTarget} object.
      */
-    public void setTarget(SecureTarget target) {
+    public void setTarget(final SecureTarget target) {
         this.target = target;
     }
 
@@ -197,7 +197,7 @@ public class ExtaPermission extends AuditedObject implements Permission {
      *
      * @param user a {@link ru.extas.model.security.UserProfile} object.
      */
-    public void setUser(UserProfile user) {
+    public void setUser(final UserProfile user) {
         this.user = user;
     }
 
@@ -215,7 +215,7 @@ public class ExtaPermission extends AuditedObject implements Permission {
      *
      * @param group a {@link ru.extas.model.security.UserGroup} object.
      */
-    public void setGroup(UserGroup group) {
+    public void setGroup(final UserGroup group) {
         this.group = group;
     }
 }

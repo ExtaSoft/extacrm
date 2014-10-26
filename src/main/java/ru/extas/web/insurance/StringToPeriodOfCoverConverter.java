@@ -3,7 +3,6 @@
  */
 package ru.extas.web.insurance;
 
-import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
 import ru.extas.model.insurance.Insurance;
@@ -29,7 +28,7 @@ public class StringToPeriodOfCoverConverter extends String2EnumConverter<Insuran
 	/** {@inheritDoc} */
 	@Override
 	protected HashBiMap<Insurance.PeriodOfCover, String> createEnum2StringMap() {
-        HashBiMap<Insurance.PeriodOfCover, String> map = HashBiMap.create();
+        final HashBiMap<Insurance.PeriodOfCover, String> map = HashBiMap.create();
 		map.put(Insurance.PeriodOfCover.YEAR, "Год");
 		map.put(Insurance.PeriodOfCover.HALF_A_YEAR, "Полгода");
 		return map;

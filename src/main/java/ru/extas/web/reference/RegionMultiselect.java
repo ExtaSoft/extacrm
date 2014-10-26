@@ -32,7 +32,7 @@ public class RegionMultiselect extends CustomField<Set> {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public RegionMultiselect(String caption) {
+    public RegionMultiselect(final String caption) {
         setBuffered(true);
         setCaption(caption);
     }
@@ -52,7 +52,7 @@ public class RegionMultiselect extends CustomField<Set> {
         //tokenField.setInputWidth(13, Unit.EX);
         //tokenField.setTokenInsertPosition(TokenField.InsertPosition.BEFORE);
         tokenField.addValueChangeListener(event -> {
-            Set selected = (Set) tokenField.getValue();
+            final Set selected = (Set) tokenField.getValue();
             setValue(selected);
         });
 
@@ -61,10 +61,10 @@ public class RegionMultiselect extends CustomField<Set> {
 		if (set != null) {
 			tokenField.setValue(newHashSet(set));
 		}
-        Collection<String> regions = lookup(SupplementService.class).loadRegions();
+        final Collection<String> regions = lookup(SupplementService.class).loadRegions();
         tokenField.setContainerDataSource(CollectionContainer.fromBeans(regions));
 
-        HorizontalLayout layout = new HorizontalLayout(tokenField);
+        final HorizontalLayout layout = new HorizontalLayout(tokenField);
         //layout.setSizeFull();
         //layout.setMargin(new MarginInfo(true, false,false,false));
         return layout;

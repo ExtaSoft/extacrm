@@ -1,6 +1,5 @@
 package ru.extas.web.product;
 
-import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
 import ru.extas.model.sale.ProdCredit;
@@ -28,7 +27,7 @@ public class String2CreditProgramType extends String2EnumConverter {
 	/** {@inheritDoc} */
 	@Override
 	protected HashBiMap createEnum2StringMap() {
-        HashBiMap<ProdCredit.ProgramType, String> map = HashBiMap.create();
+        final HashBiMap<ProdCredit.ProgramType, String> map = HashBiMap.create();
 		map.put(ProdCredit.ProgramType.NO_COLLATERAL, "Незалоговая");
 		map.put(ProdCredit.ProgramType.COLLATERAL_WITH_PTS, "Залоговая без передачи ПТС (ПСМ) в Банк");
 		map.put(ProdCredit.ProgramType.COLLATERAL_WITHOUT_PTS, "Залоговая с передачей ПТС (ПСМ) в Банк");

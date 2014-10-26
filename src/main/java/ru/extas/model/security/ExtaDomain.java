@@ -46,6 +46,10 @@ public enum ExtaDomain {
 	 */
 	SALE_POINT("contacts/sale-points"),
 	/**
+	 * Сотрудники
+	 */
+    EMPLOYEE("contacts/employees"),
+	/**
 	 * Лиды новые
 	 */
 	LEADS_NEW("leads/new"),

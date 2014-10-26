@@ -1,6 +1,5 @@
 package ru.extas.web.commons.component;
 
-import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -18,7 +17,7 @@ public class CardPanel extends CssLayout {
     private final Label label;
     private final HorizontalLayout panelCaption;
 
-    public CardPanel(String caption, Component action, Component panelContent) {
+    public CardPanel(final String caption, final Component action, final Component panelContent) {
         addStyleName(ExtaTheme.LAYOUT_CARD);
         panelCaption = new HorizontalLayout();
         panelCaption.addStyleName("v-panel-caption");

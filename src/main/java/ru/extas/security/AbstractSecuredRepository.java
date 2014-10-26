@@ -4,10 +4,10 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.model.security.SecuredObject;
-import ru.extas.model.contacts.Person;
 import ru.extas.server.security.UserManagementService;
 
 import javax.inject.Inject;
@@ -38,24 +38,24 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
      */
     @Transactional
     @Override
-    public Entity secureSave(Entity entity) {
+    public Entity secureSave(final Entity entity) {
         return permitAndSave(entity, getObjectUsers(entity), getObjectSalePoints(entity), getObjectCompanies(entity), getObjectRegions(entity), getObjectBrands(entity));
     }
 
-    protected abstract Collection<Pair<Person, AccessRole>> getObjectUsers(Entity entity);
+    protected abstract Collection<Pair<Employee, AccessRole>> getObjectUsers(Entity entity);
 
-    protected Pair<Person, AccessRole> getCurUserAccess(Entity entity) {
-        Person currentUserContact;
+    protected Pair<Employee, AccessRole> getCurUserAccess(final Entity entity) {
+        final Employee currentUserContact;
         if (userService.isUserAuthenticated())
-            currentUserContact = userService.getCurrentUserContact();
+            currentUserContact = userService.getCurrentUserEmployee();
         else
-            currentUserContact = userService.findUserContactByLogin("admin");
+            currentUserContact = userService.findUserEmployeeByLogin("admin");
 
         return new ImmutablePair<>(currentUserContact, entity.isNew() ? AccessRole.OWNER : AccessRole.EDITOR);
     }
 
-    protected Collection<Pair<Person, AccessRole>> reassigneRole(Collection<Pair<Person, AccessRole>> users, AccessRole role) {
-        List<Pair<Person, AccessRole>> newUsers = newArrayListWithCapacity(users.size());
+    protected Collection<Pair<Employee, AccessRole>> reassigneRole(final Collection<Pair<Employee, AccessRole>> users, final AccessRole role) {
+        final List<Pair<Employee, AccessRole>> newUsers = newArrayListWithCapacity(users.size());
 
         users.forEach(p -> newUsers.add(new ImmutablePair<>(p.getLeft(), role)));
 
@@ -87,12 +87,12 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
      */
     @Transactional
     @Override
-    public Entity permitAndSave(Entity entity,
-                                Collection<Pair<Person, AccessRole>> users,
-                                Collection<SalePoint> salePoints,
-                                Collection<Company> companies,
-                                Collection<String> regions,
-                                Collection<String> brands) {
+    public Entity permitAndSave(final Entity entity,
+                                final Collection<Pair<Employee, AccessRole>> users,
+                                final Collection<SalePoint> salePoints,
+                                final Collection<Company> companies,
+                                final Collection<String> regions,
+                                final Collection<String> brands) {
         if (entity != null) {
             // Доступ пользователей к объекту
             entity.addSecurityUserAccess(users);
@@ -114,16 +114,16 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
      */
     @Transactional
     @Override
-    public List<Entity> permitAndSave(Collection<Entity> entities,
-                                      Collection<Pair<Person, AccessRole>> users,
-                                      Collection<SalePoint> salePoints,
-                                      Collection<Company> companies,
-                                      Collection<String> regions,
-                                      Collection<String> brands) {
-        List<Entity> result = new ArrayList<>();
+    public List<Entity> permitAndSave(final Collection<Entity> entities,
+                                      final Collection<Pair<Employee, AccessRole>> users,
+                                      final Collection<SalePoint> salePoints,
+                                      final Collection<Company> companies,
+                                      final Collection<String> regions,
+                                      final Collection<String> brands) {
+        final List<Entity> result = new ArrayList<>();
         if (!isEmpty(entities)) {
             if (!isEmpty(entities)) {
-                for (Entity entity : entities)
+                for (final Entity entity : entities)
                     result.add(permitAndSave(entity, users, salePoints, companies, regions, brands));
             }
         }
@@ -135,9 +135,9 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
      */
     @Transactional
     @Override
-    public Entity permitAndSave(Entity entity, Pair<Person, AccessRole> user) {
+    public Entity permitAndSave(final Entity entity, final Pair<Employee, AccessRole> user) {
         if (entity != null) {
-            final ArrayList<Pair<Person, AccessRole>> users = newArrayList(user);
+            final ArrayList<Pair<Employee, AccessRole>> users = newArrayList(user);
             users.addAll(getObjectUsers(entity));
             return permitAndSave(entity, users, getObjectSalePoints(entity), getObjectCompanies(entity), getObjectRegions(entity), getObjectBrands(entity));
         }

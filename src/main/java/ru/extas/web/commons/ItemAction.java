@@ -20,14 +20,14 @@ public abstract class ItemAction extends UIAction {
      * @param description a {@link String} object.
      * @param icon a {@link String} object.
      */
-    public ItemAction(String name, String description, Resource icon) {
+    public ItemAction(final String name, final String description, final Resource icon) {
         super(name, description, icon);
     }
 
     /** {@inheritDoc} */
     @Override
     public Component createButton() {
-        Component button = super.createButton();
+        final Component button = super.createButton();
         button.addStyleName(ExtaTheme.ITEM_ACTION);
         return button;
     }

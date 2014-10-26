@@ -8,8 +8,8 @@ import com.vaadin.data.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.Person_;
+import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.Employee_;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.insurance.FormTransfer;
 import ru.extas.model.insurance.FormTransfer_;
@@ -17,15 +17,15 @@ import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.SecureTarget;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.ExtaEditForm;
 
 import javax.persistence.criteria.*;
-import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -49,7 +49,7 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
     }
 
     @Override
-    public ExtaEditForm<FormTransfer> createEditForm(FormTransfer formTransfer, boolean isInsert) {
+    public ExtaEditForm<FormTransfer> createEditForm(final FormTransfer formTransfer, final boolean isInsert) {
         return new FormTransferEditForm(formTransfer);
     }
 
@@ -63,15 +63,15 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
 
     private class FormTransferSecuredContainer extends AbstractSecuredDataContainer<FormTransfer> {
 
-        public FormTransferSecuredContainer(Class<FormTransfer> entityClass, ExtaDomain domain) {
+        public FormTransferSecuredContainer(final Class<FormTransfer> entityClass, final ExtaDomain domain) {
             super(entityClass, domain);
         }
 
         @Override
-        protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
+        protected Predicate createPredicate4Target(final CriteriaBuilder cb, final CriteriaQuery<?> cq, final SecureTarget target) {
             Predicate predicate = null;
             final Root<FormTransfer> objectRoot = (Root<FormTransfer>) getFirst(cq.getRoots(), null);
-            final Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
+            final Employee curUserContact = lookup(UserManagementService.class).getCurrentUserEmployee();
 
             switch (target) {
                 case OWNONLY:
@@ -80,24 +80,28 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
                             cb.equal(objectRoot.get(FormTransfer_.toContact), curUserContact));
                     break;
                 case SALE_POINT: {
-                    Set<SalePoint> workPlaces = null;
-                    workPlaces = curUserContact.getWorkPlaces();
+                    final Set<SalePoint> workPlaces = newHashSet();
+                    workPlaces.add(curUserContact.getWorkPlace());
+                    Optional.ofNullable(curUserContact.getUserProfile())
+                            .map(p -> p.getSalePoints())
+                            .ifPresent(s -> workPlaces.addAll(s));
                     if (!isEmpty(workPlaces)) {
-                        SetJoin<Person, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
-                        SetJoin<Person, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        final Join<Employee, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Employee_.workPlace, JoinType.LEFT);
+                        final Join<Employee, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Employee_.workPlace, JoinType.LEFT);
                         predicate = cb.or(workPlaceRootF.in(workPlaces), workPlaceRootT.in(workPlaces));
                     }
                     break;
                 }
                 case CORPORATE: {
-                    Set<SalePoint> workPlaces = null;
-                    final Set<Company> companies = curUserContact.getEmployers();
+                    final Set<SalePoint> workPlaces = null;
+                    final Set<Company> companies = newHashSet();
+                    companies.add(curUserContact.getCompany());
                     for (final Company company : companies) {
                         workPlaces.addAll(company.getSalePoints());
                     }
                     if (!isEmpty(workPlaces)) {
-                        SetJoin<Person, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
-                        SetJoin<Person, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        final Join<Employee, SalePoint> workPlaceRootF = objectRoot.join(FormTransfer_.fromContact, JoinType.LEFT).join(Employee_.workPlace, JoinType.LEFT);
+                        final Join<Employee, SalePoint> workPlaceRootT = objectRoot.join(FormTransfer_.toContact, JoinType.LEFT).join(Employee_.workPlace, JoinType.LEFT);
                         predicate = cb.or(workPlaceRootF.in(workPlaces), workPlaceRootT.in(workPlaces));
                     }
                     break;
@@ -128,21 +132,21 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
      */
     @Override
     protected List<UIAction> createActions() {
-        List<UIAction> actions = newArrayList();
+        final List<UIAction> actions = newArrayList();
 
         actions.add(new NewObjectAction("Новый", "Ввод нового акта приема/передачи"));
         actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке акта приема/передачи"));
 
-        actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", Fontello.PRINT_2) {
-            @Override
-            public void fire(Object itemId) {
-                printFormTransfer(itemId);
-            }
-        });
+//        actions.add(new ItemAction("Печать", "Создать печатное представление акта приема передачи квитанций", Fontello.PRINT_2) {
+//            @Override
+//            public void fire(Object itemId) {
+//                printFormTransfer(itemId);
+//            }
+//        });
         return actions;
     }
 
-    private void printFormTransfer(final Object itemId) {
+//    private void printFormTransfer(final Object itemId) {
 //		final FormTransfer formTransfer = extractBean(table.getItem(itemId));
 //		checkNotNull(formTransfer, "Нечего печатать", "Нет выбранной записи.");
 //
@@ -188,27 +192,27 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
 //			logger.error("Print Form Transfer error", e);
 //			throw Throwables.propagate(e);
 //		}
-    }
-
-    private boolean canPrintForm(FormTransfer formTransfer) {
-        final Person fromContact = formTransfer.getFromContact();
-        final Person toContact = formTransfer.getToContact();
-
-        List<String> messages = newArrayList();
-        if (fromContact.getAffiliation() == null)
-            messages.add(MessageFormat.format("У конткта \"{0}\" нет информации о компании (организации).", fromContact.getName()));
-        if (toContact.getPassNum() == null)
-            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Номер паспорта\".", toContact.getName()));
-        if (toContact.getPassIssueDate() == null)
-            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Дата выдачи паспорта\".", toContact.getName()));
-        if (toContact.getPassIssuedBy() == null)
-            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Кем выдан паспорт\".", toContact.getName()));
-
-        if (!messages.isEmpty()) {
-            NotificationUtil.showErrors("Недостаточно информации для печати", messages);
-            return false;
-        }
-        return true;
-    }
+//    }
+//
+//    private boolean canPrintForm(FormTransfer formTransfer) {
+//        final Person fromContact = formTransfer.getFromContact();
+//        final Person toContact = formTransfer.getToContact();
+//
+//        List<String> messages = newArrayList();
+//        if (fromContact.getAffiliation() == null)
+//            messages.add(MessageFormat.format("У конткта \"{0}\" нет информации о компании (организации).", fromContact.getName()));
+//        if (toContact.getPassNum() == null)
+//            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Номер паспорта\".", toContact.getName()));
+//        if (toContact.getPassIssueDate() == null)
+//            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Дата выдачи паспорта\".", toContact.getName()));
+//        if (toContact.getPassIssuedBy() == null)
+//            messages.add(MessageFormat.format("У конткта \"{0}\" не заполнено поле \"Кем выдан паспорт\".", toContact.getName()));
+//
+//        if (!messages.isEmpty()) {
+//            NotificationUtil.showErrors("Недостаточно информации для печати", messages);
+//            return false;
+//        }
+//        return true;
+//    }
 
 }

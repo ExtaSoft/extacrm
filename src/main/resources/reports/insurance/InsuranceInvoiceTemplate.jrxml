@@ -164,7 +164,7 @@
 			</textField>
 			<textField>
 				<reportElement style="SimpleText" mode="Transparent" x="0" y="185" width="555" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9bddffbf-beef-4ae7-8f84-12b53a92c4c8"/>
-				<textFieldExpression><![CDATA["Плательщик: " + $P{ins}.getClient().getName()]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Плательщик: " + $P{ins}.getClientName()]]></textFieldExpression>
 			</textField>
 			<frame>
 				<reportElement x="0" y="211" width="555" height="160" uuid="43b29bd9-eb0c-461b-a158-dbf76026b962">

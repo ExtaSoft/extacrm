@@ -1,14 +1,16 @@
 package ru.extas.model.security;
 
 import ru.extas.model.common.AuditedObject;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Sets.newLinkedHashSet;
 
 /**
  * Совокупная информация о пользователе
@@ -25,22 +27,24 @@ public class UserProfile extends AuditedObject {
 
     // Login/email
     @Column(length = LOGIN_LENGTH)
-    @Max(LOGIN_LENGTH)
+    @Size(max = LOGIN_LENGTH)
     private String login;
 
     // Ссылка на контакт
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Person contact;
+    private Employee employee;
 
     // Password (hash)
+    @Size(max = 255)
     private String password;
 
     // Ключ шифрования пароля
     @Column(name = "PASSWORD_SALT", length = 30)
+    @Size(max = 30)
     private String passwordSalt;
 
     // Требование сменить пароль при следующем входе
-    @Column(name = "CHANGE_PASSWORD", length = 50)
+    @Column(name = "CHANGE_PASSWORD")
     private boolean changePassword;
 
     // Основная роль пользователя
@@ -51,7 +55,8 @@ public class UserProfile extends AuditedObject {
     @JoinTable(name = "USER_GROUP_LINK",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")})
-    private Set<UserGroup> groupList = new HashSet<>();
+    @OrderBy("name ASC")
+    private Set<UserGroup> groupList = newHashSet();
 
     // Пользователь заблокирован
     private boolean blocked;
@@ -67,8 +72,24 @@ public class UserProfile extends AuditedObject {
     private Set<String> permitBrands = newHashSet();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("domain ASC")
     Set<ExtaPermission> permissions;
 
+    // Торговые точки к которым пользователь имеет доступ
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(name = "USER_SALE_POINT",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "SALE_POINT_ID", referencedColumnName = "ID")})
+    @OrderBy("name ASC")
+    private Set<SalePoint> salePoints = newLinkedHashSet();
+
+    public Set<SalePoint> getSalePoints() {
+        return salePoints;
+    }
+
+    public void setSalePoints(Set<SalePoint> salePoints) {
+        this.salePoints = salePoints;
+    }
 
     /**
      * <p>Getter for the field <code>groupList</code>.</p>
@@ -84,7 +105,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param groupList the groupList to set
      */
-    public void setGroupList(Set<UserGroup> groupList) {
+    public void setGroupList(final Set<UserGroup> groupList) {
         this.groupList = groupList;
     }
 
@@ -93,7 +114,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param role the role to set
      */
-    public void setRole(UserRole role) {
+    public void setRole(final UserRole role) {
         this.role = role;
     }
 
@@ -111,7 +132,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param login the login to set
      */
-    public void setLogin(String login) {
+    public void setLogin(final String login) {
         this.login = login;
     }
 
@@ -129,7 +150,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param password the password to set
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -147,17 +168,17 @@ public class UserProfile extends AuditedObject {
      *
      * @return the contact
      */
-    public Person getContact() {
-        return contact;
+    public Employee getEmployee() {
+        return employee;
     }
 
     /**
      * <p>Setter for the field <code>contact</code>.</p>
      *
-     * @param contact the contact to set
+     * @param employee the contact to set
      */
-    public void setContact(Person contact) {
-        this.contact = contact;
+    public void setEmployee(final Employee employee) {
+        this.employee = employee;
     }
 
     /**
@@ -174,7 +195,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param changePassword the changePassword to set
      */
-    public void setChangePassword(boolean changePassword) {
+    public void setChangePassword(final boolean changePassword) {
         this.changePassword = changePassword;
     }
 
@@ -192,7 +213,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param blocked the blocked to set
      */
-    public void setBlocked(boolean blocked) {
+    public void setBlocked(final boolean blocked) {
         this.blocked = blocked;
     }
 
@@ -210,7 +231,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param passwordSalt the passwordSalt to set
      */
-    public void setPasswordSalt(String passwordSalt) {
+    public void setPasswordSalt(final String passwordSalt) {
         this.passwordSalt = passwordSalt;
     }
 
@@ -228,7 +249,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param permitRegions a {@link java.util.Set} object.
      */
-    public void setPermitRegions(Set<String> permitRegions) {
+    public void setPermitRegions(final Set<String> permitRegions) {
         this.permitRegions = permitRegions;
     }
 
@@ -246,7 +267,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param permitBrands a {@link java.util.Set} object.
      */
-    public void setPermitBrands(Set<String> permitBrands) {
+    public void setPermitBrands(final Set<String> permitBrands) {
         this.permitBrands = permitBrands;
     }
 
@@ -264,7 +285,7 @@ public class UserProfile extends AuditedObject {
      *
      * @param permissions a {@link java.util.Set} object.
      */
-    public void setPermissions(Set<ExtaPermission> permissions) {
+    public void setPermissions(final Set<ExtaPermission> permissions) {
         this.permissions = permissions;
     }
 }

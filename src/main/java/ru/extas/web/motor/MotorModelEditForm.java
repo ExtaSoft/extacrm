@@ -6,10 +6,10 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import ru.extas.model.motor.MotorModel;
 import ru.extas.server.motor.MotorModelRepository;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.ExtaEditForm;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -31,31 +31,32 @@ public class MotorModelEditForm extends ExtaEditForm<MotorModel> {
     @PropertyId("code")
     private EditField codeField;
 
-    public MotorModelEditForm(MotorModel motorModel) {
+    public MotorModelEditForm(final MotorModel motorModel) {
         super(motorModel.isNew() ?
                 "Новая модель техники" :
                 "Редактировать модель техники",
-                new BeanItem<>(motorModel));
+                motorModel);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(MotorModel obj) {
+    protected void initObject(final MotorModel obj) {
 
     }
 
     /** {@inheritDoc} */
     @Override
-    protected MotorModel saveObject(MotorModel obj) {
-        MotorModel loc = lookup(MotorModelRepository.class).save(obj);
+    protected MotorModel saveObject(final MotorModel obj) {
+        final MotorModel loc = lookup(MotorModelRepository.class).save(obj);
         NotificationUtil.showSuccess("Модель техники сохранена");
         return loc;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(MotorModel obj) {
+    protected ComponentContainer createEditFields(final MotorModel obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         typeField = new MotorTypeSelect();
         typeField.setRequired(true);

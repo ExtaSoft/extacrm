@@ -20,7 +20,7 @@ import java.util.Locale;
 public class MimeTypeConverter implements Converter<String, String> {
     /** {@inheritDoc} */
     @Override
-    public String convertToModel(String value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+    public String convertToModel(final String value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
         if (value == null)
             return null;
 
@@ -29,13 +29,13 @@ public class MimeTypeConverter implements Converter<String, String> {
 
     /** {@inheritDoc} */
     @Override
-    public String convertToPresentation(String value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+    public String convertToPresentation(final String value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
         if (value == null)
             return null;
 
         try {
             return MimeTypes.getDefaultMimeTypes().forName(value).getDescription();
-        } catch (MimeTypeException e) {
+        } catch (final MimeTypeException e) {
         }
         return value;
     }

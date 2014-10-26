@@ -41,7 +41,7 @@ public class BPStatusForm extends CloseOnlylWindow {
 	public BPStatusForm(final String processId) {
 		super("Статус выполнения бизнес процесса");
 
-        VerticalLayout content = new VerticalLayout();
+        final VerticalLayout content = new VerticalLayout();
 		content.setSpacing(true);
 
 		// Последняя выполненная задача: название, время начала, время завершения, ответственный.

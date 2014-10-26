@@ -1,12 +1,19 @@
 package ru.extas.model.sale;
 
 import ru.extas.model.common.Comment;
-import ru.extas.model.security.SecuredObject;
+import ru.extas.model.common.ModelUtils;
+import ru.extas.model.contacts.AddressInfo;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.motor.MotorBrand;
+import ru.extas.model.motor.MotorModel;
+import ru.extas.model.motor.MotorType;
+import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -27,55 +34,73 @@ public class Sale extends SecuredObject {
 
     @Column(unique = true, columnDefinition = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE")
     private Long num;
+
     // Клиент
 	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Person client;
+
 	@Enumerated(EnumType.STRING)
 	private Status status;
+
 	// Регион покупки техники
-	@Column(name = "REGION")
+	@Column(name = "REGION", length = AddressInfo.REGION_LENGTH)
+    @Size(max = AddressInfo.REGION_LENGTH)
 	private String region;
+
 	// Тип техники
-	@Column(name = "MOTOR_TYPE")
+	@Column(name = "MOTOR_TYPE", length = MotorType.NAME_LENGTH)
+    @Size(max = MotorType.NAME_LENGTH)
 	private String motorType;
+
 	// Марка техники
-	@Column(name = "MOTOR_BRAND")
+	@Column(name = "MOTOR_BRAND", length = MotorBrand.NAME_LENGTH)
+    @Size(max = MotorBrand.NAME_LENGTH)
 	private String motorBrand;
+
 	// Модель техники
-	@Column(name = "MOTOR_MODEL")
+	@Column(name = "MOTOR_MODEL", length = MotorModel.NAME_LENGTH)
+    @Size(max = MotorModel.NAME_LENGTH)
 	private String motorModel;
+
 	// Стоимость техники
 	@Column(name = "MOTOR_PRICE", precision = 32, scale = 4)
 	private BigDecimal motorPrice;
+
 	// Мотосалон
 	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private SalePoint dealer;
-	@Column(name = "COMMENT")
+
+    @Column(name = "COMMENT")
+    @Size(max = 255)
 	private String comment;
-	@Column(name = "PROCESS_ID")
+
+    @Column(name = "PROCESS_ID", length = ModelUtils.ACTIVITI_ID_LENGTH)
 	private String processId;
+
 	@Enumerated(EnumType.STRING)
-	private Result result;
+    @Column(length = ModelUtils.ENUM_STRING_LENGTH)
+    private Result result;
+
 	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<ProductInSale> productInSales;
 
     // Ответственный
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Person responsible;
+    private Employee responsible;
 
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Lead lead;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = Comment.OWNER_ID_COLUMN)
-    @OrderBy("createdAt")
+    @OrderBy("createdDate")
     private List<SaleComment> comments = newArrayList();
 
-    public Person getResponsible() {
+    public Employee getResponsible() {
         return responsible;
     }
 
-    public void setResponsible(Person responsible) {
+    public void setResponsible(final Employee responsible) {
         this.responsible = responsible;
     }
 
@@ -83,7 +108,7 @@ public class Sale extends SecuredObject {
         return comments;
     }
 
-    public void setComments(List<SaleComment> comments) {
+    public void setComments(final List<SaleComment> comments) {
         this.comments = comments;
     }
 
@@ -91,7 +116,7 @@ public class Sale extends SecuredObject {
         return lead;
     }
 
-    public void setLead(Lead lead) {
+    public void setLead(final Lead lead) {
         this.lead = lead;
     }
 
@@ -99,7 +124,7 @@ public class Sale extends SecuredObject {
         return num;
     }
 
-    public void setNum(Long num) {
+    public void setNum(final Long num) {
         this.num = num;
     }
 
@@ -117,7 +142,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param result a {@link ru.extas.model.sale.Sale.Result} object.
 	 */
-	public void setResult(Result result) {
+	public void setResult(final Result result) {
 		this.result = result;
 	}
 
@@ -135,7 +160,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param processId a {@link java.lang.String} object.
 	 */
-	public void setProcessId(String processId) {
+	public void setProcessId(final String processId) {
 		this.processId = processId;
 	}
 
@@ -153,7 +178,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param dealer a {@link ru.extas.model.contacts.SalePoint} object.
 	 */
-	public void setDealer(SalePoint dealer) {
+	public void setDealer(final SalePoint dealer) {
 		this.dealer = dealer;
 	}
 
@@ -171,7 +196,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param client a {@link ru.extas.model.contacts.Person} object.
 	 */
-	public void setClient(Person client) {
+	public void setClient(final Person client) {
 		this.client = client;
 	}
 
@@ -189,7 +214,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param status a {@link ru.extas.model.sale.Sale.Status} object.
 	 */
-	public void setStatus(Status status) {
+	public void setStatus(final Status status) {
 		this.status = status;
 	}
 
@@ -207,7 +232,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param region a {@link java.lang.String} object.
 	 */
-	public void setRegion(String region) {
+	public void setRegion(final String region) {
 		this.region = region;
 	}
 
@@ -225,7 +250,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param motorType a {@link java.lang.String} object.
 	 */
-	public void setMotorType(String motorType) {
+	public void setMotorType(final String motorType) {
 		this.motorType = motorType;
 	}
 
@@ -243,7 +268,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param motorBrand a {@link java.lang.String} object.
 	 */
-	public void setMotorBrand(String motorBrand) {
+	public void setMotorBrand(final String motorBrand) {
 		this.motorBrand = motorBrand;
 	}
 
@@ -261,7 +286,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param motorModel a {@link java.lang.String} object.
 	 */
-	public void setMotorModel(String motorModel) {
+	public void setMotorModel(final String motorModel) {
 		this.motorModel = motorModel;
 	}
 
@@ -279,7 +304,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param motorPrice a {@link java.math.BigDecimal} object.
 	 */
-	public void setMotorPrice(BigDecimal motorPrice) {
+	public void setMotorPrice(final BigDecimal motorPrice) {
 		this.motorPrice = motorPrice;
 	}
 
@@ -297,7 +322,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param comment a {@link java.lang.String} object.
 	 */
-	public void setComment(String comment) {
+	public void setComment(final String comment) {
 		this.comment = comment;
 	}
 
