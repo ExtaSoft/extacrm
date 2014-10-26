@@ -31,7 +31,7 @@ public class MyExcelExport extends ExcelExport {
      *
      * @param tableHolder a {@link com.vaadin.addon.tableexport.CustomTableHolder} object.
      */
-    public MyExcelExport(CustomTableHolder tableHolder) {
+    public MyExcelExport(final CustomTableHolder tableHolder) {
         super(tableHolder);
     }
 
@@ -207,7 +207,7 @@ public class MyExcelExport extends ExcelExport {
     }
 
     private Class<?> getPropertyType(final Object propId) {
-        Class<?> classType;
+        final Class<?> classType;
         if (getTableHolder().isGeneratedColumn(propId)) {
             classType = getTableHolder().getPropertyTypeForGeneratedColumn(propId);
         } else {

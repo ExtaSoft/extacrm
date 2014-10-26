@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 public class ProductInSale extends AuditedObject {
 
 	// Продажа
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Sale sale;
 
 	// Продукт

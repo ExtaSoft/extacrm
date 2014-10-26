@@ -47,13 +47,13 @@ public List<User> list() {
 
 /** {@inheritDoc} */
 @Override
-public List<User> listPage(int firstResult, int maxResults) {
+public List<User> listPage(final int firstResult, final int maxResults) {
 	throw new UnsupportedOperationException();
 }
 
 /** {@inheritDoc} */
 @Override
-public UserQuery userId(String id) {
+public UserQuery userId(final String id) {
 	final UserProfile userProfile = lookup(UserManagementService.class).findUserByLogin(id);
 
 	return new UserQuery() {
@@ -64,7 +64,7 @@ public UserQuery userId(String id) {
 		}
 
 		@Override
-		public List<User> listPage(int firstResult, int maxResults) {
+		public List<User> listPage(final int firstResult, final int maxResults) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -89,47 +89,47 @@ public UserQuery userId(String id) {
 		}
 
 		@Override
-		public UserQuery userLastNameLike(String lastNameLike) {
+		public UserQuery userLastNameLike(final String lastNameLike) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public UserQuery userFullNameLike(String fullNameLike) {
+		public UserQuery userFullNameLike(final String fullNameLike) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public UserQuery userLastName(String lastName) {
+		public UserQuery userLastName(final String lastName) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public UserQuery userId(String id) {
+		public UserQuery userId(final String id) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public UserQuery userFirstNameLike(String firstNameLike) {
+		public UserQuery userFirstNameLike(final String firstNameLike) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public UserQuery userFirstName(String firstName) {
+		public UserQuery userFirstName(final String firstName) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public UserQuery userEmailLike(String emailLike) {
+		public UserQuery userEmailLike(final String emailLike) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public UserQuery userEmail(String email) {
+		public UserQuery userEmail(final String email) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public UserQuery potentialStarter(String procDefId) {
+		public UserQuery potentialStarter(final String procDefId) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -154,7 +154,7 @@ public UserQuery userId(String id) {
 		}
 
 		@Override
-		public UserQuery memberOfGroup(String groupId) {
+		public UserQuery memberOfGroup(final String groupId) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -163,55 +163,55 @@ public UserQuery userId(String id) {
 
 /** {@inheritDoc} */
 @Override
-public UserQuery userFirstName(String firstName) {
+public UserQuery userFirstName(final String firstName) {
 	throw new UnsupportedOperationException();
 }
 
 /** {@inheritDoc} */
 @Override
-public UserQuery userFirstNameLike(String firstNameLike) {
+public UserQuery userFirstNameLike(final String firstNameLike) {
 	throw new UnsupportedOperationException();
 }
 
 /** {@inheritDoc} */
 @Override
-public UserQuery userLastName(String lastName) {
+public UserQuery userLastName(final String lastName) {
 	throw new UnsupportedOperationException();
 }
 
 /** {@inheritDoc} */
 @Override
-public UserQuery userLastNameLike(String lastNameLike) {
+public UserQuery userLastNameLike(final String lastNameLike) {
 	throw new UnsupportedOperationException();
 }
 
 /** {@inheritDoc} */
 @Override
-public UserQuery userFullNameLike(String fullNameLike) {
+public UserQuery userFullNameLike(final String fullNameLike) {
 	throw new UnsupportedOperationException();
 }
 
 /** {@inheritDoc} */
 @Override
-public UserQuery userEmail(String email) {
+public UserQuery userEmail(final String email) {
 	throw new UnsupportedOperationException();
 }
 
 /** {@inheritDoc} */
 @Override
-public UserQuery userEmailLike(String emailLike) {
+public UserQuery userEmailLike(final String emailLike) {
 	throw new UnsupportedOperationException();
 }
 
 /** {@inheritDoc} */
 @Override
-public UserQuery memberOfGroup(String groupId) {
+public UserQuery memberOfGroup(final String groupId) {
 	throw new UnsupportedOperationException();
 }
 
 /** {@inheritDoc} */
 @Override
-public UserQuery potentialStarter(String procDefId) {
+public UserQuery potentialStarter(final String procDefId) {
 	throw new UnsupportedOperationException();
 }
 

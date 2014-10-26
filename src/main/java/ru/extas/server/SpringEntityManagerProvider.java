@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 
 /**
  * Предоставляет EntityManager из контекста
@@ -31,7 +30,7 @@ public class SpringEntityManagerProvider {
     }
 
     @Transactional
-    public void runInTransaction(Runnable operation) {
+    public void runInTransaction(final Runnable operation) {
         operation.run();
     }
 

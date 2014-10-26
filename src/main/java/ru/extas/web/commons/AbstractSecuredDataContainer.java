@@ -3,7 +3,7 @@ package ru.extas.web.commons;
 import com.vaadin.addon.jpacontainer.util.DefaultQueryModifierDelegate;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.common.IdentifiedObject_;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.SecureAction;
 import ru.extas.model.security.SecureTarget;
@@ -29,7 +29,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public abstract class AbstractSecuredDataContainer<TEntityType extends IdentifiedObject> extends ExtaDataContainer<TEntityType> {
     protected ExtaDomain domain;
 
-    public AbstractSecuredDataContainer(Class<TEntityType> entityClass, final ExtaDomain domain) {
+    public AbstractSecuredDataContainer(final Class<TEntityType> entityClass, final ExtaDomain domain) {
         super(entityClass);
         this.domain = domain;
 
@@ -45,14 +45,14 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
         getEntityProvider().setQueryModifierDelegate(
                 new DefaultQueryModifierDelegate() {
                     @Override
-                    public void filtersWillBeAdded(CriteriaBuilder cb, CriteriaQuery<?> cq, List<Predicate> predicates) {
+                    public void filtersWillBeAdded(final CriteriaBuilder cb, final CriteriaQuery<?> cq, final List<Predicate> predicates) {
                         if (cb == null || cq == null || predicates == null)
                             return;
 
                         if (lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN))
                             return;
 
-                        Predicate predicate = createSecurityPredicate(cb, cq);
+                        final Predicate predicate = createSecurityPredicate(cb, cq);
                         if (predicate != null) {
                             predicates.add(predicate);
                             cq.distinct(true);
@@ -63,11 +63,11 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
 
     }
 
-    private Predicate createSecurityPredicate(CriteriaBuilder cb, CriteriaQuery<?> cq) {
+    private Predicate createSecurityPredicate(final CriteriaBuilder cb, final CriteriaQuery<?> cq) {
         Predicate predicate;
-        Root<TEntityType> objectRoot = (Root<TEntityType>) getFirst(cq.getRoots(), null);
-        UserManagementService securityService = lookup(UserManagementService.class);
-        Person curUserContact = securityService.getCurrentUserContact();
+        final Root<TEntityType> objectRoot = (Root<TEntityType>) getFirst(cq.getRoots(), null);
+        final UserManagementService securityService = lookup(UserManagementService.class);
+        final Employee curUserContact = securityService.getCurrentUserEmployee();
 
         beginSecurityFilter();
         // Определить область видимости и Наложить фильтр в соответствии с областью видимости
@@ -79,11 +79,11 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
             predicate = createPredicate4Target(cb, cq, SecureTarget.OWNONLY);
 
             if (securityService.isPermittedTarget(domain, SecureTarget.CORPORATE)) {
-                Predicate corpPredicate = createPredicate4Target(cb, cq, SecureTarget.CORPORATE);
+                final Predicate corpPredicate = createPredicate4Target(cb, cq, SecureTarget.CORPORATE);
                 if (corpPredicate != null)
                     predicate = cb.or(predicate, corpPredicate);
             } else if (securityService.isPermittedTarget(domain, SecureTarget.SALE_POINT)) {
-                Predicate spPredicate = createPredicate4Target(cb, cq, SecureTarget.CORPORATE);
+                final Predicate spPredicate = createPredicate4Target(cb, cq, SecureTarget.CORPORATE);
                 if (spPredicate != null)
                     predicate = cb.or(predicate, spPredicate);
             }
@@ -106,8 +106,8 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
         return lookup(UserManagementService.class).isPermitted(domain, null, SecureAction.INSERT);
     }
 
-    public boolean isItemPermitAction(String itemId, SecureAction action) {
-        UserManagementService securityService = lookup(UserManagementService.class);
+    public boolean isItemPermitAction(final String itemId, final SecureAction action) {
+        final UserManagementService securityService = lookup(UserManagementService.class);
 
         // Прежде всего надо проверить разрешено ли действие для всех объектов
         if (securityService.isPermitted(domain, SecureTarget.ALL, action))
@@ -128,23 +128,23 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
         return false;
     }
 
-    public boolean isPermitted4OwnedObj(String itemId, SecureAction action) {
+    public boolean isPermitted4OwnedObj(final String itemId, final SecureAction action) {
         return true;
     }
 
-    public boolean isItemFromTarget(String itemId, SecureTarget target) {
+    public boolean isItemFromTarget(final String itemId, final SecureTarget target) {
         beginSecurityFilter();
 
-        EntityManager em = lookup(EntityManager.class);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery cq = cb.createQuery();
-        Root<TEntityType> root = cq.from(getEntityClass());
-        Predicate predicate = createPredicate4Target(cb, cq, target);
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery cq = cb.createQuery();
+        final Root<TEntityType> root = cq.from(getEntityClass());
+        final Predicate predicate = createPredicate4Target(cb, cq, target);
         cq.where(cb.and(cb.equal(root.get(IdentifiedObject_.id), itemId), predicate));
         cq.select(cb.countDistinct(root.get(IdentifiedObject_.id)));
 
-        Query qry = em.createQuery(cq);
-        Long results = (Long) qry.getSingleResult();
+        final Query qry = em.createQuery(cq);
+        final Long results = (Long) qry.getSingleResult();
 
         endSecurityFilter();
         return results != 0;

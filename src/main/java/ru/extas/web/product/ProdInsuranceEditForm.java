@@ -2,7 +2,10 @@ package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.TextArea;
 import ru.extas.model.sale.ProdInsurance;
 import ru.extas.server.sale.ProdInsuranceRepository;
 import ru.extas.web.commons.ExtaEditForm;
@@ -10,7 +13,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.contacts.CompanySelect;
+import ru.extas.web.contacts.company.CompanyField;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -29,7 +32,7 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 	@PropertyId("name")
 	private EditField nameField;
 	@PropertyId("vendor")
-	private CompanySelect vendorField;
+	private CompanyField vendorField;
 	@PropertyId("percent")
 	private EditField percentField;
 	@PropertyId("active")
@@ -37,8 +40,8 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
-    public ProdInsuranceEditForm(ProdInsurance prodInsurance) {
-        super(prodInsurance.isNew() ? "Новая страховая программа" : "Редактировать страховую программу", new BeanItem(prodInsurance));
+    public ProdInsuranceEditForm(final ProdInsurance prodInsurance) {
+        super(prodInsurance.isNew() ? "Новая страховая программа" : "Редактировать страховую программу", prodInsurance);
     }
 
     /** {@inheritDoc} */
@@ -61,13 +64,14 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 	@Override
 	protected ComponentContainer createEditFields(final ProdInsurance obj) {
 		final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
 		nameField = new EditField("Название продукта", "Введите название продукта");
 		nameField.setColumns(30);
 		nameField.setRequired(true);
 		form.addComponent(nameField);
 
-		vendorField = new CompanySelect("Страховщик");
+		vendorField = new CompanyField("Страховщик");
 		form.addComponent(vendorField);
 
 		percentField = new EditField("Процент страх.премии", "Введите процент страховой премии по продукту");
@@ -83,7 +87,6 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 		commentField.setDescription("Дополнительная информация о продукте");
 		commentField.setNullRepresentation("");
 		commentField.setInputPrompt("Дополнительная информация о продукте");
-		commentField.setColumns(30);
 		commentField.setRows(5);
 		form.addComponent(commentField);
 

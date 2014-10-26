@@ -2,7 +2,10 @@ package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.TextArea;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.server.sale.ProdCreditRepository;
 import ru.extas.web.commons.ExtaEditForm;
@@ -10,7 +13,7 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.contacts.CompanySelect;
+import ru.extas.web.contacts.company.CompanyField;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -30,7 +33,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 	private EditField nameField;
 
 	@PropertyId("vendor")
-	private CompanySelect vendorField;
+	private CompanyField vendorField;
 
 	@PropertyId("programType")
 	private ProdCredProgSelect programTypeField;
@@ -71,8 +74,8 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
-    public ProdCreditEditForm(ProdCredit prodCredit) {
-        super(prodCredit.isNew() ? "Новый продукт" : "Редактировать продукт", new BeanItem(prodCredit));
+    public ProdCreditEditForm(final ProdCredit prodCredit) {
+        super(prodCredit.isNew() ? "Новый продукт" : "Редактировать продукт", prodCredit);
     }
 
     /** {@inheritDoc} */
@@ -85,8 +88,8 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected ProdCredit saveObject(ProdCredit obj) {
-		ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
+	protected ProdCredit saveObject(final ProdCredit obj) {
+		final ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
         NotificationUtil.showSuccess("Продукт сохранен");
         return loc;
     }
@@ -95,6 +98,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 	@Override
 	protected ComponentContainer createEditFields(final ProdCredit obj) {
 		final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
 		activeField = new CheckBox("Активный продукт");
 		activeField.setDescription("Укажите участвует ли продукт в продажах (учавствует если активен)");
@@ -105,7 +109,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 		nameField.setRequired(true);
 		form.addComponent(nameField);
 
-		vendorField = new CompanySelect("Банк");
+		vendorField = new CompanyField("Банк");
 		vendorField.setWidth(30, Unit.EM);
 		form.addComponent(vendorField);
 
@@ -159,7 +163,6 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 		commentField.setDescription("Введите дополнительную информацию о продукте");
 		commentField.setNullRepresentation("");
 		commentField.setInputPrompt("Дополнительная информация о продукте");
-		commentField.setColumns(30);
 		commentField.setRows(5);
 		form.addComponent(commentField);
 

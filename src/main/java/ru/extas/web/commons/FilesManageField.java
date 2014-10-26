@@ -7,7 +7,6 @@ import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamVariable;
 import com.vaadin.ui.*;
@@ -41,7 +40,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
     private Mode mode;
     private ItemGrid filesContainer;
 
-    public FilesManageField(Class<TFileContainer> containerClass) {
+    public FilesManageField(final Class<TFileContainer> containerClass) {
         this.containerClass = containerClass;
         setBuffered(true);
     }
@@ -49,45 +48,49 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
 
     @Override
     protected Component initContent() {
-        final Property dataSource = getPropertyDataSource();
-        final List<TFileContainer> list = dataSource != null ? (List<TFileContainer>) dataSource.getValue() : new ArrayList<>();
+        final List<TFileContainer> list = getValue() != null ? getValue() : newArrayList();
         container = new BeanItemContainer<>(containerClass);
         if (list != null) {
             container.addAll(list);
         }
 
-        VerticalLayout root = new VerticalLayout();
+        final VerticalLayout root = new VerticalLayout();
+        root.setWidth(100, Unit.PERCENTAGE);
         root.addStyleName("drop-area");
 
         filesContainer = new ItemGrid();
+        filesContainer.setWidth(100, Unit.PERCENTAGE);
         filesContainer.setContainerDataSource(container);
         filesContainer.setItemGenerator((pSource, pItemId) -> getItemComponent((TFileContainer) pItemId));
         root.addComponent(filesContainer);
         setMode(Mode.LIST);
 
         final Label infoLabel = new Label("Перетащите файлы для загрузки сюда, или нажмите кнопку \"Добавить файлы...\"");
-//        infoLabel.setIcon(Fontello.INFO_CIRCLED);
+        //infoLabel.addStyleName(ExtaTheme.WRLABEL_LIGHT);
+        infoLabel.setWidth(100, Unit.PERCENTAGE);
         root.addComponent(infoLabel);
 
         progress = new ProgressBar();
+        progress.setWidth(100, Unit.PERCENTAGE);
         progress.setIndeterminate(true);
         progress.setVisible(false);
         root.addComponent(progress);
 
-        UploadFinishedHandler handler = (inputStream, filename, mimeType, length) -> {
+        final UploadFinishedHandler handler = (inputStream, filename, mimeType, length) -> {
             try {
                 addUploadedFile(ByteStreams.toByteArray(inputStream), filename, mimeType, length);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         };
-        FileUploader fileUploader = new FileUploader("Добавить файлы...", handler);
+        final FileUploader fileUploader = new FileUploader("Добавить файлы...", handler);
+        fileUploader.setWidth(100, Unit.PERCENTAGE);
         root.addComponent(fileUploader);
 
         return new FileDropBox(root);
     }
 
-    private Component getItemComponent(TFileContainer item) {
+    private Component getItemComponent(final TFileContainer item) {
         final ComponentContainer root;
         if (mode == Mode.LIST) {
             final HorizontalLayout layout = new HorizontalLayout();
@@ -100,7 +103,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
             root = layout;
         }
 
-        Button dwnBtn = new Button(item.getName());
+        final Button dwnBtn = new Button(item.getName());
         dwnBtn.setIcon(getFileIcon(item.getMimeType()));
         dwnBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         dwnBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
@@ -108,7 +111,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         dwnBtn.addClickListener(this::downloadClickListener);
         root.addComponent(dwnBtn);
 
-        Button delBtn = new Button("Удалить", Fontello.TRASH_4);
+        final Button delBtn = new Button("Удалить", Fontello.TRASH_4);
         delBtn.addStyleName(ExtaTheme.BUTTON_QUIET);
         delBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         delBtn.setData(item);
@@ -129,7 +132,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         return mode;
     }
 
-    public void setMode(Mode mode) {
+    public void setMode(final Mode mode) {
         if (this.mode != mode) {
             this.mode = mode;
             if (mode == Mode.LIST) {
@@ -140,7 +143,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         }
     }
 
-    private Resource getFileIcon(String mimeType) {
+    private Resource getFileIcon(final String mimeType) {
         // TODO: Move to map
         if (!isNullOrEmpty(mimeType)) {
             if (mimeType.startsWith("image/"))
@@ -168,13 +171,13 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         return Fontello.FILE_CODE;
     }
 
-    public void addUploadedFile(byte[] inputStream, String filename, String mimeType, long length) {
+    public void addUploadedFile(final byte[] inputStream, final String filename, final String mimeType, final long length) {
         TFileContainer fileContainer = null;
         try {
             fileContainer = containerClass.newInstance();
-        } catch (InstantiationException e) {
+        } catch (final InstantiationException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             e.printStackTrace();
         }
         fileContainer.setName(filename);
@@ -186,13 +189,13 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
     }
 
 
-    private void deleteClickListener(Button.ClickEvent clickEvent) {
+    private void deleteClickListener(final Button.ClickEvent clickEvent) {
         container.removeItem(clickEvent.getButton().getData());
         setValue(newArrayList(container.getItemIds()));
     }
 
-    private void downloadClickListener(Button.ClickEvent clickEvent) {
-        TFileContainer fileContainer = (TFileContainer) clickEvent.getButton().getData();
+    private void downloadClickListener(final Button.ClickEvent clickEvent) {
+        final TFileContainer fileContainer = (TFileContainer) clickEvent.getButton().getData();
         new DownloadFileWindow(fileContainer.getFileData(), fileContainer.getName()).showModal();
     }
 
@@ -206,6 +209,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
 
         public FileDropBox(final Component root) {
             super(root);
+            setWidth(100, Unit.PERCENTAGE);
             setDropHandler(this);
         }
 

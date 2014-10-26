@@ -18,7 +18,7 @@
     <jpa:repositories base-package="ru.extas.server" entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>
     <bean id="extaAuditorAwareBean" class="ru.extas.model.common.ExtaAuditorAware"/>
-    <jpa:auditing auditor-aware-ref="extaAuditorAwareBean" />
+    <jpa:auditing auditor-aware-ref="extaAuditorAwareBean"/>
     <!-- Exception translation bean post processor -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
@@ -78,6 +78,11 @@
     </bean>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
+    <!--Bean Validation config-->
+    <bean id="validator"
+          class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- JPA Configuration -->
     <context:property-placeholder location="classpath:persistence.properties" ignore-unresolvable="true"/>
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -103,6 +108,8 @@
         </property>
     </bean>
 
+    <!--<bean class="javax.persistence.PersistenceUnitUtil" factory-bean="entityManagerFactory"-->
+          <!--factory-method="getPersistenceUnitUtil"/>-->
     <!-- Transaction config-->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>

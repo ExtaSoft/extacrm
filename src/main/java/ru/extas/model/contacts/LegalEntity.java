@@ -4,7 +4,8 @@ import ru.extas.model.common.FileContainer;
 import ru.extas.model.sale.ProdCredit;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Set;
 
@@ -20,8 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @since 0.3
  */
 @Entity
-@DiscriminatorValue("LEGAL_ENTITY")
-@Table(name = "LEGAL_ENTITY")
+@Table(name = "LEGAL_ENTITY", indexes = {@Index(columnList = "NAME")})
 public class LegalEntity extends Contact{
 
     // Компания
@@ -30,37 +30,37 @@ public class LegalEntity extends Contact{
 
     // ОГРН/ОГРИП
     @Column(name = "OGRN_OGRIP", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String ogrnOgrip;
 
     // ИНН
     @Column(name = "INN", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String inn;
 
     // КПП
     @Column(name = "KPP", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String kpp;
 
     // Расчетный счет в рублях
     @Column(name = "SETTLEMENT_ACCOUNT", length = 25)
-    @Max(25)
+    @Size(max = 25)
     private String settlementAccount;
 
     // Корреспондентский счет
     @Column(name = "LORO_ACCOUNT", length = 150)
-    @Max(150)
+    @Size(max = 150)
     private String loroAccount;
 
     // Полное наименование банка
     @Column(name = "BANK_NAME", length = NAME_LENGTH)
-    @Max(NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     private String bankName;
 
     // БИК банка
     @Column(name = "BIC", length = 15)
-    @Max(15)
+    @Size(max = 15)
     private String bic;
 
     // Фактический адрес совпадает с юридическим
@@ -77,15 +77,16 @@ public class LegalEntity extends Contact{
             @AttributeOverride(name = "realtyKind", column = @Column(name = "PST_REALTY_KIND")),
             @AttributeOverride(name = "periodOfResidence", column = @Column(name = "PST_PERIOD_OF_RESIDENCE"))
     })
+    @Valid
     private AddressInfo postAddress = new AddressInfo();
 
     // Генеральный директор
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Person director;
+    private Employee director;
 
     // Главный бухгалтер
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Person accountant;
+    private Employee accountant;
 
     // Банки и кредитные продукты
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -93,6 +94,7 @@ public class LegalEntity extends Contact{
             name = "LEGAL_ENTITY_PROD_CREDIT",
             joinColumns = {@JoinColumn(name = "LEGAL_ENTITY_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "PROD_CREDIT_ID", referencedColumnName = "ID")})
+    @OrderBy("name ASC")
     private List<ProdCredit> credProducts;
 
     // Дилерство
@@ -102,29 +104,33 @@ public class LegalEntity extends Contact{
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    @OrderBy("name ASC")
     private List<LegalEntityFile> files = newArrayList();
 
     public boolean isRegNpstIsSame() {
         return regNpstIsSame;
     }
 
-    public void setRegNpstIsSame(boolean regNpstIsSame) {
+    public void setRegNpstIsSame(final boolean regNpstIsSame) {
         this.regNpstIsSame = regNpstIsSame;
     }
 
-    public Person getAccountant() {
+    public Employee getAccountant() {
         return accountant;
     }
 
-    public void setAccountant(Person accountant) {
+    public void setAccountant(final Employee accountant) {
         this.accountant = accountant;
+        if (accountant != null) {
+            accountant.setLegalWorkPlace(this);
+        }
     }
 
     public String getKpp() {
         return kpp;
     }
 
-    public void setKpp(String kpp) {
+    public void setKpp(final String kpp) {
         this.kpp = kpp;
     }
 
@@ -132,7 +138,7 @@ public class LegalEntity extends Contact{
         return settlementAccount;
     }
 
-    public void setSettlementAccount(String settlementAccount) {
+    public void setSettlementAccount(final String settlementAccount) {
         this.settlementAccount = settlementAccount;
     }
 
@@ -140,7 +146,7 @@ public class LegalEntity extends Contact{
         return loroAccount;
     }
 
-    public void setLoroAccount(String loroAccount) {
+    public void setLoroAccount(final String loroAccount) {
         this.loroAccount = loroAccount;
     }
 
@@ -148,7 +154,7 @@ public class LegalEntity extends Contact{
         return bankName;
     }
 
-    public void setBankName(String bankName) {
+    public void setBankName(final String bankName) {
         this.bankName = bankName;
     }
 
@@ -156,7 +162,7 @@ public class LegalEntity extends Contact{
         return bic;
     }
 
-    public void setBic(String bik) {
+    public void setBic(final String bik) {
         this.bic = bik;
     }
 
@@ -164,7 +170,7 @@ public class LegalEntity extends Contact{
         return postAddress;
     }
 
-    public void setPostAddress(AddressInfo postAddress) {
+    public void setPostAddress(final AddressInfo postAddress) {
         this.postAddress = postAddress;
     }
 
@@ -209,7 +215,7 @@ public class LegalEntity extends Contact{
      *
      * @return a {@link ru.extas.model.contacts.Person} object.
      */
-    public Person getDirector() {
+    public Employee getDirector() {
         return director;
     }
 
@@ -218,8 +224,11 @@ public class LegalEntity extends Contact{
      *
      * @param director a {@link ru.extas.model.contacts.Person} object.
      */
-    public void setDirector(final Person director) {
+    public void setDirector(final Employee director) {
         this.director = director;
+        if(director != null){
+            director.setLegalWorkPlace(this);
+        }
     }
 
 
@@ -275,6 +284,13 @@ public class LegalEntity extends Contact{
      */
     public void setCompany(final Company company) {
         this.company = company;
+        if(getDirector() != null && !getDirector().getCompany().equals(company))
+            setDirector(null);
+        if(getAccountant() != null && !getAccountant().getCompany().equals(company))
+            setAccountant(null);
+        if (company != null)
+            company.getLegalEntities().add(this);
+
     }
 
     /**
@@ -291,7 +307,7 @@ public class LegalEntity extends Contact{
      *
      * @param files a {@link java.util.List} object.
      */
-    public void setFiles(List<LegalEntityFile> files) {
+    public void setFiles(final List<LegalEntityFile> files) {
         this.files = files;
     }
 }

@@ -9,11 +9,11 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import ru.extas.model.insurance.FormTransfer;
 import ru.extas.server.insurance.FormTransferRepository;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.LocalDateField;
-import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.contacts.PersonSelect;
+import ru.extas.web.contacts.person.PersonSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -37,17 +37,18 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
     @PropertyId("formNums")
     private A7NumListEdit formNums;
 
-    public FormTransferEditForm(FormTransfer formTransfer) {
+    public FormTransferEditForm(final FormTransfer formTransfer) {
         super(formTransfer.isNew() ?
                         "Новый акт приема/передачи" :
                         "Редактировать акт приема/передачи",
-                new BeanItem(formTransfer));
+                formTransfer);
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final FormTransfer obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
         fromContactField = new PersonSelect("От кого");

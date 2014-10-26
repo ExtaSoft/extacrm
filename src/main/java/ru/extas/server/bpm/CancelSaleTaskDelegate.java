@@ -31,27 +31,27 @@ public class CancelSaleTaskDelegate implements JavaDelegate {
 /** {@inheritDoc} */
 @Transactional
 @Override
-public void execute(DelegateExecution execution) throws Exception {
+public void execute(final DelegateExecution execution) throws Exception {
 
-	Map<String, Object> processVariables = execution.getVariables();
+	final Map<String, Object> processVariables = execution.getVariables();
 	if (processVariables.containsKey("lead")) {
-		Lead lead = (Lead) processVariables.get("lead");
+		final Lead lead = (Lead) processVariables.get("lead");
 		lead.setStatus(Lead.Status.CLOSED);
 		if (processVariables.containsKey("getBankResponseTaskResult") && processVariables.get("getBankResponseTaskResult").equals("Rejected")) {
 			lead.setResult(Lead.Result.VENDOR_REJECTED);
 		} else
 			lead.setResult(Lead.Result.CLIENT_REJECTED);
-		LeadRepository leadRepository = lookup(LeadRepository.class);
+		final LeadRepository leadRepository = lookup(LeadRepository.class);
 		leadRepository.secureSave(lead);
 	}
 	if (processVariables.containsKey("sale")) {
-		Sale sale = (Sale) processVariables.get("sale");
+		final Sale sale = (Sale) processVariables.get("sale");
 		sale.setStatus(Sale.Status.CANCELED);
 		if (processVariables.containsKey("getBankResponseTaskResult") && processVariables.get("getBankResponseTaskResult").equals("Rejected")) {
 			sale.setResult(Sale.Result.VENDOR_REJECTED);
 		} else
 			sale.setResult(Sale.Result.CLIENT_REJECTED);
-		SaleRepository saleRepository = lookup(SaleRepository.class);
+		final SaleRepository saleRepository = lookup(SaleRepository.class);
 		saleRepository.secureSave(sale);
 	}
 

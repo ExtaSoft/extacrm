@@ -5,12 +5,9 @@ import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
 * @author Valery Orlov
@@ -28,7 +25,7 @@ public class StringToDateTimeConverter extends StringToDateConverter {
 
     private String pattern;
 
-    public StringToDateTimeConverter(String pattern) {
+    public StringToDateTimeConverter(final String pattern) {
         this.pattern = pattern;
     }
 
@@ -42,7 +39,7 @@ public class StringToDateTimeConverter extends StringToDateConverter {
             locale = this.locale;
         }
 
-        DateFormat f = new SimpleDateFormat(pattern, locale);
+        final DateFormat f = new SimpleDateFormat(pattern, locale);
         f.setTimeZone(clientTimeZone.toTimeZone());
         return f;
     }
@@ -51,7 +48,7 @@ public class StringToDateTimeConverter extends StringToDateConverter {
         return pattern;
     }
 
-    public void setPattern(String pattern) {
+    public void setPattern(final String pattern) {
         this.pattern = pattern;
     }
 }

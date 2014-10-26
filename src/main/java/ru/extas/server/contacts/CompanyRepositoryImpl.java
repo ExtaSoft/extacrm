@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
@@ -35,7 +35,7 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
     @Inject
     private CompanyRepository companyRepository;
     @Inject
-    private PersonRepository personRepository;
+    private EmployeeRepository employeeRepository;
     @Inject
     private LegalEntityRepository legEntRepository;
     @Inject
@@ -48,31 +48,31 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
     }
 
     @Override
-    protected Collection<Pair<Person, AccessRole>> getObjectUsers(Company company) {
+    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final Company company) {
         return newArrayList(getCurUserAccess(company));
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(Company company) {
+    protected Collection<Company> getObjectCompanies(final Company company) {
         return null;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(Company company) {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected Collection<String> getObjectBrands(Company company) {
+    protected Collection<SalePoint> getObjectSalePoints(final Company company) {
         return null;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected Collection<String> getObjectRegions(Company company) {
-        if(company.getRegAddress() != null && !isNullOrEmpty(company.getRegAddress().getRegion()))
-            return newHashSet(company.getRegAddress().getRegion());
+    protected Collection<String> getObjectBrands(final Company company) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Collection<String> getObjectRegions(final Company company) {
+        if(!isNullOrEmpty(company.getRegion()))
+            return newHashSet(company.getRegion());
         return null;
     }
 
@@ -80,19 +80,19 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
     @Transactional
     @Override
     public Company permitAndSave(Company company,
-                                 Collection<Pair<Person, AccessRole>> users,
-                                 Collection<SalePoint> salePoints,
-                                 Collection<Company> companies,
-                                 Collection<String> regions,
-                                 Collection<String> brands) {
+                                 final Collection<Pair<Employee, AccessRole>> users,
+                                 final Collection<SalePoint> salePoints,
+                                 final Collection<Company> companies,
+                                 final Collection<String> regions,
+                                 final Collection<String> brands) {
         if (company != null) {
             company = super.permitAndSave(company, users, salePoints, companies, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты компании:
             // Собственник(и) Компании
-            final Collection<Pair<Person, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
-            personRepository.permitAndSave(company.getOwners(), readers, salePoints, companies, regions, brands);
+            final Collection<Pair<Employee, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            employeeRepository.permitAndSave(company.getOwners(), readers, salePoints, companies, regions, brands);
             // Сотрудники компании
-            personRepository.permitAndSave(company.getEmployees(), readers, salePoints, companies, regions, brands);
+            employeeRepository.permitAndSave(company.getEmployees(), readers, salePoints, companies, regions, brands);
             // Юридические лица компании
             legEntRepository.permitAndSave(company.getLegalEntities(), readers, salePoints, companies, regions, brands);
             // Торговые точки компании

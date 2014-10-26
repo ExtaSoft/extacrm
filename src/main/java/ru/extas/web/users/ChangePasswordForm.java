@@ -41,7 +41,7 @@ public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
      *
      * @param obj a {@link com.vaadin.data.util.BeanItem} object.
      */
-    public ChangePasswordForm(final BeanItem<UserProfile> obj) {
+    public ChangePasswordForm(final UserProfile obj) {
         super("Смена пароля", obj);
     }
 

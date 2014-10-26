@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
@@ -40,29 +41,29 @@ public class PersonRepositoryImpl extends AbstractSecuredRepository<Person> {
     }
 
     @Override
-    protected Collection<Pair<Person, AccessRole>> getObjectUsers(Person person) {
+    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final Person person) {
         return newArrayList(getCurUserAccess(person));
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(Person person) {
+    protected Collection<Company> getObjectCompanies(final Person person) {
         return null;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(Person person) {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected Collection<String> getObjectBrands(Person person) {
+    protected Collection<SalePoint> getObjectSalePoints(final Person person) {
         return null;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected Collection<String> getObjectRegions(Person person) {
+    protected Collection<String> getObjectBrands(final Person person) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Collection<String> getObjectRegions(final Person person) {
         if(person.getRegAddress() != null && !isNullOrEmpty(person.getRegAddress().getRegion()))
             return newHashSet(person.getRegAddress().getRegion());
         return null;

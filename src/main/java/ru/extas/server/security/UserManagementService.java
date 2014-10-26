@@ -1,6 +1,6 @@
 package ru.extas.server.security;
 
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.security.*;
 
 import java.util.Set;
@@ -28,7 +28,7 @@ public interface UserManagementService {
      * @param login логин
      * @return найденный контакт пользователя или null
      */
-    Person findUserContactByLogin(String login);
+    Employee findUserEmployeeByLogin(String login);
 
     /**
      * Получить профайл стандартного юзера (admin)
@@ -56,7 +56,7 @@ public interface UserManagementService {
      *
      * @return контакт текущего пользователя
      */
-    Person getCurrentUserContact();
+    Employee getCurrentUserEmployee();
 
     /**
      * Определить есть ли аутентифицированный пользователь

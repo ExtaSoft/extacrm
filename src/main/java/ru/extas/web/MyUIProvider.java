@@ -19,9 +19,9 @@ public class MyUIProvider extends UIProvider {
 
     /** {@inheritDoc} */
     @Override
-    public Class<? extends UI> getUIClass(UIClassSelectionEvent event) {
+    public Class<? extends UI> getUIClass(final UIClassSelectionEvent event) {
 
-        VaadinRequest request = event.getRequest();
+        final VaadinRequest request = event.getRequest();
         if (request.getPathInfo().startsWith("/ui/elifui"))
             return LeadInputFormUI.class;
         else

@@ -4,7 +4,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 import ru.extas.web.commons.ExtaTheme;
 
 /**

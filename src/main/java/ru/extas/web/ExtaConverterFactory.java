@@ -17,7 +17,8 @@ import ru.extas.model.security.SecureAction;
 import ru.extas.model.security.SecureTarget;
 import ru.extas.model.security.UserRole;
 import ru.extas.web.commons.converters.*;
-import ru.extas.web.contacts.*;
+import ru.extas.web.contacts.employee.StringToTypeOfEmployment;
+import ru.extas.web.contacts.person.*;
 import ru.extas.web.insurance.StringToA7FormConverter;
 import ru.extas.web.insurance.StringToA7StatusConverter;
 import ru.extas.web.insurance.StringToPeriodOfCoverConverter;
@@ -49,7 +50,7 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
-	protected <PRESENTATION, MODEL> Converter<PRESENTATION, MODEL> findConverter(Class<PRESENTATION> presentationType, Class<MODEL> modelType) {
+	protected <PRESENTATION, MODEL> Converter<PRESENTATION, MODEL> findConverter(final Class<PRESENTATION> presentationType, final Class<MODEL> modelType) {
 
 		// Конверторы дат
 		if (presentationType == Date.class && modelType == DateTime.class)
@@ -90,10 +91,6 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 		// Конвертируем Квитанцию А-7 в строку (номер квитанции)
 		if (presentationType == String.class && modelType == A7Form.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToA7FormConverter.class);
-
-		// Конвертер должностей
-		if (presentationType == String.class && modelType == Person.Position.class)
-			return (Converter<PRESENTATION, MODEL>) lookup(StringToPersonPosition.class);
 
 		// Конвертер статусов А-7
 		if (presentationType == String.class && modelType == A7Form.Status.class)

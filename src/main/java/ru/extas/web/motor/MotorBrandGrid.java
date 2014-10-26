@@ -25,7 +25,7 @@ public class MotorBrandGrid extends ExtaGrid<MotorBrand> {
     }
 
     @Override
-    public ExtaEditForm<MotorBrand> createEditForm(MotorBrand motorBrand, boolean isInsert) {
+    public ExtaEditForm<MotorBrand> createEditForm(final MotorBrand motorBrand, final boolean isInsert) {
         return new MotorBrandEditForm(motorBrand);
     }
 
@@ -47,7 +47,7 @@ public class MotorBrandGrid extends ExtaGrid<MotorBrand> {
 	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 		actions.add(new NewObjectAction("Новый", "Ввод нового бренда техники"));
 		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке бренд техники"));

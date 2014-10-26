@@ -5,8 +5,8 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.Container;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.Person_;
+import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.Employee_;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.insurance.A7Form;
 import ru.extas.model.insurance.A7Form_;
@@ -18,6 +18,7 @@ import ru.extas.web.commons.*;
 
 import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.collect.Iterables.getFirst;
@@ -46,7 +47,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
     }
 
     @Override
-    public ExtaEditForm<A7Form> createEditForm(A7Form a7Form, boolean isInsert) {
+    public ExtaEditForm<A7Form> createEditForm(final A7Form a7Form, final boolean isInsert) {
         return null;
     }
 
@@ -60,37 +61,41 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
 
     private class A7SecuredContainer extends AbstractSecuredDataContainer<A7Form> {
 
-        public A7SecuredContainer(Class<A7Form> entityClass, ExtaDomain domain) {
+        public A7SecuredContainer(final Class<A7Form> entityClass, final ExtaDomain domain) {
             super(entityClass, domain);
         }
 
         @Override
-        protected Predicate createPredicate4Target(CriteriaBuilder cb, CriteriaQuery<?> cq, SecureTarget target) {
+        protected Predicate createPredicate4Target(final CriteriaBuilder cb, final CriteriaQuery<?> cq, final SecureTarget target) {
             Predicate predicate = null;
             final Root<A7Form> objectRoot = (Root<A7Form>) getFirst(cq.getRoots(), null);
-            final Person curUserContact = lookup(UserManagementService.class).getCurrentUserContact();
+            final Employee curUserContact = lookup(UserManagementService.class).getCurrentUserEmployee();
 
             switch (target) {
                 case OWNONLY:
                     predicate = cb.equal(objectRoot.get(A7Form_.owner), curUserContact);
                     break;
                 case SALE_POINT: {
-                    Set<SalePoint> workPlaces = null;
-                    workPlaces = curUserContact.getWorkPlaces();
+                    final Set<SalePoint> workPlaces = newHashSet();
+                    workPlaces.add(curUserContact.getWorkPlace());
+                    Optional.ofNullable(curUserContact.getUserProfile())
+                            .map(p -> p.getSalePoints())
+                            .ifPresent(s -> workPlaces.addAll(s));
                     if (!isEmpty(workPlaces)) {
-                        SetJoin<Person, SalePoint> workPlaceRoot = objectRoot.join(A7Form_.owner, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        final Join<Employee, SalePoint> workPlaceRoot = objectRoot.join(A7Form_.owner, JoinType.LEFT).join(Employee_.workPlace, JoinType.LEFT);
                         predicate = workPlaceRoot.in(workPlaces);
                     }
                     break;
                 }
                 case CORPORATE:
-                    Set<SalePoint> workPlaces = null;
-                    final Set<Company> companies = curUserContact.getEmployers();
+                    final Set<SalePoint> workPlaces = null;
+                    final Set<Company> companies = newHashSet();
+                    companies.add(curUserContact.getCompany());
                     for (final Company company : companies) {
                         workPlaces.addAll(company.getSalePoints());
                     }
                     if (!isEmpty(workPlaces)) {
-                        SetJoin<Person, SalePoint> workPlaceRoot = objectRoot.join(A7Form_.owner, JoinType.LEFT).join(Person_.workPlaces, JoinType.LEFT);
+                        final Join<Employee, SalePoint> workPlaceRoot = objectRoot.join(A7Form_.owner, JoinType.LEFT).join(Employee_.workPlace, JoinType.LEFT);
                         workPlaceRoot.in(workPlaces);
                     }
                     break;
@@ -107,7 +112,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
      */
     @Override
     protected Container createContainer() {
-        ExtaDataContainer<A7Form> cnt = new A7SecuredContainer(A7Form.class, ExtaDomain.INSURANCE_A_7);
+        final ExtaDataContainer<A7Form> cnt = new A7SecuredContainer(A7Form.class, ExtaDomain.INSURANCE_A_7);
         cnt.addNestedContainerProperty("owner.name");
         return cnt;
     }
@@ -117,11 +122,11 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
      */
     @Override
     protected List<UIAction> createActions() {
-        List<UIAction> actions = newArrayList();
+        final List<UIAction> actions = newArrayList();
 
         actions.add(new ItemAction("Утрачен", "Перевести выделенный в списке бланк в \"Утраченные\"", null) {
             @Override
-            public void fire(Object itemId) {
+            public void fire(final Object itemId) {
                 final A7Form.Status status = A7Form.Status.LOST;
                 changeStatus(itemId, status);
             }
@@ -129,7 +134,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
 
         actions.add(new ItemAction("Испорчен", "Перевести выделенный в списке бланк в \"Испорченные\"", null) {
             @Override
-            public void fire(Object itemId) {
+            public void fire(final Object itemId) {
                 final A7Form.Status status = A7Form.Status.BROKEN;
                 changeStatus(itemId, status);
             }
@@ -138,10 +143,10 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
         return actions;
     }
 
-    private void changeStatus(Object itemId, A7Form.Status status) {
+    private void changeStatus(final Object itemId, final A7Form.Status status) {
         final A7Form curObj = extractBean(table.getItem(itemId));
 
-        A7FormRepository formService = lookup(A7FormRepository.class);
+        final A7FormRepository formService = lookup(A7FormRepository.class);
         formService.changeStatus(curObj, status);
         refreshContainerItem(itemId);
     }

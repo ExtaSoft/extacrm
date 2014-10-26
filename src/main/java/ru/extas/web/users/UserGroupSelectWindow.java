@@ -31,9 +31,11 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public UserGroupSelectWindow(String caption) {
+    public UserGroupSelectWindow(final String caption) {
         super(caption);
         addStyleName(ExtaTheme.BASE_VIEW);
+        setWidth(800, Unit.PIXELS);
+        setHeight(600, Unit.PIXELS);
         setContent(new UserGroupGrid() {
 
 //            @Override
@@ -44,7 +46,7 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
 
             @Override
             protected List<UIAction> createActions() {
-                List<UIAction> actions = newArrayList();
+                final List<UIAction> actions = newArrayList();
 
                 actions.add(new DefaultAction("Выбрать", "Выбрать выделенную в списке группу и закрыть окно", Fontello.CHECK) {
                     @Override
@@ -78,7 +80,7 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
      *
      * @param selected a {@link ru.extas.model.security.UserGroup} object.
      */
-    public void setSelected(UserGroup selected) {
+    public void setSelected(final UserGroup selected) {
         this.selected = selected;
     }
 
@@ -96,7 +98,7 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
      *
      * @param selectPressed a boolean.
      */
-    public void setSelectPressed(boolean selectPressed) {
+    public void setSelectPressed(final boolean selectPressed) {
         this.selectPressed = selectPressed;
     }
 }

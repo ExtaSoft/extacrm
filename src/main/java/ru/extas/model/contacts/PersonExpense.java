@@ -2,11 +2,8 @@ package ru.extas.model.contacts;
 
 import ru.extas.model.common.IdentifiedObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.Max;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -22,19 +19,19 @@ public class PersonExpense extends IdentifiedObject {
 
     // Тип расхода: Текущие расходы(на питание и одежду), Оплата кредитов, Прочие(указать)
     @Column(length = 50)
-    @Max(50)
+    @Size(max = 50)
     private String type;
     // Сумма
     @Column(precision = 32, scale = 4)
     private BigDecimal expense;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person owner;
 
     public PersonExpense() {
     }
 
-    public PersonExpense(Person owner) {
+    public PersonExpense(final Person owner) {
         this.owner = owner;
     }
 
@@ -42,7 +39,7 @@ public class PersonExpense extends IdentifiedObject {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -50,7 +47,7 @@ public class PersonExpense extends IdentifiedObject {
         return expense;
     }
 
-    public void setExpense(BigDecimal expense) {
+    public void setExpense(final BigDecimal expense) {
         this.expense = expense;
     }
 
@@ -58,7 +55,7 @@ public class PersonExpense extends IdentifiedObject {
         return owner;
     }
 
-    public void setOwner(Person owner) {
+    public void setOwner(final Person owner) {
         this.owner = owner;
     }
 }

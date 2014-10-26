@@ -3,7 +3,6 @@
  */
 package ru.extas.web.sale;
 
-import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
 import ru.extas.model.sale.Sale;
@@ -29,7 +28,7 @@ public class StringToSaleResult extends String2EnumConverter<Sale.Result> {
 	/** {@inheritDoc} */
 	@Override
 	protected HashBiMap<Sale.Result, String> createEnum2StringMap() {
-        HashBiMap<Sale.Result, String> map = HashBiMap.create();
+        final HashBiMap<Sale.Result, String> map = HashBiMap.create();
 		map.put(Sale.Result.SUCCESSFUL, "Успешное выполнение");
 		map.put(Sale.Result.CLIENT_REJECTED, "Отказ клиента");
 		map.put(Sale.Result.VENDOR_REJECTED, "Отказ контрагента");

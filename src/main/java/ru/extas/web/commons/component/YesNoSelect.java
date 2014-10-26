@@ -10,7 +10,7 @@ import ru.extas.web.commons.ExtaTheme;
  */
 public class YesNoSelect extends OptionGroup {
 
-    public YesNoSelect(String caption) {
+    public YesNoSelect(final String caption) {
         super(caption);
 
         setMultiSelect(false);

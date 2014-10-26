@@ -33,13 +33,13 @@ class TaskDataDecl extends GridDataDecl {
 	    addMapping("assignee", "Ответственный", LoginToUserNameConverter.class);
         addMapping("clientName", "Клиент", new ComponentColumnGenerator() {
             @Override
-            public Object generateCell(Object columnId, Item item, Object itemId) {
+            public Object generateCell(final Object columnId, final Item item, final Object itemId) {
                 String clientName = null;
-                Task task = GridItem.extractBean(item);
-                RuntimeService runtimeService = lookup(RuntimeService.class);
-                Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
+                final Task task = GridItem.extractBean(item);
+                final RuntimeService runtimeService = lookup(RuntimeService.class);
+                final Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
                 if (processVariables.containsKey("lead")) {
-                    Lead lead = (Lead) processVariables.get("lead");
+                    final Lead lead = (Lead) processVariables.get("lead");
                     clientName = lead.getContactName();
                 }
                 return clientName;
@@ -47,13 +47,13 @@ class TaskDataDecl extends GridDataDecl {
         });
         addMapping("dealerName", "Мотосалон", new ComponentColumnGenerator() {
             @Override
-            public Object generateCell(Object columnId, Item item, Object itemId) {
+            public Object generateCell(final Object columnId, final Item item, final Object itemId) {
                 String dealerName = null;
-                Task task = GridItem.extractBean(item);
-                RuntimeService runtimeService = lookup(RuntimeService.class);
-                Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
+                final Task task = GridItem.extractBean(item);
+                final RuntimeService runtimeService = lookup(RuntimeService.class);
+                final Map<String, Object> processVariables = runtimeService.getVariables(task.getProcessInstanceId());
                 if (processVariables.containsKey("lead")) {
-                    Lead lead = (Lead) processVariables.get("lead");
+                    final Lead lead = (Lead) processVariables.get("lead");
                     dealerName = lead.getPointOfSale();
                 }
                 return dealerName;

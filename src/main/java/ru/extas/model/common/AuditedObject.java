@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Auditable;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -20,8 +21,9 @@ import javax.persistence.MappedSuperclass;
  * @version $Id: $Id
  * @since 0.3
  */
+//@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public abstract class AuditedObject extends IdentifiedObject {
+public abstract class AuditedObject extends IdentifiedObject implements Auditable<String, String> {
 
     /**
      * Constant <code>LOGIN_LENGTH=50</code>
@@ -30,97 +32,57 @@ public abstract class AuditedObject extends IdentifiedObject {
 
     @CreatedBy
     @Column(name = "CREATED_BY", length = LOGIN_LENGTH)
-    protected String createdBy;
+    private String createdBy;
 
     @CreatedDate
     @Column(name = "CREATED_AT")
-    protected DateTime createdAt;
+    private DateTime createdDate;
 
     @LastModifiedBy
     @Column(name = "MODIFIED_BY", length = LOGIN_LENGTH)
-    protected String modifiedBy;
+    private String lastModifiedBy;
 
     @LastModifiedDate
     @Column(name = "MODIFIED_AT")
-    protected DateTime modifiedAt;
+    private DateTime lastModifiedDate;
 
-    /**
-     * <p>Constructor for AuditedObject.</p>
-     */
-    protected AuditedObject() {
-        super();
-    }
-
-    /**
-     * Получить логин пользователя создавшего объект
-     *
-     * @return идентификатор пользователя
-     */
+    @Override
     public String getCreatedBy() {
         return createdBy;
     }
 
-    /**
-     * <p>Setter for the field <code>createdBy</code>.</p>
-     *
-     * @param createdBy the createdBy to set
-     */
-    public void setCreatedBy(final String createdBy) {
+    @Override
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
-    /**
-     * Получить время создания объекта
-     *
-     * @return время создания
-     */
-    public DateTime getCreatedAt() {
-        return createdAt;
+    @Override
+    public DateTime getCreatedDate() {
+        return createdDate;
     }
 
-    /**
-     * <p>Setter for the field <code>createdAt</code>.</p>
-     *
-     * @param createdAt the createdAt to set
-     */
-    public void setCreatedAt(final DateTime createdAt) {
-        this.createdAt = createdAt;
+    @Override
+    public void setCreatedDate(DateTime creationDate) {
+        this.createdDate = creationDate;
     }
 
-    /**
-     * Получить логин пользователя изменившего объект
-     *
-     * @return идентификатор пользователя
-     */
-    public String getModifiedBy() {
-        return modifiedBy;
+    @Override
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
     }
 
-    /**
-     * <p>Setter for the field <code>modifiedBy</code>.</p>
-     *
-     * @param modifiedBy the modifiedBy to set
-     */
-    public void setModifiedBy(final String modifiedBy) {
-        this.modifiedBy = modifiedBy;
+    @Override
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
-    /**
-     * Получить время изменения объекта
-     *
-     * @return время изменения
-     */
-    public DateTime getModifiedAt() {
-        return modifiedAt;
+    @Override
+    public DateTime getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    /**
-     * <p>Setter for the field <code>modifiedAt</code>.</p>
-     *
-     * @param modifiedAt the modifiedAt to set
-     */
-    public void setModifiedAt(final DateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
+    @Override
+    public void setLastModifiedDate(DateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
-
 }

@@ -9,7 +9,6 @@
 package ru.extas.web.commons;
 
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.web.commons.ExtaGrid;
 
 import java.io.Serializable;
 public interface SubdomainInfo extends Serializable {

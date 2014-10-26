@@ -32,7 +32,7 @@ public class MotorBrandMultiselect extends CustomField<Set> {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public MotorBrandMultiselect(String caption) {
+    public MotorBrandMultiselect(final String caption) {
         setBuffered(true);
         setCaption(caption);
     }
@@ -52,7 +52,7 @@ public class MotorBrandMultiselect extends CustomField<Set> {
         //tokenField.setInputWidth(13, Unit.EX);
         //tokenField.setTokenInsertPosition(TokenField.InsertPosition.BEFORE);
         tokenField.addValueChangeListener(event -> {
-            Set selected = (Set) tokenField.getValue();
+            final Set selected = (Set) tokenField.getValue();
             setValue(selected);
         });
 
@@ -61,10 +61,10 @@ public class MotorBrandMultiselect extends CustomField<Set> {
 		if (set != null) {
 			tokenField.setValue(newHashSet(set));
 		}
-        Collection<String> brands = lookup(MotorBrandRepository.class).loadAllNames();
+        final Collection<String> brands = lookup(MotorBrandRepository.class).loadAllNames();
         tokenField.setContainerDataSource(CollectionContainer.fromBeans(brands));
 
-        HorizontalLayout layout = new HorizontalLayout(tokenField);
+        final HorizontalLayout layout = new HorizontalLayout(tokenField);
         //layout.setMargin(new MarginInfo(true, false,false,false));
         return layout;
 	}

@@ -40,12 +40,12 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
 
     /** {@inheritDoc} */
     @Override
-    public void enter(ViewChangeEvent event) {
+    public void enter(final ViewChangeEvent event) {
         logger.info("Entering view {}...", event.getViewName());
         setSizeFull();
         addStyleName(ExtaTheme.BASE_VIEW);
 
-        HorizontalLayout top = new HorizontalLayout();
+        final HorizontalLayout top = new HorizontalLayout();
         top.setWidth(100, Unit.PERCENTAGE);
         top.setSpacing(true);
         top.addStyleName(ExtaTheme.TOOLBAR);
@@ -55,14 +55,14 @@ public abstract class ExtaAbstractView extends VerticalLayout implements View {
         top.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
         top.setExpandRatio(title, 1);
 
-        Button helpBtn = new Button(Fontello.HELP_1);
+        final Button helpBtn = new Button(Fontello.HELP_1);
         helpBtn.setDescription("Контекстная справка");
         helpBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         helpBtn.addClickListener(new ClickListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public void buttonClick(ClickEvent event) {
+            public void buttonClick(final ClickEvent event) {
                 // TODO: Implement context help
                 NotificationUtil.show("Не реализовано пока");
             }

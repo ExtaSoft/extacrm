@@ -3,7 +3,6 @@
  */
 package ru.extas.web.lead;
 
-import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
 import ru.extas.model.lead.Lead;
@@ -29,7 +28,7 @@ public class StringToLeadResult extends String2EnumConverter<Lead.Result> {
 	/** {@inheritDoc} */
 	@Override
 	protected HashBiMap<Lead.Result, String> createEnum2StringMap() {
-        HashBiMap<Lead.Result, String> map = HashBiMap.create();
+        final HashBiMap<Lead.Result, String> map = HashBiMap.create();
 		map.put(Lead.Result.SUCCESSFUL, "Успешное выполнение");
 		map.put(Lead.Result.CLIENT_REJECTED, "Отказ клиента");
 		map.put(Lead.Result.VENDOR_REJECTED, "Отказ контрагента");

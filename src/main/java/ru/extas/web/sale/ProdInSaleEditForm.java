@@ -38,7 +38,7 @@ public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
 	 * @param caption a {@link java.lang.String} object.
 	 * @param obj a {@link com.vaadin.data.util.BeanItem} object.
 	 */
-	public ProdInSaleEditForm(final String caption, final BeanItem<ProductInSale> obj) {
+	public ProdInSaleEditForm(final String caption, final ProductInSale obj) {
 		super(caption, obj);
 	}
 
@@ -51,7 +51,7 @@ public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected ProductInSale saveObject(ProductInSale obj) {
+	protected ProductInSale saveObject(final ProductInSale obj) {
         NotificationUtil.showSuccess("Продукт сохранен в продаже");
         return obj;
     }
@@ -60,6 +60,7 @@ public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
 	@Override
 	protected ComponentContainer createEditFields(final ProductInSale obj) {
 		final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
 		productField = new ProductSelect("Название продукта", "Введите название продукта", obj.getProduct());
 		productField.setWidth(30, Unit.EM);

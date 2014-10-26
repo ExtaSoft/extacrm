@@ -55,7 +55,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
     }
 
     @Override
-    public ExtaEditForm<Insurance> createEditForm(Insurance insurance, boolean isInsert) {
+    public ExtaEditForm<Insurance> createEditForm(final Insurance insurance, final boolean isInsert) {
         return new InsuranceEditForm(insurance);
     }
 
@@ -72,28 +72,27 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
     protected Container createContainer() {
         // Запрос данных
         final ExtaDataContainer<Insurance> container = new SecuredDataContainer<>(Insurance.class, ExtaDomain.INSURANCE_PROP);
-        container.addNestedContainerProperty("client.name");
-        container.addNestedContainerProperty("client.phone");
         container.addNestedContainerProperty("dealer.name");
-        container.sort(new Object[]{"createdAt"}, new boolean[]{false});
+        container.sort(new Object[]{"createdDate"}, new boolean[]{false});
         return container;
     }
 
     /** {@inheritDoc} */
     @Override
     protected List<UIAction> createActions() {
-        List<UIAction> actions = newArrayList();
+        final List<UIAction> actions = newArrayList();
 
         actions.add(new NewObjectAction("Новый", "Ввод нового полиса страхования"));
         actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке полис страхования"));
         actions.add(new EditObjectAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", Fontello.CLOCK) {
             @Override
-            public void fire(Object itemId) {
-                Insurance oldIns = GridItem.extractBean(table.getItem(itemId));
+            public void fire(final Object itemId) {
+                final Insurance oldIns = GridItem.extractBean(table.getItem(itemId));
 
-                Insurance insurance = createEntity();
+                final Insurance insurance = createEntity();
                 // Копируем все необходимые данные из истекшего(истекающего) договора
-                insurance.setClient(oldIns.getClient());
+                insurance.setClientPP(oldIns.getClientPP());
+                insurance.setClientLE(oldIns.getClientLE());
                 insurance.setBeneficiary(oldIns.getBeneficiary());
                 insurance.setUsedMotor(true);
                 insurance.setMotorType(oldIns.getMotorType());
@@ -117,24 +116,24 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         actions.add(new UIActionGroup("Печать", "Создать печатное представление полиса страхования", Fontello.PRINT_2) {
             @Override
             protected List<UIAction> makeActionsGroup() {
-                List<UIAction> group = newArrayList();
+                final List<UIAction> group = newArrayList();
                 group.add(new ItemAction("Печать", "Создать печатное представление полиса страхования", Fontello.PRINT_2) {
                     @Override
-                    public void fire(Object itemId) {
+                    public void fire(final Object itemId) {
                         printPolicy(itemId, true);
                     }
                 });
 
                 group.add(new ItemAction("Печать без подложки", "Создать печатное представление полиса страхования без подложки", Fontello.PRINT_2) {
                     @Override
-                    public void fire(Object itemId) {
+                    public void fire(final Object itemId) {
                         printPolicy(itemId, false);
                     }
                 });
 
                 group.add(new ItemAction("Печать счета", "Создать печатную форму счета на оплату страховки", Fontello.PRINT_2) {
                     @Override
-                    public void fire(Object itemId) {
+                    public void fire(final Object itemId) {
                         printInvoice(itemId);
                     }
                 });
@@ -144,7 +143,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
 
         actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в Excel файл", Fontello.GRID) {
             @Override
-            public void fire(Object itemId) {
+            public void fire(final Object itemId) {
                 exportTableData();
             }
         });
@@ -153,8 +152,8 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
     }
 
     private void exportTableData() {
-        CustomTableHolder tableHolder = new CustomTableHolder(table);
-        ExcelExport excelExport = new MyExcelExport(tableHolder);
+        final CustomTableHolder tableHolder = new CustomTableHolder(table);
+        final ExcelExport excelExport = new MyExcelExport(tableHolder);
         //excelExport.setExcelFormatOfProperty("date", "yyyy-MM-dd");
         excelExport.excludeCollapsedColumns();
         excelExport.setReportTitle("Имущественные страховки");
@@ -163,7 +162,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         excelExport.export();
     }
 
-    private void printPolicy(Object itemId, boolean withMat) {
+    private void printPolicy(final Object itemId, final boolean withMat) {
 
         final Insurance insurance = extractBean(table.getItem(itemId));
         checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
@@ -171,7 +170,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         try {
             final InputStream in = getClass().getResourceAsStream("/reports/insurance/PropertyInsuranceTemplate.jasper");
 
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(in);
+            final JasperReport jasperReport = (JasperReport) JRLoader.loadObject(in);
 
             final Map<String, Object> params = newHashMap();
             params.put("ins", insurance);
@@ -180,29 +179,29 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
                     insurance.getCoverTime() == null || insurance.getCoverTime() == Insurance.PeriodOfCover.YEAR
                             ? "12 месяцев" : "6 месяцев"
             );
-            NumberFormat format = NumberFormat.getInstance(lookup(Locale.class));
+            final NumberFormat format = NumberFormat.getInstance(lookup(Locale.class));
             format.setMinimumFractionDigits(2);
             format.setMaximumFractionDigits(2);
             params.put("moneyFormatter", format);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource(1));
+            final JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource(1));
 
 
             final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outDoc);
 
-            final String clientName = insurance.getClient().getName();
+            final String clientName = insurance.getClientName();
             final String policyNum = insurance.getRegNum();
             final String policyFileName = MessageFormat.format("Полис {0} {1} {2}.pdf", policyNum, clientName, new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
 
             new DownloadFileWindow(outDoc.toByteArray(), policyFileName).showModal();
 
-        } catch (JRException e) {
+        } catch (final JRException e) {
             logger.error("Print policy error", e);
             throw Throwables.propagate(e);
         }
     }
 
-    private void printInvoice(Object itemId) {
+    private void printInvoice(final Object itemId) {
 
         final Insurance insurance = extractBean(table.getItem(itemId));
         checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
@@ -210,26 +209,26 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         try {
             final InputStream in = getClass().getResourceAsStream("/reports/insurance/InsuranceInvoiceTemplate.jasper");
 
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(in);
+            final JasperReport jasperReport = (JasperReport) JRLoader.loadObject(in);
 
             final Map<String, Object> params = newHashMap();
             params.put("ins", insurance);
-            NumberFormat format = NumberFormat.getInstance(lookup(Locale.class));
+            final NumberFormat format = NumberFormat.getInstance(lookup(Locale.class));
             format.setMinimumFractionDigits(2);
             format.setMaximumFractionDigits(2);
             params.put("moneyFormatter", format);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource(1));
+            final JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource(1));
 
 
             final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outDoc);
 
-            final String clientName = insurance.getClient().getName();
+            final String clientName = insurance.getClientName();
             final String regNum = insurance.getRegNum();
             final String invoiceFileName = MessageFormat.format("Счет {0} {1} {2}.pdf", regNum, clientName, new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
 
             new DownloadFileWindow(outDoc.toByteArray(), invoiceFileName).showModal();
-        } catch (JRException e) {
+        } catch (final JRException e) {
             logger.error("Print policy error", e);
             throw Throwables.propagate(e);
         }

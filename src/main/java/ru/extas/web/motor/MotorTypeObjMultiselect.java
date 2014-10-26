@@ -26,7 +26,7 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public MotorTypeObjMultiselect(String caption) {
+    public MotorTypeObjMultiselect(final String caption) {
         setBuffered(true);
         setCaption(caption);
     }
@@ -35,7 +35,7 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
 	@Override
 	protected Component initContent() {
 
-        VerticalLayout lo = new VerticalLayout();
+        final VerticalLayout lo = new VerticalLayout();
         lo.setSpacing(true);
         final TokenField tokenField = new TokenField(lo);
         tokenField.setStyleName(TokenField.STYLE_TOKENFIELD);
@@ -54,22 +54,22 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
         tokenField.setTokenCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         tokenField.setTokenCaptionPropertyId("name");
         tokenField.addValueChangeListener(event -> {
-            Set selected = (Set) tokenField.getValue();
-            Set objValue = newHashSet();
-            for (Object id : selected)
+            final Set selected = (Set) tokenField.getValue();
+            final Set objValue = newHashSet();
+            for (final Object id : selected)
                 objValue.add(container.getItem(id).getEntity());
             setValue(objValue);
         });
         final Property dataSource = getPropertyDataSource();
         final Set<MotorType> set = dataSource != null ? (Set<MotorType>) dataSource.getValue() : null;
         if (set != null) {
-            Set idValue = newHashSet();
-            for(MotorType obj : set)
+            final Set idValue = newHashSet();
+            for(final MotorType obj : set)
                 idValue.add(obj.getId());
             tokenField.setValue(idValue);
         }
 
-        HorizontalLayout layout = new HorizontalLayout(tokenField);
+        final HorizontalLayout layout = new HorizontalLayout(tokenField);
         //layout.setMargin(new MarginInfo(true, false,false,false));
         return layout;
 	}

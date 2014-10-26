@@ -1,6 +1,5 @@
 package ru.extas.web.product;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.vaadin.ui.Button.*;
 
 /**
  * Поле редактирования комплекта документов для кредитного продукта
@@ -40,7 +38,7 @@ public class ProdCredDocsField extends CustomField<List> {
 	 * @param description a {@link java.lang.String} object.
 	 * @param product a {@link ru.extas.model.sale.ProdCredit} object.
 	 */
-	public ProdCredDocsField(String caption, final String description, ProdCredit product) {
+	public ProdCredDocsField(final String caption, final String description, final ProdCredit product) {
 		this.product = product;
         setWidth(400, Unit.PIXELS);
         setHeight(300, Unit.PIXELS);

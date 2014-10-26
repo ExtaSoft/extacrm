@@ -78,11 +78,11 @@ public class MotorBrandSelect extends ComboBox {
      *
      * @param typeField a {@link ru.extas.web.motor.MotorTypeSelect} object.
      */
-    public void linkToType(MotorTypeSelect typeField) {
+    public void linkToType(final MotorTypeSelect typeField) {
         typeField.addValueChangeListener(event -> {
-            Property prop = event.getProperty();
+            final Property prop = event.getProperty();
             if(prop != null) {
-                String type = (String) prop.getValue();
+                final String type = (String) prop.getValue();
                 fillItems(type);
             }
         });

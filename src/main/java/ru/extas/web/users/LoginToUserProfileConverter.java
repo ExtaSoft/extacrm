@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
 
-import javax.inject.Inject;
 import java.util.Locale;
 
 import static ru.extas.server.ServiceLocator.lookup;

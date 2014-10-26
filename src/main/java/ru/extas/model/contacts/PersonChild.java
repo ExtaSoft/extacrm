@@ -3,12 +3,9 @@ package ru.extas.model.contacts;
 import org.joda.time.LocalDate;
 import ru.extas.model.common.IdentifiedObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.Max;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author Valery Orlov
@@ -20,7 +17,7 @@ import javax.validation.constraints.NotNull;
 public class PersonChild extends IdentifiedObject {
 
     @Column(length = Person.NAME_LENGTH)
-    @Max(Person.NAME_LENGTH)
+    @Size(max = Person.NAME_LENGTH)
     @NotNull
     private String name;
 
@@ -28,13 +25,13 @@ public class PersonChild extends IdentifiedObject {
     @NotNull
     private LocalDate birthday;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person parent;
 
     public PersonChild() {
     }
 
-    public PersonChild(Person person) {
+    public PersonChild(final Person person) {
         parent = person;
     }
 
@@ -42,7 +39,7 @@ public class PersonChild extends IdentifiedObject {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -50,7 +47,7 @@ public class PersonChild extends IdentifiedObject {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(final LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -58,7 +55,7 @@ public class PersonChild extends IdentifiedObject {
         return parent;
     }
 
-    public void setParent(Person parent) {
+    public void setParent(final Person parent) {
         this.parent = parent;
     }
 }

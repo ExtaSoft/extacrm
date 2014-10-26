@@ -3,7 +3,6 @@ package ru.extas.web.commons;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
@@ -14,7 +13,6 @@ import ru.extas.model.common.Comment;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.users.LoginToUserNameConverter;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
     private BeanItemContainer<TComment> container;
     private ItemGrid commentsContainer;
 
-    public CommentsField(Class<TComment> commentClass) {
+    public CommentsField(final Class<TComment> commentClass) {
         this.commentClass = commentClass;
         setBuffered(true);
     }
@@ -46,7 +44,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         if (list != null) {
             container.addAll(list);
         }
-        VerticalLayout root = new VerticalLayout();
+        final VerticalLayout root = new VerticalLayout();
 
         commentsContainer = new ItemGrid();
         commentsContainer.setColumns(1);
@@ -55,13 +53,13 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         commentsContainer.setItemGenerator((pSource, pItemId) -> new ItemComponent(pItemId));
         root.addComponent(commentsContainer);
 
-        Button addBtn = new Button("Оставить комментарий", FontAwesome.PLUS);
+        final Button addBtn = new Button("Оставить комментарий", FontAwesome.PLUS);
         addBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         addBtn.addClickListener(e -> {
             try {
-                TComment newComment = commentClass.newInstance();
+                final TComment newComment = commentClass.newInstance();
                 container.addBean(newComment);
-            } catch (Throwable ex) {
+            } catch (final Throwable ex) {
             }
         });
         root.addComponent(addBtn);
@@ -81,34 +79,34 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         private final RichTextArea textArea;
         private final Label text;
 
-        public ItemComponent(Object itemId) {
-            BeanItem<TComment> item = container.getItem(itemId);
-            TComment comment = item.getBean();
+        public ItemComponent(final Object itemId) {
+            final BeanItem<TComment> item = container.getItem(itemId);
+            final TComment comment = item.getBean();
 
-            if (isNew = comment.getCreatedAt() == null) {
+            if (isNew = comment.getCreatedDate() == null) {
                 comment.setCreatedBy(lookup(UserManagementService.class).getCurrentUserLogin());
-                comment.setCreatedAt(DateTime.now());
+                comment.setCreatedDate(DateTime.now());
             }
 
-            Label icon = new Label(FontAwesome.COMMENT_O.getHtml(), ContentMode.HTML);
+            final Label icon = new Label(FontAwesome.COMMENT_O.getHtml(), ContentMode.HTML);
             icon.addStyleName(ExtaTheme.LABEL_COLORED);
-            Label user = new Label(item.getItemProperty("createdBy"), ContentMode.HTML);
+            final Label user = new Label(item.getItemProperty("createdBy"), ContentMode.HTML);
             user.addStyleName(ExtaTheme.LABEL_COLORED);
             user.addStyleName(ExtaTheme.LABEL_BOLD);
             user.setConverter(lookup(LoginToUserNameConverter.class));
-            Label crTime = new Label(item.getItemProperty("createdAt"));
+            final Label crTime = new Label(item.getItemProperty("createdDate"));
             crTime.addStyleName(ExtaTheme.LABEL_COLORED);
 
-            String userLogin = lookup(UserManagementService.class).getCurrentUserLogin();
+            final String userLogin = lookup(UserManagementService.class).getCurrentUserLogin();
             final boolean ownComment = userLogin.equals(item.getBean().getCreatedBy());
 
-            Button editBtn = new Button("Редактировать", FontAwesome.PENCIL);
+            final Button editBtn = new Button("Редактировать", FontAwesome.PENCIL);
             editBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             editBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
             editBtn.setVisible(ownComment);
             editBtn.addClickListener(e -> switchEditMode(true));
 
-            Button delBtn = new Button("Удалить", FontAwesome.TRASH_O);
+            final Button delBtn = new Button("Удалить", FontAwesome.TRASH_O);
             delBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             delBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
             delBtn.setVisible(ownComment);
@@ -121,7 +119,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
                                 }
                             }));
 
-            HorizontalLayout header = new HorizontalLayout();
+            final HorizontalLayout header = new HorizontalLayout();
             header.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
             header.addComponents(icon, crTime, user, editBtn, delBtn);
             header.setSpacing(true);
@@ -136,7 +134,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
             textArea.setBuffered(true);
             addComponent(textArea);
 
-            Button saveBtn = new Button("Сохранить", Fontello.OK);
+            final Button saveBtn = new Button("Сохранить", Fontello.OK);
             saveBtn.addStyleName(ExtaTheme.BUTTON_PRIMARY);
             saveBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
             saveBtn.addClickListener(e -> {
@@ -145,7 +143,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
                 switchEditMode(false);
                 isNew = false;
             });
-            Button cancelBtn = new Button("Отменить", Fontello.CANCEL);
+            final Button cancelBtn = new Button("Отменить", Fontello.CANCEL);
             cancelBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
             cancelBtn.addClickListener(e -> {
                 textArea.discard();
@@ -160,7 +158,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
             switchEditMode(isNew);
         }
 
-        private void switchEditMode(boolean isEdit) {
+        private void switchEditMode(final boolean isEdit) {
             text.setVisible(!isEdit);
             textArea.setVisible(isEdit);
             toolbar.setVisible(isEdit);

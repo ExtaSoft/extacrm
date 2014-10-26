@@ -2,31 +2,30 @@ package ru.extas.web.sale;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.lead.Lead;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.TextArea;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.CommentsField;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.component.FormGroupHeader;
-import ru.extas.web.contacts.PersonSelect;
-import ru.extas.web.contacts.SalePointSelect;
-import ru.extas.web.contacts.UserContactSelectField;
+import ru.extas.web.contacts.employee.EmployeeField;
+import ru.extas.web.contacts.person.PersonSelect;
+import ru.extas.web.contacts.salepoint.SalePointField;
+import ru.extas.web.contacts.employee.UserContactSelectField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
-import ru.extas.web.reference.RegionSelect;
-
-import javax.persistence.EntityManager;
 
 import java.text.MessageFormat;
 
-import static org.springframework.util.CollectionUtils.isEmpty;
 import static ru.extas.model.common.ModelUtils.evictCache;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -58,25 +57,26 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private EditField mototPriceField;
     // Мотосалон
     @PropertyId("dealer")
-    private SalePointSelect dealerField;
+    private SalePointField dealerField;
     @PropertyId("comment")
     private TextArea commentField;
     @PropertyId("productInSales")
     private ProductInSaleGrid productInSaleField;
     @PropertyId("responsible")
-    private UserContactSelectField responsibleField;
+    private EmployeeField responsibleField;
     @PropertyId("comments")
     private CommentsField<SaleComment> commentsField;
 
-    public SaleEditForm(Sale sale) {
+    public SaleEditForm(final Sale sale) {
         super(sale.isNew() ? "Ввод новой продажи в систему" :
-                MessageFormat.format("Редактирование продажи № {0}", sale.getNum()), new BeanItem(sale));
+                MessageFormat.format("Редактирование продажи № {0}", sale.getNum()), sale);
     }
 
     /** {@inheritDoc} */
     @Override
     protected ComponentContainer createEditFields(final Sale obj) {
         final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Клиент"));
@@ -106,13 +106,13 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
-        dealerField = new SalePointSelect("Мотосалон", "Введите точку продаж", null);
+        dealerField = new SalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
         form.addComponent(dealerField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дополнительно"));
-        responsibleField = new UserContactSelectField("Ответственный");
+        responsibleField = new EmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
         responsibleField.setRequired(true);
         form.addComponent(responsibleField);
 
@@ -141,13 +141,13 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     protected void initObject(final Sale obj) {
         if (obj.isNew()) {
             obj.setStatus(Sale.Status.NEW);
-            UserManagementService userService = lookup(UserManagementService.class);
-            Person user = userService.getCurrentUserContact();
+            final UserManagementService userService = lookup(UserManagementService.class);
+            final Employee user = userService.getCurrentUserEmployee();
             if(user != null) {
-                if(!isEmpty(user.getWorkPlaces()))
-                    obj.setDealer(user.getWorkPlaces().iterator().next());
+                if(user.getWorkPlace() != null)
+                    obj.setDealer(user.getWorkPlace());
             }
-            final Person userContact = lookup(UserManagementService.class).getCurrentUserContact();
+            final Employee userContact = lookup(UserManagementService.class).getCurrentUserEmployee();
             obj.setResponsible(userContact);
         }
     }
@@ -157,7 +157,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     @Override
     protected Sale saveObject(final Sale obj) {
         final SaleRepository leadService = lookup(SaleRepository.class);
-        Sale sale = leadService.secureSave(obj);
+        final Sale sale = leadService.secureSave(obj);
         if (sale.getNum() == null)
             evictCache(sale);
         NotificationUtil.showSuccess("Продажа сохранена");

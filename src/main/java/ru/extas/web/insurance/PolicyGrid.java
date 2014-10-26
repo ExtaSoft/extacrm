@@ -30,7 +30,7 @@ public class PolicyGrid extends ExtaGrid<Policy> {
     }
 
     @Override
-    public ExtaEditForm<Policy> createEditForm(Policy policy, boolean isInsert) {
+    public ExtaEditForm<Policy> createEditForm(final Policy policy, final boolean isInsert) {
         return new PolicyEditForm(policy);
     }
 
@@ -49,7 +49,7 @@ public class PolicyGrid extends ExtaGrid<Policy> {
 	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 		actions.add(new NewObjectAction("Новый", "Ввод нового бланка"));
 		actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке бланк"));

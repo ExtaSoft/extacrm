@@ -2,15 +2,18 @@ package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.TextArea;
 import ru.extas.model.sale.ProdInstallments;
 import ru.extas.server.sale.ProdInstallmentsRepository;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.contacts.CompanySelect;
+import ru.extas.web.contacts.company.CompanyField;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -29,7 +32,7 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 	@PropertyId("name")
 	private EditField nameField;
 	@PropertyId("vendor")
-	private CompanySelect vendorField;
+	private CompanyField vendorField;
 	@PropertyId("maxPeroid")
 	private EditField maxPeroidField;
 	@PropertyId("minDownpayment")
@@ -39,11 +42,11 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 	@PropertyId("comment")
 	private TextArea commentField;
 
-    public ProdInstallmentsEditForm(ProdInstallments prodInstallments) {
+    public ProdInstallmentsEditForm(final ProdInstallments prodInstallments) {
         super(prodInstallments.isNew() ?
                 "Новый продукт \"Рассрочка\"" :
                 "Редактировать продукт",
-                new BeanItem(prodInstallments));
+                prodInstallments);
     }
 
     /** {@inheritDoc} */
@@ -66,13 +69,14 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 	@Override
 	protected ComponentContainer createEditFields(final ProdInstallments obj) {
 		final FormLayout form = new ExtaFormLayout();
+        form.setSizeFull();
 
 		nameField = new EditField("Название продукта", "Введите название продукта");
 		nameField.setColumns(30);
 		nameField.setRequired(true);
 		form.addComponent(nameField);
 
-		vendorField = new CompanySelect("Поставщик");
+		vendorField = new CompanyField("Поставщик");
 		form.addComponent(vendorField);
 
 		maxPeroidField = new EditField("Max период рассрочки", "Введите максимальный период рассрочки по продукту");
@@ -92,7 +96,6 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 		commentField.setDescription("Дополнительная информация о продукте");
 		commentField.setNullRepresentation("");
 		commentField.setInputPrompt("Дополнительная информация о продукте");
-		commentField.setColumns(30);
 		commentField.setRows(5);
 		form.addComponent(commentField);
 

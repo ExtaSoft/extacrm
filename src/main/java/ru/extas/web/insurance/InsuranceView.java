@@ -13,9 +13,9 @@ package ru.extas.web.insurance;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.SubdomainInfo;
 import ru.extas.web.commons.SubdomainInfoImpl;
 import ru.extas.web.commons.SubdomainView;
-import ru.extas.web.commons.SubdomainInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +47,9 @@ public class InsuranceView extends SubdomainView {
      */
     @Override
     protected List<SubdomainInfo> getSubdomainInfo() {
-        UserManagementService userService = lookup(UserManagementService.class);
+        final UserManagementService userService = lookup(UserManagementService.class);
         final ArrayList<SubdomainInfo> ret = newArrayList();
-        ret.add(new SubdomainInfoImpl("Имущ. страховки", ExtaDomain.INSURANCE_PROP, true) {
+        ret.add(new SubdomainInfoImpl("Имущ. страховки", ExtaDomain.INSURANCE_PROP) {
 
             @Override
             public ExtaGrid createGrid() {

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
@@ -34,7 +34,7 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
 
     @Inject private SalePointRepository salePointRepository;
     @Inject private LegalEntityRepository legalEntityRepository;
-    @Inject private PersonRepository personRepository;
+    @Inject private EmployeeRepository employeeRepository;
 
     /** {@inheritDoc} */
     @Override
@@ -43,29 +43,29 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
     }
 
     @Override
-    protected Collection<Pair<Person, AccessRole>> getObjectUsers(SalePoint salePoint) {
+    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final SalePoint salePoint) {
         return newArrayList(getCurUserAccess(salePoint));
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(SalePoint salePoint) {
+    protected Collection<Company> getObjectCompanies(final SalePoint salePoint) {
         return null;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(SalePoint salePoint) {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected Collection<String> getObjectBrands(SalePoint salePoint) {
+    protected Collection<SalePoint> getObjectSalePoints(final SalePoint salePoint) {
         return null;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected Collection<String> getObjectRegions(SalePoint salePoint) {
+    protected Collection<String> getObjectBrands(final SalePoint salePoint) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Collection<String> getObjectRegions(final SalePoint salePoint) {
         if(salePoint.getRegAddress() != null && !isNullOrEmpty(salePoint.getRegAddress().getRegion()))
             return newHashSet(salePoint.getRegAddress().getRegion());
         return null;
@@ -75,19 +75,19 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
     @Transactional
     @Override
     public SalePoint permitAndSave(SalePoint salePoint,
-                                   Collection<Pair<Person, AccessRole>> users,
-                                   Collection<SalePoint> salePoints,
-                                   Collection<Company> companies,
-                                   Collection<String> regions,
-                                   Collection<String> brands) {
+                                   final Collection<Pair<Employee, AccessRole>> users,
+                                   final Collection<SalePoint> salePoints,
+                                   final Collection<Company> companies,
+                                   final Collection<String> regions,
+                                   final Collection<String> brands) {
         if (salePoint != null) {
             salePoint = super.permitAndSave(salePoint, users, salePoints, companies, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты торговой точки:
             // Юр. лица работающие на торговой точке
-            final Collection<Pair<Person, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            final Collection<Pair<Employee, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
             legalEntityRepository.permitAndSave(salePoint.getLegalEntities(), readers, salePoints, companies, regions, brands);
             // Сотрудники торговой точки
-            personRepository.permitAndSave(salePoint.getEmployees(), readers, salePoints, companies, regions, brands);
+            employeeRepository.permitAndSave(salePoint.getEmployees(), readers, salePoints, companies, regions, brands);
         }
         return salePoint;
     }

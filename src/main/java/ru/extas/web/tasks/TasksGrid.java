@@ -5,7 +5,10 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CustomTable;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
@@ -46,10 +49,9 @@ public class TasksGrid extends ExtaGrid<Task> {
 	 *
 	 * @param period a {@link ru.extas.web.tasks.TasksGrid.Period} object.
 	 */
-	public TasksGrid(Period period) {
-		super(Task.class, false);
+	public TasksGrid(final Period period) {
+		super(Task.class);
 		this.period = period;
-		initialize();
 	}
 
 	/** {@inheritDoc} */
@@ -62,20 +64,20 @@ public class TasksGrid extends ExtaGrid<Task> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		BeanItemContainer<Task> dataSource = new BeanItemContainer<>(Task.class);
+		final BeanItemContainer<Task> dataSource = new BeanItemContainer<>(Task.class);
 		fillDataContainer(dataSource);
 		return dataSource;
 	}
 
-	private void fillDataContainer(BeanItemContainer<Task> dataSource) {
-		List<Task> tasks = queryForTasksToShow();
+	private void fillDataContainer(final BeanItemContainer<Task> dataSource) {
+		final List<Task> tasks = queryForTasksToShow();
 		dataSource.removeAllItems();
 		dataSource.addAll(tasks);
 	}
 
 	private List<Task> queryForTasksToShow() {
-		TaskService taskService = lookup(TaskService.class);
-		TaskQuery query = taskService.createTaskQuery();
+		final TaskService taskService = lookup(TaskService.class);
+		final TaskQuery query = taskService.createTaskQuery();
 		switch (period) {
 			case TODAY:
 				query.taskDueBefore(LocalDate.now().plusDays(1).toDate());
@@ -91,7 +93,7 @@ public class TasksGrid extends ExtaGrid<Task> {
 		}
 		final UserManagementService userService = lookup(UserManagementService.class);
 		if (userService.isCurUserHasRole(UserRole.USER)) {
-			String currentUser = userService.getCurrentUserLogin();
+			final String currentUser = userService.getCurrentUserLogin();
 			query.taskAssignee(currentUser);
 		}
 		query.orderByTaskPriority().desc().orderByTaskDueDate().asc();
@@ -101,7 +103,7 @@ public class TasksGrid extends ExtaGrid<Task> {
 	/** {@inheritDoc} */
 	@Override
 	protected List<UIAction> createActions() {
-		List<UIAction> actions = newArrayList();
+		final List<UIAction> actions = newArrayList();
 
 //        actions.add(new UIAction("Новый", "Ввод новой задачи", Fontello.DOC_NEW) {
 //            @Override
@@ -130,10 +132,10 @@ public class TasksGrid extends ExtaGrid<Task> {
 
 		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", Fontello.SITEMAP) {
 			@Override
-			public void fire(Object itemId) {
+			public void fire(final Object itemId) {
 				final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
 				// Показать статус выполнения процесса
-				BPStatusForm statusForm = new BPStatusForm(curObj.getBean().getProcessInstanceId());
+				final BPStatusForm statusForm = new BPStatusForm(curObj.getBean().getProcessInstanceId());
 				statusForm.showModal();
 			}
 		});
@@ -148,7 +150,7 @@ public class TasksGrid extends ExtaGrid<Task> {
 	}
 
     @Override
-    public ExtaEditForm<Task> createEditForm(Task task, boolean isInsert) {
+    public ExtaEditForm<Task> createEditForm(final Task task, final boolean isInsert) {
         return new TaskEditForm(task);
     }
 
@@ -163,24 +165,24 @@ public class TasksGrid extends ExtaGrid<Task> {
             }
 
             @Override
-            public Object generateCell(CustomTable source, final Object itemId, Object columnId) {
-                Item item = source.getItem(itemId);
-                Task task = GridItem.extractBean(item);
+            public Object generateCell(final CustomTable source, final Object itemId, final Object columnId) {
+                final Item item = source.getItem(itemId);
+                final Task task = GridItem.extractBean(item);
 
-                Button titleLink = new Button();
+                final Button titleLink = new Button();
                 titleLink.addStyleName(ExtaTheme.BUTTON_LINK);
                 titleLink.setCaption(task.getName());
                 titleLink.setDescription(defAction.getDescription());
                 titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
                 titleLink.addClickListener(event -> defAction.fire(itemId));
 
-                VerticalLayout panel = new VerticalLayout();
+                final VerticalLayout panel = new VerticalLayout();
                 panel.addComponent(titleLink);
 
-                Label desc = new Label(task.getDescription());
+                final Label desc = new Label(task.getDescription());
                 panel.addComponent(desc);
 
-                Label dueTime = new Label(item.getItemProperty("dueDate"));
+                final Label dueTime = new Label(item.getItemProperty("dueDate"));
                 dueTime.setConverter(dtConverter);
                 panel.addComponent(dueTime);
 

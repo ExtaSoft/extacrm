@@ -1,9 +1,7 @@
 package ru.extas.web.commons;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
-import com.vaadin.server.VaadinService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -12,7 +10,6 @@ import ru.extas.model.security.ExtaDomain;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -35,12 +32,12 @@ public class ExtaUri implements Serializable {
     private String id;
     private ExtaDomain domain;
 
-    public ExtaUri(ExtaDomain domain, Mode mode, String id) {
+    public ExtaUri(final ExtaDomain domain, final Mode mode, final String id) {
         this.mode = mode;
         setId(id);
         this.domain = domain;
 
-        Iterable<String> uriPieces = Splitter.on(SEPARATOR).split(domain.getName());
+        final Iterable<String> uriPieces = Splitter.on(SEPARATOR).split(domain.getName());
 
         domainPrefix = Iterables.get(uriPieces, 0, null);
         subdomain = Iterables.get(uriPieces, 1, null);
@@ -64,16 +61,16 @@ public class ExtaUri implements Serializable {
 
         if (!isNullOrEmpty(uriPart)) {
             try {
-                UriComponents uriComponents = UriComponentsBuilder.fromUri(new URI(uriPart)).build();
-                List<String> idParam = uriComponents.getQueryParams().get(ID_PRM_NAME);
+                final UriComponents uriComponents = UriComponentsBuilder.fromUri(new URI(uriPart)).build();
+                final List<String> idParam = uriComponents.getQueryParams().get(ID_PRM_NAME);
                 if (!CollectionUtils.isEmpty(idParam))
                     id = idParam.get(0);
 
-                List<String> uriPieces = uriComponents.getPathSegments();
+                final List<String> uriPieces = uriComponents.getPathSegments();
                 domainPrefix = Iterables.get(uriPieces, 0, null);
                 subdomain = Iterables.get(uriPieces, 1, null);
 
-                String modeStr = Iterables.get(uriPieces, 2, null);
+                final String modeStr = Iterables.get(uriPieces, 2, null);
                 if (isNullOrEmpty(modeStr))
                     mode = Mode.GRID;
                 else if (modeStr.equals(Mode.NEW.getName()))
@@ -82,10 +79,10 @@ public class ExtaUri implements Serializable {
                     mode = Mode.EDIT;
                 else if (modeStr.equals(Mode.VIEW.getName()))
                     mode = Mode.VIEW;
-            } catch (URISyntaxException e) {
+            } catch (final URISyntaxException e) {
             }
 
-            StringBuilder domainName = new StringBuilder();
+            final StringBuilder domainName = new StringBuilder();
             if (!isNullOrEmpty(domainPrefix)) {
                 domainName.append(domainPrefix);
                 if (!isNullOrEmpty(subdomain))
@@ -130,7 +127,7 @@ public class ExtaUri implements Serializable {
         return mode;
     }
 
-    public void setMode(Mode mode) {
+    public void setMode(final Mode mode) {
         this.mode = mode;
     }
 
@@ -140,7 +137,7 @@ public class ExtaUri implements Serializable {
         return UUIDUtils.fromUrl(id);
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         if (!isNullOrEmpty(id))
             this.id = UUIDUtils.toUrl(id);
         else
@@ -151,7 +148,7 @@ public class ExtaUri implements Serializable {
         return domain;
     }
 
-    public void setDomain(ExtaDomain domain) {
+    public void setDomain(final ExtaDomain domain) {
         this.domain = domain;
     }
 
