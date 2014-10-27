@@ -147,7 +147,7 @@ public class AddressInfoField extends CustomField<AddressInfo> {
                     if (fieldGroup.isValid()) {
                         try {
                             fieldGroup.commit();
-                            setValue(addressInfo);
+                            setValue(addressInfo.createCopy());
                         } catch (final Throwable ex) {
                             NotificationUtil.showError("Невозможно сохранить изменения!", ex.getLocalizedMessage());
                             return;
