@@ -76,9 +76,9 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale.setComment(lead.getComment());
         sale.setProcessId(lead.getProcessId());
         sale.setLead(lead);
+        sale.setResponsible(lead.getResponsible());
 
         return saleRepository.secureSave(sale);
-
     }
 
     @Transactional
