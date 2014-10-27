@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.extas.model.contacts.SalePoint;
@@ -41,7 +42,7 @@ import static ru.extas.model.common.ModelUtils.evictCache;
  * @version $Id: $Id
  * @since 0.3
  */
-@Controller
+@RestController
 @RequestMapping("/service/lead")
 public class LeadRestService {
 
@@ -208,12 +209,12 @@ public class LeadRestService {
      * @throws java.io.IOException if any.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public HttpEntity<String> info() throws IOException {
+    public ResponseEntity<String> info() throws IOException {
         final String help = HelpContent.loadMarkDown("/help/rest/leads.textile");
 
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
-        return new HttpEntity(help, headers);
+        return new ResponseEntity(help, headers, HttpStatus.OK);
     }
 
     /**
@@ -222,7 +223,7 @@ public class LeadRestService {
      * @param lead a {@link ru.extas.server.lead.LeadRestService.RestLead} object.
      */
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
     public void newLead(@RequestBody final RestLead lead) {
         Lead newLead = new Lead();
         newLead.setStatus(Lead.Status.NEW);
@@ -293,7 +294,7 @@ public class LeadRestService {
             final String dirtyPrice = lead.getPrice().trim().replace(" ", "").replace("'", "");
             final DecimalFormat format = new DecimalFormat();
             format.setParseBigDecimal(true);
-            format.setDecimalFormatSymbols(new DecimalFormatSymbols(){
+            format.setDecimalFormatSymbols(new DecimalFormatSymbols() {
                 {
                     setDecimalSeparator(dirtyPrice.contains(".") ? '.' : ',');
                 }
@@ -303,7 +304,7 @@ public class LeadRestService {
                 clearPrice = (BigDecimal) format.parse(dirtyPrice);
             } catch (final ParseException e) {
             }
-            if(clearPrice == null)
+            if (clearPrice == null)
                 dirtyData.append("Цена техники: ").append(dirtyPrice).append(lineSeparator());
             else
                 newLead.setMotorPrice(clearPrice);
@@ -328,14 +329,14 @@ public class LeadRestService {
             else {
                 newLead.setVendor(salePoint);
                 newLead.setPointOfSale(salePoint.getName());
-                if(salePoint.getRegAddress() != null)
+                if (salePoint.getRegAddress() != null)
                     newLead.setRegion(salePoint.getRegAddress().getRegion());
             }
         }
         newLead.setPointOfSale(lead.getDealer());
 
         // Примечание.
-        if(!isNullOrEmpty(lead.getComment()))
+        if (!isNullOrEmpty(lead.getComment()))
             dirtyData.append(lead.getComment());
         newLead.setComment(dirtyData.toString());
 
@@ -351,11 +352,10 @@ public class LeadRestService {
      */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
-    @ResponseBody
-    public HttpEntity<String> handleIOException(final Throwable ex) {
+    public ResponseEntity<String> handleIOException(final Throwable ex) {
         logger.error("Ошибка обработки запроса", ex);
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
-        return new HttpEntity(ex.getMessage(), headers);
+        return new ResponseEntity(ex.getMessage(), headers, HttpStatus.EXPECTATION_FAILED);
     }
 }

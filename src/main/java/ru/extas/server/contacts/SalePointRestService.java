@@ -2,11 +2,10 @@ package ru.extas.server.contacts;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.HelpContent;
@@ -28,7 +27,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-@Controller
+@RestController
 @RequestMapping("/service/salepoint")
 public class SalePointRestService {
 
@@ -88,13 +87,13 @@ public class SalePointRestService {
      * @throws java.io.IOException if any.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public HttpEntity<String> info() throws IOException {
+    public ResponseEntity<String> info() throws IOException {
 
         final String help = HelpContent.loadMarkDown("/help/rest/salepoints.textile");
 
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
-        return new HttpEntity(help, headers);
+        return new ResponseEntity(help, headers, HttpStatus.OK);
     }
 
     /**
@@ -104,7 +103,7 @@ public class SalePointRestService {
      * @param region a {@link java.lang.String} object.
      */
     @RequestMapping(value = "/count", method = RequestMethod.GET)
-    public HttpEntity<String> count(@RequestParam(value = "region", required = false) final String region) {
+    public ResponseEntity<String> count(@RequestParam(value = "region", required = false) final String region) {
         final long count;
         if (isNullOrEmpty(region))
             count = repository.count();
@@ -113,7 +112,7 @@ public class SalePointRestService {
 
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/plain; charset=utf-8");
-        return new HttpEntity(NumberFormat.getInstance().format(count), headers);
+        return new ResponseEntity(NumberFormat.getInstance().format(count), headers, HttpStatus.OK);
     }
 
     /**
@@ -123,9 +122,7 @@ public class SalePointRestService {
      * @param region a {@link java.lang.String} object.
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<RestSalePoint> list(@RequestParam(value = "region", required = false) final String region) {
+    public List<RestSalePoint> list(@RequestParam(value = "region", required = false) final String region) {
         final List<RestSalePoint> result = newArrayList();
         final List<SalePoint> salePoints;
         if (isNullOrEmpty(region))
