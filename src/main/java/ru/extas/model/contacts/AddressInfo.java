@@ -167,4 +167,9 @@ public class AddressInfo implements Serializable {
                 isNullOrEmpty(postIndex)&&
                 isNullOrEmpty(streetBld);
     }
+
+    public AddressInfo createCopy() {
+        AddressInfo copy = new AddressInfo(region, city, postIndex, streetBld);
+        return copy;
+    }
 }
