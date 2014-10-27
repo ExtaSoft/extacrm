@@ -19,6 +19,7 @@ import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.legalentity.LegalEntitiesSelectField;
 import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
 
+import java.text.MessageFormat;
 import java.util.Optional;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -70,7 +71,8 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     private SalePoint salePoint;
 
     public SalePointEditForm(SalePoint salePoint) {
-        super(salePoint.isNew() ? "Ввод новой торговой точки в систему" : "Редактирование данных торговой точки", salePoint);
+        super(salePoint.isNew() ? "Ввод новой торговой точки в систему" :
+                MessageFormat.format("Редактирование данных торговой точки: {0}", salePoint.getName()), salePoint);
 
         setWinWidth(800, Unit.PIXELS);
         setWinHeight(600, Unit.PIXELS);
