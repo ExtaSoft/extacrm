@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.extas.server.motor.MotorBrandRepository;
@@ -24,7 +25,7 @@ import java.util.Collection;
  * @version $Id: $Id
  * @since 0.4.2
  */
-@Controller
+@RestController
 @RequestMapping("/service/ref")
 public class ReferenceRestService {
     private final Logger logger = LoggerFactory.getLogger(ReferenceRestService.class);
@@ -39,7 +40,7 @@ public class ReferenceRestService {
      * @return a {@link java.util.Collection} object.
      */
     @RequestMapping(value = "/regions", method = RequestMethod.GET)
-    public @ResponseBody Collection<String> loadRegions() {
+    public Collection<String> loadRegions() {
         return supplementService.loadRegions();
     }
 
@@ -49,7 +50,7 @@ public class ReferenceRestService {
      * @return a {@link java.util.Collection} object.
      */
     @RequestMapping(value = "/motor-brands", method = RequestMethod.GET)
-    public @ResponseBody Collection<String> loadMotorBrands() {
+    public Collection<String> loadMotorBrands() {
         return motorBrandRepository.loadAllNames();
     }
 
@@ -59,7 +60,7 @@ public class ReferenceRestService {
      * @return a {@link java.util.Collection} object.
      */
     @RequestMapping(value = "/motor-types", method = RequestMethod.GET)
-    public @ResponseBody Collection<String> loadMotorTypes() {
+    public Collection<String> loadMotorTypes() {
         return motorTypeRepository.loadAllNames();
     }
 
@@ -70,12 +71,12 @@ public class ReferenceRestService {
      * @throws java.io.IOException if any.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public HttpEntity<String> info() throws IOException {
+    public ResponseEntity<String> info() throws IOException {
         final String help = HelpContent.loadMarkDown("/help/rest/references.textile");
 
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
-        return new HttpEntity(help, headers);
+        return new ResponseEntity(help, headers, HttpStatus.OK);
     }
 
     /**
@@ -86,11 +87,10 @@ public class ReferenceRestService {
      */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
-    @ResponseBody
-    public HttpEntity<String> handleIOException(final Throwable ex) {
+    public ResponseEntity<String> handleIOException(final Throwable ex) {
         logger.error("Ошибка обработки запроса", ex);
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
-        return new HttpEntity(ex.getMessage(), headers);
+        return new ResponseEntity(ex.getMessage(), headers, HttpStatus.EXPECTATION_FAILED);
     }
 }

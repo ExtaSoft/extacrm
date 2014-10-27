@@ -9,11 +9,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- Activate Spring annotation support -->
     <!--<context:annotation-config/>-->
     <mvc:annotation-driven/>
+    <!--<mvc:default-servlet-handler/>-->
     <context:component-scan base-package="ru.extas.server, ru.extas.web"/>
 
     <!-- Vaadin application controller -->
@@ -31,10 +32,32 @@
         </property>
     </bean>
 
-    <bean id="annotationMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <property name="order" value="0" />
+    <bean id="annotationMapping"
+          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="order" value="0"/>
     </bean>
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
+    <!--<bean id="jacksonMessageConverter"-->
+          <!--class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>-->
+    <!--<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">-->
+        <!--<constructor-arg type="java.nio.charset.Charset">-->
+            <!--<bean class="java.nio.charset.Charset" factory-method="forName">-->
+                <!--<constructor-arg value="UTF-8"/>-->
+            <!--</bean>-->
+        <!--</constructor-arg>-->
+        <!--<property name="supportedMediaTypes">-->
+            <!--<list>-->
+                <!--<utils:constant static-field="org.springframework.http.MediaType.TEXT_HTML"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
+        <!--<property name="messageConverters">-->
+            <!--<list>-->
+                <!--<ref bean="jacksonMessageConverter"/>-->
+                <!--<ref bean="stringHttpMessageConverter"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
 
     <!-- Map URIs to web controllers -->
     <bean id="uiMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
@@ -51,6 +74,6 @@
             </map>
         </property>
     </bean>
-    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+    <!--<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>-->
 
 </beans>
