@@ -40,6 +40,8 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     // Вкладка - "Общая информация"
     @PropertyId("name")
     private EditField nameField;
+    @PropertyId("categories")
+    private CompanyCategoriesField categoriesField;
     @PropertyId("www")
     private WebSiteLinkField wwwField;
     @PropertyId("region")
@@ -162,6 +164,9 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         nameField.setRequiredError("Название компании не может быть пустым.");
         nameField.setNullRepresentation("");
         formLayout.addComponent(nameField);
+
+        categoriesField = new CompanyCategoriesField("Категория");
+        formLayout.addComponent(categoriesField);
 
         wwwField = new WebSiteLinkField("WWW", "Введите адрес сайта компании");
         formLayout.addComponent(wwwField);

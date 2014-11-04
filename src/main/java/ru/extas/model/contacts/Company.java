@@ -22,7 +22,10 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "COMPANY")
 public class Company extends SecuredObject {
 
-	private static final long serialVersionUID = -5681940552175752858L;
+    private static final long serialVersionUID = -5681940552175752858L;
+    private static final int CATEGORY_LENGTH = 50;
+
+    private static final String BANK_CATEGORY = "";
 
     // Имя контакта
     @Column(length = Contact.NAME_LENGTH)
@@ -58,115 +61,134 @@ public class Company extends SecuredObject {
     private String city;
 
     // Собственник(и) Компании
-	@ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-	@JoinTable(
-			name = "COMPANY_OWNER",
-			joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
-			inverseJoinColumns = {@JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(
+            name = "COMPANY_OWNER",
+            joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "OWNER_ID", referencedColumnName = "ID")})
     @OrderBy("name ASC")
     private Set<Employee> owners = newHashSet();
 
-	// Сотрудники компании
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    // Сотрудники компании
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     @OrderBy("name ASC")
-	private Set<Employee> employees = newHashSet();
+    private Set<Employee> employees = newHashSet();
 
-	// Юридические лица компании
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    // Юридические лица компании
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     private Set<LegalEntity> legalEntities = newHashSet();
 
-	// Торговые точки компании
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    // Торговые точки компании
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     private Set<SalePoint> salePoints = newHashSet();
 
-	/**
-	 * <p>Constructor for Company.</p>
-	 */
-	public Company() {
-	}
+    // Привязка обхекта к категориям
+    @ElementCollection
+    @CollectionTable(name = "COMPANY_CATEGORY",
+            joinColumns = {@JoinColumn(name = "COMPANY_ID")},
+            indexes = {
+                    @Index(columnList = "COMPANY_ID, CATEGORIES")
+            })
+    @Column(name = "CATEGORY", length = CATEGORY_LENGTH)
+    @OrderBy("CATEGORY ASC")
+    private Set<String> categories = newHashSet();
 
-	/**
-	 * <p>Getter for the field <code>owners</code>.</p>
-	 *
-	 * @return a {@link java.util.List} object.
-	 */
-	public Set<Employee> getOwners() {
-		return owners;
-	}
+    /**
+     * <p>Constructor for Company.</p>
+     */
+    public Company() {
+    }
 
-	/**
-	 * <p>Setter for the field <code>owners</code>.</p>
-	 *
-	 * @param ownerList a {@link java.util.List} object.
-	 */
-	public void setOwners(final Set<Employee> ownerList) {
-		this.owners = ownerList;
-	}
+    public Set<String> getCategories() {
+        return categories;
+    }
 
-	/**
-	 * <p>Getter for the field <code>salePoints</code>.</p>
-	 *
-	 * @return a {@link java.util.List} object.
-	 */
-	public Set<SalePoint> getSalePoints() {
-		return salePoints;
-	}
+    public void setCategories(Set<String> categories) {
+        this.categories = categories;
+    }
 
-	/**
-	 * <p>Setter for the field <code>salePoints</code>.</p>
-	 *
-	 * @param salePointList a {@link java.util.List} object.
-	 */
-	public void setSalePoints(final Set<SalePoint> salePointList) {
+    /**
+     * <p>Getter for the field <code>owners</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
+    public Set<Employee> getOwners() {
+        return owners;
+    }
+
+    /**
+     * <p>Setter for the field <code>owners</code>.</p>
+     *
+     * @param ownerList a {@link java.util.List} object.
+     */
+    public void setOwners(final Set<Employee> ownerList) {
+        this.owners = ownerList;
+    }
+
+    /**
+     * <p>Getter for the field <code>salePoints</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
+    public Set<SalePoint> getSalePoints() {
+        return salePoints;
+    }
+
+    /**
+     * <p>Setter for the field <code>salePoints</code>.</p>
+     *
+     * @param salePointList a {@link java.util.List} object.
+     */
+    public void setSalePoints(final Set<SalePoint> salePointList) {
         // Устанавливаем новую связь
         this.salePoints = salePointList;
         if (this.salePoints != null)
             this.salePoints.forEach(e -> e.setCompany(this));
-	}
+    }
 
-	/**
-	 * <p>Getter for the field <code>employeeList</code>.</p>
-	 *
-	 * @return a {@link java.util.List} object.
-	 */
-	public Set<Employee> getEmployees() {
-		return employees;
-	}
+    /**
+     * <p>Getter for the field <code>employeeList</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
 
-	/**
-	 * <p>Setter for the field <code>employeeList</code>.</p>
-	 *
-	 * @param employeeList a {@link java.util.List} object.
-	 */
-	public void setEmployees(final Set<Employee> employeeList) {
+    /**
+     * <p>Setter for the field <code>employeeList</code>.</p>
+     *
+     * @param employeeList a {@link java.util.List} object.
+     */
+    public void setEmployees(final Set<Employee> employeeList) {
         this.employees = employeeList;
         // Устанавливаем новую связь
         if (this.employees != null)
             this.employees.forEach(e -> e.setCompany(this));
-	}
+    }
 
-	/**
-	 * <p>Getter for the field <code>legalEntities</code>.</p>
-	 *
-	 * @return a {@link java.util.List} object.
-	 */
-	public Set<LegalEntity> getLegalEntities() {
-		return legalEntities;
-	}
+    /**
+     * <p>Getter for the field <code>legalEntities</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
+    public Set<LegalEntity> getLegalEntities() {
+        return legalEntities;
+    }
 
-	/**
-	 * <p>Setter for the field <code>legalEntities</code>.</p>
-	 *
-	 * @param legalEntities a {@link java.util.List} object.
-	 */
-	public void setLegalEntities(final Set<LegalEntity> legalEntities) {
+    /**
+     * <p>Setter for the field <code>legalEntities</code>.</p>
+     *
+     * @param legalEntities a {@link java.util.List} object.
+     */
+    public void setLegalEntities(final Set<LegalEntity> legalEntities) {
         // Устанавливаем новую связь
         this.legalEntities = legalEntities;
         if (this.legalEntities != null)
             this.legalEntities.forEach(e -> e.setCompany(this));
-	}
+    }
 
     public String getName() {
         return name;

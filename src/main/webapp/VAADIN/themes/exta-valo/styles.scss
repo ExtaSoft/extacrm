@@ -8,6 +8,7 @@
 @import "extremeassist";
 @import "layout/menu";
 @import "layout/base";
+@import "components/tokenfield";
 
 @include v-font(fontello, '../../../../exta-valo/fonts/fontello/fontello');
 
@@ -16,6 +17,7 @@
 
   @include exta-menu;
   @include exta-base-view;
+  @include exta-tokenfield;
 
   $bg-lightness: if(color-luminance($v-app-background-color) < 10, 15%, -70%);
   $bg: $valo-menu-background-color or scale-color($v-app-background-color, $lightness: $bg-lightness);
