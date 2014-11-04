@@ -47,16 +47,23 @@ public class CompanyCategoriesField extends CustomField<Set> {
         tokenField.addValueChangeListener(event -> {
             final Set selected = (Set) tokenField.getValue();
             setValue(selected);
+            refreshContainer(selected);
         });
 
         final Set<String> set = getValue() != null ? getValue() : null;
         if (set != null) {
             tokenField.setValue(newHashSet(set));
         }
-        final Collection<String> regions = lookup(CategoryService.class).loadCompanyCategories();
-        tokenField.setContainerDataSource(CollectionContainer.fromBeans(regions));
+        refreshContainer(set);
 
         return tokenField;
+    }
+
+    private void refreshContainer(Set<String> selected) {
+        final Collection<String> categories = lookup(CategoryService.class).loadCompanyCategories();
+        if(selected != null)
+            categories.removeAll(selected);
+        tokenField.setContainerDataSource(CollectionContainer.fromBeans(categories));
     }
 
     @Override
