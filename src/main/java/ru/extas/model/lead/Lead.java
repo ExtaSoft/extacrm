@@ -106,7 +106,6 @@ public class Lead extends SecuredObject {
 	// Эл. почта
 	@Column(name = "CONTACT_EMAIL", length = Contact.EMAIL_LENGTH)
     @Size(max = Contact.EMAIL_LENGTH)
-    @Email
 	private String contactEmail;
     // Регион проживания.
     @Column(name = "CONTACT_REGION", length = AddressInfo.REGION_LENGTH)
