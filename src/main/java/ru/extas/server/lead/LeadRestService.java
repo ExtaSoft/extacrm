@@ -1,6 +1,7 @@
 package ru.extas.server.lead;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.google.common.base.Strings;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -23,11 +24,14 @@ import ru.extas.web.commons.HelpContent;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.Optional;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.System.lineSeparator;
@@ -254,7 +258,9 @@ public class LeadRestService {
         }
 
         // E-mail
-        newLead.setContactEmail(lead.getEmail());
+        newLead.setContactEmail(
+                Optional.ofNullable(lead.getEmail()).
+                        map(em -> Strings.emptyToNull(em.trim())).orElse(null));
 
         // Регион проживания.
         final String dirtyClientRegion = lead.getClientRegion();
@@ -354,6 +360,12 @@ public class LeadRestService {
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     public ResponseEntity<String> handleIOException(final Throwable ex) {
         logger.error("Ошибка обработки запроса", ex);
+        if(ex instanceof ConstraintViolationException) {
+            ConstraintViolationException ce = (ConstraintViolationException) ex;
+            for (ConstraintViolation<?> violation : ce.getConstraintViolations()) {
+                logger.error(violation.getMessage());
+            }
+        }
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "text/html; charset=utf-8");
         return new ResponseEntity(ex.getMessage(), headers, HttpStatus.EXPECTATION_FAILED);
