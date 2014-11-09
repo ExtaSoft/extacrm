@@ -45,6 +45,9 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
         super(userGroup.isNew() ?
         "Ввод новой группы пользователей" :
         "Редактирование группы", userGroup);
+
+        setWinWidth(1000, Unit.PIXELS);
+        setWinHeight(600, Unit.PIXELS);
     }
 
     /** {@inheritDoc} */

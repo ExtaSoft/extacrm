@@ -4,11 +4,14 @@
 package ru.extas.web.contacts.company;
 
 import com.vaadin.data.Container;
-import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.*;
 import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.ObjectSecurityRule_;
 import ru.extas.web.commons.*;
 
+import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -49,7 +52,27 @@ public class CompaniesGrid extends ExtaGrid<Company> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<Company> container = new SecuredDataContainer<>(Company.class, ExtaDomain.COMPANY);
+        final ExtaDataContainer<Company> container = new SecuredDataContainer<Company>(Company.class, ExtaDomain.COMPANY) {
+            @Override
+            protected Predicate createAreaPredicate(CriteriaBuilder cb, Root objectRoot, Predicate predicate, Set permitRegions, Set permitBrands) {
+                if (!permitRegions.isEmpty()) {
+                    final SetJoin<Company, SalePoint> spJoin = objectRoot.join(Company_.salePoints, JoinType.LEFT);
+                    final Predicate regPredicate =
+                            spJoin.get(SalePoint_.regAddress)
+                                    .get(AddressInfo_.region)
+                                    .in(permitRegions);
+                    predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
+                }
+                if (!permitBrands.isEmpty()) {
+                    SetJoin<Company, LegalEntity> leJoin = objectRoot.join(Company_.legalEntities, JoinType.LEFT);
+                    final Predicate brPredicate =
+                            leJoin.join(LegalEntity_.motorBrands, JoinType.LEFT)
+                                    .in(permitBrands);
+                    predicate = predicate == null ? brPredicate : cb.and(predicate, brPredicate);
+                }
+                return predicate;
+            }
+        };
         container.sort(new Object[]{"name"}, new boolean[]{true});
         return container;
     }

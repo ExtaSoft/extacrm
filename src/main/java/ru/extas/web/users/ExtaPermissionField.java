@@ -68,8 +68,11 @@ public class ExtaPermissionField extends CustomField<Set> {
                 return new ExtaPermissionEditForm(extaPermission) {
                     @Override
                     protected ExtaPermission saveObject(final ExtaPermission obj) {
-                        ((RefreshBeanContainer<ExtaPermission>) container).addBean(obj);
-                        ExtaPermissionField.this.setValue(newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds()));
+                        if (isInsert)
+                            ((RefreshBeanContainer<ExtaPermission>) container).addBean(obj);
+                        else
+                            setValue(null, true); // Форсируем изменения
+                        setValue(newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds()));
                         return obj;
                     }
                 };
@@ -153,11 +156,19 @@ public class ExtaPermissionField extends CustomField<Set> {
                             "Ввод нового правила доступа в систему" :
                             "Редактирование правила доступа",
                     extaPermission);
+
+            setWinWidth(640, Unit.PIXELS);
+            setWinHeight(430, Unit.PIXELS);
         }
 
         @Override
         protected void initObject(final ExtaPermission obj) {
 
+        }
+
+        @Override
+        protected ExtaPermission saveObject(ExtaPermission obj) {
+            return null;
         }
 
         @Override

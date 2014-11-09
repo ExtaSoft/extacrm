@@ -76,7 +76,7 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
     /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectBrands(final LegalEntity legalEntity) {
-        return null;
+        return legalEntity.getMotorBrands();
     }
 
 }

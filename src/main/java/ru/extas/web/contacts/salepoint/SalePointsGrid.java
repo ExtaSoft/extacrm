@@ -5,13 +5,15 @@ package ru.extas.web.contacts.salepoint;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.*;
 import ru.extas.model.security.ExtaDomain;
+import ru.extas.model.security.ObjectSecurityRule_;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
+import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -61,7 +63,26 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<SalePoint> container = new SecuredDataContainer<>(SalePoint.class, ExtaDomain.SALE_POINT);
+		final ExtaDataContainer<SalePoint> container = new SecuredDataContainer<SalePoint>(SalePoint.class, ExtaDomain.SALE_POINT){
+			@Override
+			protected Predicate createAreaPredicate(CriteriaBuilder cb, Root<SalePoint> objectRoot, Predicate predicate, Set<String> permitRegions, Set<String> permitBrands) {
+				if (!permitRegions.isEmpty()) {
+                    final Predicate regPredicate =
+							objectRoot.get(SalePoint_.regAddress)
+									.get(AddressInfo_.region)
+                                    .in(permitRegions);
+                    predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
+                }
+				if (!permitBrands.isEmpty()) {
+					SetJoin<SalePoint, LegalEntity> leJoin = objectRoot.join(SalePoint_.legalEntities, JoinType.LEFT);
+					final Predicate brPredicate =
+							leJoin.join(LegalEntity_.motorBrands, JoinType.LEFT)
+									.in(permitBrands);
+					predicate = predicate == null ? brPredicate : cb.and(predicate, brPredicate);
+				}
+				return predicate;
+			}
+		};
 		container.addNestedContainerProperty("regAddress.region");
 		container.addNestedContainerProperty("regAddress.city");
 		container.addNestedContainerProperty("regAddress.streetBld");

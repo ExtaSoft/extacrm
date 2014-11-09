@@ -60,6 +60,8 @@ public class EmployeeFieldMany extends CustomField<Set> {
                     protected Employee saveObject(Employee obj) {
                         if (isInsert)
                             beanContainer.addBean(obj);
+                        else
+                            setValue(null, true); // Форсируем изменения
                         setValue(newHashSet(beanContainer.getItemIds()));
                         return obj;
                     }

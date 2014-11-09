@@ -112,6 +112,10 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
                 permitRegions.addAll(group.getPermitRegions());
             }
         }
+        return createAreaPredicate(cb, objectRoot, predicate, permitRegions, permitBrands);
+    }
+
+    protected Predicate createAreaPredicate(CriteriaBuilder cb, Root<TEntityType> objectRoot, Predicate predicate, Set<String> permitRegions, Set<String> permitBrands) {
         if (!permitRegions.isEmpty()) {
             final Predicate regPredicate =
                     getSecurityRoleJoin(objectRoot)
