@@ -4,6 +4,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
@@ -23,6 +24,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class EmployeesGrid extends ExtaGrid<Employee> {
 
     private SupplierSer<Company> companySupplier;
+    private SupplierSer<SalePoint> salePointSupplier;
 
     public EmployeesGrid() {
         this(null);
@@ -42,7 +44,7 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
     @Override
     protected GridDataDecl createDataDecl() {
         final EmployeesDataDecl dataDecl = new EmployeesDataDecl();
-        if(companySupplier != null)
+        if (companySupplier != null)
             dataDecl.setColumnCollapsed("company.name", true);
         return dataDecl;
     }
@@ -53,7 +55,9 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
         final ExtaDataContainer<Employee> container = new SecuredDataContainer<>(Employee.class, ExtaDomain.EMPLOYEE);
         container.addNestedContainerProperty("company.name");
         container.sort(new Object[]{"company.name", "name"}, new boolean[]{true, true});
-        if (companySupplier != null)
+        if (salePointSupplier != null) {
+            container.addContainerFilter(new Compare.Equal("workPlace", salePointSupplier.get()));
+        } else if (companySupplier != null)
             container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
         return container;
     }
@@ -74,5 +78,13 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
 
     public void setCompanySupplier(SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
+    }
+
+    public void setSalePointSupplier(SupplierSer<SalePoint> salePointSupplier) {
+        this.salePointSupplier = salePointSupplier;
+    }
+
+    public SupplierSer<SalePoint> getSalePointSupplier() {
+        return salePointSupplier;
     }
 }

@@ -124,7 +124,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
         public void refreshContainer() {
             setContainerFilter();
             container.refresh();
-            if (companySupplier != null && !Objects.equals(getConvertedValue(), companySupplier.get()))
+            if (companySupplier != null && !Objects.equals(((LegalEntity)getConvertedValue()).getCompany(), companySupplier.get()))
                 setConvertedValue(null);
         }
 

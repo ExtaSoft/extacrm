@@ -84,9 +84,24 @@ public class Sale extends SecuredObject {
 	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<ProductInSale> productInSales;
 
-    // Ответственный
+    // Ответственный с нашей стороны
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee responsible;
+
+    // Помощник ответственного с нашей стороны
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "RESPONSIBLE_ASSIST_ID")
+    private Employee responsibleAssist;
+
+    // Ответственный со стороны дилера
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "DEALER_MANAGER_ID")
+    private Employee dealerManager;
+
+    // Ответственный со стороны банка
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "BANK_MANAGER_ID")
+    private Employee bankManager;
 
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Lead lead;
@@ -95,6 +110,30 @@ public class Sale extends SecuredObject {
     @JoinColumn(name = Comment.OWNER_ID_COLUMN)
     @OrderBy("createdDate")
     private List<SaleComment> comments = newArrayList();
+
+    public Employee getDealerManager() {
+        return dealerManager;
+    }
+
+    public void setDealerManager(Employee daelerManager) {
+        this.dealerManager = daelerManager;
+    }
+
+    public Employee getBankManager() {
+        return bankManager;
+    }
+
+    public void setBankManager(Employee bankManager) {
+        this.bankManager = bankManager;
+    }
+
+    public Employee getResponsibleAssist() {
+        return responsibleAssist;
+    }
+
+    public void setResponsibleAssist(Employee responsibleAssist) {
+        this.responsibleAssist = responsibleAssist;
+    }
 
     public Employee getResponsible() {
         return responsible;

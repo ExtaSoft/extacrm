@@ -18,7 +18,7 @@
         <joda-time.version>2.5</joda-time.version>
         <gson.version>2.3</gson.version>
 
-        <vaadin.version>7.3.3</vaadin.version>
+        <vaadin.version>7.3.4</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin-charts.version>1.1.7</vaadin-charts.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
@@ -673,7 +673,6 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <!--<theme>extacrm</theme>-->
                             <theme>exta-valo</theme>
                         </configuration>
                         <phase>compile</phase>

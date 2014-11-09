@@ -222,7 +222,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     }
 
     protected BeanItem<TEditObject> createBeanItem(TEditObject bean) {
-        return new BeanItem<TEditObject>(bean);
+        return new BeanItem<>(bean);
     }
 
     protected boolean save() {

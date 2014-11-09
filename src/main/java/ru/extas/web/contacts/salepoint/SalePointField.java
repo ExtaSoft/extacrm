@@ -128,7 +128,7 @@ public class SalePointField extends CustomField<SalePoint> {
         public void refreshContainer() {
             setContainerFilter();
             container.refresh();
-            if (companySupplier != null && !Objects.equals(getConvertedValue(), companySupplier.get()))
+            if (companySupplier != null && !Objects.equals(((SalePoint)getConvertedValue()).getCompany(), companySupplier.get()))
                 setConvertedValue(null);
         }
 

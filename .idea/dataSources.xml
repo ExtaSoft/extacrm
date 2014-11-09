@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3542978412">
+  <component name="DataSourceManagerImpl" format="xml" hash="1323648396">
     <data-source source="LOCAL" name="LocalMySql" uuid="5c42dca0-ad6e-40b7-a5b9-c8db19f4f902">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/extacrm</jdbc-url>
-      <user-name>root</user-name>
-      <user-password>dfd8dfc5dfc5dfde</user-password>
-      <schema-pattern>extacrm.* information_schema.*</schema-pattern>
-      <default-schemas>extacrm.*</default-schemas>
       <default-dialect>MySQL</default-dialect>
       <libraries>
         <library>
@@ -19,4 +15,3 @@
     </data-source>
   </component>
 </project>
-

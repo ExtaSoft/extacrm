@@ -2,6 +2,7 @@ package ru.extas.web.contacts.employee;
 
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.Fontello;
@@ -21,12 +22,15 @@ import static ru.extas.web.commons.GridItem.extractBean;
 public class EmployeeSelectWindow extends CloseOnlylWindow {
     private Employee selected;
     private boolean selectPressed;
+    private SupplierSer<Company> companySupplier;
+    private SupplierSer<SalePoint> salePointSupplier;
+    private final EmployeesGrid grid;
 
-    public EmployeeSelectWindow(String caption, SupplierSer<Company> companySupplier) {
+    public EmployeeSelectWindow(String caption) {
         super(caption);
         setWidth(800, Unit.PIXELS);
         setHeight(600, Unit.PIXELS);
-        final EmployeesGrid grid = new EmployeesGrid() {
+        grid = new EmployeesGrid() {
             @Override
             protected List<UIAction> createActions() {
                 final List<UIAction> actions = newArrayList();
@@ -46,7 +50,6 @@ public class EmployeeSelectWindow extends CloseOnlylWindow {
             }
 
         };
-        grid.setCompanySupplier(companySupplier);
         setContent(grid);
     }
 
@@ -56,5 +59,23 @@ public class EmployeeSelectWindow extends CloseOnlylWindow {
 
     public Employee getSelected() {
         return selected;
+    }
+
+    public SupplierSer<Company> getCompanySupplier() {
+        return companySupplier;
+    }
+
+    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+        this.companySupplier = companySupplier;
+        grid.setCompanySupplier(companySupplier);
+    }
+
+    public SupplierSer<SalePoint> getSalePointSupplier() {
+        return salePointSupplier;
+    }
+
+    public void setSalePointSupplier(SupplierSer<SalePoint> salePointSupplier) {
+        this.salePointSupplier = salePointSupplier;
+        grid.setSalePointSupplier(salePointSupplier);
     }
 }

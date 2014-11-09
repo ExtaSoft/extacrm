@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source source="LOCAL" name="LocalMySql" uuid="5c42dca0-ad6e-40b7-a5b9-c8db19f4f902">
+  <data-source name="LocalMySql" uuid="5c42dca0-ad6e-40b7-a5b9-c8db19f4f902">
     <database-info product="MySQL" version="5.6.20-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.26 ( Revision: ${bzr.revision-id} )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
@@ -484,6 +484,7 @@
       <column name="SECURITY_RULE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_COMPANY_SECURITY_RULE_ID" columns="SECURITY_RULE_ID" ref-table="security_rule" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_COMPANY_CATEGORY_COMPANY_ID" table="company_category" schema="" catalog="extacrm" columns="COMPANY_ID"/>
       <exported-key name="FK_COMPANY_OWNER_COMPANY_ID" table="company_owner" schema="" catalog="extacrm" columns="COMPANY_ID"/>
       <exported-key name="FK_CONTACT_CODE_CONTACT_ID" table="contact_code" schema="" catalog="extacrm" columns="CONTACT_ID"/>
       <exported-key name="FK_EMPLOYEE_COMPANY_ID" table="employee" schema="" catalog="extacrm" columns="COMPANY_ID"/>
@@ -493,6 +494,12 @@
       <exported-key name="FK_SALE_POINT_COMPANY_ID" table="sale_point" schema="" catalog="extacrm" columns="COMPANY_ID"/>
       <exported-key name="FK_SECURITY_RULE_COMPANY_COMPANY_ID" table="security_rule_company" schema="" catalog="extacrm" columns="COMPANY_ID"/>
       <index name="FK_COMPANY_SECURITY_RULE_ID" unique="false" columns="SECURITY_RULE_ID"/>
+    </table>
+    <table name="company_category" schema="" catalog="extacrm" type="TABLE">
+      <column name="COMPANY_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="CATEGORY" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <foreign-key name="FK_COMPANY_CATEGORY_COMPANY_ID" columns="COMPANY_ID" ref-table="company" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="IX_COMPANY_CATEGORY_FK_COMPANY_CATEGORY_COMPANY_ID" unique="false" columns="COMPANY_ID"/>
     </table>
     <table name="company_owner" schema="" catalog="extacrm" type="TABLE">
       <column name="COMPANY_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
@@ -1151,6 +1158,9 @@
       <column name="LEAD_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="RESPONSIBLE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="SECURITY_RULE_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="BANK_MANAGER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="DAELER_MANAGER_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="RESPONSIBLE_ASSIST_ID" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_SALE_CLIENT_ID" columns="CLIENT_ID" ref-table="person" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_SALE_DEALER_ID" columns="DEALER_ID" ref-table="sale_point" ref-schema="" ref-catalog="extacrm" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>

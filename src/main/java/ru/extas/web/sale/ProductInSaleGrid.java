@@ -48,7 +48,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 	 */
 	public ProductInSaleGrid(final String caption, final Sale sale) {
 		this.sale = sale;
-        setWidth(500, Unit.PIXELS);
+        setWidth(100, Unit.PERCENTAGE);
         setHeight(200, Unit.PIXELS);
         setCaption(caption);
 	}

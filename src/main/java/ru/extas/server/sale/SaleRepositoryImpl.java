@@ -124,6 +124,12 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         // Ответственный пользователь как Редактор
         if (sale.getResponsible() != null)
             users.add(new ImmutablePair<>(sale.getResponsible(), AccessRole.EDITOR));
+        if (sale.getResponsibleAssist() != null)
+            users.add(new ImmutablePair<>(sale.getResponsibleAssist(), AccessRole.EDITOR));
+        if (sale.getDealerManager() != null)
+            users.add(new ImmutablePair<>(sale.getDealerManager(), AccessRole.READER));
+        if (sale.getBankManager() != null)
+            users.add(new ImmutablePair<>(sale.getBankManager(), AccessRole.READER));
 
         return users;
     }

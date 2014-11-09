@@ -72,7 +72,7 @@ public class CompanyOwnersField extends CustomField<Set> {
                     actions.add(new UIAction("Добавить", "Добавить сотрудника в список владельцев компании", Fontello.DOC_NEW) {
                         @Override
                         public void fire(Object itemId) {
-                            final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите владельца компании", companySupplier);
+                            final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите владельца компании");
                             selectWindow.addCloseListener(e -> {
                                 if (selectWindow.isSelectPressed()) {
                                     beanContainer.addBean(selectWindow.getSelected());
@@ -80,6 +80,7 @@ public class CompanyOwnersField extends CustomField<Set> {
                                     NotificationUtil.showSuccess("Владелец добавлен");
                                 }
                             });
+                            selectWindow.setCompanySupplier(companySupplier);
                             selectWindow.showModal();
                         }
                     });
