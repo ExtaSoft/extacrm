@@ -36,7 +36,7 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
      *  @param caption a {@link String} object.
      * @param bean
      */
-    public SecuritySettingsForm(String caption, SecuredObject bean) {
+    public SecuritySettingsForm(final String caption, final SecuredObject bean) {
         super(caption, bean);
 
         rule = Optional.ofNullable(bean.getSecurityRule()).orElse(new ObjectSecurityRule());
@@ -45,7 +45,7 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
     }
 
     @Override
-    protected void initObject(SecuredObject obj) {
+    protected void initObject(final SecuredObject obj) {
 
     }
 
@@ -56,16 +56,16 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
         return obj;
     }
 
-    private void updateAccess(RefreshBeanContainer<UserObjectAccess> container) {
+    private void updateAccess(final RefreshBeanContainer<UserObjectAccess> container) {
         rule.getUsers().clear();
-        for (UserObjectAccess access : container.getItemIds()) {
+        for (final UserObjectAccess access : container.getItemIds()) {
             rule.getUsers().put(access.getUser(), access);
         }
         SecuritySettingsForm.this.setModified(true);
     }
 
     @Override
-    protected ComponentContainer createEditFields(SecuredObject obj) {
+    protected ComponentContainer createEditFields(final SecuredObject obj) {
         final TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeFull();
 
@@ -74,11 +74,11 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
         return tabsheet;
     }
 
-    private Component createUsersForm(SecuredObject obj) {
+    private Component createUsersForm(final SecuredObject obj) {
         usersGrid = new ExtaGrid<UserObjectAccess>(UserObjectAccess.class) {
 
             @Override
-            public ExtaEditForm<UserObjectAccess> createEditForm(UserObjectAccess userObjectAccess, boolean isInsert) {
+            public ExtaEditForm<UserObjectAccess> createEditForm(final UserObjectAccess userObjectAccess, final boolean isInsert) {
                 return new ExtaEditForm<UserObjectAccess>("Доступ пользователя к объекту", userObjectAccess) {
 
                     {
@@ -92,7 +92,7 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
                     private EmployeeField employeeField;
 
                     @Override
-                    protected void initObject(UserObjectAccess obj) {
+                    protected void initObject(final UserObjectAccess obj) {
                         if(obj.isNew()){
                             obj.setRole(AccessRole.READER);
                             obj.setSecurityRule(rule);
@@ -100,14 +100,14 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
                     }
 
                     @Override
-                    protected UserObjectAccess saveObject(UserObjectAccess obj) {
+                    protected UserObjectAccess saveObject(final UserObjectAccess obj) {
                         ((RefreshBeanContainer<UserObjectAccess>) container).addBean(obj);
                         updateAccess((RefreshBeanContainer<UserObjectAccess>) container);
                         return obj;
                     }
 
                     @Override
-                    protected ComponentContainer createEditFields(UserObjectAccess obj) {
+                    protected ComponentContainer createEditFields(final UserObjectAccess obj) {
                         final FormLayout formLayout = new ExtaFormLayout();
                         formLayout.setMargin(true);
                         formLayout.setSizeFull();
@@ -142,7 +142,7 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
 
             @Override
             protected Container createContainer() {
-                RefreshBeanContainer<UserObjectAccess> cnt =
+                final RefreshBeanContainer<UserObjectAccess> cnt =
                         new RefreshBeanContainer<>(UserObjectAccess.class, rule.getUsers().values());
                 cnt.addNestedContainerProperty("user.name");
                 cnt.addNestedContainerProperty("user.company.name");

@@ -20,9 +20,9 @@ import static com.google.common.base.Strings.nullToEmpty;
 */
 public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenerator {
 
-    private String salePointPropId;
-    private String salePointNamePropId;
-    private String regionPropId;
+    private final String salePointPropId;
+    private final String salePointNamePropId;
+    private final String regionPropId;
 
     public SalePointColumnGenerator(final String salePointPropId, final String salePointNamePropId, final String regionPropId) {
         this.salePointPropId = salePointPropId;

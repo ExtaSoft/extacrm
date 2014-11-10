@@ -89,7 +89,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("comment")
     private TextArea commentField;
 
-    private boolean qualifyForm;
+    private final boolean qualifyForm;
     private ExtaDataContainer<SalePoint> vendorsContainer;
     private ExtaDataContainer<Person> clientsContainer;
 

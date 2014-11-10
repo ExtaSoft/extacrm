@@ -66,7 +66,7 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
         // Запрос данных
         final ExtaDataContainer<LegalEntity> container = new SecuredDataContainer<LegalEntity>(LegalEntity.class, ExtaDomain.LEGAL_ENTITY) {
             @Override
-            protected Predicate createAreaPredicate(CriteriaBuilder cb, Root objectRoot, Predicate predicate, Set permitRegions, Set permitBrands) {
+            protected Predicate createAreaPredicate(final CriteriaBuilder cb, final Root objectRoot, Predicate predicate, final Set permitRegions, final Set permitBrands) {
                 if (!permitRegions.isEmpty()) {
                     final Predicate regPredicate =
                             objectRoot.get(LegalEntity_.regAddress)
@@ -115,7 +115,7 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 }

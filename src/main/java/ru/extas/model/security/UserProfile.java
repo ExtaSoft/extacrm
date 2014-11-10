@@ -87,7 +87,7 @@ public class UserProfile extends AuditedObject {
         return salePoints;
     }
 
-    public void setSalePoints(Set<SalePoint> salePoints) {
+    public void setSalePoints(final Set<SalePoint> salePoints) {
         this.salePoints = salePoints;
     }
 

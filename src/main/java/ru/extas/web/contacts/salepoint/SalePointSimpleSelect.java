@@ -21,7 +21,7 @@ import ru.extas.web.commons.ExtaDataContainer;
 public class SalePointSimpleSelect extends com.vaadin.ui.ComboBox {
 
     private static final long serialVersionUID = -8005905898383483037L;
-    protected ExtaDataContainer<SalePoint> container;
+    protected final ExtaDataContainer<SalePoint> container;
 
     /**
      * <p>Constructor for CompanySelect.</p>

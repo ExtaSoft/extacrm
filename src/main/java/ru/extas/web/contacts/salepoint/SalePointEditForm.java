@@ -70,7 +70,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     private SalePoint salePoint;
 
-    public SalePointEditForm(SalePoint salePoint) {
+    public SalePointEditForm(final SalePoint salePoint) {
         super(salePoint.isNew() ? "Ввод новой торговой точки в систему" :
                 MessageFormat.format("Редактирование данных торговой точки: {0}", salePoint.getName()), salePoint);
 
@@ -238,7 +238,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 }

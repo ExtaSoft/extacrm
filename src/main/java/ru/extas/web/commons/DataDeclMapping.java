@@ -133,7 +133,7 @@ public class DataDeclMapping implements Serializable {
         return presentFlags.contains(PresentFlag.COLLAPSED);
     }
 
-    public void setCollapsed(boolean collapsed) {
+    public void setCollapsed(final boolean collapsed) {
         if (collapsed)
             presentFlags.add(PresentFlag.COLLAPSED);
         else

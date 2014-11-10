@@ -27,7 +27,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Time: 17:17
  */
 public abstract class AbstractSecuredDataContainer<TEntityType extends IdentifiedObject> extends ExtaDataContainer<TEntityType> {
-    protected ExtaDomain domain;
+    protected final ExtaDomain domain;
 
     public AbstractSecuredDataContainer(final Class<TEntityType> entityClass, final ExtaDomain domain) {
         super(entityClass);

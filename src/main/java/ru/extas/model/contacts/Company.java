@@ -105,7 +105,7 @@ public class Company extends SecuredObject {
         return categories;
     }
 
-    public void setCategories(Set<String> categories) {
+    public void setCategories(final Set<String> categories) {
         this.categories = categories;
     }
 

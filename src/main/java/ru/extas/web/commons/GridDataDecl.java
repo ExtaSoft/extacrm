@@ -32,8 +32,8 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class GridDataDecl implements Serializable {
 
-    public void setColumnCollapsed(String column, boolean collapsed) {
-        Optional<DataDeclMapping> mapping = getMappings().stream().filter(m -> m.getPropName().equals(column)).findFirst();
+    public void setColumnCollapsed(final String column, final boolean collapsed) {
+        final Optional<DataDeclMapping> mapping = getMappings().stream().filter(m -> m.getPropName().equals(column)).findFirst();
         if(mapping.isPresent())
             mapping.get().setCollapsed(collapsed);
     }

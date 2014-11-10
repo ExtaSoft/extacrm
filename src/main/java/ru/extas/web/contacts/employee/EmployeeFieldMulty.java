@@ -62,7 +62,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
             }
 
             @Override
-            public ExtaEditForm<Employee> createEditForm(Employee employee, boolean isInsert) {
+            public ExtaEditForm<Employee> createEditForm(final Employee employee, final boolean isInsert) {
                 final EmployeeEditForm form = (EmployeeEditForm) super.createEditForm(employee, isInsert);
                 form.addCloseFormListener(e -> {
                     if (form.isSaved() && isInsert)
@@ -92,7 +92,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 
@@ -100,7 +100,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
         return salePointSupplier;
     }
 
-    public void setSalePointSupplier(SupplierSer<SalePoint> salePointSupplier) {
+    public void setSalePointSupplier(final SupplierSer<SalePoint> salePointSupplier) {
         this.salePointSupplier = salePointSupplier;
     }
 
@@ -108,7 +108,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
         return legalEntitySupplier;
     }
 
-    public void setLegalEntitySupplier(SupplierSer<LegalEntity> legalEntitySupplier) {
+    public void setLegalEntitySupplier(final SupplierSer<LegalEntity> legalEntitySupplier) {
         this.legalEntitySupplier = legalEntitySupplier;
     }
 }

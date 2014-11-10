@@ -167,7 +167,7 @@ public class ExtaPermissionField extends CustomField<Set> {
         }
 
         @Override
-        protected ExtaPermission saveObject(ExtaPermission obj) {
+        protected ExtaPermission saveObject(final ExtaPermission obj) {
             return null;
         }
 

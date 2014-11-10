@@ -13,9 +13,9 @@ import ru.extas.server.references.CategoryService;
  */
 public class BankEmployeeField extends EmployeeField {
 
-    public BankEmployeeField(String caption, String description) {
+    public BankEmployeeField(final String caption, final String description) {
         super(caption, description);
-        Container.Filter filter = new Compare.Equal("company.categories", CategoryService.COMPANY_CAT_BANK);
+        final Container.Filter filter = new Compare.Equal("company.categories", CategoryService.COMPANY_CAT_BANK);
         setFilter(filter);
     }
 

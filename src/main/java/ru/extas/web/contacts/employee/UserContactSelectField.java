@@ -60,7 +60,7 @@ public class UserContactSelectField extends CustomField<Employee> {
     private class UserContactSelect extends com.vaadin.ui.ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected ExtaDataContainer<Employee> container;
+        protected final ExtaDataContainer<Employee> container;
 
         protected UserContactSelect() {
             super("");

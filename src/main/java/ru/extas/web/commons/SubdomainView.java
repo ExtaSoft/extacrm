@@ -97,7 +97,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
         }
     }
 
-    private String titleCaption;
+    private final String titleCaption;
 
     private class SubdomainUI extends VerticalLayout {
 

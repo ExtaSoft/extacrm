@@ -96,7 +96,7 @@ public class Employee extends Contact {
         return files;
     }
 
-    public void setFiles(List<EmployeeFile> files) {
+    public void setFiles(final List<EmployeeFile> files) {
         this.files = files;
     }
 

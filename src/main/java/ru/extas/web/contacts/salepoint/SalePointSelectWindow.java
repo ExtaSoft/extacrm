@@ -53,7 +53,7 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
     }
 
     private class SelectGrid extends SalePointsGrid {
-        public SelectGrid(SupplierSer<Company> companySupplier) {
+        public SelectGrid(final SupplierSer<Company> companySupplier) {
             setCompanySupplier(companySupplier);
         }
 

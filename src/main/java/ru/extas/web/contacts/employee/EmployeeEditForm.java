@@ -81,7 +81,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     @PropertyId("files")
     private FilesManageField docFilesEditor;
 
-    public EmployeeEditForm(Employee employee) {
+    public EmployeeEditForm(final Employee employee) {
         super(employee.isNew() ?
                 "Новый сотрудник" :
                 MessageFormat.format("Сотрудник: {0}", employee.getName()), employee);
@@ -89,7 +89,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     }
 
     @Override
-    protected void initObject(Employee obj) {
+    protected void initObject(final Employee obj) {
         if (obj.getRegAddress() == null)
             obj.setRegAddress(new AddressInfo());
         if (companySupplier != null)
@@ -109,7 +109,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     }
 
     @Override
-    protected ComponentContainer createEditFields(Employee obj) {
+    protected ComponentContainer createEditFields(final Employee obj) {
         final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setWidth(100, Unit.PERCENTAGE);
         formLayout.setMargin(true);
@@ -219,7 +219,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 
@@ -227,7 +227,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         return salePointSupplier;
     }
 
-    public void setSalePointSupplier(SupplierSer<SalePoint> salePointSupplier) {
+    public void setSalePointSupplier(final SupplierSer<SalePoint> salePointSupplier) {
         this.salePointSupplier = salePointSupplier;
     }
 
@@ -235,7 +235,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         return legalEntitySupplier;
     }
 
-    public void setLegalEntitySupplier(SupplierSer<LegalEntity> legalEntitySupplier) {
+    public void setLegalEntitySupplier(final SupplierSer<LegalEntity> legalEntitySupplier) {
         this.legalEntitySupplier = legalEntitySupplier;
     }
 }

@@ -18,8 +18,8 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 public class EmailLinkColumnGen extends GridDataDecl.ComponentColumnGenerator {
 
     @Override
-    public Object generateCell(Object columnId, Item item, Object itemId) {
-        String url = (String) item.getItemProperty(columnId).getValue();
+    public Object generateCell(final Object columnId, final Item item, final Object itemId) {
+        final String url = (String) item.getItemProperty(columnId).getValue();
         if (!isNullOrEmpty(url)) {
             final Link link = new Link(url, new ExternalResource(MessageFormat.format("mailto:{0}", url)));
             link.setTargetName("_blank");

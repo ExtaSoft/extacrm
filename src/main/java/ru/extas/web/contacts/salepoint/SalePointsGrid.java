@@ -65,7 +65,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 		// Запрос данных
 		final ExtaDataContainer<SalePoint> container = new SecuredDataContainer<SalePoint>(SalePoint.class, ExtaDomain.SALE_POINT){
 			@Override
-			protected Predicate createAreaPredicate(CriteriaBuilder cb, Root<SalePoint> objectRoot, Predicate predicate, Set<String> permitRegions, Set<String> permitBrands) {
+			protected Predicate createAreaPredicate(final CriteriaBuilder cb, final Root<SalePoint> objectRoot, Predicate predicate, final Set<String> permitRegions, final Set<String> permitBrands) {
 				if (!permitRegions.isEmpty()) {
                     final Predicate regPredicate =
 							objectRoot.get(SalePoint_.regAddress)
@@ -74,7 +74,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
                     predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
                 }
 				if (!permitBrands.isEmpty()) {
-					SetJoin<SalePoint, LegalEntity> leJoin = objectRoot.join(SalePoint_.legalEntities, JoinType.LEFT);
+					final SetJoin<SalePoint, LegalEntity> leJoin = objectRoot.join(SalePoint_.legalEntities, JoinType.LEFT);
 					final Predicate brPredicate =
 							leJoin.join(LegalEntity_.motorBrands, JoinType.LEFT)
 									.in(permitBrands);
@@ -107,7 +107,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 }
