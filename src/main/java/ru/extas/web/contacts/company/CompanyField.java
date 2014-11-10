@@ -60,7 +60,7 @@ public class CompanyField extends CustomField<Company> {
 
     private class CompanyComboBox extends ComboBox {
 
-        protected ExtaDataContainer<Company> container;
+        protected final ExtaDataContainer<Company> container;
 
         /**
          * <p>Constructor for CompanySelect.</p>
@@ -176,7 +176,7 @@ public class CompanyField extends CustomField<Company> {
 
             refreshFields(getValue());
 
-            HorizontalLayout toolbar = new HorizontalLayout();
+            final HorizontalLayout toolbar = new HorizontalLayout();
             viewBtn = new Button("Просмотр", event -> {
                 final Company company = getValue();
                 final CompanyEditForm editWin = new CompanyEditForm(company);
@@ -215,7 +215,7 @@ public class CompanyField extends CustomField<Company> {
             return container;
         }
 
-        public void refreshFields(Company company) {
+        public void refreshFields(final Company company) {
             setValue(company);
 
             final BeanItem<Company> beanItem = new BeanItem<>(Optional.ofNullable(company).orElse(new Company()));

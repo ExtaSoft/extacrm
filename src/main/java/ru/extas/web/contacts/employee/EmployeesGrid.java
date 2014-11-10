@@ -30,12 +30,12 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
         this(null);
     }
 
-    public EmployeesGrid(Company company) {
+    public EmployeesGrid(final Company company) {
         super(Employee.class);
     }
 
     @Override
-    public ExtaEditForm<Employee> createEditForm(Employee employee, boolean isInsert) {
+    public ExtaEditForm<Employee> createEditForm(final Employee employee, final boolean isInsert) {
         final EmployeeEditForm form = new EmployeeEditForm(employee);
         form.setCompanySupplier(companySupplier);
         return form;
@@ -76,11 +76,11 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 
-    public void setSalePointSupplier(SupplierSer<SalePoint> salePointSupplier) {
+    public void setSalePointSupplier(final SupplierSer<SalePoint> salePointSupplier) {
         this.salePointSupplier = salePointSupplier;
     }
 

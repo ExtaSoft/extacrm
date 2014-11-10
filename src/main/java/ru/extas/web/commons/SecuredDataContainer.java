@@ -101,7 +101,7 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
         securityRuleJoin = null;
     }
 
-    private Predicate composeWithAreaFilter(final CriteriaBuilder cb, final Root<TEntityType> objectRoot, Predicate predicate) {
+    private Predicate composeWithAreaFilter(final CriteriaBuilder cb, final Root<TEntityType> objectRoot, final Predicate predicate) {
         final UserProfile curUserProfile = lookup(UserManagementService.class).getCurrentUser();
         final Set<String> permitRegions = newHashSet(curUserProfile.getPermitRegions());
         final Set<String> permitBrands = newHashSet(curUserProfile.getPermitBrands());
@@ -115,7 +115,7 @@ public class SecuredDataContainer<TEntityType extends SecuredObject> extends Abs
         return createAreaPredicate(cb, objectRoot, predicate, permitRegions, permitBrands);
     }
 
-    protected Predicate createAreaPredicate(CriteriaBuilder cb, Root<TEntityType> objectRoot, Predicate predicate, Set<String> permitRegions, Set<String> permitBrands) {
+    protected Predicate createAreaPredicate(final CriteriaBuilder cb, final Root<TEntityType> objectRoot, Predicate predicate, final Set<String> permitRegions, final Set<String> permitBrands) {
         if (!permitRegions.isEmpty()) {
             final Predicate regPredicate =
                     getSecurityRoleJoin(objectRoot)

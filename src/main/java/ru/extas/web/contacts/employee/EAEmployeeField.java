@@ -14,7 +14,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class EAEmployeeField extends EmployeeField {
 
-    public EAEmployeeField(String caption, String description) {
+    public EAEmployeeField(final String caption, final String description) {
         super(caption, description);
 
         setCompanySupplier(this::getOurCompany);

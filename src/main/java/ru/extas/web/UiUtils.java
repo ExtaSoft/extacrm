@@ -99,7 +99,7 @@ public class UiUtils {
                 if (!isNullOrEmpty(e.getLocalizedMessage()))
                     msg.append(e.getLocalizedMessage());
 
-                for (Validator.InvalidValueException ce : e.getCauses()) {
+                for (final Validator.InvalidValueException ce : e.getCauses()) {
                     msg.append("<li>");
                     msg.append(ce.getLocalizedMessage());
                     msg.append("</li>");

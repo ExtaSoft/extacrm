@@ -78,7 +78,7 @@ public class PersonSelect extends CustomField<Person> {
     private class PersonSelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected ExtaDataContainer<Person> container;
+        protected final ExtaDataContainer<Person> container;
 
         protected PersonSelectField(final String caption) {
             this(caption, "Выберите существующий контакт или введите новый");
@@ -190,7 +190,7 @@ public class PersonSelect extends CustomField<Person> {
             emailField.setCaption("E-Mail");
             formLayout.addComponent(emailField);
 
-            HorizontalLayout toolbar = new HorizontalLayout();
+            final HorizontalLayout toolbar = new HorizontalLayout();
             final Button searchBtn = new Button("Поиск", event -> {
                 final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
                 selectWindow.addCloseListener(e -> {
@@ -234,7 +234,7 @@ public class PersonSelect extends CustomField<Person> {
             return formLayout;
         }
 
-        private void refreshFields(Person person) {
+        private void refreshFields(final Person person) {
             setValue(person);
 
             final BeanItem<Person> beanItem = new BeanItem<>(Optional.ofNullable(person).orElse(new Person()));

@@ -44,7 +44,7 @@ public class EmployeeField extends CustomField<Employee> {
     private PopupView popupView;
     private PopupEmployeeContent entityContent;
 
-    public EmployeeField(String caption, String description) {
+    public EmployeeField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
         setBuffered(true);
@@ -82,7 +82,7 @@ public class EmployeeField extends CustomField<Employee> {
         }
     }
 
-    public void setFilter(Container.Filter filter) {
+    public void setFilter(final Container.Filter filter) {
         this.filter = filter;
     }
 
@@ -93,7 +93,7 @@ public class EmployeeField extends CustomField<Employee> {
     private class EmployeeSelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected ExtaDataContainer<Employee> container;
+        protected final ExtaDataContainer<Employee> container;
 
         protected EmployeeSelectField(final String caption) {
             this(caption, "Выберите существующего сотрудника или введите нового");
@@ -222,7 +222,7 @@ public class EmployeeField extends CustomField<Employee> {
             positionField.setCaption("Должность");
             formLayout.addComponent(positionField);
 
-            HorizontalLayout toolbar = new HorizontalLayout();
+            final HorizontalLayout toolbar = new HorizontalLayout();
             viewBtn = new Button("Просмотр", event -> {
                 final Employee bean = (Employee) selectField.getConvertedValue();
 
@@ -273,7 +273,7 @@ public class EmployeeField extends CustomField<Employee> {
             return formLayout;
         }
 
-        public void refreshFields(Employee employee) {
+        public void refreshFields(final Employee employee) {
             setValue(employee);
 
             final BeanItem<Employee> beanItem = new BeanItem<>(Optional.ofNullable(employee).orElse(new Employee()));
@@ -296,7 +296,7 @@ public class EmployeeField extends CustomField<Employee> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 
@@ -304,7 +304,7 @@ public class EmployeeField extends CustomField<Employee> {
         return legalEntitySupplier;
     }
 
-    public void setLegalEntitySupplier(SupplierSer<LegalEntity> legalEntitySupplier) {
+    public void setLegalEntitySupplier(final SupplierSer<LegalEntity> legalEntitySupplier) {
         this.legalEntitySupplier = legalEntitySupplier;
     }
 
@@ -312,7 +312,7 @@ public class EmployeeField extends CustomField<Employee> {
         return salePointSupplier;
     }
 
-    public void setSalePointSupplier(SupplierSer<SalePoint> salePointSupplier) {
+    public void setSalePointSupplier(final SupplierSer<SalePoint> salePointSupplier) {
         this.salePointSupplier = salePointSupplier;
     }
 }

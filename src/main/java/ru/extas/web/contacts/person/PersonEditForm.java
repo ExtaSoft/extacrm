@@ -250,7 +250,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     }
 
     @Override
-    protected BeanItem<Person> createBeanItem(Person bean) {
+    protected BeanItem<Person> createBeanItem(final Person bean) {
         final BeanItem<Person> beanItem = new BeanItem<>(bean);
         beanItem.expandProperty("regAddress");
         beanItem.expandProperty("actualAddress");

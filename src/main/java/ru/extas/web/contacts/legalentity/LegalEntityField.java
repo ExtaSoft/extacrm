@@ -86,7 +86,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
     private class LESelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected ExtaDataContainer<LegalEntity> container;
+        protected final ExtaDataContainer<LegalEntity> container;
 
         protected LESelectField(final String caption) {
             this(caption, "Выберите существующее юр. лицо или введите новое");
@@ -221,7 +221,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             innField.setCaption("ИНН");
             formLayout.addComponent(innField);
 
-            HorizontalLayout toolbar = new HorizontalLayout();
+            final HorizontalLayout toolbar = new HorizontalLayout();
             viewBtn = new Button("Просмотр", event -> {
                 final LegalEntity bean = (LegalEntity) selectField.getConvertedValue();
 
@@ -269,7 +269,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             return formLayout;
         }
 
-        public void refreshFields(LegalEntity legalEntity) {
+        public void refreshFields(final LegalEntity legalEntity) {
             setValue(legalEntity);
 
             final BeanItem<LegalEntity> beanItem = new BeanItem<>(Optional.ofNullable(legalEntity).orElse(new LegalEntity()));
@@ -288,7 +288,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 }

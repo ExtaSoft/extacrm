@@ -206,7 +206,7 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     @Transactional
     @Override
-    public SecuredObject saveObjectAccess(SecuredObject obj, ObjectSecurityRule rule) {
+    public SecuredObject saveObjectAccess(final SecuredObject obj, final ObjectSecurityRule rule) {
         obj.setSecurityRule(rule);
         return em.merge(obj);
     }

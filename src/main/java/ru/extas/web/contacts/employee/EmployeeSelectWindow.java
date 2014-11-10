@@ -26,7 +26,7 @@ public class EmployeeSelectWindow extends CloseOnlylWindow {
     private SupplierSer<SalePoint> salePointSupplier;
     private final EmployeesGrid grid;
 
-    public EmployeeSelectWindow(String caption) {
+    public EmployeeSelectWindow(final String caption) {
         super(caption);
         setWidth(800, Unit.PIXELS);
         setHeight(600, Unit.PIXELS);
@@ -65,7 +65,7 @@ public class EmployeeSelectWindow extends CloseOnlylWindow {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
         grid.setCompanySupplier(companySupplier);
     }
@@ -74,7 +74,7 @@ public class EmployeeSelectWindow extends CloseOnlylWindow {
         return salePointSupplier;
     }
 
-    public void setSalePointSupplier(SupplierSer<SalePoint> salePointSupplier) {
+    public void setSalePointSupplier(final SupplierSer<SalePoint> salePointSupplier) {
         this.salePointSupplier = salePointSupplier;
         grid.setSalePointSupplier(salePointSupplier);
     }

@@ -98,7 +98,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 }

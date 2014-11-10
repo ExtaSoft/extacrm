@@ -26,7 +26,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class CompanyCategoriesField extends CustomField<Set> {
 
-    private TokenField tokenField = new TokenField();
+    private final TokenField tokenField = new TokenField();
 
     public CompanyCategoriesField(final String caption) {
         setCaption(caption);
@@ -59,7 +59,7 @@ public class CompanyCategoriesField extends CustomField<Set> {
         return tokenField;
     }
 
-    private void refreshContainer(Set<String> selected) {
+    private void refreshContainer(final Set<String> selected) {
         final Collection<String> categories = lookup(CategoryService.class).loadCompanyCategories();
         if(selected != null)
             categories.removeAll(selected);
@@ -67,19 +67,19 @@ public class CompanyCategoriesField extends CustomField<Set> {
     }
 
     @Override
-    public void setWidth(float width, Unit unit) {
+    public void setWidth(final float width, final Unit unit) {
         Optional.ofNullable(tokenField).ifPresent(f -> f.setWidth(width, unit));
         super.setWidth(width, unit);
     }
 
     @Override
-    public void setHeight(String height) {
+    public void setHeight(final String height) {
         Optional.ofNullable(tokenField).ifPresent(f -> f.setHeight(height));
         super.setHeight(height);
     }
 
     @Override
-    public void setWidth(String width) {
+    public void setWidth(final String width) {
         Optional.ofNullable(tokenField).ifPresent(f -> f.setWidth(width));
         super.setWidth(width);
     }
@@ -109,7 +109,7 @@ public class CompanyCategoriesField extends CustomField<Set> {
     }
 
     @Override
-    public void setHeight(float height, Unit unit) {
+    public void setHeight(final float height, final Unit unit) {
         Optional.ofNullable(tokenField).ifPresent(f -> f.setHeight(height, unit));
         super.setHeight(height, unit);
     }

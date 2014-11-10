@@ -42,7 +42,7 @@ public class SalePointsField extends CustomField<Set> {
 		final SalePointsGrid grid = new SalePointsGrid() {
 
             @Override
-            public ExtaEditForm<SalePoint> createEditForm(SalePoint salePoint, boolean isInsert) {
+            public ExtaEditForm<SalePoint> createEditForm(final SalePoint salePoint, final boolean isInsert) {
                 final ExtaEditForm<SalePoint> form = super.createEditForm(salePoint, isInsert);
                 form.addCloseFormListener(e -> {
                     if (form.isSaved() && isInsert)
@@ -69,7 +69,7 @@ public class SalePointsField extends CustomField<Set> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 }

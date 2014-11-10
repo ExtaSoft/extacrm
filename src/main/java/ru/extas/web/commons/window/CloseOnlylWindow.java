@@ -66,17 +66,17 @@ public class CloseOnlylWindow extends Window {
     @Override
     public void setContent(Component content) {
         if (content != null) {
-            VerticalLayout root = new VerticalLayout();
+            final VerticalLayout root = new VerticalLayout();
 
             if (content instanceof TabSheet) {
                 content.addStyleName(ExtaTheme.TABSHEET_PADDED_TABBAR);
             } else if (content instanceof ExtaGrid) {
             } else {
-                Panel panel = new Panel();
+                final Panel panel = new Panel();
                 panel.setSizeFull();
                 panel.addStyleName(ExtaTheme.PANEL_BORDERLESS);
                 panel.addStyleName(ExtaTheme.PANEL_SCROLL_DIVIDER);
-                VerticalLayout panelLayout = new VerticalLayout();
+                final VerticalLayout panelLayout = new VerticalLayout();
                 panelLayout.addComponent(content);
                 panelLayout.setMargin(true);
                 panel.setContent(panelLayout);

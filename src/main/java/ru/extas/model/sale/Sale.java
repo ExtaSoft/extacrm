@@ -115,7 +115,7 @@ public class Sale extends SecuredObject {
         return dealerManager;
     }
 
-    public void setDealerManager(Employee daelerManager) {
+    public void setDealerManager(final Employee daelerManager) {
         this.dealerManager = daelerManager;
     }
 
@@ -123,7 +123,7 @@ public class Sale extends SecuredObject {
         return bankManager;
     }
 
-    public void setBankManager(Employee bankManager) {
+    public void setBankManager(final Employee bankManager) {
         this.bankManager = bankManager;
     }
 
@@ -131,7 +131,7 @@ public class Sale extends SecuredObject {
         return responsibleAssist;
     }
 
-    public void setResponsibleAssist(Employee responsibleAssist) {
+    public void setResponsibleAssist(final Employee responsibleAssist) {
         this.responsibleAssist = responsibleAssist;
     }
 

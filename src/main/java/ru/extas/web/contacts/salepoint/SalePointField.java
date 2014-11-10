@@ -86,13 +86,13 @@ public class SalePointField extends CustomField<SalePoint> {
 
     private class SalePointComboBox extends ComboBox {
         private static final long serialVersionUID = -8005905898383483037L;
-        protected ExtaDataContainer<SalePoint> container;
+        protected final ExtaDataContainer<SalePoint> container;
 
         public SalePointComboBox() {
             this("Название");
         }
 
-        public SalePointComboBox(String caption) {
+        public SalePointComboBox(final String caption) {
             this(caption, "Введите или выберите название торговой точки");
         }
 
@@ -218,7 +218,7 @@ public class SalePointField extends CustomField<SalePoint> {
             container.addComponent(addressField);
             refreshFields(getValue());
 
-            HorizontalLayout toolbar = new HorizontalLayout();
+            final HorizontalLayout toolbar = new HorizontalLayout();
             viewBtn = new Button("Просмотр", event -> {
                 final SalePoint salePoint = (SalePoint) getPropertyDataSource().getValue();
                 final SalePointEditForm editWin = new SalePointEditForm(salePoint);
@@ -259,7 +259,7 @@ public class SalePointField extends CustomField<SalePoint> {
             return container;
         }
 
-        public void refreshFields(SalePoint salePoint) {
+        public void refreshFields(final SalePoint salePoint) {
             setValue(salePoint);
 
             final BeanItem<SalePoint> beanItem = new BeanItem<>(Optional.ofNullable(salePoint).orElse(new SalePoint()));
@@ -282,7 +282,7 @@ public class SalePointField extends CustomField<SalePoint> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 }

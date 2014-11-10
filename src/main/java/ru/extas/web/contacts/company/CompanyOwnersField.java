@@ -58,7 +58,7 @@ public class CompanyOwnersField extends CustomField<Set> {
             }
 
             @Override
-            public ExtaEditForm<Employee> createEditForm(Employee employee, boolean isInsert) {
+            public ExtaEditForm<Employee> createEditForm(final Employee employee, final boolean isInsert) {
                 final ExtaEditForm<Employee> form = super.createEditForm(employee, isInsert);
                 form.setReadOnly(isReadOnly());
                 return form;
@@ -71,7 +71,7 @@ public class CompanyOwnersField extends CustomField<Set> {
                 if (!isReadOnly())
                     actions.add(new UIAction("Добавить", "Добавить сотрудника в список владельцев компании", Fontello.DOC_NEW) {
                         @Override
-                        public void fire(Object itemId) {
+                        public void fire(final Object itemId) {
                             final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите владельца компании");
                             selectWindow.addCloseListener(e -> {
                                 if (selectWindow.isSelectPressed()) {
@@ -88,7 +88,7 @@ public class CompanyOwnersField extends CustomField<Set> {
                 if (!isReadOnly())
                     actions.add(new ItemAction("Удалить", "Удалить сотрудника из списка владельцев", Fontello.TRASH) {
                     @Override
-                    public void fire(Object itemId) {
+                    public void fire(final Object itemId) {
                         beanContainer.removeItem(itemId);
                         setValue(newHashSet(beanContainer.getItemIds()));
                     }
@@ -115,7 +115,7 @@ public class CompanyOwnersField extends CustomField<Set> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 }

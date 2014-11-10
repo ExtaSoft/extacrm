@@ -52,7 +52,7 @@ public abstract class AuditedObject extends IdentifiedObject implements Auditabl
     }
 
     @Override
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(final String createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -62,7 +62,7 @@ public abstract class AuditedObject extends IdentifiedObject implements Auditabl
     }
 
     @Override
-    public void setCreatedDate(DateTime creationDate) {
+    public void setCreatedDate(final DateTime creationDate) {
         this.createdDate = creationDate;
     }
 
@@ -72,7 +72,7 @@ public abstract class AuditedObject extends IdentifiedObject implements Auditabl
     }
 
     @Override
-    public void setLastModifiedBy(String lastModifiedBy) {
+    public void setLastModifiedBy(final String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 
@@ -82,7 +82,7 @@ public abstract class AuditedObject extends IdentifiedObject implements Auditabl
     }
 
     @Override
-    public void setLastModifiedDate(DateTime lastModifiedDate) {
+    public void setLastModifiedDate(final DateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 }

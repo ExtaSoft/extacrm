@@ -37,7 +37,7 @@ public class ProdCreditPercentForm extends ExtaEditForm<ProdCreditPercent> {
 	 * @param caption a {@link java.lang.String} object.
 	 * @param beanItem a {@link com.vaadin.data.util.BeanItem} object.
 	 */
-	protected ProdCreditPercentForm(final String caption, ProdCreditPercent bean) {
+	protected ProdCreditPercentForm(final String caption, final ProdCreditPercent bean) {
 		super(caption, bean);
 	}
 

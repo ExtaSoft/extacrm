@@ -13,9 +13,9 @@ import ru.extas.web.commons.ExtaTheme;
  */
 public class RootLayout extends HorizontalLayout {
 
-    CssLayout contentArea = new CssLayout();
+    final CssLayout contentArea = new CssLayout();
 
-    CssLayout menuArea = new CssLayout();
+    final CssLayout menuArea = new CssLayout();
 
     public RootLayout() {
         setSizeFull();

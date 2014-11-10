@@ -30,7 +30,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class ExtaUserEntityManager extends UserEntityManager {
 
     /** Constant <code>LOG</code> */
-    public static Logger LOG = LoggerFactory.getLogger(ExtaUserEntityManager.class);
+    public static final Logger LOG = LoggerFactory.getLogger(ExtaUserEntityManager.class);
 
     /** {@inheritDoc} */
     @Override
