@@ -74,7 +74,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
 
     private class ItemComponent extends VerticalLayout {
 
-        private final boolean isNew;
+        private boolean isNew;
         private final HorizontalLayout toolbar;
         private final RichTextArea textArea;
         private final Label text;
