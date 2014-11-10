@@ -83,7 +83,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     protected void initObject(final Company obj) {
         if (obj.isNew()) {
             // Инициализируем новый объект
-            // TODO: Инициализировать клиента в соответствии с локацией текущего
         }
     }
 

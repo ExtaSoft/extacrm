@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.security.*;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -35,6 +37,8 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     @Inject
     private UserRegistry userRegistry;
+    @Inject
+    private EntityManager em;
 
     /** {@inheritDoc} */
     @Override
@@ -198,6 +202,13 @@ public class UserManagementServiceImpl implements UserManagementService {
         final Subject subject = SecurityUtils.getSubject();
 
         return subject.isPermitted(new ExtaPermission(domain));
+    }
+
+    @Transactional
+    @Override
+    public SecuredObject saveObjectAccess(SecuredObject obj, ObjectSecurityRule rule) {
+        obj.setSecurityRule(rule);
+        return em.merge(obj);
     }
 
 }

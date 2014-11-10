@@ -10,6 +10,10 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
+import ru.extas.model.security.SecuredObject;
+import ru.extas.model.security.UserRole;
+import ru.extas.server.security.UserManagementService;
+import ru.extas.web.users.SecuritySettingsForm;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -17,6 +21,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.TableUtils.fullInitTable;
 
 /**
@@ -213,6 +218,21 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             final MenuBar.MenuItem refreshBtn = modeSwitchBar.addItem("", FontAwesome.REFRESH, s -> refreshContainer());
             refreshBtn.setDescription("Обновить данные в таблице");
             refreshBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+
+            if(SecuredObject.class.isAssignableFrom(entityClass) &&
+                    lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN)){
+                final MenuBar.MenuItem accessBtn = modeSwitchBar.addItem("", Fontello.LOCK, s -> {
+                    final Object itemId = table.getValue();
+                    if(itemId != null) {
+                        refreshContainerItem(itemId);
+                        SecuredObject obj = GridItem.extractBean(table.getItem(itemId));
+                        SecuritySettingsForm form = new SecuritySettingsForm("Настройки доступа объекта...", obj);
+                        FormUtils.showModalWin(form);
+                    }
+                });
+                accessBtn.setDescription("Показать настройки доступа для выделенного объекта");
+                accessBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            }
 
             final MenuBar.Command modeCommand = selectedItem -> {
                 if (selectedItem == tableModeBtn && currentMode == Mode.DETAIL_LIST) {

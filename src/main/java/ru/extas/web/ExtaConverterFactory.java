@@ -12,10 +12,7 @@ import ru.extas.model.insurance.Policy;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.Sale;
-import ru.extas.model.security.ExtaDomain;
-import ru.extas.model.security.SecureAction;
-import ru.extas.model.security.SecureTarget;
-import ru.extas.model.security.UserRole;
+import ru.extas.model.security.*;
 import ru.extas.web.commons.converters.*;
 import ru.extas.web.contacts.employee.StringToTypeOfEmployment;
 import ru.extas.web.contacts.person.*;
@@ -27,10 +24,7 @@ import ru.extas.web.lead.StringToLeadResult;
 import ru.extas.web.lead.StringToLeadStatus;
 import ru.extas.web.product.String2CreditProgramType;
 import ru.extas.web.sale.StringToSaleResult;
-import ru.extas.web.users.StringToExtaDomainConverter;
-import ru.extas.web.users.StringToSecureActionConverter;
-import ru.extas.web.users.StringToSecureTargetConverter;
-import ru.extas.web.users.StringToUserRoleConverter;
+import ru.extas.web.users.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -71,6 +65,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 		// конвертер ролей пользователя
 		if (presentationType == String.class && modelType == UserRole.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToUserRoleConverter.class);
+
+		// конвертер ролей доступа к объектам
+		if (presentationType == String.class && modelType == AccessRole.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToAccessRoleConverter.class);
 
 		// Конвертер половой принадлежности
 		if (presentationType == String.class && modelType == Sex.class)
