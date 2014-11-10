@@ -17,10 +17,9 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
-import ru.extas.web.contacts.employee.EmployeeField;
+import ru.extas.web.contacts.employee.*;
 import ru.extas.web.contacts.person.PersonSelect;
 import ru.extas.web.contacts.salepoint.SalePointField;
-import ru.extas.web.contacts.employee.UserContactSelectField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 
@@ -64,12 +63,19 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private ProductInSaleGrid productInSaleField;
     @PropertyId("responsible")
     private EmployeeField responsibleField;
+    @PropertyId("responsibleAssist")
+    private EmployeeField responsibleAssistField;
+    @PropertyId("dealerManager")
+    private EmployeeField dealerManagerField;
+    @PropertyId("bankManager")
+    private EmployeeField bankManagerField;
     @PropertyId("comments")
     private CommentsField<SaleComment> commentsField;
 
     public SaleEditForm(final Sale sale) {
         super(sale.isNew() ? "Ввод новой продажи в систему" :
                 MessageFormat.format("Редактирование продажи № {0}", sale.getNum()), sale);
+        setWinWidth(770, Unit.PIXELS);
     }
 
     /** {@inheritDoc} */
@@ -108,14 +114,24 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         form.addComponent(new FormGroupHeader("Дилер"));
         dealerField = new SalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
+        dealerField.addValueChangeListener(e -> dealerManagerField.changeSalePoint());
         form.addComponent(dealerField);
 
+        dealerManagerField = new DealerEmployeeField("Менеджер", "Выберите или введите ответственного менеджера со стороны дилера");
+        dealerManagerField.setSalePointSupplier(() -> dealerField.getValue());
+        form.addComponent(dealerManagerField);
+
         ////////////////////////////////////////////////////////////////////////////
-        form.addComponent(new FormGroupHeader("Дополнительно"));
-        responsibleField = new EmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
+        form.addComponent(new FormGroupHeader("Ответственные"));
+        responsibleField = new EAEmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
         responsibleField.setRequired(true);
         form.addComponent(responsibleField);
 
+        responsibleAssistField = new EAEmployeeField("Заместитель", "Выберите или введите заместителя ответственного менеджера");
+        form.addComponent(responsibleAssistField);
+
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Дополнительно"));
         commentField = new TextArea("Примечание");
         commentField.setRows(3);
         commentField.setNullRepresentation("");
@@ -124,8 +140,12 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
         productInSaleField = new ProductInSaleGrid("Продукты в продаже", obj);
+        productInSaleField.setWidth(100, Unit.PERCENTAGE);
         productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
+
+        bankManagerField = new BankEmployeeField("Менеджер банка", "Выберите или введите ответственного менеджера со стороны банка");
+        form.addComponent(bankManagerField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Коментарии"));

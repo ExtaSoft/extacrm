@@ -66,8 +66,8 @@ public class ExtaCrmUI extends UI {
     private static final long serialVersionUID = -6733655391417975375L;
     private static final int POLLING_INTERVAL = 3000;
 
-    RootLayout root = new RootLayout();
-    ComponentContainer viewDisplay = root.getContentContainer();
+    final RootLayout root = new RootLayout();
+    final ComponentContainer viewDisplay = root.getContentContainer();
     CssLayout menu = new CssLayout();
 
     private ExtaMainMenu mainMenu;

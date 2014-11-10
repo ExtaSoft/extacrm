@@ -26,7 +26,7 @@ public class ConfirmTabSheet extends TabSheet {
     private final SupplierSer<Boolean> condition;
     private final RunnableSer action;
 
-    public ConfirmTabSheet(SupplierSer<Boolean> condition, RunnableSer action) {
+    public ConfirmTabSheet(final SupplierSer<Boolean> condition, final RunnableSer action) {
         this.condition = condition;
         this.action = action;
 
@@ -53,7 +53,7 @@ public class ConfirmTabSheet extends TabSheet {
         });
     }
 
-    public void addConfirmTab(Component content, String caption) {
+    public void addConfirmTab(final Component content, final String caption) {
         addTab(new ConfirmTab(content), caption);
     }
 
@@ -69,7 +69,7 @@ public class ConfirmTabSheet extends TabSheet {
 
         private final Component content;
 
-        public ConfirmTab(Component content) {
+        public ConfirmTab(final Component content) {
             this.content = content;
         }
 

@@ -40,7 +40,7 @@ public class AddressInfoField extends CustomField<AddressInfo> {
         this("Адрес");
     }
 
-    public AddressInfoField(String caption) {
+    public AddressInfoField(final String caption) {
         setCaption(caption);
         setDescription("Введите полный почтовый адрес");
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
@@ -75,7 +75,7 @@ public class AddressInfoField extends CustomField<AddressInfo> {
         public String getMinimizedValueAsHTML() {
             final AddressInfo addressInfo = getValue();
             if (addressInfo != null && !addressInfo.isEmpty()) {
-                List<String> fields = newArrayListWithCapacity(4);
+                final List<String> fields = newArrayListWithCapacity(4);
                 if (!isNullOrEmpty(addressInfo.getPostIndex()))
                     fields.add(addressInfo.getPostIndex());
                 if (!isNullOrEmpty(addressInfo.getRegion()))

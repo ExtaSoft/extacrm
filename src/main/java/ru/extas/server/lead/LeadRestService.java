@@ -361,8 +361,8 @@ public class LeadRestService {
     public ResponseEntity<String> handleIOException(final Throwable ex) {
         logger.error("Ошибка обработки запроса", ex);
         if(ex instanceof ConstraintViolationException) {
-            ConstraintViolationException ce = (ConstraintViolationException) ex;
-            for (ConstraintViolation<?> violation : ce.getConstraintViolations()) {
+            final ConstraintViolationException ce = (ConstraintViolationException) ex;
+            for (final ConstraintViolation<?> violation : ce.getConstraintViolations()) {
                 logger.error(violation.getMessage());
             }
         }

@@ -43,7 +43,7 @@ public class LegalEntitiesField extends CustomField<Set> {
 	protected Component initContent() {
 		final LegalEntitiesGrid grid = new LegalEntitiesGrid() {
             @Override
-            public ExtaEditForm<LegalEntity> createEditForm(LegalEntity legalEntity, boolean isInsert) {
+            public ExtaEditForm<LegalEntity> createEditForm(final LegalEntity legalEntity, final boolean isInsert) {
                 final ExtaEditForm<LegalEntity> form = super.createEditForm(legalEntity, isInsert);
                 form.addCloseFormListener(e -> {
                     if (form.isSaved() && isInsert)
@@ -70,7 +70,7 @@ public class LegalEntitiesField extends CustomField<Set> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 }

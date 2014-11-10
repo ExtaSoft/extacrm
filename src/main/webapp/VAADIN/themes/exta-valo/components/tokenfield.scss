@@ -1,0 +1,51 @@
+@mixin exta-tokenfield {
+
+  /* tokens */
+  .v-widget.tokenfield {
+
+    $bg : $v-focus-color;
+
+    .v-button-link {
+      background-color: $bg;
+      border-radius: $v-textfield-border-radius;
+      height: $v-unit-size;
+      padding: 4px 7px;
+      text-decoration: none;
+    }
+
+    .v-button-link:focus {
+      @include valo-button-focus-style($bg);
+      text-decoration: none;
+    }
+
+    .v-button-link:hover {
+      background-color: darken($bg, 15%);
+      text-decoration: none;
+    }
+
+    .v-button-emphasize, .v-button-emphasize:focus {
+      background-color: #EC0C6D;
+    }
+
+    .v-button-link .v-button-caption {
+//      color: #fff;
+      text-decoration: none;
+    }
+
+    /* input */
+    .v-filterselect-input {
+      margin: 3px;
+      @include valo-textfield-borderless-style;
+    }
+
+    /* CssLayout special treatment */
+    .v-csslayout div {
+      float: left;
+    }
+
+    .v-csslayout .v-button-link {
+      margin: 3px;
+      height: $v-unit-size;
+    }
+  }
+}

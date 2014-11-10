@@ -1,13 +1,17 @@
 package ru.extas.web.contacts.employee;
 
 import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
+import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.And;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.SalePoint;
+import ru.extas.server.references.CategoryService;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
@@ -33,12 +37,14 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class EmployeeField extends CustomField<Employee> {
 
     private SupplierSer<Company> companySupplier;
+    private SupplierSer<SalePoint> salePointSupplier;
     private SupplierSer<LegalEntity> legalEntitySupplier;
+    private Container.Filter filter;
 
     private PopupView popupView;
     private PopupEmployeeContent entityContent;
 
-    public EmployeeField(String caption, String description) {
+    public EmployeeField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
         setBuffered(true);
@@ -64,10 +70,30 @@ public class EmployeeField extends CustomField<Employee> {
         }
     }
 
+    public void changeSalePoint() {
+        if (salePointSupplier != null) {
+            final Employee employee = getValue();
+            if (employee != null) {
+                if (!Objects.equals(this.salePointSupplier.get(), employee.getWorkPlace())) {
+                    entityContent.refreshFields(null);
+                    markAsDirtyRecursive();
+                }
+            }
+        }
+    }
+
+    public void setFilter(final Container.Filter filter) {
+        this.filter = filter;
+    }
+
+    public Container.Filter getFilter() {
+        return filter;
+    }
+
     private class EmployeeSelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected ExtaDataContainer<Employee> container;
+        protected final ExtaDataContainer<Employee> container;
 
         protected EmployeeSelectField(final String caption) {
             this(caption, "Выберите существующего сотрудника или введите нового");
@@ -105,14 +131,24 @@ public class EmployeeField extends CustomField<Employee> {
         public void refreshContainer() {
             setContainerFilter();
             container.refresh();
-            if (companySupplier != null && !Objects.equals(getConvertedValue(), companySupplier.get()))
+            if (companySupplier != null && !Objects.equals(((Employee)getConvertedValue()).getCompany(), companySupplier.get())
+                    || salePointSupplier != null && !Objects.equals(((Employee) getConvertedValue()).getWorkPlace(), salePointSupplier.get()))
                 setConvertedValue(null);
         }
 
         protected void setContainerFilter() {
             container.removeAllContainerFilters();
-            if (companySupplier != null)
-                container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
+
+            Filter fltr = null;
+            if(salePointSupplier != null) {
+                fltr = new Compare.Equal("workPlace", salePointSupplier.get());
+            } else if (companySupplier != null)
+                fltr = new Compare.Equal("company", companySupplier.get());
+            if(filter != null)
+                fltr = fltr != null ? new And(fltr, filter) : filter;
+            if(fltr != null)
+                container.addContainerFilter(fltr);
+
         }
 
     }
@@ -186,7 +222,7 @@ public class EmployeeField extends CustomField<Employee> {
             positionField.setCaption("Должность");
             formLayout.addComponent(positionField);
 
-            HorizontalLayout toolbar = new HorizontalLayout();
+            final HorizontalLayout toolbar = new HorizontalLayout();
             viewBtn = new Button("Просмотр", event -> {
                 final Employee bean = (Employee) selectField.getConvertedValue();
 
@@ -211,7 +247,7 @@ public class EmployeeField extends CustomField<Employee> {
             toolbar.addComponent(viewBtn);
 
             final Button searchBtn = new Button("Поиск", event -> {
-                final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите сотрудника или введите нового", companySupplier);
+                final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите сотрудника или введите нового");
                 selectWindow.addCloseListener(e -> {
                     if (selectWindow.isSelectPressed()) {
                         final Employee selected = selectWindow.getSelected();
@@ -219,7 +255,8 @@ public class EmployeeField extends CustomField<Employee> {
                     }
                     popupView.setPopupVisible(true);
                 });
-
+                selectWindow.setCompanySupplier(companySupplier);
+                selectWindow.setSalePointSupplier(salePointSupplier);
                 popupView.setPopupVisible(false);
                 selectWindow.showModal();
 
@@ -236,7 +273,7 @@ public class EmployeeField extends CustomField<Employee> {
             return formLayout;
         }
 
-        public void refreshFields(Employee employee) {
+        public void refreshFields(final Employee employee) {
             setValue(employee);
 
             final BeanItem<Employee> beanItem = new BeanItem<>(Optional.ofNullable(employee).orElse(new Employee()));
@@ -259,7 +296,7 @@ public class EmployeeField extends CustomField<Employee> {
         return companySupplier;
     }
 
-    public void setCompanySupplier(SupplierSer<Company> companySupplier) {
+    public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
 
@@ -267,7 +304,15 @@ public class EmployeeField extends CustomField<Employee> {
         return legalEntitySupplier;
     }
 
-    public void setLegalEntitySupplier(SupplierSer<LegalEntity> legalEntitySupplier) {
+    public void setLegalEntitySupplier(final SupplierSer<LegalEntity> legalEntitySupplier) {
         this.legalEntitySupplier = legalEntitySupplier;
+    }
+
+    public SupplierSer<SalePoint> getSalePointSupplier() {
+        return salePointSupplier;
+    }
+
+    public void setSalePointSupplier(final SupplierSer<SalePoint> salePointSupplier) {
+        this.salePointSupplier = salePointSupplier;
     }
 }

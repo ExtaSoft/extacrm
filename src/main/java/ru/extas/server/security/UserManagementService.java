@@ -120,4 +120,6 @@ public interface UserManagementService {
      * @return true если доступ разрешен
      */
     boolean isPermittedDomain(ExtaDomain domain);
+
+    SecuredObject saveObjectAccess(SecuredObject obj, ObjectSecurityRule rule);
 }

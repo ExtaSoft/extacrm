@@ -54,7 +54,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         return winWidth;
     }
 
-    public void setWinWidth(float winWidth, Unit unit) {
+    public void setWinWidth(final float winWidth, final Unit unit) {
         this.winWidth = winWidth;
         this.winWidthUnit = unit;
     }
@@ -63,7 +63,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         return winHeight;
     }
 
-    public void setWinHeight(float winHeight, Unit unit) {
+    public void setWinHeight(final float winHeight, final Unit unit) {
         this.winHeight = winHeight;
         this.winHeightUnit = unit;
     }
@@ -171,7 +171,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
 
         // Now create a binder
         fieldGroup = new BeanFieldGroup<>((Class<TEditObject>) bean.getClass());
-        BeanItem<TEditObject> beanItem = createBeanItem(bean);
+        final BeanItem<TEditObject> beanItem = createBeanItem(bean);
         fieldGroup.setItemDataSource(beanItem);
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
@@ -221,8 +221,8 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
         });
     }
 
-    protected BeanItem<TEditObject> createBeanItem(TEditObject bean) {
-        return new BeanItem<TEditObject>(bean);
+    protected BeanItem<TEditObject> createBeanItem(final TEditObject bean) {
+        return new BeanItem<>(bean);
     }
 
     protected boolean save() {
@@ -232,7 +232,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
                 try {
                     fieldGroup.commit();
                     bean = saveObject(bean);
-                    BeanItem<TEditObject> beanItem = createBeanItem(bean);
+                    final BeanItem<TEditObject> beanItem = createBeanItem(bean);
                     fieldGroup.setItemDataSource(beanItem);
                     saved = true;
                     modified = false;
@@ -284,16 +284,16 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
 
     public void setContent(Component content) {
         if (content != null) {
-            VerticalLayout root = new VerticalLayout();
+            final VerticalLayout root = new VerticalLayout();
 
             if (content instanceof TabSheet) {
                 content.addStyleName(ExtaTheme.TABSHEET_PADDED_TABBAR);
             } else {
-                Panel panel = new Panel();
+                final Panel panel = new Panel();
                 panel.setSizeFull();
                 panel.addStyleName(ExtaTheme.PANEL_BORDERLESS);
                 panel.addStyleName(ExtaTheme.PANEL_SCROLL_DIVIDER);
-                VerticalLayout panelLayout = new VerticalLayout();
+                final VerticalLayout panelLayout = new VerticalLayout();
                 panelLayout.addComponent(content);
                 panelLayout.setMargin(true);
                 panel.setContent(panelLayout);

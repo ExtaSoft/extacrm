@@ -280,7 +280,7 @@ public enum Fontello implements FontIcon {
     MOBILE_1(0XE90C); /* '' */
 
     private static final String fontFamily = "fontello";
-    private int codepoint;
+    private final int codepoint;
 
     Fontello(final int codepoint) {
         this.codepoint = codepoint;

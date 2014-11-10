@@ -169,7 +169,7 @@ public class AddressInfo implements Serializable {
     }
 
     public AddressInfo createCopy() {
-        AddressInfo copy = new AddressInfo(region, city, postIndex, streetBld);
+        final AddressInfo copy = new AddressInfo(region, city, postIndex, streetBld);
         return copy;
     }
 }

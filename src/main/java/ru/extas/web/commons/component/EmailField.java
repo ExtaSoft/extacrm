@@ -75,19 +75,19 @@ public class EmailField extends CustomField<String> {
         });
 
         addValueChangeListener(e -> {
-            String newFieldValue = (String) e.getProperty().getValue();
+            final String newFieldValue = (String) e.getProperty().getValue();
             refreshFieldState(newFieldValue);
         });
 
         refreshFieldState(getValue());
 
-        HorizontalLayout line = new HorizontalLayout();
+        final HorizontalLayout line = new HorizontalLayout();
         line.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         line.addComponents(link, linkEdit, editBtn);
         return line;
     }
 
-    private void refreshFieldState(String newFieldValue) {
+    private void refreshFieldState(final String newFieldValue) {
         if (isNullOrEmpty(newFieldValue)) {
             link.setVisible(false);
             editBtn.setVisible(false);

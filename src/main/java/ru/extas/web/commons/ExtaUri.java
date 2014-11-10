@@ -158,7 +158,7 @@ public class ExtaUri implements Serializable {
         EDIT("edit"),
         VIEW("view");
 
-        private String name;
+        private final String name;
 
         Mode(final String name) {
             this.name = name;
