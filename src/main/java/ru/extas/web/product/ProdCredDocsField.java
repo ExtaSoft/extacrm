@@ -40,7 +40,7 @@ public class ProdCredDocsField extends CustomField<List> {
 	 */
 	public ProdCredDocsField(final String caption, final String description, final ProdCredit product) {
 		this.product = product;
-        setWidth(400, Unit.PIXELS);
+        setWidth(100, Unit.PERCENTAGE);
         setHeight(300, Unit.PIXELS);
         setCaption(caption);
 		setDescription(description);

@@ -13,6 +13,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.LocalDateField;
+import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.person.PersonSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
@@ -29,9 +30,9 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
     private static final long serialVersionUID = 9510268415882116L;
     // Компоненты редактирования
     @PropertyId("fromContact")
-    private PersonSelect fromContactField;
+    private EmployeeField fromContactField;
     @PropertyId("toContact")
-    private PersonSelect toContactField;
+    private EmployeeField toContactField;
     @PropertyId("transferDate")
     private PopupDateField transferDateField;
     @PropertyId("formNums")
@@ -51,12 +52,12 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
         form.setSizeFull();
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
-        fromContactField = new PersonSelect("От кого");
+        fromContactField = new EmployeeField("От кого", "Сотрудник от которого приходят формы");
         fromContactField.setRequired(true);
         form.addComponent(fromContactField);
 
         // FIXME Ограничить выбор контакта только сотрудниками и СК
-        toContactField = new PersonSelect("Кому");
+        toContactField = new EmployeeField("Кому", "Сотрудник которому передаются формы");
         toContactField.setRequired(true);
         form.addComponent(toContactField);
 
@@ -66,6 +67,7 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
 
         formNums = new A7NumListEdit("Номера квитанций");
         formNums.setRequired(true);
+        formNums.setWidth(100, Unit.PERCENTAGE);
         form.addComponent(formNums);
 
         return form;

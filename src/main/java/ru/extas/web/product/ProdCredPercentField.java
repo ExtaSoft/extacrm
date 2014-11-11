@@ -43,7 +43,7 @@ public class ProdCredPercentField extends CustomField<List> {
      */
     public ProdCredPercentField(final String caption, final String description, final ProdCredit product) {
         this.product = product;
-        setWidth(400, Unit.PIXELS);
+        setWidth(100, Unit.PERCENTAGE);
         setHeight(200, Unit.PIXELS);
         setCaption(caption);
         setDescription(description);

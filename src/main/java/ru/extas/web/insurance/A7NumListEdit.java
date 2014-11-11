@@ -40,7 +40,7 @@ public class A7NumListEdit extends CustomField<List> {
      */
     public A7NumListEdit(final String caption) {
         this.setCaption(caption);
-        setWidth(400, Unit.PIXELS);
+        setWidth(100, Unit.PERCENTAGE);
         setHeight(300, Unit.PIXELS);
     }
 
@@ -101,7 +101,6 @@ public class A7NumListEdit extends CustomField<List> {
         formNums.addItemSetChangeListener(event -> setValue(newArrayList(formNums.getItemIds())));
         fieldLayout.addComponent(formNums);
         fieldLayout.setExpandRatio(formNums, 1);
-
 
         return fieldLayout;
     }

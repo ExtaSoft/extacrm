@@ -1,10 +1,12 @@
 package ru.extas.web.commons;
 
+import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 
 /**
@@ -22,8 +24,10 @@ public class FormUtils {
         window.setClosable(true);
         window.setModal(true);
 
-        window.setHeight(editWin.getWinHeight(), editWin.getWinHeightUnit());
-        window.setWidth(editWin.getWinWidth(), editWin.getWinWidthUnit());
+        if (editWin.getWinHeight() != Sizeable.SIZE_UNDEFINED)
+            window.setHeight(editWin.getWinHeight(), editWin.getWinHeightUnit());
+        if (editWin.getWinWidth() != Sizeable.SIZE_UNDEFINED)
+            window.setWidth(editWin.getWinWidth(), editWin.getWinWidthUnit());
 
         window.addCloseListener(event -> editWin.closeForm());
         editWin.addCloseFormListener(event -> window.close());
@@ -32,15 +36,25 @@ public class FormUtils {
         window.setId(id.toString());
         JavaScript.getCurrent().addFunction("extaGetHeight",
                 arguments -> {
-                    final int wndHeight = arguments.getInt(0);
+                    final int wndHeight = arguments.getJSONObject(0).getInt("height");
                     final int brwHeight = UI.getCurrent().getPage().getBrowserWindowHeight();
-                    if(wndHeight >= brwHeight)
+                    if (wndHeight >= brwHeight)
                         window.setHeight(100, Sizeable.Unit.PERCENTAGE);
-                    //NotificationUtil.showWarning("Высота окна равна " + wndHeight + "<br/>Высота браузера равна " + brwHeight);
+                    else
+                        window.setHeight(wndHeight, Sizeable.Unit.PIXELS);
+                    editWin.adjustSize();
                 });
-        window.addAttachListener(x ->
-                        JavaScript.getCurrent().execute("extaGetHeight(document.getElementById('" + window.getId() + "').clientHeight);")
-        );
+        final SizeReporter sizeReporter = new SizeReporter(window);
+        sizeReporter.addResizeListenerOnce(e -> {
+            final String script = MessageFormat.format(
+                    "extaGetHeight(document.getElementById(''{0}'').getBoundingClientRect());", window.getId());
+            JavaScript.getCurrent().execute(script);
+        });
+//        window.addAttachListener(e -> {
+//            final String script = MessageFormat.format(
+//                    "extaGetHeight(document.getElementById(''{0}'').getBoundingClientRect());", window.getId());
+//            JavaScript.getCurrent().execute(script);
+//        });
         UI.getCurrent().addWindow(window);
     }
 }

@@ -46,4 +46,6 @@
     <inherits name="com.vaadin.addon.timeline.gwt.TimelineWidgetSet" />
 
     <inherits name="org.vaadin.addon.itemlayout.widgetset.ItemLayoutWidgetset" />
+
+    <inherits name="com.ejt.vaadin.sizereporter.WidgetSet" />
 </module>
