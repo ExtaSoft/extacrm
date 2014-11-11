@@ -70,6 +70,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
                 status == Lead.Status.NEW ? ExtaDomain.LEADS_NEW :
                         status == Lead.Status.QUALIFIED ? ExtaDomain.LEADS_QUAL :
                                 ExtaDomain.LEADS_CLOSED);
+		container.addNestedContainerProperty("responsible.name");
 		container.addContainerFilter(new Compare.Equal("status", status));
 		container.sort(new Object[]{"createdDate"}, new boolean[]{false});
 		return container;

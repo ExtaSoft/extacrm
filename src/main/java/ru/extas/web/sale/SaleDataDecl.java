@@ -4,6 +4,7 @@ import com.vaadin.data.Item;
 import ru.extas.model.sale.Sale;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
+import ru.extas.web.contacts.Name2ShortNameConverter;
 import ru.extas.web.lead.SalePointColumnGenerator;
 import ru.extas.web.motor.MotorColumnGenerator;
 
@@ -39,6 +40,10 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("pointOfSale", "Регион | Мотосалон", new SalePointColumnGenerator("dealer", null, "region"), null);
 		addMapping("region", "Регион", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 		addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-		super.addDefaultMappings();
+        addMapping("responsible.name", "Ответственный", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
+        addMapping("responsibleAssist.name", "Заместитель", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
+        addMapping("dealerManager.name", "Представитель дилера", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
+        addMapping("bankManager.name", "Представитель банка", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
+        super.addDefaultMappings();
 	}
 }

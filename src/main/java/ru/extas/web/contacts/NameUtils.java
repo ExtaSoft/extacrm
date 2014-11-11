@@ -21,6 +21,9 @@ public class NameUtils {
      * @return фамилия и имя
      */
     public static String getShortName(final String name) {
+        if(name == null)
+            return null;
+
         final String shortName;
         final List<String> nameParts = Splitter.on(' ')
                 .trimResults()

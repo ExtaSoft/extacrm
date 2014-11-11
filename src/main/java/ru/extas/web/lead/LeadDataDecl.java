@@ -5,6 +5,7 @@ import com.vaadin.ui.Button;
 import ru.extas.model.lead.Lead;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
+import ru.extas.web.contacts.Name2ShortNameConverter;
 import ru.extas.web.motor.MotorColumnGenerator;
 
 import java.util.EnumSet;
@@ -35,6 +36,11 @@ class LeadDataDecl extends GridDataDecl {
         addMapping("motorPrice", "Стоимость техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("contactPhone", "Телефон", PhoneConverter.class);
         addMapping("pointOfSale", "Регион | Мотосалон", new SalePointColumnGenerator("vendor", "pointOfSale", "region"), null);
+        addMapping("region", "Регион", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
+        addMapping("responsible.name", "Ответственный", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
+        addMapping("status", "Статус", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
+        addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
+        super.addDefaultMappings();
         if (grid.getStatus() == Lead.Status.NEW) {
             addMapping("to_work", "", new ComponentColumnGenerator() {
                 @Override
@@ -46,10 +52,6 @@ class LeadDataDecl extends GridDataDecl {
                 }
             }, null);
         }
-        addMapping("region", "Регион", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("status", "Статус", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        super.addDefaultMappings();
     }
 
 }
