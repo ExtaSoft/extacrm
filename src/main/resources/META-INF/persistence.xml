@@ -49,6 +49,7 @@
         <class>ru.extas.model.lead.Lead</class>
         <class>ru.extas.model.sale.Sale</class>
         <class>ru.extas.model.sale.SaleComment</class>
+        <class>ru.extas.model.sale.SaleFileContainer</class>
         <class>ru.extas.model.sale.Product</class>
         <class>ru.extas.model.sale.ProdCredit</class>
         <class>ru.extas.model.sale.ProdCreditPercent</class>

@@ -63,7 +63,7 @@ public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
         form.setSizeFull();
 
 		productField = new ProductSelect("Название продукта", "Введите название продукта", obj.getProduct());
-		productField.setWidth(30, Unit.EM);
+		productField.setWidth(100, Unit.PERCENTAGE);
 		productField.setRequired(true);
 		form.addComponent(productField);
 

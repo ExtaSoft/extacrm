@@ -49,13 +49,15 @@ public class ProdCredDocsField extends CustomField<List> {
 	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
-		final VerticalLayout fieldLayout = new VerticalLayout();
-        fieldLayout.setSizeFull();
-        fieldLayout.setSpacing(true);
-        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
+		final GridLayout panel = new GridLayout(1, 2);
+		panel.setSizeFull();
 
-        if (!isReadOnly()) {
-            final MenuBar commandBar = new MenuBar();
+		panel.setRowExpandRatio(1, 1);
+		panel.setMargin(true);
+
+		if (!isReadOnly()) {
+			panel.setSpacing(true);
+			final MenuBar commandBar = new MenuBar();
             commandBar.setAutoOpen(true);
             commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
             commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
@@ -76,7 +78,7 @@ public class ProdCredDocsField extends CustomField<List> {
 			delProdBtn.setDescription("Удалить процентную ставку из продукта");
 			delProdBtn.setIcon(Fontello.TRASH);
 
-			fieldLayout.addComponent(commandBar);
+			panel.addComponent(commandBar);
 		}
 
 		docTable = new Table();
@@ -116,10 +118,9 @@ public class ProdCredDocsField extends CustomField<List> {
             }
             return null;
         });
-		fieldLayout.addComponent(docTable);
-        fieldLayout.setExpandRatio(docTable, 1);
+		panel.addComponent(docTable);
 
-        return fieldLayout;
+        return panel;
 	}
 
 	/** {@inheritDoc} */
