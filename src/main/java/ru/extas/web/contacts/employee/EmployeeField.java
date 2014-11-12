@@ -173,6 +173,7 @@ public class EmployeeField extends CustomField<Employee> {
         public Component getPopupComponent() {
 
             final ExtaFormLayout formLayout = new ExtaFormLayout();
+            formLayout.setSizeUndefined();
             formLayout.setSpacing(true);
 
             formLayout.addComponent(new FormGroupHeader("Сотрудник"));

@@ -43,7 +43,7 @@ public class ProdCredPercentField extends CustomField<List> {
      */
     public ProdCredPercentField(final String caption, final String description, final ProdCredit product) {
         this.product = product;
-        setWidth(400, Unit.PIXELS);
+        setWidth(100, Unit.PERCENTAGE);
         setHeight(200, Unit.PIXELS);
         setCaption(caption);
         setDescription(description);
@@ -54,12 +54,14 @@ public class ProdCredPercentField extends CustomField<List> {
      */
     @Override
     protected Component initContent() {
-        final VerticalLayout fieldLayout = new VerticalLayout();
-        fieldLayout.setSizeFull();
-        fieldLayout.setSpacing(true);
-        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
+        final GridLayout panel = new GridLayout(1, 2);
+        panel.setSizeFull();
+
+        panel.setRowExpandRatio(1, 1);
+        panel.setMargin(true);
 
         if (!isReadOnly()) {
+            panel.setSpacing(true);
             final MenuBar commandBar = new MenuBar();
             commandBar.setAutoOpen(true);
             commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
@@ -97,7 +99,7 @@ public class ProdCredPercentField extends CustomField<List> {
             delProdBtn.setDescription("Удалить процентную ставку из продукта");
             delProdBtn.setIcon(Fontello.TRASH);
 
-            fieldLayout.addComponent(commandBar);
+            panel.addComponent(commandBar);
         }
 
         procentTable = new Table();
@@ -123,10 +125,9 @@ public class ProdCredPercentField extends CustomField<List> {
         procentTable.setColumnHeader("period", "Срок");
         procentTable.setColumnHeader("downpayment", "Первоначальный взнос");
         procentTable.setConverter("downpayment", lookup(StringToPercentConverter.class));
-        fieldLayout.addComponent(procentTable);
-        fieldLayout.setExpandRatio(procentTable, 1);
+        panel.addComponent(procentTable);
 
-        return fieldLayout;
+        return panel;
     }
 
     /**

@@ -4,6 +4,7 @@ import com.google.common.collect.HashBiMap;
 import com.vaadin.data.util.converter.Converter;
 
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Базовый класс для создания конвертера пересисление - > описание
@@ -48,7 +49,8 @@ public abstract class String2EnumConverter<TEnum> implements Converter<String, T
 	public String convertToPresentation(final TEnum value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
 		if (value == null)
 			return null;
-		return enum2StringMap.get(value);
+		final String presentation = enum2StringMap.get(value);
+		return Optional.ofNullable(presentation).orElse(value.toString());
 	}
 
 	/** {@inheritDoc} */

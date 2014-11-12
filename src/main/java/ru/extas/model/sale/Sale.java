@@ -1,11 +1,13 @@
 package ru.extas.model.sale;
 
 import ru.extas.model.common.Comment;
+import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.ModelUtils;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.insurance.InsuranceFileContainer;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.model.motor.MotorModel;
@@ -111,7 +113,19 @@ public class Sale extends SecuredObject {
     @OrderBy("createdDate")
     private List<SaleComment> comments = newArrayList();
 
-    public Employee getDealerManager() {
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+	private List<SaleFileContainer> files = newArrayList();
+
+	public List<SaleFileContainer> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<SaleFileContainer> files) {
+		this.files = files;
+	}
+
+	public Employee getDealerManager() {
         return dealerManager;
     }
 

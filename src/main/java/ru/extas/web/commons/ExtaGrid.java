@@ -191,7 +191,6 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         setSizeFull();
 
         final GridLayout panel = new GridLayout(2, 2);
-//        panel.addStyleName(toolbarVisible ? "grid-panel" : "grid-panel-notools");
         panel.setSizeFull();
 
         panel.setRowExpandRatio(0, 0);
@@ -347,7 +346,6 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         table.setColumnCollapsingAllowed(true);
         table.setColumnReorderingAllowed(true);
         table.setNullSelectionAllowed(false);
-        table.setSizeFull();
         table.setSizeFull();
 
         // Ищем действие по умолчанию

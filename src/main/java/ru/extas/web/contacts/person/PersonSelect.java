@@ -137,6 +137,7 @@ public class PersonSelect extends CustomField<Person> {
         @Override
         public Component getPopupComponent() {
             final ExtaFormLayout formLayout = new ExtaFormLayout();
+            formLayout.setSizeUndefined();
             formLayout.setSpacing(true);
 
             formLayout.addComponent(new FormGroupHeader("Клиент"));

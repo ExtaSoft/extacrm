@@ -32,6 +32,7 @@ public class StringToLeadResult extends String2EnumConverter<Lead.Result> {
 		map.put(Lead.Result.SUCCESSFUL, "Успешное выполнение");
 		map.put(Lead.Result.CLIENT_REJECTED, "Отказ клиента");
 		map.put(Lead.Result.VENDOR_REJECTED, "Отказ контрагента");
+		map.put(Lead.Result.DOUBLE_REJECTED, "Закрыт как дублирующий");
 		return map;
 	}
 }

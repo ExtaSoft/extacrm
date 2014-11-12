@@ -6,6 +6,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
+import org.tepi.filtertable.FilterTable;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
 import ru.extas.web.commons.ExtaTheme;
@@ -28,7 +29,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class ProductInSaleGrid extends CustomField<List> {
 
 	private final Sale sale;
-	private Table productTable;
+	private FilterTable productTable;
 	private BeanItemContainer<ProductInSale> container;
 
 	/**
@@ -56,15 +57,16 @@ public class ProductInSaleGrid extends CustomField<List> {
 	/** {@inheritDoc} */
 	@Override
 	protected Component initContent() {
-		final VerticalLayout fieldLayout = new VerticalLayout();
-        fieldLayout.setSizeFull();
-        fieldLayout.setSpacing(true);
-        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
+		final GridLayout panel = new GridLayout(1, 2);
+		panel.setSizeFull();
 
-        if (!isReadOnly()) {
-            final MenuBar commandBar = new MenuBar();
+		panel.setRowExpandRatio(1, 1);
+		panel.setMargin(true);
+
+		if (!isReadOnly()) {
+			panel.setSpacing(true);
+			final MenuBar commandBar = new MenuBar();
             commandBar.setAutoOpen(true);
-            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
             commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
             commandBar.addStyleName(ExtaTheme.MENUBAR_SMALL);
 
@@ -100,12 +102,13 @@ public class ProductInSaleGrid extends CustomField<List> {
 			delProdBtn.setDescription("Удалить продукт из продажи");
 			delProdBtn.setIcon(Fontello.TRASH);
 
-			fieldLayout.addComponent(commandBar);
+			panel.addComponent(commandBar);
 		}
 
-		productTable = new Table();
-        productTable.setSizeFull();
-        productTable.addStyleName(ExtaTheme.TABLE_SMALL);
+		productTable = new FilterTable();
+        productTable.setWidth(100, Unit.PERCENTAGE);
+		productTable.setPageLength(3);
+		productTable.addStyleName(ExtaTheme.TABLE_SMALL);
         productTable.addStyleName(ExtaTheme.TABLE_COMPACT);
         productTable.setRequired(true);
 		productTable.setSelectable(true);
@@ -125,10 +128,9 @@ public class ProductInSaleGrid extends CustomField<List> {
 		productTable.setColumnHeader("product.name", "Продукт");
 		productTable.setColumnHeader("summ", "Сумма");
 		productTable.setColumnHeader("period", "Срок");
-		fieldLayout.addComponent(productTable);
-        fieldLayout.setExpandRatio(productTable, 1);
+		panel.addComponent(productTable);
 
-        return fieldLayout;
+        return panel;
 	}
 
 	/** {@inheritDoc} */

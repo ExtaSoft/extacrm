@@ -30,6 +30,7 @@ import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorTypeRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
@@ -64,7 +65,7 @@ import static ru.extas.web.UiUtils.showValidationError;
  */
 @Component
 @Scope("session")
-@Theme("extacrm")
+@Theme(ExtaTheme.NAME)
 @Title("Extreme Assistance CRM")
 public class LeadInputFormUI extends UI {
 
@@ -201,6 +202,7 @@ public class LeadInputFormUI extends UI {
         commentField = new TextArea("Примечание");
         commentField.setInputPrompt("Укажите любую дополнительную информацию");
         commentField.setRows(6);
+        commentField.setColumns(20);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);
 

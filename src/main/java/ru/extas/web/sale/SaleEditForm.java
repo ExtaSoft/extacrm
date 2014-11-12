@@ -7,12 +7,15 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.contacts.Employee;
+import ru.extas.model.insurance.InsuranceFileContainer;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
+import ru.extas.model.sale.SaleFileContainer;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.CommentsField;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
@@ -71,6 +74,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private EmployeeField bankManagerField;
     @PropertyId("comments")
     private CommentsField<SaleComment> commentsField;
+    @PropertyId("files")
+    private FilesManageField docFilesEditor;
 
     public SaleEditForm(final Sale sale) {
         super(sale.isNew() ? "Ввод новой продажи в систему" :
@@ -82,7 +87,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     @Override
     protected ComponentContainer createEditFields(final Sale obj) {
         final FormLayout form = new ExtaFormLayout();
-        form.setSizeFull();
+//        form.setSizeFull();
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Клиент"));
@@ -140,7 +145,6 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
         productInSaleField = new ProductInSaleGrid("Продукты в продаже", obj);
-        productInSaleField.setWidth(100, Unit.PERCENTAGE);
         productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
 
@@ -151,6 +155,11 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         form.addComponent(new FormGroupHeader("Коментарии"));
         commentsField = new CommentsField<>(SaleComment.class);
         form.addComponent(commentsField);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Документы"));
+        docFilesEditor = new FilesManageField(SaleFileContainer.class);
+        form.addComponent(docFilesEditor);
 
         return form;
     }
