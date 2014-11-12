@@ -29,4 +29,10 @@ public interface SaleService extends SecuredRepository<Sale> {
      * @param result результат завершения
      */
     void finishSale(Sale sale, Sale.Result result);
+
+    /**
+     *  Возобновляет продаду и перемещает ее в открытые
+     * @param sale - возобновляемая продажа
+     */
+    void reopenSale(Sale sale);
 }
