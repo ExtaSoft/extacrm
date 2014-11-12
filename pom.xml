@@ -20,14 +20,15 @@
 
         <vaadin.version>7.3.4</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <vaadin-charts.version>1.1.7</vaadin-charts.version>
+        <vaadin.charts.version>1.1.7</vaadin.charts.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
         <vaadin.filteringtable.version>0.9.11.v7</vaadin.filteringtable.version>
-        <vaadin-tokenfield.version>7.0.1</vaadin-tokenfield.version>
-        <vaadin-multifileupload.version>1.8</vaadin-multifileupload.version>
-        <vaadin-tableexport.version>1.5.1.5</vaadin-tableexport.version>
-        <vaadin-itemlayout.version>2.0.1</vaadin-itemlayout.version>
-        <vaadin-confirmdialog.version>2.1.1</vaadin-confirmdialog.version>
+        <vaadin.tokenfield.version>7.0.1</vaadin.tokenfield.version>
+        <vaadin.multifileupload.version>1.8</vaadin.multifileupload.version>
+        <vaadin.tableexport.version>1.5.1.5</vaadin.tableexport.version>
+        <vaadin.itemlayout.version>2.0.1</vaadin.itemlayout.version>
+        <vaadin.confirmdialog.version>2.1.1</vaadin.confirmdialog.version>
+        <vaadin.sizereporter.version>0.1.1</vaadin.sizereporter.version>
 
         <servlet-api.version>2.5</servlet-api.version>
         <activiti-version>5.16.3</activiti-version>
@@ -151,13 +152,7 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>com.vaadin.addon</groupId>
-            <artifactId>vaadin-charts</artifactId>
-            <version>${vaadin-charts.version}</version>
-        </dependency>
-
-        <dependency>
+       <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
             <version>1.5</version>
@@ -306,6 +301,11 @@
             <version>${vaadin.jpacontainer.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.vaadin.addon</groupId>
+            <artifactId>vaadin-charts</artifactId>
+            <version>${vaadin.charts.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>filteringtable</artifactId>
             <version>${vaadin.filteringtable.version}</version>
@@ -313,27 +313,32 @@
         <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>tokenfield</artifactId>
-            <version>${vaadin-tokenfield.version}</version>
+            <version>${vaadin.tokenfield.version}</version>
         </dependency>
         <dependency>
             <groupId>com.wcs.wcslib</groupId>
             <artifactId>wcslib-vaadin-widget-multifileupload</artifactId>
-            <version>${vaadin-multifileupload.version}</version>
+            <version>${vaadin.multifileupload.version}</version>
         </dependency>
         <dependency>
             <groupId>org.vaadin.addon</groupId>
             <artifactId>tableexport-for-vaadin</artifactId>
-            <version>${vaadin-tableexport.version}</version>
+            <version>${vaadin.tableexport.version}</version>
         </dependency>
         <dependency>
             <groupId>org.vaadin.addon</groupId>
             <artifactId>itemlayout</artifactId>
-            <version>${vaadin-itemlayout.version}</version>
+            <version>${vaadin.itemlayout.version}</version>
         </dependency>
         <dependency>
             <groupId>org.vaadin.addon</groupId>
             <artifactId>confirmdialog</artifactId>
-            <version>${vaadin-confirmdialog.version}</version>
+            <version>${vaadin.confirmdialog.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.addons</groupId>
+            <artifactId>sizereporter</artifactId>
+            <version>${vaadin.sizereporter.version}</version>
         </dependency>
 
         <dependency>

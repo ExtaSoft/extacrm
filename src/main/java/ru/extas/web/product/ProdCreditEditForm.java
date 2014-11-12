@@ -76,6 +76,8 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 
     public ProdCreditEditForm(final ProdCredit prodCredit) {
         super(prodCredit.isNew() ? "Новый продукт" : "Редактировать продукт", prodCredit);
+
+		setWinWidth(800, Unit.PIXELS);
     }
 
     /** {@inheritDoc} */

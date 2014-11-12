@@ -40,7 +40,7 @@ public class A7NumListEdit extends CustomField<List> {
      */
     public A7NumListEdit(final String caption) {
         this.setCaption(caption);
-        setWidth(400, Unit.PIXELS);
+        setWidth(100, Unit.PERCENTAGE);
         setHeight(300, Unit.PIXELS);
     }
 
@@ -48,41 +48,45 @@ public class A7NumListEdit extends CustomField<List> {
     @SuppressWarnings("unchecked")
     @Override
     protected Component initContent() {
-        final VerticalLayout fieldLayout = new VerticalLayout();
-        fieldLayout.setSizeFull();
-        fieldLayout.setSpacing(true);
-        fieldLayout.setMargin(new MarginInfo(true, false, true, false));
+        final GridLayout panel = new GridLayout(1, 2);
+        panel.setSizeFull();
 
-        final MenuBar commandBar = new MenuBar();
-        commandBar.setAutoOpen(true);
-        commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
-        commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+        panel.setRowExpandRatio(1, 1);
+        panel.setMargin(true);
 
-        final MenuBar.MenuItem addNumBtn = commandBar.addItem("Добавить", Fontello.PLUS, event -> {
-            final GetValueWindowLong win = new GetValueWindowLong("Введите номер новой квитанции");
-            win.addCloseFormListener(event1 -> {
-                if (win.isSaved())
-                    addNumber(win.getValue().toString());
+        if (!isReadOnly()) {
+            panel.setSpacing(true);
+            final MenuBar commandBar = new MenuBar();
+            commandBar.setAutoOpen(true);
+            commandBar.addStyleName(ExtaTheme.GRID_TOOLBAR);
+            commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+
+            final MenuBar.MenuItem addNumBtn = commandBar.addItem("Добавить", Fontello.PLUS, event -> {
+                final GetValueWindowLong win = new GetValueWindowLong("Введите номер новой квитанции");
+                win.addCloseFormListener(event1 -> {
+                    if (win.isSaved())
+                        addNumber(win.getValue().toString());
+                });
+                FormUtils.showModalWin(win);
             });
-            FormUtils.showModalWin(win);
-        });
-        addNumBtn.setDescription("Добавить номер квитанции к акту приема/передачи");
+            addNumBtn.setDescription("Добавить номер квитанции к акту приема/передачи");
 
-        final MenuBar.MenuItem addNumRangeBtn = commandBar.addItem("Диапазон", event -> {
-            final GetValueWindowLongRange win = new GetValueWindowLongRange("Введите диапазон номеров квитанций");
-            win.addCloseFormListener(event1 -> {
-                if (win.isSaved()) {
-                    Range<Long> range = Range.closed(win.getStartValue(), win.getEndValue());
-                    for (Long num : ContiguousSet.create(range, DiscreteDomain.longs())) {
-                        addNumber(num.toString());
+            final MenuBar.MenuItem addNumRangeBtn = commandBar.addItem("Диапазон", event -> {
+                final GetValueWindowLongRange win = new GetValueWindowLongRange("Введите диапазон номеров квитанций");
+                win.addCloseFormListener(event1 -> {
+                    if (win.isSaved()) {
+                        Range<Long> range = Range.closed(win.getStartValue(), win.getEndValue());
+                        for (Long num : ContiguousSet.create(range, DiscreteDomain.longs())) {
+                            addNumber(num.toString());
+                        }
                     }
-                }
+                });
+                FormUtils.showModalWin(win);
             });
-            FormUtils.showModalWin(win);
-        });
-        addNumRangeBtn.setDescription("Добавить диапазон номеров квитанции (пачку квитанций) к акту приема/передачи");
+            addNumRangeBtn.setDescription("Добавить диапазон номеров квитанции (пачку квитанций) к акту приема/передачи");
 
-        fieldLayout.addComponent(commandBar);
+            panel.addComponent(commandBar);
+        }
 
         formNums = new Table();
         formNums.setSizeFull();
@@ -99,11 +103,9 @@ public class A7NumListEdit extends CustomField<List> {
             }
         }
         formNums.addItemSetChangeListener(event -> setValue(newArrayList(formNums.getItemIds())));
-        fieldLayout.addComponent(formNums);
-        fieldLayout.setExpandRatio(formNums, 1);
+        panel.addComponent(formNums);
 
-
-        return fieldLayout;
+        return panel;
     }
 
     /**

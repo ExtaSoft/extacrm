@@ -102,6 +102,13 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         secureSave(lead);
     }
 
+    @Override
+    public void reopenLead(Lead lead) {
+        lead.setResult(null);
+        lead.setStatus(Lead.Status.NEW);
+        secureSave(lead);
+    }
+
     /**
      * {@inheritDoc}
      */

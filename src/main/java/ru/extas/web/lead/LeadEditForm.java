@@ -9,6 +9,7 @@ import com.vaadin.data.util.filter.Or;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
+import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.Person;
@@ -21,6 +22,7 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.*;
+import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.employee.UserContactSelectField;
 import ru.extas.web.contacts.person.PersonDataDecl;
@@ -31,6 +33,7 @@ import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
+import ru.extas.web.sale.SaleEditForm;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -98,7 +101,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                 qualifyForm ? MessageFormat.format("Квалификация лида № {0}", lead.getNum()) :
                         MessageFormat.format("Редактирование лида № {0}", lead.getNum()), lead);
         this.qualifyForm = qualifyForm;
-        if(qualifyForm)setWinWidth(1000, Unit.PIXELS);
+        if (qualifyForm) setWinWidth(1000, Unit.PIXELS);
     }
 
     /**
@@ -217,7 +220,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дополнительно"));
-        responsibleField = new EmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
+        responsibleField = new EAEmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
         responsibleField.setRequired(obj.getStatus() != Lead.Status.NEW || qualifyForm);
         form.addComponent(responsibleField);
 
@@ -474,9 +477,21 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @Override
     protected Lead saveObject(Lead obj) {
         final LeadRepository leadRepository = lookup(LeadRepository.class);
+        final SaleRepository saleRepository = lookup(SaleRepository.class);
         if (qualifyForm) {
             obj = leadRepository.qualify(obj);
+            evictCache(saleRepository.findByLead(obj));
+            Sale sale = saleRepository.findByLead(obj);
             NotificationUtil.showSuccess("Лид квалифицирован");
+            ConfirmDialog.show(UI.getCurrent(),
+                    "Лид успешно квалифицирован...",
+                    MessageFormat.format("Лид № {0} был успешно квалифицирован, на его основе была создана продажа № {1}. " +
+                            "Продажа доступна для просмотра/редактирования в разделе \"Продажи\". " +
+                            "Хотите просмотреть/отредактировать эту продажу сейчас?", obj.getNum(), sale.getNum()),
+                    "Да", "Нет", () -> {
+                        final SaleEditForm saleEditForm = new SaleEditForm(sale);
+                        FormUtils.showModalWin(saleEditForm);
+                    });
         } else {
             obj = leadRepository.secureSave(obj);
             NotificationUtil.showSuccess("Лид сохранен");
@@ -485,9 +500,6 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         // Решаем проблему с автоинкрементами базы о  которых не знает JPA
         if (obj.getNum() == null)
             evictCache(obj);
-        final Sale sale = lookup(SaleRepository.class).findByLead(obj);
-        if (sale != null && sale.getNum() == null)
-            evictCache(sale);
 
         return obj;
     }

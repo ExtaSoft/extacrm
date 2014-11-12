@@ -21,8 +21,10 @@ import ru.extas.model.common.IdentifiedObject;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.web.UiUtils.showValidationError;
 
 /**
@@ -32,7 +34,7 @@ import static ru.extas.web.UiUtils.showValidationError;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
+public abstract class ExtaEditForm<TEditObject> extends VerticalLayout {
 
     private final static Logger logger = LoggerFactory.getLogger(ExtaEditForm.class);
 
@@ -49,6 +51,7 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     private float winHeight = SIZE_UNDEFINED;
     private Unit winWidthUnit = Unit.PIXELS;
     private Unit winHeightUnit = Unit.PIXELS;
+    private final List<Component> toFullSize = newArrayList();
 
     public float getWinWidth() {
         return winWidth;
@@ -137,8 +140,6 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
     protected ExtaEditForm(final String caption, final TEditObject bean) {
         this.caption = caption;
         this.bean = bean;
-        // Must set a dummy root in constructor
-        setCompositionRoot(new Label(""));
     }
 
     @Override
@@ -284,13 +285,11 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
 
     public void setContent(Component content) {
         if (content != null) {
-            final VerticalLayout root = new VerticalLayout();
 
             if (content instanceof TabSheet) {
                 content.addStyleName(ExtaTheme.TABSHEET_PADDED_TABBAR);
             } else {
                 final Panel panel = new Panel();
-                panel.setSizeFull();
                 panel.addStyleName(ExtaTheme.PANEL_BORDERLESS);
                 panel.addStyleName(ExtaTheme.PANEL_SCROLL_DIVIDER);
                 final VerticalLayout panelLayout = new VerticalLayout();
@@ -299,17 +298,18 @@ public abstract class ExtaEditForm<TEditObject> extends CustomComponent {
                 panel.setContent(panelLayout);
                 content = panel;
             }
-            content.setSizeFull();
-            root.addComponent(content);
-            root.addComponent(buttonsPanel);
-            root.setSizeFull();
-            root.setExpandRatio(content, 1);
-            setSizeFull();
-            content = root;
+            addComponent(content);
+            addComponent(buttonsPanel);
+            setExpandRatio(content, 1);
+            toFullSize.add(content);
+            toFullSize.add(this);
+
         }
-        super.setCompositionRoot(content);
     }
 
+    public void adjustSize(){
+        toFullSize.forEach(c -> c.setSizeFull());
+    }
 
     /**
      * <p>isSaved.</p>

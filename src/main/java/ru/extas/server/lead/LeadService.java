@@ -27,4 +27,11 @@ public interface LeadService extends SecuredRepository<Lead> {
      * @param result результат завершения
      */
     void finishLead(Lead lead, Lead.Result result);
+
+    /**
+     * Возобновляет лид, перемещяя его в новые
+     *
+     * @param lead возобновляемый лид
+     */
+    void reopenLead(Lead lead);
 }

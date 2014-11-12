@@ -126,6 +126,7 @@ public class CompanyField extends CustomField<Company> {
         @Override
         public Component getPopupComponent() {
             final ExtaFormLayout container = new ExtaFormLayout();
+            container.setSizeUndefined();
             container.setSpacing(true);
 
             container.addComponent(new FormGroupHeader("Компания"));

@@ -2,15 +2,23 @@ package ru.extas.web.lead;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
+import ru.extas.server.lead.LeadRepository;
+import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.*;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * <p>LeadsGrid class.</p>
@@ -22,29 +30,31 @@ import static com.google.common.collect.Lists.newArrayList;
  * @since 0.3
  */
 public class LeadsGrid extends ExtaGrid<Lead> {
-	private static final long serialVersionUID = 4876073256421755574L;
-	private final static Logger logger = LoggerFactory.getLogger(LeadsGrid.class);
-	private final Lead.Status status;
+    private static final long serialVersionUID = 4876073256421755574L;
+    private final static Logger logger = LoggerFactory.getLogger(LeadsGrid.class);
+    private final Lead.Status status;
 
-	/**
-	 * <p>Constructor for LeadsGrid.</p>
-	 *
-	 * @param status a {@link ru.extas.model.lead.Lead.Status} object.
-	 */
-	public LeadsGrid(final Lead.Status status) {
-		super(Lead.class);
-		this.status = status;
-	}
+    /**
+     * <p>Constructor for LeadsGrid.</p>
+     *
+     * @param status a {@link ru.extas.model.lead.Lead.Status} object.
+     */
+    public LeadsGrid(final Lead.Status status) {
+        super(Lead.class);
+        this.status = status;
+    }
 
     public Lead.Status getStatus() {
         return status;
     }
 
-    /** {@inheritDoc} */
-	@Override
-	protected GridDataDecl createDataDecl() {
-		return new LeadDataDecl(this);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected GridDataDecl createDataDecl() {
+        return new LeadDataDecl(this);
+    }
 
     @Override
     public ExtaEditForm<Lead> createEditForm(final Lead lead, final boolean isInsert) {
@@ -53,47 +63,92 @@ public class LeadsGrid extends ExtaGrid<Lead> {
         return editForm;
     }
 
-    /** {@inheritDoc} */
-	@Override
-	protected void initTable(final Mode mode) {
-		super.initTable(mode);
-		// Покозываем колонку результата в закрытых
-		if (status == Lead.Status.CLOSED)
-			table.setColumnCollapsed("result", false);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initTable(final Mode mode) {
+        super.initTable(mode);
+        // Покозываем колонку результата в закрытых
+        if (status == Lead.Status.CLOSED)
+            table.setColumnCollapsed("result", false);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected Container createContainer() {
-		// Запрос данных
-		final ExtaDataContainer<Lead> container = new SecuredDataContainer<>(Lead.class,
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Container createContainer() {
+        // Запрос данных
+        final ExtaDataContainer<Lead> container = new SecuredDataContainer<>(Lead.class,
                 status == Lead.Status.NEW ? ExtaDomain.LEADS_NEW :
                         status == Lead.Status.QUALIFIED ? ExtaDomain.LEADS_QUAL :
                                 ExtaDomain.LEADS_CLOSED);
-		container.addContainerFilter(new Compare.Equal("status", status));
-		container.sort(new Object[]{"createdDate"}, new boolean[]{false});
-		return container;
-	}
+        container.addNestedContainerProperty("responsible.name");
+        container.addContainerFilter(new Compare.Equal("status", status));
+        container.sort(new Object[]{"createdDate"}, new boolean[]{false});
+        return container;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected List<UIAction> createActions() {
-		final List<UIAction> actions = newArrayList();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected List<UIAction> createActions() {
+        final List<UIAction> actions = newArrayList();
 
-		if (status == Lead.Status.NEW || status == Lead.Status.QUALIFIED) {
-			actions.add(new NewObjectAction("Новый", "Ввод нового лида"));
-		}
+        if (status == Lead.Status.NEW || status == Lead.Status.QUALIFIED) {
+            actions.add(new NewObjectAction("Новый", "Ввод нового лида"));
+        }
 
-		actions.add(new EditObjectAction(status == Lead.Status.NEW ? "Изменить" : "Просмотреть", "Редактировать выделенный в списке лид"));
+        actions.add(new EditObjectAction(status == Lead.Status.NEW ? "Изменить" : "Просмотреть", "Редактировать выделенный в списке лид"));
 
-		if (status == Lead.Status.NEW) {
-			actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {
-				@Override
-				public void fire(final Object itemId) {
+        if (status == Lead.Status.NEW) {
+            actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {
+                @Override
+                public void fire(final Object itemId) {
                     doQualifyLead(itemId);
-				}
-			});
-		}
+                }
+            });
+
+            actions.add(new UIActionGroup("Отменить", "Отмена лида", Fontello.CANCEL) {
+                @Override
+                protected List<UIAction> makeActionsGroup() {
+                    final List<UIAction> group = newArrayList();
+                    group.add(new ItemAction("Отказ клиента", "Клиент по каким-то причинам отказался от предоставления услуги", FontAwesome.USER) {
+                        @Override
+                        public void fire(final Object itemId) {
+                            final Lead lead = GridItem.extractBean(table.getItem(itemId));
+                            ConfirmDialog.show(UI.getCurrent(),
+                                    "Подтвердите действие...",
+                                    MessageFormat.format("Вы уверены, что необходимо закрыть лид № {0} по причине отказа клиента?", lead.getNum()),
+                                    "Да", "Нет", () -> {
+                                        lookup(LeadRepository.class).finishLead(lead, Lead.Result.CLIENT_REJECTED);
+                                        refreshContainer();
+                                        NotificationUtil.showSuccess("Лид отменен по инициативе клиента");
+                                    });
+                        }
+                    });
+
+                    group.add(new ItemAction("Отменить дубль", "Отменить ошибочно введенную дублирующую заявку", FontAwesome.COPY) {
+                        @Override
+                        public void fire(final Object itemId) {
+                            final Lead lead = GridItem.extractBean(table.getItem(itemId));
+                            ConfirmDialog.show(UI.getCurrent(),
+                                    "Подтвердите действие...",
+                                    MessageFormat.format("Вы уверены, что необходимо закрыть лид № {0} как дублирующий?", lead.getNum()),
+                                    "Да", "Нет", () -> {
+                                        lookup(LeadRepository.class).finishLead(lead, Lead.Result.DOUBLE_REJECTED);
+                                        refreshContainer();
+                                        NotificationUtil.showSuccess("Лид закрыт как дублирующий");
+                                    });
+                        }
+                    });
+
+                    return group;
+                }
+            });
+        }
 
 //		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязан текущий Лид", Fontello.SITEMAP) {
 //			@Override
@@ -118,8 +173,8 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 //			}
 //		});
 
-		return actions;
-	}
+        return actions;
+    }
 
     public void doQualifyLead(final Object itemId) {
         final Lead curObj = GridItem.extractBean(table.getItem(itemId));

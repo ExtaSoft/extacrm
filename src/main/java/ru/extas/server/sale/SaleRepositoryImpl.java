@@ -107,6 +107,16 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
             leadRepository.finishLead(lead, leadResult);
     }
 
+    @Override
+    public void reopenSale(Sale sale) {
+        sale.setResult(null);
+        sale.setStatus(Sale.Status.NEW);
+        sale = secureSave(sale);
+        final Lead lead = sale.getLead();
+        if (lead != null)
+            leadRepository.reopenLead(lead);
+    }
+
     /**
      * {@inheritDoc}
      */

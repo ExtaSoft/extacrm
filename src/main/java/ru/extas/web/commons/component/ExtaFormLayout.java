@@ -17,7 +17,7 @@ public class ExtaFormLayout extends FormLayout {
 
     protected void init() {
         addStyleName(ExtaTheme.FORMLAYOUT_LIGHT);
-        setSizeUndefined();
+//        setSizeUndefined();
     }
 
     public ExtaFormLayout(final Component... children) {
