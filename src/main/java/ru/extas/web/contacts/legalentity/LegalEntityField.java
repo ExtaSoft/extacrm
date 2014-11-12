@@ -164,6 +164,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
         public Component getPopupComponent() {
 
             final ExtaFormLayout formLayout = new ExtaFormLayout();
+            formLayout.setSizeUndefined();
             formLayout.setSpacing(true);
 
             formLayout.addComponent(new FormGroupHeader("Юридическое лицо"));

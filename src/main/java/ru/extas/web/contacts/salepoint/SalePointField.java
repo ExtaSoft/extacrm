@@ -161,6 +161,7 @@ public class SalePointField extends CustomField<SalePoint> {
         @Override
         public Component getPopupComponent() {
             final ExtaFormLayout container = new ExtaFormLayout();
+            container.setSizeUndefined();
             container.setSpacing(true);
 
             container.addComponent(new FormGroupHeader("Торговая точка"));

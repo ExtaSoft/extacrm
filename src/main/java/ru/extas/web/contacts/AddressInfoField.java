@@ -92,6 +92,7 @@ public class AddressInfoField extends CustomField<AddressInfo> {
         @Override
         public Component getPopupComponent() {
             final FormLayout formLayout = new ExtaFormLayout();
+            formLayout.setSizeUndefined();
             formLayout.setMargin(true);
 
             final AddressInfo addressInfo = Optional.ofNullable(getValue()).orElse(new AddressInfo());
