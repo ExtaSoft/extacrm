@@ -73,6 +73,11 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         // Запрос данных
         final ExtaDataContainer<Insurance> container = new SecuredDataContainer<>(Insurance.class, ExtaDomain.INSURANCE_PROP);
         container.addNestedContainerProperty("dealer.name");
+        container.addNestedContainerProperty("clientPP.name");
+        container.addNestedContainerProperty("clientPP.phone");
+        container.addNestedContainerProperty("clientPP.birthday");
+        container.addNestedContainerProperty("clientLE.name");
+        container.addNestedContainerProperty("clientLE.phone");
         container.sort(new Object[]{"createdDate"}, new boolean[]{false});
         return container;
     }

@@ -21,9 +21,6 @@ import java.util.EnumSet;
  */
 class InsuranceDataDecl extends GridDataDecl {
 
-    /** Constant <code>CLIENT_BIRTHDAY="client_birthday"</code> */
-    public static final String CLIENT_BIRTHDAY = "client_birthday";
-
     /**
      * <p>Constructor for InsuranceDataDecl.</p>
      */
@@ -32,9 +29,11 @@ class InsuranceDataDecl extends GridDataDecl {
         addMapping("regNum", "Номер полиса");
         addMapping("a7Num", "Квитанция А-7", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("date", "Дата договора");
-        addMapping("clientName", "Клиент");
-        addMapping("clientPhone", "Телефон", EnumSet.of(PresentFlag.COLLAPSED), PhoneConverter.class);
-        addMapping(CLIENT_BIRTHDAY, "Дата рождения", new ClientBirthdayGenerator(), EnumSet.of(PresentFlag.COLLAPSED));
+        addMapping("clientPP.name", "Клиент(ФЛ)");
+        addMapping("clientLE.name", "Клиент(ЮЛ)", EnumSet.of(PresentFlag.COLLAPSED));
+        addMapping("clientPP.phone", "Телефон(ФЛ)", EnumSet.of(PresentFlag.COLLAPSED), PhoneConverter.class);
+        addMapping("clientLE.phone", "Телефон(ЮЛ)", EnumSet.of(PresentFlag.COLLAPSED), PhoneConverter.class);
+        addMapping("clientPP.birthday", "Дата рождения(ФЛ)", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("beneficiary", "Выгодопреобретатель", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("usedMotor", "Б/у", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("motorType", "Тип техники");
@@ -54,35 +53,4 @@ class InsuranceDataDecl extends GridDataDecl {
         super.addDefaultMappings();
     }
 
-
-    private class ClientBirthdayGenerator implements GridColumnGenerator {
-
-        @Override
-        public Object generateCell(final Object columnId, final Item item, final Object itemId) {
-            final Property itemProperty = getCellProperty(columnId, item);
-            if (itemProperty != null) {
-                final Label value = new Label(itemProperty);
-                return value;
-            }
-            return null;
-        }
-
-        @Override
-        public Property getCellProperty(final Object columnId, final Item item) {
-            Property itemProperty = null;
-            if (CLIENT_BIRTHDAY.equals(columnId)) {
-                final Insurance ins = GridItem.extractBean(item);
-                if (ins.getClientPP() != null) {
-                    final BeanItem<Person> personItem = new BeanItem<>(ins.getClientPP());
-                    itemProperty = personItem.getItemProperty("birthday");
-                }
-            }
-            return itemProperty;
-        }
-
-        @Override
-        public Class<?> getType() {
-            return LocalDate.class;
-        }
-    }
 }
