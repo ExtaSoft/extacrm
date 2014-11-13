@@ -5,6 +5,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
+import org.springframework.cache.CacheManager;
 import ru.extas.model.security.UserGroup;
 import ru.extas.server.security.UserGroupRegistry;
 import ru.extas.web.commons.ExtaEditForm;
@@ -63,6 +64,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
     protected UserGroup saveObject(UserGroup obj) {
         final UserGroupRegistry groupRegistry = lookup(UserGroupRegistry.class);
         obj = groupRegistry.save(obj);
+        lookup("cacheManager", CacheManager.class).getCache("userByLogin").clear();
         NotificationUtil.showSuccess("Группа сохранена");
         return obj;
     }

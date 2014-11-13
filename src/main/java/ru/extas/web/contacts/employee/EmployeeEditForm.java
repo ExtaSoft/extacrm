@@ -5,6 +5,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
+import org.springframework.cache.CacheManager;
 import ru.extas.model.contacts.*;
 import ru.extas.server.contacts.EmployeeRepository;
 import ru.extas.utils.SupplierSer;
@@ -104,6 +105,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     protected Employee saveObject(Employee obj) {
         final EmployeeRepository employeeRepository = lookup(EmployeeRepository.class);
         obj = employeeRepository.secureSave(obj);
+        lookup("cacheManager", CacheManager.class).getCache("userByLogin").clear();
         NotificationUtil.showSuccess("Сотрудник сохранен");
         return obj;
     }

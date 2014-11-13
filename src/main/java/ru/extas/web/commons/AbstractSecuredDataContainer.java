@@ -83,7 +83,7 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
                 if (corpPredicate != null)
                     predicate = cb.or(predicate, corpPredicate);
             } else if (securityService.isPermittedTarget(domain, SecureTarget.SALE_POINT)) {
-                final Predicate spPredicate = createPredicate4Target(cb, cq, SecureTarget.CORPORATE);
+                final Predicate spPredicate = createPredicate4Target(cb, cq, SecureTarget.SALE_POINT);
                 if (spPredicate != null)
                     predicate = cb.or(predicate, spPredicate);
             }

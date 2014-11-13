@@ -8,6 +8,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
 import ru.extas.model.security.UserProfile;
 import ru.extas.model.security.UserRole;
 import ru.extas.security.UserRealm;
@@ -96,6 +97,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         securePassword(obj);
         final UserRegistry userService = lookup(UserRegistry.class);
         obj = userService.save(obj);
+        lookup("cacheManager", CacheManager.class).getCache("userByLogin").evict(obj.getLogin());
         NotificationUtil.showSuccess("Пользователь сохранен");
         return obj;
     }
