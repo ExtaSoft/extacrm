@@ -4,6 +4,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.security.UserProfile;
 
@@ -27,7 +29,8 @@ public interface UserRegistry extends JpaRepository<UserProfile, String> {
      * @return a {@link ru.extas.model.security.UserProfile} object.
      */
     @Cacheable("userByLogin")
-    UserProfile findByLogin(String login);
+    @Query("SELECT u FROM UserProfile u, u.aliases a WHERE a = :login")
+    UserProfile findByLogin(@Param("login") String login);
 
 //    @CacheEvict(value = "userByLogin", allEntries=true)
 //    @Override

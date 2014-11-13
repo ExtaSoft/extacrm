@@ -41,6 +41,7 @@ public abstract class NumColumnGenerator extends ComponentColumnGenerator {
         cell.addComponent(link);
         final Label createdAt = new Label(item.getItemProperty("createdDate"));
         createdAt.setConverter(dtConverter);
+        createdAt.setWidthUndefined();
         cell.addComponent(createdAt);
         return cell;
     }

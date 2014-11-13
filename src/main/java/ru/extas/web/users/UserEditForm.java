@@ -5,9 +5,7 @@ package ru.extas.web.users;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
@@ -15,7 +13,6 @@ import ru.extas.model.security.UserRole;
 import ru.extas.security.UserRealm;
 import ru.extas.server.security.UserRegistry;
 import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.contacts.employee.EmployeeField;
@@ -68,8 +65,8 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
     public UserEditForm(final UserProfile userProfile) {
         super(userProfile.isNew() ?
-                "Ввод нового пользователя в систему" :
-                String.format("Редактирование данных пользователя: %s", userProfile.getEmployee().getName()),
+                        "Ввод нового пользователя в систему" :
+                        String.format("Редактирование данных пользователя: %s", userProfile.getEmployee().getName()),
                 userProfile);
         initialPassword = userProfile.getPassword();
 
@@ -78,7 +75,9 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initObject(final UserProfile obj) {
         if (obj.isNew()) {
@@ -88,7 +87,9 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected UserProfile saveObject(UserProfile obj) {
         logger.debug("Saving user profile...");
@@ -109,7 +110,9 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields(final UserProfile obj) {
         final TabSheet tabsheet = new TabSheet();
@@ -172,13 +175,22 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         loginField.setReadOnly(!obj.isNew());
         loginField.setImmediate(true);
         loginField.setWidth(40, Unit.EX);
-        loginField.setDescription("Введите имя e-mail пользователя который будет использоваться для входа в систему");
-        loginField.setInputPrompt("e-mail");
+        loginField.setDescription("Введите имя или e-mail пользователя который будет использоваться для входа в систему");
+        loginField.setInputPrompt("имя или e-mail");
         loginField.setRequired(true);
-        loginField
-                .setRequiredError("Логин пользователя не может быть пустым. Пожалуйста введите действительный e-mail пользователя.");
+        loginField.setRequiredError("Логин пользователя не может быть пустым. Пожалуйста введите имя или e-mail пользователя.");
         loginField.setNullRepresentation("");
-        loginField.addValidator(new EmailValidator("{0} не является допустимым адресом электронной почты."));
+        loginField.addValidator(new UserNameValidator());
+        loginField.addValidator(new UserNameUniqueValidator(obj));
+        loginField.addValueChangeListener(e -> {
+            if(loginField.isValid()) {
+                String newLogin = (String) e.getProperty().getValue();
+                passField.setValue(null);
+                passConfField.setValue(null);
+                changePasswordField.setValue(true);
+                getObject().getAliases().add(newLogin);
+            }
+        });
         form.addComponent(loginField);
 
         passField = new PasswordField("Пароль");
