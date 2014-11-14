@@ -3,6 +3,14 @@
     color: #000
 }
 
+.exta-valo.v-app, .exta-valo.v-app-loading {
+    background-color: #ffffff
+}
+
+.v-vertical > .v-slot {
+    text-align: center
+}
+
 .extacrm.v-app {
     background-color: #fff
 }

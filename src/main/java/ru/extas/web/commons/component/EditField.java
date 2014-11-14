@@ -28,7 +28,7 @@ public class EditField extends TextField {
         setImmediate(true);
         setDescription(description);
         setInputPrompt(description);
-        setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
+        setRequiredError(String.format("Поле '%s' необходимо заполнить", caption));
         setNullRepresentation("");
     }
 
@@ -42,7 +42,6 @@ public class EditField extends TextField {
     }
 
     public EditField() {
-        setImmediate(true);
-        setNullRepresentation("");
+        this(null, null);
     }
 }

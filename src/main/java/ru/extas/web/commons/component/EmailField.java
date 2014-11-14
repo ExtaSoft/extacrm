@@ -34,6 +34,7 @@ public class EmailField extends CustomField<String> {
     public EmailField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
+        setRequiredError(String.format("Поле '%s' необходимо заполнить", caption));
     }
 
     /**
