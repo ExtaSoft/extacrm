@@ -1,10 +1,10 @@
 package ru.extas.web.users;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
+import org.springframework.cache.CacheManager;
 import ru.extas.model.security.UserGroup;
 import ru.extas.server.security.UserGroupRegistry;
 import ru.extas.web.commons.ExtaEditForm;
@@ -52,24 +52,25 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(final UserGroup obj) {
-        if (obj.isNew()) {
+    protected void initEntity(final UserGroup userGroup) {
+        if (userGroup.isNew()) {
             // Инициализируем новый объект
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    protected UserGroup saveObject(UserGroup obj) {
+    protected UserGroup saveEntity(UserGroup userGroup) {
         final UserGroupRegistry groupRegistry = lookup(UserGroupRegistry.class);
-        obj = groupRegistry.save(obj);
+        userGroup = groupRegistry.save(userGroup);
+        lookup("cacheManager", CacheManager.class).getCache("userByLogin").clear();
         NotificationUtil.showSuccess("Группа сохранена");
-        return obj;
+        return userGroup;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(final UserGroup obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 
@@ -95,7 +96,7 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
         regionsField = new RegionMultiselect("Доступные регионы");
         form.addComponent(regionsField);
 
-        permissionsField = new ExtaPermissionField(obj);
+        permissionsField = new ExtaPermissionField(getEntity());
         permissionsField.setCaption("Правила доступа группы");
         form.addComponent(permissionsField);
 

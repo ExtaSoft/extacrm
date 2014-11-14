@@ -52,6 +52,7 @@ public class NotificationUtil {
         notify.setStyleName(ExtaTheme.NOTIFICATION_WARNING + " " +
                 ExtaTheme.NOTIFICATION_CLOSABLE);
         notify.setPosition(Position.MIDDLE_CENTER);
+        notify.setDelayMsec(-1);
         notify.setHtmlContentAllowed(true);
         notify.show(Page.getCurrent());
     }

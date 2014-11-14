@@ -1,7 +1,6 @@
 package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
@@ -46,23 +45,23 @@ public class ProdInsuranceEditForm extends ExtaEditForm<ProdInsurance> {
 
     /** {@inheritDoc} */
 	@Override
-	protected void initObject(final ProdInsurance obj) {
-		if (obj.isNew()) {
-			obj.setActive(true);
+	protected void initEntity(final ProdInsurance prodInsurance) {
+		if (prodInsurance.isNew()) {
+			prodInsurance.setActive(true);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected ProdInsurance saveObject(ProdInsurance obj) {
-        obj = lookup(ProdInsuranceRepository.class).save(obj);
+	protected ProdInsurance saveEntity(ProdInsurance prodInsurance) {
+        prodInsurance = lookup(ProdInsuranceRepository.class).save(prodInsurance);
         NotificationUtil.showSuccess("Продукт сохранен");
-        return obj;
+        return prodInsurance;
     }
 
     /** {@inheritDoc} */
 	@Override
-	protected ComponentContainer createEditFields(final ProdInsurance obj) {
+	protected ComponentContainer createEditFields() {
 		final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 

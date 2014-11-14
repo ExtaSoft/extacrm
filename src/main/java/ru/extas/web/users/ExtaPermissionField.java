@@ -1,9 +1,7 @@
 package ru.extas.web.users;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import ru.extas.model.security.*;
 import ru.extas.web.commons.*;
@@ -67,13 +65,13 @@ public class ExtaPermissionField extends CustomField<Set> {
             public ExtaEditForm<ExtaPermission> createEditForm(final ExtaPermission extaPermission, final boolean isInsert) {
                 return new ExtaPermissionEditForm(extaPermission) {
                     @Override
-                    protected ExtaPermission saveObject(final ExtaPermission obj) {
+                    protected ExtaPermission saveEntity(final ExtaPermission permission) {
                         if (isInsert)
-                            ((RefreshBeanContainer<ExtaPermission>) container).addBean(obj);
+                            ((RefreshBeanContainer<ExtaPermission>) container).addBean(permission);
                         else
                             setValue(null, true); // Форсируем изменения
                         setValue(newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds()));
-                        return obj;
+                        return permission;
                     }
                 };
             }
@@ -162,17 +160,17 @@ public class ExtaPermissionField extends CustomField<Set> {
         }
 
         @Override
-        protected void initObject(final ExtaPermission obj) {
+        protected void initEntity(final ExtaPermission permission) {
 
         }
 
         @Override
-        protected ExtaPermission saveObject(final ExtaPermission obj) {
-            return null;
+        protected ExtaPermission saveEntity(final ExtaPermission permission) {
+            return permission;
         }
 
         @Override
-        protected ComponentContainer createEditFields(final ExtaPermission obj) {
+        protected ComponentContainer createEditFields() {
             final FormLayout form = new ExtaFormLayout();
             form.setSizeFull();
 

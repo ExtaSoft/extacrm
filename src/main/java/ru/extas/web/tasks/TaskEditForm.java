@@ -3,7 +3,6 @@ package ru.extas.web.tasks;
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterators;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
@@ -80,13 +79,13 @@ public class TaskEditForm extends ExtaEditForm<Task> {
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(final Task obj) {
+    protected ComponentContainer createEditFields() {
         formsContainer = new VerticalLayout();
         //formsContainer.setSpacing(true);
 
         final FormService formService = lookup(FormService.class);
 
-        final TaskFormData taskData = formService.getTaskFormData(obj.getId());
+        final TaskFormData taskData = formService.getTaskFormData(getEntity().getId());
         final List<FormProperty> formProps = taskData.getFormProperties();
         final Optional<FormProperty> result = Iterators.tryFind(formProps.iterator(), input -> input.getId().equals("result"));
         final HorizontalLayout finishToolBar = new HorizontalLayout();
@@ -99,14 +98,14 @@ public class TaskEditForm extends ExtaEditForm<Task> {
             for (final Map.Entry<String, String> resultValue : resultValues.entrySet()) {
                 final Button btn = new Button(resultValue.getValue(), event -> {
                     final String curValue = (String) event.getButton().getData();
-                    completeTask(curValue, obj);
+                    completeTask(curValue, getEntity());
                 });
                 btn.setData(resultValue.getKey());
                 btn.setDescription(MessageFormat.format("Завершить задачу с результатом: \"{0}\"", resultValue.getValue()));
                 finishToolBar.addComponent(btn);
             }
         } else {
-            final Button btn = new Button("Завершить", event -> completeTask(null, obj));
+            final Button btn = new Button("Завершить", event -> completeTask(null, getEntity()));
             finishToolBar.addComponent(btn);
         }
         formsContainer.addComponent(new Panel("Завершить задачу", finishToolBar));
@@ -150,8 +149,8 @@ public class TaskEditForm extends ExtaEditForm<Task> {
                     assigneeField.setValue(profile.getLogin());
                 }
             });
-            if (obj.getAssignee() != null) {
-                final UserProfile profile = lookup(UserManagementService.class).findUserByLogin(obj.getAssignee());
+            if (getEntity().getAssignee() != null) {
+                final UserProfile profile = lookup(UserManagementService.class).findUserByLogin(getEntity().getAssignee());
                 profileSelect.setConvertedValue(profile);
             }
             form.addComponent(profileSelect);
@@ -165,7 +164,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         ownerField.setConverter(lookup(LoginToUserNameConverter.class));
         form.addComponent(ownerField);
 
-        final String processId = obj.getProcessInstanceId();
+        final String processId = getEntity().getProcessInstanceId();
         // Клиент (берется из лида): имя, телефон, почта.
         form.addComponent(createClientContent(processId));
         // Лид процесса: имя клиента, тип лида (кредит, страховка, рассрочка).
@@ -261,20 +260,20 @@ public class TaskEditForm extends ExtaEditForm<Task> {
     }
 
 
-    private void completeTask(final String result, final Task obj) {
+    private void completeTask(final String result, final Task task) {
         if (result != null) {
             final Map<String, String> submitFormProps = newHashMap();
             submitFormProps.put("result", result);
-            lookup(FormService.class).submitTaskFormData(obj.getId(), submitFormProps);
+            lookup(FormService.class).submitTaskFormData(task.getId(), submitFormProps);
         } else {
-            lookup(TaskService.class).complete(obj.getId());
+            lookup(TaskService.class).complete(task.getId());
         }
         // Закрыть окно
         taskCompleted = true;
         NotificationUtil.showSuccess("Задача выполнена");
         closeForm();
         // Показать статус выполнения процесса
-        final BPStatusForm statusForm = new BPStatusForm(obj.getProcessInstanceId());
+        final BPStatusForm statusForm = new BPStatusForm(task.getProcessInstanceId());
         statusForm.showModal();
     }
 
@@ -289,20 +288,20 @@ public class TaskEditForm extends ExtaEditForm<Task> {
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(final Task obj) {
+    protected void initEntity(final Task task) {
     }
 
     /** {@inheritDoc} */
     @Override
-    protected Task saveObject(final Task obj) {
+    protected Task saveEntity(final Task savingTask) {
         final TaskService taskService = lookup(TaskService.class);
-        final Task task = taskService.createTaskQuery().taskId(obj.getId()).singleResult();
+        final Task task = taskService.createTaskQuery().taskId(savingTask.getId()).singleResult();
 
-        task.setName(obj.getName());
-        task.setDescription(obj.getDescription());
-        task.setDueDate(obj.getDueDate());
-        task.setOwner(obj.getOwner());
-        task.setAssignee(obj.getAssignee());
+        task.setName(savingTask.getName());
+        task.setDescription(savingTask.getDescription());
+        task.setDueDate(savingTask.getDueDate());
+        task.setOwner(savingTask.getOwner());
+        task.setAssignee(savingTask.getAssignee());
 
         taskService.saveTask(task);
         NotificationUtil.showSuccess("Задача сохранена");

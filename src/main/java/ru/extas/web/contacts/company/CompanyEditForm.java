@@ -4,7 +4,6 @@
 package ru.extas.web.contacts.company;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,8 +79,8 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
      * {@inheritDoc}
      */
     @Override
-    protected void initObject(final Company obj) {
-        if (obj.isNew()) {
+    protected void initEntity(final Company company) {
+        if (company.isNew()) {
             // Инициализируем новый объект
         }
     }
@@ -90,26 +89,26 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
      * {@inheritDoc}
      */
     @Override
-    protected Company saveObject(final Company obj) {
+    protected Company saveEntity(final Company company) {
         logger.debug("Saving contact data...");
         final CompanyRepository contactRepository = lookup(CompanyRepository.class);
-        contactRepository.secureSave(obj);
+        contactRepository.secureSave(company);
         NotificationUtil.showSuccess("Компания сохранена");
-        return obj;
+        return company;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ComponentContainer createEditFields(final Company obj) {
+    protected ComponentContainer createEditFields() {
         final ConfirmTabSheet tabsheet = new ConfirmTabSheet(
-                () -> !getObject().isNew(),
+                () -> !getEntity().isNew(),
                 () -> save());
         tabsheet.setSizeFull();
 
         // Вкладка - "Общая информация"
-        tabsheet.addTab(createMainForm(obj), "Общие данные");
+        tabsheet.addTab(createMainForm(), "Общие данные");
         // Вкладка - "Торговые точки"
         tabsheet.addConfirmTab(createSalePointsForm(), "Торговые точки");
         // Вкладка - "Сотрудники"
@@ -123,33 +122,33 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
     private Component createLegalsForm() {
         legalsField = new LegalEntitiesField();
-        legalsField.setCompanySupplier(super::getObject);
+        legalsField.setCompanySupplier(super::getEntity);
         legalsField.setSizeFull();
         return legalsField;
     }
 
     private Component createEmployeesForm() {
         employeeField = new EmployeeFieldMulty();
-        employeeField.setCompanySupplier(super::getObject);
+        employeeField.setCompanySupplier(super::getEntity);
         employeeField.setSizeFull();
         return employeeField;
     }
 
     private Component createSalePointsForm() {
         salePointsField = new SalePointsField();
-        salePointsField.setCompanySupplier(super::getObject);
+        salePointsField.setCompanySupplier(super::getEntity);
         salePointsField.setSizeFull();
         return salePointsField;
     }
 
     private Component createOwnerForm() {
         ownersField = new CompanyOwnersField();
-        ownersField.setCompanySupplier(super::getObject);
+        ownersField.setCompanySupplier(super::getEntity);
         ownersField.setSizeFull();
         return ownersField;
     }
 
-    private FormLayout createMainForm(final Company obj) {
+    private FormLayout createMainForm() {
         final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
         formLayout.setSizeFull();
@@ -182,7 +181,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
 
         cityField = new CitySelect();
         cityField.setDescription("Введите город регистрации");
-        if (obj.getCity() != null) cityField.addItem(obj.getCity());
+        if (getEntity().getCity() != null) cityField.addItem(getEntity().getCity());
         cityField.addValueChangeListener(event -> {
             final String newCity = (String) event.getProperty().getValue();
             final String region = lookup(SupplementService.class).findRegionByCity(newCity);

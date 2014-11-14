@@ -1,7 +1,6 @@
 package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import ru.extas.model.sale.ProdCreditPercent;
@@ -43,20 +42,20 @@ public class ProdCreditPercentForm extends ExtaEditForm<ProdCreditPercent> {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void initObject(final ProdCreditPercent obj) {
+	protected void initEntity(final ProdCreditPercent creditPercent) {
 
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected ProdCreditPercent saveObject(final ProdCreditPercent obj) {
+	protected ProdCreditPercent saveEntity(final ProdCreditPercent creditPercent) {
         NotificationUtil.showSuccess("Процентная ставка сохранена");
-        return obj;
+        return creditPercent;
     }
 
     /** {@inheritDoc} */
 	@Override
-	protected ComponentContainer createEditFields(final ProdCreditPercent obj) {
+	protected ComponentContainer createEditFields() {
 		final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 

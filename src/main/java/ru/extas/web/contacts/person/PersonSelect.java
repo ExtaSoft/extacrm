@@ -4,7 +4,6 @@ import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
-import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
@@ -158,7 +157,7 @@ public class PersonSelect extends CustomField<Person> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             personSelectField.refreshContainer();
-                            personSelectField.setValue(editWin.getObjectId());
+                            personSelectField.setValue(editWin.getEntityId());
                         }
                         popupView.setPopupVisible(true);
                     });

@@ -1,13 +1,11 @@
 package ru.extas.web.sale;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.contacts.Employee;
-import ru.extas.model.insurance.InsuranceFileContainer;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.model.sale.SaleFileContainer;
@@ -85,7 +83,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(final Sale obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
 //        form.setSizeFull();
 
@@ -144,7 +142,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-        productInSaleField = new ProductInSaleGrid("Продукты в продаже", obj);
+        productInSaleField = new ProductInSaleGrid("Продукты в продаже", getEntity());
         productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
 
@@ -167,26 +165,26 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(final Sale obj) {
-        if (obj.isNew()) {
-            obj.setStatus(Sale.Status.NEW);
+    protected void initEntity(final Sale sale) {
+        if (sale.isNew()) {
+            sale.setStatus(Sale.Status.NEW);
             final UserManagementService userService = lookup(UserManagementService.class);
             final Employee user = userService.getCurrentUserEmployee();
             if(user != null) {
                 if(user.getWorkPlace() != null)
-                    obj.setDealer(user.getWorkPlace());
+                    sale.setDealer(user.getWorkPlace());
             }
             final Employee userContact = lookup(UserManagementService.class).getCurrentUserEmployee();
-            obj.setResponsible(userContact);
+            sale.setResponsible(userContact);
         }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Sale saveObject(final Sale obj) {
+    protected Sale saveEntity(Sale sale) {
         final SaleRepository leadService = lookup(SaleRepository.class);
-        final Sale sale = leadService.secureSave(obj);
+        sale = leadService.secureSave(sale);
         if (sale.getNum() == null)
             evictCache(sale);
         NotificationUtil.showSuccess("Продажа сохранена");

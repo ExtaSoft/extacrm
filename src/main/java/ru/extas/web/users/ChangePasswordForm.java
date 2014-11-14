@@ -5,7 +5,6 @@ package ru.extas.web.users;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PasswordField;
@@ -39,35 +38,35 @@ public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
     /**
      * <p>Constructor for ChangePasswordForm.</p>
      *
-     * @param obj a {@link com.vaadin.data.util.BeanItem} object.
+     * @param userProfile a {@link com.vaadin.data.util.BeanItem} object.
      */
-    public ChangePasswordForm(final UserProfile obj) {
-        super("Смена пароля", obj);
+    public ChangePasswordForm(final UserProfile userProfile) {
+        super("Смена пароля", userProfile);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(final UserProfile obj) {
+    protected void initEntity(final UserProfile userProfile) {
     }
 
     /** {@inheritDoc} */
     @Override
-    protected UserProfile saveObject(UserProfile obj) {
+    protected UserProfile saveEntity(UserProfile userProfile) {
         logger.debug("Saving changed password...");
 
         // Шифруем пароль
-        UserRealm.securePassword(obj);
+        UserRealm.securePassword(userProfile);
         // Сбрасываем флаг смены пароля.
-        obj.setChangePassword(false);
+        userProfile.setChangePassword(false);
 
         final UserRegistry userService = lookup(UserRegistry.class);
-        obj = userService.save(obj);
-        return obj;
+        userProfile = userService.save(userProfile);
+        return userProfile;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(final UserProfile obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
 
         passField = new PasswordField("Пароль");
@@ -100,7 +99,7 @@ public class ChangePasswordForm extends ExtaEditForm<UserProfile> {
 
             }
         });
-        passConfField.setValue(obj.getPassword());
+        passConfField.setValue(getEntity().getPassword());
         form.addComponent(passConfField);
 
         return form;

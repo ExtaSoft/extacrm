@@ -125,9 +125,9 @@ public abstract class SubdomainView extends ExtaAbstractView {
                 } else if(uri.getMode() == ExtaUri.Mode.EDIT) {
                     if (!isNullOrEmpty(uri.getId())) {
                         final EntityManager em = lookup(EntityManager.class);
-                        final Object obj = em.find(grid.getEntityClass(), uri.getId());
-                        if (obj != null) {
-                            grid.doEditObject(obj);
+                        final Object entity = em.find(grid.getEntityClass(), uri.getId());
+                        if (entity != null) {
+                            grid.doEditObject(entity);
                         } else {
                             NotificationUtil.showWarning("Немогу открыть форму редактирования",
                                     "Ненайден объект редактирования. Возможно, неверный URL, или объект был удален.");
@@ -163,7 +163,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
 
             @Override
             public void open4Edit(final ExtaEditForm form) {
-                final ExtaUri uri = new ExtaUri(info.getDomain(), ExtaUri.Mode.EDIT, form.getObjectId().toString());
+                final ExtaUri uri = new ExtaUri(info.getDomain(), ExtaUri.Mode.EDIT, form.getEntityId().toString());
                 NavigationUtils.setUriFragment(uri);
                 form.addCloseFormListener(event -> {
                     uri.setMode(ExtaUri.Mode.GRID);
@@ -179,7 +179,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
                 NavigationUtils.setUriFragment(uri);
                 form.addCloseFormListener(event -> {
                     uri.setMode(ExtaUri.Mode.GRID);
-                    final Object objectId = form.getObjectId();
+                    final Object objectId = form.getEntityId();
                     uri.setId(null);
                     if(objectId != null) {
                         grid.selectObject(objectId);
@@ -195,9 +195,9 @@ public abstract class SubdomainView extends ExtaAbstractView {
             public void open4Edit(final ExtaEditForm form) {
                 form.addCloseFormListener(event -> {
                     if (form.isSaved()) {
-                        grid.refreshContainerItem(form.getObjectId());
+                        grid.refreshContainerItem(form.getEntityId());
                     }
-                    grid.selectObject(form.getObjectId());
+                    grid.selectObject(form.getEntityId());
                     contentContainer.switchToTabsheet();
                 });
                 contentContainer.switchToForm(form);
@@ -208,7 +208,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
                 form.addCloseFormListener(event -> {
                     if (form.isSaved()) {
                         grid.refreshContainer();
-                        grid.selectObject(form.getObjectId());
+                        grid.selectObject(form.getEntityId());
                     }
                     contentContainer.switchToTabsheet();
                 });

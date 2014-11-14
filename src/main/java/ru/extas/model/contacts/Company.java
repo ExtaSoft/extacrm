@@ -89,7 +89,7 @@ public class Company extends SecuredObject {
     @CollectionTable(name = "COMPANY_CATEGORY",
             joinColumns = {@JoinColumn(name = "COMPANY_ID")},
             indexes = {
-                    @Index(columnList = "COMPANY_ID, CATEGORIES")
+                    @Index(columnList = "COMPANY_ID, CATEGORY")
             })
     @Column(name = "CATEGORY", length = CATEGORY_LENGTH)
     @OrderBy("CATEGORY ASC")

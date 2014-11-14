@@ -5,7 +5,6 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.LegalEntity;
 import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
@@ -144,7 +143,7 @@ public class CompanyField extends CustomField<Company> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             select.refreshContainer();
-                            select.setValue(editWin.getObjectId());
+                            select.setValue(editWin.getEntityId());
                         }
                         popupView.setPopupVisible(true);
                     });

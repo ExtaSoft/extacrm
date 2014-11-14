@@ -6,8 +6,6 @@ import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaDataContainer;
@@ -128,7 +126,9 @@ public class SalePointField extends CustomField<SalePoint> {
         public void refreshContainer() {
             setContainerFilter();
             container.refresh();
-            if (companySupplier != null && !Objects.equals(((SalePoint)getConvertedValue()).getCompany(), companySupplier.get()))
+            final SalePoint salePoint = (SalePoint) getConvertedValue();
+            if(salePoint != null)
+            if (companySupplier != null && !Objects.equals(salePoint.getCompany(), companySupplier.get()))
                 setConvertedValue(null);
         }
 
@@ -182,7 +182,7 @@ public class SalePointField extends CustomField<SalePoint> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             contactSelect.refreshContainer();
-                            contactSelect.setValue(editWin.getObjectId());
+                            contactSelect.setValue(editWin.getEntityId());
                         }
                         popupView.setPopupVisible(true);
                     });

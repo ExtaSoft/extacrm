@@ -1,7 +1,6 @@
 package ru.extas.web.commons.window;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.RangeValidator;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
@@ -63,19 +62,19 @@ public class GetValueWindowLongRange extends ExtaEditForm<GetValueWindowLongRang
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(final ValueContainer obj) {
-        this.valueContainer = obj;
+    protected void initEntity(final ValueContainer value) {
+        this.valueContainer = value;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ValueContainer saveObject(final ValueContainer obj) {
-        return obj;
+    protected ValueContainer saveEntity(final ValueContainer value) {
+        return value;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(final ValueContainer obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
 
         startValueField = new EditField("Начальное значение", "Введите целое число.");

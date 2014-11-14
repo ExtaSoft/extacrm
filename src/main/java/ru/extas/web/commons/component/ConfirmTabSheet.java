@@ -7,6 +7,7 @@ import com.vaadin.ui.VerticalLayout;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.utils.RunnableSer;
 import ru.extas.utils.SupplierSer;
+import ru.extas.web.commons.PredictConfirmedAction;
 
 import javax.persistence.criteria.Predicate;
 import java.util.Optional;
@@ -20,49 +21,25 @@ import java.util.Optional;
  */
 public class ConfirmTabSheet extends TabSheet {
 
-    private final String confirmCaption = "Необходимо сохранить объект...";
-    private final String confirmMessage = "Необходимо сохранить компанию прежде чем продолжить редактирование. Сохранить сейчас?";
-
-    private final SupplierSer<Boolean> condition;
-    private final RunnableSer action;
+    private final PredictConfirmedAction confirmedAction;
 
     public ConfirmTabSheet(final SupplierSer<Boolean> condition, final RunnableSer action) {
-        this.condition = condition;
-        this.action = action;
+        confirmedAction = new PredictConfirmedAction(
+                "Необходимо сохранить компанию...",
+                "Необходимо сохранить компанию прежде чем продолжить редактирование. Сохранить сейчас?",
+                condition, action);
 
         addSelectedTabChangeListener(event -> {
             final Component selectedTab = getSelectedTab();
             if (selectedTab instanceof ConfirmTab) {
                 final ConfirmTab confirmTab = (ConfirmTab) selectedTab;
-                if (!this.condition.get()) {
-                    ConfirmDialog.show(UI.getCurrent(),
-                            confirmCaption,
-                            confirmMessage,
-                            "Да", "Нет",
-                            dialog -> {
-                                if (dialog.isConfirmed()) {
-                                    Optional.ofNullable(action).ifPresent(a -> a.run());
-                                    if (this.condition.get())
-                                        confirmTab.show();
-                                }
-                            });
-
-                } else
-                    confirmTab.show();
+                confirmedAction.run(() -> confirmTab.show());
             }
         });
     }
 
     public void addConfirmTab(final Component content, final String caption) {
         addTab(new ConfirmTab(content), caption);
-    }
-
-    public String getConfirmCaption() {
-        return confirmCaption;
-    }
-
-    public String getConfirmMessage() {
-        return confirmMessage;
     }
 
     public static class ConfirmTab extends VerticalLayout {
