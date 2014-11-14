@@ -1,7 +1,6 @@
 package ru.extas.web.contacts.salepoint;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,8 +67,6 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     @PropertyId("extaCode")
     private EditField extaCodeField;
 
-    private SalePoint salePoint;
-
     public SalePointEditForm(final SalePoint salePoint) {
         super(salePoint.isNew() ? "Ввод новой торговой точки в систему" :
                 MessageFormat.format("Редактирование данных торговой точки: {0}", salePoint.getName()), salePoint);
@@ -86,18 +83,16 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     public void attach() {
         super.attach();
 
-        if (salePoint != null) {
-            if (salePoint.getCompany() == null) {
-                companyField.setReadOnly(false);
-                companyField.setVisible(true);
-                companyField.setRequired(true);
-            } else {
-                companyField.setReadOnly(true);
-                companyField.getPropertyDataSource().setReadOnly(true);
-                if (salePoint.getCompany().isNew()) {
-                    companyField.setVisible(false);
-                    companyField.setRequired(false);
-                }
+        if (getEntity().getCompany() == null) {
+            companyField.setReadOnly(false);
+            companyField.setVisible(true);
+            companyField.setRequired(true);
+        } else {
+            companyField.setReadOnly(true);
+            companyField.getPropertyDataSource().setReadOnly(true);
+            if (getEntity().getCompany().isNew()) {
+                companyField.setVisible(false);
+                companyField.setRequired(false);
             }
         }
     }
@@ -106,14 +101,14 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
      * {@inheritDoc}
      */
     @Override
-    protected void initObject(final SalePoint obj) {
-        if (obj.isNew()) {
+    protected void initEntity(final SalePoint salePoint) {
+        if (salePoint.isNew()) {
             // Инициализируем новый объект
             if (companySupplier != null)
-                obj.setCompany(companySupplier.get());
+                salePoint.setCompany(companySupplier.get());
         }
-        if (obj.getRegAddress() == null)
-            obj.setRegAddress(new AddressInfo());
+        if (salePoint.getRegAddress() == null)
+            salePoint.setRegAddress(new AddressInfo());
     }
 
 
@@ -121,14 +116,14 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
      * {@inheritDoc}
      */
     @Override
-    protected SalePoint saveObject(SalePoint obj) {
-        if (!obj.getCompany().isNew()) {
+    protected SalePoint saveEntity(SalePoint salePoint) {
+        if (!salePoint.getCompany().isNew()) {
             logger.debug("Saving contact data...");
             final SalePointRepository contactRepository = lookup(SalePointRepository.class);
-            obj = contactRepository.secureSave(obj);
+            salePoint = contactRepository.secureSave(salePoint);
             NotificationUtil.showSuccess("Торговая точка сохранена");
         }
-        return obj;
+        return salePoint;
     }
 
 
@@ -136,14 +131,14 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
      * {@inheritDoc}
      */
     @Override
-    protected ComponentContainer createEditFields(final SalePoint obj) {
+    protected ComponentContainer createEditFields() {
         final ConfirmTabSheet tabsheet = new ConfirmTabSheet(
-                () -> !getObject().isNew(),
+                () -> !getEntity().isNew(),
                 () -> save());
         tabsheet.setSizeFull();
 
         // Вкладка - "Общая информация"
-        final FormLayout mainForm = createMainForm(obj);
+        final FormLayout mainForm = createMainForm();
         tabsheet.addTab(mainForm).setCaption("Общие данные");
 
         // Вкладка - "Сотрудники"
@@ -151,7 +146,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         tabsheet.addConfirmTab(employeesForm, "Сотрудники");
 
         // Вкладка - "Юр.лица"
-        final Component legalsForm = createLegalsForm(obj.getCompany());
+        final Component legalsForm = createLegalsForm();
         tabsheet.addConfirmTab(legalsForm, "Юридические лица");
 
         // Вкладка - "Идентификация"
@@ -185,7 +180,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         return formLayout;
     }
 
-    private Component createLegalsForm(final Company obj) {
+    private Component createLegalsForm() {
         legalsField = new LegalEntitiesSelectField();
         legalsField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
         legalsField.setSizeFull();
@@ -195,12 +190,12 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     private Component createEmployeesForm() {
         employeesField = new EmployeeFieldMulty();
         employeesField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
-        employeesField.setSalePointSupplier(super::getObject);
+        employeesField.setSalePointSupplier(super::getEntity);
         employeesField.setSizeFull();
         return employeesField;
     }
 
-    private FormLayout createMainForm(final SalePoint obj) {
+    private FormLayout createMainForm() {
         final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
         formLayout.setSizeFull();

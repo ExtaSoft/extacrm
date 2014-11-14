@@ -34,20 +34,10 @@ public class FormUtils {
         window.addCloseListener(event -> editWin.closeForm());
         editWin.addCloseFormListener(event -> window.close());
 
-        new WinSizeAdjuster(editWin, window);
-
-        final UUID id = UUID.randomUUID();
-        window.setId(id.toString());
-        JavaScript.getCurrent().addFunction("extaGetHeight",
-                arguments -> {
-                    final int wndHeight = arguments.getJSONObject(0).getInt("height");
-                    final int brwHeight = UI.getCurrent().getPage().getBrowserWindowHeight();
-                    if (wndHeight >= brwHeight)
-                        window.setHeight(100, Sizeable.Unit.PERCENTAGE);
-                    else
-                        window.setHeight(wndHeight, Sizeable.Unit.PIXELS);
-                    editWin.adjustSize();
-                });
+        if (editWin.getWinHeight() != Sizeable.SIZE_UNDEFINED && editWin.getWinWidth() != Sizeable.SIZE_UNDEFINED)
+            editWin.addAttachListener(e -> editWin.adjustSize());
+        else
+            new WinSizeAdjuster(editWin, window);
 
         UI.getCurrent().addWindow(window);
     }

@@ -1,7 +1,6 @@
 package ru.extas.web.contacts.legalentity;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
@@ -10,10 +9,8 @@ import ru.extas.model.contacts.LegalEntity;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -88,10 +85,10 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
                         final LegalEntity bean = GridItem.extractBean(table.getItem(itemId));
                         final LegalEntityEditForm editWin = new LegalEntityEditForm(bean) {
                             @Override
-                            protected LegalEntity saveObject(final LegalEntity obj) {
+                            protected LegalEntity saveEntity(final LegalEntity legalEntity) {
                                 setValue(null, true); // Форсируем изменения
                                 setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
-                                return obj;
+                                return legalEntity;
                             }
                         };
                         FormUtils.showModalWin(editWin);

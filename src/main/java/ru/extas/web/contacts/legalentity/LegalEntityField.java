@@ -6,7 +6,6 @@ import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaDataContainer;
@@ -124,8 +123,10 @@ public class LegalEntityField extends CustomField<LegalEntity> {
         public void refreshContainer() {
             setContainerFilter();
             container.refresh();
-            if (companySupplier != null && !Objects.equals(((LegalEntity)getConvertedValue()).getCompany(), companySupplier.get()))
-                setConvertedValue(null);
+            final LegalEntity legalEntity = (LegalEntity) getConvertedValue();
+            if (legalEntity != null)
+                if (companySupplier != null && !Objects.equals(legalEntity.getCompany(), companySupplier.get()))
+                    setConvertedValue(null);
         }
 
         protected void setContainerFilter() {
@@ -174,9 +175,6 @@ public class LegalEntityField extends CustomField<LegalEntity> {
                 selectField.setPropertyDataSource(getPropertyDataSource());
                 selectField.setNewItemsAllowed(true);
                 selectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-                    private static final long serialVersionUID = 1L;
-
-                    @SuppressWarnings({"unchecked"})
                     @Override
                     public void addNewItem(final String newItemCaption) {
                         final LegalEntity newObj = new LegalEntity();
@@ -188,7 +186,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
                         editWin.addCloseFormListener(event -> {
                             if (editWin.isSaved()) {
                                 selectField.refreshContainer();
-                                selectField.setValue(editWin.getObjectId());
+                                selectField.setValue(editWin.getEntityId());
                             }
                             popupView.setPopupVisible(true);
                         });

@@ -1,7 +1,6 @@
 package ru.extas.web.insurance;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
@@ -14,7 +13,6 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.contacts.employee.EmployeeField;
-import ru.extas.web.contacts.person.PersonSelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -47,7 +45,7 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(final FormTransfer obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 
@@ -75,20 +73,20 @@ public class FormTransferEditForm extends ExtaEditForm<FormTransfer> {
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(final FormTransfer obj) {
-        if (obj.isNew()) {
+    protected void initEntity(final FormTransfer formTransfer) {
+        if (formTransfer.isNew()) {
             final LocalDate now = LocalDate.now(lookup(DateTimeZone.class));
-            obj.setTransferDate(now);
+            formTransfer.setTransferDate(now);
             // TODO: Инициализировать поле "От" текущим пользователем
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    protected FormTransfer saveObject(FormTransfer obj) {
-        obj = lookup(FormTransferRepository.class).saveAndChangeOwner(obj);
+    protected FormTransfer saveEntity(FormTransfer formTransfer) {
+        formTransfer = lookup(FormTransferRepository.class).saveAndChangeOwner(formTransfer);
         NotificationUtil.showSuccess("Акт приема/передачи сохранен");
-        return obj;
+        return formTransfer;
     }
 
 }

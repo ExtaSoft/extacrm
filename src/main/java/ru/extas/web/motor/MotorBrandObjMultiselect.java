@@ -64,8 +64,8 @@ public class MotorBrandObjMultiselect extends CustomField<Set> {
         final Set<MotorBrand> set = dataSource != null ? (Set<MotorBrand>) dataSource.getValue() : null;
         if (set != null) {
             final Set idValue = newHashSet();
-            for(final MotorBrand obj : set)
-                idValue.add(obj.getId());
+            for(final MotorBrand brand : set)
+                idValue.add(brand.getId());
             tokenField.setValue(idValue);
         }
 

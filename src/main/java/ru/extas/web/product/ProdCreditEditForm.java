@@ -1,7 +1,6 @@
 package ru.extas.web.product;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
@@ -82,23 +81,23 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 
     /** {@inheritDoc} */
 	@Override
-	protected void initObject(final ProdCredit obj) {
-		if (obj.isNew()) {
-			obj.setActive(true);
+	protected void initEntity(final ProdCredit prodCredit) {
+		if (prodCredit.isNew()) {
+			prodCredit.setActive(true);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected ProdCredit saveObject(final ProdCredit obj) {
-		final ProdCredit loc = lookup(ProdCreditRepository.class).save(obj);
+	protected ProdCredit saveEntity(final ProdCredit prodCredit) {
+		final ProdCredit loc = lookup(ProdCreditRepository.class).save(prodCredit);
         NotificationUtil.showSuccess("Продукт сохранен");
         return loc;
     }
 
     /** {@inheritDoc} */
 	@Override
-	protected ComponentContainer createEditFields(final ProdCredit obj) {
+	protected ComponentContainer createEditFields() {
 		final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 
@@ -144,7 +143,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 		maxPeriodField.setRequired(true);
 		form.addComponent(maxPeriodField);
 
-		percentsField = new ProdCredPercentField("Процентные ставки", "Введите процентные ставки по кредиту в зависимости от начальных параментов кредита", obj);
+		percentsField = new ProdCredPercentField("Процентные ставки", "Введите процентные ставки по кредиту в зависимости от начальных параментов кредита", getEntity());
 		percentsField.setRequired(true);
 		form.addComponent(percentsField);
 
@@ -157,7 +156,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 		dealerSubsidyField.setConverter(lookup(StringToPercentConverter.class));
 		form.addComponent(dealerSubsidyField);
 
-		docListField = new ProdCredDocsField("Кмплект документов", "Введите комплект докуметнов по продукту (обязательные и на выбор", obj);
+		docListField = new ProdCredDocsField("Кмплект документов", "Введите комплект докуметнов по продукту (обязательные и на выбор", getEntity());
 		docListField.setRequired(true);
 		form.addComponent(docListField);
 

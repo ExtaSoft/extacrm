@@ -7,7 +7,6 @@ import com.vaadin.data.Item;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
 import ru.extas.model.security.SecuredObject;
@@ -82,9 +81,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         public void open4Edit(final ExtaEditForm form) {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
-                    grid.refreshContainerItem(form.getObjectId());
+                    grid.refreshContainerItem(form.getEntityId());
                 }
-                grid.selectObject(form.getObjectId());
+                grid.selectObject(form.getEntityId());
             });
             FormUtils.showModalWin(form);
         }
@@ -94,7 +93,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
                     grid.refreshContainer();
-                    grid.selectObject(form.getObjectId());
+                    grid.selectObject(form.getEntityId());
                 }
             });
             FormUtils.showModalWin(form);
@@ -224,8 +223,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                     final Object itemId = table.getValue();
                     if(itemId != null) {
                         refreshContainerItem(itemId);
-                        SecuredObject obj = GridItem.extractBean(table.getItem(itemId));
-                        SecuritySettingsForm form = new SecuritySettingsForm("Настройки доступа объекта...", obj);
+                        SecuredObject securedObject = GridItem.extractBean(table.getItem(itemId));
+                        SecuritySettingsForm form = new SecuritySettingsForm("Настройки доступа объекта...", securedObject);
                         FormUtils.showModalWin(form);
                     }
                 });

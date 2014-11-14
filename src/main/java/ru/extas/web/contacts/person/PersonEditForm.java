@@ -262,16 +262,16 @@ public class PersonEditForm extends ExtaEditForm<Person> {
      * {@inheritDoc}
      */
     @Override
-    protected void initObject(final Person obj) {
-        if (obj.getRegAddress() == null)
-            obj.setRegAddress(new AddressInfo());
-        if (obj.getActualAddress() == null)
-            obj.setActualAddress(new AddressInfo());
-        if (obj.isNew()) {
+    protected void initEntity(final Person person) {
+        if (person.getRegAddress() == null)
+            person.setRegAddress(new AddressInfo());
+        if (person.getActualAddress() == null)
+            person.setActualAddress(new AddressInfo());
+        if (person.isNew()) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
             // пользователя (регион, город)
-            obj.setSex(Person.Sex.MALE);
+            person.setSex(Person.Sex.MALE);
         }
     }
 
@@ -280,12 +280,12 @@ public class PersonEditForm extends ExtaEditForm<Person> {
      * {@inheritDoc}
      */
     @Override
-    protected Person saveObject(Person obj) {
+    protected Person saveEntity(Person person) {
         logger.debug("Saving contact data...");
         final PersonRepository contactRepository = lookup(PersonRepository.class);
-        obj = contactRepository.secureSave(obj);
+        person = contactRepository.secureSave(person);
         NotificationUtil.showSuccess("Контакт сохранен");
-        return obj;
+        return person;
     }
 
 
@@ -293,7 +293,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
      * {@inheritDoc}
      */
     @Override
-    protected ComponentContainer createEditFields(final Person obj) {
+    protected ComponentContainer createEditFields() {
         // Форма редактирования персональных данных
         final FormLayout personForm = new ExtaFormLayout();
         personForm.setSizeFull();
@@ -346,11 +346,11 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         personForm.addComponent(changeNameField);
 
         exNameField = new EditField("Прежняя фамилия", "Укажите прежнюю (до смены) фамилию");
-        exNameField.setVisible(obj.isChangeName());
+        exNameField.setVisible(getEntity().isChangeName());
         personForm.addComponent(exNameField);
 
         changeNameDateField = new LocalDateField("Дата смены фамилии", "Укажите дату когда менялась фамилия");
-        changeNameDateField.setVisible(obj.isChangeName());
+        changeNameDateField.setVisible(getEntity().isChangeName());
         personForm.addComponent(changeNameDateField);
 
 
@@ -390,8 +390,8 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         regCityField = new CitySelect();
         regCityField.setDescription("Введите город проживания контакта");
-        if (obj.getRegAddress().getCity() != null)
-            regCityField.addItem(obj.getRegAddress().getCity());
+        if (getEntity().getRegAddress().getCity() != null)
+            regCityField.addItem(getEntity().getRegAddress().getCity());
         regCityField.addValueChangeListener(event -> {
             final String newCity = (String) event.getProperty().getValue();
             final String region = lookup(SupplementService.class).findRegionByCity(newCity);
@@ -452,8 +452,8 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         actCityField = new CitySelect();
         actCityField.setDescription("Введите город проживания контакта");
-        if (obj.getRegAddress().getCity() != null)
-            actCityField.addItem(obj.getRegAddress().getCity());
+        if (getEntity().getRegAddress().getCity() != null)
+            actCityField.addItem(getEntity().getRegAddress().getCity());
         actCityField.addValueChangeListener(event -> {
             final String newCity = (String) event.getProperty().getValue();
             final String region = lookup(SupplementService.class).findRegionByCity(newCity);
@@ -482,7 +482,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         actPeriodOfResidenceField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(actPeriodOfResidenceField, PeriodOfResidence.class);
         personForm.addComponent(actPeriodOfResidenceField);
-        setActualAdressStatus(obj.isRegNactIsSame());
+        setActualAdressStatus(getEntity().isRegNactIsSame());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupHeader("Паспорт"));
@@ -553,7 +553,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         marriageСontractField = new YesNoSelect("Наличие брачного договора");
         personForm.addComponent(marriageСontractField);
 
-        childrenField = new PersonChildrenField("Дети", obj);
+        childrenField = new PersonChildrenField("Дети", getEntity());
         personForm.addComponent(childrenField);
 
         livingTogetherField = new EditField("Кол-во проживающих совместно");
@@ -580,7 +580,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         spouseCitizenshipField = new EditField("Гражданство", "Введите гражданство супруги(а)");
         personForm.addComponent(spouseCitizenshipField);
-        setMaritalStatusUI(obj.getMaritalStatus());
+        setMaritalStatusUI(getEntity().getMaritalStatus());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupHeader("Образование"));
@@ -669,7 +669,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         // Количество мест за последнии 3 года
         jobsFor3yearsField = new EditField("Число компаний (последние 3 года)");
         personForm.addComponent(jobsFor3yearsField);
-        setWorkInfoStatus(obj.getTypeOfEmployment());
+        setWorkInfoStatus(getEntity().getTypeOfEmployment());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupSubHeader("Бизнес"));
@@ -711,30 +711,30 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         // Годовой оборот или годовая выручка, руб
         businessYearlySalesField = new EditField("Годовой оборот или годовая выручка, руб");
         personForm.addComponent(businessYearlySalesField);
-        setBusinessInfoStatus(obj.isBusinessOwner());
+        setBusinessInfoStatus(getEntity().isBusinessOwner());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupHeader("Информация о собственности"));
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupSubHeader("Недвижимость"));
-        realtiesField = new PersonRealtyField(obj);
+        realtiesField = new PersonRealtyField(getEntity());
         //realtiesField.setWidth(25, Unit.EM);
         personForm.addComponent(realtiesField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupSubHeader("Автотранспорт"));
-        autosField = new PersonAutosField(obj);
+        autosField = new PersonAutosField(getEntity());
         personForm.addComponent(autosField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         personForm.addComponent(new FormGroupHeader("Информация о доходах/расходах"));
         personForm.addComponent(new FormGroupSubHeader("Доходы"));
-        incomesField = new PersonIncomeField(obj);
+        incomesField = new PersonIncomeField(getEntity());
         personForm.addComponent(incomesField);
 
         personForm.addComponent(new FormGroupSubHeader("Расходы"));
-        expensesField = new PersonExpensesField(obj);
+        expensesField = new PersonExpensesField(getEntity());
         personForm.addComponent(expensesField);
 
 
@@ -746,7 +746,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         personForm.addComponent(anotherCreditField);
         // Наименование Банка
         anotherCreditBankField = new EditField("Наименование Банка");
-        anotherCreditBankField.setVisible(obj.isAnotherCredit());
+        anotherCreditBankField.setVisible(getEntity().isAnotherCredit());
         personForm.addComponent(anotherCreditBankField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

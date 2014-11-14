@@ -6,9 +6,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.security.*;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.component.ConfirmTabSheet;
 import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.contacts.employee.BankEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.util.ComponentUtil;
 
@@ -45,15 +43,15 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
     }
 
     @Override
-    protected void initObject(final SecuredObject obj) {
+    protected void initEntity(final SecuredObject securedObject) {
 
     }
 
     @Override
-    protected SecuredObject saveObject(SecuredObject obj) {
-        obj = lookup(UserManagementService.class).saveObjectAccess(obj, rule);
+    protected SecuredObject saveEntity(SecuredObject securedObject) {
+        securedObject = lookup(UserManagementService.class).saveObjectAccess(securedObject, rule);
         NotificationUtil.showSuccess("Настройки доступа сохранены");
-        return obj;
+        return securedObject;
     }
 
     private void updateAccess(final RefreshBeanContainer<UserObjectAccess> container) {
@@ -65,16 +63,16 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
     }
 
     @Override
-    protected ComponentContainer createEditFields(final SecuredObject obj) {
+    protected ComponentContainer createEditFields() {
         final TabSheet tabsheet = new TabSheet();
         tabsheet.setSizeFull();
 
         // Вкладка - "Пользователи"
-        tabsheet.addTab(createUsersForm(obj), "Пользователи");
+        tabsheet.addTab(createUsersForm(), "Пользователи");
         return tabsheet;
     }
 
-    private Component createUsersForm(final SecuredObject obj) {
+    private Component createUsersForm() {
         usersGrid = new ExtaGrid<UserObjectAccess>(UserObjectAccess.class) {
 
             @Override
@@ -92,22 +90,22 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
                     private EmployeeField employeeField;
 
                     @Override
-                    protected void initObject(final UserObjectAccess obj) {
-                        if(obj.isNew()){
-                            obj.setRole(AccessRole.READER);
-                            obj.setSecurityRule(rule);
+                    protected void initEntity(final UserObjectAccess objectAccess) {
+                        if(objectAccess.isNew()){
+                            objectAccess.setRole(AccessRole.READER);
+                            objectAccess.setSecurityRule(rule);
                         }
                     }
 
                     @Override
-                    protected UserObjectAccess saveObject(final UserObjectAccess obj) {
-                        ((RefreshBeanContainer<UserObjectAccess>) container).addBean(obj);
+                    protected UserObjectAccess saveEntity(final UserObjectAccess objectAccess) {
+                        ((RefreshBeanContainer<UserObjectAccess>) container).addBean(objectAccess);
                         updateAccess((RefreshBeanContainer<UserObjectAccess>) container);
-                        return obj;
+                        return objectAccess;
                     }
 
                     @Override
-                    protected ComponentContainer createEditFields(final UserObjectAccess obj) {
+                    protected ComponentContainer createEditFields() {
                         final FormLayout formLayout = new ExtaFormLayout();
                         formLayout.setMargin(true);
                         formLayout.setSizeFull();

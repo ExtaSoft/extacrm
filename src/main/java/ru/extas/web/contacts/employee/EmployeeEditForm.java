@@ -1,7 +1,6 @@
 package ru.extas.web.contacts.employee;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
@@ -90,28 +89,28 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     }
 
     @Override
-    protected void initObject(final Employee obj) {
-        if (obj.getRegAddress() == null)
-            obj.setRegAddress(new AddressInfo());
+    protected void initEntity(final Employee employee) {
+        if (employee.getRegAddress() == null)
+            employee.setRegAddress(new AddressInfo());
         if (companySupplier != null)
-            obj.setCompany(companySupplier.get());
+            employee.setCompany(companySupplier.get());
         if (salePointSupplier != null)
-            obj.setWorkPlace(salePointSupplier.get());
+            employee.setWorkPlace(salePointSupplier.get());
         if (legalEntitySupplier != null)
-            obj.setLegalWorkPlace(legalEntitySupplier.get());
+            employee.setLegalWorkPlace(legalEntitySupplier.get());
     }
 
     @Override
-    protected Employee saveObject(Employee obj) {
+    protected Employee saveEntity(Employee employee) {
         final EmployeeRepository employeeRepository = lookup(EmployeeRepository.class);
-        obj = employeeRepository.secureSave(obj);
+        employee = employeeRepository.secureSave(employee);
         lookup("cacheManager", CacheManager.class).getCache("userByLogin").clear();
         NotificationUtil.showSuccess("Сотрудник сохранен");
-        return obj;
+        return employee;
     }
 
     @Override
-    protected ComponentContainer createEditFields(final Employee obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setWidth(100, Unit.PERCENTAGE);
         formLayout.setMargin(true);
