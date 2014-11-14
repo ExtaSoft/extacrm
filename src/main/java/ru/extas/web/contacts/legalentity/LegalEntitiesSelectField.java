@@ -83,14 +83,13 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
                     @Override
                     public void fire(final Object itemId) {
                         final LegalEntity bean = GridItem.extractBean(table.getItem(itemId));
-                        final LegalEntityEditForm editWin = new LegalEntityEditForm(bean) {
-                            @Override
-                            protected LegalEntity saveEntity(final LegalEntity legalEntity) {
+                        final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
+                        editWin.addCloseFormListener(e -> {
+                            if(editWin.isSaved()) {
                                 setValue(null, true); // Форсируем изменения
                                 setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
-                                return legalEntity;
                             }
-                        };
+                        });
                         FormUtils.showModalWin(editWin);
                     }
                 });
