@@ -4,7 +4,6 @@
 package ru.extas.web.insurance;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
@@ -46,23 +45,23 @@ public class PolicyEditForm extends ExtaEditForm<Policy> {
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(final Policy obj) {
+    protected void initEntity(final Policy policy) {
 
     }
 
     /** {@inheritDoc} */
     @Override
-    protected Policy saveObject(Policy obj) {
+    protected Policy saveEntity(Policy policy) {
         final PolicyRepository policyRepository = lookup(PolicyRepository.class);
-        obj = policyRepository.save(obj);
+        policy = policyRepository.save(policy);
         NotificationUtil.showSuccess("Бланк сохранен");
-        return obj;
+        return policy;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(final Policy obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 

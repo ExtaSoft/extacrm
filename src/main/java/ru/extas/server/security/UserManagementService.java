@@ -121,5 +121,5 @@ public interface UserManagementService {
      */
     boolean isPermittedDomain(ExtaDomain domain);
 
-    SecuredObject saveObjectAccess(SecuredObject obj, ObjectSecurityRule rule);
+    SecuredObject saveObjectAccess(SecuredObject securedObject, ObjectSecurityRule rule);
 }

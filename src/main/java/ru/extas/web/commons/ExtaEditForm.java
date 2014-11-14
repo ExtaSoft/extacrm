@@ -7,15 +7,11 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.server.Sizeable;
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.util.ReflectTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.data.collectioncontainer.CollectionContainer;
 import ru.extas.model.common.IdentifiedObject;
 
 import java.io.Serializable;
@@ -34,7 +30,7 @@ import static ru.extas.web.UiUtils.showValidationError;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class ExtaEditForm<TEditObject> extends VerticalLayout {
+public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
 
     private final static Logger logger = LoggerFactory.getLogger(ExtaEditForm.class);
 
@@ -42,9 +38,9 @@ public abstract class ExtaEditForm<TEditObject> extends VerticalLayout {
     private final String caption;
     protected boolean saved = false;
     private HorizontalLayout buttonsPanel;
-    private BeanFieldGroup<TEditObject> fieldGroup;
+    private BeanFieldGroup<TEntity> fieldGroup;
     private boolean modified;
-    private TEditObject bean;
+    private TEntity entity;
     private Button okBtn;
 
     private float winWidth = 600;
@@ -79,18 +75,18 @@ public abstract class ExtaEditForm<TEditObject> extends VerticalLayout {
         return winHeightUnit;
     }
 
-    public Object getObjectId() {
-        if (bean != null) {
-            if (bean instanceof IdentifiedObject)
-                return ((IdentifiedObject) bean).getId();
+    public Object getEntityId() {
+        if (entity != null) {
+            if (entity instanceof IdentifiedObject)
+                return ((IdentifiedObject) entity).getId();
             else
-                return bean;
+                return entity;
         }
         return null;
     }
 
-    public TEditObject getObject() {
-        return bean;
+    public TEntity getEntity() {
+        return entity;
     }
 
     public static class CloseFormEvent extends Component.Event {
@@ -137,9 +133,9 @@ public abstract class ExtaEditForm<TEditObject> extends VerticalLayout {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    protected ExtaEditForm(final String caption, final TEditObject bean) {
+    protected ExtaEditForm(final String caption, final TEntity entity) {
         this.caption = caption;
-        this.bean = bean;
+        this.entity = entity;
     }
 
     @Override
@@ -152,27 +148,17 @@ public abstract class ExtaEditForm<TEditObject> extends VerticalLayout {
         return caption;
     }
 
-//    public BeanItem<TEditObject> getBeanItem() {
-//        return beanItem;
-//    }
-
-//    public void setBeanItem(BeanItem<TEditObject> beanItem) {
-//        checkNotNull(beanItem);
-//        this.beanItem = beanItem;
-//        this.bean = beanItem.getBean();
-//    }
-
     /**
      * <p>initForm.</p>
      */
     private void initForm() {
-        checkNotNull(bean);
-        initObject(bean);
-        final ComponentContainer form = createEditFields(bean);
+        checkNotNull(entity);
+        initEntity(entity);
+        final ComponentContainer form = createEditFields();
 
         // Now create a binder
-        fieldGroup = new BeanFieldGroup<>((Class<TEditObject>) bean.getClass());
-        final BeanItem<TEditObject> beanItem = createBeanItem(bean);
+        fieldGroup = new BeanFieldGroup<>((Class<TEntity>) entity.getClass());
+        final BeanItem<TEntity> beanItem = createBeanItem(entity);
         fieldGroup.setItemDataSource(beanItem);
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
@@ -222,7 +208,7 @@ public abstract class ExtaEditForm<TEditObject> extends VerticalLayout {
         });
     }
 
-    protected BeanItem<TEditObject> createBeanItem(final TEditObject bean) {
+    protected BeanItem<TEntity> createBeanItem(final TEntity bean) {
         return new BeanItem<>(bean);
     }
 
@@ -232,8 +218,8 @@ public abstract class ExtaEditForm<TEditObject> extends VerticalLayout {
             if (isModified()) {
                 try {
                     fieldGroup.commit();
-                    bean = saveObject(bean);
-                    final BeanItem<TEditObject> beanItem = createBeanItem(bean);
+                    entity = saveEntity(entity);
+                    final BeanItem<TEntity> beanItem = createBeanItem(entity);
                     fieldGroup.setItemDataSource(beanItem);
                     saved = true;
                     modified = false;
@@ -331,25 +317,24 @@ public abstract class ExtaEditForm<TEditObject> extends VerticalLayout {
     }
 
     /**
-     * <p>initObject.</p>
+     * <p>initEntity.</p>
      *
-     * @param obj a TEditObject object.
+     * @param entity a TEditObject object.
      */
-    protected abstract void initObject(TEditObject obj);
+    protected abstract void initEntity(TEntity entity);
 
     /**
-     * <p>saveObject.</p>
+     * <p>saveEntity.</p>
      *
-     * @param obj a TEditObject object.
+     * @param entity a TEditObject object.
      */
-    protected abstract TEditObject saveObject(TEditObject obj);
+    protected abstract TEntity saveEntity(TEntity entity);
 
     /**
      * <p>createEditFields.</p>
      *
-     * @param obj a TEditObject object.
      * @return a {@link com.vaadin.ui.ComponentContainer} object.
      */
-    protected abstract ComponentContainer createEditFields(TEditObject obj);
+    protected abstract ComponentContainer createEditFields();
 
 }

@@ -11,19 +11,15 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.server.references.CategoryService;
+import ru.extas.utils.RunnableSer;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaDataContainer;
-import ru.extas.web.commons.ExtaTheme;
-import ru.extas.web.commons.Fontello;
-import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -43,6 +39,7 @@ public class EmployeeField extends CustomField<Employee> {
 
     private PopupView popupView;
     private PopupEmployeeContent entityContent;
+    private PredictConfirmedAction newEmployeePrecondition;
 
     public EmployeeField(final String caption, final String description) {
         setCaption(caption);
@@ -90,6 +87,14 @@ public class EmployeeField extends CustomField<Employee> {
         return filter;
     }
 
+    public void setNewEmployeePrecondition(PredictConfirmedAction newEmployeePrecondition) {
+        this.newEmployeePrecondition = newEmployeePrecondition;
+    }
+
+    public PredictConfirmedAction getNewEmployeePrecondition() {
+        return newEmployeePrecondition;
+    }
+
     private class EmployeeSelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
@@ -131,22 +136,24 @@ public class EmployeeField extends CustomField<Employee> {
         public void refreshContainer() {
             setContainerFilter();
             container.refresh();
-            if (companySupplier != null && !Objects.equals(((Employee)getConvertedValue()).getCompany(), companySupplier.get())
-                    || salePointSupplier != null && !Objects.equals(((Employee) getConvertedValue()).getWorkPlace(), salePointSupplier.get()))
-                setConvertedValue(null);
+            final Employee employee = (Employee) getConvertedValue();
+            if (employee != null)
+                if (companySupplier != null && !Objects.equals(employee.getCompany(), companySupplier.get())
+                        || salePointSupplier != null && !Objects.equals(employee.getWorkPlace(), salePointSupplier.get()))
+                    setConvertedValue(null);
         }
 
         protected void setContainerFilter() {
             container.removeAllContainerFilters();
 
             Filter fltr = null;
-            if(salePointSupplier != null) {
+            if (salePointSupplier != null) {
                 fltr = new Compare.Equal("workPlace", salePointSupplier.get());
             } else if (companySupplier != null)
                 fltr = new Compare.Equal("company", companySupplier.get());
-            if(filter != null)
+            if (filter != null)
                 fltr = fltr != null ? new And(fltr, filter) : filter;
-            if(fltr != null)
+            if (fltr != null)
                 container.addContainerFilter(fltr);
 
         }
@@ -181,11 +188,10 @@ public class EmployeeField extends CustomField<Employee> {
             selectField = new EmployeeSelectField("Имя", "Введите или выберите имя сотрудника");
             selectField.setPropertyDataSource(getPropertyDataSource());
             selectField.setNewItemsAllowed(true);
-            selectField.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-                @Override
-                public void addNewItem(final String newItemCaption) {
+            selectField.setNewItemHandler(newItemCaption -> {
+                final RunnableSer action = () -> {
                     final Employee newObj = new Employee();
-                    if(companySupplier != null)
+                    if (companySupplier != null)
                         newObj.setCompany(companySupplier.get());
                     newObj.setName(newItemCaption);
 
@@ -197,13 +203,19 @@ public class EmployeeField extends CustomField<Employee> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             selectField.refreshContainer();
-                            selectField.setValue(editWin.getObjectId());
+                            selectField.setValue(editWin.getEntityId());
                         }
                         popupView.setPopupVisible(true);
                     });
                     popupView.setPopupVisible(false);
                     FormUtils.showModalWin(editWin);
-                }
+                };
+                if (newEmployeePrecondition != null) {
+                    popupView.setPopupVisible(false);
+                    newEmployeePrecondition.run(action);
+                } else
+                    action.run();
+
             });
             selectField.addValueChangeListener(event -> refreshFields((Employee) selectField.getConvertedValue()));
             formLayout.addComponent(selectField);

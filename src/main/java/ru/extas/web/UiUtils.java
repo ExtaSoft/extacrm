@@ -84,7 +84,7 @@ public class UiUtils {
      */
     public static void showValidationError(final String caption, final FieldGroup fieldGroup) {
         final StringBuilder msg = new StringBuilder();
-        msg.append("<ul style = { text-align: left; }>");
+        msg.append("<ul style = \"text-align: left !important;\">");
         for (final Field<?> field : fieldGroup.getFields()) {
             try {
                 field.validate();
@@ -92,17 +92,16 @@ public class UiUtils {
                 final String message = "Неизвестная ошибка.";
 
                 msg.append("<li>");
-                msg.append("Ошибка в поле '");
-                msg.append(field.getCaption());
-                msg.append("': ");
-
                 if (!isNullOrEmpty(e.getLocalizedMessage()))
                     msg.append(e.getLocalizedMessage());
 
                 for (final Validator.InvalidValueException ce : e.getCauses()) {
-                    msg.append("<li>");
-                    msg.append(ce.getLocalizedMessage());
-                    msg.append("</li>");
+                    final String causeMessage = ce.getLocalizedMessage();
+                    if (!isNullOrEmpty(causeMessage)) {
+                        msg.append("<li>");
+                        msg.append(causeMessage);
+                        msg.append("</li>");
+                    }
                 }
                 msg.append("</li>");
             }

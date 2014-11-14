@@ -30,6 +30,16 @@ public class UserProfile extends AuditedObject {
     @Size(max = LOGIN_LENGTH)
     private String login;
 
+    @ElementCollection
+    @CollectionTable(name = "USER_LOGIN_ALIAS",
+            joinColumns = {@JoinColumn(name = "USER_PROFILE_ID")},
+            indexes = {
+                    @Index(columnList = "ALIAS", unique = true),
+                    @Index(columnList = "USER_PROFILE_ID, ALIAS", unique = true)})
+    @Column(name = "ALIAS", length = LOGIN_LENGTH)
+    @OrderBy("ALIAS ASC")
+    private Set<String> aliases = newHashSet();
+
     // Ссылка на контакт
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee employee;
@@ -82,6 +92,14 @@ public class UserProfile extends AuditedObject {
             inverseJoinColumns = {@JoinColumn(name = "SALE_POINT_ID", referencedColumnName = "ID")})
     @OrderBy("name ASC")
     private Set<SalePoint> salePoints = newLinkedHashSet();
+
+    public Set<String> getAliases() {
+        return aliases;
+    }
+
+    public void setAliases(Set<String> aliases) {
+        this.aliases = aliases;
+    }
 
     public Set<SalePoint> getSalePoints() {
         return salePoints;

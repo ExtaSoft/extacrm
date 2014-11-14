@@ -1,5 +1,7 @@
 package ru.extas.web.commons;
 
+import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
+import com.ejt.vaadin.sizereporter.ComponentResizeListener;
 import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.JavaScript;
@@ -32,29 +34,45 @@ public class FormUtils {
         window.addCloseListener(event -> editWin.closeForm());
         editWin.addCloseFormListener(event -> window.close());
 
-        final UUID id = UUID.randomUUID();
-        window.setId(id.toString());
-        JavaScript.getCurrent().addFunction("extaGetHeight",
-                arguments -> {
-                    final int wndHeight = arguments.getJSONObject(0).getInt("height");
-                    final int brwHeight = UI.getCurrent().getPage().getBrowserWindowHeight();
+        if (editWin.getWinHeight() != Sizeable.SIZE_UNDEFINED && editWin.getWinWidth() != Sizeable.SIZE_UNDEFINED)
+            editWin.addAttachListener(e -> editWin.adjustSize());
+        else
+            new WinSizeAdjuster(editWin, window);
+
+        UI.getCurrent().addWindow(window);
+    }
+
+    private static class WinSizeAdjuster {
+
+        private int formHeight;
+        private final int brwHeight;
+        private int wndHeight;
+        private boolean adjusted;
+
+        public WinSizeAdjuster(ExtaEditForm<?> editWin, Window window) {
+            brwHeight = UI.getCurrent().getPage().getBrowserWindowHeight();
+
+            final SizeReporter winSizeReporter = new SizeReporter(window);
+            winSizeReporter.addResizeListener(e -> {
+                wndHeight = e.getHeight();
+                adjustWindow(editWin, window);
+            });
+
+            final SizeReporter formSizeReporter = new SizeReporter(editWin);
+            formSizeReporter.addResizeListenerOnce(e -> formHeight = e.getHeight());
+        }
+
+        protected void adjustWindow(ExtaEditForm<?> editWin, Window window) {
+            if (!adjusted) {
+                if(formHeight != 0 && wndHeight > formHeight || wndHeight >= brwHeight) {
                     if (wndHeight >= brwHeight)
                         window.setHeight(100, Sizeable.Unit.PERCENTAGE);
                     else
                         window.setHeight(wndHeight, Sizeable.Unit.PIXELS);
                     editWin.adjustSize();
-                });
-        final SizeReporter sizeReporter = new SizeReporter(window);
-        sizeReporter.addResizeListenerOnce(e -> {
-            final String script = MessageFormat.format(
-                    "extaGetHeight(document.getElementById(''{0}'').getBoundingClientRect());", window.getId());
-            JavaScript.getCurrent().execute(script);
-        });
-//        window.addAttachListener(e -> {
-//            final String script = MessageFormat.format(
-//                    "extaGetHeight(document.getElementById(''{0}'').getBoundingClientRect());", window.getId());
-//            JavaScript.getCurrent().execute(script);
-//        });
-        UI.getCurrent().addWindow(window);
+                    adjusted = true;
+                }
+            }
+        }
     }
 }

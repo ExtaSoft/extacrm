@@ -1,7 +1,6 @@
 package ru.extas.web.motor;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import ru.extas.model.motor.MotorType;
@@ -34,21 +33,21 @@ public class MotorTypeEditForm extends ExtaEditForm<MotorType> {
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(final MotorType obj) {
+    protected void initEntity(final MotorType motorType) {
 
     }
 
     /** {@inheritDoc} */
     @Override
-    protected MotorType saveObject(final MotorType obj) {
-        final MotorType loc = lookup(MotorTypeRepository.class).save(obj);
+    protected MotorType saveEntity(final MotorType motorType) {
+        final MotorType loc = lookup(MotorTypeRepository.class).save(motorType);
         NotificationUtil.showSuccess("Тип техники сохранен");
         return loc;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(final MotorType obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 

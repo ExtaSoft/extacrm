@@ -1,7 +1,6 @@
 package ru.extas.web.motor;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import ru.extas.model.motor.MotorBrand;
@@ -34,20 +33,20 @@ public class MotorBrandEditForm extends ExtaEditForm<MotorBrand> {
 
     /** {@inheritDoc} */
     @Override
-    protected void initObject(final MotorBrand obj) {
+    protected void initEntity(final MotorBrand motorBrand) {
     }
 
     /** {@inheritDoc} */
     @Override
-    protected MotorBrand saveObject(final MotorBrand obj) {
-        final MotorBrand loc = lookup(MotorBrandRepository.class).save(obj);
+    protected MotorBrand saveEntity(final MotorBrand motorBrand) {
+        final MotorBrand loc = lookup(MotorBrandRepository.class).save(motorBrand);
         NotificationUtil.showSuccess("Марка сохранена");
         return loc;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ComponentContainer createEditFields(final MotorBrand obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 

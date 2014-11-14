@@ -110,7 +110,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
      * {@inheritDoc}
      */
     @Override
-    protected ComponentContainer createEditFields(final Insurance obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
         form.setMargin(true);
@@ -118,7 +118,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         ////////////////////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Полис"));
         regNumField = new PolicySelect("Номер полиса",
-                "Введите номер полиса страхования. Выбирается из справочника БСО.", obj.getRegNum());
+                "Введите номер полиса страхования. Выбирается из справочника БСО.", getEntity().getRegNum());
         regNumField.setRequired(true);
         regNumField.addValueChangeListener(event -> {
             if (event.getProperty().getType() == Policy.class) {
@@ -133,7 +133,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         form.addComponent(regNumField);
 
         a7FormNumField = new A7Select("Номер квитанции А-7",
-                "Введите номер квитанции А-7. Выбирается из справочника БСО.", obj.getA7Num());
+                "Введите номер квитанции А-7. Выбирается из справочника БСО.", getEntity().getA7Num());
         // TODO a7FormNumField.setRequired(true);
         form.addComponent(a7FormNumField);
 
@@ -154,7 +154,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Страхователь/выгодопреобретатель"));
-        final boolean isLegalEntity = obj.getClientLE() != null && obj.getClientPP() == null;
+        final boolean isLegalEntity = getEntity().getClientLE() != null && getEntity().getClientPP() == null;
         isLegalEntityField = new CheckBox("Страхователь Юр.лицо", isLegalEntity);
         isLegalEntityField.setDescription("Отметте флаг, если страхователь является юр.лицом");
         isLegalEntityField.addValueChangeListener(event -> {
@@ -189,7 +189,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         beneficiaryField.setNewItemsAllowed(true);
         beneficiaryField.setRequired(true);
         beneficiaryField.setWidth(25, Unit.EM);
-        fillBeneficiariesChoice(obj.getClientName());
+        fillBeneficiariesChoice(getEntity().getClientName());
         form.addComponent(beneficiaryField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,8 +248,8 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         form.addComponent(riskSumField);
 
         // По умолчанию страховка на год.
-        if (obj.getCoverTime() == null)
-            obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
+        if (getEntity().getCoverTime() == null)
+            getEntity().setCoverTime(Insurance.PeriodOfCover.YEAR);
         coverTimeField = new OptionGroup("Срок страхования");
         coverTimeField.setDescription("Укажите требуемый срок действия страхового полиса");
         coverTimeField.setRequired(true);
@@ -372,19 +372,19 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
      * {@inheritDoc}
      */
     @Override
-    protected void initObject(final Insurance obj) {
-        if (obj.isNew()) {
+    protected void initEntity(final Insurance insurance) {
+        if (insurance.isNew()) {
             final LocalDate now = LocalDate.now(lookup(DateTimeZone.class));
-            obj.setDate(now);
-            obj.setPaymentDate(now);
-            obj.setCoverTime(Insurance.PeriodOfCover.YEAR);
-            obj.setStartDate(obj.getPaymentDate().plusDays(1));
-            obj.setEndDate(obj.getStartDate().plusYears(1).minusDays(1));
+            insurance.setDate(now);
+            insurance.setPaymentDate(now);
+            insurance.setCoverTime(Insurance.PeriodOfCover.YEAR);
+            insurance.setStartDate(insurance.getPaymentDate().plusDays(1));
+            insurance.setEndDate(insurance.getStartDate().plusYears(1).minusDays(1));
             final UserManagementService userService = lookup(UserManagementService.class);
             final Employee user = userService.getCurrentUserEmployee();
             if (user != null) {
                 if (user.getWorkPlace() != null)
-                    obj.setDealer(user.getWorkPlace());
+                    insurance.setDealer(user.getWorkPlace());
             }
         }
     }
@@ -393,10 +393,10 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
      * {@inheritDoc}
      */
     @Override
-    protected Insurance saveObject(Insurance obj) {
-        obj = lookup(InsuranceRepository.class).saveAndIssue(obj);
+    protected Insurance saveEntity(Insurance insurance) {
+        insurance = lookup(InsuranceRepository.class).saveAndIssue(insurance);
         NotificationUtil.showSuccess("Полис сохранен");
-        return obj;
+        return insurance;
     }
 
     /**

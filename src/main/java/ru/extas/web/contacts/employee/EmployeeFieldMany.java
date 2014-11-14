@@ -57,13 +57,13 @@ public class EmployeeFieldMany extends CustomField<Set> {
             public ExtaEditForm<Employee> createEditForm(final Employee employee, final boolean isInsert) {
                 final EmployeeEditForm form = new EmployeeEditForm(employee) {
                     @Override
-                    protected Employee saveObject(final Employee obj) {
+                    protected Employee saveEntity(final Employee employee) {
                         if (isInsert)
-                            beanContainer.addBean(obj);
+                            beanContainer.addBean(employee);
                         else
                             setValue(null, true); // Форсируем изменения
                         setValue(newHashSet(beanContainer.getItemIds()));
-                        return obj;
+                        return employee;
                     }
                 };
                 form.setCompanySupplier(companySupplier);

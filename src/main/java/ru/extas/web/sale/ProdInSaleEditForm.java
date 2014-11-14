@@ -1,7 +1,6 @@
 package ru.extas.web.sale;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import ru.extas.model.sale.*;
@@ -36,18 +35,18 @@ public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
      * <p>Constructor for ProdInSaleEditForm.</p>
      *
      * @param caption a {@link java.lang.String} object.
-     * @param obj     a {@link com.vaadin.data.util.BeanItem} object.
+     * @param productInSale     a {@link com.vaadin.data.util.BeanItem} object.
      */
-    public ProdInSaleEditForm(final String caption, final ProductInSale obj) {
-        super(caption, obj);
+    public ProdInSaleEditForm(final String caption, final ProductInSale productInSale) {
+        super(caption, productInSale);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void initObject(final ProductInSale obj) {
-        if (obj.isNew()) {
+    protected void initEntity(final ProductInSale productInSale) {
+        if (productInSale.isNew()) {
         }
     }
 
@@ -55,20 +54,20 @@ public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
      * {@inheritDoc}
      */
     @Override
-    protected ProductInSale saveObject(final ProductInSale obj) {
+    protected ProductInSale saveEntity(final ProductInSale productInSale) {
         NotificationUtil.showSuccess("Продукт сохранен в продаже");
-        return obj;
+        return productInSale;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ComponentContainer createEditFields(final ProductInSale obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 
-        productField = new ProductSelect("Название продукта", "Введите название продукта", obj.getProduct());
+        productField = new ProductSelect("Название продукта", "Введите название продукта", getEntity().getProduct());
         productField.setWidth(100, Unit.PERCENTAGE);
         productField.setRequired(true);
         productField.addValueChangeListener(e -> {
@@ -80,7 +79,7 @@ public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
         summField = new EditField("Сумма", "Введите сумму по продукту");
         summField.setRequired(true);
         form.addComponent(summField);
-        setSummCaption(obj.getProduct());
+        setSummCaption(getEntity().getProduct());
 
         downpaymentField = new EditField("Первоначальный взнос", "Введите сумму первоначального взноса по продукту");
         //downpaymentField.setRequired(true);

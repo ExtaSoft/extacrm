@@ -3,7 +3,6 @@ package ru.extas.web.lead;
 import com.google.common.base.Strings;
 import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Like;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.shared.ui.MarginInfo;
@@ -24,7 +23,6 @@ import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.*;
 import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
-import ru.extas.web.contacts.employee.UserContactSelectField;
 import ru.extas.web.contacts.person.PersonDataDecl;
 import ru.extas.web.contacts.person.PersonEditForm;
 import ru.extas.web.contacts.person.PersonSelect;
@@ -148,15 +146,15 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
      * {@inheritDoc}
      */
     @Override
-    protected ComponentContainer createEditFields(final Lead obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
         form.setSizeFull();
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Клиент"));
-        if (obj.getStatus() == Lead.Status.NEW) {
+        if (getEntity().getStatus() == Lead.Status.NEW) {
             if (qualifyForm) {
-                final Component clientPanel = createClientPanel(obj);
+                final Component clientPanel = createClientPanel(getEntity());
                 form.addComponent(clientPanel);
             } else {
                 contactNameField = new EditField("Имя", "Введите имя клиента");
@@ -198,10 +196,10 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
-        if (obj.getStatus() == Lead.Status.NEW) {
-            if (obj.getVendor() == null) {
+        if (getEntity().getStatus() == Lead.Status.NEW) {
+            if (getEntity().getVendor() == null) {
                 if (qualifyForm) {
-                    final Component vendorPanel = createVendorPanel(obj);
+                    final Component vendorPanel = createVendorPanel(getEntity());
                     form.addComponent(vendorPanel);
                 } else {
                     regionField = new RegionSelect();
@@ -221,7 +219,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дополнительно"));
         responsibleField = new EAEmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
-        responsibleField.setRequired(obj.getStatus() != Lead.Status.NEW || qualifyForm);
+        responsibleField.setRequired(getEntity().getStatus() != Lead.Status.NEW || qualifyForm);
         form.addComponent(responsibleField);
 
         commentField = new TextArea("Примечание");
@@ -270,7 +268,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             editWin.addCloseFormListener(event1 -> {
                 if (editWin.isSaved()) {
                     vendorsContainer.refresh();
-                    table.setValue(editWin.getObjectId());
+                    table.setValue(editWin.getEntityId());
                 }
             });
             FormUtils.showModalWin(editWin);
@@ -370,7 +368,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             editWin.addCloseFormListener(event1 -> {
                 if (editWin.isSaved()) {
                     clientsContainer.refresh();
-                    table.setValue(editWin.getObjectId());
+                    table.setValue(editWin.getEntityId());
                 }
             });
             FormUtils.showModalWin(editWin);
@@ -453,20 +451,20 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
      * {@inheritDoc}
      */
     @Override
-    protected void initObject(final Lead obj) {
-        if (obj.isNew()) {
-            obj.setStatus(Lead.Status.NEW);
+    protected void initEntity(final Lead lead) {
+        if (lead.isNew()) {
+            lead.setStatus(Lead.Status.NEW);
             final UserManagementService userService = lookup(UserManagementService.class);
             final Employee user = userService.getCurrentUserEmployee();
             if (user != null) {
                 if (user.getWorkPlace() != null) {
                     final SalePoint salePoint = user.getWorkPlace();
-                    obj.setVendor(salePoint);
-                    obj.setPointOfSale(salePoint.getName());
+                    lead.setVendor(salePoint);
+                    lead.setPointOfSale(salePoint.getName());
                 }
             }
             final Employee userContact = lookup(UserManagementService.class).getCurrentUserEmployee();
-            obj.setResponsible(userContact);
+            lead.setResponsible(userContact);
         }
     }
 
@@ -475,33 +473,33 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
      * {@inheritDoc}
      */
     @Override
-    protected Lead saveObject(Lead obj) {
+    protected Lead saveEntity(Lead lead) {
         final LeadRepository leadRepository = lookup(LeadRepository.class);
         final SaleRepository saleRepository = lookup(SaleRepository.class);
         if (qualifyForm) {
-            obj = leadRepository.qualify(obj);
-            evictCache(saleRepository.findByLead(obj));
-            Sale sale = saleRepository.findByLead(obj);
+            lead = leadRepository.qualify(lead);
+            evictCache(saleRepository.findByLead(lead));
+            Sale sale = saleRepository.findByLead(lead);
             NotificationUtil.showSuccess("Лид квалифицирован");
             ConfirmDialog.show(UI.getCurrent(),
                     "Лид успешно квалифицирован...",
                     MessageFormat.format("Лид № {0} был успешно квалифицирован, на его основе была создана продажа № {1}. " +
                             "Продажа доступна для просмотра/редактирования в разделе \"Продажи\". " +
-                            "Хотите просмотреть/отредактировать эту продажу сейчас?", obj.getNum(), sale.getNum()),
+                            "Хотите просмотреть/отредактировать эту продажу сейчас?", lead.getNum(), sale.getNum()),
                     "Да", "Нет", () -> {
                         final SaleEditForm saleEditForm = new SaleEditForm(sale);
                         FormUtils.showModalWin(saleEditForm);
                     });
         } else {
-            obj = leadRepository.secureSave(obj);
+            lead = leadRepository.secureSave(lead);
             NotificationUtil.showSuccess("Лид сохранен");
         }
 
         // Решаем проблему с автоинкрементами базы о  которых не знает JPA
-        if (obj.getNum() == null)
-            evictCache(obj);
+        if (lead.getNum() == null)
+            evictCache(lead);
 
-        return obj;
+        return lead;
     }
 
 }

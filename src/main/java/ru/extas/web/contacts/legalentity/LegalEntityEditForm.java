@@ -4,7 +4,6 @@
 package ru.extas.web.contacts.legalentity;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.PredictConfirmedAction;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.AddressInfoField;
 import ru.extas.web.contacts.company.CompanyField;
@@ -101,14 +101,14 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     public void attach() {
         super.attach();
 
-        if (getObject().getCompany() == null) {
+        if (getEntity().getCompany() == null) {
             companyField.setReadOnly(false);
             companyField.setVisible(true);
             companyField.setRequired(true);
         } else {
             companyField.setReadOnly(true);
             companyField.getPropertyDataSource().setReadOnly(true);
-            if (getObject().getCompany().isNew()) {
+            if (getEntity().getCompany().isNew()) {
                 companyField.setVisible(false);
                 companyField.setRequired(false);
             }
@@ -119,16 +119,16 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
      * {@inheritDoc}
      */
     @Override
-    protected void initObject(final LegalEntity obj) {
-        if (obj.isNew()) {
+    protected void initEntity(final LegalEntity legalEntity) {
+        if (legalEntity.isNew()) {
             // Инициализируем новый объект
             if (companySupplier != null)
-                obj.setCompany(companySupplier.get());
+                legalEntity.setCompany(companySupplier.get());
         }
-        if (obj.getRegAddress() == null)
-            obj.setRegAddress(new AddressInfo());
-        if (obj.getPostAddress() == null)
-            obj.setPostAddress(new AddressInfo());
+        if (legalEntity.getRegAddress() == null)
+            legalEntity.setRegAddress(new AddressInfo());
+        if (legalEntity.getPostAddress() == null)
+            legalEntity.setPostAddress(new AddressInfo());
     }
 
 
@@ -136,14 +136,14 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
      * {@inheritDoc}
      */
     @Override
-    protected LegalEntity saveObject(LegalEntity obj) {
-        if (!obj.getCompany().isNew()) {
+    protected LegalEntity saveEntity(LegalEntity legalEntity) {
+        if (!legalEntity.getCompany().isNew()) {
             logger.debug("Saving contact data...");
             final LegalEntityRepository contactRepository = lookup(LegalEntityRepository.class);
-            obj = contactRepository.secureSave(obj);
+            legalEntity = contactRepository.secureSave(legalEntity);
             NotificationUtil.showSuccess("Юр. лицо сохранено");
         }
-        return obj;
+        return legalEntity;
     }
 
 
@@ -151,9 +151,15 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
      * {@inheritDoc}
      */
     @Override
-    protected ComponentContainer createEditFields(final LegalEntity obj) {
+    protected ComponentContainer createEditFields() {
         final FormLayout formLayout = new ExtaFormLayout();
         formLayout.setMargin(true);
+
+        final PredictConfirmedAction predictConfirmedAction = new PredictConfirmedAction(
+                "Необходимо сохранить Юр. лицо...",
+                "Необходимо сохранить Юр. лицо прежде чем продолжить редактирование. Сохранить сейчас?",
+                () -> !getEntity().isNew(), () -> save()
+        );
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // "Общая информация"
@@ -182,24 +188,27 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         directorField = new EmployeeField("Генеральный директор",
                 "Выберите или введите геннерального деректора юридического лица");
         directorField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
-        directorField.setLegalEntitySupplier(super::getObject);
+        directorField.setLegalEntitySupplier(super::getEntity);
         directorField.addValueChangeListener(e -> {
             Employee emp = directorField.getValue();
             Company cmp = companyField.getValue();
             if (cmp == null)
                 companyField.setValue(emp.getCompany());
         });
+        directorField.setNewEmployeePrecondition(predictConfirmedAction);
         formLayout.addComponent(directorField);
+
         accountantField = new EmployeeField("Главный бухгалтер",
                 "Выберите или введите главного бухгалтера юридического лица");
         accountantField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
-        accountantField.setLegalEntitySupplier(super::getObject);
+        accountantField.setLegalEntitySupplier(super::getEntity);
         accountantField.addValueChangeListener(e -> {
             Employee emp = accountantField.getValue();
             Company cmp = companyField.getValue();
             if (cmp == null)
                 companyField.setValue(emp.getCompany());
         });
+        accountantField.setNewEmployeePrecondition(predictConfirmedAction);
         formLayout.addComponent(accountantField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
