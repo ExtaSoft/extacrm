@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
+<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
+<!-- 2014-11-16T22:12:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PropertyInsuranceTemplate" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" isSummaryNewPage="true" uuid="986df7ce-c89b-43fa-a244-5c098911f17a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -87,16 +88,16 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<staticText>
-					<reportElement positionType="Float" x="0" y="0" width="525" height="48" uuid="544ceb62-07c9-4c45-a527-be14ffba05fe"/>
+					<reportElement positionType="Float" x="0" y="0" width="525" height="55" uuid="544ceb62-07c9-4c45-a527-be14ffba05fe"/>
 					<box topPadding="0"/>
 					<textElement verticalAlignment="Middle">
-						<font pdfEncoding=""/>
+						<font size="7" pdfEncoding=""/>
 						<paragraph tabStopWidth="0"/>
 					</textElement>
-					<text><![CDATA[По настоящему Полису-оферте (далее – Полис) Страховщик – ОАО «АльфаСтрахование» обязуется за обусловленную Полисом плату (страховую премию) возместить Страхователю или иному лицу, в пользу которого заключен Полис (Выгодоприобретателю), в пределах определенных Полисом страховых сумм убытки, причиненные в результате наступления предусмотренного Полисом события (страхового случая). Условия страхования по Полису разработаны на основании «Правил страхования имущественных рисков» в редакции от 27.06.2012.]]></text>
+					<text><![CDATA[Настоящим Полисом-офертой (далее Полис-оферта, Полис) ОАО «АльфаСтрахование» (далее именуемое Страховщик) в соответствии со ст. 436 ГК РФ предлагает Страхователю заключить договор страхования на следующих условиях: Страховщик обязуется за обусловленную договором плату (страховую премию) возместить Страхователю или иному лицу, в пользу которого заключен Полис-оферта (Выгодоприобретателю), в пределах определенных договором страховых сумм убытки, причиненные в результате наступления предусмотренного договором события (страхового случая). Условия страхования по Полису-оферте разработаны на основании «Правил страхования имущественных рисков» Страховщика.]]></text>
 				</staticText>
 				<frame>
-					<reportElement style="TableContent" positionType="Float" x="0" y="50" width="525" height="94" uuid="e0e68c7a-7828-4a92-8e5b-172c0323c701">
+					<reportElement style="TableContent" positionType="Float" x="0" y="60" width="525" height="105" uuid="e0e68c7a-7828-4a92-8e5b-172c0323c701">
 						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 						<property name="local_mesure_unity" value="pixel"/>
 					</reportElement>
@@ -114,9 +115,9 @@
 							<rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textElement verticalAlignment="Middle">
-							<font size="8" isBold="true"/>
+							<font size="7" isBold="true"/>
 						</textElement>
-						<text><![CDATA[Страховщик]]></text>
+						<text><![CDATA[1. Страховщик]]></text>
 					</staticText>
 					<staticText>
 						<reportElement positionType="Float" x="110" y="0" width="414" height="25" uuid="a82a8db2-3d53-425d-a35d-db9b3a1e9f44">
@@ -129,9 +130,10 @@
 							<rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textElement verticalAlignment="Top">
-							<font size="8"/>
+							<font size="7"/>
 						</textElement>
-						<text><![CDATA[ОАО «АльфаСтрахование», Российская Федерация, г. Москва, ул. Шаболовка, дом 31 строение Б. Телефон +7 495 788-09-99]]></text>
+						<text><![CDATA[ОАО «АльфаСтрахование», Российская Федерация, г. Москва, ул. Шаболовка, дом 31 строение Б. 
+Телефон: +7 495 788-09-99, 8 800 333 75 57]]></text>
 					</staticText>
 					<textField>
 						<reportElement positionType="Float" x="110" y="29" width="414" height="19" uuid="4c773007-83a7-4ba1-8f83-c1e9846914a2">
@@ -164,9 +166,9 @@
 							<rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textElement verticalAlignment="Middle">
-							<font size="8" isBold="true"/>
+							<font size="7" isBold="true"/>
 						</textElement>
-						<text><![CDATA[Страхователь]]></text>
+						<text><![CDATA[2. Страхователь]]></text>
 					</staticText>
 					<staticText>
 						<reportElement positionType="Float" x="219" y="52" width="94" height="19" uuid="24267f55-9334-4660-bfa8-81b2aff75e9c">
@@ -186,11 +188,13 @@
 						<text><![CDATA[Дата рождения]]></text>
 					</staticText>
 					<staticText>
-						<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="75" width="110" height="19" isPrintWhenDetailOverflows="true" uuid="95a00c62-68f0-4300-b99c-d86fdc20f002">
+						<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="75" width="110" height="30" isPrintWhenDetailOverflows="true" uuid="95a00c62-68f0-4300-b99c-d86fdc20f002">
 							<property name="local_mesure_unity" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 							<property name="local_mesure_unitwidth" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="local_mesure_unitx" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						</reportElement>
 						<box padding="2">
 							<topPen lineWidth="2.0"/>
@@ -199,13 +203,17 @@
 							<rightPen lineWidth="2.0"/>
 						</box>
 						<textElement verticalAlignment="Middle">
-							<font size="8" isBold="true"/>
+							<font size="7" isBold="true"/>
 						</textElement>
-						<text><![CDATA[Выгодоприобретатель]]></text>
+						<text><![CDATA[3. Выгодоприобретатель]]></text>
 					</staticText>
 					<textField isStretchWithOverflow="true">
-						<reportElement positionType="Float" x="110" y="75" width="414" height="19" uuid="5d5ba59c-5355-4271-9cae-fd310ece7197">
+						<reportElement positionType="Float" x="110" y="75" width="414" height="30" uuid="5d5ba59c-5355-4271-9cae-fd310ece7197">
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="local_mesure_unitx" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="local_mesure_unitwidth" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						</reportElement>
 						<box padding="2">
 							<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
@@ -214,9 +222,9 @@
 							<rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textElement verticalAlignment="Middle">
-							<font size="8"/>
+							<font size="7"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$P{ins}.getBeneficiary() == $P{ins}.getClientName() ? $P{ins}.getBeneficiary() : "При гибели или утрате застрахованного имущества - в размере неисполненных обязательств Заемщика (Лизингополучателя), Выгодоприобретатель - " + $P{ins}.getBeneficiary() + ", в оставшейся части – Страхователь. При частичном повреждении застрахованного имущества - Страхователь"]]></textFieldExpression>
+						<textFieldExpression><![CDATA[!$P{ins}.isCredit() ? "Страхование \"За счет кого следует\"" : "При гибели или утрате застрахованного имущества - в размере неисполненных обязательств Заемщика, Выгодоприобретатель - " + $P{ins}.getBeneficiary() + ", в оставшейся части – Собственник застрахованного имущества."]]></textFieldExpression>
 					</textField>
 					<textField>
 						<reportElement positionType="Float" x="313" y="52" width="105" height="19" uuid="94c724e3-4085-45cf-a5d4-26710d981da7">
@@ -251,7 +259,7 @@
 							<rightPen lineWidth="2.0"/>
 						</box>
 						<textElement verticalAlignment="Middle">
-							<font size="8" isBold="true"/>
+							<font size="7" isBold="true"/>
 						</textElement>
 						<text><![CDATA[Телефон]]></text>
 					</staticText>
@@ -371,62 +379,50 @@
 					</textField>
 				</frame>
 				<staticText>
-					<reportElement positionType="Float" x="0" y="145" width="525" height="44" uuid="419a6343-6ec5-46e3-8d8f-690c5dab8b77">
-						<property name="local_mesure_unitx" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-						<property name="local_mesure_unity" value="pixel"/>
+					<reportElement positionType="Float" x="0" y="208" width="525" height="25" uuid="233307aa-325a-4cf2-aafc-b26e35491ee4"/>
+					<text><![CDATA[4. Объектом страхования являются не противоречащие действующему законодательству РФ имущественные интересы Страхователя или Выгодоприобретателя, связанные с риском гибели или утраты застрахованного имущества, указанного в п.8 Полиса.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="59" y="235" width="466" height="20" uuid="ec23729b-9448-46e4-b4ad-ffb04a0861d3">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
-					<textElement>
-						<font size="7"/>
-					</textElement>
-					<text><![CDATA[Настоящий Полис может заключаться без указания имени или наименования Выгодоприобретателя. При этом при наступлении страхового события Страхователь (Выгодоприобретатель) обязан предоставить документы (паспорт самоходной машины; договор купли-продажи самоходной машины; акт приемки-передачи самоходной машины; если техника приобреталась в кредит - кредитный договор и документы, подтверждающие оплату взносов по кредитному договору), подтверждающие имущественный интерес в сохранении застрахованного имущества), а также оригинал настоящего Полиса.]]></text>
+					<text><![CDATA[В рамках настоящего Полиса на страхование принимается движимое имущество: самоходная машина (квадроцикл, снегоход, гидроцикл).]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="Float" x="0" y="190" width="525" height="30" uuid="233307aa-325a-4cf2-aafc-b26e35491ee4"/>
-					<text><![CDATA[Объектом страхования являются не противоречащие действующему законодательству РФ имущественные интересы Страхователя или Выгодоприобретателя, связанные с риском поврждения, гибели или утраты имущества, указанного в Таблице «Предмет страхования, страховая сумма, страховая премия».]]></text>
-				</staticText>
-				<staticText>
-					<reportElement positionType="Float" x="59" y="222" width="466" height="20" uuid="ec23729b-9448-46e4-b4ad-ffb04a0861d3">
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					</reportElement>
-					<text><![CDATA[В рамках настоящего Полиса на страхование принимается движимое имущество: самоходная машина (квадроцикл, снегоход).]]></text>
-				</staticText>
-				<staticText>
-					<reportElement positionType="Float" x="0" y="222" width="59" height="20" uuid="1aeb21b6-3a12-49ba-8977-c49484149a09">
+					<reportElement positionType="Float" x="0" y="235" width="59" height="20" uuid="1aeb21b6-3a12-49ba-8977-c49484149a09">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Left">
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Предмет страхования:]]></text>
+					<text><![CDATA[5. Предмет страхования:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="Float" x="59" y="246" width="466" height="20" uuid="39afefd5-f442-4e48-9a87-d7bd863bfbdc">
+					<reportElement positionType="Float" x="59" y="259" width="466" height="20" uuid="39afefd5-f442-4e48-9a87-d7bd863bfbdc">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
-					<text><![CDATA[Движимое имущество считается застрахованным от повреждения, гибели или утраты в результате противоправных действия третьих лиц (кража со взломом, грабеж, разбой).]]></text>
+					<text><![CDATA[Движимое имущество считается застрахованным от гибели или утраты в результате противоправных действия третьих лиц, а именно: кража со взломом, грабеж, разбой.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="Float" x="1" y="246" width="58" height="20" uuid="e75a35dc-7763-43da-8880-c22e08de8454">
+					<reportElement positionType="Float" x="1" y="259" width="58" height="20" uuid="e75a35dc-7763-43da-8880-c22e08de8454">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Left">
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Страховые риски:]]></text>
+					<text><![CDATA[6.Страховые риски:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="Float" x="0" y="265" width="525" height="154" uuid="6b046ee8-9da4-4221-ac80-427d10287e72"/>
-					<text><![CDATA[1. Кража со взломом (тайное хищение чужого имущества с проникновением на территорию страхования) в смысле договора страхования имеет место, если злоумышленник:
-    a. Проникает на территорию страхования, взламывая двери, ворота или окна, применяя отмычки или поддельные ключи, или иные технические средства. Поддельными считаются ключи, изготовленные по поручению или с ведома лиц, не имеющих права распоряжаться подлинными ключами; одного факта исчезновения имущества с территории страхования недостаточно для доказательства использования поддельных ключей (факт использования поддельных ключей или отмычек должен быть подтвержден результатами трасологической экспертизы);
-     b. Взламывает в пределах территории страхования (в т.ч. помещения), используемые в качестве хранилищ имущества или вскрывает их с помощью отмычек, поддельных ключей или иных инструментов;
-    c. Изымает предметы из закрытых помещений, куда он ранее проник, используя средства, указанные в подпункте а), или обычным путем, в которых тайно продолжал оставаться до их закрытия и использовал средства, указанные в подпункте а) при выходе из помещения.
+					<reportElement positionType="Float" x="0" y="280" width="525" height="139" uuid="6b046ee8-9da4-4221-ac80-427d10287e72"/>
+					<text><![CDATA[6.1. Кража со взломом (тайное хищение чужого имущества с проникновением на территорию страхования) в смысле договора страхования имеет место, если злоумышленник: 
+а) проникает на территорию страхования, взламывая двери, ворота или окна, применяя отмычки или поддельные ключи, или иные технические средства. Поддельными считаются ключи, изготовленные по поручению или с ведома лиц, не имеющих права распоряжаться подлинными ключами; одного факта исчезновения имущества с территории страхования недостаточно для доказательства использования поддельных ключей (факт использования поддельных ключей или отмычек должен быть подтвержден результатами трасологической экспертизы);
+б) взламывает в пределах территории страхования (в т.ч. помещения), используемые в качестве хранилищ имущества или вскрывает их с помощью отмычек, поддельных ключей или иных инструментов;
+в) изымает предметы из закрытых помещений, куда он ранее проник, используя средства, указанные в подпункте а), или обычным путем, в которых тайно продолжал оставаться до их закрытия и использовал средства, указанные в подпункте а) при выходе из помещения.
 Для соблюдения норм безопасности Страхователь или лица, ответственные за хранение обязаны обеспечивать запирание замков на застрахованной территории и принимать все меры для обеспечения степени безопасности.
-2. Грабеж (открытое хищение чужого имущества в соответствии со ст.161 УК РФ)
-3. Разбой (нападение в целях хищения чужого имущества, совершенное с применением насилия, опасного для жизни или здоровья, либо с угрозой применения такого насилия в соответствии со ст.162 УК РФ)]]></text>
+6.2. Грабеж (открытое хищение чужого имущества в соответствии со ст.161 УК РФ).
+6.3. Разбой (нападение в целях хищения чужого имущества, совершенное с применением насилия, опасного для жизни или здоровья, либо с угрозой применения такого насилия в соответствии со ст.162 УК РФ).]]></text>
 				</staticText>
 				<staticText>
 					<reportElement positionType="Float" x="0" y="420" width="259" height="20" uuid="7eef68e2-51a6-4a7d-a2df-f199b569ff8e"/>
@@ -439,7 +435,7 @@
 					<textElement>
 						<font size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Территория страхования]]></text>
+					<text><![CDATA[7. Территория страхования]]></text>
 				</staticText>
 				<staticText>
 					<reportElement positionType="Float" x="260" y="420" width="264" height="20" uuid="26ebf921-b417-4076-a5ad-7355a79567b7"/>
@@ -484,7 +480,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Предмет страхования, страховая сумма, страховая премия]]></text>
+					<text><![CDATA[8. Предмет страхования, страховая сумма, страховая премия]]></text>
 				</staticText>
 				<staticText>
 					<reportElement positionType="Float" x="0" y="508" width="265" height="20" uuid="2b65b950-9fba-4ec1-a3ab-48934dcff30c"/>
@@ -584,28 +580,10 @@
 				</textField>
 				<staticText>
 					<reportElement positionType="Float" x="0" y="564" width="525" height="43" uuid="cd111228-70a8-44fd-8ce1-8fb90ca93f8c"/>
-					<text><![CDATA[На основании ст. 435, 438 ГК РФ согласием Страхователя заключить Полис на предложенных Страховщиком условиях (акцептом) считается уплата страховой премии.
-Страховая премия уплачивается единовременно.
-Данное предложение действительно в течение 1 (Одного) календарного дня, в котором был выдан Полис.
+					<text><![CDATA[9. На основании ст. 435, 438 ГК РФ согласием Страхователя заключить Полис на предложенных Страховщиком условиях (акцептом) считается уплата страховой премии.
+Страховая премия уплачивается Страхователем единовременно. Дата заключения Полиса соответствует дате оплаты Полиса.
+Данное предложение действительно в течение даты, в которою был выдан Полис.
 Сумма и дата оплаты страховой премии указываются в квитанции, являющейся подтверждением оплаты страховой премии.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement positionType="Float" x="0" y="607" width="100" height="50" uuid="7d851e90-0810-4c5c-a8bd-c8b571f65d2b">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="local_mesure_unitheight" value="pixel"/>
-						<property name="local_mesure_unitx" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					</reportElement>
-					<box padding="3">
-						<topPen lineWidth="1.5"/>
-						<leftPen lineWidth="1.5"/>
-						<bottomPen lineWidth="1.5"/>
-						<rightPen lineWidth="1.5"/>
-					</box>
-					<textElement textAlignment="Left">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Период страхования по Полису]]></text>
 				</staticText>
 				<textField>
 					<reportElement positionType="Float" x="100" y="607" width="425" height="50" uuid="ce491b20-c2c7-49bc-bd9d-b774a32efa8f">
@@ -623,9 +601,7 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{periodOfCover} + " с даты вступления Полиса в силу. " + 
-(($P{ins}.isUsedMotor() == true) ? ("Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем оплаты Страхователем полной суммы страховой премии.")
-: ("Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем подписания Страхователем акта приема-передачи по договору купли-продажи (договора лизинга) № " + $P{ins}.getSaleNum() + " от "+ new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getSaleDate().toDate()) + "г. застрахованного имущества, но в любом случае не ранее даты оплаты страховой премии."))]]></textFieldExpression>
+					<textFieldExpression><![CDATA[!$P{ins}.isCredit() ? "Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем оплаты Страхователем полной суммы страховой премии." : "Полис вступает в силу с 00 ч. 00 мин. дня, следующего за днем подписания Страхователем акта приема-передачи по договору купли-продажи № " + $P{ins}.getSaleNum() + " от "+ new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getSaleDate().toDate()) + "г. застрахованного имущества."]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement positionType="Float" x="0" y="657" width="525" height="20" uuid="aa13249b-f593-4769-ade9-5d3510435c17">
@@ -634,6 +610,30 @@
 					</reportElement>
 					<text><![CDATA[Моментом уплаты страховой премии считается поступление денежных средств в кассу представителя Страховщика или на расчетный счет представителя Страховщика.]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="0" y="172" width="525" height="34" uuid="10b77ebe-a0e7-49e0-9e72-ffbc0d1ce429">
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[!$P{ins}.isCredit()]]></printWhenExpression>
+					</reportElement>
+					<text><![CDATA[Настоящий Полис может заключаться без указания имени или наименования Выгодоприобретателя. При этом при наступлении страхового события Страхователь (Выгодоприобретатель) обязан предоставить документы (паспорт самоходной машины; договор купли-продажи самоходной машины; акт приемки-передачи самоходной машины), подтверждающие имущественный интерес в сохранении застрахованного имущества, а также оригинал настоящего Полиса.]]></text>
+				</staticText>
+				<textField>
+					<reportElement positionType="Float" mode="Transparent" x="0" y="607" width="100" height="50" forecolor="#000000" backcolor="#FFFFFF" uuid="2d78308d-c84b-45d4-b5ef-03e4f4ec3559"/>
+					<box padding="3" topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+						<topPen lineWidth="1.5"/>
+						<leftPen lineWidth="1.5"/>
+						<bottomPen lineWidth="1.5"/>
+						<rightPen lineWidth="1.5"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="DejaVu Sans" size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1251 (Cyrillic)" isPdfEmbedded="true"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA["10. Период страхования по Полису "+$P{periodOfCover}+" месяцев с даты вступления Полиса в силу."]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</detail>
@@ -649,6 +649,12 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<image>
+					<reportElement x="376" y="613" width="129" height="119" uuid="a34ab76d-e22a-41a8-ac11-d951d48db983">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+					</reportElement>
+					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/Печать-Альфа.png")]]></imageExpression>
+				</image>
+				<image>
 					<reportElement x="222" y="655" width="140" height="80" uuid="95ecb8d1-dcad-450c-bcef-cd999ed5dbb1">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -657,12 +663,6 @@
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/Подпись-Альфа.png")]]></imageExpression>
-				</image>
-				<image>
-					<reportElement x="376" y="605" width="129" height="119" uuid="a34ab76d-e22a-41a8-ac11-d951d48db983">
-						<property name="local_mesure_unitwidth" value="pixel"/>
-					</reportElement>
-					<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/Печать-Альфа.png")]]></imageExpression>
 				</image>
 				<staticText>
 					<reportElement x="0" y="0" width="525" height="12" uuid="ec449955-36cd-4f70-bd4b-d47ae3e0e69d">
@@ -674,10 +674,10 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Исключения из страхования.]]></text>
+					<text><![CDATA[11. Исключения из страхования.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="12" width="525" height="177" uuid="211a2726-4538-4700-8b1e-807b6df659a5">
+					<reportElement x="0" y="12" width="525" height="185" uuid="211a2726-4538-4700-8b1e-807b6df659a5">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -686,28 +686,28 @@
 					<textElement verticalAlignment="Top">
 						<font size="6"/>
 					</textElement>
-					<text><![CDATA[Во всех случаях не подлежат возмещению убытки в результате:
-1. Умысла Страхователя, Выгодоприобретателя, или представителей:
-2. Повреждения, вызванные постепенным естественным износом, процессом окисления, ржавления или разрушения;
-3. Любого косвенного ущерба, не являющегося прямым следствием страхового случая;
-4. Убытков, вызванных хранением бомб, мин, снарядов или иного вооружения;
-5. Убытков, наступивших вследствие народных волнений, массовых беспорядков, забастовок или локаутов;
-6. Убытков наступивших в связи с конфискацией, реквизицией, арестом, уничтожением или повреждением имущества по распоряжению военных или гражданских властей, или иных действий административных органов;
-7. Убытков наступивших в результате гражданской войны, вооруженного восстания, мятежа, действий вооруженных повстанцев, а также действий властей, направленных на их подавление;
-8. Террористического акта и/или терроризма, несмотря на любые другие обстоятельства или события, действующие одновременно;
-9. Действий по контролированию, предупреждению, подавлению или любыми другими действиями, относящимися к террористическому акту и/или терроризму;
-10. Актов насилия или актов, опасных для человеческой жизни, материальной и нематериальной собственности с целью или желанием повлиять на любое правительство или с целью запугивания населения или какой-либо прослойки населения;
-11. Необъяснимого исчезновения застрахованного имущества; его пропажи или сокрытия;
-12. Повреждения или поломки, подлежащие ремонту в рамках гарантийного срока, установленного производителем застрахованного имущества;
-13. Повреждения или поломки в результате нарушений Страхователем (Выгодоприобретателем) или лицами, действовавшими по их поручению, указанию, рекомендации, содержащихся в инструкции, в правилах и рекомендациях по эксплуатации и обслуживанию застрахованного имущества, в том числе самостоятельного налаживания, монтажа, сборки, разборки застрахованного имущества;
-14. Повреждения или поломки во время технического обслуживания застрахованного имущества (чистка, экспертиза, сервисное обслуживание, настройка, ремонт и др.) сервисным центром, воздействия ультразвуковых волн;
-15. использования застрахованного имущества в целях, не соответствующих его прямому назначению;
-16. Нарушения правил, норм, сроков и условий эксплуатации, и хранения застрахованного имущества, изложенных в документации;
-17. Наличия следов попыток неквалифицированного ремонта;
-18. Возникновения дефекта, вызванного изменением конструкции или схемы застрахованного имущества, не предусмотренным Изготовителем.]]></text>
+					<text><![CDATA[Во всех случаях не подлежат возмещению убытки, возникшие в результате:
+11.1. умысла Страхователя, Выгодоприобретателя, или представителей:
+11.2. повреждения, вызванные постепенным естественным износом, процессом окисления, ржавления или разрушения;
+11.3. любого косвенного ущерба, не являющегося прямым следствием страхового случая;
+11.4. убытков, вызванных хранением бомб, мин, снарядов или иного вооружения;
+11.5. убытков, наступивших вследствие народных волнений, массовых беспорядков, забастовок или локаутов;
+11.6. убытков наступивших в связи с конфискацией, реквизицией, арестом, уничтожением или повреждением имущества по распоряжению военных или гражданских властей или иных действий административных органов;
+11.7. убытков наступивших в результате гражданской войны, вооруженного восстания, мятежа, действий вооруженных повстанцев, а также действий властей, направленных на их подавление;
+11.8. террористического акта и/или терроризма, несмотря на любые другие обстоятельства или события, действующие одновременно;
+11.9. действий по контролированию, предупреждению, подавлению или любыми другими действиями, относящимися к террористическому акту и/или терроризму;
+11.10. актов насилия или актов, опасных для человеческой жизни, материальной и нематериальной собственности с целью или желанием повлиять на любое правительство или с целью запугивания населения или какой-либо прослойки населения;
+11.11. необъяснимого исчезновения застрахованного имущества; его пропажи или сокрытия;
+11.12. повреждения или поломки, подлежащие ремонту в рамках гарантийного срока, установленного производителем застрахованного имущества;
+11.13. повреждения или поломки в результате нарушений Страхователем (Выгодоприобретателем) или лицами, действовавшими по их поручению, указанию, рекомендации, содержащихся в инструкции, в правилах и рекомендациях по эксплуатации и обслуживанию застрахованного имущества, в том числе самостоятельного налаживания, монтажа, сборки, разборки застрахованного имущества;
+11.14. повреждения или поломки во время технического обслуживания застрахованного имущества (чистка, экспертиза, сервисное обслуживание, настройка, ремонт и др.) сервисным центром, воздействия ультразвуковых волн;
+11.15. использования застрахованного имущества в целях, не соответствующих его прямому назначению;
+11.16. нарушения правил, норм, сроков и условий  эксплуатации и хранения застрахованного имущества, изложенных в документации;
+11.17. наличия следов попыток неквалифицированного ремонта;
+11.18. возникновения дефекта, вызванного изменением конструкции или схемы застрахованного имущества, не предусмотренным Изготовителем.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0" y="189" width="525" height="12" uuid="cb19a7f8-0c53-4183-af02-3b380a3bc6e4">
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0" y="198" width="525" height="12" uuid="cb19a7f8-0c53-4183-af02-3b380a3bc6e4">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -718,10 +718,10 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Действия Страхователя/ Выгодоприобретателя при страховом событии.]]></text>
+					<text><![CDATA[12. Действия Страхователя/ Выгодоприобретателя при страховом событии.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0" y="201" width="525" height="58" uuid="86d28479-405b-47f4-ab97-6baf86fd5cb0">
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="0" y="210" width="525" height="45" uuid="86d28479-405b-47f4-ab97-6baf86fd5cb0">
 						<property name="local_mesure_unitx" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -733,13 +733,12 @@
 						<font size="6"/>
 					</textElement>
 					<text><![CDATA[При возникновении убытка, в связи с которым Выгодоприобретатель обращается к Страховщику с претензией о выплате страхового возмещения, Выгодоприобретатель обязан:
-1. Принять все возможные меры по предотвращению или уменьшению ущерба и по спасению застрахованного имущества, если это представляется возможным; 
-2. Незамедлительно заявить о случившемся событии в органы внутренних дел;
-3. В течение трех рабочих дней с момента, когда Страхователю стало известно о наступлении события, подать письменное  заявление о событии в ОАО «АльфаСтрахование»;
-4. При повреждении застрахованного имущества обратиться в авторизованный сервисный центр, обслуживающий данную марку и модель поврежденного имущества.]]></text>
+12.1. принять все возможные меры по предотвращению или уменьшению ущерба и по спасению застрахованного имущества, если это представляется возможным; 
+12.2. незамедлительно заявить о случившемся событии в органы внутренних дел;
+12.3. в течение трех рабочих дней с момента, когда Страхователю стало известно о наступлении события, подать письменное  заявление о событии в ОАО «АльфаСтрахование».]]></text>
 				</staticText>
 				<staticText>
-					<reportElement positionType="FixRelativeToBottom" x="1" y="261" width="523" height="12" uuid="8b9584cf-d56e-4684-a88e-629259c8f8d2">
+					<reportElement positionType="FixRelativeToBottom" x="1" y="256" width="523" height="12" uuid="8b9584cf-d56e-4684-a88e-629259c8f8d2">
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="local_mesure_unity" value="pixel"/>
@@ -748,10 +747,10 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Перечень документов при наступлении страхового события.]]></text>
+					<text><![CDATA[13. Перечень документов при наступлении страхового события.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="273" width="525" height="149" uuid="62d9fd14-d297-475c-977a-bf3fd41129a4">
+					<reportElement x="0" y="269" width="525" height="142" uuid="62d9fd14-d297-475c-977a-bf3fd41129a4">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -763,20 +762,20 @@
 						<font size="6"/>
 					</textElement>
 					<text><![CDATA[Перечень документов, которые предоставляются Выгодоприобретателем при наступлении страхового события:
-1. Оригинал Полиса.
-2. Заявление об убытке по установленной форме, подписанное Выгодоприобретателем или его полномочным представителем.
-3. Документы из компетентных органов, подтверждающие факт и причины события:
-– заявление Страхователя в правоохранительные органы о возбуждении уголовного дела по факту и причине, связанное с наступлением страхового события с отметкой этого органа о его принятии с приложением документа о принятии сообщения о преступлении с указанием данных о лице, его принявшем, а также даты и времени его принятия;
-– постановление правоохранительного органа о возбуждении уголовного дела;
+13.1. Оригинал Полиса.
+13.2. Письменное заявление о страховом событии установленной формы, подписанное Выгодоприобретателем или его полномочным представителем.
+13.3. Документы из компетентных органов, подтверждающие факт и причины события:                                                                                                       – заявление Страхователя в правоохранительные органы о возбуждении уголовного дела по факту и причине, связанное с наступлением страхового события с отметкой этого органа о его принятии с приложением документа о принятии сообщения о преступлении с указанием данных о лице, его принявшем, а также даты и времени его принятия;
+– постановление правоохранительного органа о возбуждении уголовного дела дела либо постановление о приостановлении уголовного дела. Если уголовное дело не было приостановлено, то необходимо предоставить приговор суда или постановление о прекращении уголовного дела;
 – копия протокола осмотра места происшествия;
 – копия трасологической экспертизы, в случае наличия признаков проникновения в помещение путем подбора ключей;
-– постановление о приостановлении уголовного дела (в случае если нет постановления об отказе в возбуждении уголовного дела). Если уголовное дело не было приостановлено, то необходимо предоставить приговор суда или постановление о прекращении уголовного дела;
 – список похищенного имущества с указанием его стоимости, составленный собственноручно и заверенный печатью органа внутренних дел, проводящего расследование по заявленному событию.
-4. Паспорт самоходной машины; договор купли-продажи самоходной машины; акт приемки-передачи самоходной машины; если техника приобреталась в кредит - кредитный договор и документы, подтверждающие оплату взносов по кредитному договору. При этом дата, указанная в документах на оплату страховой премии по настоящему Полису, не может быть позже даты заключения договора купли-продажи/ подписания акта приемки-передачи застрахованного имущества по настоящему Полису.
-5. В случае повреждения застрахованного имущества - заключение авторизованного сервисного центра о причине повреждения имущества, возможности/не возможности проведения ремонта , стоимости ремонта (Акт о выполненной работе) или заключение о невозможности восстановления застрахованного имущества, а также подтверждение, что событие не входит в перечень гарантийных, предусмотренных производителем.]]></text>
+13.4. Паспорт самоходной машины; договор купли-продажи самоходной машины; акт приемки-передачи самоходной машины, кредитный договор и документы, подтверждающие оплату взносов по кредитному договору.
+13.5. В случае полной гибели застрахованного имущества - заключение авторизованного сервисного центра о причине повреждения имущества,  невозможности восстановления застрахованного имущества либо стоимости ремонта (калькуляция), а также подтверждение, что событие не входит в перечень гарантийных, предусмотренных производителем.
+13.6. Документ, подтверждающий оплату страховой премии.
+13.7. Документ, удостоверяющий личность заявителя или полномочия его представителя.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="422" width="525" height="12" uuid="5754b411-94a3-4218-9374-583bb2f11546">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="412" width="525" height="12" uuid="5754b411-94a3-4218-9374-583bb2f11546">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -787,10 +786,10 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Порядок выплаты страхового возмещения.]]></text>
+					<text><![CDATA[14. Порядок выплаты страхового возмещения.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="434" width="525" height="198" uuid="827c444d-76a8-467b-86d9-639b58ed6a30">
+					<reportElement x="0" y="425" width="525" height="105" uuid="827c444d-76a8-467b-86d9-639b58ed6a30">
 						<property name="local_mesure_unity" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -801,21 +800,16 @@
 					<textElement verticalAlignment="Top">
 						<font size="6"/>
 					</textElement>
-					<text><![CDATA[1. При утрате и гибели застрахованного имущества по выбору Страхователя (Выгодоприобретателя) выплата страхового возмещения может осуществляться:
-    a. В денежной форме (в размере действительной стоимости застрахованного имущества на момент наступления страхового случая с учетом износа из расчета 20% в год, но не более страховой суммы);
-    b. В натуральной форме, т.е. имуществом – техникой, аналогичной застрахованной на момент наступления страхового случая.
-2. При частичном повреждении застрахованного имущества в размере ущерба без учета соотношения страховой суммы и страховой стоимости (по системе «первого риска») без учета износа, но не более страховой суммы.3. В случае если восстановительные расходы превышают действительную стоимость застрахованного имущества на момент заключения Полиса, то признается полная гибель застрахованного имущества.
-3. В случае если восстановительные расходы превышают действительную стоимость застрахованного имущества на момент заключения Полиса, то признается полная гибель застрахованного имущества.
-4. Если имеются лица, виновные в наступлении страхового случая, Страхователь обязан передать Страховщику все документы и предпринять все действия, необходимые для осуществления Страховщиком права требования к виновным лицам.
-5. Страховщик имеет право отказать в страховой выплате по страховым случаям, непосредственной причиной которых явилось нарушение Страхователем (Выгодоприобретателем) норм безопасности, включая, установленные правила и сроки эксплуатации (обслуживания, хранения, правил техники безопасности и т.д.) застрахованного имущества.
-6. Страховой акт составляется и утверждается Страховщиком в течение 10 (Десяти) рабочих дней после получения всех необходимых документов, подтверждающих факт, причину и размер ущерба.
-7. Выплата страхового возмещения производится в течение 5 (Пяти) рабочих дней после утверждения Страховщиком страхового Акта.
-8. Общая сумма выплат страхового возмещения за весь период действия Полиса не может превышать страховой суммы, установленной Полисом.
-Согласен(а) на обработку Страховщиком и уполномоченными им третьими лицами сведений, указанных в настоящем Полисе (а также иных персональных сведений, получаемых Страховщиком при исполнении настоящего договора страхования (Полиса)), любыми способами, установленными законом, с целью исполнения договора страхования (Полиса), а также информирования Страхователя о программах страхования, о сроке действия договора (Полиса) и иными целями. Срок использования и обработки персональных сведений устанавливается в течение срока договорных отношений, связанных со страхованием, и срока исковой давности. Вы, может отозвать свое согласие на обработку персональных данных в любое время путем направления в ОАО «АльфаСтрахование» письменного и подписанного уведомления. ОАО «АльфаСтрахование» обязуется в течение 3 (трех) рабочих дней получения уведомления об отзыве согласия на обработку персональных данных прекратить их обработку, уничтожить и уведомить субъекта об уничтожении персональных данных. Вы подтверждаете, что согласие третьих лиц на передачу и обработку их персональных данных ОАО «АльфаСтрахование» в течение срока договорных отношений, связанных со страхованием, и срока исковой давности для целей формирования (разработки), заключения и исполнения договора страхования Вами получено в порядке, предусмотренном Федеральным законом от 27.07.2006 №152-ФЗ «О персональных данных».
-Стороны пришли к соглашению об использовании Страховщиком факсимильного воспроизведения подписи и печати Страховщика с помощью средств механического или иного копирования, электронно-цифровой подписи либо иного аналога собственноручной подписи.]]></text>
+					<text><![CDATA[14.1. При утрате или полной гибели застрахованного имущества  выплата страхового возмещения производится Страхователю (Выгодоприобретателю) в денежной форме в размере действительной стоимости застрахованного имущества на момент наступления страхового случая с учетом износа из расчета 20% в год,  но не более страховой суммы.
+14.2. В случае если восстановительные расходы превышают действительную стоимость застрахованного имущества на момент заключения Полиса, то признается полная гибель застрахованного имущества.
+14.3. Если имеются лица, виновные в наступлении страхового случая, Страхователь обязан передать Страховщику все документы и предпринять все действия, необходимые для осуществления Страховщиком  права требования к виновным лицам.
+14.4. Страховой акт составляется и утверждается Страховщиком в течение 10 (десяти) рабочих дней после получения всех необходимых документов, подтверждающих факт, причину и размер ущерба.
+14.5. При принятии решения об отказе в выплате страхового возмещения Страховщик письменно извещает об этом Страхователя/Выгодоприобретателя путем направления мотивированного отказа по почте в течение 10 (десяти) рабочих дней с даты принятия решения об отказе по адресу, указанному в заявлении о страховом событии. Решение об отказе принимается Страховщиком в течение 10 (десяти) рабочих дней после получения всех необходимых документов, подтверждающих факт, причину и размер ущерба.
+14.6. Выплата страхового возмещения производится в течение 5 (пяти) рабочих дней после утверждения Страховщиком страхового Акта.
+14.7. Общая сумма выплат страхового возмещения за весь период действия Полиса не может превышать страховой суммы, установленной Полисом.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="1" y="670" width="160" height="22" uuid="c85fbc82-25b8-4be7-a66a-7fc072a05686">
+					<reportElement x="1" y="670" width="181" height="22" uuid="c85fbc82-25b8-4be7-a66a-7fc072a05686">
 						<property name="local_mesure_unitx" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
@@ -833,11 +827,11 @@
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[Орлов Дмитрий Александрович
-Доверенность № 5232/12 от 01.07.2013
+Доверенность №1029/14 от 01.01.2014
 ]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="431" y="694" width="24" height="27" uuid="5870d5d6-7d0b-4960-8251-447bff722e51"/>
+					<reportElement x="431" y="685" width="24" height="27" uuid="5870d5d6-7d0b-4960-8251-447bff722e51"/>
 					<text><![CDATA[М.П.]]></text>
 				</staticText>
 				<staticText>
@@ -846,6 +840,35 @@
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<text><![CDATA[Подпись]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="533" width="525" height="71" uuid="82d42f55-0ee8-45bb-b2cb-5a4e50816696">
+						<property name="local_mesure_unity" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+					</reportElement>
+					<textElement verticalAlignment="Top">
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[15. Страхователь согласен(а) на обработку Страховщиком и уполномоченными им третьими лицами сведений, указанных в настоящем Полисе (а также иных персональных сведений, получаемых Страховщиком при исполнении настоящего договора страхования (Полиса)), любыми способами, установленными законом, с целью исполнения договора страхования (Полиса), а также информирования Страхователя о программах страхования, о сроке действия договора (Полиса) и иными целями. Срок использования и обработки персональных сведений устанавливается в течение срока договорных отношений, связанных со страхованием, и срока исковой давности. Вы, можете отозвать свое согласие на обработку персональных данных в любое время путем направления в ОАО «АльфаСтрахование» письменного и подписанного уведомления. ОАО «АльфаСтрахование» обязуется в течение 3 (трех) рабочих дней  получения уведомления об отзыве согласия на обработку персональных данных прекратить их обработку, уничтожить и уведомить субъекта об уничтожении персональных данных.
+Страхователь подтверждает, что согласие третьих лиц на передачу и обработку их персональных данных ОАО «АльфаСтрахование» в течение срока договорных отношений, связанных со страхованием, и срока исковой давности для целей формирования (разработки), заключения и исполнения договора страхования Вами получено в порядке, предусмотренном Федеральным законом от 27.07.2006 №152-ФЗ «О персональных данных».]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="606" width="525" height="27" uuid="489982cc-4fc4-48fa-853f-ecc87510ac65">
+						<property name="local_mesure_unity" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+					</reportElement>
+					<textElement verticalAlignment="Top">
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[16. Стороны пришли к соглашению об использовании Страховщиком факсимильного воспроизведения подписи и печати Страховщика с помощью средств механического или иного копирования, электронно-цифровой подписи либо иного аналога собственноручной подписи.]]></text>
 				</staticText>
 			</frame>
 		</band>

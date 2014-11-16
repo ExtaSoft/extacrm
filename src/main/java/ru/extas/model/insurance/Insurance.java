@@ -16,6 +16,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
@@ -128,6 +129,10 @@ public class Insurance extends SecuredObject {
 
     @Column(name = "IS_DOC_COMPLETE")
     private boolean docComplete;
+
+    public boolean isCredit() {
+        return !isNullOrEmpty(getBeneficiary()) && !getBeneficiary().equals(getClientName());
+    }
 
     public String getClientPhone() {
         if (clientPP != null)
