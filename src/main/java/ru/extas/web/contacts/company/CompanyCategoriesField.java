@@ -1,5 +1,6 @@
 package ru.extas.web.contacts.company;
 
+import com.google.common.collect.ImmutableList;
 import com.vaadin.data.Property;
 import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.combobox.FilteringMode;
@@ -10,10 +11,9 @@ import org.vaadin.tokenfield.TokenField;
 import ru.extas.server.references.CategoryService;
 import ru.extas.server.references.SupplementService;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -60,8 +60,8 @@ public class CompanyCategoriesField extends CustomField<Set> {
     }
 
     private void refreshContainer(final Set<String> selected) {
-        final Collection<String> categories = lookup(CategoryService.class).loadCompanyCategories();
-        if(selected != null)
+        final Collection<String> categories = new ArrayList(lookup(CategoryService.class).loadCompanyCategories());
+        if (selected != null)
             categories.removeAll(selected);
         tokenField.setContainerDataSource(CollectionContainer.fromBeans(categories));
     }
