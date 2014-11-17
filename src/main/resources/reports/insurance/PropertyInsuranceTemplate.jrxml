@@ -224,7 +224,7 @@
 						<textElement verticalAlignment="Middle">
 							<font size="7"/>
 						</textElement>
-						<textFieldExpression><![CDATA[!$P{ins}.isCredit() ? "Страхование \"За счет кого следует\"" : "При гибели или утрате застрахованного имущества - в размере неисполненных обязательств Заемщика, Выгодоприобретатель - " + $P{ins}.getBeneficiary() + ", в оставшейся части – Собственник застрахованного имущества."]]></textFieldExpression>
+						<textFieldExpression><![CDATA[!$P{ins}.isCredit() ? $P{ins}.getBeneficiary() : "При гибели или утрате застрахованного имущества - в размере неисполненных обязательств Заемщика, Выгодоприобретатель - " + $P{ins}.getBeneficiary() + ", в оставшейся части – Собственник застрахованного имущества."]]></textFieldExpression>
 					</textField>
 					<textField>
 						<reportElement positionType="Float" x="313" y="52" width="105" height="19" uuid="94c724e3-4085-45cf-a5d4-26710d981da7">
