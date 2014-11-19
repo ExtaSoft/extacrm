@@ -39,14 +39,14 @@ public class MyExcelExport extends ExcelExport {
     @Override
     protected CellStyle getCellStyle(final Object rootItemId, final int row, final int col, final boolean totalsRow) {
         final Object propId = getPropIds().get(col);
+        final Class<?> propType = getPropertyType(propId);
         // get the basic style for the type of cell (i.e. data, header, total)
-        if ((rowHeaders) && (col == 0)) {
+        if ((rowHeaders) && (col == 0) || propType == null) {
             if (null == rowHeaderCellStyle) {
                 return columnHeaderCellStyle;
             }
             return rowHeaderCellStyle;
         }
-        final Class<?> propType = getPropertyType(propId);
         if (totalsRow) {
             if (this.propertyExcelFormatMap.containsKey(propId)) {
                 final short df = dataFormat.getFormat(propertyExcelFormatMap.get(propId));

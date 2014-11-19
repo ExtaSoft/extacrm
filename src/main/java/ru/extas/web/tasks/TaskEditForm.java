@@ -75,6 +75,12 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         // Может ли пользователь менять ответственного
         final UserManagementService userService = lookup(UserManagementService.class);
         canAssigne = userService.isCurUserHasRole(UserRole.ADMIN)/* || userService.isCurUserHasRole(UserRole.MANAGER)*/;
+
+        addAttachListener(e -> {
+            ownerField.setReadOnly(true);
+            if (!canAssigne)
+                assigneeField.setReadOnly(true);
+        });
     }
 
     /** {@inheritDoc} */
@@ -275,15 +281,6 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         // Показать статус выполнения процесса
         final BPStatusForm statusForm = new BPStatusForm(task.getProcessInstanceId());
         statusForm.showModal();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void attach() {
-        super.attach();
-        ownerField.setReadOnly(true);
-        if (!canAssigne)
-            assigneeField.setReadOnly(true);
     }
 
     /** {@inheritDoc} */

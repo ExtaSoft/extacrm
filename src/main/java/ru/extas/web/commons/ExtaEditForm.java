@@ -136,12 +136,7 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
     protected ExtaEditForm(final String caption, final TEntity entity) {
         this.caption = caption;
         this.entity = entity;
-    }
-
-    @Override
-    public void attach() {
-        initForm();
-        super.attach();
+        addAttachListener(e -> initForm());
     }
 
     public String getCaption() {
@@ -293,7 +288,7 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
         }
     }
 
-    public void adjustSize(){
+    public void adjustSize() {
         toFullSize.forEach(c -> c.setSizeFull());
     }
 

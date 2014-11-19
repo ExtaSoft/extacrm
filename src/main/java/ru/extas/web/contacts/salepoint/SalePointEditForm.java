@@ -74,27 +74,20 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         setWinWidth(800, Unit.PIXELS);
         setWinHeight(600, Unit.PIXELS);
 
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void attach() {
-        super.attach();
-
-        if (getEntity().getCompany() == null) {
-            companyField.setReadOnly(false);
-            companyField.setVisible(true);
-            companyField.setRequired(true);
-        } else {
-            companyField.setReadOnly(true);
-            companyField.getPropertyDataSource().setReadOnly(true);
-            if (getEntity().getCompany().isNew()) {
-                companyField.setVisible(false);
-                companyField.setRequired(false);
+        addAttachListener(e -> {
+            if (getEntity().getCompany() == null) {
+                companyField.setReadOnly(false);
+                companyField.setVisible(true);
+                companyField.setRequired(true);
+            } else {
+                companyField.setReadOnly(true);
+                companyField.getPropertyDataSource().setReadOnly(true);
+                if (getEntity().getCompany().isNew()) {
+                    companyField.setVisible(false);
+                    companyField.setRequired(false);
+                }
             }
-        }
+        });
     }
 
     /**

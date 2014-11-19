@@ -100,15 +100,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                         MessageFormat.format("Редактирование лида № {0}", lead.getNum()), lead);
         this.qualifyForm = qualifyForm;
         if (qualifyForm) setWinWidth(1000, Unit.PIXELS);
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void attach() {
-        super.attach();
-        setFieldsStatus();
+        addAttachListener(e -> setFieldsStatus());
     }
 
     private void setFieldsStatus() {

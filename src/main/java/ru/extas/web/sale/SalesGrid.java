@@ -1,17 +1,27 @@
 package ru.extas.web.sale;
 
+import com.google.common.base.Throwables;
+import com.vaadin.addon.tableexport.CustomTableHolder;
+import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.UI;
 import org.joda.time.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.window.DownloadFileWindow;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -28,6 +38,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class SalesGrid extends ExtaGrid<Sale> {
     private static final long serialVersionUID = 4876073256421755574L;
+    private final static Logger logger = LoggerFactory.getLogger(SalesGrid.class);
     private final ExtaDomain domain;
 
     /**

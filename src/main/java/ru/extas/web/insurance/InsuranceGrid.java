@@ -17,8 +17,7 @@ import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
@@ -59,7 +58,9 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         return new InsuranceEditForm(insurance);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected GridDataDecl createDataDecl() {
         if (dataDecl == null)
@@ -67,7 +68,9 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         return dataDecl;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Container createContainer() {
         // Запрос данных
@@ -82,7 +85,9 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         return container;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected List<UIAction> createActions() {
         final List<UIAction> actions = newArrayList();
@@ -146,25 +151,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
             }
         });
 
-        actions.add(new UIAction("Экспорт", "Экспорт содержимого таблицы в Excel файл", Fontello.GRID) {
-            @Override
-            public void fire(final Object itemId) {
-                exportTableData();
-            }
-        });
-
         return actions;
-    }
-
-    private void exportTableData() {
-        final CustomTableHolder tableHolder = new CustomTableHolder(table);
-        final ExcelExport excelExport = new MyExcelExport(tableHolder);
-        //excelExport.setExcelFormatOfProperty("date", "yyyy-MM-dd");
-        excelExport.excludeCollapsedColumns();
-        excelExport.setReportTitle("Имущественные страховки");
-        final String fileName = MessageFormat.format("PropertyInsurances {0}.xls", new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
-        excelExport.setExportFileName(fileName);
-        excelExport.export();
     }
 
     private void printPolicy(final Object itemId, final boolean withMat) {

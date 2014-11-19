@@ -2,19 +2,29 @@ package ru.extas.web.commons;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
+import com.vaadin.addon.tableexport.CustomTableHolder;
+import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tepi.filtertable.FilterTable;
 import ru.extas.model.security.SecuredObject;
 import ru.extas.model.security.UserRole;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.window.DownloadFileWindow;
 import ru.extas.web.users.SecuritySettingsForm;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,6 +44,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  */
 public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private static final long serialVersionUID = 2299363623807745654L;
+    private final static Logger logger = LoggerFactory.getLogger(ExtaGrid.class);
 
     /**
      * Constant <code>OVERALL_COLUMN="OverallColumn"</code>
@@ -102,21 +113,14 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
     /**
      * <p>Constructor for ExtaGrid.</p>
-     *
-     * @param initNow a boolean.
      */
     public ExtaGrid(final Class<TEntity> entityClass) {
         this.entityClass = entityClass;
         formService = new ModalPopupFormService(this);
         // Must set a dummy root in constructor
         setCompositionRoot(new Label(""));
-    }
 
-
-    @Override
-    public void attach() {
-        initialize();
-        super.attach();
+        addAttachListener(e -> initialize());
     }
 
     public FormService getFormService() {
@@ -156,7 +160,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     public void doEditObject(final TEntity entity) {
 
         final ExtaEditForm<TEntity> form = createEditForm(entity, false);
-        if(!form.isReadOnly())
+        if (!form.isReadOnly())
             form.setReadOnly(!GridUtils.isPermitEdit(container, entity));
         formService.open4Edit(form);
     }
@@ -217,45 +221,69 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             refreshBtn.setDescription("Обновить данные в таблице");
             refreshBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
 
-            if(SecuredObject.class.isAssignableFrom(entityClass) &&
-                    lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN)){
-                final MenuBar.MenuItem accessBtn = modeSwitchBar.addItem("", Fontello.LOCK, s -> {
-                    final Object itemId = table.getValue();
-                    if(itemId != null) {
-                        refreshContainerItem(itemId);
-                        SecuredObject securedObject = GridItem.extractBean(table.getItem(itemId));
-                        SecuritySettingsForm form = new SecuritySettingsForm("Настройки доступа объекта...", securedObject);
-                        FormUtils.showModalWin(form);
+            final boolean isAdmin = lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN);
+            if (isAdmin) {
+                if (SecuredObject.class.isAssignableFrom(entityClass)) {
+                    final MenuBar.MenuItem accessBtn = modeSwitchBar.addItem("", Fontello.LOCK, s -> {
+                        final Object itemId = table.getValue();
+                        if (itemId != null) {
+                            refreshContainerItem(itemId);
+                            SecuredObject securedObject = GridItem.extractBean(table.getItem(itemId));
+                            SecuritySettingsForm form = new SecuritySettingsForm("Настройки доступа объекта...", securedObject);
+                            FormUtils.showModalWin(form);
+                        }
+                    });
+                    accessBtn.setDescription("Показать настройки доступа для выделенного объекта");
+                    accessBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+                }
+
+                final MenuBar.MenuItem exportBtn = modeSwitchBar.addItem("", Fontello.FILE_EXCEL, s -> {
+                    final CustomTableHolder tableHolder = new CustomTableHolder(table);
+                    final ExcelExport excelExport = new MyExcelExport(tableHolder);
+                    excelExport.excludeCollapsedColumns();
+                    excelExport.setReportTitle(entityClass.getSimpleName());
+                    final String fileName = MessageFormat.format("{1} {0}.xls",
+                            new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()),
+                            entityClass.getSimpleName());
+                    excelExport.setExportFileName(fileName);
+                    excelExport.convertTable();
+                    try {
+                        final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
+                        excelExport.getWorkbook().write(outDoc);
+                        new DownloadFileWindow(outDoc.toByteArray(), fileName).showModal();
+                    } catch (final IOException e) {
+                        logger.error("Converting to XLS failed with IOException ", e);
+                        throw Throwables.propagate(e);
                     }
                 });
-                accessBtn.setDescription("Показать настройки доступа для выделенного объекта");
-                accessBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+                exportBtn.setDescription("Экспортировать данные таблицы в MS Excel");
+                exportBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             }
 
-            final MenuBar.Command modeCommand = selectedItem -> {
-                if (selectedItem == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
-                    setMode(Mode.TABLE);
-                } else if (currentMode == Mode.TABLE) {
-                    setMode(Mode.DETAIL_LIST);
-                }
-            };
-            tableModeBtn = modeSwitchBar.addItem("", Fontello.TABLE, modeCommand);
-            tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
-            tableModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-            tableModeBtn.setCheckable(true);
-
-            detailModeBtn = modeSwitchBar.addItem("", Fontello.LIST_ALT, modeCommand);
-            detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
-            detailModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-            detailModeBtn.setCheckable(true);
-
-            if (currentMode == Mode.TABLE) {
-                tableModeBtn.setChecked(true);
-                detailModeBtn.setChecked(false);
-            } else {
-                detailModeBtn.setChecked(true);
-                tableModeBtn.setChecked(false);
-            }
+//            final MenuBar.Command modeCommand = selectedItem -> {
+//                if (selectedItem == tableModeBtn && currentMode == Mode.DETAIL_LIST) {
+//                    setMode(Mode.TABLE);
+//                } else if (currentMode == Mode.TABLE) {
+//                    setMode(Mode.DETAIL_LIST);
+//                }
+//            };
+//            tableModeBtn = modeSwitchBar.addItem("", Fontello.TABLE, modeCommand);
+//            tableModeBtn.setDescription("Нажмите чтобы переключить список в стандартный табличный режим");
+//            tableModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+//            tableModeBtn.setCheckable(true);
+//
+//            detailModeBtn = modeSwitchBar.addItem("", Fontello.LIST_ALT, modeCommand);
+//            detailModeBtn.setDescription("Нажмите чтобы переключить список в детализированный режим");
+//            detailModeBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+//            detailModeBtn.setCheckable(true);
+//
+//            if (currentMode == Mode.TABLE) {
+//                tableModeBtn.setChecked(true);
+//                detailModeBtn.setChecked(false);
+//            } else {
+//                detailModeBtn.setChecked(true);
+//                tableModeBtn.setChecked(false);
+//            }
             panel.addComponent(modeSwitchBar, 1, 0);
             panel.setComponentAlignment(modeSwitchBar, Alignment.TOP_RIGHT);
         }
@@ -391,6 +419,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             });
 
         }
+        table.setWrapFilters(true);
+        table.setFilterBarVisible(true);
+        table.addAttachListener(e -> table.setFilterBarVisible(false));
     }
 
     private void initDetailTable(final UIAction defAction) {
