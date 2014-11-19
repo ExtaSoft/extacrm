@@ -4,6 +4,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.UI;
+import org.joda.time.*;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
@@ -62,6 +63,19 @@ public class SalesGrid extends ExtaGrid<Sale> {
         super.initTable(mode);
         if (domain == ExtaDomain.SALES_CANCELED)
             table.setColumnCollapsed("result", false);
+
+        // Раскрашиваем "протухшие" продажи
+        if (domain == ExtaDomain.SALES_OPENED)
+            table.setCellStyleGenerator((source, itemId, propertyId) -> {
+                final Sale sale = GridItem.extractBean(table.getItem(itemId));
+                final DateTime curDate = DateTime.now(DateTimeZone.UTC);
+                final DateTime modifiedDate = sale.getLastModifiedDate();
+                if (modifiedDate.plus(Days.days(10)).isBeforeNow())
+                    return "highlight-red"; // Красненькие
+                else if (modifiedDate.plus(Days.days(5)).isBeforeNow())
+                    return "highlight-yellow"; // Желтенькие
+                return null;
+            });
     }
 
     /**
@@ -81,7 +95,10 @@ public class SalesGrid extends ExtaGrid<Sale> {
         container.addContainerFilter(new Compare.Equal("status",
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
                         domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
-        container.sort(new Object[]{"createdDate"}, new boolean[]{false});
+        if (domain != ExtaDomain.SALES_OPENED)
+            container.sort(new Object[]{"createdDate"}, new boolean[]{false});
+        else
+            container.sort(new Object[]{"lastModifiedDate"}, new boolean[]{true});
         return container;
     }
 
@@ -98,7 +115,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
         actions.add(new EditObjectAction(domain == ExtaDomain.SALES_OPENED ? "Изменить" : "Просмотреть", "Редактировать выделенную в списке продажу"));
 
         if (domain != ExtaDomain.SALES_OPENED)
-            actions.add(new ItemAction("Возобновить", "Вернуть продажу в открытые, чтобы продолжить работу по ней", FontAwesome.UNDO){
+            actions.add(new ItemAction("Возобновить", "Вернуть продажу в открытые, чтобы продолжить работу по ней", FontAwesome.UNDO) {
                 @Override
                 public void fire(Object itemId) {
                     final Sale sale = GridItem.extractBean(table.getItem(itemId));
