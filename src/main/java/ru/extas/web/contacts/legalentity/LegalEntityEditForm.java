@@ -81,8 +81,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     private EditField loroAccountField;
     @PropertyId("bankName")
     private EditField bankNameField;
-    @PropertyId("biс")
-    private EditField biсField;
+    @PropertyId("bic")
+    private EditField bicField;
 
     private SupplierSer<Company> companySupplier;
 
@@ -256,20 +256,16 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         formLayout.addComponent(new FormGroupHeader("Банковские реквизиты"));
         // Расчетный счет в рублях
         settlementAccountField = new EditField("Расчетный счет", "Введите Расчетный счет юридического лицав рублях");
-        ;
         formLayout.addComponent(settlementAccountField);
         // Корреспондентский счет
         loroAccountField = new EditField("Корреспондентский счет", "Введите Корреспондентский счет юридического лица");
-        ;
         formLayout.addComponent(loroAccountField);
         // Полное наименование банка
         bankNameField = new EditField("Наименование банка", "Введите наименование банка юридического лица");
-        ;
         formLayout.addComponent(bankNameField);
         // БИК банка
-        biсField = new EditField("БИК банка", "Введите БИК банка юридического лица");
-        ;
-        formLayout.addComponent(biсField);
+        bicField = new EditField("БИК банка", "Введите БИК банка юридического лица");
+        formLayout.addComponent(bicField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // "Продукты"
