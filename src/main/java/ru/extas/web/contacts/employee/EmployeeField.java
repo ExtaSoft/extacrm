@@ -220,6 +220,11 @@ public class EmployeeField extends CustomField<Employee> {
             selectField.addValueChangeListener(event -> refreshFields((Employee) selectField.getConvertedValue()));
             formLayout.addComponent(selectField);
 
+            if(isReadOnly()){
+                selectField.setReadOnly(true);
+                selectField.setWidthUndefined();
+            }
+
             // Телефон
             phoneField = new Label();
             phoneField.setCaption("Телефон");
@@ -243,6 +248,7 @@ public class EmployeeField extends CustomField<Employee> {
                 editWin.setCompanySupplier(companySupplier);
                 editWin.setLegalEntitySupplier(legalEntitySupplier);
                 editWin.setModified(true);
+                editWin.setReadOnly(isReadOnly());
 
                 editWin.addCloseFormListener(event1 -> {
                     if (editWin.isSaved()) {
@@ -259,26 +265,28 @@ public class EmployeeField extends CustomField<Employee> {
             viewBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
             toolbar.addComponent(viewBtn);
 
-            final Button searchBtn = new Button("Поиск", event -> {
-                final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите сотрудника или введите нового");
-                selectWindow.addCloseListener(e -> {
-                    if (selectWindow.isSelectPressed()) {
-                        final Employee selected = selectWindow.getSelected();
-                        selectField.setConvertedValue(selected);
-                    }
-                    popupView.setPopupVisible(true);
-                });
-                selectWindow.setCompanySupplier(companySupplier);
-                selectWindow.setSalePointSupplier(salePointSupplier);
-                popupView.setPopupVisible(false);
-                selectWindow.showModal();
+            if (!isReadOnly()) {
+                final Button searchBtn = new Button("Поиск", event -> {
+                    final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите сотрудника или введите нового");
+                    selectWindow.addCloseListener(e -> {
+                        if (selectWindow.isSelectPressed()) {
+                            final Employee selected = selectWindow.getSelected();
+                            selectField.setConvertedValue(selected);
+                        }
+                        popupView.setPopupVisible(true);
+                    });
+                    selectWindow.setCompanySupplier(companySupplier);
+                    selectWindow.setSalePointSupplier(salePointSupplier);
+                    popupView.setPopupVisible(false);
+                    selectWindow.showModal();
 
-            });
-            searchBtn.setDescription("Открыть форму для поиска и выбора сотрудника");
-            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
-            toolbar.addComponent(searchBtn);
+                });
+                searchBtn.setDescription("Открыть форму для поиска и выбора сотрудника");
+                searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
+                toolbar.addComponent(searchBtn);
+            }
 
             formLayout.addComponent(toolbar);
 

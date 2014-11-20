@@ -191,23 +191,25 @@ public class PersonSelect extends CustomField<Person> {
             formLayout.addComponent(emailField);
 
             final HorizontalLayout toolbar = new HorizontalLayout();
-            final Button searchBtn = new Button("Поиск", event -> {
-                final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
-                selectWindow.addCloseListener(e -> {
-                    if (selectWindow.isSelectPressed()) {
-                        final Person selected = selectWindow.getSelected();
-                        personSelectField.setConvertedValue(selected);
-                    }
-                    popupView.setPopupVisible(true);
-                });
-                popupView.setPopupVisible(false);
-                selectWindow.showModal();
+            if (!isReadOnly()) {
+                final Button searchBtn = new Button("Поиск", event -> {
+                    final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
+                    selectWindow.addCloseListener(e -> {
+                        if (selectWindow.isSelectPressed()) {
+                            final Person selected = selectWindow.getSelected();
+                            personSelectField.setConvertedValue(selected);
+                        }
+                        popupView.setPopupVisible(true);
+                    });
+                    popupView.setPopupVisible(false);
+                    selectWindow.showModal();
 
-            });
-            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
-            toolbar.addComponent(searchBtn);
+                });
+                searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
+                toolbar.addComponent(searchBtn);
+            }
 
             viewBtn = new Button("Просмотр", event -> {
                 final Person bean = (Person) getPropertyDataSource().getValue();

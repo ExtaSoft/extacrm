@@ -77,6 +77,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
         };
 
         grid.setReadOnly(isReadOnly());
+        addReadOnlyStatusChangeListener(e -> grid.setReadOnly(isReadOnly()));
         return grid;
     }
 

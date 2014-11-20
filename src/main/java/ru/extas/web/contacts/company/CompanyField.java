@@ -180,6 +180,7 @@ public class CompanyField extends CustomField<Company> {
             viewBtn = new Button("Просмотр", event -> {
                 final Company company = getValue();
                 final CompanyEditForm editWin = new CompanyEditForm(company);
+                editWin.setReadOnly(isReadOnly());
                 editWin.addCloseFormListener(e -> {
                     if (editWin.isSaved()) {
                         refreshFields(company);

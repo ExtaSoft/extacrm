@@ -226,6 +226,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
 
                 final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
                 editWin.setModified(true);
+                editWin.setReadOnly(isReadOnly());
 
                 editWin.addCloseFormListener(event1 -> {
                     if (editWin.isSaved()) {
@@ -242,25 +243,27 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             viewBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
             toolbar.addComponent(viewBtn);
 
-            final Button searchBtn = new Button("Поиск", event -> {
-                final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберете юр. лицо или введите новое");
-                selectWindow.addCloseListener(e -> {
-                    if (selectWindow.isSelectPressed()) {
-                        final LegalEntity selected = selectWindow.getSelected();
-                        selectField.setConvertedValue(selected);
-                    }
-                    popupView.setPopupVisible(true);
-                });
-                selectWindow.setCompanySupplier(companySupplier);
-                popupView.setPopupVisible(false);
-                selectWindow.showModal();
+            if (!isReadOnly()) {
+                final Button searchBtn = new Button("Поиск", event -> {
+                    final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберете юр. лицо или введите новое");
+                    selectWindow.addCloseListener(e -> {
+                        if (selectWindow.isSelectPressed()) {
+                            final LegalEntity selected = selectWindow.getSelected();
+                            selectField.setConvertedValue(selected);
+                        }
+                        popupView.setPopupVisible(true);
+                    });
+                    selectWindow.setCompanySupplier(companySupplier);
+                    popupView.setPopupVisible(false);
+                    selectWindow.showModal();
 
-            });
-            searchBtn.setDescription("Открыть форму для поиска и выбора юр. лица");
-            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
-            toolbar.addComponent(searchBtn);
+                });
+                searchBtn.setDescription("Открыть форму для поиска и выбора юр. лица");
+                searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
+                toolbar.addComponent(searchBtn);
+            }
 
             formLayout.addComponent(toolbar);
 

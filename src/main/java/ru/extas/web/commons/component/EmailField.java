@@ -74,6 +74,7 @@ public class EmailField extends CustomField<String> {
             linkEdit.setVisible(true);
             linkEdit.focus();
         });
+        addReadOnlyStatusChangeListener(e -> editBtn.setVisible(!isReadOnly()));
 
         addValueChangeListener(e -> {
             final String newFieldValue = (String) e.getProperty().getValue();

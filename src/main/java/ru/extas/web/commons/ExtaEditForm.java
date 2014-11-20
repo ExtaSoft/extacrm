@@ -197,10 +197,8 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
         setDefaultFocus(form);
         setContent(form);
 
-        addAttachListener(e -> {
-            fieldGroup.setReadOnly(isReadOnly());
-            okBtn.setEnabled(!isReadOnly());
-        });
+        fieldGroup.setReadOnly(isReadOnly());
+        okBtn.setEnabled(!isReadOnly());
     }
 
     protected BeanItem<TEntity> createBeanItem(final TEntity bean) {

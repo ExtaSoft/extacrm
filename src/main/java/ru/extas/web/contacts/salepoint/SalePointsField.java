@@ -54,8 +54,8 @@ public class SalePointsField extends CustomField<Set> {
         };
         grid.setCompanySupplier(companySupplier);
 		grid.setSizeFull();
-        grid.setReadOnly(isReadOnly());
 
+        addReadOnlyStatusChangeListener(e -> grid.setReadOnly(isReadOnly()));
         return grid;
 	}
 

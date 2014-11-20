@@ -49,6 +49,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     public SalesGrid(final ExtaDomain domain) {
         super(Sale.class);
         this.domain = domain;
+        setReadOnly(domain != ExtaDomain.SALES_OPENED);
     }
 
     /**

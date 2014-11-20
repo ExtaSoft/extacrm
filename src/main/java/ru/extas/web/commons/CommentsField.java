@@ -8,6 +8,7 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.joda.time.DateTime;
 import org.vaadin.addon.itemlayout.grid.ItemGrid;
+import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.common.Comment;
 import ru.extas.server.security.UserManagementService;
@@ -50,7 +51,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         commentsContainer.setColumns(1);
         commentsContainer.setSelectable(false);
         commentsContainer.setContainerDataSource(container);
-        commentsContainer.setItemGenerator((pSource, pItemId) -> new ItemComponent(pItemId));
+        commentsContainer.setItemGenerator((pSource, pItemId) -> new ItemComponent(pSource, pItemId));
         root.addComponent(commentsContainer);
 
         final Button addBtn = new Button("Оставить комментарий", FontAwesome.PLUS);
@@ -64,6 +65,11 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         });
         root.addComponent(addBtn);
 
+        addReadOnlyStatusChangeListener(e -> {
+            final boolean isRedOnly = isReadOnly();
+            addBtn.setVisible(!isRedOnly);
+            commentsContainer.setReadOnly(isRedOnly);
+        });
         return root;
     }
 
@@ -79,7 +85,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         private final RichTextArea textArea;
         private final Label text;
 
-        public ItemComponent(final Object itemId) {
+        public ItemComponent(AbstractItemLayout pSource, final Object itemId) {
             final BeanItem<TComment> item = container.getItem(itemId);
             final TComment comment = item.getBean();
 
@@ -101,17 +107,19 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
             final boolean ownComment = userLogin.equals(item.getBean().getCreatedBy());
 
             final Button editBtn = new Button("Редактировать", FontAwesome.PENCIL);
+            editBtn.setDescription("Редактировать комментарий...");
             editBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             editBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
             editBtn.setVisible(ownComment);
             editBtn.addClickListener(e -> switchEditMode(true));
 
             final Button delBtn = new Button("Удалить", FontAwesome.TRASH_O);
+            delBtn.setDescription("Удалить комментарий");
             delBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             delBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
             delBtn.setVisible(ownComment);
             delBtn.addClickListener(e ->
-                    ConfirmDialog.show(UI.getCurrent(), "Удаление комментария...", "Вы уверены что необходимо удлить комментарий?",
+                    ConfirmDialog.show(UI.getCurrent(), "Удаление комментария...", "Вы уверены что необходимо удалить комментарий?",
                             "Удалить", "Оставить", dialog -> {
                                 if (dialog.isConfirmed()) {
                                     container.removeItem(itemId);
@@ -153,9 +161,15 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
                 isNew = false;
             });
             toolbar = new HorizontalLayout(saveBtn, cancelBtn);
+            toolbar.setSpacing(true);
             addComponent(toolbar);
 
             switchEditMode(isNew);
+
+            final boolean isRedOnly = pSource.isReadOnly();
+            editBtn.setVisible(!isRedOnly);
+            delBtn.setVisible(!isRedOnly);
+
         }
 
         private void switchEditMode(final boolean isEdit) {

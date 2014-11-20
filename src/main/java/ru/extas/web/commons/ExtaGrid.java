@@ -59,7 +59,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private GridDataDecl dataDecl;
     private Mode currentMode;
     private boolean toolbarVisible = true;
-    private List<MenuBar.MenuItem> needCurrentMenu;
+    private List<MenuBar.MenuItem> needCurrentMenu = newArrayList();
+    private List<MenuBar.MenuItem> disallowInReadOnlyMenu = newArrayList();
     private MenuBar.MenuItem tableModeBtn;
     private MenuBar.MenuItem detailModeBtn;
 
@@ -160,6 +161,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     public void doEditObject(final TEntity entity) {
 
         final ExtaEditForm<TEntity> form = createEditForm(entity, false);
+        form.setReadOnly(isReadOnly());
         if (!form.isReadOnly())
             form.setReadOnly(!GridUtils.isPermitEdit(container, entity));
         formService.open4Edit(form);
@@ -320,7 +322,6 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
 //        commandBar.focus();
 
-        needCurrentMenu = newArrayList();
         for (final UIAction action : actions) {
             final MenuBar.MenuItem menuItem = commandBar.addItem(action.getName(), action.getIcon(), null);
             fillGridTollbarItem(action, menuItem);
@@ -352,8 +353,20 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             needCurrentMenu.add(menuItem);
             menuItem.setEnabled(false);
         }
+
+        if(!action.isAllowInReadOnly())
+            disallowInReadOnlyMenu.add(menuItem);
+
         if (action instanceof ExtaGrid.NewObjectAction) {
-            menuItem.setEnabled(GridUtils.isPermitInsert(container));
+            menuItem.setEnabled(GridUtils.isPermitInsert(container) && !isReadOnly());
+        }
+    }
+
+    @Override
+    public void setReadOnly(boolean readOnly) {
+        super.setReadOnly(readOnly);
+        for (MenuBar.MenuItem menuItem : disallowInReadOnlyMenu) {
+            menuItem.setEnabled(!readOnly);
         }
     }
 
@@ -584,11 +597,11 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
     protected class NewObjectAction extends UIAction {
         public NewObjectAction(final String caption, final String description, final Fontello icon) {
-            super(caption, description, icon);
+            super(caption, description, icon, false);
         }
 
         public NewObjectAction(final String caption, final String description) {
-            super(caption, description, Fontello.DOC_NEW);
+            super(caption, description, Fontello.DOC_NEW, false);
         }
 
         @Override

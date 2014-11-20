@@ -6,6 +6,7 @@ import com.vaadin.ui.*;
 import org.vaadin.tokenfield.TokenField;
 import ru.extas.model.motor.MotorType;
 import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.component.ExtaTokenField;
 
 import java.util.Set;
 
@@ -37,8 +38,9 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
 
         final VerticalLayout lo = new VerticalLayout();
         lo.setSpacing(true);
-        final TokenField tokenField = new TokenField(lo);
-        tokenField.setStyleName(TokenField.STYLE_TOKENFIELD);
+        final ExtaTokenField tokenField = new ExtaTokenField(lo);
+        addReadOnlyStatusChangeListener(e -> tokenField.setReadOnly(isReadOnly()));
+        tokenField.setStyleName(ExtaTokenField.STYLE_TOKENFIELD);
         tokenField.setFilteringMode(FilteringMode.CONTAINS); // suggest
         tokenField.setInputPrompt("Введите или выберите тип техники...");
         tokenField.setDescription("Введите или выберите тип техники...");
