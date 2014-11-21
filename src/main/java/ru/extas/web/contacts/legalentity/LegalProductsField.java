@@ -62,7 +62,7 @@ public class LegalProductsField extends CustomField<List> {
                 final ProductSelectWindow selectWindow = new ProductSelectWindow("Выберите продукт");
                 selectWindow.addCloseListener(e -> {
                     if (selectWindow.isSelectPressed()) {
-                        container.addBean(selectWindow.getSelected());
+                        container.addAll(selectWindow.getSelected());
                         setValue(container.getItemIds());
                         NotificationUtil.showSuccess("Продукт добавлен");
                     }

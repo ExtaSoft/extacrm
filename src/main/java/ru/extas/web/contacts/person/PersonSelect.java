@@ -14,6 +14,7 @@ import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -196,8 +197,8 @@ public class PersonSelect extends CustomField<Person> {
                     final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
                     selectWindow.addCloseListener(e -> {
                         if (selectWindow.isSelectPressed()) {
-                            final Person selected = selectWindow.getSelected();
-                            personSelectField.setConvertedValue(selected);
+                            final Set<Person> selected = selectWindow.getSelected();
+                            personSelectField.setConvertedValue(selected.stream().findFirst().orElse(null));
                         }
                         popupView.setPopupVisible(true);
                     });

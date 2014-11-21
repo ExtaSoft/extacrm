@@ -472,7 +472,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         if (qualifyForm) {
             lead = leadRepository.qualify(lead);
             evictCache(saleRepository.findByLead(lead));
-            Sale sale = saleRepository.findByLead(lead);
+            final Sale sale = saleRepository.findByLead(lead);
             NotificationUtil.showSuccess("Лид квалифицирован");
             ConfirmDialog.show(UI.getCurrent(),
                     "Лид успешно квалифицирован...",

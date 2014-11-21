@@ -16,6 +16,7 @@ import ru.extas.server.security.UserManagementService;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>A7FormServiceImpl class.</p>
@@ -71,6 +72,12 @@ public class A7FormRepositoryImpl implements A7FormService {
             form.setStatus(newStatus);
             formRepository.save(form);
         }
+    }
+
+    @Transactional
+    @Override
+    public void changeStatus(final Set<A7Form> forms, final A7Form.Status newStatus) {
+        forms.forEach(f -> changeStatus(f, newStatus));
     }
 
     /** {@inheritDoc} */

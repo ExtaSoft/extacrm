@@ -97,7 +97,7 @@ public class UserProfile extends AuditedObject {
         return aliases;
     }
 
-    public void setAliases(Set<String> aliases) {
+    public void setAliases(final Set<String> aliases) {
         this.aliases = aliases;
     }
 

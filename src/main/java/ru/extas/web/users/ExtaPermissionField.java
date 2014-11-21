@@ -118,8 +118,8 @@ public class ExtaPermissionField extends CustomField<Set> {
                 actions.add(new EditObjectAction("Изменить", "Редактирование правила доступа"));
                 actions.add(new ItemAction("Удалить", "Удалить правило доступа", Fontello.TRASH) {
                     @Override
-                    public void fire(final Object itemId) {
-                        container.removeItem(itemId);
+                    public void fire(final Set itemIds) {
+                        itemIds.forEach(id -> container.removeItem(id));
                         ExtaPermissionField.this.setValue(newHashSet(((RefreshBeanContainer<ExtaPermission>) container).getItemIds()));
                     }
                 });

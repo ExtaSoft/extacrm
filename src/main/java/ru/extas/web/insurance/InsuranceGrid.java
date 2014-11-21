@@ -22,10 +22,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
@@ -96,8 +93,8 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         actions.add(new EditObjectAction("Изменить", "Редактировать выделенный в списке полис страхования"));
         actions.add(new EditObjectAction("Пролонгация", "Пролонгировать выделенный в списке полис страхования", Fontello.CLOCK) {
             @Override
-            public void fire(final Object itemId) {
-                final Insurance oldIns = GridItem.extractBean(table.getItem(itemId));
+            public void fire(final Set itemIds) {
+                final Insurance oldIns = getFirstEntity(itemIds);
 
                 final Insurance insurance = createEntity();
                 // Копируем все необходимые данные из истекшего(истекающего) договора
@@ -129,22 +126,22 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
                 final List<UIAction> group = newArrayList();
                 group.add(new ItemAction("Печать", "Создать печатное представление полиса страхования", Fontello.PRINT_2) {
                     @Override
-                    public void fire(final Object itemId) {
-                        printPolicy(itemId, true);
+                    public void fire(final Set itemIds) {
+                        printPolicy(getFirstEntity(itemIds), true);
                     }
                 });
 
                 group.add(new ItemAction("Печать без подложки", "Создать печатное представление полиса страхования без подложки", Fontello.PRINT_2) {
                     @Override
-                    public void fire(final Object itemId) {
-                        printPolicy(itemId, false);
+                    public void fire(final Set itemIds) {
+                        printPolicy(getFirstEntity(itemIds), false);
                     }
                 });
 
                 group.add(new ItemAction("Печать счета", "Создать печатную форму счета на оплату страховки", Fontello.PRINT_2) {
                     @Override
-                    public void fire(final Object itemId) {
-                        printInvoice(itemId);
+                    public void fire(final Set itemIds) {
+                        printInvoice(getFirstEntity(itemIds));
                     }
                 });
                 return group;
@@ -154,10 +151,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         return actions;
     }
 
-    private void printPolicy(final Object itemId, final boolean withMat) {
-
-        final Insurance insurance = extractBean(table.getItem(itemId));
-        checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
+    private void printPolicy(final Insurance insurance, final boolean withMat) {
 
         try {
             final InputStream in = getClass().getResourceAsStream("/reports/insurance/PropertyInsuranceTemplate.jasper");
@@ -193,10 +187,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         }
     }
 
-    private void printInvoice(final Object itemId) {
-
-        final Insurance insurance = extractBean(table.getItem(itemId));
-        checkNotNull(insurance, "Нечего печатать", "Нет выбранной записи.");
+    private void printInvoice(final Insurance insurance) {
 
         try {
             final InputStream in = getClass().getResourceAsStream("/reports/insurance/InsuranceInvoiceTemplate.jasper");

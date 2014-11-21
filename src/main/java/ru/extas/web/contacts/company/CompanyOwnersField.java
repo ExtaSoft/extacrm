@@ -71,11 +71,11 @@ public class CompanyOwnersField extends CustomField<Set> {
                 if (!isReadOnly())
                     actions.add(new UIAction("Добавить", "Добавить сотрудника в список владельцев компании", Fontello.DOC_NEW) {
                         @Override
-                        public void fire(final Object itemId) {
+                        public void fire(final Set itemIds) {
                             final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите владельца компании");
                             selectWindow.addCloseListener(e -> {
                                 if (selectWindow.isSelectPressed()) {
-                                    beanContainer.addBean(selectWindow.getSelected());
+                                    beanContainer.addAll(selectWindow.getSelected());
                                     setValue(newHashSet(beanContainer.getItemIds()));
                                     NotificationUtil.showSuccess("Владелец добавлен");
                                 }
@@ -88,8 +88,8 @@ public class CompanyOwnersField extends CustomField<Set> {
                 if (!isReadOnly())
                     actions.add(new ItemAction("Удалить", "Удалить сотрудника из списка владельцев", Fontello.TRASH) {
                     @Override
-                    public void fire(final Object itemId) {
-                        beanContainer.removeItem(itemId);
+                    public void fire(final Set itemIds) {
+                        itemIds.forEach(id -> beanContainer.removeItem(id));
                         setValue(newHashSet(beanContainer.getItemIds()));
                     }
                 });

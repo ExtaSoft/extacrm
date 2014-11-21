@@ -24,12 +24,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
 import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.TableUtils.fullInitTable;
 
@@ -59,8 +60,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private GridDataDecl dataDecl;
     private Mode currentMode;
     private boolean toolbarVisible = true;
-    private List<MenuBar.MenuItem> needCurrentMenu = newArrayList();
-    private List<MenuBar.MenuItem> disallowInReadOnlyMenu = newArrayList();
+    private final List<MenuBar.MenuItem> needCurrentMenu = newArrayList();
+    private final List<MenuBar.MenuItem> disallowInReadOnlyMenu = newArrayList();
     private MenuBar.MenuItem tableModeBtn;
     private MenuBar.MenuItem detailModeBtn;
 
@@ -144,16 +145,60 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         }
     }
 
-    public TEntity getSelectedEntity() {
+    public Set<TEntity> getSelectedEntities() {
+        final Set itemIds = getSelectedItemIds();
+        return getEntities(itemIds);
+    }
+
+    public Set<TEntity> getEntities(final Set itemIds) {
+        final Set<TEntity> entities = newHashSetWithExpectedSize(itemIds.size());
+        itemIds.forEach(id -> entities.add(getEntity(id)));
+        return entities;
+    }
+
+    public TEntity getEntity(final Object itemId) {
+        return GridItem.extractBean(getItem(itemId));
+    }
+
+    public TEntity getFirstSelectedEntity() {
+        final Set itemIds = getSelectedItemIds();
+        return getFirstEntity(itemIds);
+    }
+
+    public Item getFirstItem(final Set itemIds) {
+        return (Item) itemIds.stream().findFirst().map(id -> getItem(id)).orElse(null);
+    }
+
+    public TEntity getFirstEntity(final Set itemIds) {
+        return (TEntity) itemIds.stream().findFirst().map(id -> getEntity(id)).orElse(null);
+    }
+
+    public Set getSelectedItemIds() {
         if (table != null) {
-            final Object itemId = table.getValue();
-            if (itemId != null) {
-                final Item item = table.getItem(itemId);
-                if (item != null)
-                    return GridItem.extractBean(item);
+            final Object tableValue = table.getValue();
+            if (tableValue != null) {
+                if (tableValue instanceof Set)
+                    return (Set) tableValue;
+                else
+                    return newHashSet(tableValue);
             }
         }
-        return null;
+        return newHashSet();
+    }
+
+    public Set<Item> getSelectedItems() {
+        final Set itemIds = getSelectedItemIds();
+        return getItems(itemIds);
+    }
+
+    public Set<Item> getItems(final Set itemIds) {
+        final Set<Item> items = newHashSetWithExpectedSize(itemIds.size());
+        itemIds.forEach(i -> items.add(getItem(i)));
+        return items;
+    }
+
+    public Item getItem(final Object itemId) {
+        return table.getItem(itemId);
     }
 
     public abstract ExtaEditForm<TEntity> createEditForm(TEntity entity, boolean isInsert);
@@ -175,6 +220,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             formService.open4Insert(form);
         } else
             NotificationUtil.showWarning("Ввод новых объектов запрещен администратором!");
+    }
+
+    public FilterTable getTable() {
+        return table;
     }
 
     /**
@@ -227,16 +276,16 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             if (isAdmin) {
                 if (SecuredObject.class.isAssignableFrom(entityClass)) {
                     final MenuBar.MenuItem accessBtn = modeSwitchBar.addItem("", Fontello.LOCK, s -> {
-                        final Object itemId = table.getValue();
-                        if (itemId != null) {
-                            refreshContainerItem(itemId);
-                            SecuredObject securedObject = GridItem.extractBean(table.getItem(itemId));
-                            SecuritySettingsForm form = new SecuritySettingsForm("Настройки доступа объекта...", securedObject);
-                            FormUtils.showModalWin(form);
-                        }
+                        final Set itemIds = getSelectedItemIds();
+                        refreshContainerItems(itemIds);
+                        SecuredObject securedObject = (SecuredObject) getFirstSelectedEntity();
+                        SecuritySettingsForm form = new SecuritySettingsForm("Настройки доступа объекта...", securedObject);
+                        FormUtils.showModalWin(form);
                     });
                     accessBtn.setDescription("Показать настройки доступа для выделенного объекта");
                     accessBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+                    needCurrentMenu.add(accessBtn);
+                    accessBtn.setEnabled(false);
                 }
 
                 final MenuBar.MenuItem exportBtn = modeSwitchBar.addItem("", Fontello.FILE_EXCEL, s -> {
@@ -340,9 +389,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         } else {
             final MenuBar.Command command = selectedItem -> {
                 if (action instanceof ItemAction) {
-                    final Object item = table.getValue();
-                    refreshContainerItem(item);
-                    action.fire(checkNotNull(item, "No selected row"));
+                    final Set selectedIds = getSelectedItemIds();
+                    refreshContainerItems(selectedIds);
+                    checkState(!selectedIds.isEmpty(), "No selected row");
+                    action.fire(selectedIds);
                 } else
                     action.fire(null);
 
@@ -354,7 +404,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             menuItem.setEnabled(false);
         }
 
-        if(!action.isAllowInReadOnly())
+        if (!action.isAllowInReadOnly())
             disallowInReadOnlyMenu.add(menuItem);
 
         if (action instanceof ExtaGrid.NewObjectAction) {
@@ -362,10 +412,14 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         }
     }
 
+    public void refreshContainerItems(final Set selectedIds) {
+        selectedIds.forEach(id -> refreshContainerItem(id));
+    }
+
     @Override
-    public void setReadOnly(boolean readOnly) {
+    public void setReadOnly(final boolean readOnly) {
         super.setReadOnly(readOnly);
-        for (MenuBar.MenuItem menuItem : disallowInReadOnlyMenu) {
+        for (final MenuBar.MenuItem menuItem : disallowInReadOnlyMenu) {
             menuItem.setEnabled(!readOnly);
         }
     }
@@ -382,6 +436,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         // Общие настройки таблицы
         table.setContainerDataSource(container);
         table.setSelectable(true);
+        table.setMultiSelect(true);
         table.setImmediate(true);
         table.setColumnCollapsingAllowed(true);
         table.setColumnReorderingAllowed(true);
@@ -406,7 +461,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                 @Override
                 public void handleAction(final Action action, final Object sender, final Object target) {
                     final UIAction firedAction = Iterables.find(actions, input -> input.getName().equals(action.getCaption()));
-                    firedAction.fire(table.getValue());
+                    firedAction.fire(getSelectedItemIds());
                 }
             });
         }
@@ -420,7 +475,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             fullInitTable(table, dataDecl);
             table.addItemClickListener(event -> {
                 if (event.isDoubleClick())
-                    defAction.fire(event.getItemId());
+                    defAction.fire(newHashSet(event.getItemId()));
             });
             for (final MenuBar.MenuItem btn : needCurrentMenu)
                 btn.setVisible(true);
@@ -459,7 +514,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             if (a instanceof ItemAction && !(a instanceof DefaultAction)) {
                 final Component command = a.createButton();
                 if (command instanceof Button) {
-                    ((Button) command).addClickListener(event -> a.fire(itemId));
+                    ((Button) command).addClickListener(event -> a.fire(newHashSet(itemId)));
                 }
                 actionToolbar.addComponent(command);
             }
@@ -556,7 +611,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                 titleLink.setCaption(item.getItemProperty(titleMap.getPropName()).getValue().toString());
                 titleLink.setDescription(defAction.getDescription());
                 titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-                titleLink.addClickListener(event -> defAction.fire(itemId));
+                titleLink.addClickListener(event -> defAction.fire(newHashSet(itemId)));
                 titleComp = titleLink;
             }
             titleComp.setImmediate(true);
@@ -587,7 +642,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             panel.addLayoutClickListener(event -> {
                 source.select(itemId);
                 if (event.isDoubleClick())
-                    defAction.fire(itemId);
+                    defAction.fire(newHashSet(itemId));
             });
             panel.setImmediate(true);
 
@@ -605,7 +660,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         }
 
         @Override
-        public void fire(final Object itemId) {
+        public void fire(final Set itemIds) {
             doEditNewObject(null);
         }
     }
@@ -620,8 +675,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         }
 
         @Override
-        public void fire(final Object itemId) {
-            final TEntity entity = GridItem.extractBean(table.getItem(itemId));
+        public void fire(final Set itemIds) {
+            final TEntity entity = getFirstEntity(itemIds);
             doEditObject(entity);
         }
     }

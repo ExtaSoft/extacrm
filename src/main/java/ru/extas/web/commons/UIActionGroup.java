@@ -3,6 +3,7 @@ package ru.extas.web.commons;
 import com.vaadin.server.Resource;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Группа действий (как бы подменю)
@@ -27,7 +28,7 @@ public abstract class UIActionGroup extends UIAction{
     abstract protected List<UIAction> makeActionsGroup();
 
     @Override
-    public void fire(final Object itemId) {
+    public void fire(final Set itemIds) {
 
     }
 }

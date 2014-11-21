@@ -31,14 +31,14 @@ public class PredictConfirmedAction implements Serializable {
     public PredictConfirmedAction() {
     }
 
-    public PredictConfirmedAction(String confirmCaption, String confirmMessage, SupplierSer<Boolean> condition, RunnableSer predictAction) {
+    public PredictConfirmedAction(final String confirmCaption, final String confirmMessage, final SupplierSer<Boolean> condition, final RunnableSer predictAction) {
         this.confirmCaption = confirmCaption;
         this.confirmMessage = confirmMessage;
         this.condition = condition;
         this.predictAction = predictAction;
     }
 
-    public void run(RunnableSer action) {
+    public void run(final RunnableSer action) {
         checkNotNull(confirmCaption);
         checkNotNull(confirmMessage);
         checkNotNull(condition);
@@ -69,7 +69,7 @@ public class PredictConfirmedAction implements Serializable {
         return confirmCaption;
     }
 
-    public void setConfirmCaption(String confirmCaption) {
+    public void setConfirmCaption(final String confirmCaption) {
         this.confirmCaption = confirmCaption;
     }
 
@@ -77,7 +77,7 @@ public class PredictConfirmedAction implements Serializable {
         return confirmMessage;
     }
 
-    public void setConfirmMessage(String confirmMessage) {
+    public void setConfirmMessage(final String confirmMessage) {
         this.confirmMessage = confirmMessage;
     }
 
@@ -85,7 +85,7 @@ public class PredictConfirmedAction implements Serializable {
         return condition;
     }
 
-    public void setCondition(SupplierSer<Boolean> condition) {
+    public void setCondition(final SupplierSer<Boolean> condition) {
         this.condition = condition;
     }
 
@@ -93,7 +93,7 @@ public class PredictConfirmedAction implements Serializable {
         return predictAction;
     }
 
-    public void setPredictAction(RunnableSer predictAction) {
+    public void setPredictAction(final RunnableSer predictAction) {
         this.predictAction = predictAction;
     }
 

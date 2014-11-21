@@ -65,7 +65,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 
                 actions.add(new UIAction("Добавить", "Выбрать юридическое лицо осуществляющуе деятельность на торговой точке", Fontello.DOC_NEW) {
                     @Override
-                    public void fire(final Object itemId) {
+                    public void fire(final Set itemIds) {
                         final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите юридическое лицо");
                         selectWindow.addCloseListener(e -> {
                             if (selectWindow.isSelectPressed()) {
@@ -81,8 +81,8 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 
                 actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.EDIT_3) {
                     @Override
-                    public void fire(final Object itemId) {
-                        final LegalEntity bean = GridItem.extractBean(table.getItem(itemId));
+                    public void fire(final Set itemIds) {
+                        final LegalEntity bean = getFirstEntity(itemIds);
                         final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
                         editWin.addCloseFormListener(e -> {
                             if(editWin.isSaved()) {
@@ -95,8 +95,8 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
                 });
                 actions.add(new ItemAction("Удалить", "Удалить юр.лицо из компании", Fontello.TRASH) {
                     @Override
-                    public void fire(final Object itemId) {
-                        container.removeItem(itemId);
+                    public void fire(final Set itemIds) {
+                        itemIds.forEach(id -> container.removeItem(id));
                         setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
                     }
                 });

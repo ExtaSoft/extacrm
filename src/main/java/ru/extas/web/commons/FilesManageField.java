@@ -102,7 +102,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         return dropBox;
     }
 
-    private Component getItemComponent(AbstractItemLayout pSource, final TFileContainer item) {
+    private Component getItemComponent(final AbstractItemLayout pSource, final TFileContainer item) {
         final ComponentContainer root;
         if (mode == Mode.LIST) {
             final HorizontalLayout layout = new HorizontalLayout();

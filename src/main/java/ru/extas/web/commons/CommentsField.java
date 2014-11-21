@@ -85,7 +85,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         private final RichTextArea textArea;
         private final Label text;
 
-        public ItemComponent(AbstractItemLayout pSource, final Object itemId) {
+        public ItemComponent(final AbstractItemLayout pSource, final Object itemId) {
             final BeanItem<TComment> item = container.getItem(itemId);
             final TComment comment = item.getBean();
 

@@ -10,6 +10,7 @@ import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.web.commons.GridItem.extractBean;
@@ -20,7 +21,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  *         Time: 22:52
  */
 public class EmployeeSelectWindow extends CloseOnlylWindow {
-    private Employee selected;
+    private Set<Employee> selected;
     private boolean selectPressed;
     private SupplierSer<Company> companySupplier;
     private SupplierSer<SalePoint> salePointSupplier;
@@ -37,8 +38,8 @@ public class EmployeeSelectWindow extends CloseOnlylWindow {
 
                 actions.add(new DefaultAction("Выбрать", "Выбрать выделенного в списке сотрудника и закрыть окно", Fontello.CHECK) {
                     @Override
-                    public void fire(final Object itemId) {
-                        selected = extractBean(table.getItem(itemId));
+                    public void fire(final Set itemIds) {
+                        selected = getEntities(itemIds);
                         selectPressed = true;
                         close();
                     }
@@ -57,7 +58,7 @@ public class EmployeeSelectWindow extends CloseOnlylWindow {
         return selectPressed;
     }
 
-    public Employee getSelected() {
+    public Set<Employee> getSelected() {
         return selected;
     }
 

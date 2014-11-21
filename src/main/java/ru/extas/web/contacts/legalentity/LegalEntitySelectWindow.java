@@ -31,7 +31,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
 public class LegalEntitySelectWindow extends CloseOnlylWindow {
 
     private SupplierSer<Company> companySupplier;
-    private LegalEntity selected;
+    private Set<LegalEntity> selected;
 	private boolean selectPressed;
 
 	/**
@@ -67,9 +67,9 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 
 			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
 				@Override
-				public void fire(final Object itemId) {
+				public void fire(final Set itemIds) {
 
-					selected = extractBean(table.getItem(itemId));
+					selected = getEntities(itemIds);
 					selectPressed = true;
 					close();
 				}
@@ -87,7 +87,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 	 * @return a {@link ru.extas.model.contacts.LegalEntity} object.
 	 */
 	public LegalEntity getSelected() {
-		return selected;
+		return (LegalEntity) selected;
 	}
 
     public SupplierSer<Company> getCompanySupplier() {

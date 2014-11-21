@@ -3,6 +3,8 @@ package ru.extas.server.lead;
 import ru.extas.model.lead.Lead;
 import ru.extas.security.SecuredRepository;
 
+import java.util.Set;
+
 /**
  * <p>LeadService interface.</p>
  *
@@ -34,4 +36,12 @@ public interface LeadService extends SecuredRepository<Lead> {
      * @param lead возобновляемый лид
      */
     void reopenLead(Lead lead);
+
+    /**
+     * Завершает набор лидов с указанным результатом
+     *
+     * @param leads набор лидов
+     * @param result результат завершения
+     */
+    void finishLeads(Set<Lead> leads, Lead.Result result);
 }

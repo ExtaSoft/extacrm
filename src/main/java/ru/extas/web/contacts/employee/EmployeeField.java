@@ -20,6 +20,7 @@ import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -87,7 +88,7 @@ public class EmployeeField extends CustomField<Employee> {
         return filter;
     }
 
-    public void setNewEmployeePrecondition(PredictConfirmedAction newEmployeePrecondition) {
+    public void setNewEmployeePrecondition(final PredictConfirmedAction newEmployeePrecondition) {
         this.newEmployeePrecondition = newEmployeePrecondition;
     }
 
@@ -270,8 +271,8 @@ public class EmployeeField extends CustomField<Employee> {
                     final EmployeeSelectWindow selectWindow = new EmployeeSelectWindow("Выберите сотрудника или введите нового");
                     selectWindow.addCloseListener(e -> {
                         if (selectWindow.isSelectPressed()) {
-                            final Employee selected = selectWindow.getSelected();
-                            selectField.setConvertedValue(selected);
+                            final Set<Employee> selected = selectWindow.getSelected();
+                            selectField.setConvertedValue(selected.stream().findFirst().orElse(null));
                         }
                         popupView.setPopupVisible(true);
                     });

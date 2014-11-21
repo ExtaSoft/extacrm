@@ -126,28 +126,28 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
 
         actions.add(new ItemAction("Утрачен", "Перевести выделенный в списке бланк в \"Утраченные\"", null) {
             @Override
-            public void fire(final Object itemId) {
+            public void fire(final Set itemIds) {
                 final A7Form.Status status = A7Form.Status.LOST;
-                changeStatus(itemId, status);
+                changeStatus(itemIds, status);
             }
         });
 
         actions.add(new ItemAction("Испорчен", "Перевести выделенный в списке бланк в \"Испорченные\"", null) {
             @Override
-            public void fire(final Object itemId) {
+            public void fire(final Set itemIds) {
                 final A7Form.Status status = A7Form.Status.BROKEN;
-                changeStatus(itemId, status);
+                changeStatus(itemIds, status);
             }
         });
 
         return actions;
     }
 
-    private void changeStatus(final Object itemId, final A7Form.Status status) {
-        final A7Form curObj = extractBean(table.getItem(itemId));
+    private void changeStatus(final Set itemIds, final A7Form.Status status) {
+        final Set<A7Form> a7Forms = getEntities(itemIds);
 
         final A7FormRepository formService = lookup(A7FormRepository.class);
-        formService.changeStatus(curObj, status);
-        refreshContainerItem(itemId);
+        formService.changeStatus(a7Forms, status);
+        refreshContainerItems(itemIds);
     }
 }

@@ -60,11 +60,11 @@ public class UserGroupField extends CustomField<Set> {
 
                 actions.add(new UIAction("Добавить", "Добавить пользователя в группу", Fontello.USER_ADD) {
                     @Override
-                    public void fire(final Object itemId) {
+                    public void fire(final Set itemIds) {
                         final UserGroupSelectWindow selectWindow = new UserGroupSelectWindow("Выберите группу");
                         selectWindow.addCloseListener(e -> {
                             if (selectWindow.isSelectPressed()) {
-                                itemContainer.addBean(selectWindow.getSelected());
+                                itemContainer.addAll(selectWindow.getSelected());
                                 setValue(newHashSet(itemContainer.getItemIds()));
                                 NotificationUtil.showSuccess("Группа добавлена");
                             }
@@ -75,8 +75,8 @@ public class UserGroupField extends CustomField<Set> {
 
                 actions.add(new ItemAction("Удалить", "Удалить принадлежность к группе", Fontello.TRASH) {
                     @Override
-                    public void fire(final Object itemId) {
-                        container.removeItem(itemId);
+                    public void fire(final Set itemIds) {
+                        itemIds.forEach(id -> container.removeItem(id));
                         setValue(newHashSet(((BeanItemContainer<UserGroup>) container).getItemIds()));
                     }
                 });

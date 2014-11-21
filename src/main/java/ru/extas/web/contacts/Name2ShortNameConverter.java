@@ -14,12 +14,12 @@ import java.util.Locale;
 @Component
 public class Name2ShortNameConverter implements Converter<String, String> {
     @Override
-    public String convertToModel(String value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+    public String convertToModel(final String value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
         return value;
     }
 
     @Override
-    public String convertToPresentation(String value, Class<? extends String> targetType, Locale locale) throws ConversionException {
+    public String convertToPresentation(final String value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
         return NameUtils.getShortName(value);
     }
 

@@ -129,7 +129,7 @@ public class Company extends SecuredObject {
         return facebook;
     }
 
-    public void setFacebook(String facebook) {
+    public void setFacebook(final String facebook) {
         this.facebook = facebook;
     }
 
@@ -137,7 +137,7 @@ public class Company extends SecuredObject {
         return bk;
     }
 
-    public void setBk(String bk) {
+    public void setBk(final String bk) {
         this.bk = bk;
     }
 
@@ -145,7 +145,7 @@ public class Company extends SecuredObject {
         return instagram;
     }
 
-    public void setInstagram(String instagram) {
+    public void setInstagram(final String instagram) {
         this.instagram = instagram;
     }
 
@@ -153,7 +153,7 @@ public class Company extends SecuredObject {
         return youtube;
     }
 
-    public void setYoutube(String youtube) {
+    public void setYoutube(final String youtube) {
         this.youtube = youtube;
     }
 

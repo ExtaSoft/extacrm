@@ -92,7 +92,7 @@ public class ProdInSaleEditForm extends ExtaEditForm<ProductInSale> {
         return form;
     }
 
-    private void setSummCaption(Product prod) {
+    private void setSummCaption(final Product prod) {
         if (prod != null) {
             if (prod instanceof ProdCredit)
                 summField.setCaption("Сумма кредита");

@@ -53,11 +53,11 @@ public class SalePointsSelectField extends CustomField<Set> {
 
                 actions.add(new UIAction("Добавить", "Выбрать Торговую точку", Fontello.DOC_NEW) {
                     @Override
-                    public void fire(final Object itemId) {
+                    public void fire(final Set itemIds) {
                         final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите торговую точку", null);
                         selectWindow.addCloseListener(e -> {
                             if (selectWindow.isSelectPressed()) {
-                                beanContainer.addBean(selectWindow.getSelected());
+                                beanContainer.addAll(selectWindow.getSelected());
                                 setValue(newHashSet(beanContainer.getItemIds()));
                                 NotificationUtil.showSuccess("Торговая точке добавлена");
                             }
@@ -69,8 +69,8 @@ public class SalePointsSelectField extends CustomField<Set> {
                 actions.add(new EditObjectAction("Изменить", "Редактирование данных торговой точки"));
                 actions.add(new ItemAction("Удалить", "Убрать доступ к торговой точке", Fontello.TRASH) {
                     @Override
-                    public void fire(final Object itemId) {
-                        beanContainer.removeItem(itemId);
+                    public void fire(final Set itemIds) {
+                        itemIds.forEach(id -> beanContainer.removeItem(id));
                         setValue(newHashSet(beanContainer.getItemIds()));
                     }
                 });
