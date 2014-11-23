@@ -6,15 +6,15 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * Окно выбора торговой точки
@@ -26,7 +26,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @since 0.3
  */
 public class SalePointSelectWindow extends CloseOnlylWindow {
-    private SalePoint selected;
+    private Set<SalePoint> selected;
     private boolean selectPressed;
 
     /**
@@ -59,7 +59,7 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 
         @Override
         protected Container createContainer() {
-            final ExtaDataContainer<SalePoint> container = new ExtaDataContainer<>(SalePoint.class);
+            final ExtaJpaContainer<SalePoint> container = new ExtaJpaContainer<>(SalePoint.class);
             container.addNestedContainerProperty("regAddress.region");
             container.addNestedContainerProperty("regAddress.city");
             container.addNestedContainerProperty("regAddress.streetBld");
@@ -75,9 +75,9 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 
             actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
                 @Override
-                public void fire(final Object itemId) {
+                public void fire(final Set itemIds) {
 
-                    selected = extractBean(table.getItem(itemId));
+                    selected = getEntities(itemIds);
                     selectPressed = true;
                     close();
                 }
@@ -94,7 +94,7 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
      *
      * @return a {@link ru.extas.model.contacts.SalePoint} object.
      */
-    public SalePoint getSelected() {
+    public Set<SalePoint> getSelected() {
         return selected;
     }
 }

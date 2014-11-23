@@ -102,11 +102,18 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         secureSave(lead);
     }
 
+    @Transactional
     @Override
-    public void reopenLead(Lead lead) {
+    public void reopenLead(final Lead lead) {
         lead.setResult(null);
         lead.setStatus(Lead.Status.NEW);
         secureSave(lead);
+    }
+
+    @Transactional
+    @Override
+    public void finishLeads(final Set<Lead> leads, final Lead.Result result) {
+        leads.forEach(l -> finishLead(l, result));
     }
 
     /**

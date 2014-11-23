@@ -8,6 +8,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditDoc;
+import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 
@@ -29,7 +30,7 @@ public class ProdCredDocsField extends CustomField<List> {
 
 	private final ProdCredit product;
 	private Table docTable;
-	private BeanItemContainer<ProdCreditDoc> container;
+	private ExtaBeanContainer<ProdCreditDoc> container;
 
 	/**
 	 * <p>Constructor for ProdCredDocsField.</p>
@@ -89,7 +90,7 @@ public class ProdCredDocsField extends CustomField<List> {
         docTable.setSelectable(true);
 		final Property dataSource = getPropertyDataSource();
 		final List<ProdCreditDoc> docList = dataSource != null ? (List<ProdCreditDoc>) dataSource.getValue() : new ArrayList<ProdCreditDoc>();
-		container = new BeanItemContainer<>(ProdCreditDoc.class);
+		container = new ExtaBeanContainer<>(ProdCreditDoc.class);
 		if (docList != null) {
 			for (final ProdCreditDoc doc : docList) {
 				container.addBean(doc);

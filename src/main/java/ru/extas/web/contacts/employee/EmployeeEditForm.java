@@ -145,7 +145,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
             workPlaceField.changeCompany();
             legalWorkPlaceField.changeCompany();
         });
-        companyField.setVisible(companySupplier == null);
+        companyField.setReadOnly(companySupplier != null);
         formLayout.addComponent(companyField);
 
         workPlaceField = new SalePointField("Торговая точка", "Укажите торговую точку сотрудника");
@@ -155,7 +155,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
             if (salePoint != null)
                 companyField.setValue(salePoint.getCompany());
         });
-        workPlaceField.setVisible(salePointSupplier == null);
+        workPlaceField.setReadOnly(salePointSupplier != null);
         formLayout.addComponent(workPlaceField);
 
 //        jobDepartmentField = new;
@@ -168,7 +168,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
             if (legalEntity != null)
                 companyField.setValue(legalEntity.getCompany());
         });
-        legalWorkPlaceField.setVisible(legalEntitySupplier == null);
+        legalWorkPlaceField.setReadOnly(legalEntitySupplier != null);
         formLayout.addComponent(legalWorkPlaceField);
 
         jobPositionField = new EditField("Должность", "Укажите должность сотрудника");

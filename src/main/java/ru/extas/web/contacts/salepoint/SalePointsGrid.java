@@ -7,7 +7,6 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.*;
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.model.security.ObjectSecurityRule_;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
@@ -63,7 +62,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<SalePoint> container = new SecuredDataContainer<SalePoint>(SalePoint.class, ExtaDomain.SALE_POINT){
+		final ExtaJpaContainer<SalePoint> container = new SecuredDataContainer<SalePoint>(SalePoint.class, ExtaDomain.SALE_POINT){
 			@Override
 			protected Predicate createAreaPredicate(final CriteriaBuilder cb, final Root<SalePoint> objectRoot, Predicate predicate, final Set<String> permitRegions, final Set<String> permitBrands) {
 				if (!permitRegions.isEmpty()) {

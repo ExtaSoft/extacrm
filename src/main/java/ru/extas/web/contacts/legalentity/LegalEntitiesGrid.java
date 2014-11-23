@@ -64,7 +64,7 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<LegalEntity> container = new SecuredDataContainer<LegalEntity>(LegalEntity.class, ExtaDomain.LEGAL_ENTITY) {
+        final ExtaJpaContainer<LegalEntity> container = new SecuredDataContainer<LegalEntity>(LegalEntity.class, ExtaDomain.LEGAL_ENTITY) {
             @Override
             protected Predicate createAreaPredicate(final CriteriaBuilder cb, final Root objectRoot, Predicate predicate, final Set permitRegions, final Set permitBrands) {
                 if (!permitRegions.isEmpty()) {

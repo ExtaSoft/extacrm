@@ -59,10 +59,8 @@ public class HomeView extends ExtaAbstractView {
         horizontalSplitPanel.setFirstComponent(sheet);
 
         final TasksGrid tasksGrid = new TasksGrid(TasksGrid.Period.TODAY);
-        tasksGrid.addAttachListener(e -> {
-            tasksGrid.setToolbarVisible(false);
-            tasksGrid.setMode(ExtaGrid.Mode.DETAIL_LIST);
-        });
+        tasksGrid.setToolbarVisible(false);
+
         final Panel taskPanel = new Panel("Задачи");
         taskPanel.setSizeFull();
         taskPanel.setContent(tasksGrid);

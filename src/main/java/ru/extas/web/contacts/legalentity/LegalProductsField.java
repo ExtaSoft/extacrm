@@ -5,10 +5,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.Product;
-import ru.extas.web.commons.ExtaTheme;
-import ru.extas.web.commons.Fontello;
-import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.*;
 import ru.extas.web.product.ProductDataDecl;
 import ru.extas.web.product.ProductSelectWindow;
 
@@ -29,7 +26,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
 public class LegalProductsField extends CustomField<List> {
 
     private Table table;
-    private BeanItemContainer<Product> container;
+    private ExtaBeanContainer<Product> container;
 
     /**
      * <p>Constructor for LegalProductsField.</p>
@@ -62,7 +59,7 @@ public class LegalProductsField extends CustomField<List> {
                 final ProductSelectWindow selectWindow = new ProductSelectWindow("Выберите продукт");
                 selectWindow.addCloseListener(e -> {
                     if (selectWindow.isSelectPressed()) {
-                        container.addBean(selectWindow.getSelected());
+                        container.addAll(selectWindow.getSelected());
                         setValue(container.getItemIds());
                         NotificationUtil.showSuccess("Продукт добавлен");
                     }
@@ -91,7 +88,7 @@ public class LegalProductsField extends CustomField<List> {
         table.setColumnCollapsingAllowed(true);
         final Property dataSource = getPropertyDataSource();
         final List<Product> list = dataSource != null ? (List<Product>) dataSource.getValue() : new ArrayList<>();
-        container = new BeanItemContainer<>(Product.class);
+        container = new ExtaBeanContainer<>(Product.class);
         if (list != null) {
             for (final Product item : list) {
                 container.addBean(item);

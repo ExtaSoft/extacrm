@@ -26,7 +26,7 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 public class UserGroupField extends CustomField<Set> {
 
-    private BeanItemContainer<UserGroup> itemContainer;
+    private ExtaBeanContainer<UserGroup> itemContainer;
 
     /**
      * <p>Constructor for UserGroupField.</p>
@@ -45,7 +45,7 @@ public class UserGroupField extends CustomField<Set> {
             @Override
             protected Container createContainer() {
                 final Set<UserGroup> list = getValue() != null ? getValue() : newHashSet();
-                itemContainer = new BeanItemContainer<>(UserGroup.class);
+                itemContainer = new ExtaBeanContainer<>(UserGroup.class);
                 if (list != null) {
                     for (final UserGroup item : list) {
                         itemContainer.addBean(item);
@@ -60,11 +60,11 @@ public class UserGroupField extends CustomField<Set> {
 
                 actions.add(new UIAction("Добавить", "Добавить пользователя в группу", Fontello.USER_ADD) {
                     @Override
-                    public void fire(final Object itemId) {
+                    public void fire(final Set itemIds) {
                         final UserGroupSelectWindow selectWindow = new UserGroupSelectWindow("Выберите группу");
                         selectWindow.addCloseListener(e -> {
                             if (selectWindow.isSelectPressed()) {
-                                itemContainer.addBean(selectWindow.getSelected());
+                                itemContainer.addAll(selectWindow.getSelected());
                                 setValue(newHashSet(itemContainer.getItemIds()));
                                 NotificationUtil.showSuccess("Группа добавлена");
                             }
@@ -75,9 +75,9 @@ public class UserGroupField extends CustomField<Set> {
 
                 actions.add(new ItemAction("Удалить", "Удалить принадлежность к группе", Fontello.TRASH) {
                     @Override
-                    public void fire(final Object itemId) {
-                        container.removeItem(itemId);
-                        setValue(newHashSet(((BeanItemContainer<UserGroup>) container).getItemIds()));
+                    public void fire(final Set itemIds) {
+                        itemIds.forEach(id -> container.removeItem(id));
+                        setValue(newHashSet(((ExtaBeanContainer<UserGroup>) container).getItemIds()));
                     }
                 });
                 return actions;

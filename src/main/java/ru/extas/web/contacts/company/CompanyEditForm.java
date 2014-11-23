@@ -43,6 +43,14 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     private CompanyCategoriesField categoriesField;
     @PropertyId("www")
     private WebSiteLinkField wwwField;
+    @PropertyId("facebook")
+    private WebSiteLinkField facebookField;
+    @PropertyId("bk")
+    private WebSiteLinkField bkField;
+    @PropertyId("instagram")
+    private WebSiteLinkField instagramField;
+    @PropertyId("youtube")
+    private WebSiteLinkField youtubeField;
     @PropertyId("region")
     private ComboBox regionField;
     @PropertyId("city")
@@ -166,9 +174,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         categoriesField = new CompanyCategoriesField("Категория");
         formLayout.addComponent(categoriesField);
 
-        wwwField = new WebSiteLinkField("WWW", "Введите адрес сайта компании");
-        formLayout.addComponent(wwwField);
-
         regionField = new RegionSelect();
         regionField.setDescription("Укажите регион регистрации");
         regionField.addValueChangeListener(event -> {
@@ -189,6 +194,21 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
                 regionField.setValue(region);
         });
         formLayout.addComponent(cityField);
+
+        wwwField = new WebSiteLinkField("WWW", "Введите адрес сайта компании");
+        formLayout.addComponent(wwwField);
+
+        facebookField = new WebSiteLinkField("Facebook", "Введите ссылку на группу компании в Facebook");
+        formLayout.addComponent(facebookField);
+
+        bkField = new WebSiteLinkField("ВКонтакте", "Введите ссылку на группу компании ВКонтакте");
+        formLayout.addComponent(bkField);
+
+        instagramField = new WebSiteLinkField("Instagram", "Введите ссылку на страницу компании в Instagram");
+        formLayout.addComponent(instagramField);
+
+        youtubeField = new WebSiteLinkField("YouTube", "Введите ссылку на канал компании в YouTube");
+        formLayout.addComponent(youtubeField);
 
         return formLayout;
     }

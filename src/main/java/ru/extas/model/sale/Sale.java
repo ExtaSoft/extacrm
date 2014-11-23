@@ -121,7 +121,7 @@ public class Sale extends SecuredObject {
 		return files;
 	}
 
-	public void setFiles(List<SaleFileContainer> files) {
+	public void setFiles(final List<SaleFileContainer> files) {
 		this.files = files;
 	}
 

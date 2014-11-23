@@ -1,23 +1,17 @@
 package ru.extas.web.contacts.legalentity;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * Окно с таблицей для выбора юр. лица
@@ -31,7 +25,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
 public class LegalEntitySelectWindow extends CloseOnlylWindow {
 
     private SupplierSer<Company> companySupplier;
-    private LegalEntity selected;
+    private Set<LegalEntity> selected;
 	private boolean selectPressed;
 
 	/**
@@ -43,13 +37,9 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 		super(caption);
         setWidth(800, Unit.PIXELS);
         setHeight(600, Unit.PIXELS);
-	}
 
-    @Override
-    public void attach() {
-        setContent(new SelectGrid());
-        super.attach();
-    }
+		addAttachListener(e -> setContent(new SelectGrid()));
+	}
 
     /**
 	 * <p>isSelectPressed.</p>
@@ -71,9 +61,9 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 
 			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
 				@Override
-				public void fire(final Object itemId) {
+				public void fire(final Set itemIds) {
 
-					selected = extractBean(table.getItem(itemId));
+					selected = getEntities(itemIds);
 					selectPressed = true;
 					close();
 				}
@@ -91,7 +81,7 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 	 * @return a {@link ru.extas.model.contacts.LegalEntity} object.
 	 */
 	public LegalEntity getSelected() {
-		return selected;
+		return (LegalEntity) selected;
 	}
 
     public SupplierSer<Company> getCompanySupplier() {

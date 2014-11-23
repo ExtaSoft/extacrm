@@ -107,6 +107,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
             leadRepository.finishLead(lead, leadResult);
     }
 
+    @Transactional
     @Override
     public void reopenSale(Sale sale) {
         sale.setResult(null);
@@ -115,6 +116,18 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         final Lead lead = sale.getLead();
         if (lead != null)
             leadRepository.reopenLead(lead);
+    }
+
+    @Transactional
+    @Override
+    public void reopenSales(final Set<Sale> sales) {
+        sales.forEach(s -> reopenSale(s));
+    }
+
+    @Transactional
+    @Override
+    public void finishSales(final Set<Sale> sales, final Sale.Result result) {
+        sales.forEach(s -> finishSale(s, result));
     }
 
     /**

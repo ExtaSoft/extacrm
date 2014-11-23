@@ -78,6 +78,29 @@
 
   }
 
+  $row-highlight-yellow-bg: #ffffe0;
+  .v-table-row.v-table-row-highlight-yellow {
+    background-color: $row-highlight-yellow-bg;
+  }
+  .v-table-row-odd.v-table-row-highlight-yellow {
+    background-color: scale-color($row-highlight-yellow-bg, $lightness: -5%);
+  }
+
+  $row-highlight-red-bg: #FF6347;
+  .v-table-row.v-table-row-highlight-red {
+    background-color: $row-highlight-red-bg;
+  }
+  .v-table-row-odd.v-table-row-highlight-red {
+    background-color: scale-color($row-highlight-red-bg, $lightness: -5%);
+  }
+
+  .v-table-row.v-table-row-archived {
+    text-decoration: line-through;
+  }
+  .v-table-row-odd.v-table-row-archived {
+    text-decoration: line-through;
+  }
+
   .view-title {
     @extend .h2;
     font-size: round($v-font-size * 1.125);
@@ -111,8 +134,8 @@
 
   .drop-area .v-label {
     color: #919083;
-//    font-weight: bold;
-//    font-size: 17px;
+    //    font-weight: bold;
+    //    font-size: 17px;
   }
 
   .exta-large-icon {
@@ -142,13 +165,13 @@
   }
 
   //  .v-formlayout-contentcell {
-//    > .v-no-caption-complex-field {
-//      position: absolute;
-//      left: 0;
-//      margin-top: -0.5em;
-//      padding-bottom: 0.5em;
-//      padding-left: 20px;
-//    }
-//  }
+  //    > .v-no-caption-complex-field {
+  //      position: absolute;
+  //      left: 0;
+  //      margin-top: -0.5em;
+  //      padding-bottom: 0.5em;
+  //      padding-left: 20px;
+  //    }
+  //  }
 
 }

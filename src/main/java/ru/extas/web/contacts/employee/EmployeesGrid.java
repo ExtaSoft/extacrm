@@ -10,7 +10,6 @@ import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -52,7 +51,7 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<Employee> container = new SecuredDataContainer<>(Employee.class, ExtaDomain.EMPLOYEE);
+        final ExtaJpaContainer<Employee> container = new SecuredDataContainer<>(Employee.class, ExtaDomain.EMPLOYEE);
         container.addNestedContainerProperty("company.name");
         container.sort(new Object[]{"company.name", "name"}, new boolean[]{true, true});
         if (salePointSupplier != null) {

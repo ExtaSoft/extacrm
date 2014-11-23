@@ -43,7 +43,7 @@ public class PolicyGrid extends ExtaGrid<Policy> {
 	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
-		return new ExtaDataContainer<>(Policy.class);
+		return new ExtaJpaContainer<>(Policy.class);
 	}
 
 	/** {@inheritDoc} */

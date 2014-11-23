@@ -6,7 +6,6 @@ package ru.extas.web.contacts.company;
 import com.vaadin.data.Container;
 import ru.extas.model.contacts.*;
 import ru.extas.model.security.ExtaDomain;
-import ru.extas.model.security.ObjectSecurityRule_;
 import ru.extas.web.commons.*;
 
 import javax.persistence.criteria.*;
@@ -52,7 +51,7 @@ public class CompaniesGrid extends ExtaGrid<Company> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<Company> container = new SecuredDataContainer<Company>(Company.class, ExtaDomain.COMPANY) {
+        final ExtaJpaContainer<Company> container = new SecuredDataContainer<Company>(Company.class, ExtaDomain.COMPANY) {
             @Override
             protected Predicate createAreaPredicate(final CriteriaBuilder cb, final Root objectRoot, Predicate predicate, final Set permitRegions, final Set permitBrands) {
                 if (!permitRegions.isEmpty()) {

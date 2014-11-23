@@ -20,8 +20,10 @@ import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.StringToDateTimeConverter;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -64,12 +66,12 @@ public class TasksGrid extends ExtaGrid<Task> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final BeanItemContainer<Task> dataSource = new BeanItemContainer<>(Task.class);
+		final ExtaBeanContainer<Task> dataSource = new ExtaBeanContainer<>(Task.class);
 		fillDataContainer(dataSource);
 		return dataSource;
 	}
 
-	private void fillDataContainer(final BeanItemContainer<Task> dataSource) {
+	private void fillDataContainer(final ExtaBeanContainer<Task> dataSource) {
 		final List<Task> tasks = queryForTasksToShow();
 		dataSource.removeAllItems();
 		dataSource.addAll(tasks);
@@ -132,8 +134,8 @@ public class TasksGrid extends ExtaGrid<Task> {
 
 		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса в рамках текущуе задачи", Fontello.SITEMAP) {
 			@Override
-			public void fire(final Object itemId) {
-				final BeanItem<Task> curObj = (BeanItem<Task>) table.getItem(itemId);
+			public void fire(final Set itemIds) {
+				final BeanItem<Task> curObj = (BeanItem<Task>) getFirstItem(itemIds);
 				// Показать статус выполнения процесса
 				final BPStatusForm statusForm = new BPStatusForm(curObj.getBean().getProcessInstanceId());
 				statusForm.showModal();
@@ -143,10 +145,11 @@ public class TasksGrid extends ExtaGrid<Task> {
 		return actions;
 	}
 
+
 	/** {@inheritDoc} */
 	@Override
 	protected void refreshContainer() {
-		fillDataContainer((BeanItemContainer<Task>) container);
+		fillDataContainer((ExtaBeanContainer<Task>) container);
 	}
 
     @Override
@@ -166,7 +169,7 @@ public class TasksGrid extends ExtaGrid<Task> {
 
             @Override
             public Object generateCell(final CustomTable source, final Object itemId, final Object columnId) {
-                final Item item = source.getItem(itemId);
+                final Item item = getItem(itemId);
                 final Task task = GridItem.extractBean(item);
 
                 final Button titleLink = new Button();
@@ -174,7 +177,7 @@ public class TasksGrid extends ExtaGrid<Task> {
                 titleLink.setCaption(task.getName());
                 titleLink.setDescription(defAction.getDescription());
                 titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-                titleLink.addClickListener(event -> defAction.fire(itemId));
+                titleLink.addClickListener(event -> defAction.fire(newHashSet(itemId)));
 
                 final VerticalLayout panel = new VerticalLayout();
                 panel.addComponent(titleLink);

@@ -5,7 +5,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -14,6 +14,7 @@ import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -77,7 +78,7 @@ public class PersonSelect extends CustomField<Person> {
     private class PersonSelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaDataContainer<Person> container;
+        protected final ExtaJpaContainer<Person> container;
 
         protected PersonSelectField(final String caption) {
             this(caption, "Выберите существующий контакт или введите новый");
@@ -93,7 +94,7 @@ public class PersonSelect extends CustomField<Person> {
             setImmediate(true);
 
             // Инициализация контейнера
-            container = new ExtaDataContainer<>(Person.class);
+            container = new ExtaJpaContainer<>(Person.class);
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);
@@ -191,23 +192,25 @@ public class PersonSelect extends CustomField<Person> {
             formLayout.addComponent(emailField);
 
             final HorizontalLayout toolbar = new HorizontalLayout();
-            final Button searchBtn = new Button("Поиск", event -> {
-                final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
-                selectWindow.addCloseListener(e -> {
-                    if (selectWindow.isSelectPressed()) {
-                        final Person selected = selectWindow.getSelected();
-                        personSelectField.setConvertedValue(selected);
-                    }
-                    popupView.setPopupVisible(true);
-                });
-                popupView.setPopupVisible(false);
-                selectWindow.showModal();
+            if (!isReadOnly()) {
+                final Button searchBtn = new Button("Поиск", event -> {
+                    final PersonSelectWindow selectWindow = new PersonSelectWindow("Выберите клиента или введите нового");
+                    selectWindow.addCloseListener(e -> {
+                        if (selectWindow.isSelectPressed()) {
+                            final Set<Person> selected = selectWindow.getSelected();
+                            personSelectField.setConvertedValue(selected.stream().findFirst().orElse(null));
+                        }
+                        popupView.setPopupVisible(true);
+                    });
+                    popupView.setPopupVisible(false);
+                    selectWindow.showModal();
 
-            });
-            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
-            toolbar.addComponent(searchBtn);
+                });
+                searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
+                toolbar.addComponent(searchBtn);
+            }
 
             viewBtn = new Button("Просмотр", event -> {
                 final Person bean = (Person) getPropertyDataSource().getValue();

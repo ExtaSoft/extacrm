@@ -50,6 +50,30 @@ public class Company extends SecuredObject {
     @URL
     private String www;
 
+    // Сайт
+    @Column(length = Contact.WWW_LENGTH)
+    @Size(max = Contact.WWW_LENGTH)
+    @URL
+    private String facebook;
+
+    // Сайт
+    @Column(length = Contact.WWW_LENGTH)
+    @Size(max = Contact.WWW_LENGTH)
+    @URL
+    private String bk;
+
+    // Сайт
+    @Column(length = Contact.WWW_LENGTH)
+    @Size(max = Contact.WWW_LENGTH)
+    @URL
+    private String instagram;
+
+    // Сайт
+    @Column(length = Contact.WWW_LENGTH)
+    @Size(max = Contact.WWW_LENGTH)
+    @URL
+    private String youtube;
+
     // Регион
     @Column(length = AddressInfo.REGION_LENGTH)
     @Size(max = AddressInfo.REGION_LENGTH)
@@ -99,6 +123,38 @@ public class Company extends SecuredObject {
      * <p>Constructor for Company.</p>
      */
     public Company() {
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(final String facebook) {
+        this.facebook = facebook;
+    }
+
+    public String getBk() {
+        return bk;
+    }
+
+    public void setBk(final String bk) {
+        this.bk = bk;
+    }
+
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public void setInstagram(final String instagram) {
+        this.instagram = instagram;
+    }
+
+    public String getYoutube() {
+        return youtube;
+    }
+
+    public void setYoutube(final String youtube) {
+        this.youtube = youtube;
     }
 
     public Set<String> getCategories() {

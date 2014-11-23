@@ -8,6 +8,7 @@ import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.web.commons.GridItem.extractBean;
@@ -23,7 +24,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  */
 public class UserGroupSelectWindow extends CloseOnlylWindow {
 
-    private UserGroup selected;
+    private Set<UserGroup> selected;
     private boolean selectPressed;
 
     /**
@@ -50,9 +51,9 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
 
                 actions.add(new DefaultAction("Выбрать", "Выбрать выделенную в списке группу и закрыть окно", Fontello.CHECK) {
                     @Override
-                    public void fire(final Object itemId) {
+                    public void fire(final Set itemIds) {
 
-                        selected = extractBean(table.getItem(itemId));
+                        selected = getEntities(itemIds);
                         selectPressed = true;
                         close();
                     }
@@ -71,7 +72,7 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
      *
      * @return a {@link ru.extas.model.security.UserGroup} object.
      */
-    public UserGroup getSelected() {
+    public Set<UserGroup> getSelected() {
         return selected;
     }
 
@@ -80,7 +81,7 @@ public class UserGroupSelectWindow extends CloseOnlylWindow {
      *
      * @param selected a {@link ru.extas.model.security.UserGroup} object.
      */
-    public void setSelected(final UserGroup selected) {
+    public void setSelected(final Set<UserGroup> selected) {
         this.selected = selected;
     }
 

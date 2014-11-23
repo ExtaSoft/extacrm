@@ -12,6 +12,7 @@ import ru.extas.web.util.ComponentUtil;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -155,8 +156,8 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
                 actions.add(new EditObjectAction("Изменить", "Изменить уроветь доступа пользователя к объекту", Fontello.USER_1));
                 actions.add(new ItemAction("Удалить", "Удалить доступ пользователю", Fontello.TRASH) {
                     @Override
-                    public void fire(final Object itemId) {
-                        container.removeItem(itemId);
+                    public void fire(final Set itemIds) {
+                        itemIds.forEach(id -> container.removeItem(id));
                         updateAccess((RefreshBeanContainer<UserObjectAccess>) container);
                     }
                 });

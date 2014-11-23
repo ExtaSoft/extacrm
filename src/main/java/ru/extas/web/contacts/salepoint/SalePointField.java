@@ -8,7 +8,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -84,7 +84,7 @@ public class SalePointField extends CustomField<SalePoint> {
 
     private class SalePointComboBox extends ComboBox {
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaDataContainer<SalePoint> container;
+        protected final ExtaJpaContainer<SalePoint> container;
 
         public SalePointComboBox() {
             this("Название");
@@ -104,7 +104,7 @@ public class SalePointField extends CustomField<SalePoint> {
             setImmediate(true);
 
             // Инициализация контейнера
-            container = new ExtaDataContainer<>(SalePoint.class);
+            container = new ExtaJpaContainer<>(SalePoint.class);
             container.sort(new Object[]{"name"}, new boolean[]{true});
             setContainerFilter();
 
@@ -223,6 +223,7 @@ public class SalePointField extends CustomField<SalePoint> {
             viewBtn = new Button("Просмотр", event -> {
                 final SalePoint salePoint = (SalePoint) getPropertyDataSource().getValue();
                 final SalePointEditForm editWin = new SalePointEditForm(salePoint);
+                editWin.setReadOnly(isReadOnly());
                 editWin.addCloseFormListener(e -> {
                     if (editWin.isSaved()) {
                         refreshFields(salePoint);
@@ -238,23 +239,25 @@ public class SalePointField extends CustomField<SalePoint> {
             viewBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
             toolbar.addComponent(viewBtn);
 
-            final Button searchBtn = new Button("Поиск", event -> {
-                final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите торговую точку или введите новую", companySupplier);
-                selectWindow.addCloseListener(e -> {
-                    if (selectWindow.isSelectPressed()) {
-                        contactSelect.setConvertedValue(selectWindow.getSelected());
-                    }
-                    popupView.setPopupVisible(true);
-                });
-                popupView.setPopupVisible(false);
-                selectWindow.showModal();
+            if (!isReadOnly()) {
+                final Button searchBtn = new Button("Поиск", event -> {
+                    final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите торговую точку или введите новую", companySupplier);
+                    selectWindow.addCloseListener(e -> {
+                        if (selectWindow.isSelectPressed()) {
+                            contactSelect.setConvertedValue(selectWindow.getSelected());
+                        }
+                        popupView.setPopupVisible(true);
+                    });
+                    popupView.setPopupVisible(false);
+                    selectWindow.showModal();
 
-            });
-            searchBtn.setDescription("Открыть форму для поиска и выбора торговой точки");
-            searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-            searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
-            toolbar.addComponent(searchBtn);
+                });
+                searchBtn.setDescription("Открыть форму для поиска и выбора торговой точки");
+                searchBtn.setIcon(Fontello.SEARCH_OUTLINE);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+                searchBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
+                toolbar.addComponent(searchBtn);
+            }
 
             container.addComponent(toolbar);
             return container;

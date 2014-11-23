@@ -7,6 +7,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.PersonChild;
+import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.EditField;
@@ -26,7 +27,7 @@ public class PersonChildrenField extends CustomField<List> {
 
 
     private final Person person;
-    private BeanItemContainer<PersonChild> itemContainer;
+    private ExtaBeanContainer<PersonChild> itemContainer;
     private VerticalLayout root;
 
     public PersonChildrenField(final String caption, final Person person) {
@@ -38,7 +39,7 @@ public class PersonChildrenField extends CustomField<List> {
     protected Component initContent() {
         final Property dataSource = this.getPropertyDataSource();
         final List<PersonChild> list = dataSource != null ? (List<PersonChild>) dataSource.getValue() : new ArrayList<>();
-        itemContainer = new BeanItemContainer<>(PersonChild.class);
+        itemContainer = new ExtaBeanContainer<>(PersonChild.class);
 
         root = new VerticalLayout();
         root.setMargin(new MarginInfo(true, false, true, false));

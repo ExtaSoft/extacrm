@@ -1,9 +1,14 @@
 package ru.extas.web.sale;
 
+import com.google.common.base.Joiner;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.CustomTable;
 import com.vaadin.ui.UI;
+import org.joda.time.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
@@ -12,6 +17,7 @@ import ru.extas.web.commons.*;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -27,6 +33,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class SalesGrid extends ExtaGrid<Sale> {
     private static final long serialVersionUID = 4876073256421755574L;
+    private final static Logger logger = LoggerFactory.getLogger(SalesGrid.class);
     private final ExtaDomain domain;
 
     /**
@@ -37,6 +44,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     public SalesGrid(final ExtaDomain domain) {
         super(Sale.class);
         this.domain = domain;
+        setReadOnly(domain != ExtaDomain.SALES_OPENED);
     }
 
     /**
@@ -62,6 +70,26 @@ public class SalesGrid extends ExtaGrid<Sale> {
         super.initTable(mode);
         if (domain == ExtaDomain.SALES_CANCELED)
             table.setColumnCollapsed("result", false);
+
+        // Раскрашиваем "протухшие" продажи
+        if (domain == ExtaDomain.SALES_OPENED) {
+            final CustomTable.CellStyleGenerator defGen = table.getCellStyleGenerator();
+            table.setCellStyleGenerator((source, itemId, propertyId) -> {
+                String style = null;
+                if(defGen != null) // Если уже есть генератор
+                    style = defGen.getStyle(source, itemId, propertyId);
+                if (style == null) {
+                    final Sale sale = getEntity(itemId);
+                    final DateTime curDate = DateTime.now(DateTimeZone.UTC);
+                    final DateTime modifiedDate = sale.getLastModifiedDate();
+                    if (modifiedDate.plus(Days.days(10)).isBeforeNow())
+                        style = "highlight-red"; // Красненькие
+                    else if (modifiedDate.plus(Days.days(5)).isBeforeNow())
+                        style = "highlight-yellow"; // Желтенькие
+                }
+                return style;
+            });
+        }
     }
 
     /**
@@ -70,7 +98,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<Sale> container = new SecuredDataContainer<>(Sale.class, domain);
+        final ExtaJpaContainer<Sale> container = new SecuredDataContainer<>(Sale.class, domain);
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
         container.addNestedContainerProperty("dealer.name");
@@ -81,7 +109,10 @@ public class SalesGrid extends ExtaGrid<Sale> {
         container.addContainerFilter(new Compare.Equal("status",
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
                         domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
-        container.sort(new Object[]{"createdDate"}, new boolean[]{false});
+        if (domain != ExtaDomain.SALES_OPENED)
+            container.sort(new Object[]{"createdDate"}, new boolean[]{false});
+        else
+            container.sort(new Object[]{"lastModifiedDate"}, new boolean[]{true});
         return container;
     }
 
@@ -98,17 +129,18 @@ public class SalesGrid extends ExtaGrid<Sale> {
         actions.add(new EditObjectAction(domain == ExtaDomain.SALES_OPENED ? "Изменить" : "Просмотреть", "Редактировать выделенную в списке продажу"));
 
         if (domain != ExtaDomain.SALES_OPENED)
-            actions.add(new ItemAction("Возобновить", "Вернуть продажу в открытые, чтобы продолжить работу по ней", FontAwesome.UNDO){
+            actions.add(new ItemAction("Возобновить", "Вернуть продажу в открытые, чтобы продолжить работу по ней", FontAwesome.UNDO) {
                 @Override
-                public void fire(Object itemId) {
-                    final Sale sale = GridItem.extractBean(table.getItem(itemId));
+                public void fire(final Set itemIds) {
+                    final Set<Sale> sales = getEntities(itemIds);
                     ConfirmDialog.show(UI.getCurrent(),
                             "Подтвердите действие...",
-                            MessageFormat.format("Вы уверены, что хотите возобновить продажу № {0} и переместить ее в открытые?", sale.getNum()),
+                            MessageFormat.format("Вы уверены, что хотите возобновить продажу № {0} и переместить ее в открытые?",
+                                    Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
                             "Да", "Нет", () -> {
-                                lookup(SaleRepository.class).reopenSale(sale);
+                                lookup(SaleRepository.class).reopenSales(sales);
                                 refreshContainer();
-                                NotificationUtil.showSuccess("Продажа успешно возобновлена");
+                                NotificationUtil.showSuccess("Продажа(и) успешно возобновлена(ы)");
                             });
                 }
             });
@@ -116,13 +148,14 @@ public class SalesGrid extends ExtaGrid<Sale> {
         if (domain == ExtaDomain.SALES_OPENED) {
             actions.add(new ItemAction("Завершить", "Успешное завершение продажи", FontAwesome.FLAG_CHECKERED) {
                 @Override
-                public void fire(final Object itemId) {
-                    final Sale sale = GridItem.extractBean(table.getItem(itemId));
+                public void fire(final Set itemIds) {
+                    final Set<Sale> sales = getEntities(itemIds);
                     ConfirmDialog.show(UI.getCurrent(),
                             "Подтвердите действие...",
-                            MessageFormat.format("Вы уверены, что хотите завершить продажу № {0}?", sale.getNum()),
+                            MessageFormat.format("Вы уверены, что хотите завершить продажу № {0}?",
+                                    Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
                             "Да", "Нет", () -> {
-                                lookup(SaleRepository.class).finishSale(sale, Sale.Result.SUCCESSFUL);
+                                lookup(SaleRepository.class).finishSales(sales, Sale.Result.SUCCESSFUL);
                                 refreshContainer();
                                 NotificationUtil.showSuccess("Продажа успешно завершена");
                             });
@@ -135,13 +168,14 @@ public class SalesGrid extends ExtaGrid<Sale> {
                     final List<UIAction> group = newArrayList();
                     group.add(new ItemAction("Отказ контрагента (банка, дилера)", "Отказ банка или дилера в предоставлении услуги", FontAwesome.BANK) {
                         @Override
-                        public void fire(final Object itemId) {
-                            final Sale sale = GridItem.extractBean(table.getItem(itemId));
+                        public void fire(final Set itemIds) {
+                            final Set<Sale> sales = getEntities(itemIds);
                             ConfirmDialog.show(UI.getCurrent(),
                                     "Подтвердите действие...",
-                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа контрагента (банка, дилера)?", sale.getNum()),
+                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа контрагента (банка, дилера)?",
+                                            Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
                                     "Да", "Нет", () -> {
-                                        lookup(SaleRepository.class).finishSale(sale, Sale.Result.VENDOR_REJECTED);
+                                        lookup(SaleRepository.class).finishSales(sales, Sale.Result.VENDOR_REJECTED);
                                         refreshContainer();
                                         NotificationUtil.showSuccess("Продажа отменена контрагентом");
                                     });
@@ -150,13 +184,14 @@ public class SalesGrid extends ExtaGrid<Sale> {
 
                     group.add(new ItemAction("Отказ клиента", "Отказ клиента от услуги", FontAwesome.USER) {
                         @Override
-                        public void fire(final Object itemId) {
-                            final Sale sale = GridItem.extractBean(table.getItem(itemId));
+                        public void fire(final Set itemIds) {
+                            final Set<Sale> sales = getEntities(itemIds);
                             ConfirmDialog.show(UI.getCurrent(),
                                     "Подтвердите действие...",
-                                    MessageFormat.format("Вы уверены, что отменить продажу № {0} по причине отказа клиента?", sale.getNum()),
+                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа клиента?",
+                                            Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
                                     "Да", "Нет", () -> {
-                                        lookup(SaleRepository.class).finishSale(sale, Sale.Result.CLIENT_REJECTED);
+                                        lookup(SaleRepository.class).finishSales(sales, Sale.Result.CLIENT_REJECTED);
                                         refreshContainer();
                                         NotificationUtil.showSuccess("Продажа отменена клиентом");
                                     });

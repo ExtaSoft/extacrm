@@ -26,7 +26,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * <p>A7FormGrid class.</p>
@@ -112,7 +111,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
      */
     @Override
     protected Container createContainer() {
-        final ExtaDataContainer<A7Form> cnt = new A7SecuredContainer(A7Form.class, ExtaDomain.INSURANCE_A_7);
+        final ExtaJpaContainer<A7Form> cnt = new A7SecuredContainer(A7Form.class, ExtaDomain.INSURANCE_A_7);
         cnt.addNestedContainerProperty("owner.name");
         return cnt;
     }
@@ -126,28 +125,28 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
 
         actions.add(new ItemAction("Утрачен", "Перевести выделенный в списке бланк в \"Утраченные\"", null) {
             @Override
-            public void fire(final Object itemId) {
+            public void fire(final Set itemIds) {
                 final A7Form.Status status = A7Form.Status.LOST;
-                changeStatus(itemId, status);
+                changeStatus(itemIds, status);
             }
         });
 
         actions.add(new ItemAction("Испорчен", "Перевести выделенный в списке бланк в \"Испорченные\"", null) {
             @Override
-            public void fire(final Object itemId) {
+            public void fire(final Set itemIds) {
                 final A7Form.Status status = A7Form.Status.BROKEN;
-                changeStatus(itemId, status);
+                changeStatus(itemIds, status);
             }
         });
 
         return actions;
     }
 
-    private void changeStatus(final Object itemId, final A7Form.Status status) {
-        final A7Form curObj = extractBean(table.getItem(itemId));
+    private void changeStatus(final Set itemIds, final A7Form.Status status) {
+        final Set<A7Form> a7Forms = getEntities(itemIds);
 
         final A7FormRepository formService = lookup(A7FormRepository.class);
-        formService.changeStatus(curObj, status);
-        refreshContainerItem(itemId);
+        formService.changeStatus(a7Forms, status);
+        refreshContainerItems(itemIds);
     }
 }

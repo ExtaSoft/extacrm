@@ -1,7 +1,6 @@
 package ru.extas.web.contacts.employee;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
@@ -10,13 +9,9 @@ import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
-import ru.extas.web.contacts.employee.EmployeeEditForm;
-import ru.extas.web.contacts.employee.EmployeesGrid;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.web.commons.TableUtils.fullInitTable;
@@ -50,7 +45,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
         grid = new EmployeesGrid() {
             @Override
             protected Container createContainer() {
-                final ExtaDataContainer<Employee> cont = (ExtaDataContainer<Employee>) super.createContainer();
+                final ExtaJpaContainer<Employee> cont = (ExtaJpaContainer<Employee>) super.createContainer();
                 Optional.ofNullable(companySupplier)
                         .ifPresent(s -> cont.addContainerFilter(new Compare.Equal("company", s.get())));
                 Optional.ofNullable(salePointSupplier)
@@ -66,7 +61,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
                 final EmployeeEditForm form = (EmployeeEditForm) super.createEditForm(employee, isInsert);
                 form.addCloseFormListener(e -> {
                     if (form.isSaved() && isInsert)
-                        setValue(((ExtaDataContainer) container).getEntitiesSet());
+                        setValue(((ExtaJpaContainer) container).getEntitiesSet());
                 });
                 form.setCompanySupplier(companySupplier);
                 form.setSalePointSupplier(salePointSupplier);
@@ -77,6 +72,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
         };
 
         grid.setReadOnly(isReadOnly());
+        addReadOnlyStatusChangeListener(e -> grid.setReadOnly(isReadOnly()));
         return grid;
     }
 

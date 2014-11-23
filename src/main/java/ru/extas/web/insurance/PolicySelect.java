@@ -8,6 +8,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.PolicyRepository;
+import ru.extas.web.commons.ExtaBeanContainer;
 
 import java.util.Collection;
 
@@ -66,7 +67,7 @@ public class PolicySelect extends ComboBox {
         final PolicyRepository policyRepository = lookup(PolicyRepository.class);
         final PolicyRepository policyService = lookup(PolicyRepository.class);
         final Collection<Policy> policies = policyService.loadAvailable();
-        final BeanItemContainer<Policy> clientsCont = new BeanItemContainer<>(Policy.class);
+        final ExtaBeanContainer<Policy> clientsCont = new ExtaBeanContainer<>(Policy.class);
         clientsCont.addAll(policies);
         if (forceNum != null) {
             final Policy forcePolicy = policyRepository.findByRegNum(forceNum);

@@ -49,7 +49,7 @@ public class FormUtils {
         private int wndHeight;
         private boolean adjusted;
 
-        public WinSizeAdjuster(ExtaEditForm<?> editWin, Window window) {
+        public WinSizeAdjuster(final ExtaEditForm<?> editWin, final Window window) {
             brwHeight = UI.getCurrent().getPage().getBrowserWindowHeight();
 
             final SizeReporter winSizeReporter = new SizeReporter(window);
@@ -62,7 +62,7 @@ public class FormUtils {
             formSizeReporter.addResizeListenerOnce(e -> formHeight = e.getHeight());
         }
 
-        protected void adjustWindow(ExtaEditForm<?> editWin, Window window) {
+        protected void adjustWindow(final ExtaEditForm<?> editWin, final Window window) {
             if (!adjusted) {
                 if(formHeight != 0 && wndHeight > formHeight || wndHeight >= brwHeight) {
                     if (wndHeight >= brwHeight)

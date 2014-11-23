@@ -48,7 +48,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
             @Override
             protected Container createContainer() {
                 final Set<LegalEntity> list = getValue() != null ? getValue() : newHashSet();
-                final BeanItemContainer<LegalEntity> itemContainer = new BeanItemContainer<>(LegalEntity.class);
+                final ExtaBeanContainer<LegalEntity> itemContainer = new ExtaBeanContainer<>(LegalEntity.class);
                 if (list != null) {
                     for (final LegalEntity item : list) {
                         itemContainer.addBean(item);
@@ -65,12 +65,12 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 
                 actions.add(new UIAction("Добавить", "Выбрать юридическое лицо осуществляющуе деятельность на торговой точке", Fontello.DOC_NEW) {
                     @Override
-                    public void fire(final Object itemId) {
+                    public void fire(final Set itemIds) {
                         final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите юридическое лицо");
                         selectWindow.addCloseListener(e -> {
                             if (selectWindow.isSelectPressed()) {
-                                ((BeanItemContainer<LegalEntity>) container).addBean(selectWindow.getSelected());
-                                setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
+                                ((ExtaBeanContainer<LegalEntity>) container).addBean(selectWindow.getSelected());
+                                setValue(newHashSet(((ExtaBeanContainer<LegalEntity>) container).getItemIds()));
                                 NotificationUtil.showSuccess("Юридическое лицо добавлено");
                             }
                         });
@@ -81,13 +81,13 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
 
                 actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.EDIT_3) {
                     @Override
-                    public void fire(final Object itemId) {
-                        final LegalEntity bean = GridItem.extractBean(table.getItem(itemId));
+                    public void fire(final Set itemIds) {
+                        final LegalEntity bean = getFirstEntity(itemIds);
                         final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
                         editWin.addCloseFormListener(e -> {
                             if(editWin.isSaved()) {
                                 setValue(null, true); // Форсируем изменения
-                                setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
+                                setValue(newHashSet(((ExtaBeanContainer<LegalEntity>) container).getItemIds()));
                             }
                         });
                         FormUtils.showModalWin(editWin);
@@ -95,9 +95,9 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
                 });
                 actions.add(new ItemAction("Удалить", "Удалить юр.лицо из компании", Fontello.TRASH) {
                     @Override
-                    public void fire(final Object itemId) {
-                        container.removeItem(itemId);
-                        setValue(newHashSet(((BeanItemContainer<LegalEntity>) container).getItemIds()));
+                    public void fire(final Set itemIds) {
+                        itemIds.forEach(id -> container.removeItem(id));
+                        setValue(newHashSet(((ExtaBeanContainer<LegalEntity>) container).getItemIds()));
                     }
                 });
                 return actions;

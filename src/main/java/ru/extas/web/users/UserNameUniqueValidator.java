@@ -22,7 +22,7 @@ public class UserNameUniqueValidator extends AbstractStringValidator {
     }
 
     @Override
-    protected boolean isValidValue(String value) {
+    protected boolean isValidValue(final String value) {
         final UserProfile user = lookup(UserManagementService.class).findUserByLogin(value);
         if(user != null)
             return user.equals(curUser);

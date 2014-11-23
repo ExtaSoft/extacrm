@@ -1,6 +1,5 @@
 package ru.extas.web.contacts.legalentity;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
@@ -10,7 +9,6 @@ import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
 import java.util.Set;
-import java.util.function.Supplier;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -27,7 +25,7 @@ import static com.google.common.collect.Sets.newHashSet;
 public class LegalEntitiesField extends CustomField<Set> {
 
     private SupplierSer<Company> companySupplier;
-    private BeanItemContainer<LegalEntity> itemContainer;
+    private ExtaBeanContainer<LegalEntity> itemContainer;
 
     /**
 	 * <p>Constructor for LegalEntitiesField.</p>
@@ -47,7 +45,7 @@ public class LegalEntitiesField extends CustomField<Set> {
                 final ExtaEditForm<LegalEntity> form = super.createEditForm(legalEntity, isInsert);
                 form.addCloseFormListener(e -> {
                     if (form.isSaved() && isInsert)
-                        setValue(((ExtaDataContainer) container).getEntitiesSet());
+                        setValue(((ExtaJpaContainer) container).getEntitiesSet());
                 });
                 form.setReadOnly(isReadOnly());
                 return form;
@@ -56,6 +54,7 @@ public class LegalEntitiesField extends CustomField<Set> {
         grid.setCompanySupplier(companySupplier);
 		grid.setSizeFull();
         grid.setReadOnly(isReadOnly());
+        addReadOnlyStatusChangeListener(e -> grid.setReadOnly(isReadOnly()));
 
         return grid;
 	}

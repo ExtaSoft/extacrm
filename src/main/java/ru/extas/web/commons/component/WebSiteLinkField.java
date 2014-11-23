@@ -63,6 +63,8 @@ public class WebSiteLinkField extends CustomField<String> {
             linkEdit.focus();
         });
 
+        addReadOnlyStatusChangeListener(e -> editBtn.setVisible(!isReadOnly()));
+
         addValueChangeListener(e -> {
             final String newFieldValue = (String) e.getProperty().getValue();
             refreshFieldState(newFieldValue);

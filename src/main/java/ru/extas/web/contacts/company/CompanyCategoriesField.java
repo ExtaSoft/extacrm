@@ -7,9 +7,9 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
-import org.vaadin.tokenfield.TokenField;
 import ru.extas.server.references.CategoryService;
 import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.component.ExtaTokenField;
 
 import java.util.*;
 
@@ -26,19 +26,20 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class CompanyCategoriesField extends CustomField<Set> {
 
-    private final TokenField tokenField = new TokenField();
+    private final ExtaTokenField tokenField = new ExtaTokenField();
 
     public CompanyCategoriesField(final String caption) {
         setCaption(caption);
         setBuffered(true);
+        addReadOnlyStatusChangeListener(e -> tokenField.setReadOnly(isReadOnly()));
     }
 
     @Override
     protected Component initContent() {
-        tokenField.setStyleName(TokenField.STYLE_TOKENFIELD);
+        tokenField.setStyleName(ExtaTokenField.STYLE_TOKENFIELD);
         tokenField.setFilteringMode(FilteringMode.CONTAINS); // suggest
         tokenField.setInputPrompt("Выберите категорию...");
-        tokenField.setDescription("Выберите одну лили несколько категорий компании...");
+        tokenField.setDescription("Выберите одну или несколько категорий компании...");
         tokenField.setRememberNewTokens(false);
         tokenField.setNewTokensAllowed(false);
         tokenField.setWidth(getWidth(), getWidthUnits());

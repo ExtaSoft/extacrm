@@ -3,15 +3,15 @@ package ru.extas.web.contacts.person;
 import com.vaadin.data.Container;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * Окно с таблицей для выбора физ. лица
@@ -24,7 +24,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  */
 public class PersonSelectWindow extends CloseOnlylWindow {
 
-	private Person selected;
+	private Set<Person> selected;
 	private boolean selectPressed;
 
 	/**
@@ -36,13 +36,9 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 		super(caption);
         setWidth(800, Unit.PIXELS);
         setHeight(600, Unit.PIXELS);
-	}
 
-    @Override
-    public void attach() {
-        setContent(new SelectGrid());
-        super.attach();
-    }
+		addAttachListener(e -> setContent(new SelectGrid()));
+	}
 
     /**
 	 * <p>isSelectPressed.</p>
@@ -56,7 +52,7 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 	private class SelectGrid extends PersonsGrid {
         @Override
         protected Container createContainer() {
-            final ExtaDataContainer<Person> container = new ExtaDataContainer<>(Person.class);
+            final ExtaJpaContainer<Person> container = new ExtaJpaContainer<>(Person.class);
             container.addNestedContainerProperty("regAddress.region");
             return container;
         }
@@ -67,9 +63,9 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 
 			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
 				@Override
-				public void fire(final Object itemId) {
+				public void fire(final Set itemIds) {
 
-					selected = extractBean(table.getItem(itemId));
+					selected = getEntities(itemIds);
 					selectPressed = true;
 					close();
 				}
@@ -86,7 +82,7 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 	 *
 	 * @return a {@link ru.extas.model.contacts.Person} object.
 	 */
-	public Person getSelected() {
+	public Set<Person> getSelected() {
 		return selected;
 	}
 }

@@ -1,5 +1,6 @@
 package ru.extas.web.lead;
 
+import com.google.common.base.Joiner;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.server.FontAwesome;
@@ -8,14 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.lead.Lead;
-import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.lead.LeadRepository;
-import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.*;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -80,7 +80,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<Lead> container = new SecuredDataContainer<>(Lead.class,
+        final ExtaJpaContainer<Lead> container = new SecuredDataContainer<>(Lead.class,
                 status == Lead.Status.NEW ? ExtaDomain.LEADS_NEW :
                         status == Lead.Status.QUALIFIED ? ExtaDomain.LEADS_QUAL :
                                 ExtaDomain.LEADS_CLOSED);
@@ -106,8 +106,8 @@ public class LeadsGrid extends ExtaGrid<Lead> {
         if (status == Lead.Status.NEW) {
             actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {
                 @Override
-                public void fire(final Object itemId) {
-                    doQualifyLead(itemId);
+                public void fire(final Set itemIds) {
+                    doQualifyLead(itemIds.stream().findFirst().orElse(null));
                 }
             });
 
@@ -117,13 +117,14 @@ public class LeadsGrid extends ExtaGrid<Lead> {
                     final List<UIAction> group = newArrayList();
                     group.add(new ItemAction("Отказ клиента", "Клиент по каким-то причинам отказался от предоставления услуги", FontAwesome.USER) {
                         @Override
-                        public void fire(final Object itemId) {
-                            final Lead lead = GridItem.extractBean(table.getItem(itemId));
+                        public void fire(final Set itemIds) {
+                            final Set<Lead> leads = getEntities(itemIds);
                             ConfirmDialog.show(UI.getCurrent(),
                                     "Подтвердите действие...",
-                                    MessageFormat.format("Вы уверены, что необходимо закрыть лид № {0} по причине отказа клиента?", lead.getNum()),
+                                    MessageFormat.format("Вы уверены, что необходимо закрыть лид № {0} по причине отказа клиента?",
+                                            Joiner.on(", ").join(leads.stream().map(l -> l.getNum()).toArray())),
                                     "Да", "Нет", () -> {
-                                        lookup(LeadRepository.class).finishLead(lead, Lead.Result.CLIENT_REJECTED);
+                                        lookup(LeadRepository.class).finishLeads(leads, Lead.Result.CLIENT_REJECTED);
                                         refreshContainer();
                                         NotificationUtil.showSuccess("Лид отменен по инициативе клиента");
                                     });
@@ -132,13 +133,14 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 
                     group.add(new ItemAction("Отменить дубль", "Отменить ошибочно введенную дублирующую заявку", FontAwesome.COPY) {
                         @Override
-                        public void fire(final Object itemId) {
-                            final Lead lead = GridItem.extractBean(table.getItem(itemId));
+                        public void fire(final Set itemIds) {
+                            final Set<Lead> leads = getEntities(itemIds);
                             ConfirmDialog.show(UI.getCurrent(),
                                     "Подтвердите действие...",
-                                    MessageFormat.format("Вы уверены, что необходимо закрыть лид № {0} как дублирующий?", lead.getNum()),
+                                    MessageFormat.format("Вы уверены, что необходимо закрыть лид № {0} как дублирующий?",
+                                            Joiner.on(", ").join(leads.stream().map(l -> l.getNum()).toArray())),
                                     "Да", "Нет", () -> {
-                                        lookup(LeadRepository.class).finishLead(lead, Lead.Result.DOUBLE_REJECTED);
+                                        lookup(LeadRepository.class).finishLeads(leads, Lead.Result.DOUBLE_REJECTED);
                                         refreshContainer();
                                         NotificationUtil.showSuccess("Лид закрыт как дублирующий");
                                     });

@@ -136,12 +136,7 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
     protected ExtaEditForm(final String caption, final TEntity entity) {
         this.caption = caption;
         this.entity = entity;
-    }
-
-    @Override
-    public void attach() {
-        initForm();
-        super.attach();
+        addAttachListener(e -> initForm());
     }
 
     public String getCaption() {
@@ -202,10 +197,8 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
         setDefaultFocus(form);
         setContent(form);
 
-        addAttachListener(e -> {
-            fieldGroup.setReadOnly(isReadOnly());
-            okBtn.setEnabled(!isReadOnly());
-        });
+        fieldGroup.setReadOnly(isReadOnly());
+        okBtn.setEnabled(!isReadOnly());
     }
 
     protected BeanItem<TEntity> createBeanItem(final TEntity bean) {
@@ -293,7 +286,7 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
         }
     }
 
-    public void adjustSize(){
+    public void adjustSize() {
         toFullSize.forEach(c -> c.setSizeFull());
     }
 

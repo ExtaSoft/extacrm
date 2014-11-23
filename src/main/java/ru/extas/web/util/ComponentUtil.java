@@ -8,6 +8,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.AbstractSelect;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
 import org.vaadin.tokenfield.TokenField;
+import ru.extas.web.commons.component.ExtaTokenField;
 
 import java.util.EnumSet;
 
@@ -42,7 +43,7 @@ public class ComponentUtil {
      * @param component поле выбора
      * @param cls       тип перечисления
      */
-    public static <TEnum extends Enum<TEnum>> void fillSelectByEnum(final TokenField component, final Class<TEnum> cls) {
+    public static <TEnum extends Enum<TEnum>> void fillSelectByEnum(final ExtaTokenField component, final Class<TEnum> cls) {
         final Converter<String, TEnum> converter = VaadinSession.getCurrent().getConverterFactory()
                 .createConverter(String.class, cls);
         final EnumSet<TEnum> enums = EnumSet.allOf(cls);

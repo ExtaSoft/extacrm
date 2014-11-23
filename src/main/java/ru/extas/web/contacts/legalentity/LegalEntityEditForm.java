@@ -92,27 +92,21 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
                 String.format("Редактирование юр. лица: %s", legalEntity.getName()), legalEntity);
 
         setWinWidth(860, Unit.PIXELS);
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void attach() {
-        super.attach();
-
-        if (getEntity().getCompany() == null) {
-            companyField.setReadOnly(false);
-            companyField.setVisible(true);
-            companyField.setRequired(true);
-        } else {
-            companyField.setReadOnly(true);
-            companyField.getPropertyDataSource().setReadOnly(true);
-            if (getEntity().getCompany().isNew()) {
-                companyField.setVisible(false);
-                companyField.setRequired(false);
+        addAttachListener(e -> {
+            if (getEntity().getCompany() == null) {
+                companyField.setReadOnly(false);
+                companyField.setVisible(true);
+                companyField.setRequired(true);
+            } else {
+                companyField.setReadOnly(true);
+                companyField.getPropertyDataSource().setReadOnly(true);
+                if (getEntity().getCompany().isNew()) {
+                    companyField.setVisible(false);
+                    companyField.setRequired(false);
+                }
             }
-        }
+        });
     }
 
     /**

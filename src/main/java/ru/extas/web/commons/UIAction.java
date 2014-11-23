@@ -5,6 +5,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * <p>Abstract UIAction class.</p>
@@ -23,6 +24,8 @@ public abstract class UIAction implements Serializable {
     protected String description;
     // Стиль иконки
     protected Resource icon;
+    // Действие разрешено в режиме только для чтения
+    protected boolean allowInReadOnly = true;
 
     /**
      * <p>Constructor for UIAction.</p>
@@ -31,9 +34,14 @@ public abstract class UIAction implements Serializable {
      * @param icon a {@link String} object.
      */
     public UIAction(final String name, final String description, final Resource icon) {
-        this.description = description;
+        this(name, description, icon, true);
+    }
+
+    public UIAction(final String name, final String description, final Resource icon, final boolean allowInReadOnly) {
         this.name = name;
+        this.description = description;
         this.icon = icon;
+        this.allowInReadOnly = allowInReadOnly;
     }
 
     /**
@@ -51,9 +59,17 @@ public abstract class UIAction implements Serializable {
      * Функция
      * <p>fire.</p>
      *
-     * @param itemId a {@link java.lang.Object} object.
+     * @param itemIds
      */
-    abstract public void fire(final Object itemId);
+    abstract public void fire(final Set itemIds);
+
+    public boolean isAllowInReadOnly() {
+        return allowInReadOnly;
+    }
+
+    public void setAllowInReadOnly(final boolean allowInReadOnly) {
+        this.allowInReadOnly = allowInReadOnly;
+    }
 
     /**
      * <p>Getter for the field <code>name</code>.</p>

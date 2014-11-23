@@ -12,6 +12,7 @@ import com.vaadin.server.StreamVariable;
 import com.vaadin.ui.*;
 import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler;
 import org.vaadin.addon.itemlayout.grid.ItemGrid;
+import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
 import ru.extas.model.common.FileContainer;
 import ru.extas.web.commons.component.FileUploader;
 import ru.extas.web.commons.window.DownloadFileWindow;
@@ -34,7 +35,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class FilesManageField<TFileContainer extends FileContainer> extends CustomField<List> {
 
     private final Class<TFileContainer> containerClass;
-    private BeanItemContainer<TFileContainer> container;
+    private ExtaBeanContainer<TFileContainer> container;
     private ProgressBar progress;
 
     private Mode mode;
@@ -49,7 +50,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
     @Override
     protected Component initContent() {
         final List<TFileContainer> list = getValue() != null ? getValue() : newArrayList();
-        container = new BeanItemContainer<>(containerClass);
+        container = new ExtaBeanContainer<>(containerClass);
         if (list != null) {
             container.addAll(list);
         }
@@ -61,7 +62,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         filesContainer = new ItemGrid();
         filesContainer.setWidth(100, Unit.PERCENTAGE);
         filesContainer.setContainerDataSource(container);
-        filesContainer.setItemGenerator((pSource, pItemId) -> getItemComponent((TFileContainer) pItemId));
+        filesContainer.setItemGenerator((pSource, pItemId) -> getItemComponent(pSource, (TFileContainer) pItemId));
         root.addComponent(filesContainer);
         setMode(Mode.LIST);
 
@@ -87,10 +88,21 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         fileUploader.setWidth(100, Unit.PERCENTAGE);
         root.addComponent(fileUploader);
 
-        return new FileDropBox(root);
+        final FileDropBox dropBox = new FileDropBox(root);
+
+        addReadOnlyStatusChangeListener(e -> {
+            final boolean isRedOnly = isReadOnly();
+            infoLabel.setVisible(!isRedOnly);
+//            progress.setVisible(!isRedOnly);
+            fileUploader.setVisible(!isRedOnly);
+            filesContainer.setReadOnly(isRedOnly);
+            dropBox.setReadOnly(isRedOnly);
+        });
+
+        return dropBox;
     }
 
-    private Component getItemComponent(final TFileContainer item) {
+    private Component getItemComponent(final AbstractItemLayout pSource, final TFileContainer item) {
         final ComponentContainer root;
         if (mode == Mode.LIST) {
             final HorizontalLayout layout = new HorizontalLayout();
@@ -112,6 +124,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         root.addComponent(dwnBtn);
 
         final Button delBtn = new Button("Удалить", Fontello.TRASH_4);
+        delBtn.setDescription("Удалить файл");
         delBtn.addStyleName(ExtaTheme.BUTTON_QUIET);
         delBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         delBtn.setData(item);
@@ -124,6 +137,9 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
             dwnBtn.addStyleName(ExtaTheme.BUTTON_ICON_ALIGN_TOP);
             dwnBtn.addStyleName(ExtaTheme.LARGE_ICON);
         }
+
+        if (pSource.isReadOnly())
+            delBtn.setVisible(false);
 
         return root;
     }
@@ -216,60 +232,62 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         @Override
         public void drop(final DragAndDropEvent dropEvent) {
 
-            // expecting this to be an html5 drag
-            final WrapperTransferable tr = (WrapperTransferable) dropEvent.getTransferable();
-            final Html5File[] files = tr.getFiles();
-            if (files != null) {
-                for (final Html5File html5File : files) {
-                    final String fileName = html5File.getFileName();
+            if (!isReadOnly()) {
+                // expecting this to be an html5 drag
+                final WrapperTransferable tr = (WrapperTransferable) dropEvent.getTransferable();
+                final Html5File[] files = tr.getFiles();
+                if (files != null) {
+                    for (final Html5File html5File : files) {
+                        final String fileName = html5File.getFileName();
 
-                    if (html5File.getFileSize() > FILE_SIZE_LIMIT) {
-                        NotificationUtil.showError("Ошибка загрузки",
-                                MessageFormat.format("Файл {0} не может быть загрузен, Поскольку превышает лимит в 20MB", fileName));
-                    } else {
+                        if (html5File.getFileSize() > FILE_SIZE_LIMIT) {
+                            NotificationUtil.showError("Ошибка загрузки",
+                                    MessageFormat.format("Файл {0} не может быть загрузен, Поскольку превышает лимит в 20MB", fileName));
+                        } else {
 
-                        final ByteArrayOutputStream bas = new ByteArrayOutputStream((int) html5File.getFileSize());
-                        final StreamVariable streamVariable = new StreamVariable() {
+                            final ByteArrayOutputStream bas = new ByteArrayOutputStream((int) html5File.getFileSize());
+                            final StreamVariable streamVariable = new StreamVariable() {
 
-                            @Override
-                            public OutputStream getOutputStream() {
-                                return bas;
-                            }
+                                @Override
+                                public OutputStream getOutputStream() {
+                                    return bas;
+                                }
 
-                            @Override
-                            public boolean listenProgress() {
-                                return false;
-                            }
+                                @Override
+                                public boolean listenProgress() {
+                                    return false;
+                                }
 
-                            @Override
-                            public void onProgress(final StreamingProgressEvent event) {
-                            }
+                                @Override
+                                public void onProgress(final StreamingProgressEvent event) {
+                                }
 
-                            @Override
-                            public void streamingStarted(final StreamingStartEvent event) {
-                            }
+                                @Override
+                                public void streamingStarted(final StreamingStartEvent event) {
+                                }
 
-                            @Override
-                            public void streamingFinished(final StreamingEndEvent event) {
-                                progress.setVisible(false);
-                                addUploadedFile(bas.toByteArray(), fileName, html5File.getType(), html5File.getFileSize());
-                            }
+                                @Override
+                                public void streamingFinished(final StreamingEndEvent event) {
+                                    progress.setVisible(false);
+                                    addUploadedFile(bas.toByteArray(), fileName, html5File.getType(), html5File.getFileSize());
+                                }
 
-                            @Override
-                            public void streamingFailed(final StreamingErrorEvent event) {
-                                progress.setVisible(false);
-                            }
+                                @Override
+                                public void streamingFailed(final StreamingErrorEvent event) {
+                                    progress.setVisible(false);
+                                }
 
-                            @Override
-                            public boolean isInterrupted() {
-                                return false;
-                            }
-                        };
-                        html5File.setStreamVariable(streamVariable);
-                        progress.setVisible(true);
+                                @Override
+                                public boolean isInterrupted() {
+                                    return false;
+                                }
+                            };
+                            html5File.setStreamVariable(streamVariable);
+                            progress.setVisible(true);
+                        }
                     }
-                }
 
+                }
             }
         }
 

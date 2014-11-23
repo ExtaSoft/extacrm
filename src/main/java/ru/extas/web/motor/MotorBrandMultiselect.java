@@ -8,6 +8,7 @@ import com.vaadin.ui.HorizontalLayout;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
 import org.vaadin.tokenfield.TokenField;
 import ru.extas.server.motor.MotorBrandRepository;
+import ru.extas.web.commons.component.ExtaTokenField;
 
 import java.util.Collection;
 import java.util.Set;
@@ -41,8 +42,9 @@ public class MotorBrandMultiselect extends CustomField<Set> {
 	@Override
 	protected Component initContent() {
 
-        final TokenField tokenField = new TokenField();
-        tokenField.setStyleName(TokenField.STYLE_TOKENFIELD);
+        final ExtaTokenField tokenField = new ExtaTokenField();
+        addReadOnlyStatusChangeListener(e -> tokenField.setReadOnly(isReadOnly()));
+        tokenField.setStyleName(ExtaTokenField.STYLE_TOKENFIELD);
         tokenField.setFilteringMode(FilteringMode.CONTAINS); // suggest
         tokenField.setInputPrompt("Введите или выберите бренд...");
         tokenField.setDescription("Введите или выберите бренд...");

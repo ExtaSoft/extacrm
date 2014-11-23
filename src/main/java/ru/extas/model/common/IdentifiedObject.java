@@ -4,7 +4,6 @@ import org.eclipse.persistence.annotations.UuidGenerator;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
@@ -34,11 +33,16 @@ public class IdentifiedObject implements Persistable<String> {
     @Version
     private int version;
 
-    /**
-     * <p>Constructor for IdentifiedObject.</p>
-     */
-    public IdentifiedObject() {
-        super();
+    // Архивный
+    @Column(name = ArchivedObject.COLUMN_NAME)
+    private boolean archived;
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     /**

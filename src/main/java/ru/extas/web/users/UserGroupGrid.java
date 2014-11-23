@@ -5,6 +5,7 @@ import ru.extas.model.security.UserGroup;
 import ru.extas.web.commons.*;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -37,7 +38,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<UserGroup> container = new ExtaDataContainer<>(UserGroup.class);
+        final ExtaJpaContainer<UserGroup> container = new ExtaJpaContainer<>(UserGroup.class);
         return container;
     }
 
@@ -51,8 +52,8 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
 
         actions.add(new ItemAction("Копировать", "Копировать текущую группу в новую запись", Fontello.DOCS) {
             @Override
-            public void fire(final Object itemId) {
-                final UserGroup curObj = GridItem.extractBean(table.getItem(itemId));
+            public void fire(final Set itemIds) {
+                final UserGroup curObj = getFirstEntity(itemIds);
 
                 final UserGroup copy = curObj.createCopy();
                 copy.setName("Копия - " + curObj.getName());
