@@ -1,12 +1,10 @@
 package ru.extas.web.sale;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Throwables;
-import com.vaadin.addon.tableexport.CustomTableHolder;
-import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.CustomTable;
 import com.vaadin.ui.UI;
 import org.joda.time.*;
 import org.slf4j.Logger;
@@ -16,13 +14,8 @@ import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.window.DownloadFileWindow;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -79,17 +72,24 @@ public class SalesGrid extends ExtaGrid<Sale> {
             table.setColumnCollapsed("result", false);
 
         // Раскрашиваем "протухшие" продажи
-        if (domain == ExtaDomain.SALES_OPENED)
+        if (domain == ExtaDomain.SALES_OPENED) {
+            final CustomTable.CellStyleGenerator defGen = table.getCellStyleGenerator();
             table.setCellStyleGenerator((source, itemId, propertyId) -> {
-                final Sale sale = GridItem.extractBean(table.getItem(itemId));
-                final DateTime curDate = DateTime.now(DateTimeZone.UTC);
-                final DateTime modifiedDate = sale.getLastModifiedDate();
-                if (modifiedDate.plus(Days.days(10)).isBeforeNow())
-                    return "highlight-red"; // Красненькие
-                else if (modifiedDate.plus(Days.days(5)).isBeforeNow())
-                    return "highlight-yellow"; // Желтенькие
-                return null;
+                String style = null;
+                if(defGen != null) // Если уже есть генератор
+                    style = defGen.getStyle(source, itemId, propertyId);
+                if (style == null) {
+                    final Sale sale = getEntity(itemId);
+                    final DateTime curDate = DateTime.now(DateTimeZone.UTC);
+                    final DateTime modifiedDate = sale.getLastModifiedDate();
+                    if (modifiedDate.plus(Days.days(10)).isBeforeNow())
+                        style = "highlight-red"; // Красненькие
+                    else if (modifiedDate.plus(Days.days(5)).isBeforeNow())
+                        style = "highlight-yellow"; // Желтенькие
+                }
+                return style;
             });
+        }
     }
 
     /**
@@ -98,7 +98,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<Sale> container = new SecuredDataContainer<>(Sale.class, domain);
+        final ExtaJpaContainer<Sale> container = new SecuredDataContainer<>(Sale.class, domain);
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
         container.addNestedContainerProperty("dealer.name");
@@ -188,7 +188,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
                             final Set<Sale> sales = getEntities(itemIds);
                             ConfirmDialog.show(UI.getCurrent(),
                                     "Подтвердите действие...",
-                                    MessageFormat.format("Вы уверены, что отменить продажу № {0} по причине отказа клиента?",
+                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа клиента?",
                                             Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
                                     "Да", "Нет", () -> {
                                         lookup(SaleRepository.class).finishSales(sales, Sale.Result.CLIENT_REJECTED);

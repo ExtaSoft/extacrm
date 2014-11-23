@@ -8,6 +8,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.sale.Product;
 import ru.extas.server.sale.ProductRepository;
+import ru.extas.web.commons.ExtaBeanContainer;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class ProductSelect extends ComboBox {
 		// Инициализация контейнера
 		final ProductRepository productRepository = lookup(ProductRepository.class);
 		final List<Product> products = productRepository.findByActive(true);
-		final BeanItemContainer<Product> clientsCont = new BeanItemContainer<>(Product.class);
+		final ExtaBeanContainer<Product> clientsCont = new ExtaBeanContainer<>(Product.class);
 		clientsCont.addAll(products);
 		if (product != null) {
 			final Product forceProduct = productRepository.findOne(product.getId());

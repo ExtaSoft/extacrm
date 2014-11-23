@@ -1,23 +1,17 @@
 package ru.extas.web.contacts.legalentity;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaDataContainer;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * Окно с таблицей для выбора юр. лица

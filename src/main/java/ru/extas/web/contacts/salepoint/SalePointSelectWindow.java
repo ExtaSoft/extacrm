@@ -6,7 +6,7 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * Окно выбора торговой точки
@@ -60,7 +59,7 @@ public class SalePointSelectWindow extends CloseOnlylWindow {
 
         @Override
         protected Container createContainer() {
-            final ExtaDataContainer<SalePoint> container = new ExtaDataContainer<>(SalePoint.class);
+            final ExtaJpaContainer<SalePoint> container = new ExtaJpaContainer<>(SalePoint.class);
             container.addNestedContainerProperty("regAddress.region");
             container.addNestedContainerProperty("regAddress.city");
             container.addNestedContainerProperty("regAddress.streetBld");

@@ -8,7 +8,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -84,7 +84,7 @@ public class SalePointField extends CustomField<SalePoint> {
 
     private class SalePointComboBox extends ComboBox {
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaDataContainer<SalePoint> container;
+        protected final ExtaJpaContainer<SalePoint> container;
 
         public SalePointComboBox() {
             this("Название");
@@ -104,7 +104,7 @@ public class SalePointField extends CustomField<SalePoint> {
             setImmediate(true);
 
             // Инициализация контейнера
-            container = new ExtaDataContainer<>(SalePoint.class);
+            container = new ExtaJpaContainer<>(SalePoint.class);
             container.sort(new Object[]{"name"}, new boolean[]{true});
             setContainerFilter();
 

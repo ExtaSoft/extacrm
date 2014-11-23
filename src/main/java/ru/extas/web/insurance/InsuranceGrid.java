@@ -4,8 +4,6 @@
 package ru.extas.web.insurance;
 
 import com.google.common.base.Throwables;
-import com.vaadin.addon.tableexport.CustomTableHolder;
-import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Container;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -28,7 +26,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.gwt.thirdparty.guava.common.collect.Maps.newHashMap;
 import static ru.extas.server.ServiceLocator.lookup;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * <p>InsuranceGrid class.</p>
@@ -71,7 +68,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<Insurance> container = new SecuredDataContainer<>(Insurance.class, ExtaDomain.INSURANCE_PROP);
+        final ExtaJpaContainer<Insurance> container = new SecuredDataContainer<>(Insurance.class, ExtaDomain.INSURANCE_PROP);
         container.addNestedContainerProperty("dealer.name");
         container.addNestedContainerProperty("clientPP.name");
         container.addNestedContainerProperty("clientPP.phone");

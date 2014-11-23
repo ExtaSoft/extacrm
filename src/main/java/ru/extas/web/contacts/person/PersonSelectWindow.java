@@ -3,7 +3,7 @@ package ru.extas.web.contacts.person;
 import com.vaadin.data.Container;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
 import ru.extas.web.commons.window.CloseOnlylWindow;
@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * Окно с таблицей для выбора физ. лица
@@ -53,7 +52,7 @@ public class PersonSelectWindow extends CloseOnlylWindow {
 	private class SelectGrid extends PersonsGrid {
         @Override
         protected Container createContainer() {
-            final ExtaDataContainer<Person> container = new ExtaDataContainer<>(Person.class);
+            final ExtaJpaContainer<Person> container = new ExtaJpaContainer<>(Person.class);
             container.addNestedContainerProperty("regAddress.region");
             return container;
         }

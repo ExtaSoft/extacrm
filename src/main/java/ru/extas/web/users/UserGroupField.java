@@ -26,7 +26,7 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 public class UserGroupField extends CustomField<Set> {
 
-    private BeanItemContainer<UserGroup> itemContainer;
+    private ExtaBeanContainer<UserGroup> itemContainer;
 
     /**
      * <p>Constructor for UserGroupField.</p>
@@ -45,7 +45,7 @@ public class UserGroupField extends CustomField<Set> {
             @Override
             protected Container createContainer() {
                 final Set<UserGroup> list = getValue() != null ? getValue() : newHashSet();
-                itemContainer = new BeanItemContainer<>(UserGroup.class);
+                itemContainer = new ExtaBeanContainer<>(UserGroup.class);
                 if (list != null) {
                     for (final UserGroup item : list) {
                         itemContainer.addBean(item);
@@ -77,7 +77,7 @@ public class UserGroupField extends CustomField<Set> {
                     @Override
                     public void fire(final Set itemIds) {
                         itemIds.forEach(id -> container.removeItem(id));
-                        setValue(newHashSet(((BeanItemContainer<UserGroup>) container).getItemIds()));
+                        setValue(newHashSet(((ExtaBeanContainer<UserGroup>) container).getItemIds()));
                     }
                 });
                 return actions;

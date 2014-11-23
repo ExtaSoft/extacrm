@@ -11,7 +11,7 @@ import java.util.Collection;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class RefreshBeanContainer<BEANTYPE> extends BeanItemContainer<BEANTYPE> {
+public class RefreshBeanContainer<BEANTYPE> extends ExtaBeanContainer<BEANTYPE> {
 
     /**
      * <p>Constructor for RefreshBeanContainer.</p>

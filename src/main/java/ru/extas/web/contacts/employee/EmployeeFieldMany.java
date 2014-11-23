@@ -9,6 +9,7 @@ import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
+import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaEditForm;
 
 import java.util.Set;
@@ -31,7 +32,7 @@ public class EmployeeFieldMany extends CustomField<Set> {
     private SupplierSer<LegalEntity> legalEntitySupplier;
 
     private EmployeesGrid grid;
-    private BeanItemContainer<Employee> beanContainer;
+    private ExtaBeanContainer<Employee> beanContainer;
 
     public EmployeeFieldMany() {
         setBuffered(true);
@@ -46,7 +47,7 @@ public class EmployeeFieldMany extends CustomField<Set> {
             @Override
             protected Container createContainer() {
                 final Set<Employee> list = getValue() != null ? getValue() : newHashSet();
-                beanContainer = new BeanItemContainer<>(Employee.class);
+                beanContainer = new ExtaBeanContainer<>(Employee.class);
                 beanContainer.addNestedContainerProperty("company.name");
                 beanContainer.addAll(list);
 

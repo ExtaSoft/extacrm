@@ -7,6 +7,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.PersonAuto;
+import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.CardPanel;
@@ -28,7 +29,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class PersonAutosField extends CustomField<List> {
 
     private final Person person;
-    private BeanItemContainer<PersonAuto> itemContainer;
+    private ExtaBeanContainer<PersonAuto> itemContainer;
     private VerticalLayout root;
 
     public PersonAutosField(final Person person) {
@@ -38,9 +39,9 @@ public class PersonAutosField extends CustomField<List> {
 
     @Override
     protected Component initContent() {
-        final Property dataSource = checkNotNull(this.getPropertyDataSource(), "No Dsta source!!!");
+        final Property dataSource = checkNotNull(this.getPropertyDataSource(), "No Data source!!!");
         final List<PersonAuto> list = dataSource != null ? (List<PersonAuto>) dataSource.getValue() : new ArrayList<>();
-        itemContainer = new BeanItemContainer<>(PersonAuto.class);
+        itemContainer = new ExtaBeanContainer<>(PersonAuto.class);
 
         root = new VerticalLayout();
         root.setMargin(new MarginInfo(true, false, true, false));

@@ -6,6 +6,8 @@ import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.addon.jpacontainer.filter.util.FilterConverter;
 import com.vaadin.addon.jpacontainer.provider.MutableLocalEntityProvider;
 import com.vaadin.addon.jpacontainer.util.CollectionUtil;
+import com.vaadin.data.util.filter.Compare;
+import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.server.SpringEntityManagerProvider;
 
@@ -33,19 +35,41 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3.0
  */
-public class ExtaDataContainer<TEntityType extends IdentifiedObject> extends JPAContainer<TEntityType> {
+public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAContainer<TEntityType> implements ArchivedContainer {
 
     private static final long serialVersionUID = -7891940552175752858L;
+
+    private final Compare.Equal archiveFilter = new Compare.Equal(ArchivedObject.PROPERTY_NAME, false);
+    private boolean archiveExcluded;
 
     /**
      * <p>Constructor for ExtaDataContainer.</p>
      *
      * @param entityClass a {@link java.lang.Class} object.
      */
-    public ExtaDataContainer(final Class<TEntityType> entityClass) {
+    public ExtaJpaContainer(final Class<TEntityType> entityClass) {
         super(entityClass);
         // We need an entity provider to create a container
         setEntityProvider(new ExtaLocalEntityProvider<>(entityClass));
+
+        // Отсекаем архивные записи
+        setArchiveExcluded(true);
+    }
+
+    @Override
+    public boolean isArchiveExcluded() {
+        return archiveExcluded;
+    }
+
+    @Override
+    public void setArchiveExcluded(boolean archiveExcluded) {
+        if (this.archiveExcluded != archiveExcluded && ArchivedObject.class.isAssignableFrom(getEntityClass())) {
+            this.archiveExcluded = archiveExcluded;
+            if (archiveExcluded)
+                addContainerFilter(archiveFilter);
+            else
+                removeContainerFilter(archiveFilter);
+        }
     }
 
     public List<TEntityType> getEntitiesList() {

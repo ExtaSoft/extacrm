@@ -8,7 +8,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -85,7 +85,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
     private class LESelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaDataContainer<LegalEntity> container;
+        protected final ExtaJpaContainer<LegalEntity> container;
 
         protected LESelectField(final String caption) {
             this(caption, "Выберите существующее юр. лицо или введите новое");
@@ -101,7 +101,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             setImmediate(true);
 
             // Инициализация контейнера
-            container = new ExtaDataContainer<>(LegalEntity.class);
+            container = new ExtaJpaContainer<>(LegalEntity.class);
             container.sort(new Object[]{"name"}, new boolean[]{true});
             setContainerFilter();
 

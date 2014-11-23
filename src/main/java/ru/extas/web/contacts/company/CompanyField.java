@@ -5,7 +5,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -59,7 +59,7 @@ public class CompanyField extends CustomField<Company> {
 
     private class CompanyComboBox extends ComboBox {
 
-        protected final ExtaDataContainer<Company> container;
+        protected final ExtaJpaContainer<Company> container;
 
         /**
          * <p>Constructor for CompanySelect.</p>
@@ -86,7 +86,7 @@ public class CompanyField extends CustomField<Company> {
             setImmediate(true);
 
             // Инициализация контейнера
-            container = new ExtaDataContainer<>(Company.class);
+            container = new ExtaJpaContainer<>(Company.class);
             container.sort(new Object[]{"name"}, new boolean[]{true});
 
             // Устанавливаем контент выбора

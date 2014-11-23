@@ -38,7 +38,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<UserGroup> container = new ExtaDataContainer<>(UserGroup.class);
+        final ExtaJpaContainer<UserGroup> container = new ExtaJpaContainer<>(UserGroup.class);
         return container;
     }
 

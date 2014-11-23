@@ -39,7 +39,7 @@ public class MotorModelGrid extends ExtaGrid<MotorModel> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<MotorModel> container = new ExtaDataContainer<>(MotorModel.class);
+		final ExtaJpaContainer<MotorModel> container = new ExtaJpaContainer<>(MotorModel.class);
 		container.sort(new Object[]{"name"}, new boolean[]{true});
 		return container;
 	}

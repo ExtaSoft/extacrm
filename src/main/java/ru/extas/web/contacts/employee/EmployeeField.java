@@ -99,7 +99,7 @@ public class EmployeeField extends CustomField<Employee> {
     private class EmployeeSelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaDataContainer<Employee> container;
+        protected final ExtaJpaContainer<Employee> container;
 
         protected EmployeeSelectField(final String caption) {
             this(caption, "Выберите существующего сотрудника или введите нового");
@@ -115,7 +115,7 @@ public class EmployeeField extends CustomField<Employee> {
             setImmediate(true);
 
             // Инициализация контейнера
-            container = new ExtaDataContainer<>(Employee.class);
+            container = new ExtaJpaContainer<>(Employee.class);
             container.sort(new Object[]{"name"}, new boolean[]{true});
             setContainerFilter();
 

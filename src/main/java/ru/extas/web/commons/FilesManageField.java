@@ -35,7 +35,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class FilesManageField<TFileContainer extends FileContainer> extends CustomField<List> {
 
     private final Class<TFileContainer> containerClass;
-    private BeanItemContainer<TFileContainer> container;
+    private ExtaBeanContainer<TFileContainer> container;
     private ProgressBar progress;
 
     private Mode mode;
@@ -50,7 +50,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
     @Override
     protected Component initContent() {
         final List<TFileContainer> list = getValue() != null ? getValue() : newArrayList();
-        container = new BeanItemContainer<>(containerClass);
+        container = new ExtaBeanContainer<>(containerClass);
         if (list != null) {
             container.addAll(list);
         }

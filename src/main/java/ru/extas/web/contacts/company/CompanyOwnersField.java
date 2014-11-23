@@ -31,7 +31,7 @@ public class CompanyOwnersField extends CustomField<Set> {
 
     private SupplierSer<Company> companySupplier;
     private EmployeesGrid grid;
-    private BeanItemContainer<Employee> beanContainer;
+    private ExtaBeanContainer<Employee> beanContainer;
 
     /**
      * <p>Constructor for CompanyOwnersField.</p>
@@ -50,7 +50,7 @@ public class CompanyOwnersField extends CustomField<Set> {
             @Override
             protected Container createContainer() {
                 final Set<Employee> list = getValue() != null ? getValue() : newHashSet();
-                beanContainer = new BeanItemContainer<>(Employee.class);
+                beanContainer = new ExtaBeanContainer<>(Employee.class);
                 beanContainer.addNestedContainerProperty("company.name");
                 beanContainer.addAll(list);
 

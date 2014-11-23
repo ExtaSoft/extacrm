@@ -1,5 +1,6 @@
 package ru.extas.model.contacts;
 
+import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.sale.ProdCredit;
 
@@ -22,7 +23,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 @Entity
 @Table(name = "LEGAL_ENTITY", indexes = {@Index(columnList = "NAME")})
-public class LegalEntity extends Contact{
+public class LegalEntity extends Contact implements ArchivedObject {
 
     // Компания
     @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})

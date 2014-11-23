@@ -48,7 +48,7 @@ public class UsersGrid extends ExtaGrid<UserProfile> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<UserProfile> container = new ExtaDataContainer<>(UserProfile.class);
+		final ExtaJpaContainer<UserProfile> container = new ExtaJpaContainer<>(UserProfile.class);
 		container.addNestedContainerProperty("employee.name");
         container.sort(new Object[]{"employee.name"}, new boolean[]{true});
 		return container;

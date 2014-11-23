@@ -91,8 +91,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private TextArea commentField;
 
     private final boolean qualifyForm;
-    private ExtaDataContainer<SalePoint> vendorsContainer;
-    private ExtaDataContainer<Person> clientsContainer;
+    private ExtaJpaContainer<SalePoint> vendorsContainer;
+    private ExtaJpaContainer<Person> clientsContainer;
 
     public LeadEditForm(final Lead lead, final boolean qualifyForm) {
         super(lead.isNew() ? "Ввод нового лида в систему" :
@@ -237,7 +237,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         final Table table = new Table();
         table.setRequired(true);
         // Запрос данных
-        vendorsContainer = new ExtaDataContainer<>(SalePoint.class);
+        vendorsContainer = new ExtaJpaContainer<>(SalePoint.class);
         vendorsContainer.addNestedContainerProperty("regAddress.region");
         setVendorsFilter(lead.getPointOfSale(), lead.getRegion());
 
@@ -344,7 +344,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         layout.addComponent(info);
 
         // Запрос данных
-        clientsContainer = new ExtaDataContainer<>(Person.class);
+        clientsContainer = new ExtaJpaContainer<>(Person.class);
         clientsContainer.addNestedContainerProperty("regAddress.region");
         setClientsFilter(lead.getContactName(), lead.getContactPhone(), lead.getContactEmail());
 

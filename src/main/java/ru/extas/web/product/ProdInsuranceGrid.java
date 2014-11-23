@@ -38,7 +38,7 @@ public class ProdInsuranceGrid extends ExtaGrid<ProdInsurance> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaDataContainer<ProdInsurance> container = new ExtaDataContainer<>(ProdInsurance.class);
+		final ExtaJpaContainer<ProdInsurance> container = new ExtaJpaContainer<>(ProdInsurance.class);
 		container.sort(new Object[]{"createdDate"}, new boolean[]{false});
 		container.addNestedContainerProperty("vendor.name");
 		return container;

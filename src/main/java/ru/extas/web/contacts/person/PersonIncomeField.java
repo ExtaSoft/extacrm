@@ -8,6 +8,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.PersonIncome;
+import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.EditField;
@@ -32,7 +33,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class PersonIncomeField extends CustomField<List> {
 
     private final Person person;
-    private BeanItemContainer<PersonIncome> itemContainer;
+    private ExtaBeanContainer<PersonIncome> itemContainer;
     private VerticalLayout root;
     private Table table;
 
@@ -45,7 +46,7 @@ public class PersonIncomeField extends CustomField<List> {
     protected Component initContent() {
         final Property dataSource = checkNotNull(this.getPropertyDataSource(), "No Dsta source!!!");
         final List<PersonIncome> list = dataSource != null ? (List<PersonIncome>) dataSource.getValue() : new ArrayList<>();
-        itemContainer = new BeanItemContainer<>(PersonIncome.class);
+        itemContainer = new ExtaBeanContainer<>(PersonIncome.class);
         itemContainer.addAll(list);
         itemContainer.addItemSetChangeListener(event -> updateValue(true));
 

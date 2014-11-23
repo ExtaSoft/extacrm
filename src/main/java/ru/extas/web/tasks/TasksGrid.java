@@ -66,12 +66,12 @@ public class TasksGrid extends ExtaGrid<Task> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final BeanItemContainer<Task> dataSource = new BeanItemContainer<>(Task.class);
+		final ExtaBeanContainer<Task> dataSource = new ExtaBeanContainer<>(Task.class);
 		fillDataContainer(dataSource);
 		return dataSource;
 	}
 
-	private void fillDataContainer(final BeanItemContainer<Task> dataSource) {
+	private void fillDataContainer(final ExtaBeanContainer<Task> dataSource) {
 		final List<Task> tasks = queryForTasksToShow();
 		dataSource.removeAllItems();
 		dataSource.addAll(tasks);
@@ -149,7 +149,7 @@ public class TasksGrid extends ExtaGrid<Task> {
 	/** {@inheritDoc} */
 	@Override
 	protected void refreshContainer() {
-		fillDataContainer((BeanItemContainer<Task>) container);
+		fillDataContainer((ExtaBeanContainer<Task>) container);
 	}
 
     @Override

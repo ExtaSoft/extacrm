@@ -9,6 +9,7 @@ import com.vaadin.ui.*;
 import org.tepi.filtertable.FilterTable;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
+import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -30,7 +31,7 @@ public class ProductInSaleGrid extends CustomField<List> {
 
     private final Sale sale;
     private FilterTable productTable;
-    private BeanItemContainer<ProductInSale> container;
+    private ExtaBeanContainer<ProductInSale> container;
 
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
@@ -120,7 +121,7 @@ public class ProductInSaleGrid extends CustomField<List> {
         productTable.setSelectable(true);
         final Property dataSource = getPropertyDataSource();
         final List<ProductInSale> productInSaleList = dataSource != null ? (List<ProductInSale>) dataSource.getValue() : sale.getProductInSales();
-        container = new BeanItemContainer<>(ProductInSale.class);
+        container = new ExtaBeanContainer<>(ProductInSale.class);
         container.addNestedContainerProperty("product.name");
         if (productInSaleList != null) {
             for (final ProductInSale productInSale : productInSaleList) {

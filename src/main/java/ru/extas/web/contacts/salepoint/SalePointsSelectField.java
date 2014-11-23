@@ -25,7 +25,7 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 public class SalePointsSelectField extends CustomField<Set> {
 
-    private BeanItemContainer<SalePoint> beanContainer;
+    private ExtaBeanContainer<SalePoint> beanContainer;
 
     /**
      * {@inheritDoc}
@@ -37,7 +37,7 @@ public class SalePointsSelectField extends CustomField<Set> {
             @Override
             protected Container createContainer() {
                 final Set<SalePoint> list = getValue() != null ? getValue() : newHashSet();
-                beanContainer = new BeanItemContainer<>(SalePoint.class);
+                beanContainer = new ExtaBeanContainer<>(SalePoint.class);
                 beanContainer.addNestedContainerProperty("regAddress.region");
                 beanContainer.addNestedContainerProperty("regAddress.city");
                 beanContainer.addNestedContainerProperty("regAddress.streetBld");

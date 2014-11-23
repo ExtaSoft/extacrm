@@ -3,9 +3,8 @@ package ru.extas.web.motor;
 import com.vaadin.data.Property;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
-import org.vaadin.tokenfield.TokenField;
 import ru.extas.model.motor.MotorBrand;
-import ru.extas.web.commons.ExtaDataContainer;
+import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.component.ExtaTokenField;
 
 import java.util.Set;
@@ -50,7 +49,7 @@ public class MotorBrandObjMultiselect extends CustomField<Set> {
         //tokenField.setInputWidth(13, Unit.EX);
         //tokenField.setTokenInsertPosition(TokenField.InsertPosition.BEFORE);
 
-        final ExtaDataContainer<MotorBrand> container = new ExtaDataContainer<>(MotorBrand.class);
+        final ExtaJpaContainer<MotorBrand> container = new ExtaJpaContainer<>(MotorBrand.class);
         container.sort(new Object[]{"name"}, new boolean[]{true});
         tokenField.setContainerDataSource(container);
         tokenField.setTokenCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);

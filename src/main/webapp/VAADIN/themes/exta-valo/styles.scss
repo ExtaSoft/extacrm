@@ -94,6 +94,13 @@
     background-color: scale-color($row-highlight-red-bg, $lightness: -5%);
   }
 
+  .v-table-row.v-table-row-archived {
+    text-decoration: line-through;
+  }
+  .v-table-row-odd.v-table-row-archived {
+    text-decoration: line-through;
+  }
+
   .view-title {
     @extend .h2;
     font-size: round($v-font-size * 1.125);

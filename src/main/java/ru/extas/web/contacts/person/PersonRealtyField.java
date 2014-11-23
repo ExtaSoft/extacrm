@@ -7,6 +7,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.PersonRealty;
+import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.CardPanel;
@@ -28,7 +29,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class PersonRealtyField extends CustomField<List> {
 
     private final Person person;
-    private BeanItemContainer<PersonRealty> itemContainer;
+    private ExtaBeanContainer<PersonRealty> itemContainer;
     private VerticalLayout root;
 
     public PersonRealtyField(final Person person) {
@@ -40,7 +41,7 @@ public class PersonRealtyField extends CustomField<List> {
     protected Component initContent() {
         final Property dataSource = checkNotNull(this.getPropertyDataSource(), "No Dsta source!!!");
         final List<PersonRealty> list = dataSource != null ? (List<PersonRealty>) dataSource.getValue() : new ArrayList<>();
-        itemContainer = new BeanItemContainer<>(PersonRealty.class);
+        itemContainer = new ExtaBeanContainer<>(PersonRealty.class);
 
         root = new VerticalLayout();
         root.setMargin(new MarginInfo(true, false, true, false));

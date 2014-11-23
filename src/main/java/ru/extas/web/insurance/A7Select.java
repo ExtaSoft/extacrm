@@ -8,6 +8,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.insurance.A7Form;
 import ru.extas.server.insurance.A7FormRepository;
+import ru.extas.web.commons.ExtaBeanContainer;
 
 import java.util.Collection;
 
@@ -50,7 +51,7 @@ public class A7Select extends ComboBox {
         final A7FormRepository a7FormRepository = lookup(A7FormRepository.class);
         final A7FormRepository a7FormService = lookup(A7FormRepository.class);
         final Collection<A7Form> forms = a7FormService.loadAvailable();
-        final BeanItemContainer<A7Form> clientsCont = new BeanItemContainer<>(A7Form.class);
+        final ExtaBeanContainer<A7Form> clientsCont = new ExtaBeanContainer<>(A7Form.class);
         clientsCont.addAll(forms);
         if (forceNum != null) {
             final A7Form forceForm = a7FormRepository.findByRegNum(forceNum);

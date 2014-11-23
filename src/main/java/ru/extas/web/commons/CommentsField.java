@@ -29,7 +29,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class CommentsField<TComment extends Comment> extends CustomField<List> {
 
     private final Class<TComment> commentClass;
-    private BeanItemContainer<TComment> container;
+    private ExtaBeanContainer<TComment> container;
     private ItemGrid commentsContainer;
 
     public CommentsField(final Class<TComment> commentClass) {
@@ -41,7 +41,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
     protected Component initContent() {
         final Property dataSource = getPropertyDataSource();
         final List<TComment> list = dataSource != null ? (List<TComment>) dataSource.getValue() : new ArrayList<>();
-        container = new BeanItemContainer<>(commentClass);
+        container = new ExtaBeanContainer<>(commentClass);
         if (list != null) {
             container.addAll(list);
         }

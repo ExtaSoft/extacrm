@@ -1,7 +1,5 @@
 package ru.extas.web.contacts.salepoint;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.Company;
@@ -46,7 +44,7 @@ public class SalePointsField extends CustomField<Set> {
                 final ExtaEditForm<SalePoint> form = super.createEditForm(salePoint, isInsert);
                 form.addCloseFormListener(e -> {
                     if (form.isSaved() && isInsert)
-                        setValue(((ExtaDataContainer) container).getEntitiesSet());
+                        setValue(((ExtaJpaContainer) container).getEntitiesSet());
                 });
                 form.setReadOnly(isReadOnly());
                 return form;

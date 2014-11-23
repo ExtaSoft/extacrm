@@ -1,5 +1,7 @@
 package ru.extas.model.contacts;
 
+import ru.extas.model.common.ArchivedObject;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -17,7 +19,7 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 @Entity
 @Table(name = "SALE_POINT", indexes = {@Index(columnList = "NAME")})
-public class SalePoint extends Contact {
+public class SalePoint extends Contact implements ArchivedObject {
 
     private static final int CODE_LENGTH = 15;
     // Компания

@@ -1,5 +1,6 @@
 package ru.extas.web.commons;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import com.vaadin.addon.tableexport.CustomTableHolder;
@@ -13,8 +14,13 @@ import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tepi.filtertable.FilterTable;
+import org.vaadin.dialogs.ConfirmDialog;
+import ru.extas.model.common.ArchivedObject;
+import ru.extas.model.sale.Sale;
 import ru.extas.model.security.SecuredObject;
 import ru.extas.model.security.UserRole;
+import ru.extas.server.common.ArchiveService;
+import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.window.DownloadFileWindow;
 import ru.extas.web.users.SecuritySettingsForm;
@@ -288,6 +294,65 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                     accessBtn.setEnabled(false);
                 }
 
+                if (isArchiveEnabled()) {
+                    final MenuBar.MenuItem archiveMenu = modeSwitchBar.addItem("", FontAwesome.ARCHIVE, null);
+                    archiveMenu.setDescription("Меню действий с архивом, позволяет управлять архивными записями");
+                    archiveMenu.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+
+                    final MenuBar.MenuItem showArchiveMenu = archiveMenu.addItem("Показать архивные записи", FontAwesome.HISTORY, null);
+                    showArchiveMenu.setCommand(c -> {
+                        if (c.isChecked()) {
+                            showArchiveMenu.setText("Скрыть архивные записи");
+                            ((ArchivedContainer) container).setArchiveExcluded(false);
+                        } else {
+                            showArchiveMenu.setText("Показать архивные записи");
+                            ((ArchivedContainer) container).setArchiveExcluded(true);
+                        }
+                    });
+
+                    showArchiveMenu.setDescription("Отображает или скрывает архивные записи в таблице");
+                    showArchiveMenu.setCheckable(true);
+
+                    final MenuBar.MenuItem toArchiveMenu = archiveMenu.addItem("Отправить в архив", FontAwesome.DOWNLOAD, c -> {
+                        final Set<ArchivedObject> selectedEntities = (Set<ArchivedObject>) getSelectedEntities();
+                        ConfirmDialog.show(UI.getCurrent(),
+                                "Подтвердите действие...",
+                                MessageFormat.format(
+                                        "Вы уверены, что хотите преместить выделенные записи ({0}) в архив? " +
+                                                "Архивные записи будут скрыты для всех пользователей. " +
+                                                "Только администратор сможет в дальнейшем работать с этими записями. " +
+                                                "Нажмите 'Да', чтобы выполнить архивирование.",
+                                        selectedEntities.size()),
+                                "Да", "Нет", () -> {
+                                    lookup(ArchiveService.class).archive(selectedEntities);
+                                    refreshContainer();
+                                    NotificationUtil.showSuccess("Записи перенесены в архив");
+                                });
+                    });
+                    toArchiveMenu.setDescription("Убрать выделенные записи в архив");
+                    needCurrentMenu.add(toArchiveMenu);
+                    toArchiveMenu.setEnabled(false);
+
+                    final MenuBar.MenuItem fromArchiveMenu = archiveMenu.addItem("Достать из архива", FontAwesome.UPLOAD, c -> {
+                        final Set<ArchivedObject> selectedEntities = (Set<ArchivedObject>) getSelectedEntities();
+                        ConfirmDialog.show(UI.getCurrent(),
+                                "Подтвердите действие...",
+                                MessageFormat.format(
+                                        "Вы уверены, что хотите извлечь выделенные записи ({0}) из архива? " +
+                                                "Архивные записи будут извлечены из архива и доступны для пользователей. " +
+                                                "Нажмите 'Да', чтобы извлечь записи из архива.",
+                                        selectedEntities.size()),
+                                "Да", "Нет", () -> {
+                                    lookup(ArchiveService.class).extract(selectedEntities);
+                                    refreshContainer();
+                                    NotificationUtil.showSuccess("Записи возвращены из архива");
+                                });
+                    });
+                    fromArchiveMenu.setDescription("Извлечь выделенные записи из архива");
+                    needCurrentMenu.add(fromArchiveMenu);
+                    fromArchiveMenu.setEnabled(false);
+                }
+
                 final MenuBar.MenuItem exportBtn = modeSwitchBar.addItem("", Fontello.FILE_EXCEL, s -> {
                     final CustomTableHolder tableHolder = new CustomTableHolder(table);
                     final ExcelExport excelExport = new MyExcelExport(tableHolder);
@@ -344,6 +409,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         panel.addComponent(table, 0, 1, 1, 1);
 
         setCompositionRoot(panel);
+    }
+
+    private boolean isArchiveEnabled() {
+        return ArchivedObject.class.isAssignableFrom(entityClass);
     }
 
     public void setMode(final Mode mode) {
@@ -490,6 +559,17 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         table.setWrapFilters(true);
         table.setFilterBarVisible(true);
         table.addAttachListener(e -> table.setFilterBarVisible(false));
+
+        // Задаем стиль для архивных записей
+        if (isArchiveEnabled()) {
+            table.setCellStyleGenerator((source, itemId, propertyId) -> {
+                final ArchivedObject archivedObject = (ArchivedObject) getEntity(itemId);
+                if(archivedObject.isArchived())
+                    return "archived";
+                else
+                    return null;
+            });
+        }
     }
 
     private void initDetailTable(final UIAction defAction) {
@@ -536,8 +616,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      */
     protected void refreshContainer() {
         final Object itemId = table.getValue();
-        if (container instanceof ExtaDataContainer)
-            ((ExtaDataContainer) container).refresh();
+        if (container instanceof ExtaJpaContainer)
+            ((ExtaJpaContainer) container).refresh();
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
         table.setValue(itemId);
@@ -549,8 +629,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      * @param itemId a {@link java.lang.Object} object.
      */
     protected void refreshContainerItem(final Object itemId) {
-        if (container instanceof ExtaDataContainer)
-            ((ExtaDataContainer) container).refreshItem(itemId);
+        if (container instanceof ExtaJpaContainer)
+            ((ExtaJpaContainer) container).refreshItem(itemId);
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
     }

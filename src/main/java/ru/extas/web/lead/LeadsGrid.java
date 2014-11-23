@@ -9,10 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.lead.Lead;
-import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.lead.LeadRepository;
-import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.*;
 
 import java.text.MessageFormat;
@@ -82,7 +80,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaDataContainer<Lead> container = new SecuredDataContainer<>(Lead.class,
+        final ExtaJpaContainer<Lead> container = new SecuredDataContainer<>(Lead.class,
                 status == Lead.Status.NEW ? ExtaDomain.LEADS_NEW :
                         status == Lead.Status.QUALIFIED ? ExtaDomain.LEADS_QUAL :
                                 ExtaDomain.LEADS_CLOSED);

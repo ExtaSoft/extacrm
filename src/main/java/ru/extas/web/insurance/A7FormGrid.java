@@ -26,7 +26,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static ru.extas.server.ServiceLocator.lookup;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * <p>A7FormGrid class.</p>
@@ -112,7 +111,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
      */
     @Override
     protected Container createContainer() {
-        final ExtaDataContainer<A7Form> cnt = new A7SecuredContainer(A7Form.class, ExtaDomain.INSURANCE_A_7);
+        final ExtaJpaContainer<A7Form> cnt = new A7SecuredContainer(A7Form.class, ExtaDomain.INSURANCE_A_7);
         cnt.addNestedContainerProperty("owner.name");
         return cnt;
     }
