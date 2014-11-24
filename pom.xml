@@ -660,7 +660,7 @@
                 <configuration>
                     <gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
                     <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-                    <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+                    <extraJvmArgs>-Dvaadin.charts.developer.license=${vaadin.charts.developer.license}</extraJvmArgs>
                     <!-- <runTarget>mobilemail</runTarget> -->
                     <!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This
                         way compatible with Vaadin eclipse plugin. -->
