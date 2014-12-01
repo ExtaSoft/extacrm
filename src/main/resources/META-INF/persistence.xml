@@ -60,6 +60,7 @@
         <class>ru.extas.model.motor.MotorType</class>
         <class>ru.extas.model.motor.MotorBrand</class>
         <class>ru.extas.model.motor.MotorModel</class>
+        <class>ru.extas.model.settings.UserGridState</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

@@ -23,6 +23,7 @@
         <vaadin.charts.version>2.0.0.alpha1</vaadin.charts.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
         <vaadin.filteringtable.version>0.9.11.v7</vaadin.filteringtable.version>
+        <vaadin.filtertablestate.version>1.0.6</vaadin.filtertablestate.version>
         <vaadin.tokenfield.version>7.0.1</vaadin.tokenfield.version>
         <vaadin.multifileupload.version>1.8</vaadin.multifileupload.version>
         <vaadin.tableexport.version>1.5.1.5</vaadin.tableexport.version>
@@ -309,6 +310,11 @@
             <groupId>org.vaadin.addons</groupId>
             <artifactId>filteringtable</artifactId>
             <version>${vaadin.filteringtable.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wcs.wcslib</groupId>
+            <artifactId>wcslib-vaadin-widget-filtertablestate-bundle</artifactId>
+            <version>${vaadin.filtertablestate.version}</version>
         </dependency>
         <dependency>
             <groupId>org.vaadin.addons</groupId>

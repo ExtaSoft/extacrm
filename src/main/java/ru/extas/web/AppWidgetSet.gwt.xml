@@ -7,6 +7,8 @@
         goal "vaadin:update-widgetset".
     -->
 
+    <inherits name="com.wcs.wcslib.vaadin.widget.filtertablestate.FilterTableStateWidgetSet"/>
+
     <!-- Inherit DefaultWidgetSet -->
     <inherits name="com.vaadin.DefaultWidgetSet"/>
 

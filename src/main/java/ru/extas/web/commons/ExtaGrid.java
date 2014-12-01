@@ -1,6 +1,6 @@
 package ru.extas.web.commons;
 
-import com.google.common.base.Joiner;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import com.vaadin.addon.tableexport.CustomTableHolder;
@@ -11,29 +11,35 @@ import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
+import com.wcs.wcslib.vaadin.widget.filtertablestate.api.FilterTableStateHandler;
+import com.wcs.wcslib.vaadin.widget.filtertablestate.api.model.FilterTableStateProfile;
+import com.wcs.wcslib.vaadin.widget.filtertablestate.extension.FilterTableState;
+import com.wcs.wcslib.vaadin.widget.filtertablestate.extension.FilterTableStateGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tepi.filtertable.FilterTable;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.common.ArchivedObject;
-import ru.extas.model.sale.Sale;
 import ru.extas.model.security.SecuredObject;
 import ru.extas.model.security.UserRole;
+import ru.extas.model.settings.UserGridState;
 import ru.extas.server.common.ArchiveService;
-import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.server.settings.UserGridStateService;
 import ru.extas.web.commons.window.DownloadFileWindow;
 import ru.extas.web.users.SecuritySettingsForm;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
@@ -57,6 +63,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      * Constant <code>OVERALL_COLUMN="OverallColumn"</code>
      */
     public static final String OVERALL_COLUMN = "OverallColumn";
+    public static final String STANDARD_PROFILE_NAME = "Стандартный";
 
     private final Class<TEntity> entityClass;
     private FormService formService;
@@ -74,6 +81,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     public void selectObject(final Object objectId) {
         if (table != null && objectId != null && table.containsId(objectId))
             table.select(objectId);
+    }
+
+    public String getGridId() {
+        return getClass().getName();
     }
 
     public enum Mode {
@@ -564,12 +575,75 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         if (isArchiveEnabled()) {
             table.setCellStyleGenerator((source, itemId, propertyId) -> {
                 final ArchivedObject archivedObject = (ArchivedObject) getEntity(itemId);
-                if(archivedObject.isArchived())
+                if (archivedObject.isArchived())
                     return "archived";
                 else
                     return null;
             });
         }
+
+        // Сохранение состояния таблицы
+        new FilterTableState().extend(table, createFilterTableStateHandler());
+    }
+
+    private FilterTableStateHandler createFilterTableStateHandler() {
+        return new FilterTableStateHandler() {
+            @Override
+            public void save(FilterTableStateProfile profile) {
+
+                FilterTableStateProfile newProfile = TableUtils.createProfile(table, profile.getName());
+                profile.getColumnInfos().clear();
+                profile.getColumnInfos().addAll(newProfile.getColumnInfos());
+
+                ObjectMapper mapper = new ObjectMapper();
+                StringWriter profileJson = new StringWriter();
+                try {
+                    mapper.writeValue(profileJson, profile);
+                } catch (IOException e) {
+                    Throwables.propagate(e);
+                }
+                lookup(UserGridStateService.class).saveState(getGridId(), profile.getName(), profileJson.toString());
+                NotificationUtil.showSuccess("Профиль таблицы сохранен!");
+            }
+
+            @Override
+            public void delete(String profileName) {
+                lookup(UserGridStateService.class).deleteState(getGridId(), profileName);
+                NotificationUtil.showSuccess("Профиль таблицы удален!");
+            }
+
+            @Override
+            public Set<FilterTableStateProfile> load() {
+                Set<FilterTableStateProfile> stateProfiles = newHashSet();
+
+                // Извлекаем стандартный профиль (по умолчанию)
+                FilterTableStateProfile standardProfile = TableUtils.createProfile(table, STANDARD_PROFILE_NAME);
+                stateProfiles.add(standardProfile);
+
+                for (UserGridState gridState : lookup(UserGridStateService.class).loadStates(getGridId())) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        FilterTableStateProfile profile = mapper.readValue(gridState.getState(), FilterTableStateProfile.class);
+                        stateProfiles.add(profile);
+                    } catch (IOException e) {
+                        Throwables.propagate(e);
+                    }
+                }
+
+                return stateProfiles;
+            }
+
+            @Override
+            public String getDefaultProfile() {
+                String profileName = lookup(UserGridStateService.class).getDefaultStateName(getGridId());
+                return isNullOrEmpty(profileName) ? STANDARD_PROFILE_NAME : profileName;
+            }
+
+            @Override
+            public void setDefaultProfile(String profileName) {
+                lookup(UserGridStateService.class).setDefaultState(getGridId(), profileName);
+            }
+        };
     }
 
     private void initDetailTable(final UIAction defAction) {
