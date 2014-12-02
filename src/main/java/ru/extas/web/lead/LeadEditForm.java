@@ -5,14 +5,12 @@ import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.filter.Like;
 import com.vaadin.data.util.filter.Or;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.vaadin.dialogs.ConfirmDialog;
-import ru.extas.model.contacts.AddressInfo;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
 import ru.extas.server.lead.LeadRepository;
@@ -23,9 +21,9 @@ import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.*;
 import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
-import ru.extas.web.contacts.person.PersonDataDecl;
+import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
+import ru.extas.web.contacts.person.ClientDataDecl;
 import ru.extas.web.contacts.person.PersonEditForm;
-import ru.extas.web.contacts.person.PersonSelect;
 import ru.extas.web.contacts.salepoint.SalePointEditForm;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
@@ -80,7 +78,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("pointOfSale")
     private EditField pointOfSaleField;
     @PropertyId("client")
-    private PersonSelect clientField;
+    private ClientField clientField;
     @PropertyId("vendor")
     private SalePointField vendorField;
 
@@ -92,7 +90,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
     private final boolean qualifyForm;
     private ExtaJpaContainer<SalePoint> vendorsContainer;
-    private ExtaJpaContainer<Person> clientsContainer;
+    private ExtaJpaContainer<Client> clientsContainer;
 
     public LeadEditForm(final Lead lead, final boolean qualifyForm) {
         super(lead.isNew() ? "Ввод нового лида в систему" :
@@ -117,14 +115,11 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 //        commentField.setReadOnly(qualifyForm);
     }
 
-    private Person createPersonFromLead(final Lead lead) {
-        final Person person = new Person();
-        person.setName(lead.getContactName());
-        person.setPhone(lead.getContactPhone());
-        person.setEmail(lead.getContactEmail());
-        person.setRegAddress(new AddressInfo(lead.getRegion(), null, null, null));
-        return person;
-
+    private void fillClientFromLead(final Lead lead, final Client client) {
+        client.setName(lead.getContactName());
+        client.setPhone(lead.getContactPhone());
+        client.setEmail(lead.getContactEmail());
+        client.setRegAddress(new AddressInfo(lead.getRegion(), null, null, null));
     }
 
     private SalePoint createSalePointFromLead(final Lead lead) {
@@ -163,7 +158,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                 form.addComponent(contactEmailField);
             }
         } else {
-            clientField = new PersonSelect("Клиент");
+            clientField = new ClientField("Клиент");
             clientField.setRequired(true);
             form.addComponent(clientField);
         }
@@ -344,16 +339,16 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         layout.addComponent(info);
 
         // Запрос данных
-        clientsContainer = new ExtaJpaContainer<>(Person.class);
+        clientsContainer = new ExtaJpaContainer<>(Client.class);
         clientsContainer.addNestedContainerProperty("regAddress.region");
         setClientsFilter(lead.getContactName(), lead.getContactPhone(), lead.getContactEmail());
 
-        final Button newBtn = new Button("Новый клиент");
-        newBtn.setIcon(Fontello.DOC_NEW);
-        newBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-        newBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
-        newBtn.addClickListener(event -> {
-            final Person newObj = createPersonFromLead(lead);
+        final MenuBar menuBar = new MenuBar();
+        menuBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+        final MenuBar.MenuItem newMenu = menuBar.addItem("Новый клиент", Fontello.DOC_NEW, null);
+        newMenu.addItem("Физическое лицо", FontAwesome.USER, e-> {
+            final Person newObj = new Person();
+            fillClientFromLead(lead, newObj);
 
             final PersonEditForm editWin = new PersonEditForm(newObj);
             editWin.setModified(true);
@@ -366,7 +361,23 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             });
             FormUtils.showModalWin(editWin);
         });
-        layout.addComponent(newBtn);
+        newMenu.addItem("Юридическое лицо", FontAwesome.BUILDING, e-> {
+            final LegalEntity newObj = new LegalEntity();
+            fillClientFromLead(lead, newObj);
+
+            final LegalEntityEditForm editWin = new LegalEntityEditForm(newObj);
+            editWin.setModified(true);
+
+            editWin.addCloseFormListener(event1 -> {
+                if (editWin.isSaved()) {
+                    clientsContainer.refresh();
+                    table.setValue(editWin.getEntityId());
+                }
+            });
+            FormUtils.showModalWin(editWin);
+        });
+
+        layout.addComponent(menuBar);
 
         final EditField name = new EditField("Имя");
         name.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
@@ -403,14 +414,11 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.addStyleName(ExtaTheme.TABLE_SMALL);
         // Настройка столбцов таблицы
         table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
-        final GridDataDecl dataDecl = new PersonDataDecl();
+        final GridDataDecl dataDecl = new ClientDataDecl();
         initTableColumns(table, dataDecl);
-        table.setColumnCollapsed("sex", true);
-//        table.setColumnCollapsed("birthday", true);
-//        table.setColumnCollapsed("email", true);
         // Обрабатываем выбор контакта
         table.addValueChangeListener(event -> {
-            final Person curObj = extractBean(table.getItem(table.getValue()));
+            final Client curObj = extractBean(table.getItem(table.getValue()));
             lead.setClient(curObj);
             setModified(true);
         });

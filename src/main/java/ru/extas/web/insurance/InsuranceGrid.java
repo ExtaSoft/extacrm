@@ -70,11 +70,8 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         // Запрос данных
         final ExtaJpaContainer<Insurance> container = new SecuredDataContainer<>(Insurance.class, ExtaDomain.INSURANCE_PROP);
         container.addNestedContainerProperty("dealer.name");
-        container.addNestedContainerProperty("clientPP.name");
-        container.addNestedContainerProperty("clientPP.phone");
-        container.addNestedContainerProperty("clientPP.birthday");
-        container.addNestedContainerProperty("clientLE.name");
-        container.addNestedContainerProperty("clientLE.phone");
+        container.addNestedContainerProperty("client.name");
+        container.addNestedContainerProperty("client.phone");
         container.sort(new Object[]{"createdDate"}, new boolean[]{false});
         return container;
     }
@@ -95,8 +92,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
 
                 final Insurance insurance = createEntity();
                 // Копируем все необходимые данные из истекшего(истекающего) договора
-                insurance.setClientPP(oldIns.getClientPP());
-                insurance.setClientLE(oldIns.getClientLE());
+                insurance.setClient(oldIns.getClient());
                 insurance.setBeneficiary(oldIns.getBeneficiary());
                 insurance.setUsedMotor(true);
                 insurance.setMotorType(oldIns.getMotorType());
@@ -172,7 +168,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
             final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outDoc);
 
-            final String clientName = insurance.getClientName();
+            final String clientName = insurance.getClient().getName();
             final String policyNum = insurance.getRegNum();
             final String policyFileName = MessageFormat.format("Полис {0} {1} {2}.pdf", policyNum, clientName, new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
 
@@ -203,7 +199,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
             final ByteArrayOutputStream outDoc = new ByteArrayOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outDoc);
 
-            final String clientName = insurance.getClientName();
+            final String clientName = insurance.getClient().getName();
             final String regNum = insurance.getRegNum();
             final String invoiceFileName = MessageFormat.format("Счет {0} {1} {2}.pdf", regNum, clientName, new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date()));
 

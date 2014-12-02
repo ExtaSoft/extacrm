@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
+<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
+<!-- 2014-12-02T18:25:11 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InsuranceInvoiceTemplate" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f5ef38dd-f014-47f7-82c3-cd72f28baee6">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<import value="com.programmisty.numerals.Numerals"/>
@@ -164,7 +165,7 @@
 			</textField>
 			<textField>
 				<reportElement style="SimpleText" mode="Transparent" x="0" y="185" width="555" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9bddffbf-beef-4ae7-8f84-12b53a92c4c8"/>
-				<textFieldExpression><![CDATA["Плательщик: " + $P{ins}.getClientName()]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Плательщик: " + $P{ins}.getClient().getName()]]></textFieldExpression>
 			</textField>
 			<frame>
 				<reportElement x="0" y="211" width="555" height="160" uuid="43b29bd9-eb0c-461b-a158-dbf76026b962">

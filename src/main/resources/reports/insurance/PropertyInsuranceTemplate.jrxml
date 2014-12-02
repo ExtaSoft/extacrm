@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
-<!-- 2014-11-16T22:12:03 -->
+<!-- 2014-12-02T17:26:48 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PropertyInsuranceTemplate" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" isSummaryNewPage="true" uuid="986df7ce-c89b-43fa-a244-5c098911f17a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -150,7 +150,7 @@
 						<textElement verticalAlignment="Middle">
 							<font size="10"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$P{ins}.getClientName()]]></textFieldExpression>
+						<textFieldExpression><![CDATA[$P{ins}.getClient().getName()]]></textFieldExpression>
 					</textField>
 					<staticText>
 						<reportElement positionType="Float" x="0" y="29" width="110" height="19" uuid="52102858-7588-4800-b8c3-c28f76505448">
@@ -174,7 +174,7 @@
 						<reportElement positionType="Float" x="219" y="52" width="94" height="19" uuid="24267f55-9334-4660-bfa8-81b2aff75e9c">
 							<property name="local_mesure_unity" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
-							<printWhenExpression><![CDATA[$P{ins}.getClientPP() != null]]></printWhenExpression>
+							<printWhenExpression><![CDATA[$P{ins}.getClient() instanceof ru.extas.model.contacts.Person]]></printWhenExpression>
 						</reportElement>
 						<box padding="2">
 							<topPen lineWidth="2.0"/>
@@ -231,7 +231,7 @@
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-							<printWhenExpression><![CDATA[$P{ins}.getClientPP() != null]]></printWhenExpression>
+							<printWhenExpression><![CDATA[$P{ins}.getClient() instanceof ru.extas.model.contacts.Person]]></printWhenExpression>
 						</reportElement>
 						<box padding="2">
 							<topPen lineWidth="2.0"/>
@@ -242,7 +242,7 @@
 						<textElement verticalAlignment="Middle">
 							<font size="10"/>
 						</textElement>
-						<textFieldExpression><![CDATA[new SimpleDateFormat("dd.MM.yyyy").format($P{ins}.getClientPP().getBirthday().toDate())]]></textFieldExpression>
+						<textFieldExpression><![CDATA[new SimpleDateFormat("dd.MM.yyyy").format(((ru.extas.model.contacts.Person)$P{ins}.getClient()).getBirthday().toDate())]]></textFieldExpression>
 					</textField>
 					<staticText>
 						<reportElement positionType="Float" x="0" y="52" width="110" height="19" uuid="22b15f68-339d-45ed-8725-64a407150cc0">
@@ -278,13 +278,13 @@
 						<textElement verticalAlignment="Middle">
 							<font size="10"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$P{ins}.getClientPhone()]]></textFieldExpression>
+						<textFieldExpression><![CDATA[$P{ins}.getClient().getPhone()]]></textFieldExpression>
 					</textField>
 					<staticText>
 						<reportElement positionType="Float" x="419" y="52" width="29" height="19" uuid="611889c4-9752-4ece-a0e1-29fc6ac3235b">
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-							<printWhenExpression><![CDATA[$P{ins}.getClientPP() != null]]></printWhenExpression>
+							<printWhenExpression><![CDATA[$P{ins}.getClient() instanceof ru.extas.model.contacts.Person]]></printWhenExpression>
 						</reportElement>
 						<box padding="2">
 							<topPen lineWidth="2.0"/>
@@ -304,7 +304,7 @@
 							<property name="local_mesure_unitwidth" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
-							<printWhenExpression><![CDATA[$P{ins}.getClientPP() != null]]></printWhenExpression>
+							<printWhenExpression><![CDATA[$P{ins}.getClient() instanceof ru.extas.model.contacts.Person]]></printWhenExpression>
 						</reportElement>
 						<box padding="2">
 							<topPen lineWidth="2.0"/>
@@ -324,7 +324,7 @@
 							<property name="local_mesure_unitwidth" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
-							<printWhenExpression><![CDATA[$P{ins}.getClientPP() != null]]></printWhenExpression>
+							<printWhenExpression><![CDATA[$P{ins}.getClient() instanceof ru.extas.model.contacts.Person]]></printWhenExpression>
 						</reportElement>
 						<box padding="2">
 							<topPen lineWidth="2.0"/>
@@ -344,7 +344,7 @@
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
-							<printWhenExpression><![CDATA[$P{ins}.getClientPP() != null]]></printWhenExpression>
+							<printWhenExpression><![CDATA[$P{ins}.getClient() instanceof ru.extas.model.contacts.Person]]></printWhenExpression>
 						</reportElement>
 						<box padding="2">
 							<topPen lineWidth="2.0"/>
@@ -355,7 +355,7 @@
 						<textElement textAlignment="Center" verticalAlignment="Middle">
 							<font size="12"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$P{ins}.getClientPP().getSex() == Person.Sex.MALE ? "" : "X"]]></textFieldExpression>
+						<textFieldExpression><![CDATA[((ru.extas.model.contacts.Person)$P{ins}.getClient()).getSex() == Person.Sex.MALE ? "" : "X"]]></textFieldExpression>
 					</textField>
 					<textField>
 						<reportElement positionType="Float" x="467" y="52" width="19" height="19" uuid="a375434d-e2a1-46d5-83d0-b0f4b2bd8051">
@@ -364,7 +364,7 @@
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
-							<printWhenExpression><![CDATA[$P{ins}.getClientPP() != null]]></printWhenExpression>
+							<printWhenExpression><![CDATA[$P{ins}.getClient() instanceof ru.extas.model.contacts.Person]]></printWhenExpression>
 						</reportElement>
 						<box padding="2">
 							<topPen lineWidth="2.0"/>
@@ -375,7 +375,7 @@
 						<textElement textAlignment="Center" verticalAlignment="Middle">
 							<font size="12"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$P{ins}.getClientPP().getSex() == Person.Sex.MALE ? "X" : ""]]></textFieldExpression>
+						<textFieldExpression><![CDATA[((ru.extas.model.contacts.Person)$P{ins}.getClient()).getSex() == Person.Sex.MALE ? "X" : ""]]></textFieldExpression>
 					</textField>
 				</frame>
 				<staticText>

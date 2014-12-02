@@ -3,10 +3,7 @@ package ru.extas.model.sale;
 import ru.extas.model.common.Comment;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.ModelUtils;
-import ru.extas.model.contacts.AddressInfo;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.*;
 import ru.extas.model.insurance.InsuranceFileContainer;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.motor.MotorBrand;
@@ -39,7 +36,8 @@ public class Sale extends SecuredObject {
 
     // Клиент
 	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-	private Person client;
+	@JoinColumn(name = "CLIENT", referencedColumnName = "ID")
+	private Client client;
 
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -240,7 +238,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @return a {@link ru.extas.model.contacts.Person} object.
 	 */
-	public Person getClient() {
+	public Client getClient() {
 		return client;
 	}
 
@@ -249,7 +247,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param client a {@link ru.extas.model.contacts.Person} object.
 	 */
-	public void setClient(final Person client) {
+	public void setClient(final Client client) {
 		this.client = client;
 	}
 

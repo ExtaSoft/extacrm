@@ -18,8 +18,9 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.contacts.ClientField;
 import ru.extas.web.contacts.employee.*;
-import ru.extas.web.contacts.person.PersonSelect;
+import ru.extas.web.contacts.person.PersonField;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
@@ -42,7 +43,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     // Компоненты редактирования
     // Имя клиента
     @PropertyId("client")
-    private PersonSelect clientField;
+    private ClientField clientField;
     // Тип техники
     @PropertyId("motorType")
     private ComboBox motorTypeField;
@@ -89,7 +90,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Клиент"));
-        clientField = new PersonSelect("Клиент", "Введите имя клиента");
+        clientField = new ClientField("Клиент", "Введите имя клиента");
         clientField.setRequired(true);
         clientField.setRequiredError("Имя контакта не может быть пустым.");
         form.addComponent(clientField);

@@ -2,10 +2,7 @@ package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.FileContainer;
-import ru.extas.model.contacts.Contact;
-import ru.extas.model.contacts.LegalEntity;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.*;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.model.motor.MotorModel;
 import ru.extas.model.motor.MotorType;
@@ -57,11 +54,8 @@ public class Insurance extends SecuredObject {
 
     // Клиент может быть физ. или юр. лицом
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "CLIENT_PP", referencedColumnName = "ID")
-    private Person clientPP;
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "CLIENT_LE", referencedColumnName = "ID")
-    private LegalEntity clientLE;
+    @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")
+    private Client client;
 
     @Column(name = "BENEFICIARY", length = Contact.NAME_LENGTH)
     @Size(max = Contact.NAME_LENGTH)
@@ -131,23 +125,7 @@ public class Insurance extends SecuredObject {
     private boolean docComplete;
 
     public boolean isCredit() {
-        return !isNullOrEmpty(getBeneficiary()) && !getBeneficiary().equals(getClientName());
-    }
-
-    public String getClientPhone() {
-        if (clientPP != null)
-            return clientPP.getPhone();
-        if (clientLE != null)
-            return clientLE.getPhone();
-        return null;
-    }
-
-    public String getClientName() {
-        if(clientPP != null)
-            return clientPP.getName();
-        if(clientLE != null)
-            return clientLE.getName();
-        return null;
+        return !isNullOrEmpty(getBeneficiary()) && !getBeneficiary().equals(getClient().getName());
     }
 
     public enum PeriodOfCover {
@@ -320,20 +298,12 @@ public class Insurance extends SecuredObject {
         this.date = date;
     }
 
-    public Person getClientPP() {
-        return clientPP;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClientPP(final Person clientPP) {
-        this.clientPP = clientPP;
-    }
-
-    public LegalEntity getClientLE() {
-        return clientLE;
-    }
-
-    public void setClientLE(final LegalEntity clientLE) {
-        this.clientLE = clientLE;
+    public void setClient(final Client client) {
+        this.client = client;
     }
 
     /**

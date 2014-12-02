@@ -29,11 +29,8 @@ class InsuranceDataDecl extends GridDataDecl {
         addMapping("regNum", "Номер полиса");
         addMapping("a7Num", "Квитанция А-7", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("date", "Дата договора");
-        addMapping("clientPP.name", "Клиент(ФЛ)");
-        addMapping("clientLE.name", "Клиент(ЮЛ)", EnumSet.of(PresentFlag.COLLAPSED));
-        addMapping("clientPP.phone", "Телефон(ФЛ)", EnumSet.of(PresentFlag.COLLAPSED), PhoneConverter.class);
-        addMapping("clientLE.phone", "Телефон(ЮЛ)", EnumSet.of(PresentFlag.COLLAPSED), PhoneConverter.class);
-        addMapping("clientPP.birthday", "Дата рождения(ФЛ)", EnumSet.of(PresentFlag.COLLAPSED));
+        addMapping("client.name", "Клиент");
+        addMapping("client.phone", "Телефон", PhoneConverter.class);
         addMapping("beneficiary", "Выгодопреобретатель", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("usedMotor", "Б/у", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("motorType", "Тип техники");
@@ -49,7 +46,7 @@ class InsuranceDataDecl extends GridDataDecl {
         addMapping("paymentDate", "Дата оплаты страховой премии", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("startDate", "Дата начала срока действия договора", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("endDate", "Дата окончания срока действия договора", EnumSet.of(PresentFlag.COLLAPSED));
-        addMapping("dealer.name", "Торгова точка");
+        addMapping("dealer.name", "Торговая точка");
         super.addDefaultMappings();
     }
 

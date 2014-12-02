@@ -8,9 +8,8 @@ import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.*;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
+import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.LegalEntity;
-import ru.extas.model.contacts.Person;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.insurance.InsuranceFileContainer;
 import ru.extas.model.insurance.Policy;
@@ -26,8 +25,7 @@ import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.converters.StringToPercentConverter;
-import ru.extas.web.contacts.legalentity.LegalEntityField;
-import ru.extas.web.contacts.person.PersonSelect;
+import ru.extas.web.contacts.ClientField;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
@@ -54,11 +52,8 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     private A7Select a7FormNumField;
     @PropertyId("date")
     private PopupDateField dateField;
-    private CheckBox isLegalEntityField;
-    @PropertyId("clientPP")
-    private PersonSelect clientPPField;
-    @PropertyId("clientLE")
-    private LegalEntityField clientLEField;
+    @PropertyId("client")
+    private ClientField clientField;
     @PropertyId("beneficiary")
     private ComboBox beneficiaryField;
     @PropertyId("usedMotor")
@@ -154,42 +149,23 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Страхователь/выгодопреобретатель"));
-        final boolean isLegalEntity = getEntity().getClientLE() != null && getEntity().getClientPP() == null;
-        isLegalEntityField = new CheckBox("Страхователь Юр.лицо", isLegalEntity);
-        isLegalEntityField.setDescription("Отметте флаг, если страхователь является юр.лицом");
-        isLegalEntityField.addValueChangeListener(event -> {
-            final Boolean isLE = isLegalEntityField.getValue();
-            bindClientFieldState(isLE, form);
-        });
-        form.addComponent(isLegalEntityField);
-
         final String caption = "Страхователь";
-        clientLEField = new LegalEntityField(caption);
-        clientLEField.addValueChangeListener(event -> {
-            final LegalEntity legalEntity = clientLEField.getValue();
-            if (beneficiaryField.getPropertyDataSource() != null && legalEntity != null) {
-                fillBeneficiariesChoice(legalEntity.getName());
-                beneficiaryField.setValue(legalEntity.getName());
+        clientField = new ClientField(caption);
+        clientField.addValueChangeListener(event -> {
+            final Client client = clientField.getValue();
+            if (beneficiaryField.getPropertyDataSource() != null && client != null) {
+                fillBeneficiariesChoice(client.getName());
+                beneficiaryField.setValue(client.getName());
             }
         });
-        form.addComponent(clientLEField);
-        clientPPField = new PersonSelect(caption);
-        clientPPField.addValueChangeListener(event -> {
-            final Person person = clientPPField.getValue();
-            if (beneficiaryField.getPropertyDataSource() != null && person != null) {
-                fillBeneficiariesChoice(person.getName());
-                beneficiaryField.setValue(person.getName());
-            }
-        });
-        form.addComponent(clientPPField);
-        bindClientFieldState(isLegalEntity, form);
+        form.addComponent(clientField);
 
         beneficiaryField = new ComboBox("Выгодопреобретатель");
         beneficiaryField.setDescription("Введите имя выгодопреобретателя по данному договору страхования");
         beneficiaryField.setNewItemsAllowed(true);
         beneficiaryField.setRequired(true);
         beneficiaryField.setWidth(25, Unit.EM);
-        fillBeneficiariesChoice(getEntity().getClientName());
+        fillBeneficiariesChoice(getEntity().getClient().getName());
         form.addComponent(beneficiaryField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -316,28 +292,6 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         beneficiaryField.addItem("ООО \"Финпрайд\"");
         beneficiaryField.addItem("ООО КБ \"АйМаниБанк\"");
         beneficiaryField.addItem("ООО \"МОТОРАССРОЧКА\"");
-    }
-
-    /**
-     * <p>bindClientFieldState.</p>
-     *
-     * @param isLegalEntity a {@link java.lang.Boolean} object.
-     * @param form          a {@link com.vaadin.ui.FormLayout} object.
-     */
-    protected void bindClientFieldState(final Boolean isLegalEntity, final FormLayout form) {
-        if (isLegalEntity) {
-            clientLEField.setRequired(true);
-            clientLEField.setVisible(true);
-            clientPPField.setRequired(false);
-            clientPPField.setVisible(false);
-            clientPPField.setValue(null);
-        } else {
-            clientPPField.setRequired(true);
-            clientPPField.setVisible(true);
-            clientLEField.setRequired(false);
-            clientLEField.setVisible(false);
-            clientLEField.setValue(null);
-        }
     }
 
     private void updateTarifField() {
