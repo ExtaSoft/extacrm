@@ -176,7 +176,15 @@
   //    }
   //  }
 
-  // Подправим вид кнопок управления профилями таблицы
+  .v-formlayout-contentcell {
+
+    > .v-label-h2,
+    > .v-label-h3,
+    > .v-label-h4 {
+      padding-left: $v-layout-margin-right/2;
+    }
+  }
+
 }
 
 
