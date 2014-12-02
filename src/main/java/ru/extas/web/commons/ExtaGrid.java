@@ -553,10 +553,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             table.setColumnHeaderMode(CustomTable.ColumnHeaderMode.EXPLICIT);
             //table.removecolutable.getVisibleColumns()
             fullInitTable(table, dataDecl);
-            table.addItemClickListener(event -> {
-                if (event.isDoubleClick())
-                    defAction.fire(newHashSet(event.getItemId()));
-            });
+            if (defAction != null) {
+                table.addItemClickListener(event -> {
+                    if (event.isDoubleClick())
+                        defAction.fire(newHashSet(event.getItemId()));
+                });
+            }
             for (final MenuBar.MenuItem btn : needCurrentMenu)
                 btn.setVisible(true);
             // Обеспечиваем корректную работу кнопок зависящих от выбранной записи
