@@ -248,7 +248,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
                     final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберете юр. лицо или введите новое");
                     selectWindow.addCloseListener(e -> {
                         if (selectWindow.isSelectPressed()) {
-                            final LegalEntity selected = selectWindow.getSelected();
+                            final LegalEntity selected = selectWindow.getSelected().stream().findFirst().orElse(null);
                             selectField.setConvertedValue(selected);
                         }
                         popupView.setPopupVisible(true);
