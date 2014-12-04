@@ -22,11 +22,11 @@ import java.util.List;
 public interface ProdInsuranceRepository extends JpaRepository<ProdInsurance, String> {
 
 	/**
-	 * <p>findByActive.</p>
+	 * <p>findByActiveOrderByNameAsc.</p>
 	 *
 	 * @param active a boolean.
 	 * @return a {@link java.util.List} object.
 	 */
-	List<ProdInsurance> findByActive(boolean active);
+	List<ProdInsurance> findByActiveOrderByNameAsc(boolean active);
 
 }

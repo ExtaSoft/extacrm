@@ -22,7 +22,7 @@ import ru.extas.web.commons.FormUtils;
 public class SaleField extends CustomField<Sale> {
 
     private BeanItem<Sale> saleItem;
-    private ProductInSaleGrid productInSaleField;
+    private ProductInSaleField productInSaleField;
 
     /**
      * <p>Constructor for SaleField.</p>
@@ -70,8 +70,8 @@ public class SaleField extends CustomField<Sale> {
         return container;
     }
 
-    private ProductInSaleGrid createProdInSale(final Sale sale) {
-        final ProductInSaleGrid productInSale = new ProductInSaleGrid("Продукты в продаже", sale);
+    private ProductInSaleField createProdInSale(final Sale sale) {
+        final ProductInSaleField productInSale = new ProductInSaleField("Продукты в продаже", sale);
         productInSale.setReadOnly(true);
         productInSale.setPropertyDataSource(saleItem.getItemProperty("productInSales"));
         return productInSale;

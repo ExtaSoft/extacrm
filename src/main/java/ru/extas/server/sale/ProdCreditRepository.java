@@ -22,10 +22,10 @@ import java.util.List;
 public interface ProdCreditRepository extends JpaRepository<ProdCredit, String> {
 
 	/**
-	 * <p>findByActive.</p>
+	 * <p>findByActiveOrderByNameAsc.</p>
 	 *
 	 * @param active a boolean.
 	 * @return a {@link java.util.List} object.
 	 */
-	List<ProdCredit> findByActive(boolean active);
+	List<ProdCredit> findByActiveOrderByNameAsc(boolean active);
 }

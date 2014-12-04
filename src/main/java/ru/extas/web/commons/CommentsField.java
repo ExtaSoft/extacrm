@@ -106,19 +106,13 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
             final String userLogin = lookup(UserManagementService.class).getCurrentUserLogin();
             final boolean ownComment = userLogin.equals(item.getBean().getCreatedBy());
 
-            final Button editBtn = new Button("Редактировать", FontAwesome.PENCIL);
-            editBtn.setDescription("Редактировать комментарий...");
-            editBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-            editBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-            editBtn.setVisible(ownComment);
-            editBtn.addClickListener(e -> switchEditMode(true));
-
-            final Button delBtn = new Button("Удалить", FontAwesome.TRASH_O);
-            delBtn.setDescription("Удалить комментарий");
-            delBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-            delBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-            delBtn.setVisible(ownComment);
-            delBtn.addClickListener(e ->
+            MenuBar commentMenu = new MenuBar();
+            commentMenu.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+            commentMenu.addStyleName(ExtaTheme.MENUBAR_SMALL);
+            MenuBar.MenuItem editMenuItem = commentMenu.addItem("", FontAwesome.PENCIL, e -> switchEditMode(true));
+            editMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            editMenuItem.setDescription("Редактировать комментарий");
+            MenuBar.MenuItem delMenuItem = commentMenu.addItem("", FontAwesome.TRASH_O, e ->
                     ConfirmDialog.show(UI.getCurrent(), "Удаление комментария...", "Вы уверены что необходимо удалить комментарий?",
                             "Удалить", "Оставить", dialog -> {
                                 if (dialog.isConfirmed()) {
@@ -126,10 +120,12 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
                                     setValue(container.getItemIds());
                                 }
                             }));
+            delMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            delMenuItem.setDescription("Удалить комментарий");
 
             final HorizontalLayout header = new HorizontalLayout();
             header.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
-            header.addComponents(icon, crTime, user, editBtn, delBtn);
+            header.addComponents(icon, crTime, user, commentMenu);
             header.setSpacing(true);
             addComponent(header);
 
@@ -167,8 +163,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
             switchEditMode(isNew);
 
             final boolean isRedOnly = pSource.isReadOnly();
-            editBtn.setVisible(!isRedOnly);
-            delBtn.setVisible(!isRedOnly);
+            commentMenu.setVisible(!isRedOnly);
 
         }
 

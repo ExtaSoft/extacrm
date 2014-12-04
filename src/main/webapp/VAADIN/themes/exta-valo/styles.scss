@@ -166,25 +166,34 @@
     text-align: left;
   }
 
-  //  .v-formlayout-contentcell {
-  //    > .v-no-caption-complex-field {
-  //      position: absolute;
-  //      left: 0;
-  //      margin-top: -0.5em;
-  //      padding-bottom: 0.5em;
-  //      padding-left: 20px;
-  //    }
-  //  }
-
   .v-formlayout-contentcell {
 
     > .v-label-h2,
     > .v-label-h3,
     > .v-label-h4 {
-      padding-left: $v-layout-margin-right/2;
+      padding-left: $v-layout-margin-right;
     }
   }
 
+  // Стили документов кредитной программы
+  // Обязательный документ
+  span.ea-credit-doc-req {
+    font-weight: bold;
+  }
+  // Дополнительный документ
+  span.ea-credit-doc-add {
+    font-style: italic;
+  }
+
+  // Стиль вспомогательного компанента для подгонки комбобокса по размеру текста
+  .ea-widthfittin-label {
+    padding-left: ceil($v-unit-size/6) + ceil($v-textfield-border-radius/3);
+    padding-right: round($v-unit-size * 1.2);
+  }
+  .v-slot-ea-widthfittin-label {
+    height: 0;
+    visibility: collapse;
+  }
 }
 
 

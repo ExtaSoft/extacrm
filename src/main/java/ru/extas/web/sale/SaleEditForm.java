@@ -20,7 +20,6 @@ import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.contacts.ClientField;
 import ru.extas.web.contacts.employee.*;
-import ru.extas.web.contacts.person.PersonField;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
@@ -62,7 +61,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     @PropertyId("comment")
     private TextArea commentField;
     @PropertyId("productInSales")
-    private ProductInSaleGrid productInSaleField;
+    private ProductInSaleField productInSaleField;
     @PropertyId("responsible")
     private EmployeeField responsibleField;
     @PropertyId("responsibleAssist")
@@ -79,7 +78,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     public SaleEditForm(final Sale sale) {
         super(sale.isNew() ? "Ввод новой продажи в систему" :
                 MessageFormat.format("Редактирование продажи № {0}", sale.getNum()), sale);
-        setWinWidth(770, Unit.PIXELS);
+        setWinWidth(930, Unit.PIXELS);
     }
 
     /** {@inheritDoc} */
@@ -143,7 +142,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-        productInSaleField = new ProductInSaleGrid("Продукты в продаже", getEntity());
+        productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity());
         productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
 

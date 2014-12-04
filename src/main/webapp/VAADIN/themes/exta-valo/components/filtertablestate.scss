@@ -1,5 +1,11 @@
 @mixin exta-filtertablestate {
 
+  .w-filtertablestate-item {
+    &:hover {
+      color: $v-selection-color;
+    }
+  }
+
   .w-filtertablestate-button {
     display: inline-block;
     font-family: 'FontAwesome';
@@ -41,7 +47,7 @@
   @include filtertablestate-button(addbutton, '\f067');
   @include filtertablestate-button(resetbutton, '\f12d');
   @include filtertablestate-button(deletebutton, '\f014');
-  @include filtertablestate-button(defaultprofilebutton, '\f111');
+  @include filtertablestate-button(defaultprofilebutton, '\f192');
   @include filtertablestate-button(defaultprofilebutton-open, '\f08d');
   @include filtertablestate-button(resavebutton, '\f0c7');
   @include filtertablestate-button(savebutton, '\f0c7');

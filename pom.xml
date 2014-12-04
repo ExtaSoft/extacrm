@@ -18,9 +18,9 @@
         <joda-time.version>2.5</joda-time.version>
         <gson.version>2.3</gson.version>
 
-        <vaadin.version>7.3.5</vaadin.version>
+        <vaadin.version>7.3.6</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <vaadin.charts.version>2.0.0.alpha1</vaadin.charts.version>
+        <vaadin.charts.version>2.0.0.beta1</vaadin.charts.version>
         <vaadin.jpacontainer.version>3.1.1</vaadin.jpacontainer.version>
         <vaadin.filteringtable.version>0.9.11.v7</vaadin.filteringtable.version>
         <vaadin.filtertablestate.version>1.0.6</vaadin.filtertablestate.version>
@@ -301,11 +301,11 @@
             <artifactId>jpacontainer</artifactId>
             <version>${vaadin.jpacontainer.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.vaadin.addon</groupId>
-            <artifactId>vaadin-charts</artifactId>
-            <version>${vaadin.charts.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.vaadin.addon</groupId>-->
+            <!--<artifactId>vaadin-charts</artifactId>-->
+            <!--<version>${vaadin.charts.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>filteringtable</artifactId>
