@@ -1,6 +1,9 @@
 package ru.extas.web.sale;
 
 import com.google.common.base.Joiner;
+import com.vaadin.data.Validator;
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -9,20 +12,25 @@ import org.tepi.filtertable.FilterTable;
 import org.vaadin.addon.itemlayout.grid.ItemGrid;
 import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
 import ru.extas.model.sale.*;
+import ru.extas.server.financial.LoanCalculator;
+import ru.extas.server.financial.LoanInfo;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
-import ru.extas.web.product.ProductSelect;
+import ru.extas.web.product.ProdCreditField;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Встроенная форма редактирования продуктов в продаже
@@ -35,7 +43,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class ProductInSaleField extends CustomField<List> {
 
-    private final Sale sale;
+    private final SupplierSer<BigDecimal> priceSupplier;
     private FilterTable productTable;
     private ExtaBeanContainer<ProductInSale> container;
     private ItemGrid productsContainer;
@@ -45,8 +53,8 @@ public class ProductInSaleField extends CustomField<List> {
      *
      * @param sale a {@link ru.extas.model.sale.Sale} object.
      */
-    public ProductInSaleField(final Sale sale) {
-        this("Продукты в продаже", sale);
+    public ProductInSaleField(final SupplierSer<BigDecimal> priceSupplier) {
+        this("Продукты в продаже", priceSupplier);
     }
 
     /**
@@ -55,8 +63,8 @@ public class ProductInSaleField extends CustomField<List> {
      * @param caption a {@link java.lang.String} object.
      * @param sale    a {@link ru.extas.model.sale.Sale} object.
      */
-    public ProductInSaleField(final String caption, final Sale sale) {
-        this.sale = sale;
+    public ProductInSaleField(final String caption, final SupplierSer<BigDecimal> priceSupplier) {
+        this.priceSupplier = priceSupplier;
         setWidth(100, Unit.PERCENTAGE);
         setCaption(caption);
     }
@@ -193,25 +201,44 @@ public class ProductInSaleField extends CustomField<List> {
     private class CreditItemComponent extends CssLayout {
 
         private final Object itemId;
-        private ProductSelect productField;
-        private Label vendorField;
-        private Label programTypeField;
-        private Label sumField;
-        private Label downpaymentField;
-        private Label periodField;
-        private Label percentField;
-        private Label documentsField;
+
+        // Компоненты редактирования
+        @PropertyId("summ")
+        private EditField summField;
+        @PropertyId("downpayment")
+        private EditField downpaymentField;
+        @PropertyId("period")
+        private EditField periodField;
+        @PropertyId("product")
+        private ProdCreditField productField;
+
+        private Label vendorLabel;
+        private Label programTypeLabel;
+        private Label sumLabel;
+        private Label downpaymentLabel;
+        private Label periodLabel;
+        private Label percentLabel;
+        private Label documentsLabel;
+
+        private Label monthlyPayLabel;
+        private Label overpaymentLabel;
+        private Label yearlyRiseLabel;
+        private Label monthlyRiseLabel;
+
+        private final BeanItem<ProductInSale> productInSaleItem;
 
         public CreditItemComponent(AbstractItemLayout pSource, Object itemId) {
             this.itemId = itemId;
-            final Product product = container.getItem(itemId).getBean().getProduct();
+            productInSaleItem = container.getItem(itemId);
+            final Product product = productInSaleItem.getBean().getProduct();
+
             addStyleName(ExtaTheme.LAYOUT_CARD);
             setWidth(100, Unit.PERCENTAGE);
 
             HorizontalLayout panelCaption = new HorizontalLayout();
             panelCaption.addStyleName(ExtaTheme.PANEL_CAPTION);
             panelCaption.setWidth(100, Unit.PERCENTAGE);
-            Label label = new Label("Кредит: " + product.getName());
+            Label label = new Label("Кредит");
             panelCaption.addComponent(label);
             panelCaption.setExpandRatio(label, 1);
 
@@ -227,63 +254,141 @@ public class ProductInSaleField extends CustomField<List> {
             panelCaption.addComponent(productMenu);
 
             addComponent(panelCaption);
-            addComponent(createProductForm(product));
+            addComponent(createProductForm());
         }
 
-        private Component createProductForm(Product product) {
+        private Component createProductForm() {
 
-            ProdCredit credit = (ProdCredit) product;
             ExtaFormLayout form = new ExtaFormLayout();
 
             form.addComponent(new FormGroupHeader("Характеристики продукта"));
-            productField = new ProductSelect("Продукт", "Введите название продукта", null);
-            productField.addValueChangeListener(e -> refreshProductFields((ProdCredit) productField.getConvertedValue()));
+            productField = new ProdCreditField("Продукт", "Введите название продукта");
+            productField.addValueChangeListener(e -> refreshProductFields());
             form.addComponent(productField);
 
-            vendorField = new Label();
-            vendorField.setCaption("Банк");
-            programTypeField = new Label();
-            programTypeField.setCaption("Тип программы");
-            sumField = new Label();
-            sumField.setCaption("Сумма кредита");
-            downpaymentField = new Label();
-            downpaymentField.setCaption("Первоначальный взнос");
-            periodField = new Label();
-            periodField.setCaption("Период кредитования");
-            documentsField = new Label();
-            documentsField.setCaption("Пакет документов");
-            documentsField.setContentMode(ContentMode.HTML);
-            percentField = new Label();
-            percentField.setCaption("Процент");
+            vendorLabel = new Label();
+            vendorLabel.setCaption("Банк");
+            form.addComponent(vendorLabel);
 
-            productField.setValue(credit);
-            form.addComponents(vendorField, programTypeField, sumField, downpaymentField, periodField, percentField, documentsField);
+            programTypeLabel = new Label();
+            programTypeLabel.setCaption("Тип программы");
+            form.addComponent(programTypeLabel);
 
-            refreshProductFields(credit);
+            sumLabel = new Label();
+            sumLabel.setCaption("Сумма кредита");
+            form.addComponent(sumLabel);
+
+            downpaymentLabel = new Label();
+            downpaymentLabel.setCaption("Первоначальный взнос");
+            form.addComponent(downpaymentLabel);
+
+            periodLabel = new Label();
+            periodLabel.setCaption("Период кредитования");
+            form.addComponent(periodLabel);
+
+            documentsLabel = new Label();
+            documentsLabel.setCaption("Пакет документов");
+            documentsLabel.setContentMode(ContentMode.HTML);
+            form.addComponent(documentsLabel);
+
+            percentLabel = new Label();
+            percentLabel.setCaption("Процент");
+            form.addComponent(percentLabel);
+
+            form.addComponent(new FormGroupHeader("Параметры кредита"));
+            downpaymentField = new EditField("Первоначальный взнос", "Введите сумму первоначального взноса по кредиту");
+            downpaymentField.setRequired(true);
+            downpaymentField.addValidator(value -> {
+                ProdCredit prod = productField.getValue();
+                BigDecimal newDownpayment = (BigDecimal) value;
+                BigDecimal minDownpayment = prod.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
+                BigDecimal maxDownpayment = prod.getMaxDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
+                if (newDownpayment.compareTo(minDownpayment) < 0 ||
+                        newDownpayment.compareTo(maxDownpayment) > 0) {
+                    throw new Validator.InvalidValueException(
+                            MessageFormat.format(
+                                    "Недопустимая сумма первоначального взноса. " +
+                                            "Первоначальный взнос должен быть в пределах " +
+                                            "от {0, number, currency} до {1, number, currency}",
+                                    minDownpayment, maxDownpayment));
+                }
+            });
+            form.addComponent(downpaymentField);
+
+            periodField = new EditField("Срок кредитования", "Введите период кредитования (сток кредита)");
+            periodField.setRequired(true);
+            form.addComponent(periodField);
+
+            summField = new EditField("Сумма кредита", "Введите сумму кредита (Также может рассчитываться автоматически)");
+            summField.setRequired(true);
+            form.addComponent(summField);
+
+            form.addComponent(new FormGroupHeader("Стоимость кредита"));
+            // Размер ежемесячного платежа
+            monthlyPayLabel = new Label();
+            monthlyPayLabel.setCaption("Ежемесячный платеж");
+            form.addComponent(monthlyPayLabel);
+            // Переплата в рамках программы
+            overpaymentLabel = new Label();
+            overpaymentLabel.setCaption("Переплата");
+            form.addComponent(overpaymentLabel);
+            // Среднегодовое удорожание кредита
+            yearlyRiseLabel = new Label();
+            yearlyRiseLabel.setCaption("Среднегодовое удорожание");
+            form.addComponent(yearlyRiseLabel);
+            // Среднемесячное удорожание кредита
+            monthlyRiseLabel = new Label();
+            monthlyRiseLabel.setCaption("Среднемесячное удорожание");
+            form.addComponent(monthlyRiseLabel);
+
+            // Now create a binder
+            BeanFieldGroup<ProductInSale> fieldGroup = new BeanFieldGroup<>(ProductInSale.class);
+            fieldGroup.setItemDataSource(productInSaleItem);
+            fieldGroup.setBuffered(true);
+            fieldGroup.bindMemberFields(this);
+
+            refreshProductFields();
+            refreshCreditCosts();
+
             return form;
         }
 
-        public void refreshProductFields(final ProdCredit credit) {
+        private void refreshCreditCosts() {
+
+            LoanInfo loanInfo = lookup(LoanCalculator.class).calc(
+                    (ProdCredit) productField.getValue(),
+                    priceSupplier.get(),
+                    (BigDecimal) downpaymentField.getConvertedValue(),
+                    (int) periodField.getConvertedValue());
+            monthlyPayLabel.setValue(MessageFormat.format("{0, number, currency}", loanInfo.getMonthlyPay()));
+            overpaymentLabel.setValue(MessageFormat.format("{0, number, currency}", loanInfo.getOverpayment()));
+            yearlyRiseLabel.setValue(MessageFormat.format("{0, number, #,##.##%}", loanInfo.getYearlyRise()));
+            monthlyRiseLabel.setValue(MessageFormat.format("{0, number, #,##.##%}", loanInfo.getMonthlyRise()));
+        }
+
+        public void refreshProductFields() {
+            ProdCredit credit = productField.getValue();
 
             final BeanItem<ProdCredit> beanItem = new BeanItem<>(Optional.ofNullable(credit).orElse(new ProdCredit()));
             beanItem.addNestedProperty("vendor.name");
 
-            vendorField.setPropertyDataSource(beanItem.getItemProperty("vendor.name"));
-            programTypeField.setPropertyDataSource(beanItem.getItemProperty("programType"));
-            sumField.setValue(
+            vendorLabel.setPropertyDataSource(beanItem.getItemProperty("vendor.name"));
+            programTypeLabel.setPropertyDataSource(beanItem.getItemProperty("programType"));
+            sumLabel.setValue(
                     MessageFormat.format("от {0, number, currency} до {1, number, currency}",
                             credit.getMinSum(), credit.getMaxSum()));
-            downpaymentField.setValue(
-                    MessageFormat.format("от {0, number, percent} до {1, number, percent}",
+            downpaymentLabel.setValue(
+                    MessageFormat.format("от {0, number, #,##.##%} до {1, number, percent}",
                             credit.getMinDownpayment(), credit.getMaxDownpayment()));
-            periodField.setValue(
+            periodLabel.setValue(
                     MessageFormat.format("от {0} до {1} мес.",
                             credit.getMinPeriod(), credit.getMaxPeriod()));
-            percentField.setValue(getInterestRate(credit));
-            documentsField.setValue(getDocumentsList(credit));
+            percentLabel.setValue(getInterestRateText());
+            documentsLabel.setValue(getDocumentsList());
         }
 
-        private String getDocumentsList(ProdCredit credit) {
+        private String getDocumentsList() {
+            ProdCredit credit = productField.getValue();
             final ArrayList<ProdCreditDoc> prodCreditDocs = newArrayList(credit.getDocList());
             return Joiner.on(", ").join(
                     prodCreditDocs.stream()
@@ -295,15 +400,18 @@ public class ProductInSaleField extends CustomField<List> {
                             .toArray());
         }
 
-        private String getInterestRate(ProdCredit credit) {
-            final List<ProdCreditPercent> percents = newArrayList(credit.getPercents());
-            if (percents.size() < 2)
-                return percents.stream()
-                        .findFirst()
-                        .map(p -> MessageFormat.format("{0, number, percent}", p.getPercent()))
-                        .orElse("Нет");
-            else
-                return "Рассчитывается...";
+        private String getInterestRateText() {
+            BigDecimal interest = getInterestRate();
+            return interest == null ? "Рассчитывается..." : MessageFormat.format("{0, number, percent}", interest);
+        }
+
+        private BigDecimal getInterestRate() {
+            ProdCredit credit = productField.getValue();
+            BigDecimal downpaymentSum = (BigDecimal) downpaymentField.getConvertedValue();
+            int period = (int) periodField.getConvertedValue();
+
+            return lookup(LoanCalculator.class)
+                    .calcInterest(credit, downpaymentSum.divide(priceSupplier.get(), MathContext.DECIMAL128), period);
         }
     }
 }

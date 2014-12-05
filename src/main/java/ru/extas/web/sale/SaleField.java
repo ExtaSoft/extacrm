@@ -71,7 +71,7 @@ public class SaleField extends CustomField<Sale> {
     }
 
     private ProductInSaleField createProdInSale(final Sale sale) {
-        final ProductInSaleField productInSale = new ProductInSaleField("Продукты в продаже", sale);
+        final ProductInSaleField productInSale = new ProductInSaleField("Продукты в продаже", null);
         productInSale.setReadOnly(true);
         productInSale.setPropertyDataSource(saleItem.getItemProperty("productInSales"));
         return productInSale;

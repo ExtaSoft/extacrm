@@ -24,6 +24,7 @@ import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 
 import static ru.extas.model.common.ModelUtils.evictCache;
@@ -142,7 +143,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-        productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity());
+        productInSaleField = new ProductInSaleField("Продукты в продаже", () -> (BigDecimal)mototPriceField.getConvertedValue());
         productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
 
