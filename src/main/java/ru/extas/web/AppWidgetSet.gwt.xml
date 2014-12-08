@@ -39,15 +39,11 @@
 
     <inherits name="org.vaadin.tokenfield.TokenfieldWidgetset" />
 
-    
-
     <inherits name="com.wcs.wcslib.vaadin.widget.multifileupload.MultiFileUploadWidgetSet" />
-
-    
-
-    
 
     <inherits name="org.vaadin.addon.itemlayout.widgetset.ItemLayoutWidgetset" />
 
     <inherits name="com.ejt.vaadin.sizereporter.WidgetSet" />
+
+    
 </module>

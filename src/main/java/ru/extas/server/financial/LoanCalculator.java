@@ -16,11 +16,10 @@ public interface LoanCalculator {
     /**
      * Рассчитывает различные параметры кредита
      *
-     * @param product кредитный продукт
-     * @param price цена товара
+     * @param product     кредитный продукт
+     * @param price       цена товара
      * @param downPayment первоначальный платеж (руб.)
-     * @param period срок кредита (месяцы)
-     *
+     * @param period      срок кредита (месяцы)
      * @return Объект со всеми рассчитанными параметрами кредита
      */
     LoanInfo calc(ProdCredit product, BigDecimal price, BigDecimal downPayment, int period);
@@ -44,4 +43,14 @@ public interface LoanCalculator {
      * @return процентная ставка или null, если нет подходящей ставки
      */
     BigDecimal calcInterest(ProdCredit product, BigDecimal downPayment, int period);
+
+    /**
+     * Рассчитывает сумму первоначального взноса исходя из продукта, цены товара и суммы кредита
+     *
+     * @param credit    продукт
+     * @param price     цена товара
+     * @param creditSum сумма кредита
+     * @return сумма первоначальнго взноса
+     */
+    BigDecimal calcDownPayment(ProdCredit credit, BigDecimal price, BigDecimal creditSum);
 }

@@ -40,16 +40,16 @@ public class LoanCalculatorImpl implements LoanCalculator {
         //  annuitant = interestFactor * (1 + interestFactor)^period / ((1 + interestFactor)^period - 1)
         //      interestFactor - это коэффициент процентной ставки
         final BigDecimal interestFactor = interest.divide(BigDecimal.valueOf(12), MathContext.DECIMAL128);
-        final BigDecimal pow = BigDecimal.ONE.add(interestFactor).pow(period);
-        final BigDecimal annuitant = interestFactor.multiply(pow).divide(pow.subtract(BigDecimal.ONE), MathContext.DECIMAL128);
+        final BigDecimal pow = BigDecimal.ONE.add(interestFactor).pow(period, MathContext.DECIMAL128);
+        final BigDecimal annuitant = interestFactor.multiply(pow, MathContext.DECIMAL128).divide(pow.subtract(BigDecimal.ONE), MathContext.DECIMAL128);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Рассчет Ежемесячного платежа
-        final BigDecimal monthlyPay = annuitant.multiply(creditSum);
+        final BigDecimal monthlyPay = annuitant.multiply(creditSum, MathContext.DECIMAL128);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Рассчет полной стоимости кредита
-        final BigDecimal creditCost = monthlyPay.multiply(BigDecimal.valueOf(period));
+        final BigDecimal creditCost = monthlyPay.multiply(BigDecimal.valueOf(period), MathContext.DECIMAL128);
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Рассчет переплаты
@@ -72,10 +72,22 @@ public class LoanCalculatorImpl implements LoanCalculator {
     @Override
     public BigDecimal calcCreditSum(ProdCredit product, BigDecimal price, BigDecimal downPaymentSum) {
         // Стоимость товара с учетом субсидии
-        final BigDecimal subsidyPrice = Optional.ofNullable(product.getDealerSubsidy())
-                .map(p -> BigDecimal.ZERO.equals(p) ? price : p.multiply(price)).orElse(price);
+        final BigDecimal subsidyPrice = calcSubsidyPrice(product, price);
         // Возвращаем сумму кредита
         return price.subtract(downPaymentSum);
+    }
+
+    /**
+     * Стоимость товара с учетом субсидии
+     *
+     * @param product
+     * @param price
+     * @return
+     */
+    private BigDecimal calcSubsidyPrice(ProdCredit product, BigDecimal price) {
+        return Optional.ofNullable(product.getDealerSubsidy())
+                .map(p -> BigDecimal.ZERO.equals(p) ? price : p.multiply(price, MathContext.DECIMAL128))
+                .orElse(price);
     }
 
     @Override
@@ -96,5 +108,13 @@ public class LoanCalculatorImpl implements LoanCalculator {
                             a.getDownpayment().add(BigDecimal.valueOf(a.getPeriod()))
                                     .compareTo(b.getDownpayment().add(BigDecimal.valueOf(b.getPeriod()))))
                     .map(p -> p.getPercent()).orElse(null);
+    }
+
+    @Override
+    public BigDecimal calcDownPayment(ProdCredit credit, BigDecimal price, BigDecimal creditSum) {
+        // Стоимость товара с учетом субсидии
+        final BigDecimal subsidyPrice = calcSubsidyPrice(credit, price);
+        // Возвращаем сумму кредита
+        return price.subtract(creditSum);
     }
 }

@@ -37,4 +37,5 @@ public class ExtaTheme extends ValoTheme {
     public static final String HUGE_ICON = "exta-huge-icon";
     public static final String PANEL_SCROLL_DIVIDER = "scroll-divider";
     public static final String PANEL_CAPTION = "v-panel-caption";
+    public static final String SLIDER_TICS = "ticks";
 }

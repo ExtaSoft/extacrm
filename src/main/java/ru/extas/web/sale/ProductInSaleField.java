@@ -1,14 +1,16 @@
 package ru.extas.web.sale;
 
 import com.google.common.base.Joiner;
+import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
-import org.tepi.filtertable.FilterTable;
 import org.vaadin.addon.itemlayout.grid.ItemGrid;
 import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
 import ru.extas.model.sale.*;
@@ -20,15 +22,15 @@ import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.component.slider.SliderExtension;
 import ru.extas.web.product.ProdCreditField;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -44,14 +46,11 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class ProductInSaleField extends CustomField<List> {
 
     private final SupplierSer<BigDecimal> priceSupplier;
-    private FilterTable productTable;
     private ExtaBeanContainer<ProductInSale> container;
     private ItemGrid productsContainer;
 
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
-     *
-     * @param sale a {@link ru.extas.model.sale.Sale} object.
      */
     public ProductInSaleField(final SupplierSer<BigDecimal> priceSupplier) {
         this("Продукты в продаже", priceSupplier);
@@ -61,7 +60,6 @@ public class ProductInSaleField extends CustomField<List> {
      * <p>Constructor for ProductInSaleGrid.</p>
      *
      * @param caption a {@link java.lang.String} object.
-     * @param sale    a {@link ru.extas.model.sale.Sale} object.
      */
     public ProductInSaleField(final String caption, final SupplierSer<BigDecimal> priceSupplier) {
         this.priceSupplier = priceSupplier;
@@ -110,84 +108,44 @@ public class ProductInSaleField extends CustomField<List> {
             productsContainer.setReadOnly(isRedOnly);
         });
         return root;
-//        final GridLayout panel = new GridLayout(1, 2);
-//        panel.setSizeFull();
-//
-//        panel.setRowExpandRatio(1, 1);
-//        panel.setMargin(true);
-//
-//        panel.setSpacing(true);
-//        final MenuBar commandBar = new MenuBar();
-//        commandBar.setAutoOpen(true);
-//        commandBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
-//        commandBar.addStyleName(ExtaTheme.MENUBAR_SMALL);
-//
-//        final MenuBar.MenuItem addProdBtn = commandBar.addItem("Добавить", event -> {
-//
-//            final ProductInSale productInSale = new ProductInSale(sale);
-//            final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Новый продукт в продаже", productInSale);
-//            editWin.addCloseFormListener(event1 -> {
-//                if (editWin.isSaved()) {
-//                    container.addBean(productInSale);
-//                }
-//            });
-//            FormUtils.showModalWin(editWin);
-//        });
-//        addProdBtn.setDescription("Добавить продукт в продажу");
-//        addProdBtn.setIcon(Fontello.DOC_NEW);
-//
-//        final MenuBar.MenuItem edtProdBtn = commandBar.addItem("Изменить", event -> {
-//            if (productTable.getValue() != null) {
-//                final BeanItem<ProductInSale> prodItem = (BeanItem<ProductInSale>) productTable.getItem(productTable.getValue());
-//                final ProdInSaleEditForm editWin = new ProdInSaleEditForm("Редактирование продукта в продаже", prodItem.getBean());
-//                FormUtils.showModalWin(editWin);
-//            }
-//        });
-//        edtProdBtn.setDescription("Изменить выделенный в списке продукт");
-//        edtProdBtn.setIcon(Fontello.EDIT_3);
-//
-//        final MenuBar.MenuItem delProdBtn = commandBar.addItem("Удалить", event -> {
-//            if (productTable.getValue() != null) {
-//                productTable.removeItem(productTable.getValue());
-//            }
-//        });
-//        delProdBtn.setDescription("Удалить продукт из продажи");
-//        delProdBtn.setIcon(Fontello.TRASH);
-//
-//        panel.addComponent(commandBar);
-//
-//        addReadOnlyStatusChangeListener(e -> {
-//            final boolean isReadOnly = isReadOnly();
-//            commandBar.setVisible(!isReadOnly);
-//            panel.setSpacing(!isReadOnly);
-//        });
-//
-//        productTable = new FilterTable();
-//        productTable.setWidth(100, Unit.PERCENTAGE);
-//        productTable.setPageLength(3);
-//        productTable.addStyleName(ExtaTheme.TABLE_SMALL);
-//        productTable.addStyleName(ExtaTheme.TABLE_COMPACT);
-//        productTable.setRequired(true);
-//        productTable.setSelectable(true);
-//        final Property dataSource = getPropertyDataSource();
-//        final List<ProductInSale> productInSaleList = dataSource != null ? (List<ProductInSale>) dataSource.getValue() : sale.getProductInSales();
-//        container = new ExtaBeanContainer<>(ProductInSale.class);
-//        container.addNestedContainerProperty("product.name");
-//        if (productInSaleList != null) {
-//            for (final ProductInSale productInSale : productInSaleList) {
-//                container.addBean(productInSale);
-//            }
-//        }
-//        productTable.setContainerDataSource(container);
-//        productTable.addItemSetChangeListener(event -> setValue(newArrayList(productTable.getItemIds())));
-//        // Колонки таблицы
-//        productTable.setVisibleColumns("product.name", "summ", "period");
-//        productTable.setColumnHeader("product.name", "Продукт");
-//        productTable.setColumnHeader("summ", "Сумма");
-//        productTable.setColumnHeader("period", "Срок");
-//        panel.addComponent(productTable);
-//
-//        return panel;
+    }
+
+    @Override
+    public boolean isModified() {
+
+        if (super.isModified())
+            return true;
+
+        if (productsContainer != null) {
+            final Iterator<Component> iterator = productsContainer.iterator();
+            while (iterator.hasNext()) {
+                if (((ProductItemComponent) iterator.next()).isModified())
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void validate() throws Validator.InvalidValueException {
+        super.validate();
+        if (productsContainer != null) {
+            final Iterator<Component> iterator = productsContainer.iterator();
+            while (iterator.hasNext()) {
+                ((ProductItemComponent) iterator.next()).validate();
+            }
+        }
+    }
+
+    @Override
+    public void commit() throws SourceException, Validator.InvalidValueException {
+        if (productsContainer != null) {
+            final Iterator<Component> iterator = productsContainer.iterator();
+            while (iterator.hasNext()) {
+                ((ProductItemComponent) iterator.next()).commit();
+            }
+        }
+        super.commit();
     }
 
     /**
@@ -198,7 +156,7 @@ public class ProductInSaleField extends CustomField<List> {
         return List.class;
     }
 
-    private class CreditItemComponent extends CssLayout {
+    private class CreditItemComponent extends CssLayout implements ProductItemComponent {
 
         private final Object itemId;
 
@@ -208,7 +166,7 @@ public class ProductInSaleField extends CustomField<List> {
         @PropertyId("downpayment")
         private EditField downpaymentField;
         @PropertyId("period")
-        private EditField periodField;
+        private Slider periodField;
         @PropertyId("product")
         private ProdCreditField productField;
 
@@ -226,6 +184,7 @@ public class ProductInSaleField extends CustomField<List> {
         private Label monthlyRiseLabel;
 
         private final BeanItem<ProductInSale> productInSaleItem;
+        private BeanFieldGroup<ProductInSale> fieldGroup;
 
         public CreditItemComponent(AbstractItemLayout pSource, Object itemId) {
             this.itemId = itemId;
@@ -298,25 +257,40 @@ public class ProductInSaleField extends CustomField<List> {
             form.addComponent(new FormGroupHeader("Параметры кредита"));
             downpaymentField = new EditField("Первоначальный взнос", "Введите сумму первоначального взноса по кредиту");
             downpaymentField.setRequired(true);
-            downpaymentField.addValidator(value -> {
-                ProdCredit prod = productField.getValue();
-                BigDecimal newDownpayment = (BigDecimal) value;
-                BigDecimal minDownpayment = prod.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
-                BigDecimal maxDownpayment = prod.getMaxDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
-                if (newDownpayment.compareTo(minDownpayment) < 0 ||
-                        newDownpayment.compareTo(maxDownpayment) > 0) {
-                    throw new Validator.InvalidValueException(
-                            MessageFormat.format(
-                                    "Недопустимая сумма первоначального взноса. " +
-                                            "Первоначальный взнос должен быть в пределах " +
-                                            "от {0, number, currency} до {1, number, currency}",
-                                    minDownpayment, maxDownpayment));
-                }
-            });
             form.addComponent(downpaymentField);
 
-            periodField = new EditField("Срок кредитования", "Введите период кредитования (сток кредита)");
+            periodField = new Slider("Срок кредитования");
+            periodField.setDescription("Введите период кредитования (срок кредита)");
+            periodField.setImmediate(true);
             periodField.setRequired(true);
+            periodField.setWidth(100, Unit.PERCENTAGE);
+            periodField.addStyleName(ExtaTheme.SLIDER_TICS);
+            periodField.setConverter(new Converter<Double, Integer>() {
+                @Override
+                public Integer convertToModel(Double value, Class<? extends Integer> targetType, Locale locale) throws ConversionException {
+                    if(value != null)
+                        return value.intValue();
+                    return null;
+                }
+
+                @Override
+                public Double convertToPresentation(Integer value, Class<? extends Double> targetType, Locale locale) throws ConversionException {
+                    if (value != null)
+                        return value.doubleValue();
+                    return null;
+                }
+
+                @Override
+                public Class<Integer> getModelType() {
+                    return Integer.class;
+                }
+
+                @Override
+                public Class<Double> getPresentationType() {
+                    return Double.class;
+                }
+            });
+            new SliderExtension().extend(periodField);
             form.addComponent(periodField);
 
             summField = new EditField("Сумма кредита", "Введите сумму кредита (Также может рассчитываться автоматически)");
@@ -342,49 +316,209 @@ public class ProductInSaleField extends CustomField<List> {
             form.addComponent(monthlyRiseLabel);
 
             // Now create a binder
-            BeanFieldGroup<ProductInSale> fieldGroup = new BeanFieldGroup<>(ProductInSale.class);
+            fieldGroup = new BeanFieldGroup<>(ProductInSale.class);
             fieldGroup.setItemDataSource(productInSaleItem);
             fieldGroup.setBuffered(true);
             fieldGroup.bindMemberFields(this);
 
+            // Инициализация валидаторов
+            initValidators();
+            // Обновление рассчетных полей
             refreshProductFields();
             refreshCreditCosts();
+            // Инициализация взаимосвязей
+            initRelations();
 
             return form;
         }
 
-        private void refreshCreditCosts() {
-
-            LoanInfo loanInfo = lookup(LoanCalculator.class).calc(
-                    (ProdCredit) productField.getValue(),
-                    priceSupplier.get(),
-                    (BigDecimal) downpaymentField.getConvertedValue(),
-                    (int) periodField.getConvertedValue());
-            monthlyPayLabel.setValue(MessageFormat.format("{0, number, currency}", loanInfo.getMonthlyPay()));
-            overpaymentLabel.setValue(MessageFormat.format("{0, number, currency}", loanInfo.getOverpayment()));
-            yearlyRiseLabel.setValue(MessageFormat.format("{0, number, #,##.##%}", loanInfo.getYearlyRise()));
-            monthlyRiseLabel.setValue(MessageFormat.format("{0, number, #,##.##%}", loanInfo.getMonthlyRise()));
+        private void initRelations() {
+            productField.addValueChangeListener(this::productChangeListener);
+            downpaymentField.addValueChangeListener(this::downPaymentChangeListener);
+            periodField.addValueChangeListener(this::periodChangeListener);
+            summField.addValueChangeListener(this::creditSummChangeListener);
+            // Наполняем возможными сроками кредита
+            fillPeriodFieldItems();
         }
 
+        /**
+         * Меняется продукт.
+         */
+        private void productChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем характеристики продукта.
+            refreshProductFields();
+            // Обновляем параметы продукта
+            ProdCredit credit = productField.getValue();
+            if (credit != null) {
+                // Наполняем возможными сроками кредита
+                fillPeriodFieldItems();
+
+                // Задаем начальные значения параметров (если они не заданы)
+                if (isNullOrEmpty(downpaymentField.getValue()))
+                    downpaymentField.setConvertedValue(
+                            credit.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128));
+                if (periodField.getValue() == null)
+                    periodField.setValue(((double) credit.getMinPeriod()));
+            }
+            // Обновляем(Пересчитываем) стоимость кредита
+            refreshCreditCosts();
+        }
+
+        private void fillPeriodFieldItems() {
+            // Наполняем возможными сроками кредита
+            ProdCredit credit = productField.getValue();
+            if (credit != null) {
+                int start = credit.getMinPeriod();
+                int end = credit.getMaxPeriod();
+                int step = credit.getStep();
+                periodField.setMin(start);
+                periodField.setMax(end);
+            }
+        }
+
+        /**
+         * Меняется первоначальный взнос
+         */
+        private void downPaymentChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем характеристики
+            refreshProductFields();
+            // Обновляем сумму кредита
+            final ProdCredit credit = productField.getValue();
+            final BigDecimal price = priceSupplier.get();
+            final BigDecimal downPayment = (BigDecimal) downpaymentField.getConvertedValue();
+            final boolean canCalculate = credit != null && price != null && downPayment != null;
+            if (canCalculate) {
+                BigDecimal creditSum = lookup(LoanCalculator.class).calcCreditSum(credit, price, downPayment);
+                summField.setConvertedValue(creditSum);
+            }
+            // Обновляем стоимость
+            refreshCreditCosts();
+        }
+
+        /**
+         * Меняется срок кредитования
+         */
+        private void periodChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем характеристики
+            refreshProductFields();
+            // Обновляем стоимость
+            refreshCreditCosts();
+        }
+
+        /**
+         * Меняется сумма
+         */
+        private void creditSummChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем первоначальный взнос чтобы получить цену техники с учетом новой суммы
+            final ProdCredit credit = productField.getValue();
+            final BigDecimal price = priceSupplier.get();
+            final BigDecimal creditSum = (BigDecimal) summField.getConvertedValue();
+            if(credit != null && price != null && creditSum != null) {
+                BigDecimal downPayment = lookup(LoanCalculator.class).calcDownPayment(credit, price, creditSum);
+                downpaymentField.setConvertedValue(downPayment);
+            }
+            // Обновляем характеристики
+            refreshProductFields();
+            // Обновляем стоимость
+            refreshCreditCosts();
+        }
+
+
+        /**
+         * Добавляем проверки при вводе
+         */
+        private void initValidators() {
+            downpaymentField.addValidator(value -> {
+                ProdCredit prod = productField.getValue();
+                if (prod != null) {
+                    BigDecimal newDownpayment = (BigDecimal) value;
+                    BigDecimal minDownpayment = prod.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
+                    BigDecimal maxDownpayment = prod.getMaxDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
+                    if (newDownpayment.compareTo(minDownpayment) < 0 ||
+                            newDownpayment.compareTo(maxDownpayment) > 0) {
+                        throw new Validator.InvalidValueException(
+                                MessageFormat.format(
+                                        "Недопустимая сумма первоначального взноса. " +
+                                                "Первоначальный взнос должен быть в пределах " +
+                                                "от {0, number, currency} до {1, number, currency}",
+                                        minDownpayment, maxDownpayment));
+                    }
+                }
+            });
+            summField.addValidator(value -> {
+                ProdCredit prod = productField.getValue();
+                if (prod != null) {
+                    BigDecimal newSumm = (BigDecimal) value;
+                    BigDecimal minSumm = prod.getMinSum();
+                    BigDecimal maxSumm = prod.getMaxSum();
+                    if (newSumm.compareTo(minSumm) < 0 ||
+                            newSumm.compareTo(maxSumm) > 0) {
+                        throw new Validator.InvalidValueException(
+                                MessageFormat.format(
+                                        "Недопустимый размер кредита. " +
+                                                "По условиям кредитного продукта, размер кредита должен быть в пределах " +
+                                                "от {0, number, currency} до {1, number, currency}",
+                                        minSumm, maxSumm));
+                    }
+                }
+            });
+        }
+
+        /**
+         * Обновляем(Пересчитываем) стоимость кредита
+         */
+        private void refreshCreditCosts() {
+
+            final ProdCredit credit = productField.getValue();
+            final BigDecimal price = priceSupplier.get();
+            final BigDecimal downPayment = (BigDecimal) downpaymentField.getConvertedValue();
+            final Number period = periodField.getValue();
+            final boolean canCalculate = credit != null && price != null && downPayment != null && period != null;
+            if (canCalculate) {
+                LoanInfo loanInfo = lookup(LoanCalculator.class).calc(credit, price, downPayment, period.intValue());
+                monthlyPayLabel.setValue(MessageFormat.format("{0, number, currency}", loanInfo.getMonthlyPay()));
+                overpaymentLabel.setValue(MessageFormat.format("{0, number, currency}", loanInfo.getOverpayment()));
+                yearlyRiseLabel.setValue(MessageFormat.format("{0, number, #,##.##%}", loanInfo.getYearlyRise()));
+                monthlyRiseLabel.setValue(MessageFormat.format("{0, number, #,##.##%}", loanInfo.getMonthlyRise()));
+            }
+            // Гасим поля, если нечего в них показывать
+            monthlyPayLabel.setVisible(canCalculate);
+            overpaymentLabel.setVisible(canCalculate);
+            yearlyRiseLabel.setVisible(canCalculate);
+            monthlyRiseLabel.setVisible(canCalculate);
+        }
+
+        /**
+         * Обновляем характеристики продукта.
+         */
         public void refreshProductFields() {
             ProdCredit credit = productField.getValue();
+            final boolean canShowDetails = credit != null;
+            if (canShowDetails) {
+                final BeanItem<ProdCredit> beanItem = new BeanItem<>(Optional.ofNullable(credit).orElse(new ProdCredit()));
+                beanItem.addNestedProperty("vendor.name");
 
-            final BeanItem<ProdCredit> beanItem = new BeanItem<>(Optional.ofNullable(credit).orElse(new ProdCredit()));
-            beanItem.addNestedProperty("vendor.name");
-
-            vendorLabel.setPropertyDataSource(beanItem.getItemProperty("vendor.name"));
-            programTypeLabel.setPropertyDataSource(beanItem.getItemProperty("programType"));
-            sumLabel.setValue(
-                    MessageFormat.format("от {0, number, currency} до {1, number, currency}",
-                            credit.getMinSum(), credit.getMaxSum()));
-            downpaymentLabel.setValue(
-                    MessageFormat.format("от {0, number, #,##.##%} до {1, number, percent}",
-                            credit.getMinDownpayment(), credit.getMaxDownpayment()));
-            periodLabel.setValue(
-                    MessageFormat.format("от {0} до {1} мес.",
-                            credit.getMinPeriod(), credit.getMaxPeriod()));
-            percentLabel.setValue(getInterestRateText());
-            documentsLabel.setValue(getDocumentsList());
+                vendorLabel.setPropertyDataSource(beanItem.getItemProperty("vendor.name"));
+                programTypeLabel.setPropertyDataSource(beanItem.getItemProperty("programType"));
+                sumLabel.setValue(
+                        MessageFormat.format("от {0, number, currency} до {1, number, currency}",
+                                credit.getMinSum(), credit.getMaxSum()));
+                downpaymentLabel.setValue(
+                        MessageFormat.format("от {0, number, #,##.##%} до {1, number, percent}",
+                                credit.getMinDownpayment(), credit.getMaxDownpayment()));
+                periodLabel.setValue(
+                        MessageFormat.format("от {0} до {1} мес. с шагом {2} мес.",
+                                credit.getMinPeriod(), credit.getMaxPeriod(), credit.getStep()));
+                percentLabel.setValue(getInterestRateText());
+                documentsLabel.setValue(getDocumentsList());
+            }
+            vendorLabel.setVisible(canShowDetails);
+            programTypeLabel.setVisible(canShowDetails);
+            sumLabel.setVisible(canShowDetails);
+            downpaymentLabel.setVisible(canShowDetails);
+            periodLabel.setVisible(canShowDetails);
+            percentLabel.setVisible(canShowDetails);
+            documentsLabel.setVisible(canShowDetails);
         }
 
         private String getDocumentsList() {
@@ -407,11 +541,35 @@ public class ProductInSaleField extends CustomField<List> {
 
         private BigDecimal getInterestRate() {
             ProdCredit credit = productField.getValue();
+            Number period = periodField.getValue();
             BigDecimal downpaymentSum = (BigDecimal) downpaymentField.getConvertedValue();
-            int period = (int) periodField.getConvertedValue();
+            final boolean canCalculate = credit != null && period != null && downpaymentSum != null;
+            if (canCalculate)
+                return lookup(LoanCalculator.class)
+                        .calcInterest(credit, downpaymentSum.divide(priceSupplier.get(), MathContext.DECIMAL128), period.intValue());
+            else
+                return null;
+        }
 
-            return lookup(LoanCalculator.class)
-                    .calcInterest(credit, downpaymentSum.divide(priceSupplier.get(), MathContext.DECIMAL128), period);
+        @Override
+        public void commit() throws SourceException, Validator.InvalidValueException {
+            try {
+                fieldGroup.commit();
+            } catch (FieldGroup.CommitException e) {
+                throw new Validator.InvalidValueException(e.getMessage());
+            }
+        }
+
+        @Override
+        public boolean isModified() {
+            return fieldGroup.isModified();
+        }
+
+        @Override
+        public void validate() {
+            for (final Field<?> field : fieldGroup.getFields())
+                field.validate();
+
         }
     }
 }

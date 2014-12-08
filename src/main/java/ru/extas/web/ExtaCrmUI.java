@@ -1,5 +1,6 @@
 package ru.extas.web;
 
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.util.BeanItem;
@@ -58,7 +59,12 @@ import static ru.extas.web.UiUtils.initUi;
 @Scope("session")
 @Theme(ExtaTheme.NAME)
 @Title("Extreme Assistance CRM")
-//@Push(PushMode.AUTOMATIC)
+@StyleSheet({
+        "vaadin://addons/jslider/css/jslider.blue.css",
+        "vaadin://addons/jslider/css/jslider.plastic.css",
+        "vaadin://addons/jslider/css/jslider.round.plastic.css",
+        "vaadin://addons/jslider/css/jslider.css",
+        "vaadin://addons/jslider/css/jslider.round.css"})
 public class ExtaCrmUI extends UI {
 
     private final static Logger logger = LoggerFactory.getLogger(ExtaCrmUI.class);
