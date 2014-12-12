@@ -5,15 +5,12 @@ src/main/webapp/VAADIN/gwt-unitCache/
 /.idea/workspace.xml
 hotspot.log
 target/
-classes/
 /var
 pom.xml.versionsBackup
 test-output/
 *~
 /pom.xml.save
 /1.txt
-/target
 /build.log
 .bpmn
 *.jasper
-/extacrm.iml
