@@ -7,7 +7,6 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
@@ -22,15 +21,18 @@ import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
-import ru.extas.web.commons.component.slider.SliderExtension;
+import ru.extas.web.commons.component.PercentOfField;
+import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.product.ProdCreditField;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -164,11 +166,13 @@ public class ProductInSaleField extends CustomField<List> {
         @PropertyId("summ")
         private EditField summField;
         @PropertyId("downpayment")
-        private EditField downpaymentField;
+        private PercentOfField downpaymentField;
         @PropertyId("period")
-        private Slider periodField;
+        private ComboBox periodField;
         @PropertyId("product")
         private ProdCreditField productField;
+        @PropertyId("responsible")
+        private EmployeeField responsibleField;
 
         private Label vendorLabel;
         private Label programTypeLabel;
@@ -222,6 +226,7 @@ public class ProductInSaleField extends CustomField<List> {
 
             form.addComponent(new FormGroupHeader("Характеристики продукта"));
             productField = new ProdCreditField("Продукт", "Введите название продукта");
+            productField.setRequired(true);
             productField.addValueChangeListener(e -> refreshProductFields());
             form.addComponent(productField);
 
@@ -255,47 +260,34 @@ public class ProductInSaleField extends CustomField<List> {
             form.addComponent(percentLabel);
 
             form.addComponent(new FormGroupHeader("Параметры кредита"));
-            downpaymentField = new EditField("Первоначальный взнос", "Введите сумму первоначального взноса по кредиту");
+            downpaymentField = new PercentOfField("Первоначальный взнос", "Введите сумму первоначального взноса по кредиту");
             downpaymentField.setRequired(true);
             form.addComponent(downpaymentField);
 
-            periodField = new Slider("Срок кредитования");
+            periodField = new ComboBox("Срок кредитования");
             periodField.setDescription("Введите период кредитования (срок кредита)");
             periodField.setImmediate(true);
+            periodField.setNullSelectionAllowed(false);
             periodField.setRequired(true);
-            periodField.setWidth(100, Unit.PERCENTAGE);
-            periodField.addStyleName(ExtaTheme.SLIDER_TICS);
-            periodField.setConverter(new Converter<Double, Integer>() {
-                @Override
-                public Integer convertToModel(Double value, Class<? extends Integer> targetType, Locale locale) throws ConversionException {
-                    if(value != null)
-                        return value.intValue();
-                    return null;
-                }
-
-                @Override
-                public Double convertToPresentation(Integer value, Class<? extends Double> targetType, Locale locale) throws ConversionException {
-                    if (value != null)
-                        return value.doubleValue();
-                    return null;
-                }
-
-                @Override
-                public Class<Integer> getModelType() {
-                    return Integer.class;
-                }
-
-                @Override
-                public Class<Double> getPresentationType() {
-                    return Double.class;
-                }
-            });
-            new SliderExtension().extend(periodField);
+            periodField.setWidth(6, Unit.EM);
+            // Наполняем возможными сроками кредита
+            fillPeriodFieldItems();
             form.addComponent(periodField);
 
             summField = new EditField("Сумма кредита", "Введите сумму кредита (Также может рассчитываться автоматически)");
             summField.setRequired(true);
             form.addComponent(summField);
+
+            // Ответственный со стороны банка
+            responsibleField = new EmployeeField("Менеджер банка", "Укажите ответственного со стороны банка");
+            responsibleField.setCompanySupplier(() -> {
+                ProdCredit product = productField.getValue();
+                if (product != null) {
+                    return product.getVendor();
+                } else
+                    return null;
+            });
+            form.addComponent(responsibleField);
 
             form.addComponent(new FormGroupHeader("Стоимость кредита"));
             // Размер ежемесячного платежа
@@ -354,11 +346,12 @@ public class ProductInSaleField extends CustomField<List> {
                 fillPeriodFieldItems();
 
                 // Задаем начальные значения параметров (если они не заданы)
-                if (isNullOrEmpty(downpaymentField.getValue()))
-                    downpaymentField.setConvertedValue(
+                if (downpaymentField.getValue() == null)
+                    downpaymentField.setValue(
                             credit.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128));
                 if (periodField.getValue() == null)
-                    periodField.setValue(((double) credit.getMinPeriod()));
+                    periodField.setValue((credit.getMinPeriod()));
+                responsibleField.changeCompany();
             }
             // Обновляем(Пересчитываем) стоимость кредита
             refreshCreditCosts();
@@ -371,8 +364,13 @@ public class ProductInSaleField extends CustomField<List> {
                 int start = credit.getMinPeriod();
                 int end = credit.getMaxPeriod();
                 int step = credit.getStep();
-                periodField.setMin(start);
-                periodField.setMax(end);
+                Object curValue = periodField.getValue();
+                periodField.removeAllItems();
+                for (int i = start; i <= end; i += step) {
+                    periodField.addItem(i);
+                    periodField.setItemCaption(i, MessageFormat.format("{0} мес.", i));
+                }
+                periodField.setValue(curValue);
             }
         }
 
@@ -385,7 +383,7 @@ public class ProductInSaleField extends CustomField<List> {
             // Обновляем сумму кредита
             final ProdCredit credit = productField.getValue();
             final BigDecimal price = priceSupplier.get();
-            final BigDecimal downPayment = (BigDecimal) downpaymentField.getConvertedValue();
+            final BigDecimal downPayment = (BigDecimal) downpaymentField.getValue();
             final boolean canCalculate = credit != null && price != null && downPayment != null;
             if (canCalculate) {
                 BigDecimal creditSum = lookup(LoanCalculator.class).calcCreditSum(credit, price, downPayment);
@@ -413,7 +411,7 @@ public class ProductInSaleField extends CustomField<List> {
             final ProdCredit credit = productField.getValue();
             final BigDecimal price = priceSupplier.get();
             final BigDecimal creditSum = (BigDecimal) summField.getConvertedValue();
-            if(credit != null && price != null && creditSum != null) {
+            if (credit != null && price != null && creditSum != null) {
                 BigDecimal downPayment = lookup(LoanCalculator.class).calcDownPayment(credit, price, creditSum);
                 downpaymentField.setConvertedValue(downPayment);
             }
@@ -471,9 +469,10 @@ public class ProductInSaleField extends CustomField<List> {
 
             final ProdCredit credit = productField.getValue();
             final BigDecimal price = priceSupplier.get();
-            final BigDecimal downPayment = (BigDecimal) downpaymentField.getConvertedValue();
-            final Number period = periodField.getValue();
+            final BigDecimal downPayment = (BigDecimal) downpaymentField.getValue();
+            final Number period = (Number) periodField.getValue();
             final boolean canCalculate = credit != null && price != null && downPayment != null && period != null;
+            final BigDecimal percent = getInterestRate(credit, period, downPayment);
             if (canCalculate) {
                 LoanInfo loanInfo = lookup(LoanCalculator.class).calc(credit, price, downPayment, period.intValue());
                 monthlyPayLabel.setValue(MessageFormat.format("{0, number, currency}", loanInfo.getMonthlyPay()));
@@ -541,8 +540,12 @@ public class ProductInSaleField extends CustomField<List> {
 
         private BigDecimal getInterestRate() {
             ProdCredit credit = productField.getValue();
-            Number period = periodField.getValue();
-            BigDecimal downpaymentSum = (BigDecimal) downpaymentField.getConvertedValue();
+            Number period = (Number) periodField.getValue();
+            BigDecimal downpaymentSum = (BigDecimal) downpaymentField.getValue();
+            return getInterestRate(credit, period, downpaymentSum);
+        }
+
+        private BigDecimal getInterestRate(ProdCredit credit, Number period, BigDecimal downpaymentSum) {
             final boolean canCalculate = credit != null && period != null && downpaymentSum != null;
             if (canCalculate)
                 return lookup(LoanCalculator.class)

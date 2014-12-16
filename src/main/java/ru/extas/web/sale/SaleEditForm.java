@@ -19,7 +19,9 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.contacts.ClientField;
-import ru.extas.web.contacts.employee.*;
+import ru.extas.web.contacts.employee.DealerEmployeeField;
+import ru.extas.web.contacts.employee.EAEmployeeField;
+import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
@@ -69,8 +71,6 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private EmployeeField responsibleAssistField;
     @PropertyId("dealerManager")
     private EmployeeField dealerManagerField;
-    @PropertyId("bankManager")
-    private EmployeeField bankManagerField;
     @PropertyId("comments")
     private CommentsField<SaleComment> commentsField;
     @PropertyId("files")
@@ -146,9 +146,6 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         productInSaleField = new ProductInSaleField("Продукты в продаже", () -> (BigDecimal)mototPriceField.getConvertedValue());
         productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
-
-        bankManagerField = new BankEmployeeField("Менеджер банка", "Выберите или введите ответственного менеджера со стороны банка");
-        form.addComponent(bankManagerField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Коментарии"));

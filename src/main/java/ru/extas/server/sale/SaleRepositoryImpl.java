@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
@@ -152,9 +153,13 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
             users.add(new ImmutablePair<>(sale.getResponsibleAssist(), AccessRole.EDITOR));
         if (sale.getDealerManager() != null)
             users.add(new ImmutablePair<>(sale.getDealerManager(), AccessRole.READER));
-        if (sale.getBankManager() != null)
-            users.add(new ImmutablePair<>(sale.getBankManager(), AccessRole.READER));
-
+        // Ответственные по продуктам
+        for (ProductInSale productInSale : sale.getProductInSales()) {
+            Employee prodResponsible = productInSale.getResponsible();
+            if (prodResponsible != null) {
+                users.add(new ImmutablePair<>(prodResponsible, AccessRole.READER));
+            }
+        }
         return users;
     }
 
