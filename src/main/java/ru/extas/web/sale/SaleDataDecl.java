@@ -43,7 +43,6 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("responsible.name", "Ответственный", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         addMapping("responsibleAssist.name", "Заместитель", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         addMapping("dealerManager.name", "Представитель дилера", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
-        addMapping("bankManager.name", "Представитель банка", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         super.addDefaultMappings();
 	}
 }

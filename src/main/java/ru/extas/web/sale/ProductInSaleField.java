@@ -326,6 +326,7 @@ public class ProductInSaleField extends CustomField<List> {
 
         private void initRelations() {
             productField.addValueChangeListener(this::productChangeListener);
+            downpaymentField.setBase(priceSupplier.get());
             downpaymentField.addValueChangeListener(this::downPaymentChangeListener);
             periodField.addValueChangeListener(this::periodChangeListener);
             summField.addValueChangeListener(this::creditSummChangeListener);
@@ -383,7 +384,7 @@ public class ProductInSaleField extends CustomField<List> {
             // Обновляем сумму кредита
             final ProdCredit credit = productField.getValue();
             final BigDecimal price = priceSupplier.get();
-            final BigDecimal downPayment = (BigDecimal) downpaymentField.getValue();
+            final BigDecimal downPayment = downpaymentField.getValue();
             final boolean canCalculate = credit != null && price != null && downPayment != null;
             if (canCalculate) {
                 BigDecimal creditSum = lookup(LoanCalculator.class).calcCreditSum(credit, price, downPayment);
@@ -413,7 +414,7 @@ public class ProductInSaleField extends CustomField<List> {
             final BigDecimal creditSum = (BigDecimal) summField.getConvertedValue();
             if (credit != null && price != null && creditSum != null) {
                 BigDecimal downPayment = lookup(LoanCalculator.class).calcDownPayment(credit, price, creditSum);
-                downpaymentField.setConvertedValue(downPayment);
+                downpaymentField.setValue(downPayment);
             }
             // Обновляем характеристики
             refreshProductFields();
@@ -469,7 +470,7 @@ public class ProductInSaleField extends CustomField<List> {
 
             final ProdCredit credit = productField.getValue();
             final BigDecimal price = priceSupplier.get();
-            final BigDecimal downPayment = (BigDecimal) downpaymentField.getValue();
+            final BigDecimal downPayment = downpaymentField.getValue();
             final Number period = (Number) periodField.getValue();
             final boolean canCalculate = credit != null && price != null && downPayment != null && period != null;
             final BigDecimal percent = getInterestRate(credit, period, downPayment);
@@ -541,7 +542,7 @@ public class ProductInSaleField extends CustomField<List> {
         private BigDecimal getInterestRate() {
             ProdCredit credit = productField.getValue();
             Number period = (Number) periodField.getValue();
-            BigDecimal downpaymentSum = (BigDecimal) downpaymentField.getValue();
+            BigDecimal downpaymentSum = downpaymentField.getValue();
             return getInterestRate(credit, period, downpaymentSum);
         }
 
