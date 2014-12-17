@@ -41,11 +41,13 @@
 
     <inherits name="com.wcs.wcslib.vaadin.widget.multifileupload.MultiFileUploadWidgetSet" />
 
-    <inherits name="com.vaadin.addon.charts.Widgetset" />
+    
 
-    <inherits name="com.vaadin.addon.timeline.gwt.TimelineWidgetSet" />
+    
 
     <inherits name="org.vaadin.addon.itemlayout.widgetset.ItemLayoutWidgetset" />
 
     <inherits name="com.ejt.vaadin.sizereporter.WidgetSet" />
+
+    <inherits name="com.wcs.wcslib.vaadin.widget.filtertablestate.FilterTableStateWidgetSet" />
 </module>
