@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="LocalMySql" uuid="5c42dca0-ad6e-40b7-a5b9-c8db19f4f902">
+      <user-name>root</user-name>
+      <user-password>dfd8dfc5dfc5dfde</user-password>
+      <schema-pattern>extacrm.* information_schema.*</schema-pattern>
+      <default-schemas>extacrm.*</default-schemas>
+    </data-source>
+  </component>
+</project>
