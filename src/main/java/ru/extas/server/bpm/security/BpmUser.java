@@ -79,4 +79,9 @@ public class BpmUser implements User {
     @Override
     public void setPassword(final String string) {
     }
+
+    @Override
+    public boolean isPictureSet() {
+        return false;
+    }
 }

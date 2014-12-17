@@ -3,8 +3,6 @@
  */
 package ru.extas.web.dashboard;
 
-import com.vaadin.addon.charts.Chart;
-import com.vaadin.addon.charts.model.*;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,50 +69,51 @@ public class HomeView extends ExtaAbstractView {
     }
 
     protected Component getChart() {
-        final Chart chart = new Chart();
-        chart.setSizeFull();
-
-        final Configuration configuration = new Configuration();
-        configuration.getChart().setType(ChartType.LINE);
-//        configuration.getChart().setMarginRight(130);
-//        configuration.getChart().setMarginBottom(25);
-
-        configuration.getTitle().setText("Подажи страховок и кредитов");
-//        configuration.getSubTitle().setText("Source: WorldClimate.com");
-
-        configuration.getxAxis().setCategories("Янв", "Фев.", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Нов", "Дек");
-
-        final Axis yAxis = configuration.getyAxis();
-//        yAxis.setMin(-5d);
-        yAxis.setTitle(new Title("Количество (шт.)"));
-        yAxis.getTitle().setVerticalAlign(VerticalAlign.HIGH);
-
-        configuration
-                .getTooltip()
-                .setFormatter("''+ this.series.name +' ' + this.x +': '+ this.y +'шт.'");
-        final PlotOptionsLine plotOptions = new PlotOptionsLine();
-        plotOptions.setDataLabels(new Labels(true));
-        configuration.setPlotOptions(plotOptions);
-
-        final Legend legend = configuration.getLegend();
-        legend.setLayout(LayoutDirection.VERTICAL);
-        legend.setHorizontalAlign(HorizontalAlign.RIGHT);
-        legend.setVerticalAlign(VerticalAlign.TOP);
-//        legend.setX(-10d);
-//        legend.setY(100d);
-//        legend.setBorderWidth(0);
-
-        ListSeries ls = new ListSeries();
-        ls.setName("Кредиты");
-        ls.setData(70, 69, 95, 145, 182, 215, 252, 265, 233, 183, 139, 96);
-        configuration.addSeries(ls);
-        ls = new ListSeries();
-        ls.setName("Страховки");
-        ls.setData(39, 42, 57, 85, 119, 152, 170, 166, 142, 103, 66, 48);
-        configuration.addSeries(ls);
-
-        chart.drawChart(configuration);
-        return chart;
+        return new Label("График продаж");
+//        final Chart chart = new Chart();
+//        chart.setSizeFull();
+//
+//        final Configuration configuration = new Configuration();
+//        configuration.getChart().setType(ChartType.LINE);
+////        configuration.getChart().setMarginRight(130);
+////        configuration.getChart().setMarginBottom(25);
+//
+//        configuration.getTitle().setText("Подажи страховок и кредитов");
+////        configuration.getSubTitle().setText("Source: WorldClimate.com");
+//
+//        configuration.getxAxis().setCategories("Янв", "Фев.", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Нов", "Дек");
+//
+//        final Axis yAxis = configuration.getyAxis();
+////        yAxis.setMin(-5d);
+//        yAxis.setTitle(new Title("Количество (шт.)"));
+//        yAxis.getTitle().setVerticalAlign(VerticalAlign.HIGH);
+//
+//        configuration
+//                .getTooltip()
+//                .setFormatter("''+ this.series.name +' ' + this.x +': '+ this.y +'шт.'");
+//        final PlotOptionsLine plotOptions = new PlotOptionsLine();
+//        plotOptions.setDataLabels(new Labels(true));
+//        configuration.setPlotOptions(plotOptions);
+//
+//        final Legend legend = configuration.getLegend();
+//        legend.setLayout(LayoutDirection.VERTICAL);
+//        legend.setHorizontalAlign(HorizontalAlign.RIGHT);
+//        legend.setVerticalAlign(VerticalAlign.TOP);
+////        legend.setX(-10d);
+////        legend.setY(100d);
+////        legend.setBorderWidth(0);
+//
+//        ListSeries ls = new ListSeries();
+//        ls.setName("Кредиты");
+//        ls.setData(70, 69, 95, 145, 182, 215, 252, 265, 233, 183, 139, 96);
+//        configuration.addSeries(ls);
+//        ls = new ListSeries();
+//        ls.setName("Страховки");
+//        ls.setData(39, 42, 57, 85, 119, 152, 170, 166, 142, 103, 66, 48);
+//        configuration.addSeries(ls);
+//
+//        chart.drawChart(configuration);
+//        return chart;
     }
 
     /**

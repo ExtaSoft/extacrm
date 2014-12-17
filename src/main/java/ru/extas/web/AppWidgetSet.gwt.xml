@@ -7,6 +7,9 @@
         goal "vaadin:update-widgetset".
     -->
 
+
+    <inherits name="com.wcs.wcslib.vaadin.widget.filtertablestate.FilterTableStateWidgetSet"/>
+
     <!-- Inherit DefaultWidgetSet -->
     <inherits name="com.vaadin.DefaultWidgetSet"/>
 
@@ -37,13 +40,7 @@
 
     <inherits name="org.vaadin.tokenfield.TokenfieldWidgetset" />
 
-    
-
     <inherits name="com.wcs.wcslib.vaadin.widget.multifileupload.MultiFileUploadWidgetSet" />
-
-    <inherits name="com.vaadin.addon.charts.Widgetset" />
-
-    <inherits name="com.vaadin.addon.timeline.gwt.TimelineWidgetSet" />
 
     <inherits name="org.vaadin.addon.itemlayout.widgetset.ItemLayoutWidgetset" />
 

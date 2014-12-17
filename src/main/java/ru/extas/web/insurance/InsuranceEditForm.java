@@ -312,7 +312,7 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         if (clientName != null)
             beneficiaryField.addItem(clientName);
         // Добавляем заданных выгодопреобретателей
-        beneficiaryField.addItem("ВТБ24 (ЗАО)");
+        beneficiaryField.addItem("ВТБ24 (ПАО)");
         beneficiaryField.addItem("ООО \"Финпрайд\"");
         beneficiaryField.addItem("ООО КБ \"АйМаниБанк\"");
         beneficiaryField.addItem("ООО \"МОТОРАССРОЧКА\"");
