@@ -37,10 +37,13 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
 
     static {
         tarifTable = HashBasedTable.create();
-        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda","Kawasaki", "Polaris", "Русская Механика", "SYM", "Тингер"),
+        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda", "Kawasaki", "Polaris", "Русская Механика", "SYM", "Тингер"),
                 BigDecimal.valueOf(.053), BigDecimal.valueOf(.037));
-        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda","Kawasaki", "Polaris", "Русская Механика", "SYM", "Тингер"),
+        fillBrandTarif(newHashSet("Baltmotors", "Suzuki", "Honda", "Kawasaki", "Polaris", "Русская Механика", "SYM", "Тингер"),
                 BigDecimal.valueOf(.057), BigDecimal.valueOf(.039), true);
+
+        fillBrandTarif(newHashSet("HSUN (HISUN)"), BigDecimal.valueOf(.054), BigDecimal.valueOf(.038));
+        fillBrandTarif(newHashSet("HSUN (HISUN)"), BigDecimal.valueOf(.058), BigDecimal.valueOf(.04), true);
 
         fillBrandTarif(newHashSet("STELS"), BigDecimal.valueOf(.068), BigDecimal.valueOf(.048));
         fillBrandTarif(newHashSet("STELS"), BigDecimal.valueOf(.073), BigDecimal.valueOf(.052), true);
@@ -68,7 +71,9 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
         return periodOfCover.toString() + (isUsed ? "_used" : "");
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BigDecimal calcPropInsPremium(final Insurance ins) {
         checkArgument(ins != null, "Can't calculate premium. No insurance paramenets.");
@@ -84,7 +89,9 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
         return ins.getRiskSum().multiply(tarif);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BigDecimal findTarif(final String motorBrand, final Insurance.PeriodOfCover coverTime, final boolean isUsed) {
         checkArgument(motorBrand != null, "Can't calculate premium. No insurance motor brand.");
