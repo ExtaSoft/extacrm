@@ -56,7 +56,9 @@
       <excludeFolder url="file://$MODULE_DIR$/target/apache-tomcat-maven-plugin" />
       <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.2.0" />
       <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.2.1" />
+      <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.2.2" />
       <excludeFolder url="file://$MODULE_DIR$/target/extra" />
+      <excludeFolder url="file://$MODULE_DIR$/target/m2e-wtp" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
       <excludeFolder url="file://$MODULE_DIR$/target/tomcat" />
