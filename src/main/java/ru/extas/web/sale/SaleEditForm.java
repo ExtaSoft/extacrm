@@ -82,7 +82,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         setWinWidth(930, Unit.PIXELS);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
@@ -143,7 +145,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-        productInSaleField = new ProductInSaleField("Продукты в продаже", () -> (BigDecimal)mototPriceField.getConvertedValue());
+        productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity(),
+                () -> (BigDecimal) mototPriceField.getConvertedValue(),
+                () -> (String) motorBrandField.getValue());
         productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
 
@@ -157,19 +161,23 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         docFilesEditor = new FilesManageField(SaleFileContainer.class);
         form.addComponent(docFilesEditor);
 
+        mototPriceField.addValueChangeListener(e -> productInSaleField.markAsDirtyRecursive());
+
         return form;
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initEntity(final Sale sale) {
         if (sale.isNew()) {
             sale.setStatus(Sale.Status.NEW);
             final UserManagementService userService = lookup(UserManagementService.class);
             final Employee user = userService.getCurrentUserEmployee();
-            if(user != null) {
-                if(user.getWorkPlace() != null)
+            if (user != null) {
+                if (user.getWorkPlace() != null)
                     sale.setDealer(user.getWorkPlace());
             }
             final Employee userContact = lookup(UserManagementService.class).getCurrentUserEmployee();
@@ -178,7 +186,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Sale saveEntity(Sale sale) {
         final SaleRepository leadService = lookup(SaleRepository.class);

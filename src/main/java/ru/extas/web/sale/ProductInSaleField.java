@@ -7,14 +7,19 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.vaadin.addon.itemlayout.grid.ItemGrid;
-import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
+import ru.extas.model.insurance.Insurance;
 import ru.extas.model.sale.*;
 import ru.extas.server.financial.LoanCalculator;
 import ru.extas.server.financial.LoanInfo;
+import ru.extas.server.insurance.InsuranceCalculator;
+import ru.extas.server.sale.ProdCreditRepository;
+import ru.extas.server.sale.ProdInstallmentsRepository;
+import ru.extas.server.sale.ProdInsuranceRepository;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
@@ -22,8 +27,11 @@ import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.PercentOfField;
+import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.product.ProdCreditField;
+import ru.extas.web.product.ProdInstallmentsField;
+import ru.extas.web.product.ProdInsuranceField;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -48,23 +56,28 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class ProductInSaleField extends CustomField<List> {
 
     private final SupplierSer<BigDecimal> priceSupplier;
+    private final SupplierSer<String> brandSupplier;
+    private final Sale sale;
     private ExtaBeanContainer<ProductInSale> container;
     private ItemGrid productsContainer;
 
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
      */
-    public ProductInSaleField(final SupplierSer<BigDecimal> priceSupplier) {
-        this("Продукты в продаже", priceSupplier);
+    public ProductInSaleField(Sale sale, final SupplierSer<BigDecimal> priceSupplier, SupplierSer<String> brandSupplier) {
+        this("Продукты в продаже", sale, priceSupplier, brandSupplier);
     }
 
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
-     *
-     * @param caption a {@link java.lang.String} object.
+     *  @param caption a {@link String} object.
+     * @param sale
+     * @param brandSupplier
      */
-    public ProductInSaleField(final String caption, final SupplierSer<BigDecimal> priceSupplier) {
+    public ProductInSaleField(final String caption, Sale sale, final SupplierSer<BigDecimal> priceSupplier, SupplierSer<String> brandSupplier) {
         this.priceSupplier = priceSupplier;
+        this.sale = sale;
+        this.brandSupplier = brandSupplier;
         setWidth(100, Unit.PERCENTAGE);
         setCaption(caption);
     }
@@ -86,23 +99,37 @@ public class ProductInSaleField extends CustomField<List> {
         productsContainer.setSelectable(false);
         productsContainer.setContainerDataSource(container);
         productsContainer.setItemGenerator((pSource, pItemId) -> {
-            final Product product = container.getItem(pItemId).getBean().getProduct();
+            final BeanItem<ProductInSale> item = container.getItem(pItemId);
+            final Product product = item.getBean().getProduct();
             if (product instanceof ProdCredit)
-                return new CreditItemComponent(pSource, pItemId);
+                return new CreditItemComponent(pItemId);
             else if (product instanceof ProdInsurance)
-                return new Label("Страховые продукты не поддерживаются!!!");
+                return new InsuranceItemComponent(pItemId);
             else if (product instanceof ProdInstallments)
-                return new Label("Рассрочка не поддерживается!!!");
+                return new InstallmentItemComponent(pItemId);
             else
                 return new Label("Неизвесный тип продукта!!!");
         });
         root.addComponent(productsContainer);
 
-        final Button addBtn = new Button("Добавить продукт", FontAwesome.PLUS);
-        addBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-        addBtn.addClickListener(e -> {
-        });
-        root.addComponent(addBtn);
+        MenuBar productMenu = new MenuBar();
+        productMenu.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+        productMenu.addStyleName(ExtaTheme.MENUBAR_SMALL);
+        final MenuBar.MenuItem addBtn = productMenu.addItem("Добавить продукт", FontAwesome.PLUS, null);
+
+        MenuBar.MenuItem creditMn = addBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
+        for (ProdCredit prod : lookup(ProdCreditRepository.class).findByActiveOrderByNameAsc(true))
+            creditMn.addItem(prod.getName(), e -> addProduct(prod));
+
+        MenuBar.MenuItem instMn = addBtn.addItem("Рассрочка", FontAwesome.PUZZLE_PIECE, null);
+        for (ProdInstallments prod : lookup(ProdInstallmentsRepository.class).findByActiveOrderByNameAsc(true))
+            instMn.addItem(prod.getName(), e -> addProduct(prod));
+
+        MenuBar.MenuItem insurMn = addBtn.addItem("Страховка", FontAwesome.UMBRELLA, null);
+        for (ProdInsurance prod : lookup(ProdInsuranceRepository.class).findByActiveOrderByNameAsc(true))
+            insurMn.addItem(prod.getName(), e -> addProduct(prod));
+
+        root.addComponent(productMenu);
 
         addReadOnlyStatusChangeListener(e -> {
             final boolean isRedOnly = isReadOnly();
@@ -110,6 +137,13 @@ public class ProductInSaleField extends CustomField<List> {
             productsContainer.setReadOnly(isRedOnly);
         });
         return root;
+    }
+
+    private void addProduct(Product product) {
+        ProductInSale productInSale = new ProductInSale(sale);
+        productInSale.setProduct(product);
+        container.addBean(productInSale);
+        setValue(container.getItemIds());
     }
 
     @Override
@@ -132,9 +166,8 @@ public class ProductInSaleField extends CustomField<List> {
     public void validate() throws Validator.InvalidValueException {
         super.validate();
         if (productsContainer != null) {
-            final Iterator<Component> iterator = productsContainer.iterator();
-            while (iterator.hasNext()) {
-                ((ProductItemComponent) iterator.next()).validate();
+            for (Component component : newArrayList(productsContainer)) {
+                ((ProductItemComponent) component).validate();
             }
         }
     }
@@ -142,9 +175,8 @@ public class ProductInSaleField extends CustomField<List> {
     @Override
     public void commit() throws SourceException, Validator.InvalidValueException {
         if (productsContainer != null) {
-            final Iterator<Component> iterator = productsContainer.iterator();
-            while (iterator.hasNext()) {
-                ((ProductItemComponent) iterator.next()).commit();
+            for (Component component : newArrayList(productsContainer)) {
+                ((ProductItemComponent) component).commit();
             }
         }
         super.commit();
@@ -158,9 +190,500 @@ public class ProductInSaleField extends CustomField<List> {
         return List.class;
     }
 
-    private class CreditItemComponent extends CssLayout implements ProductItemComponent {
+    private abstract class ProductItemComponent extends CssLayout {
+        protected final Object itemId;
+        protected final String panelCaption;
+        protected final BeanItem<ProductInSale> productInSaleItem;
+        protected BeanFieldGroup<ProductInSale> fieldGroup;
 
-        private final Object itemId;
+        public ProductItemComponent(Object itemId, String panelCaption) {
+            this.itemId = itemId;
+            this.panelCaption = panelCaption;
+            productInSaleItem = container.getItem(itemId);
+
+            addStyleName(ExtaTheme.LAYOUT_CARD);
+            setWidth(100, Unit.PERCENTAGE);
+
+            HorizontalLayout panelCaptionLayout = new HorizontalLayout();
+            panelCaptionLayout.addStyleName(ExtaTheme.PANEL_CAPTION);
+            panelCaptionLayout.setWidth(100, Unit.PERCENTAGE);
+            Label caption = new Label(this.panelCaption);
+            panelCaptionLayout.addComponent(caption);
+            panelCaptionLayout.setExpandRatio(caption, 1);
+
+            MenuBar productMenu = createMenuBar();
+            panelCaptionLayout.addComponent(productMenu);
+
+            addComponent(panelCaptionLayout);
+            addComponent(createProductForm());
+        }
+
+        protected MenuBar createMenuBar() {
+            MenuBar productMenu = new MenuBar();
+            productMenu.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
+            productMenu.addStyleName(ExtaTheme.MENUBAR_SMALL);
+            MenuBar.MenuItem delMenuItem = productMenu.addItem("", FontAwesome.TRASH_O, c -> {
+                container.removeItem(itemId);
+                setValue(container.getItemIds());
+            });
+            delMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            delMenuItem.setDescription("Удалить продукт");
+            return productMenu;
+        }
+
+        protected abstract Component createProductForm();
+
+        public void commit() throws SourceException, Validator.InvalidValueException {
+            try {
+                fieldGroup.commit();
+            } catch (FieldGroup.CommitException e) {
+                throw new Validator.InvalidValueException(e.getMessage());
+            }
+        }
+
+        public boolean isModified() {
+            return fieldGroup.isModified();
+        }
+
+        public void validate() throws Validator.InvalidValueException {
+            fieldGroup.getFields().forEach(Field::validate);
+        }
+
+    }
+
+    private class InsuranceItemComponent extends ProductItemComponent {
+
+        // Компоненты редактирования
+        @PropertyId("period")
+        private ComboBox periodField;
+        @PropertyId("product")
+        private ProdInsuranceField productField;
+        @PropertyId("responsible")
+        private EmployeeField responsibleField;
+
+        private Label vendorLabel;
+        private Label tariffLabel;
+        private Label premiumLabel;
+
+        public InsuranceItemComponent(Object itemId) {
+            super(itemId, "Страховка");
+        }
+
+        @Override
+        protected Component createProductForm() {
+            ExtaFormLayout form = new ExtaFormLayout();
+
+            form.addComponent(new FormGroupHeader("Характеристики продукта"));
+            productField = new ProdInsuranceField("Продукт", "Введите название продукта");
+            productField.setRequired(true);
+            productField.addValueChangeListener(e -> refreshProductFields());
+            form.addComponent(productField);
+
+            vendorLabel = new Label();
+            vendorLabel.setCaption("Страховщик");
+            form.addComponent(vendorLabel);
+
+            tariffLabel = new Label();
+            tariffLabel.setCaption("Первоначальный взнос");
+            tariffLabel.setConverter(lookup(StringToPercentConverter.class));
+            form.addComponent(tariffLabel);
+
+            form.addComponent(new FormGroupHeader("Параметры страховки"));
+            periodField = new ComboBox("Период страхования");
+            periodField.setDescription("Введите период страхования");
+            periodField.setImmediate(true);
+            periodField.setNullSelectionAllowed(false);
+            periodField.setRequired(true);
+            periodField.setWidth(6, Unit.EM);
+            // Наполняем возможными сроками страховки
+            fillPeriodFieldItems();
+            form.addComponent(periodField);
+
+            // Ответственный за оформление страховки
+            responsibleField = new EmployeeField("Ответственный", "Укажите ответственного за оформление страховки");
+            responsibleField.setCompanySupplier(() -> {
+                ProdInsurance product = productField.getValue();
+                if (product != null) {
+                    return product.getVendor();
+                } else
+                    return null;
+            });
+            form.addComponent(responsibleField);
+
+            form.addComponent(new FormGroupHeader("Стоимость страховки"));
+            // Размер страховой премии
+            premiumLabel = new Label();
+            premiumLabel.setCaption("Страховая премия");
+            form.addComponent(premiumLabel);
+
+            // Now create a binder
+            fieldGroup = new BeanFieldGroup<>(ProductInSale.class);
+            fieldGroup.setItemDataSource(productInSaleItem);
+            fieldGroup.setBuffered(true);
+            fieldGroup.bindMemberFields(this);
+
+            // Обновление рассчетных полей
+            refreshProductFields();
+            refreshInsCosts();
+            // Инициализация взаимосвязей
+            initRelations();
+
+            return form;
+        }
+
+        private void initRelations() {
+            productField.addValueChangeListener(this::productChangeListener);
+            periodField.addValueChangeListener(this::periodChangeListener);
+        }
+
+        /**
+         * Меняется продукт.
+         */
+        private void productChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем характеристики продукта.
+            refreshProductFields();
+            // Обновляем(Пересчитываем) стоимость страховки
+            refreshInsCosts();
+        }
+
+        /**
+         * Меняется срок страхования
+         */
+        private void periodChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем характеристики
+            refreshProductFields();
+            // Обновляем стоимость
+            refreshInsCosts();
+        }
+
+        /**
+         * Обновляем(Пересчитываем) стоимость страховки
+         */
+        private void refreshInsCosts() {
+
+            final ProdInsurance insurance = productField.getValue();
+            final BigDecimal price = priceSupplier.get();
+            final String brand = brandSupplier.get();
+            Number numPeriod = (Number) periodField.getValue();
+            final Insurance.PeriodOfCover period =
+                    Optional.ofNullable(numPeriod).map(
+                            n -> n.equals(6) ? Insurance.PeriodOfCover.HALF_A_YEAR : Insurance.PeriodOfCover.YEAR).orElse(null);
+            final boolean canCalculate = insurance != null && price != null && brand != null && period != null;
+            if (canCalculate) {
+                InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+                BigDecimal premium = calc.calcPropInsPremium(brand, price, period, false);
+                premiumLabel.setValue(MessageFormat.format("{0, number, currency}", premium));
+            }
+            // Гасим поля, если нечего в них показывать
+            premiumLabel.setVisible(canCalculate);
+        }
+
+        /**
+         * Обновляем характеристики продукта.
+         */
+        public void refreshProductFields() {
+            ProdInsurance insurance = productField.getValue();
+            final boolean canShowDetails = insurance != null;
+            if (canShowDetails) {
+                final BeanItem<ProdInsurance> beanItem = new BeanItem<>(Optional.ofNullable(insurance).orElse(new ProdInsurance()));
+                beanItem.addNestedProperty("vendor.name");
+
+                vendorLabel.setPropertyDataSource(beanItem.getItemProperty("vendor.name"));
+
+                final String brand = brandSupplier.get();
+                Number numPeriod = (Number) periodField.getValue();
+                final Insurance.PeriodOfCover period =
+                        Optional.ofNullable(numPeriod).map(
+                                n -> n.equals(6) ? Insurance.PeriodOfCover.HALF_A_YEAR : Insurance.PeriodOfCover.YEAR).orElse(null);
+                final boolean canFindTarif = brand != null && period != null;
+                if (canFindTarif) {
+                    InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+                    BigDecimal premium = calc.findTarif(brand, period, false);
+                    tariffLabel.setPropertyDataSource(new ObjectProperty<>(premium));
+                    tariffLabel.setVisible(true);
+                } else
+                    tariffLabel.setVisible(false);
+                vendorLabel.setVisible(true);
+            } else {
+                vendorLabel.setVisible(false);
+                tariffLabel.setVisible(false);
+            }
+        }
+
+        private void fillPeriodFieldItems() {
+            // Наполняем возможными сроками страхования
+            periodField.removeAllItems();
+            int period = 6;
+            periodField.addItem(period);
+            periodField.setItemCaption(period, "6 мес.");
+            period = 12;
+            periodField.addItem(period);
+            periodField.setItemCaption(period, "12 мес.");
+        }
+    }
+
+    private class InstallmentItemComponent extends ProductItemComponent {
+
+        // Компоненты редактирования
+        @PropertyId("summ")
+        private EditField summField;
+        @PropertyId("downpayment")
+        private PercentOfField downpaymentField;
+        @PropertyId("period")
+        private ComboBox periodField;
+        @PropertyId("product")
+        private ProdInstallmentsField productField;
+        @PropertyId("responsible")
+        private EmployeeField responsibleField;
+
+        private Label vendorLabel;
+        private Label downpaymentLabel;
+        private Label periodLabel;
+        private Label monthlyPayLabel;
+
+        public InstallmentItemComponent(Object itemId) {
+            super(itemId, "Рассрочка");
+        }
+
+        @Override
+        protected Component createProductForm() {
+            ExtaFormLayout form = new ExtaFormLayout();
+
+            form.addComponent(new FormGroupHeader("Характеристики продукта"));
+            productField = new ProdInstallmentsField("Продукт", "Введите название продукта");
+            productField.setRequired(true);
+            productField.addValueChangeListener(e -> refreshProductFields());
+            form.addComponent(productField);
+
+            vendorLabel = new Label();
+            vendorLabel.setCaption("Эммитент");
+            form.addComponent(vendorLabel);
+
+            downpaymentLabel = new Label();
+            downpaymentLabel.setCaption("Первоначальный взнос");
+            form.addComponent(downpaymentLabel);
+
+            periodLabel = new Label();
+            periodLabel.setCaption("Период рассрочки");
+            form.addComponent(periodLabel);
+
+            form.addComponent(new FormGroupHeader("Параметры рассрочки"));
+            downpaymentField = new PercentOfField("Первоначальный взнос", "Введите сумму первоначального взноса по рассрочке");
+            downpaymentField.setRequired(true);
+            form.addComponent(downpaymentField);
+
+            periodField = new ComboBox("Срок рассрочки");
+            periodField.setDescription("Введите период рассрочки (длительность рассрочки)");
+            periodField.setImmediate(true);
+            periodField.setNullSelectionAllowed(false);
+            periodField.setRequired(true);
+            periodField.setWidth(6, Unit.EM);
+            // Наполняем возможными сроками кредита
+            fillPeriodFieldItems();
+            form.addComponent(periodField);
+
+            summField = new EditField("Сумма рассрочки", "Введите сумму рассрочки (Также может рассчитываться автоматически)");
+            summField.setRequired(true);
+            form.addComponent(summField);
+
+            // Размер ежемесячного платежа
+            monthlyPayLabel = new Label();
+            monthlyPayLabel.setCaption("Ежемесячный платеж");
+            form.addComponent(monthlyPayLabel);
+
+            // Ответственный со стороны банка
+            responsibleField = new EmployeeField("Ответственный сотрудник", "Укажите ответственного со стороны эммитента рассрочки");
+            responsibleField.setCompanySupplier(() -> {
+                ProdInstallments product = productField.getValue();
+                if (product != null) {
+                    return product.getVendor();
+                } else
+                    return null;
+            });
+            form.addComponent(responsibleField);
+
+            // Now create a binder
+            fieldGroup = new BeanFieldGroup<>(ProductInSale.class);
+            fieldGroup.setItemDataSource(productInSaleItem);
+            fieldGroup.setBuffered(true);
+            fieldGroup.bindMemberFields(this);
+
+            // Инициализация валидаторов
+            initValidators();
+            // Обновление рассчетных полей
+            refreshProductFields();
+            refreshInstCosts();
+            // Инициализация взаимосвязей
+            initRelations();
+
+            return form;
+        }
+
+        /**
+         * Меняется продукт.
+         */
+        private void productChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем характеристики продукта.
+            refreshProductFields();
+            // Обновляем параметы продукта
+            ProdInstallments installments = productField.getValue();
+            if (installments != null) {
+                // Наполняем возможными сроками кредита
+                fillPeriodFieldItems();
+
+                // Задаем начальные значения параметров (если они не заданы)
+                if (downpaymentField.getValue() == null)
+                    downpaymentField.setValue(
+                            installments.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128));
+                if (periodField.getValue() == null)
+                    periodField.setValue((installments.getMaxPeriod()));
+                responsibleField.changeCompany();
+            }
+            // Обновляем(Пересчитываем) стоимость кредита
+            refreshInstCosts();
+        }
+
+        /**
+         * Меняется первоначальный взнос
+         */
+        private void downPaymentChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем характеристики
+            refreshProductFields();
+            // Обновляем сумму кредита
+            final ProdInstallments installments = productField.getValue();
+            final BigDecimal price = priceSupplier.get();
+            final BigDecimal downPayment = downpaymentField.getValue();
+            final boolean canCalculate = installments != null && price != null && downPayment != null;
+            if (canCalculate) {
+                BigDecimal instSum = price.subtract(downPayment);
+                summField.setConvertedValue(instSum);
+            }
+            // Обновляем стоимость
+            refreshInstCosts();
+        }
+
+        /**
+         * Меняется срок кредитования
+         */
+        private void periodChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем характеристики
+            refreshProductFields();
+            // Обновляем стоимость
+            refreshInstCosts();
+        }
+
+        /**
+         * Меняется сумма
+         */
+        private void creditSummChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+            // Обновляем первоначальный взнос чтобы получить цену техники с учетом новой суммы
+            final ProdInstallments inst = productField.getValue();
+            final BigDecimal price = priceSupplier.get();
+            final BigDecimal instSum = (BigDecimal) summField.getConvertedValue();
+            if (inst != null && price != null && instSum != null) {
+                BigDecimal downPayment = price.subtract(instSum);
+                downpaymentField.setValue(downPayment);
+            }
+            // Обновляем характеристики
+            refreshProductFields();
+            // Обновляем стоимость
+            refreshInstCosts();
+        }
+
+        private void initRelations() {
+            productField.addValueChangeListener(this::productChangeListener);
+            downpaymentField.setBase(priceSupplier.get());
+            downpaymentField.addValueChangeListener(this::downPaymentChangeListener);
+            periodField.addValueChangeListener(this::periodChangeListener);
+            summField.addValueChangeListener(this::creditSummChangeListener);
+            // Наполняем возможными сроками кредита
+            fillPeriodFieldItems();
+        }
+
+        /**
+         * Обновляем(Пересчитываем) стоимость рассрочки
+         */
+        private void refreshInstCosts() {
+
+            final ProdInstallments installments = productField.getValue();
+            final BigDecimal price = priceSupplier.get();
+            final BigDecimal downPayment = downpaymentField.getValue();
+            final Number period = (Number) periodField.getValue();
+            final boolean canCalculate = installments != null && price != null && downPayment != null && period != null;
+            if (canCalculate) {
+                monthlyPayLabel.setValue(MessageFormat.format("{0, number, currency}",
+                        price.subtract(downPayment).
+                                divide(BigDecimal.valueOf(period.intValue()), MathContext.DECIMAL128)));
+            }
+            // Гасим поля, если нечего в них показывать
+            monthlyPayLabel.setVisible(canCalculate);
+        }
+
+        /**
+         * Добавляем проверки при вводе
+         */
+        private void initValidators() {
+            downpaymentField.addValidator(value -> {
+                ProdInstallments prod = productField.getValue();
+                if (prod != null) {
+                    BigDecimal newDownpayment = (BigDecimal) value;
+                    BigDecimal minDownpayment = prod.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
+                    BigDecimal maxDownpayment = BigDecimal.valueOf(.99).multiply(priceSupplier.get(), MathContext.DECIMAL128);
+                    if (newDownpayment.compareTo(minDownpayment) < 0 ||
+                            newDownpayment.compareTo(maxDownpayment) > 0) {
+                        throw new Validator.InvalidValueException(
+                                MessageFormat.format(
+                                        "Недопустимая сумма первоначального взноса. " +
+                                                "Первоначальный взнос должен быть в пределах " +
+                                                "от {0, number, currency} до {1, number, currency}",
+                                        minDownpayment, maxDownpayment));
+                    }
+                }
+            });
+        }
+
+        private void fillPeriodFieldItems() {
+            // Наполняем возможными сроками кредита
+            ProdInstallments installments = productField.getValue();
+            if (installments != null) {
+                int start = 1;
+                int end = installments.getMaxPeriod();
+                int step = 1;
+                Object curValue = periodField.getValue();
+                periodField.removeAllItems();
+                for (int i = start; i <= end; i += step) {
+                    periodField.addItem(i);
+                    periodField.setItemCaption(i, MessageFormat.format("{0} мес.", i));
+                }
+                periodField.setValue(curValue);
+            }
+        }
+
+        /**
+         * Обновляем характеристики продукта.
+         */
+        public void refreshProductFields() {
+            ProdInstallments installments = productField.getValue();
+            final boolean canShowDetails = installments != null;
+            if (canShowDetails) {
+                final BeanItem<ProdInstallments> beanItem = new BeanItem<>(Optional.ofNullable(installments).orElse(new ProdInstallments()));
+                beanItem.addNestedProperty("vendor.name");
+
+                vendorLabel.setPropertyDataSource(beanItem.getItemProperty("vendor.name"));
+                downpaymentLabel.setValue(
+                        MessageFormat.format("от {0, number, #,##.##%} до {1, number, percent}",
+                                installments.getMinDownpayment(), .99));
+                periodLabel.setValue(
+                        MessageFormat.format("от {0} до {1} мес.",
+                                1, installments.getMaxPeriod()));
+            }
+            vendorLabel.setVisible(canShowDetails);
+            downpaymentLabel.setVisible(canShowDetails);
+            periodLabel.setVisible(canShowDetails);
+        }
+    }
+
+    private class CreditItemComponent extends ProductItemComponent {
 
         // Компоненты редактирования
         @PropertyId("summ")
@@ -187,40 +710,23 @@ public class ProductInSaleField extends CustomField<List> {
         private Label yearlyRiseLabel;
         private Label monthlyRiseLabel;
 
-        private final BeanItem<ProductInSale> productInSaleItem;
-        private BeanFieldGroup<ProductInSale> fieldGroup;
-
-        public CreditItemComponent(AbstractItemLayout pSource, Object itemId) {
-            this.itemId = itemId;
-            productInSaleItem = container.getItem(itemId);
-            final Product product = productInSaleItem.getBean().getProduct();
-
-            addStyleName(ExtaTheme.LAYOUT_CARD);
-            setWidth(100, Unit.PERCENTAGE);
-
-            HorizontalLayout panelCaption = new HorizontalLayout();
-            panelCaption.addStyleName(ExtaTheme.PANEL_CAPTION);
-            panelCaption.setWidth(100, Unit.PERCENTAGE);
-            Label label = new Label("Кредит");
-            panelCaption.addComponent(label);
-            panelCaption.setExpandRatio(label, 1);
-
-            MenuBar productMenu = new MenuBar();
-            productMenu.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
-            productMenu.addStyleName(ExtaTheme.MENUBAR_SMALL);
-            MenuBar.MenuItem editMenuItem = productMenu.addItem("", FontAwesome.PENCIL, null);
-            editMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-            editMenuItem.setDescription("Редактировать продукт");
-            MenuBar.MenuItem delMenuItem = productMenu.addItem("", FontAwesome.TRASH_O, null);
-            delMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-            delMenuItem.setDescription("Удалить продукт");
-            panelCaption.addComponent(productMenu);
-
-            addComponent(panelCaption);
-            addComponent(createProductForm());
+        public CreditItemComponent(Object itemId) {
+            super(itemId, "Кредит");
         }
 
-        private Component createProductForm() {
+        @Override
+        protected MenuBar createMenuBar() {
+            final MenuBar menuBar = super.createMenuBar();
+
+            MenuBar.MenuItem editMenuItem = menuBar.addItemBefore("", FontAwesome.COMPASS, null, menuBar.getItems().get(0));
+            editMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+            editMenuItem.setDescription("Открыть форму подбора продукта (калькулятор продукта)");
+
+            return menuBar;
+        }
+
+        @Override
+        protected Component createProductForm() {
 
             ExtaFormLayout form = new ExtaFormLayout();
 
@@ -422,7 +928,6 @@ public class ProductInSaleField extends CustomField<List> {
             refreshCreditCosts();
         }
 
-
         /**
          * Добавляем проверки при вводе
          */
@@ -553,27 +1058,6 @@ public class ProductInSaleField extends CustomField<List> {
                         .calcInterest(credit, downpaymentSum.divide(priceSupplier.get(), MathContext.DECIMAL128), period.intValue());
             else
                 return null;
-        }
-
-        @Override
-        public void commit() throws SourceException, Validator.InvalidValueException {
-            try {
-                fieldGroup.commit();
-            } catch (FieldGroup.CommitException e) {
-                throw new Validator.InvalidValueException(e.getMessage());
-            }
-        }
-
-        @Override
-        public boolean isModified() {
-            return fieldGroup.isModified();
-        }
-
-        @Override
-        public void validate() {
-            for (final Field<?> field : fieldGroup.getFields())
-                field.validate();
-
         }
     }
 }

@@ -9,6 +9,7 @@ import ru.extas.web.commons.converters.StringToPercentConverter;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.MessageFormat;
+import java.util.Optional;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -43,7 +44,7 @@ public class PercentOfField extends CustomField<BigDecimal> {
             switch (mode) {
                 case PERCENT:
                     inputField.setConverter(lookup(StringToPercentConverter.class));
-                    inputField.setWidth(3, Unit.EM);
+                    inputField.setWidth(5, Unit.EM);
                     inputField.setConvertedValue(value.divide(base, MathContext.DECIMAL128));
                     alterLabel.setValue(MessageFormat.format("{0, number, currency}", value));
                     break;
@@ -75,16 +76,19 @@ public class PercentOfField extends CustomField<BigDecimal> {
         inputField = new EditField(null);
         inputField.addStyleName(ExtaTheme.TEXTFIELD_BORDERLESS);
         inputField.setReadOnly(isReadOnly());
+        inputField.setConverter(BigDecimal.class);
         inputField.addValueChangeListener(e -> {
-            final BigDecimal value = (BigDecimal) inputField.getConvertedValue();
+            final BigDecimal value = Optional.ofNullable((BigDecimal) inputField.getConvertedValue()).orElse(BigDecimal.ZERO);
             if (mode == Mode.PERCENT) setValue(value.multiply(base, MathContext.DECIMAL128));
             else if (mode == Mode.VALUE) setValue(value);
         });
         layout.addComponent(inputField);
 
         Button modeBtn = new Button("Режим", FontAwesome.EXCHANGE);
+        modeBtn.setDescription("Нажмите чтобы переключить режим поля ввода с суммы на проценты или обратно.");
         modeBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         modeBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
+        modeBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
         modeBtn.addClickListener(e -> {
             if (mode == Mode.PERCENT) mode = Mode.VALUE;
             else if (mode == Mode.VALUE) mode = Mode.PERCENT;

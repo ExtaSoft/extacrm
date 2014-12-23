@@ -5,6 +5,8 @@ import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 
+import java.util.Objects;
+
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
@@ -110,7 +112,7 @@ public class IdentifiedObject implements Persistable<String> {
         if (id == null || other.id == null) {
             return super.equals(other);
         } else
-            return id.equals(other.id);
+            return Objects.equals(id, other.id);
     }
 
     @Override

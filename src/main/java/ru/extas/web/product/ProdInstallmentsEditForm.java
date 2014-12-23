@@ -32,7 +32,7 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 	private EditField nameField;
 	@PropertyId("vendor")
 	private CompanyField vendorField;
-	@PropertyId("maxPeroid")
+	@PropertyId("maxPeriod")
 	private EditField maxPeroidField;
 	@PropertyId("minDownpayment")
 	private EditField minDownpaymentField;
