@@ -70,7 +70,8 @@ public class ProductInSaleField extends CustomField<List> {
 
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
-     *  @param caption a {@link String} object.
+     *
+     * @param caption       a {@link String} object.
      * @param sale
      * @param brandSupplier
      */
@@ -118,6 +119,8 @@ public class ProductInSaleField extends CustomField<List> {
         final MenuBar.MenuItem addBtn = productMenu.addItem("Добавить продукт", FontAwesome.PLUS, null);
 
         MenuBar.MenuItem creditMn = addBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
+        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {});
+        creditMn.addSeparator();
         for (ProdCredit prod : lookup(ProdCreditRepository.class).findByActiveOrderByNameAsc(true))
             creditMn.addItem(prod.getName(), e -> addProduct(prod));
 
