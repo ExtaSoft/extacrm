@@ -119,7 +119,9 @@ public class ProductInSaleField extends CustomField<List> {
         final MenuBar.MenuItem addBtn = productMenu.addItem("Добавить продукт", FontAwesome.PLUS, null);
 
         MenuBar.MenuItem creditMn = addBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
-        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {});
+        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
+            new LoanCalculatorForm().showModal();
+        });
         creditMn.addSeparator();
         for (ProdCredit prod : lookup(ProdCreditRepository.class).findByActiveOrderByNameAsc(true))
             creditMn.addItem(prod.getName(), e -> addProduct(prod));
