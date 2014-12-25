@@ -1,14 +1,17 @@
 package ru.extas.web.sale;
 
-import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.VerticalLayout;
+import ru.extas.server.product.ProdCreditRepository;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.PercentOfField;
 import ru.extas.web.commons.window.OkCancelWindow;
-import ru.extas.web.contacts.employee.EmployeeField;
-import ru.extas.web.product.ProdCreditField;
+
+import java.text.MessageFormat;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Форма кредитного калькулятора
@@ -30,9 +33,58 @@ public class LoanCalculatorForm extends OkCancelWindow {
         final VerticalLayout mainLayout = new VerticalLayout();
 
         final ExtaFormLayout paramForm = new ExtaFormLayout();
+        paramForm.addComponent(new FormGroupHeader("Параметры кредита"));
+        priceField = new EditField("Стоимость техники", "Введите стоимость техники");
+        priceField.setRequired(true);
+        downpaymentField = new PercentOfField("Первоначальный взнос", "Введите сумму первоначального взноса по кредиту");
+        downpaymentField.setRequired(true);
+        paramForm.addComponent(downpaymentField);
+
+        periodField = new ComboBox("Срок кредитования");
+        periodField.setDescription("Введите период кредитования (срок кредита)");
+        periodField.setImmediate(true);
+        periodField.setNullSelectionAllowed(false);
+        periodField.setRequired(true);
+        periodField.setWidth(6, Unit.EM);
+        // Наполняем возможными сроками кредита
+        fillPeriodFieldItems();
+        paramForm.addComponent(periodField);
+
+        summField = new EditField("Сумма кредита", "Введите сумму кредита (Также может рассчитываться автоматически)");
+        summField.setRequired(true);
+        paramForm.addComponent(summField);
+
 
         mainLayout.addComponent(paramForm);
 
         setContent(mainLayout);
     }
+
+    private void fillPeriodFieldItems() {
+        // Наполняем возможными сроками кредита
+        ProdCreditRepository rep = lookup(ProdCreditRepository.class);
+        final int start = rep.getMinPeriod();
+        final int end = rep.getMaxPeriod();
+        final int step = rep.getPeriodMinStep();
+        final Object curValue = periodField.getValue();
+        periodField.removeAllItems();
+        for (int i = start; i <= end; i += step) {
+            periodField.addItem(i);
+            periodField.setItemCaption(i, MessageFormat.format("{0} мес.", i));
+        }
+        periodField.setValue(curValue);
+    }
+
+// Кредитный продукт
+// Банк
+// Тип программы
+// Сумма кредита, руб.
+// Ставка прог-мы, %
+// Взнос, руб
+// Срок
+// Еж. платёж, руб.
+// Переплата, руб.
+// Среднегодовое удорожание
+// Среднемесячное удорожание
+
 }

@@ -6,7 +6,7 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.sale.ProdInsurance;
-import ru.extas.server.sale.ProdInsuranceRepository;
+import ru.extas.server.product.ProdInsuranceRepository;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;

@@ -6,18 +6,11 @@ package ru.extas.web.product;
 import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
-import com.vaadin.ui.*;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
-import ru.extas.model.contacts.Employee;
+import com.vaadin.ui.*;
 import ru.extas.model.sale.Product;
-import ru.extas.server.sale.ProductRepository;
-import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
-
-import java.util.List;
-
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Компонент выбора продукта

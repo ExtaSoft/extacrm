@@ -9,6 +9,7 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.FontIcon;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.vaadin.addon.itemlayout.grid.ItemGrid;
@@ -17,9 +18,9 @@ import ru.extas.model.sale.*;
 import ru.extas.server.financial.LoanCalculator;
 import ru.extas.server.financial.LoanInfo;
 import ru.extas.server.insurance.InsuranceCalculator;
-import ru.extas.server.sale.ProdCreditRepository;
-import ru.extas.server.sale.ProdInstallmentsRepository;
-import ru.extas.server.sale.ProdInsuranceRepository;
+import ru.extas.server.product.ProdCreditRepository;
+import ru.extas.server.product.ProdInstallmentsRepository;
+import ru.extas.server.product.ProdInsuranceRepository;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
@@ -126,7 +127,7 @@ public class ProductInSaleField extends CustomField<List> {
         for (final ProdCredit prod : lookup(ProdCreditRepository.class).findByActiveOrderByNameAsc(true))
             creditMn.addItem(prod.getName(), e -> addProduct(prod));
 
-        final MenuBar.MenuItem instMn = addBtn.addItem("Рассрочка", FontAwesome.PUZZLE_PIECE, null);
+        final MenuBar.MenuItem instMn = addBtn.addItem("Рассрочка", FontAwesome.MONEY, null);
         for (final ProdInstallments prod : lookup(ProdInstallmentsRepository.class).findByActiveOrderByNameAsc(true))
             instMn.addItem(prod.getName(), e -> addProduct(prod));
 
@@ -201,7 +202,7 @@ public class ProductInSaleField extends CustomField<List> {
         protected final BeanItem<ProductInSale> productInSaleItem;
         protected BeanFieldGroup<ProductInSale> fieldGroup;
 
-        public ProductItemComponent(final Object itemId, final String panelCaption) {
+        public ProductItemComponent(final Object itemId, final String panelCaption, FontIcon icon) {
             this.itemId = itemId;
             this.panelCaption = panelCaption;
             productInSaleItem = container.getItem(itemId);
@@ -212,7 +213,7 @@ public class ProductInSaleField extends CustomField<List> {
             final HorizontalLayout panelCaptionLayout = new HorizontalLayout();
             panelCaptionLayout.addStyleName(ExtaTheme.PANEL_CAPTION);
             panelCaptionLayout.setWidth(100, Unit.PERCENTAGE);
-            final Label caption = new Label(this.panelCaption);
+            final Label caption = new Label(icon.getHtml() + " " + this.panelCaption, ContentMode.HTML);
             panelCaptionLayout.addComponent(caption);
             panelCaptionLayout.setExpandRatio(caption, 1);
 
@@ -271,7 +272,7 @@ public class ProductInSaleField extends CustomField<List> {
         private Label premiumLabel;
 
         public InsuranceItemComponent(final Object itemId) {
-            super(itemId, "Страховка");
+            super(itemId, "Страховка", FontAwesome.UMBRELLA);
         }
 
         @Override
@@ -447,7 +448,7 @@ public class ProductInSaleField extends CustomField<List> {
         private Label monthlyPayLabel;
 
         public InstallmentItemComponent(final Object itemId) {
-            super(itemId, "Рассрочка");
+            super(itemId, "Рассрочка", FontAwesome.MONEY);
         }
 
         @Override
@@ -716,7 +717,7 @@ public class ProductInSaleField extends CustomField<List> {
         private Label monthlyRiseLabel;
 
         public CreditItemComponent(final Object itemId) {
-            super(itemId, "Кредит");
+            super(itemId, "Кредит", FontAwesome.CREDIT_CARD);
         }
 
         @Override
