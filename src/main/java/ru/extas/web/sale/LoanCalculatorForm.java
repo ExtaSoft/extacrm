@@ -15,5 +15,6 @@ public class LoanCalculatorForm extends OkCancelWindow {
         super("Рассчет кредита и подбор кредитного продукта");
 
 
+
     }
 }
