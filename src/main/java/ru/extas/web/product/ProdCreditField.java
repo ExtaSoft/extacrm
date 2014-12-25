@@ -12,7 +12,7 @@ import ru.extas.model.sale.Product;
  */
 public class ProdCreditField extends ProductField<ProdCredit> {
 
-    public ProdCreditField(String caption, String description) {
+    public ProdCreditField(final String caption, final String description) {
         super(caption, description, ProdCredit.class);
     }
 

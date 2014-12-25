@@ -40,7 +40,7 @@ public abstract class ProductField<TProduct extends Product> extends CustomField
     }
 
 
-    public ProductField(final String caption, final String description, Class<TProduct> productCls) {
+    public ProductField(final String caption, final String description, final Class<TProduct> productCls) {
         this.productCls = productCls;
         setCaption(caption);
         setDescription(description);
@@ -49,10 +49,10 @@ public abstract class ProductField<TProduct extends Product> extends CustomField
     @Override
     protected Component initContent() {
         // A vertical layout with undefined width
-        VerticalLayout box = new VerticalLayout();
+        final VerticalLayout box = new VerticalLayout();
         box.setSizeUndefined();
 
-        ComboBox productSelect = new ComboBox();
+        final ComboBox productSelect = new ComboBox();
         productSelect.setInputPrompt("Выберите продукт...");
         productSelect.setImmediate(true);
         productSelect.setNullSelectionAllowed(false);
@@ -77,7 +77,7 @@ public abstract class ProductField<TProduct extends Product> extends CustomField
         productSelect.setWidth(100, Unit.PERCENTAGE);
         box.addComponent(productSelect);
         // The layout shrinks to fit this label
-        Label label = new Label(getFieldTextLabel());
+        final Label label = new Label(getFieldTextLabel());
         label.addStyleName("ea-widthfittin-label");
         label.setWidthUndefined();
         label.setHeight("0px"); // Hide: Could be 0px

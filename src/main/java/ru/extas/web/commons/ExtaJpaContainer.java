@@ -68,7 +68,7 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
     }
 
     @Override
-    public void setArchiveExcluded(boolean archiveExcluded) {
+    public void setArchiveExcluded(final boolean archiveExcluded) {
         if (this.archiveExcluded != archiveExcluded && ArchivedObject.class.isAssignableFrom(getEntityClass())) {
             this.archiveExcluded = archiveExcluded;
             if (archiveExcluded)

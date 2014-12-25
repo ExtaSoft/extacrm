@@ -70,7 +70,7 @@ public class LoanCalculatorImpl implements LoanCalculator {
     }
 
     @Override
-    public BigDecimal calcCreditSum(ProdCredit product, BigDecimal price, BigDecimal downPaymentSum) {
+    public BigDecimal calcCreditSum(final ProdCredit product, final BigDecimal price, final BigDecimal downPaymentSum) {
         // Стоимость товара с учетом субсидии
         final BigDecimal subsidyPrice = calcSubsidyPrice(product, price);
         // Возвращаем сумму кредита
@@ -84,14 +84,14 @@ public class LoanCalculatorImpl implements LoanCalculator {
      * @param price
      * @return
      */
-    private BigDecimal calcSubsidyPrice(ProdCredit product, BigDecimal price) {
+    private BigDecimal calcSubsidyPrice(final ProdCredit product, final BigDecimal price) {
         return Optional.ofNullable(product.getDealerSubsidy())
                 .map(p -> BigDecimal.ZERO.equals(p) ? price : p.multiply(price, MathContext.DECIMAL128))
                 .orElse(price);
     }
 
     @Override
-    public BigDecimal calcInterest(ProdCredit product, BigDecimal downPayment, int period) {
+    public BigDecimal calcInterest(final ProdCredit product, final BigDecimal downPayment, final int period) {
         final List<ProdCreditPercent> percents = newArrayList(product.getPercents());
         if (percents.size() < 2)
             return percents.stream()
@@ -111,7 +111,7 @@ public class LoanCalculatorImpl implements LoanCalculator {
     }
 
     @Override
-    public BigDecimal calcDownPayment(ProdCredit credit, BigDecimal price, BigDecimal creditSum) {
+    public BigDecimal calcDownPayment(final ProdCredit credit, final BigDecimal price, final BigDecimal creditSum) {
         // Стоимость товара с учетом субсидии
         final BigDecimal subsidyPrice = calcSubsidyPrice(credit, price);
         // Возвращаем сумму кредита

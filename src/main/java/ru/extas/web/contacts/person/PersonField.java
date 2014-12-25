@@ -125,7 +125,7 @@ public class PersonField extends CustomField<Person> {
         private PersonSelectField personSelectField;
         private final Field field;
 
-        public PopupForm(Field field, final PopupView popupView) {
+        public PopupForm(final Field field, final PopupView popupView) {
             this.field = field;
 
             setSizeUndefined();

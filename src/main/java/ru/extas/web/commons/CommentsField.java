@@ -106,13 +106,13 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
             final String userLogin = lookup(UserManagementService.class).getCurrentUserLogin();
             final boolean ownComment = userLogin.equals(item.getBean().getCreatedBy());
 
-            MenuBar commentMenu = new MenuBar();
+            final MenuBar commentMenu = new MenuBar();
             commentMenu.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
             commentMenu.addStyleName(ExtaTheme.MENUBAR_SMALL);
-            MenuBar.MenuItem editMenuItem = commentMenu.addItem("", FontAwesome.PENCIL, e -> switchEditMode(true));
+            final MenuBar.MenuItem editMenuItem = commentMenu.addItem("", FontAwesome.PENCIL, e -> switchEditMode(true));
             editMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             editMenuItem.setDescription("Редактировать комментарий");
-            MenuBar.MenuItem delMenuItem = commentMenu.addItem("", FontAwesome.TRASH_O, e ->
+            final MenuBar.MenuItem delMenuItem = commentMenu.addItem("", FontAwesome.TRASH_O, e ->
                     ConfirmDialog.show(UI.getCurrent(), "Удаление комментария...", "Вы уверены что необходимо удалить комментарий?",
                             "Удалить", "Оставить", dialog -> {
                                 if (dialog.isConfirmed()) {

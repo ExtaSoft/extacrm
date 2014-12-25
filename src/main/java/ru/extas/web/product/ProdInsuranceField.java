@@ -11,7 +11,7 @@ import ru.extas.model.sale.ProdInsurance;
  */
 public class ProdInsuranceField extends ProductField<ProdInsurance> {
 
-    public ProdInsuranceField(String caption, String description) {
+    public ProdInsuranceField(final String caption, final String description) {
         super(caption, description, ProdInsurance.class);
     }
 

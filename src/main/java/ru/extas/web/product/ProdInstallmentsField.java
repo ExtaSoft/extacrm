@@ -11,7 +11,7 @@ import ru.extas.model.sale.ProdInstallments;
  */
 public class ProdInstallmentsField extends ProductField<ProdInstallments> {
 
-    public ProdInstallmentsField(String caption, String description) {
+    public ProdInstallmentsField(final String caption, final String description) {
         super(caption, description, ProdInstallments.class);
     }
 

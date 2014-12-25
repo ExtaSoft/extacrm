@@ -86,7 +86,7 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
     }
 
     @Override
-    public BigDecimal calcPropInsPremium(String motorBrand, BigDecimal riskSum, Insurance.PeriodOfCover coverTime, boolean usedMotor) {
+    public BigDecimal calcPropInsPremium(final String motorBrand, final BigDecimal riskSum, final Insurance.PeriodOfCover coverTime, final boolean usedMotor) {
         checkArgument(riskSum != null, "Can't calculate premium. No insurance risk sum.");
         checkArgument(motorBrand != null, "Can't calculate premium. No insurance motor brand.");
         checkArgument(coverTime != null, "Can't calculate premium. No period of cover.");

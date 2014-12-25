@@ -27,7 +27,7 @@ public class LoanInfo {
     private final BigDecimal yearlyRise;
     private final BigDecimal monthlyRise;
 
-    public LoanInfo(ProdCredit product, BigDecimal price, BigDecimal downPayment, int period, BigDecimal interest, BigDecimal creditSum, BigDecimal interestFactor, BigDecimal annuitant, BigDecimal monthlyPay, BigDecimal creditCost, BigDecimal overpayment, BigDecimal yearlyRise, BigDecimal monthlyRise) {
+    public LoanInfo(final ProdCredit product, final BigDecimal price, final BigDecimal downPayment, final int period, final BigDecimal interest, final BigDecimal creditSum, final BigDecimal interestFactor, final BigDecimal annuitant, final BigDecimal monthlyPay, final BigDecimal creditCost, final BigDecimal overpayment, final BigDecimal yearlyRise, final BigDecimal monthlyRise) {
         this.product = product;
         this.price = price;
         this.downPayment = downPayment;

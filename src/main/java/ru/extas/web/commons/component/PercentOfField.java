@@ -32,14 +32,14 @@ public class PercentOfField extends CustomField<BigDecimal> {
     private BigDecimal base;
 
 
-    public PercentOfField(String caption, String description) {
+    public PercentOfField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
         addValueChangeListener(e -> updateState());
     }
 
     private void updateState() {
-        BigDecimal value = getValue();
+        final BigDecimal value = getValue();
         if (value != null && base != null && inputField != null) {
             switch (mode) {
                 case PERCENT:
@@ -62,14 +62,14 @@ public class PercentOfField extends CustomField<BigDecimal> {
         return base;
     }
 
-    public void setBase(BigDecimal base) {
+    public void setBase(final BigDecimal base) {
         this.base = base;
         updateState();
     }
 
     @Override
     protected Component initContent() {
-        HorizontalLayout layout = new HorizontalLayout();
+        final HorizontalLayout layout = new HorizontalLayout();
         layout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         layout.setSpacing(true);
 
@@ -84,7 +84,7 @@ public class PercentOfField extends CustomField<BigDecimal> {
         });
         layout.addComponent(inputField);
 
-        Button modeBtn = new Button("Режим", FontAwesome.EXCHANGE);
+        final Button modeBtn = new Button("Режим", FontAwesome.EXCHANGE);
         modeBtn.setDescription("Нажмите чтобы переключить режим поля ввода с суммы на проценты или обратно.");
         modeBtn.addStyleName(ExtaTheme.BUTTON_ICON_ONLY);
         modeBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);

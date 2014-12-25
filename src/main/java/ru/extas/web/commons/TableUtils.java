@@ -208,15 +208,15 @@ public class TableUtils {
 
     }
 
-    public static FilterTableStateProfile createProfile(FilterTable filterTable, String profileName) {
+    public static FilterTableStateProfile createProfile(final FilterTable filterTable, final String profileName) {
 
-        Set<ColumnInfo> columnInfos = new HashSet<>();
+        final Set<ColumnInfo> columnInfos = new HashSet<>();
         addVisibleColumns(columnInfos, filterTable);
 
         return new FilterTableStateProfile(profileName, columnInfos);
     }
 
-    private static int getColumnIndex(FilterTable filterTable, Object propertyId) {
+    private static int getColumnIndex(final FilterTable filterTable, final Object propertyId) {
         for (int i = 0; i < filterTable.getVisibleColumns().length; i++) {
             if (filterTable.getVisibleColumns()[i].equals(propertyId)) {
                 return i;
@@ -225,8 +225,8 @@ public class TableUtils {
         return 0;
     }
 
-    private static void addVisibleColumns(Set<ColumnInfo> columnInfos, FilterTable filterTable) {
-        for (Object propertyId : filterTable.getVisibleColumns()) {
+    private static void addVisibleColumns(final Set<ColumnInfo> columnInfos, final FilterTable filterTable) {
+        for (final Object propertyId : filterTable.getVisibleColumns()) {
             columnInfos.add(createColumnInfo(propertyId, filterTable));
         }
     }
@@ -239,8 +239,8 @@ public class TableUtils {
 //        }
 //    }
 //
-    private static ColumnInfo createColumnInfo(Object propertyId, FilterTable filterTable) {
-        ColumnInfo columnInfo = new ColumnInfo();
+    private static ColumnInfo createColumnInfo(final Object propertyId, final FilterTable filterTable) {
+        final ColumnInfo columnInfo = new ColumnInfo();
         columnInfo.setPropertyId((String) propertyId);
         columnInfo.setCollapsed(filterTable.isColumnCollapsed(propertyId));
         columnInfo.setFilter(filterTable.getFilterFieldValue(propertyId));

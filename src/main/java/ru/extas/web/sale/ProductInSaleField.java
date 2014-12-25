@@ -64,7 +64,7 @@ public class ProductInSaleField extends CustomField<List> {
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
      */
-    public ProductInSaleField(Sale sale, final SupplierSer<BigDecimal> priceSupplier, SupplierSer<String> brandSupplier) {
+    public ProductInSaleField(final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
         this("Продукты в продаже", sale, priceSupplier, brandSupplier);
     }
 
@@ -75,7 +75,7 @@ public class ProductInSaleField extends CustomField<List> {
      * @param sale
      * @param brandSupplier
      */
-    public ProductInSaleField(final String caption, Sale sale, final SupplierSer<BigDecimal> priceSupplier, SupplierSer<String> brandSupplier) {
+    public ProductInSaleField(final String caption, final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
         this.priceSupplier = priceSupplier;
         this.sale = sale;
         this.brandSupplier = brandSupplier;
@@ -113,25 +113,25 @@ public class ProductInSaleField extends CustomField<List> {
         });
         root.addComponent(productsContainer);
 
-        MenuBar productMenu = new MenuBar();
+        final MenuBar productMenu = new MenuBar();
         productMenu.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
         productMenu.addStyleName(ExtaTheme.MENUBAR_SMALL);
         final MenuBar.MenuItem addBtn = productMenu.addItem("Добавить продукт", FontAwesome.PLUS, null);
 
-        MenuBar.MenuItem creditMn = addBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
+        final MenuBar.MenuItem creditMn = addBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
         creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
             new LoanCalculatorForm().showModal();
         });
         creditMn.addSeparator();
-        for (ProdCredit prod : lookup(ProdCreditRepository.class).findByActiveOrderByNameAsc(true))
+        for (final ProdCredit prod : lookup(ProdCreditRepository.class).findByActiveOrderByNameAsc(true))
             creditMn.addItem(prod.getName(), e -> addProduct(prod));
 
-        MenuBar.MenuItem instMn = addBtn.addItem("Рассрочка", FontAwesome.PUZZLE_PIECE, null);
-        for (ProdInstallments prod : lookup(ProdInstallmentsRepository.class).findByActiveOrderByNameAsc(true))
+        final MenuBar.MenuItem instMn = addBtn.addItem("Рассрочка", FontAwesome.PUZZLE_PIECE, null);
+        for (final ProdInstallments prod : lookup(ProdInstallmentsRepository.class).findByActiveOrderByNameAsc(true))
             instMn.addItem(prod.getName(), e -> addProduct(prod));
 
-        MenuBar.MenuItem insurMn = addBtn.addItem("Страховка", FontAwesome.UMBRELLA, null);
-        for (ProdInsurance prod : lookup(ProdInsuranceRepository.class).findByActiveOrderByNameAsc(true))
+        final MenuBar.MenuItem insurMn = addBtn.addItem("Страховка", FontAwesome.UMBRELLA, null);
+        for (final ProdInsurance prod : lookup(ProdInsuranceRepository.class).findByActiveOrderByNameAsc(true))
             insurMn.addItem(prod.getName(), e -> addProduct(prod));
 
         root.addComponent(productMenu);
@@ -144,8 +144,8 @@ public class ProductInSaleField extends CustomField<List> {
         return root;
     }
 
-    private void addProduct(Product product) {
-        ProductInSale productInSale = new ProductInSale(sale);
+    private void addProduct(final Product product) {
+        final ProductInSale productInSale = new ProductInSale(sale);
         productInSale.setProduct(product);
         container.addBean(productInSale);
         setValue(container.getItemIds());
@@ -171,7 +171,7 @@ public class ProductInSaleField extends CustomField<List> {
     public void validate() throws Validator.InvalidValueException {
         super.validate();
         if (productsContainer != null) {
-            for (Component component : newArrayList(productsContainer)) {
+            for (final Component component : newArrayList(productsContainer)) {
                 ((ProductItemComponent) component).validate();
             }
         }
@@ -180,7 +180,7 @@ public class ProductInSaleField extends CustomField<List> {
     @Override
     public void commit() throws SourceException, Validator.InvalidValueException {
         if (productsContainer != null) {
-            for (Component component : newArrayList(productsContainer)) {
+            for (final Component component : newArrayList(productsContainer)) {
                 ((ProductItemComponent) component).commit();
             }
         }
@@ -201,7 +201,7 @@ public class ProductInSaleField extends CustomField<List> {
         protected final BeanItem<ProductInSale> productInSaleItem;
         protected BeanFieldGroup<ProductInSale> fieldGroup;
 
-        public ProductItemComponent(Object itemId, String panelCaption) {
+        public ProductItemComponent(final Object itemId, final String panelCaption) {
             this.itemId = itemId;
             this.panelCaption = panelCaption;
             productInSaleItem = container.getItem(itemId);
@@ -209,14 +209,14 @@ public class ProductInSaleField extends CustomField<List> {
             addStyleName(ExtaTheme.LAYOUT_CARD);
             setWidth(100, Unit.PERCENTAGE);
 
-            HorizontalLayout panelCaptionLayout = new HorizontalLayout();
+            final HorizontalLayout panelCaptionLayout = new HorizontalLayout();
             panelCaptionLayout.addStyleName(ExtaTheme.PANEL_CAPTION);
             panelCaptionLayout.setWidth(100, Unit.PERCENTAGE);
-            Label caption = new Label(this.panelCaption);
+            final Label caption = new Label(this.panelCaption);
             panelCaptionLayout.addComponent(caption);
             panelCaptionLayout.setExpandRatio(caption, 1);
 
-            MenuBar productMenu = createMenuBar();
+            final MenuBar productMenu = createMenuBar();
             panelCaptionLayout.addComponent(productMenu);
 
             addComponent(panelCaptionLayout);
@@ -224,10 +224,10 @@ public class ProductInSaleField extends CustomField<List> {
         }
 
         protected MenuBar createMenuBar() {
-            MenuBar productMenu = new MenuBar();
+            final MenuBar productMenu = new MenuBar();
             productMenu.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
             productMenu.addStyleName(ExtaTheme.MENUBAR_SMALL);
-            MenuBar.MenuItem delMenuItem = productMenu.addItem("", FontAwesome.TRASH_O, c -> {
+            final MenuBar.MenuItem delMenuItem = productMenu.addItem("", FontAwesome.TRASH_O, c -> {
                 container.removeItem(itemId);
                 setValue(container.getItemIds());
             });
@@ -241,7 +241,7 @@ public class ProductInSaleField extends CustomField<List> {
         public void commit() throws SourceException, Validator.InvalidValueException {
             try {
                 fieldGroup.commit();
-            } catch (FieldGroup.CommitException e) {
+            } catch (final FieldGroup.CommitException e) {
                 throw new Validator.InvalidValueException(e.getMessage());
             }
         }
@@ -270,13 +270,13 @@ public class ProductInSaleField extends CustomField<List> {
         private Label tariffLabel;
         private Label premiumLabel;
 
-        public InsuranceItemComponent(Object itemId) {
+        public InsuranceItemComponent(final Object itemId) {
             super(itemId, "Страховка");
         }
 
         @Override
         protected Component createProductForm() {
-            ExtaFormLayout form = new ExtaFormLayout();
+            final ExtaFormLayout form = new ExtaFormLayout();
 
             form.addComponent(new FormGroupHeader("Характеристики продукта"));
             productField = new ProdInsuranceField("Продукт", "Введите название продукта");
@@ -307,7 +307,7 @@ public class ProductInSaleField extends CustomField<List> {
             // Ответственный за оформление страховки
             responsibleField = new EmployeeField("Ответственный", "Укажите ответственного за оформление страховки");
             responsibleField.setCompanySupplier(() -> {
-                ProdInsurance product = productField.getValue();
+                final ProdInsurance product = productField.getValue();
                 if (product != null) {
                     return product.getVendor();
                 } else
@@ -344,7 +344,7 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется продукт.
          */
-        private void productChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void productChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем характеристики продукта.
             refreshProductFields();
             // Обновляем(Пересчитываем) стоимость страховки
@@ -354,7 +354,7 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется срок страхования
          */
-        private void periodChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void periodChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем характеристики
             refreshProductFields();
             // Обновляем стоимость
@@ -369,14 +369,14 @@ public class ProductInSaleField extends CustomField<List> {
             final ProdInsurance insurance = productField.getValue();
             final BigDecimal price = priceSupplier.get();
             final String brand = brandSupplier.get();
-            Number numPeriod = (Number) periodField.getValue();
+            final Number numPeriod = (Number) periodField.getValue();
             final Insurance.PeriodOfCover period =
                     Optional.ofNullable(numPeriod).map(
                             n -> n.equals(6) ? Insurance.PeriodOfCover.HALF_A_YEAR : Insurance.PeriodOfCover.YEAR).orElse(null);
             final boolean canCalculate = insurance != null && price != null && brand != null && period != null;
             if (canCalculate) {
-                InsuranceCalculator calc = lookup(InsuranceCalculator.class);
-                BigDecimal premium = calc.calcPropInsPremium(brand, price, period, false);
+                final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+                final BigDecimal premium = calc.calcPropInsPremium(brand, price, period, false);
                 premiumLabel.setValue(MessageFormat.format("{0, number, currency}", premium));
             }
             // Гасим поля, если нечего в них показывать
@@ -387,7 +387,7 @@ public class ProductInSaleField extends CustomField<List> {
          * Обновляем характеристики продукта.
          */
         public void refreshProductFields() {
-            ProdInsurance insurance = productField.getValue();
+            final ProdInsurance insurance = productField.getValue();
             final boolean canShowDetails = insurance != null;
             if (canShowDetails) {
                 final BeanItem<ProdInsurance> beanItem = new BeanItem<>(Optional.ofNullable(insurance).orElse(new ProdInsurance()));
@@ -396,14 +396,14 @@ public class ProductInSaleField extends CustomField<List> {
                 vendorLabel.setPropertyDataSource(beanItem.getItemProperty("vendor.name"));
 
                 final String brand = brandSupplier.get();
-                Number numPeriod = (Number) periodField.getValue();
+                final Number numPeriod = (Number) periodField.getValue();
                 final Insurance.PeriodOfCover period =
                         Optional.ofNullable(numPeriod).map(
                                 n -> n.equals(6) ? Insurance.PeriodOfCover.HALF_A_YEAR : Insurance.PeriodOfCover.YEAR).orElse(null);
                 final boolean canFindTarif = brand != null && period != null;
                 if (canFindTarif) {
-                    InsuranceCalculator calc = lookup(InsuranceCalculator.class);
-                    BigDecimal premium = calc.findTarif(brand, period, false);
+                    final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
+                    final BigDecimal premium = calc.findTarif(brand, period, false);
                     tariffLabel.setPropertyDataSource(new ObjectProperty<>(premium));
                     tariffLabel.setVisible(true);
                 } else
@@ -446,13 +446,13 @@ public class ProductInSaleField extends CustomField<List> {
         private Label periodLabel;
         private Label monthlyPayLabel;
 
-        public InstallmentItemComponent(Object itemId) {
+        public InstallmentItemComponent(final Object itemId) {
             super(itemId, "Рассрочка");
         }
 
         @Override
         protected Component createProductForm() {
-            ExtaFormLayout form = new ExtaFormLayout();
+            final ExtaFormLayout form = new ExtaFormLayout();
 
             form.addComponent(new FormGroupHeader("Характеристики продукта"));
             productField = new ProdInstallmentsField("Продукт", "Введите название продукта");
@@ -499,7 +499,7 @@ public class ProductInSaleField extends CustomField<List> {
             // Ответственный со стороны банка
             responsibleField = new EmployeeField("Ответственный сотрудник", "Укажите ответственного со стороны эммитента рассрочки");
             responsibleField.setCompanySupplier(() -> {
-                ProdInstallments product = productField.getValue();
+                final ProdInstallments product = productField.getValue();
                 if (product != null) {
                     return product.getVendor();
                 } else
@@ -527,11 +527,11 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется продукт.
          */
-        private void productChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void productChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем характеристики продукта.
             refreshProductFields();
             // Обновляем параметы продукта
-            ProdInstallments installments = productField.getValue();
+            final ProdInstallments installments = productField.getValue();
             if (installments != null) {
                 // Наполняем возможными сроками кредита
                 fillPeriodFieldItems();
@@ -551,7 +551,7 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется первоначальный взнос
          */
-        private void downPaymentChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void downPaymentChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем характеристики
             refreshProductFields();
             // Обновляем сумму кредита
@@ -560,7 +560,7 @@ public class ProductInSaleField extends CustomField<List> {
             final BigDecimal downPayment = downpaymentField.getValue();
             final boolean canCalculate = installments != null && price != null && downPayment != null;
             if (canCalculate) {
-                BigDecimal instSum = price.subtract(downPayment);
+                final BigDecimal instSum = price.subtract(downPayment);
                 summField.setConvertedValue(instSum);
             }
             // Обновляем стоимость
@@ -570,7 +570,7 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется срок кредитования
          */
-        private void periodChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void periodChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем характеристики
             refreshProductFields();
             // Обновляем стоимость
@@ -580,13 +580,13 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется сумма
          */
-        private void creditSummChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void creditSummChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем первоначальный взнос чтобы получить цену техники с учетом новой суммы
             final ProdInstallments inst = productField.getValue();
             final BigDecimal price = priceSupplier.get();
             final BigDecimal instSum = (BigDecimal) summField.getConvertedValue();
             if (inst != null && price != null && instSum != null) {
-                BigDecimal downPayment = price.subtract(instSum);
+                final BigDecimal downPayment = price.subtract(instSum);
                 downpaymentField.setValue(downPayment);
             }
             // Обновляем характеристики
@@ -649,12 +649,12 @@ public class ProductInSaleField extends CustomField<List> {
 
         private void fillPeriodFieldItems() {
             // Наполняем возможными сроками кредита
-            ProdInstallments installments = productField.getValue();
+            final ProdInstallments installments = productField.getValue();
             if (installments != null) {
-                int start = 1;
-                int end = installments.getMaxPeriod();
-                int step = 1;
-                Object curValue = periodField.getValue();
+                final int start = 1;
+                final int end = installments.getMaxPeriod();
+                final int step = 1;
+                final Object curValue = periodField.getValue();
                 periodField.removeAllItems();
                 for (int i = start; i <= end; i += step) {
                     periodField.addItem(i);
@@ -668,7 +668,7 @@ public class ProductInSaleField extends CustomField<List> {
          * Обновляем характеристики продукта.
          */
         public void refreshProductFields() {
-            ProdInstallments installments = productField.getValue();
+            final ProdInstallments installments = productField.getValue();
             final boolean canShowDetails = installments != null;
             if (canShowDetails) {
                 final BeanItem<ProdInstallments> beanItem = new BeanItem<>(Optional.ofNullable(installments).orElse(new ProdInstallments()));
@@ -715,7 +715,7 @@ public class ProductInSaleField extends CustomField<List> {
         private Label yearlyRiseLabel;
         private Label monthlyRiseLabel;
 
-        public CreditItemComponent(Object itemId) {
+        public CreditItemComponent(final Object itemId) {
             super(itemId, "Кредит");
         }
 
@@ -723,7 +723,7 @@ public class ProductInSaleField extends CustomField<List> {
         protected MenuBar createMenuBar() {
             final MenuBar menuBar = super.createMenuBar();
 
-            MenuBar.MenuItem editMenuItem = menuBar.addItemBefore("", FontAwesome.COMPASS, null, menuBar.getItems().get(0));
+            final MenuBar.MenuItem editMenuItem = menuBar.addItemBefore("", FontAwesome.COMPASS, null, menuBar.getItems().get(0));
             editMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             editMenuItem.setDescription("Открыть форму подбора продукта (калькулятор продукта)");
 
@@ -733,7 +733,7 @@ public class ProductInSaleField extends CustomField<List> {
         @Override
         protected Component createProductForm() {
 
-            ExtaFormLayout form = new ExtaFormLayout();
+            final ExtaFormLayout form = new ExtaFormLayout();
 
             form.addComponent(new FormGroupHeader("Характеристики продукта"));
             productField = new ProdCreditField("Продукт", "Введите название продукта");
@@ -792,7 +792,7 @@ public class ProductInSaleField extends CustomField<List> {
             // Ответственный со стороны банка
             responsibleField = new EmployeeField("Менеджер банка", "Укажите ответственного со стороны банка");
             responsibleField.setCompanySupplier(() -> {
-                ProdCredit product = productField.getValue();
+                final ProdCredit product = productField.getValue();
                 if (product != null) {
                     return product.getVendor();
                 } else
@@ -848,11 +848,11 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется продукт.
          */
-        private void productChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void productChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем характеристики продукта.
             refreshProductFields();
             // Обновляем параметы продукта
-            ProdCredit credit = productField.getValue();
+            final ProdCredit credit = productField.getValue();
             if (credit != null) {
                 // Наполняем возможными сроками кредита
                 fillPeriodFieldItems();
@@ -871,12 +871,12 @@ public class ProductInSaleField extends CustomField<List> {
 
         private void fillPeriodFieldItems() {
             // Наполняем возможными сроками кредита
-            ProdCredit credit = productField.getValue();
+            final ProdCredit credit = productField.getValue();
             if (credit != null) {
-                int start = credit.getMinPeriod();
-                int end = credit.getMaxPeriod();
-                int step = credit.getStep();
-                Object curValue = periodField.getValue();
+                final int start = credit.getMinPeriod();
+                final int end = credit.getMaxPeriod();
+                final int step = credit.getStep();
+                final Object curValue = periodField.getValue();
                 periodField.removeAllItems();
                 for (int i = start; i <= end; i += step) {
                     periodField.addItem(i);
@@ -889,7 +889,7 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется первоначальный взнос
          */
-        private void downPaymentChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void downPaymentChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем характеристики
             refreshProductFields();
             // Обновляем сумму кредита
@@ -898,7 +898,7 @@ public class ProductInSaleField extends CustomField<List> {
             final BigDecimal downPayment = downpaymentField.getValue();
             final boolean canCalculate = credit != null && price != null && downPayment != null;
             if (canCalculate) {
-                BigDecimal creditSum = lookup(LoanCalculator.class).calcCreditSum(credit, price, downPayment);
+                final BigDecimal creditSum = lookup(LoanCalculator.class).calcCreditSum(credit, price, downPayment);
                 summField.setConvertedValue(creditSum);
             }
             // Обновляем стоимость
@@ -908,7 +908,7 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется срок кредитования
          */
-        private void periodChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void periodChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем характеристики
             refreshProductFields();
             // Обновляем стоимость
@@ -918,13 +918,13 @@ public class ProductInSaleField extends CustomField<List> {
         /**
          * Меняется сумма
          */
-        private void creditSummChangeListener(Property.ValueChangeEvent valueChangeEvent) {
+        private void creditSummChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
             // Обновляем первоначальный взнос чтобы получить цену техники с учетом новой суммы
             final ProdCredit credit = productField.getValue();
             final BigDecimal price = priceSupplier.get();
             final BigDecimal creditSum = (BigDecimal) summField.getConvertedValue();
             if (credit != null && price != null && creditSum != null) {
-                BigDecimal downPayment = lookup(LoanCalculator.class).calcDownPayment(credit, price, creditSum);
+                final BigDecimal downPayment = lookup(LoanCalculator.class).calcDownPayment(credit, price, creditSum);
                 downpaymentField.setValue(downPayment);
             }
             // Обновляем характеристики
@@ -985,7 +985,7 @@ public class ProductInSaleField extends CustomField<List> {
             final boolean canCalculate = credit != null && price != null && downPayment != null && period != null;
             final BigDecimal percent = getInterestRate(credit, period, downPayment);
             if (canCalculate) {
-                LoanInfo loanInfo = lookup(LoanCalculator.class).calc(credit, price, downPayment, period.intValue());
+                final LoanInfo loanInfo = lookup(LoanCalculator.class).calc(credit, price, downPayment, period.intValue());
                 monthlyPayLabel.setValue(MessageFormat.format("{0, number, currency}", loanInfo.getMonthlyPay()));
                 overpaymentLabel.setValue(MessageFormat.format("{0, number, currency}", loanInfo.getOverpayment()));
                 yearlyRiseLabel.setValue(MessageFormat.format("{0, number, #,##.##%}", loanInfo.getYearlyRise()));
@@ -1002,7 +1002,7 @@ public class ProductInSaleField extends CustomField<List> {
          * Обновляем характеристики продукта.
          */
         public void refreshProductFields() {
-            ProdCredit credit = productField.getValue();
+            final ProdCredit credit = productField.getValue();
             final boolean canShowDetails = credit != null;
             if (canShowDetails) {
                 final BeanItem<ProdCredit> beanItem = new BeanItem<>(Optional.ofNullable(credit).orElse(new ProdCredit()));
@@ -1032,7 +1032,7 @@ public class ProductInSaleField extends CustomField<List> {
         }
 
         private String getDocumentsList() {
-            ProdCredit credit = productField.getValue();
+            final ProdCredit credit = productField.getValue();
             final ArrayList<ProdCreditDoc> prodCreditDocs = newArrayList(credit.getDocList());
             return Joiner.on(", ").join(
                     prodCreditDocs.stream()
@@ -1045,18 +1045,18 @@ public class ProductInSaleField extends CustomField<List> {
         }
 
         private String getInterestRateText() {
-            BigDecimal interest = getInterestRate();
+            final BigDecimal interest = getInterestRate();
             return interest == null ? "Рассчитывается..." : MessageFormat.format("{0, number, percent}", interest);
         }
 
         private BigDecimal getInterestRate() {
-            ProdCredit credit = productField.getValue();
-            Number period = (Number) periodField.getValue();
-            BigDecimal downpaymentSum = downpaymentField.getValue();
+            final ProdCredit credit = productField.getValue();
+            final Number period = (Number) periodField.getValue();
+            final BigDecimal downpaymentSum = downpaymentField.getValue();
             return getInterestRate(credit, period, downpaymentSum);
         }
 
-        private BigDecimal getInterestRate(ProdCredit credit, Number period, BigDecimal downpaymentSum) {
+        private BigDecimal getInterestRate(final ProdCredit credit, final Number period, final BigDecimal downpaymentSum) {
             final boolean canCalculate = credit != null && period != null && downpaymentSum != null;
             if (canCalculate)
                 return lookup(LoanCalculator.class)

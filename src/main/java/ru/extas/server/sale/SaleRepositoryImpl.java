@@ -154,8 +154,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         if (sale.getDealerManager() != null)
             users.add(new ImmutablePair<>(sale.getDealerManager(), AccessRole.READER));
         // Ответственные по продуктам
-        for (ProductInSale productInSale : sale.getProductInSales()) {
-            Employee prodResponsible = productInSale.getResponsible();
+        for (final ProductInSale productInSale : sale.getProductInSales()) {
+            final Employee prodResponsible = productInSale.getResponsible();
             if (prodResponsible != null) {
                 users.add(new ImmutablePair<>(prodResponsible, AccessRole.READER));
             }

@@ -30,8 +30,8 @@ public class UserGridStateServiceImpl implements UserGridStateService {
 
     @Transactional
     @Override
-    public void saveState(String tableId, String name, String state) {
-        UserGridState gridState = new UserGridState();
+    public void saveState(final String tableId, final String name, final String state) {
+        final UserGridState gridState = new UserGridState();
         gridState.setUser(userService.getCurrentUser());
         gridState.setTableId(tableId);
         gridState.setName(name);
@@ -42,20 +42,20 @@ public class UserGridStateServiceImpl implements UserGridStateService {
 
     @Transactional
     @Override
-    public void deleteState(String tableId, String name) {
-        UserGridState gridState = stateRegistry.findByUserAndTableIdAndName(userService.getCurrentUser(), tableId, name);
+    public void deleteState(final String tableId, final String name) {
+        final UserGridState gridState = stateRegistry.findByUserAndTableIdAndName(userService.getCurrentUser(), tableId, name);
         if (gridState != null)
             stateRegistry.delete(gridState);
     }
 
     @Override
-    public Set<UserGridState> loadStates(String tableId) {
+    public Set<UserGridState> loadStates(final String tableId) {
         return stateRegistry.findByUserAndTableId(userService.getCurrentUser(), tableId);
     }
 
     @Override
-    public String getDefaultStateName(String tableId) {
-        UserGridState gridState = stateRegistry.findByUserAndTableIdAndDefaultState(userService.getCurrentUser(), tableId, true);
+    public String getDefaultStateName(final String tableId) {
+        final UserGridState gridState = stateRegistry.findByUserAndTableIdAndDefaultState(userService.getCurrentUser(), tableId, true);
         if (gridState != null)
             return gridState.getName();
 
@@ -64,15 +64,15 @@ public class UserGridStateServiceImpl implements UserGridStateService {
 
     @Transactional
     @Override
-    public void setDefaultState(String tableId, String name) {
+    public void setDefaultState(final String tableId, final String name) {
         // Снимаем текущее состояние по умолчанию
-        UserGridState gridState = stateRegistry.findByUserAndTableIdAndDefaultState(userService.getCurrentUser(), tableId, true);
+        final UserGridState gridState = stateRegistry.findByUserAndTableIdAndDefaultState(userService.getCurrentUser(), tableId, true);
         if (gridState != null) {
             gridState.setDefaultState(false);
             stateRegistry.save(gridState);
         }
         if (!isNullOrEmpty(name)) {
-            UserGridState state = stateRegistry.findByUserAndTableIdAndName(userService.getCurrentUser(), tableId, name);
+            final UserGridState state = stateRegistry.findByUserAndTableIdAndName(userService.getCurrentUser(), tableId, name);
             if (state != null) {
                 state.setDefaultState(true);
                 stateRegistry.save(state);

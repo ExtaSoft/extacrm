@@ -18,13 +18,13 @@ public class ExtaBeanContainer<BEANTYPE> extends BeanItemContainer<BEANTYPE> imp
     private final Compare.Equal archiveFilter = new Compare.Equal(ArchivedObject.PROPERTY_NAME, false);
     private boolean archiveExcluded;
 
-    public ExtaBeanContainer(Class<? super BEANTYPE> type) throws IllegalArgumentException {
+    public ExtaBeanContainer(final Class<? super BEANTYPE> type) throws IllegalArgumentException {
         super(type);
         // Отсекаем архивные записи
         setArchiveExcluded(true);
     }
 
-    public ExtaBeanContainer(Class<? super BEANTYPE> type, Collection<? extends BEANTYPE> collection) throws IllegalArgumentException {
+    public ExtaBeanContainer(final Class<? super BEANTYPE> type, final Collection<? extends BEANTYPE> collection) throws IllegalArgumentException {
         super(type, collection);
         // Отсекаем архивные записи
         setArchiveExcluded(true);
@@ -36,7 +36,7 @@ public class ExtaBeanContainer<BEANTYPE> extends BeanItemContainer<BEANTYPE> imp
     }
 
     @Override
-    public void setArchiveExcluded(boolean archiveExcluded) {
+    public void setArchiveExcluded(final boolean archiveExcluded) {
         if (this.archiveExcluded != archiveExcluded && ArchivedObject.class.isAssignableFrom(getBeanType())) {
             this.archiveExcluded = archiveExcluded;
             if (archiveExcluded)

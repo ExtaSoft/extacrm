@@ -591,17 +591,17 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private FilterTableStateHandler createFilterTableStateHandler() {
         return new FilterTableStateHandler() {
             @Override
-            public void save(FilterTableStateProfile profile) {
+            public void save(final FilterTableStateProfile profile) {
 
-                FilterTableStateProfile newProfile = TableUtils.createProfile(table, profile.getName());
+                final FilterTableStateProfile newProfile = TableUtils.createProfile(table, profile.getName());
                 profile.getColumnInfos().clear();
                 profile.getColumnInfos().addAll(newProfile.getColumnInfos());
 
-                ObjectMapper mapper = new ObjectMapper();
-                StringWriter profileJson = new StringWriter();
+                final ObjectMapper mapper = new ObjectMapper();
+                final StringWriter profileJson = new StringWriter();
                 try {
                     mapper.writeValue(profileJson, profile);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     Throwables.propagate(e);
                 }
                 lookup(UserGridStateService.class).saveState(getGridId(), profile.getName(), profileJson.toString());
@@ -609,25 +609,25 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             }
 
             @Override
-            public void delete(String profileName) {
+            public void delete(final String profileName) {
                 lookup(UserGridStateService.class).deleteState(getGridId(), profileName);
                 NotificationUtil.showSuccess("Профиль таблицы удален!");
             }
 
             @Override
             public Set<FilterTableStateProfile> load() {
-                Set<FilterTableStateProfile> stateProfiles = newHashSet();
+                final Set<FilterTableStateProfile> stateProfiles = newHashSet();
 
                 // Извлекаем стандартный профиль (по умолчанию)
-                FilterTableStateProfile standardProfile = TableUtils.createProfile(table, STANDARD_PROFILE_NAME);
+                final FilterTableStateProfile standardProfile = TableUtils.createProfile(table, STANDARD_PROFILE_NAME);
                 stateProfiles.add(standardProfile);
 
-                for (UserGridState gridState : lookup(UserGridStateService.class).loadStates(getGridId())) {
-                    ObjectMapper mapper = new ObjectMapper();
+                for (final UserGridState gridState : lookup(UserGridStateService.class).loadStates(getGridId())) {
+                    final ObjectMapper mapper = new ObjectMapper();
                     try {
-                        FilterTableStateProfile profile = mapper.readValue(gridState.getState(), FilterTableStateProfile.class);
+                        final FilterTableStateProfile profile = mapper.readValue(gridState.getState(), FilterTableStateProfile.class);
                         stateProfiles.add(profile);
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         Throwables.propagate(e);
                     }
                 }
@@ -637,12 +637,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
             @Override
             public String getDefaultProfile() {
-                String profileName = lookup(UserGridStateService.class).getDefaultStateName(getGridId());
+                final String profileName = lookup(UserGridStateService.class).getDefaultStateName(getGridId());
                 return isNullOrEmpty(profileName) ? STANDARD_PROFILE_NAME : profileName;
             }
 
             @Override
-            public void setDefaultProfile(String profileName) {
+            public void setDefaultProfile(final String profileName) {
                 lookup(UserGridStateService.class).setDefaultState(getGridId(), profileName);
             }
         };

@@ -62,7 +62,7 @@ public class ProductInSale extends AuditedObject {
 		return responsible;
 	}
 
-	public void setResponsible(Employee responsible) {
+	public void setResponsible(final Employee responsible) {
 		this.responsible = responsible;
 	}
 

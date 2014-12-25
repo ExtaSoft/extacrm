@@ -51,7 +51,7 @@ public class ClientField extends CustomField<Client> {
     private class PopupClientContent implements PopupView.Content {
         @Override
         public String getMinimizedValueAsHTML() {
-            Client client = getValue();
+            final Client client = getValue();
             if (client != null)
                 return client.getName();
             else
@@ -65,7 +65,7 @@ public class ClientField extends CustomField<Client> {
             layout.setMargin(true);
 
             final boolean isLegalEntity = getValue() != null && getValue() instanceof LegalEntity;
-            CheckBox isLegalEntityField = new CheckBox("Клиент Юр.лицо", isLegalEntity);
+            final CheckBox isLegalEntityField = new CheckBox("Клиент Юр.лицо", isLegalEntity);
             isLegalEntityField.setDescription("Отметте флаг, если клиент является юр.лицом");
             isLegalEntityField.addValueChangeListener(event -> {
                 final Boolean isLE = isLegalEntityField.getValue();
@@ -82,7 +82,7 @@ public class ClientField extends CustomField<Client> {
             return layout;
         }
 
-        private void makePopup(VerticalLayout layout, boolean isLegalEntity) {
+        private void makePopup(final VerticalLayout layout, final boolean isLegalEntity) {
             if (layout.getComponentCount() == 2)
                 layout.removeComponent(layout.getComponent(1));
 

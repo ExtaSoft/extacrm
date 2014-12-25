@@ -43,7 +43,7 @@ public class IdentifiedObject implements Persistable<String> {
         return archived;
     }
 
-    public void setArchived(boolean archived) {
+    public void setArchived(final boolean archived) {
         this.archived = archived;
     }
 

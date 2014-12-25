@@ -40,7 +40,7 @@ public class UserGridState extends IdentifiedObject {
         return user;
     }
 
-    public void setUser(UserProfile user) {
+    public void setUser(final UserProfile user) {
         this.user = user;
     }
 
@@ -48,7 +48,7 @@ public class UserGridState extends IdentifiedObject {
         return tableId;
     }
 
-    public void setTableId(String table) {
+    public void setTableId(final String table) {
         this.tableId = table;
     }
 
@@ -56,7 +56,7 @@ public class UserGridState extends IdentifiedObject {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -64,7 +64,7 @@ public class UserGridState extends IdentifiedObject {
         return defaultState;
     }
 
-    public void setDefaultState(boolean defaultState) {
+    public void setDefaultState(final boolean defaultState) {
         this.defaultState = defaultState;
     }
 
@@ -72,7 +72,7 @@ public class UserGridState extends IdentifiedObject {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(final String state) {
         this.state = state;
     }
 }
