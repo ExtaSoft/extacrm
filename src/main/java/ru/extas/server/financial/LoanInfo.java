@@ -13,18 +13,31 @@ import java.math.BigDecimal;
  */
 public class LoanInfo {
 
+    // Кредитный продукт
     private final ProdCredit product;
+    // Цена товара
     private final BigDecimal price;
+    // Первоначальный взнос
     private final BigDecimal downPayment;
+    // Срок кредита в месяцах
     private final int period;
+    // Кредитная ставка
     private final BigDecimal interest;
+    // Сумма кредита
     private final BigDecimal creditSum;
+    // Коэффициент процентной ставки
     private final BigDecimal interestFactor;
+    // Аннуитентныый коэффициент
     private final BigDecimal annuitant;
+    // Ежемесячный платеж
     private final BigDecimal monthlyPay;
+    // Полная стоимость кредита
     private final BigDecimal creditCost;
+    // Переплата
     private final BigDecimal overpayment;
+    // Ежегодное удорожание
     private final BigDecimal yearlyRise;
+    // Ежемесячное удорожание
     private final BigDecimal monthlyRise;
 
     public LoanInfo(final ProdCredit product, final BigDecimal price, final BigDecimal downPayment, final int period, final BigDecimal interest, final BigDecimal creditSum, final BigDecimal interestFactor, final BigDecimal annuitant, final BigDecimal monthlyPay, final BigDecimal creditCost, final BigDecimal overpayment, final BigDecimal yearlyRise, final BigDecimal monthlyRise) {
