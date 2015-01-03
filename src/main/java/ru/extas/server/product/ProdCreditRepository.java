@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.sale.ProdCredit;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -53,5 +54,16 @@ public interface ProdCreditRepository extends JpaRepository<ProdCredit, String> 
 	 */
 	@Query("SELECT min(p.step) FROM ProdCredit p WHERE p.active = true")
 	Integer getPeriodMinStep();
+
+	/**
+	 * Найти подходящие под параметры кредитные продукты
+	 *
+	 * @param price       цена товара
+	 * @param downPayment первоначальный платеж (руб.)
+	 * @param period      срок кредита (месяцы)
+	 * @return список подходящих кредитных продуктов
+	 */
+	@Query("SELECT p FROM ProdCredit p WHERE p.active = true AND p.minSum")
+	List<ProdCredit>  findSuitableProducts(BigDecimal price, BigDecimal downPayment, int period);
 
 }

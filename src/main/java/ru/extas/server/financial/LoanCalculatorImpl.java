@@ -5,7 +5,9 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditPercent;
+import ru.extas.server.product.ProdCreditRepository;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
@@ -23,6 +25,9 @@ import static com.google.common.collect.Lists.newArrayList;
 @Service
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class LoanCalculatorImpl implements LoanCalculator {
+
+    @Inject
+    ProdCreditRepository creditRepository;
 
     @Override
     public LoanInfo calc(final ProdCredit product, final BigDecimal price, final BigDecimal downPaymentSum, final int period) {
@@ -116,5 +121,76 @@ public class LoanCalculatorImpl implements LoanCalculator {
         final BigDecimal subsidyPrice = calcSubsidyPrice(credit, price);
         // Возвращаем сумму кредита
         return price.subtract(creditSum);
+    }
+
+    /**
+     * Найти подходящие кредитные программы и рассчитать их параметры.
+     *
+     * @param price       цена товара
+     * @param downPayment первоначальный платеж (руб.)
+     * @param period      срок кредита (месяцы)
+     * @return список полностью рассчитанных кредитных продуктов
+     */
+    @Override
+    public List<LoanInfo> findSuitableProducts(BigDecimal price, BigDecimal downPayment, int period) {
+        // Выбрать все продукты подходящие под параметры
+        List<ProdCredit> products = creditRepository.findSuitableProducts(price, downPayment, period);
+        // TODO: To implement
+        return null;
+    }
+
+    /**
+     * Найти подходящие кредитные программы и рассчитать их параметры.
+     * В качестве срока кредита берется максимально возможный по программе.
+     *
+     * @param price       цена товара
+     * @param downPayment первоначальный платеж (руб.)
+     * @return список полностью рассчитанных кредитных продуктов
+     */
+    @Override
+    public List<LoanInfo> findSuitableProducts(BigDecimal price, BigDecimal downPayment) {
+        // TODO: To implement
+        return null;
+    }
+
+    /**
+     * Найти подходящие кредитные программы и рассчитать их параметры
+     * В качестве первоначального взноса берется минимально возможный по программе
+     *
+     * @param price  цена товара
+     * @param period срок кредита (месяцы)
+     * @return список полностью рассчитанных кредитных продуктов
+     */
+    @Override
+    public List<LoanInfo> findSuitableProducts(BigDecimal price, int period) {
+        // TODO: To implement
+        return null;
+    }
+
+    /**
+     * Найти подходящие кредитные программы и рассчитать их параметры
+     * В качестве первоначального взноса берется минимально возможный по программе
+     * В качестве срока кредита берется максимально возможный по программе.
+     *
+     * @param price цена товара
+     * @return список полностью рассчитанных кредитных продуктов
+     */
+    @Override
+    public List<LoanInfo> findSuitableProducts(BigDecimal price) {
+        // TODO: To implement
+        return null;
+    }
+
+    /**
+     * Найти подходящие кредитные продукты и рассчитать их параметры исходя из первоначального взноса.
+     *
+     * @param price      цена товара
+     * @param monthlyPay первоначальный взнос
+     * @return список полностью рассчитанных кредитных продуктов
+     */
+    @Override
+    public List<LoanInfo> findSuitableProductsByMonthlyPay(BigDecimal price, BigDecimal monthlyPay) {
+        // TODO: To implement
+        return null;
     }
 }

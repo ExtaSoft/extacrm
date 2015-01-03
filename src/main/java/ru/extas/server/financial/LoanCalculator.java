@@ -96,10 +96,11 @@ public interface LoanCalculator {
     List<LoanInfo> findSuitableProducts(BigDecimal price);
 
     /**
+     * Найти подходящие кредитные продукты и рассчитать их параметры исходя из первоначального взноса.
      *
-     * @param price
-     * @param monthlyPay
-     * @return
+     * @param price цена товара
+     * @param monthlyPay первоначальный взнос
+     * @return список полностью рассчитанных кредитных продуктов
      */
     List<LoanInfo> findSuitableProductsByMonthlyPay(BigDecimal price, BigDecimal monthlyPay);
 
