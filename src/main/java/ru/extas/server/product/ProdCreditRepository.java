@@ -63,7 +63,7 @@ public interface ProdCreditRepository extends JpaRepository<ProdCredit, String> 
 	 * @param period      срок кредита (месяцы)
 	 * @return список подходящих кредитных продуктов
 	 */
-	@Query("SELECT p FROM ProdCredit p WHERE p.active = true AND p.minSum")
+	@Query("SELECT p FROM ProdCredit p WHERE p.active = true")
 	List<ProdCredit>  findSuitableProducts(BigDecimal price, BigDecimal downPayment, int period);
 
 }

@@ -1,5 +1,7 @@
 package ru.extas.web.commons.component;
 
+import com.vaadin.data.Buffered;
+import com.vaadin.data.Validator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import ru.extas.web.commons.ExtaTheme;
@@ -40,7 +42,7 @@ public class PercentOfField extends CustomField<BigDecimal> {
 
     private void updateState() {
         final BigDecimal value = getValue();
-        if (value != null && base != null && inputField != null) {
+        if (value != null && base != null && !base.equals(BigDecimal.ZERO) && inputField != null) {
             switch (mode) {
                 case PERCENT:
                     inputField.setConverter(lookup(StringToPercentConverter.class));
@@ -108,5 +110,10 @@ public class PercentOfField extends CustomField<BigDecimal> {
     @Override
     public Class<? extends BigDecimal> getType() {
         return BigDecimal.class;
+    }
+
+    @Override
+    public void commit() throws SourceException, Validator.InvalidValueException {
+        super.commit();
     }
 }

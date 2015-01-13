@@ -82,6 +82,14 @@ public class ProductInSaleField extends CustomField<List> {
         this.brandSupplier = brandSupplier;
         setWidth(100, Unit.PERCENTAGE);
         setCaption(caption);
+        addValidator(value -> {
+            if (productsContainer != null) {
+                for (final Component component : newArrayList(productsContainer)) {
+                    ((ProductItemComponent) component).validate();
+                }
+            }
+        });
+
     }
 
     /**
@@ -120,10 +128,11 @@ public class ProductInSaleField extends CustomField<List> {
         final MenuBar.MenuItem addBtn = productMenu.addItem("Добавить продукт", FontAwesome.PLUS, null);
 
         final MenuBar.MenuItem creditMn = addBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
-        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
-            new LoanCalculatorForm().showModal();
-        });
-        creditMn.addSeparator();
+        // TODO: Реализовать вызов формы калькулятора
+//        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
+//            new LoanCalculatorForm().showModal();
+//        });
+//        creditMn.addSeparator();
         for (final ProdCredit prod : lookup(ProdCreditRepository.class).findByActiveOrderByNameAsc(true))
             creditMn.addItem(prod.getName(), e -> addProduct(prod));
 
@@ -166,16 +175,6 @@ public class ProductInSaleField extends CustomField<List> {
             }
         }
         return false;
-    }
-
-    @Override
-    public void validate() throws Validator.InvalidValueException {
-        super.validate();
-        if (productsContainer != null) {
-            for (final Component component : newArrayList(productsContainer)) {
-                ((ProductItemComponent) component).validate();
-            }
-        }
     }
 
     @Override
@@ -255,6 +254,9 @@ public class ProductInSaleField extends CustomField<List> {
             fieldGroup.getFields().forEach(Field::validate);
         }
 
+        public void updateSubValue(Property.ValueChangeEvent event) {
+            fireValueChange(false);
+        }
     }
 
     private class InsuranceItemComponent extends ProductItemComponent {
@@ -724,9 +726,10 @@ public class ProductInSaleField extends CustomField<List> {
         protected MenuBar createMenuBar() {
             final MenuBar menuBar = super.createMenuBar();
 
-            final MenuBar.MenuItem editMenuItem = menuBar.addItemBefore("", FontAwesome.COMPASS, null, menuBar.getItems().get(0));
-            editMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
-            editMenuItem.setDescription("Открыть форму подбора продукта (калькулятор продукта)");
+            // TODO: Реализовать вызов формы калькулятора
+//            final MenuBar.MenuItem editMenuItem = menuBar.addItemBefore("", FontAwesome.COMPASS, null, menuBar.getItems().get(0));
+//            editMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
+//            editMenuItem.setDescription("Открыть форму подбора продукта (калькулятор продукта)");
 
             return menuBar;
         }
@@ -838,10 +841,14 @@ public class ProductInSaleField extends CustomField<List> {
 
         private void initRelations() {
             productField.addValueChangeListener(this::productChangeListener);
+            productField.addValueChangeListener(super::updateSubValue);
             downpaymentField.setBase(priceSupplier.get());
             downpaymentField.addValueChangeListener(this::downPaymentChangeListener);
+            downpaymentField.addValueChangeListener(super::updateSubValue);
             periodField.addValueChangeListener(this::periodChangeListener);
+            periodField.addValueChangeListener(super::updateSubValue);
             summField.addValueChangeListener(this::creditSummChangeListener);
+            summField.addValueChangeListener(super::updateSubValue);
             // Наполняем возможными сроками кредита
             fillPeriodFieldItems();
         }
@@ -983,7 +990,7 @@ public class ProductInSaleField extends CustomField<List> {
             final BigDecimal price = priceSupplier.get();
             final BigDecimal downPayment = downpaymentField.getValue();
             final Number period = (Number) periodField.getValue();
-            final boolean canCalculate = credit != null && price != null && downPayment != null && period != null;
+            final boolean canCalculate = credit != null && price != null && downPayment != null && period != null && period.intValue() != 0;
             final BigDecimal percent = getInterestRate(credit, period, downPayment);
             if (canCalculate) {
                 final LoanInfo loanInfo = lookup(LoanCalculator.class).calc(credit, price, downPayment, period.intValue());
