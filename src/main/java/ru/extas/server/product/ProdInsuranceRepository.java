@@ -1,15 +1,15 @@
-package ru.extas.server.sale;
+package ru.extas.server.product;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.extas.model.sale.Product;
+import ru.extas.model.sale.ProdInsurance;
 
 import java.util.List;
 
 /**
- * Интерфейс доступа к базе всех типов продуктов
+ * Интерфейс доступа к базе продуктов "Страховка"
  *
  * @author Valery Orlov
  *         Date: 16.01.14
@@ -19,13 +19,14 @@ import java.util.List;
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public interface ProductRepository extends JpaRepository<Product, String> {
+public interface ProdInsuranceRepository extends JpaRepository<ProdInsurance, String> {
 
 	/**
-	 * <p>findByActive.</p>
+	 * <p>findByActiveOrderByNameAsc.</p>
 	 *
 	 * @param active a boolean.
 	 * @return a {@link java.util.List} object.
 	 */
-	List<Product> findByActive(boolean active);
+	List<ProdInsurance> findByActiveOrderByNameAsc(boolean active);
+
 }

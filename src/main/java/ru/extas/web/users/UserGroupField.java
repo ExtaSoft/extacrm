@@ -73,6 +73,8 @@ public class UserGroupField extends CustomField<Set> {
                     }
                 });
 
+                actions.add(new EditObjectAction("Изменить", "Редактирование группы", Fontello.USER_1));
+
                 actions.add(new ItemAction("Удалить", "Удалить принадлежность к группе", Fontello.TRASH) {
                     @Override
                     public void fire(final Set itemIds) {

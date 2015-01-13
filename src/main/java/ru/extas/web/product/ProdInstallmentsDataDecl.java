@@ -17,7 +17,7 @@ class ProdInstallmentsDataDecl extends GridDataDecl {
 	public ProdInstallmentsDataDecl() {
 		addMapping("name", "Название продукта");
 		addMapping("vendor.name", "Банк");
-		addMapping("maxPeroid", "Период рассрочки");
+		addMapping("maxPeriod", "Период рассрочки");
 		addMapping("minDownpayment", "Первоначальный взнос", StringToPercentConverter.class);
 		addMapping("active", "Активный продукт");
 		super.addDefaultMappings();

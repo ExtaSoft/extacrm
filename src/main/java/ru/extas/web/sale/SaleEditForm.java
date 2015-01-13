@@ -18,12 +18,15 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
-import ru.extas.web.contacts.employee.*;
-import ru.extas.web.contacts.person.PersonSelect;
+import ru.extas.web.contacts.ClientField;
+import ru.extas.web.contacts.employee.DealerEmployeeField;
+import ru.extas.web.contacts.employee.EAEmployeeField;
+import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 
 import static ru.extas.model.common.ModelUtils.evictCache;
@@ -42,7 +45,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     // Компоненты редактирования
     // Имя клиента
     @PropertyId("client")
-    private PersonSelect clientField;
+    private ClientField clientField;
     // Тип техники
     @PropertyId("motorType")
     private ComboBox motorTypeField;
@@ -61,15 +64,13 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     @PropertyId("comment")
     private TextArea commentField;
     @PropertyId("productInSales")
-    private ProductInSaleGrid productInSaleField;
+    private ProductInSaleField productInSaleField;
     @PropertyId("responsible")
     private EmployeeField responsibleField;
     @PropertyId("responsibleAssist")
     private EmployeeField responsibleAssistField;
     @PropertyId("dealerManager")
     private EmployeeField dealerManagerField;
-    @PropertyId("bankManager")
-    private EmployeeField bankManagerField;
     @PropertyId("comments")
     private CommentsField<SaleComment> commentsField;
     @PropertyId("files")
@@ -78,10 +79,12 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     public SaleEditForm(final Sale sale) {
         super(sale.isNew() ? "Ввод новой продажи в систему" :
                 MessageFormat.format("Редактирование продажи № {0}", sale.getNum()), sale);
-        setWinWidth(770, Unit.PIXELS);
+        setWinWidth(930, Unit.PIXELS);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComponentContainer createEditFields() {
         final FormLayout form = new ExtaFormLayout();
@@ -89,7 +92,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Клиент"));
-        clientField = new PersonSelect("Клиент", "Введите имя клиента");
+        clientField = new ClientField("Клиент", "Введите имя клиента");
         clientField.setRequired(true);
         clientField.setRequiredError("Имя контакта не может быть пустым.");
         form.addComponent(clientField);
@@ -142,12 +145,11 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-        productInSaleField = new ProductInSaleGrid("Продукты в продаже", getEntity());
+        productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity(),
+                () -> (BigDecimal) mototPriceField.getConvertedValue(),
+                () -> (String) motorBrandField.getValue());
         productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
-
-        bankManagerField = new BankEmployeeField("Менеджер банка", "Выберите или введите ответственного менеджера со стороны банка");
-        form.addComponent(bankManagerField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Коментарии"));
@@ -159,19 +161,23 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         docFilesEditor = new FilesManageField(SaleFileContainer.class);
         form.addComponent(docFilesEditor);
 
+        mototPriceField.addValueChangeListener(e -> productInSaleField.markAsDirtyRecursive());
+
         return form;
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initEntity(final Sale sale) {
         if (sale.isNew()) {
             sale.setStatus(Sale.Status.NEW);
             final UserManagementService userService = lookup(UserManagementService.class);
             final Employee user = userService.getCurrentUserEmployee();
-            if(user != null) {
-                if(user.getWorkPlace() != null)
+            if (user != null) {
+                if (user.getWorkPlace() != null)
                     sale.setDealer(user.getWorkPlace());
             }
             final Employee userContact = lookup(UserManagementService.class).getCurrentUserEmployee();
@@ -180,7 +186,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Sale saveEntity(Sale sale) {
         final SaleRepository leadService = lookup(SaleRepository.class);

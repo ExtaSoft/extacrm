@@ -34,29 +34,29 @@ public class ArchiveServiceImpl implements ArchiveService {
 
     @Transactional
     @Override
-    public <TEntity extends ArchivedObject> TEntity archive(TEntity entity) {
+    public <TEntity extends ArchivedObject> TEntity archive(final TEntity entity) {
         return setArchivedFlag(entity, true);
     }
 
     @Transactional
     @Override
-    public <TEntity extends ArchivedObject> Set<TEntity> archive(Set<TEntity> entities) {
+    public <TEntity extends ArchivedObject> Set<TEntity> archive(final Set<TEntity> entities) {
         return setArchivedFlag(entities, true);
     }
 
     @Transactional
     @Override
-    public <TEntity extends ArchivedObject> TEntity extract(TEntity entity) {
+    public <TEntity extends ArchivedObject> TEntity extract(final TEntity entity) {
         return setArchivedFlag(entity, false);
     }
 
     @Transactional
     @Override
-    public <TEntity extends ArchivedObject> Set<TEntity> extract(Set<TEntity> entities) {
+    public <TEntity extends ArchivedObject> Set<TEntity> extract(final Set<TEntity> entities) {
         return setArchivedFlag(entities, false);
     }
 
-    private <TEntity extends ArchivedObject> TEntity setArchivedFlag(TEntity entity, boolean toArchive) {
+    private <TEntity extends ArchivedObject> TEntity setArchivedFlag(TEntity entity, final boolean toArchive) {
         checkNotNull(entity);
         checkArgument(entity instanceof IdentifiedObject);
         checkArgument(!((IdentifiedObject) entity).isNew());
@@ -73,11 +73,11 @@ public class ArchiveServiceImpl implements ArchiveService {
         return entity;
     }
 
-    private <TEntity extends ArchivedObject> Set<TEntity> setArchivedFlag(Set<TEntity> entities, boolean toArchive) {
+    private <TEntity extends ArchivedObject> Set<TEntity> setArchivedFlag(final Set<TEntity> entities, final boolean toArchive) {
         checkNotNull(entities);
 
-        Set<TEntity> res = new LinkedHashSet<>(entities.size());
-        for (TEntity entity : entities) {
+        final Set<TEntity> res = new LinkedHashSet<>(entities.size());
+        for (final TEntity entity : entities) {
             res.add(setArchivedFlag(entity, toArchive));
         }
 

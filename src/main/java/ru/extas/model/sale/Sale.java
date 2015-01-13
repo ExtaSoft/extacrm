@@ -4,10 +4,9 @@ import ru.extas.model.common.Comment;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.ModelUtils;
 import ru.extas.model.contacts.AddressInfo;
+import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.insurance.InsuranceFileContainer;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.model.motor.MotorModel;
@@ -39,7 +38,8 @@ public class Sale extends SecuredObject {
 
     // Клиент
 	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-	private Person client;
+	@JoinColumn(name = "CLIENT", referencedColumnName = "ID")
+	private Client client;
 
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -100,11 +100,6 @@ public class Sale extends SecuredObject {
     @JoinColumn(name = "DEALER_MANAGER_ID")
     private Employee dealerManager;
 
-    // Ответственный со стороны банка
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "BANK_MANAGER_ID")
-    private Employee bankManager;
-
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Lead lead;
 
@@ -131,14 +126,6 @@ public class Sale extends SecuredObject {
 
     public void setDealerManager(final Employee daelerManager) {
         this.dealerManager = daelerManager;
-    }
-
-    public Employee getBankManager() {
-        return bankManager;
-    }
-
-    public void setBankManager(final Employee bankManager) {
-        this.bankManager = bankManager;
     }
 
     public Employee getResponsibleAssist() {
@@ -240,7 +227,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @return a {@link ru.extas.model.contacts.Person} object.
 	 */
-	public Person getClient() {
+	public Client getClient() {
 		return client;
 	}
 
@@ -249,7 +236,7 @@ public class Sale extends SecuredObject {
 	 *
 	 * @param client a {@link ru.extas.model.contacts.Person} object.
 	 */
-	public void setClient(final Person client) {
+	public void setClient(final Client client) {
 		this.client = client;
 	}
 

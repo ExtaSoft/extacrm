@@ -22,32 +22,32 @@ public class ProdInstallments extends Product {
 
 	// Максимальный срок кредита (в месяцах)
 	@Column(name = "MAX_PERIOD")
-	private int maxPeroid;
+	private int maxPeriod;
 
 	// Минимальный первоначальный взнос
 	@Column(name = "MIN_DOWNPAYMENT", precision = 32, scale = 4)
 	private BigDecimal minDownpayment;
 
-	// Максимальная сумма кредита
+	// Максимальная сумма рассрочки
 	@Column(name = "MAX_SUM", precision = 32, scale = 4)
 	private BigDecimal maxSum;
 
 	/**
-	 * <p>Getter for the field <code>maxPeroid</code>.</p>
+	 * <p>Getter for the field <code>maxPeriod</code>.</p>
 	 *
 	 * @return a int.
 	 */
-	public int getMaxPeroid() {
-		return maxPeroid;
+	public int getMaxPeriod() {
+		return maxPeriod;
 	}
 
 	/**
-	 * <p>Setter for the field <code>maxPeroid</code>.</p>
+	 * <p>Setter for the field <code>maxPeriod</code>.</p>
 	 *
-	 * @param maxPeroid a int.
+	 * @param maxPeriod a int.
 	 */
-	public void setMaxPeroid(final int maxPeroid) {
-		this.maxPeroid = maxPeroid;
+	public void setMaxPeriod(final int maxPeriod) {
+		this.maxPeriod = maxPeriod;
 	}
 
 	/**

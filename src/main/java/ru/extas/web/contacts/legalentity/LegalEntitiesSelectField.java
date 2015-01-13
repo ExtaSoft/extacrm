@@ -69,7 +69,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
                         final LegalEntitySelectWindow selectWindow = new LegalEntitySelectWindow("Выберите юридическое лицо");
                         selectWindow.addCloseListener(e -> {
                             if (selectWindow.isSelectPressed()) {
-                                ((ExtaBeanContainer<LegalEntity>) container).addBean(selectWindow.getSelected());
+                                ((ExtaBeanContainer<LegalEntity>) container).addAll(selectWindow.getSelected());
                                 setValue(newHashSet(((ExtaBeanContainer<LegalEntity>) container).getItemIds()));
                                 NotificationUtil.showSuccess("Юридическое лицо добавлено");
                             }

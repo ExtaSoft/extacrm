@@ -56,6 +56,7 @@ public class ProdCredit extends Product {
 
 	// Процент по кредиту: процент ; срок ; первый взнос
 	@OneToMany(mappedBy = "product", targetEntity = ProdCreditPercent.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
+	@OrderBy("percent")
 	private List<ProdCreditPercent> percents;
 
 	// шаг кредита, мес.
@@ -67,6 +68,7 @@ public class ProdCredit extends Product {
 
 	// Комплект документов
 	@OneToMany(mappedBy = "product", targetEntity = ProdCreditDoc.class, orphanRemoval = true, cascade = {CascadeType.ALL})
+	@OrderBy("required DESC")
 	private List<ProdCreditDoc> docList;
 
 	/**
@@ -225,10 +227,10 @@ public class ProdCredit extends Product {
 	/**
 	 * <p>Setter for the field <code>maxPeriod</code>.</p>
 	 *
-	 * @param maxPeroid a int.
+	 * @param maxPeriod a int.
 	 */
-	public void setMaxPeriod(final int maxPeroid) {
-		this.maxPeriod = maxPeroid;
+	public void setMaxPeriod(final int maxPeriod) {
+		this.maxPeriod = maxPeriod;
 	}
 
 	/**

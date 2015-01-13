@@ -6,7 +6,7 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.sale.ProdInstallments;
-import ru.extas.server.sale.ProdInstallmentsRepository;
+import ru.extas.server.product.ProdInstallmentsRepository;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
@@ -32,7 +32,7 @@ public class ProdInstallmentsEditForm extends ExtaEditForm<ProdInstallments> {
 	private EditField nameField;
 	@PropertyId("vendor")
 	private CompanyField vendorField;
-	@PropertyId("maxPeroid")
+	@PropertyId("maxPeriod")
 	private EditField maxPeroidField;
 	@PropertyId("minDownpayment")
 	private EditField minDownpaymentField;

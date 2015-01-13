@@ -30,8 +30,8 @@ class SaleDataDecl extends GridDataDecl {
             }
         }, null);
 		addMapping("client.name", "Клиент");
-        addMapping("motor_all", "Техника", new MotorColumnGenerator(), null);
         addMapping("client.phone", "Телефон", PhoneConverter.class);
+        addMapping("motor_all", "Техника", new MotorColumnGenerator(), null);
         addMapping("motorType", "Тип техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 		addMapping("motorBrand", "Марка техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 		addMapping("motorModel", "Модель техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
@@ -43,7 +43,6 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("responsible.name", "Ответственный", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         addMapping("responsibleAssist.name", "Заместитель", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         addMapping("dealerManager.name", "Представитель дилера", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
-        addMapping("bankManager.name", "Представитель банка", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         super.addDefaultMappings();
 	}
 }

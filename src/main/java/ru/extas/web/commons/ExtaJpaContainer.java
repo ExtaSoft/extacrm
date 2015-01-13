@@ -8,6 +8,7 @@ import com.vaadin.addon.jpacontainer.provider.MutableLocalEntityProvider;
 import com.vaadin.addon.jpacontainer.util.CollectionUtil;
 import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.common.ArchivedObject;
+import ru.extas.model.common.AuditedObject;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.server.SpringEntityManagerProvider;
 
@@ -54,6 +55,11 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
 
         // Отсекаем архивные записи
         setArchiveExcluded(true);
+
+        // По умолчанию последние изменившиеся записи вверху
+        if (AuditedObject.class.isAssignableFrom(entityClass))
+            sort(new Object[]{"lastModifiedDate"}, new boolean[]{false});
+
     }
 
     @Override
@@ -62,7 +68,7 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
     }
 
     @Override
-    public void setArchiveExcluded(boolean archiveExcluded) {
+    public void setArchiveExcluded(final boolean archiveExcluded) {
         if (this.archiveExcluded != archiveExcluded && ArchivedObject.class.isAssignableFrom(getEntityClass())) {
             this.archiveExcluded = archiveExcluded;
             if (archiveExcluded)

@@ -295,44 +295,44 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     @Override
     protected ComponentContainer createEditFields() {
         // Форма редактирования персональных данных
-        final FormLayout personForm = new ExtaFormLayout();
-        personForm.setSizeFull();
-        personForm.setMargin(true);
+        final TabSheet tabsheet = new TabSheet();
+
+        // Вкладка - "Общая информация"
+        tabsheet.addTab(createMainForm(), "Общие данные");
+        tabsheet.addTab(createQuestionnaireForm(), "Анкета");
+
+        return tabsheet;
+    }
+
+    private Component createQuestionnaireForm() {
+        final FormLayout formLayout = new ExtaFormLayout();
+        formLayout.setMargin(true);
+//        formLayout.setSizeFull();
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Персональные данные"));
-        nameField = new EditField("Имя");
-        nameField.setColumns(30);
-        nameField.setDescription("Введите имя (ФИО) контакта");
-        nameField.setInputPrompt("Фамилия Имя (Отчество)");
-        nameField.setRequired(true);
-        nameField.setRequiredError("Имя контакта не может быть пустым. Пожалуйста введите ФИО контакта.");
-        personForm.addComponent(nameField);
-
-        sexField = new OptionGroup("Пол");
-        sexField.setMultiSelect(false);
-        sexField.addStyleName(ExtaTheme.OPTIONGROUP_HORIZONTAL);
-        sexField.setDescription("Укажите пол контакта");
-        sexField.setRequired(true);
-        sexField.setNullSelectionAllowed(false);
-        sexField.setNewItemsAllowed(false);
-        ComponentUtil.fillSelectByEnum(sexField, Sex.class);
-        sexField.setItemIcon(Sex.MALE, Fontello.MALE);
-        sexField.setItemIcon(Sex.FEMALE, Fontello.FEMALE);
-        personForm.addComponent(sexField);
-
-        birthdayField = new LocalDateField("Дата рождения", "Введите дату рождения контакта");
-        birthdayField.setImmediate(true);
-        birthdayField.setInputPrompt("31.12.1978");
-        birthdayField.setDateFormat("dd.MM.yyyy");
-        birthdayField.setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ");
-        personForm.addComponent(birthdayField);
-
+        formLayout.addComponent(new FormGroupHeader("Паспортные данные"));
         birthPlaceField = new CitySelect("Место рождения");
-        personForm.addComponent(birthPlaceField);
+        formLayout.addComponent(birthPlaceField);
 
         citizenshipField = new EditField("Гражданство", "Введите гражданство");
-        personForm.addComponent(citizenshipField);
+        formLayout.addComponent(citizenshipField);
+
+        passNumField = new EditField("Серия/номер");
+        passNumField.setColumns(20);
+        formLayout.addComponent(passNumField);
+
+        passIssueDateField = new LocalDateField("Дата выдачи", "Дата выдачи документа");
+        formLayout.addComponent(passIssueDateField);
+
+        passIssuedByField = new TextArea("Кем выдан");
+        passIssuedByField.setDescription("Наименование органа выдавшего документ");
+        passIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
+        passIssuedByField.setNullRepresentation("");
+        passIssuedByField.setRows(2);
+        formLayout.addComponent(passIssuedByField);
+
+        passIssuedByNumField = new EditField("Код подразделения");
+        formLayout.addComponent(passIssuedByNumField);
 
         changeNameField = new YesNoSelect("Менялась ли фамилия");
         changeNameField.setDescription("Укажите менялась ли фамилия");
@@ -343,40 +343,25 @@ public class PersonEditForm extends ExtaEditForm<Person> {
             exNameField.setVisible(isChangeName);
             changeNameDateField.setVisible(isChangeName);
         });
-        personForm.addComponent(changeNameField);
+        formLayout.addComponent(changeNameField);
 
         exNameField = new EditField("Прежняя фамилия", "Укажите прежнюю (до смены) фамилию");
         exNameField.setVisible(getEntity().isChangeName());
-        personForm.addComponent(exNameField);
+        formLayout.addComponent(exNameField);
 
         changeNameDateField = new LocalDateField("Дата смены фамилии", "Укажите дату когда менялась фамилия");
         changeNameDateField.setVisible(getEntity().isChangeName());
-        personForm.addComponent(changeNameDateField);
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Контактные данные"));
-        cellPhoneField = new PhoneField("Мобильный телефон");
-        personForm.addComponent(cellPhoneField);
-
-        workPhoneField = new PhoneField("Рабочий телефон");
-        personForm.addComponent(workPhoneField);
-
-        homePhoneField = new PhoneField("Домашний телефон");
-        personForm.addComponent(homePhoneField);
-
-        emailField = new EmailField("E-Mail");
-        personForm.addComponent(emailField);
+        formLayout.addComponent(changeNameDateField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Адрес по месту постоянной регистрации"));
+        formLayout.addComponent(new FormGroupHeader("Адрес по месту постоянной регистрации"));
         regRealtyKindField = new ComboBox("Отношение к недвижимости");
         regRealtyKindField.setWidth(15, Unit.EM);
         regRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
         regRealtyKindField.setNullSelectionAllowed(false);
         regRealtyKindField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(regRealtyKindField, RealtyKind.class);
-        personForm.addComponent(regRealtyKindField);
+        formLayout.addComponent(regRealtyKindField);
 
         regRegionField = new RegionSelect();
         regRegionField.setDescription("Укажите регион проживания");
@@ -386,7 +371,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
             if (city != null)
                 regCityField.setValue(city);
         });
-        personForm.addComponent(regRegionField);
+        formLayout.addComponent(regRegionField);
 
         regCityField = new CitySelect();
         regCityField.setDescription("Введите город проживания контакта");
@@ -398,20 +383,20 @@ public class PersonEditForm extends ExtaEditForm<Person> {
             if (region != null)
                 regRegionField.setValue(region);
         });
-        personForm.addComponent(regCityField);
+        formLayout.addComponent(regCityField);
 
         regPostIndexField = new EditField("Почтовый индекс");
         regPostIndexField.setColumns(8);
         regPostIndexField.setInputPrompt("Индекс");
         regPostIndexField.setNullRepresentation("");
-        personForm.addComponent(regPostIndexField);
+        formLayout.addComponent(regPostIndexField);
 
         regStreetBldField = new TextArea("Адрес");
         regStreetBldField.setRows(2);
         regStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
         regStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
         regStreetBldField.setNullRepresentation("");
-        personForm.addComponent(regStreetBldField);
+        formLayout.addComponent(regStreetBldField);
 
         regPeriodOfResidenceField = new ComboBox("Срок проживания");
         regPeriodOfResidenceField.setWidth(15, Unit.EM);
@@ -419,10 +404,10 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         regPeriodOfResidenceField.setNullSelectionAllowed(false);
         regPeriodOfResidenceField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(regPeriodOfResidenceField, PeriodOfResidence.class);
-        personForm.addComponent(regPeriodOfResidenceField);
+        formLayout.addComponent(regPeriodOfResidenceField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Адрес фактического проживания"));
+        formLayout.addComponent(new FormGroupHeader("Адрес фактического проживания"));
         regNactIsSameField = new CheckBox("Совпадает с адресом постоянной регистрации");
         regNactIsSameField.addValueChangeListener(event -> {
             Boolean isRegIsAct = (Boolean) event.getProperty().getValue();
@@ -430,7 +415,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
                 isRegIsAct = false;
             setActualAdressStatus(isRegIsAct);
         });
-        personForm.addComponent(regNactIsSameField);
+        formLayout.addComponent(regNactIsSameField);
 
         actRealtyKindField = new ComboBox("Отношение к недвижимости");
         actRealtyKindField.setWidth(15, Unit.EM);
@@ -438,7 +423,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         actRealtyKindField.setNullSelectionAllowed(false);
         actRealtyKindField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(actRealtyKindField, RealtyKind.class);
-        personForm.addComponent(actRealtyKindField);
+        formLayout.addComponent(actRealtyKindField);
 
         actRegionField = new RegionSelect();
         actRegionField.setDescription("Укажите регион проживания");
@@ -448,7 +433,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
             if (city != null)
                 actCityField.setValue(city);
         });
-        personForm.addComponent(actRegionField);
+        formLayout.addComponent(actRegionField);
 
         actCityField = new CitySelect();
         actCityField.setDescription("Введите город проживания контакта");
@@ -460,20 +445,20 @@ public class PersonEditForm extends ExtaEditForm<Person> {
             if (region != null)
                 actRegionField.setValue(region);
         });
-        personForm.addComponent(actCityField);
+        formLayout.addComponent(actCityField);
 
         actPostIndexField = new EditField("Почтовый индекс");
         actPostIndexField.setColumns(8);
         actPostIndexField.setInputPrompt("Индекс");
         actPostIndexField.setNullRepresentation("");
-        personForm.addComponent(actPostIndexField);
+        formLayout.addComponent(actPostIndexField);
 
         actStreetBldField = new TextArea("Адрес");
         actStreetBldField.setRows(2);
         actStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
         actStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
         actStreetBldField.setNullRepresentation("");
-        personForm.addComponent(actStreetBldField);
+        formLayout.addComponent(actStreetBldField);
 
         actPeriodOfResidenceField = new ComboBox("Срок проживания");
         actPeriodOfResidenceField.setWidth(15, Unit.EM);
@@ -481,46 +466,27 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         actPeriodOfResidenceField.setNullSelectionAllowed(false);
         actPeriodOfResidenceField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(actPeriodOfResidenceField, PeriodOfResidence.class);
-        personForm.addComponent(actPeriodOfResidenceField);
+        formLayout.addComponent(actPeriodOfResidenceField);
         setActualAdressStatus(getEntity().isRegNactIsSame());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Паспорт"));
-        passNumField = new EditField("Серия/номер");
-        passNumField.setColumns(20);
-        personForm.addComponent(passNumField);
-
-        passIssueDateField = new LocalDateField("Дата выдачи", "Дата выдачи документа");
-        personForm.addComponent(passIssueDateField);
-
-        passIssuedByField = new TextArea("Кем выдан");
-        passIssuedByField.setDescription("Наименование органа выдавшего документ");
-        passIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
-        passIssuedByField.setNullRepresentation("");
-        passIssuedByField.setRows(2);
-        personForm.addComponent(passIssuedByField);
-
-        passIssuedByNumField = new EditField("Код подразделения");
-        personForm.addComponent(passIssuedByNumField);
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Водительское удостоверение"));
+        formLayout.addComponent(new FormGroupHeader("Водительское удостоверение"));
         dlNumField = new EditField("Серия/номер");
         dlNumField.setColumns(20);
-        personForm.addComponent(dlNumField);
+        formLayout.addComponent(dlNumField);
 
         dlIssueDateField = new LocalDateField("Дата выдачи", "Дата выдачи документа");
-        personForm.addComponent(dlIssueDateField);
+        formLayout.addComponent(dlIssueDateField);
 
         dlIssuedByField = new TextArea("Кем выдан");
         dlIssuedByField.setDescription("Наименование органа выдавшего документ");
         dlIssuedByField.setInputPrompt("Наименование органа выдавшего документ");
         dlIssuedByField.setNullRepresentation("");
         dlIssuedByField.setRows(2);
-        personForm.addComponent(dlIssuedByField);
+        formLayout.addComponent(dlIssuedByField);
 
         periodOfDrivingField = new EditField("Водительский стаж");
-        personForm.addComponent(periodOfDrivingField);
+        formLayout.addComponent(periodOfDrivingField);
 
         drivingCategoriesField = new OptionGroup("Открытые категории");
         drivingCategoriesField.setMultiSelect(true);
@@ -534,10 +500,10 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         drivingCategoriesField.addItem('D');
         drivingCategoriesField.addItem('E');
         drivingCategoriesField.setConverter(new DrivingCategoriesConverter());
-        personForm.addComponent(drivingCategoriesField);
+        formLayout.addComponent(drivingCategoriesField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Данные о семье"));
+        formLayout.addComponent(new FormGroupHeader("Данные о семье"));
         maritalStatusField = new ComboBox("Семейное положение");
         maritalStatusField.setDescription("Укажите семейное положение");
         maritalStatusField.setWidth(15, Unit.EM);
@@ -548,42 +514,42 @@ public class PersonEditForm extends ExtaEditForm<Person> {
             MaritalStatus maritalStatus = (MaritalStatus) event.getProperty().getValue();
             setMaritalStatusUI(maritalStatus);
         });
-        personForm.addComponent(maritalStatusField);
+        formLayout.addComponent(maritalStatusField);
 
         marriageСontractField = new YesNoSelect("Наличие брачного договора");
-        personForm.addComponent(marriageСontractField);
+        formLayout.addComponent(marriageСontractField);
 
         childrenField = new PersonChildrenField("Дети", getEntity());
-        personForm.addComponent(childrenField);
+        formLayout.addComponent(childrenField);
 
         livingTogetherField = new EditField("Кол-во проживающих совместно");
-        personForm.addComponent(livingTogetherField);
+        formLayout.addComponent(livingTogetherField);
 
         dependantsField = new EditField("Кол-во иждевенцев");
-        personForm.addComponent(dependantsField);
+        formLayout.addComponent(dependantsField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         spouseHeader = new FormGroupSubHeader("Сведения о супруге");
-        personForm.addComponent(spouseHeader);
+        formLayout.addComponent(spouseHeader);
 
         spouseNameField = new EditField("Ф.И.О.");
         nameField.setColumns(25);
         nameField.setDescription("Введите имя (ФИО) супруги(а)");
         nameField.setInputPrompt("Фамилия Имя (Отчество)");
-        personForm.addComponent(spouseNameField);
+        formLayout.addComponent(spouseNameField);
 
         spouseBirthdayField = new LocalDateField("Дата рождения");
-        personForm.addComponent(spouseBirthdayField);
+        formLayout.addComponent(spouseBirthdayField);
 
         spouseBirthPlaceField = new CitySelect("Место рождения");
-        personForm.addComponent(spouseBirthPlaceField);
+        formLayout.addComponent(spouseBirthPlaceField);
 
         spouseCitizenshipField = new EditField("Гражданство", "Введите гражданство супруги(а)");
-        personForm.addComponent(spouseCitizenshipField);
+        formLayout.addComponent(spouseCitizenshipField);
         setMaritalStatusUI(getEntity().getMaritalStatus());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Образование"));
+        formLayout.addComponent(new FormGroupHeader("Образование"));
 
         eduKindField = new ComboBox("Образование");
         eduKindField.setDescription("Укажите уровень образования");
@@ -591,23 +557,23 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         eduKindField.setNullSelectionAllowed(false);
         eduKindField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(eduKindField, EducationKind.class);
-        personForm.addComponent(eduKindField);
+        formLayout.addComponent(eduKindField);
 
         eduFinishField = new YearField("Год окончания");
-        personForm.addComponent(eduFinishField);
+        formLayout.addComponent(eduFinishField);
 
         eduInstNameField = new EditField("Название учебного заведения", "Укажите наименование учебного заведения");
-        personForm.addComponent(eduInstNameField);
+        formLayout.addComponent(eduInstNameField);
 
         eduInstINNField = new EditField("ИНН", " Укажите ИНН учебного заведения");
-        personForm.addComponent(eduInstINNField);
+        formLayout.addComponent(eduInstINNField);
 
         specialityField = new EditField("Специальность", "Укажите специальнось по которой проводилось обучения");
-        personForm.addComponent(specialityField);
+        formLayout.addComponent(specialityField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Информация о занятости"));
-        personForm.addComponent(new FormGroupSubHeader("Место работы"));
+        formLayout.addComponent(new FormGroupHeader("Информация о занятости"));
+        formLayout.addComponent(new FormGroupSubHeader("Место работы"));
         // Вид занятости: Работа по трудовому договору/контракту/ИП
         typeOfEmploymentField = new ComboBox("Вид занятости");
         typeOfEmploymentField.setDescription("Укажите уровень образования");
@@ -619,138 +585,138 @@ public class PersonEditForm extends ExtaEditForm<Person> {
             TypeOfEmployment type = (TypeOfEmployment) event.getProperty().getValue();
             setWorkInfoStatus(type);
         });
-        personForm.addComponent(typeOfEmploymentField);
+        formLayout.addComponent(typeOfEmploymentField);
         // Срок трудового договора (мес.)
         tempJobPeriodField = new EditField("Срок трудового договора (мес.)", "Укажите срок трудового договора в месяцах");
-        personForm.addComponent(tempJobPeriodField);
+        formLayout.addComponent(tempJobPeriodField);
         // Вид частной практики
         practiceTypeField = new EditField("Вид частной практики", "Укажите подробнее вид частной практики");
-        personForm.addComponent(practiceTypeField);
+        formLayout.addComponent(practiceTypeField);
         // Сфера деятельности
         employerScopeField = new EditField("Сфера деятельности", "Укажите сферу деятельности по месту занятости");
-        personForm.addComponent(employerScopeField);
+        formLayout.addComponent(employerScopeField);
         // Название организации
         employerNameField = new EditField("Название организации", "Укажите название компании работодателя");
-        personForm.addComponent(employerNameField);
+        formLayout.addComponent(employerNameField);
         // ИНН
         employerINNField = new EditField("ИНН", "Укажите ИНН работодателя");
-        personForm.addComponent(employerINNField);
+        formLayout.addComponent(employerINNField);
         // Тел/факс:
         employerPhoneField = new PhoneField("Тел/факс", "Укажите телефон или факс компании работодателя");
-        personForm.addComponent(employerPhoneField);
+        formLayout.addComponent(employerPhoneField);
         // Должность
         officePositionField = new EditField("Должность", "Укажите должность");
-        personForm.addComponent(officePositionField);
+        formLayout.addComponent(officePositionField);
         // Адрес (фактич.)
         employerAdressField = new TextArea("Адрес (фактич.)");
         employerAdressField.setRows(3);
         employerAdressField.setInputPrompt("Город, Улица, Дом ...");
         employerAdressField.setNullRepresentation("");
-        personForm.addComponent(employerAdressField);
+        formLayout.addComponent(employerAdressField);
         // Сайт компании
         employerWwwField = new EditField("Сайт компании", "Укажите сайт компании");
         employerWwwField.setInputPrompt("http://...");
-        personForm.addComponent(employerWwwField);
+        formLayout.addComponent(employerWwwField);
         // Ф.И.О. руководителя
         employerDirectorNameField = new EditField("Ф.И.О. руководителя");
-        personForm.addComponent(employerDirectorNameField);
+        formLayout.addComponent(employerDirectorNameField);
         // Ф.И.О. гл. бухгалтера
         employerAccountantNameField = new EditField("Ф.И.О. гл. бухгалтера");
-        personForm.addComponent(employerAccountantNameField);
+        formLayout.addComponent(employerAccountantNameField);
         // Среднемесячный доход
         salaryField = new EditField("Среднемесячный доход", "Укажите, приблизительно, среднемесячный доход");
-        personForm.addComponent(salaryField);
+        formLayout.addComponent(salaryField);
         // Стаж на последнем месте работы
         lastExperienceField = new EditField("Стаж на последнем месте работы (годы)");
-        personForm.addComponent(lastExperienceField);
+        formLayout.addComponent(lastExperienceField);
         // Общий стаж
         genExperienceField = new EditField("Общий рабочий стаж (годы)");
-        personForm.addComponent(genExperienceField);
+        formLayout.addComponent(genExperienceField);
         // Количество мест за последнии 3 года
         jobsFor3yearsField = new EditField("Число компаний (последние 3 года)");
-        personForm.addComponent(jobsFor3yearsField);
+        formLayout.addComponent(jobsFor3yearsField);
         setWorkInfoStatus(getEntity().getTypeOfEmployment());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupSubHeader("Бизнес"));
+        formLayout.addComponent(new FormGroupSubHeader("Бизнес"));
         // Владелец бизнеса
         businessOwnerField = new YesNoSelect("Владелец бизнеса");
         businessOwnerField.addValueChangeListener(e -> {
             Boolean isOwner = (Boolean) e.getProperty().getValue();
             setBusinessInfoStatus(isOwner);
         });
-        personForm.addComponent(businessOwnerField);
+        formLayout.addComponent(businessOwnerField);
         // Сфера деятельности
         businessScopeField = new EditField("Сфера деятельности", "Укажите сферу деятельности компании");
-        personForm.addComponent(businessScopeField);
+        formLayout.addComponent(businessScopeField);
         // Название организации
         businessNameField = new EditField("Название организации", "Укажите название компании");
-        personForm.addComponent(businessNameField);
+        formLayout.addComponent(businessNameField);
         // ИНН
         businessINNField = new EditField("ИНН", "Укажите ИНН компании");
-        personForm.addComponent(businessINNField);
+        formLayout.addComponent(businessINNField);
         // Тел/факс:
         businessPhoneField = new PhoneField("Тел/факс", "Укажите телефон или факс компании");
-        personForm.addComponent(businessPhoneField);
+        formLayout.addComponent(businessPhoneField);
         // Адрес (фактич.)
         businessAdressField = new TextArea("Адрес (фактич.)");
         businessAdressField.setRows(3);
         businessAdressField.setInputPrompt("Город, Улица, Дом ...");
         businessAdressField.setNullRepresentation("");
-        personForm.addComponent(businessAdressField);
+        formLayout.addComponent(businessAdressField);
         // Доля в уставном капитале, %
         businessPartField = new EditField("Доля в уставном капитале, %");
         businessPartField.setConverter(lookup(StringToPercentConverter.class));
-        personForm.addComponent(businessPartField);
+        formLayout.addComponent(businessPartField);
         // кол-во работников
         businessMumbersEmployedField = new EditField("Число сотрудников");
-        personForm.addComponent(businessMumbersEmployedField);
+        formLayout.addComponent(businessMumbersEmployedField);
         // Валюта баланса, руб.
         businessBalanceField = new EditField("Валюта баланса, руб.");
-        personForm.addComponent(businessBalanceField);
+        formLayout.addComponent(businessBalanceField);
         // Годовой оборот или годовая выручка, руб
         businessYearlySalesField = new EditField("Годовой оборот или годовая выручка, руб");
-        personForm.addComponent(businessYearlySalesField);
+        formLayout.addComponent(businessYearlySalesField);
         setBusinessInfoStatus(getEntity().isBusinessOwner());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Информация о собственности"));
+        formLayout.addComponent(new FormGroupHeader("Информация о собственности"));
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupSubHeader("Недвижимость"));
+        formLayout.addComponent(new FormGroupSubHeader("Недвижимость"));
         realtiesField = new PersonRealtyField(getEntity());
         //realtiesField.setWidth(25, Unit.EM);
-        personForm.addComponent(realtiesField);
+        formLayout.addComponent(realtiesField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupSubHeader("Автотранспорт"));
+        formLayout.addComponent(new FormGroupSubHeader("Автотранспорт"));
         autosField = new PersonAutosField(getEntity());
-        personForm.addComponent(autosField);
+        formLayout.addComponent(autosField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Информация о доходах/расходах"));
-        personForm.addComponent(new FormGroupSubHeader("Доходы"));
+        formLayout.addComponent(new FormGroupHeader("Информация о доходах/расходах"));
+        formLayout.addComponent(new FormGroupSubHeader("Доходы"));
         incomesField = new PersonIncomeField(getEntity());
-        personForm.addComponent(incomesField);
+        formLayout.addComponent(incomesField);
 
-        personForm.addComponent(new FormGroupSubHeader("Расходы"));
+        formLayout.addComponent(new FormGroupSubHeader("Расходы"));
         expensesField = new PersonExpensesField(getEntity());
-        personForm.addComponent(expensesField);
+        formLayout.addComponent(expensesField);
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Кредиты банков и/или других организаций"));
+        formLayout.addComponent(new FormGroupHeader("Кредиты банков и/или других организаций"));
         // Пользуетесь ли Вы кредитом
         anotherCreditField = new YesNoSelect("Пользуетесь ли Вы кредитом");
         anotherCreditField.addValueChangeListener(e -> anotherCreditBankField.setVisible((Boolean) e.getProperty().getValue()));
-        personForm.addComponent(anotherCreditField);
+        formLayout.addComponent(anotherCreditField);
         // Наименование Банка
         anotherCreditBankField = new EditField("Наименование Банка");
         anotherCreditBankField.setVisible(getEntity().isAnotherCredit());
-        personForm.addComponent(anotherCreditBankField);
+        formLayout.addComponent(anotherCreditBankField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Дополнительные сведения"));
+        formLayout.addComponent(new FormGroupHeader("Дополнительные сведения"));
         // Откуда Вы о нас узнали
         marketingChannelField = new ComboBox("Маркетинговый источник",
                 newArrayList("СМИ", "Автосалон", "Партнеры КА", "Печатная продукция", "Наружная реклама", "Повторное обращение"));
@@ -758,52 +724,97 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         marketingChannelField.setWidth(15, Unit.EM);
         marketingChannelField.setNullSelectionAllowed(false);
         marketingChannelField.setNewItemsAllowed(true);
-        personForm.addComponent(marketingChannelField);
+        formLayout.addComponent(marketingChannelField);
         // Состоите (состояли) ли Вы на учете у врача нарколога?
         accountingForPsychiatristField = new YesNoSelect("На учете у врача нарколога");
         accountingForPsychiatristField.setDescription("Состоите (состояли) ли Вы на учете у врача нарколога?");
-        personForm.addComponent(accountingForPsychiatristField);
+        formLayout.addComponent(accountingForPsychiatristField);
         // Привлекались ли Вы или привлекаетесь в настоящее к уголовной ответственности
         criminalLiabilityField = new YesNoSelect("Привлекался к уг. ответственности");
         criminalLiabilityField.setDescription("Привлекался ли или привлекается в настоящее к уголовной ответственности?");
-        personForm.addComponent(criminalLiabilityField);
+        formLayout.addComponent(criminalLiabilityField);
         // Являетесь ли Вы ответчиком по имущественным спорам?
         receivershipField = new YesNoSelect("Ответчик по имущ. спорам");
         receivershipField.setDescription("Является ли ответчиком по имущественным спорам?");
-        personForm.addComponent(receivershipField);
+        formLayout.addComponent(receivershipField);
         // Является ли ваше имущество предметом залога, наложен ли на него арест?
         collateralPropertyField = new YesNoSelect("Имущество в залоге/аресте");
         collateralPropertyField.setDescription("Является ли имущество предметом залога, наложен ли на него арест?");
-        personForm.addComponent(collateralPropertyField);
+        formLayout.addComponent(collateralPropertyField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        personForm.addComponent(new FormGroupHeader("Ближайший родственник для экстренной связи"));
+        formLayout.addComponent(new FormGroupHeader("Ближайший родственник для экстренной связи"));
         // Фамилия Имя Отчество
         closeRelativeNameField = new EditField("Ф.И.О.");
-        personForm.addComponent(closeRelativeNameField);
+        formLayout.addComponent(closeRelativeNameField);
         // Степень родства
         closeRelativeFiliationField = new EditField("Степень родства");
-        personForm.addComponent(closeRelativeFiliationField);
+        formLayout.addComponent(closeRelativeFiliationField);
         // Контактный телефон моб.
         closeRelativeMobPhoneField = new PhoneField("Контактный телефон моб.");
-        personForm.addComponent(closeRelativeMobPhoneField);
+        formLayout.addComponent(closeRelativeMobPhoneField);
         // Контактный телефон дом.
         closeRelativeHomePhoneField = new PhoneField("Контактный телефон моб.");
-        personForm.addComponent(closeRelativeHomePhoneField);
+        formLayout.addComponent(closeRelativeHomePhoneField);
 
+        return formLayout;
+    }
 
+    private Component createMainForm() {
+        final FormLayout formLayout = new ExtaFormLayout();
+        formLayout.setMargin(true);
+//        formLayout.setSizeFull();
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        formLayout.addComponent(new FormGroupHeader("Персональные данные"));
+        nameField = new EditField("Имя");
+        nameField.setColumns(30);
+        nameField.setDescription("Введите имя (ФИО) контакта");
+        nameField.setInputPrompt("Фамилия Имя (Отчество)");
+        nameField.setRequired(true);
+        nameField.setRequiredError("Имя контакта не может быть пустым. Пожалуйста введите ФИО контакта.");
+        formLayout.addComponent(nameField);
+
+        sexField = new OptionGroup("Пол");
+        sexField.setMultiSelect(false);
+        sexField.addStyleName(ExtaTheme.OPTIONGROUP_HORIZONTAL);
+        sexField.setDescription("Укажите пол контакта");
+        sexField.setRequired(true);
+        sexField.setNullSelectionAllowed(false);
+        sexField.setNewItemsAllowed(false);
+        ComponentUtil.fillSelectByEnum(sexField, Sex.class);
+        sexField.setItemIcon(Sex.MALE, Fontello.MALE);
+        sexField.setItemIcon(Sex.FEMALE, Fontello.FEMALE);
+        formLayout.addComponent(sexField);
+
+        birthdayField = new LocalDateField("Дата рождения", "Введите дату рождения контакта");
+        birthdayField.setImmediate(true);
+        birthdayField.setInputPrompt("31.12.1978");
+        birthdayField.setDateFormat("dd.MM.yyyy");
+        birthdayField.setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ");
+        formLayout.addComponent(birthdayField);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        formLayout.addComponent(new FormGroupHeader("Контактные данные"));
+        cellPhoneField = new PhoneField("Мобильный телефон");
+        formLayout.addComponent(cellPhoneField);
+
+        workPhoneField = new PhoneField("Рабочий телефон");
+        formLayout.addComponent(workPhoneField);
+
+        homePhoneField = new PhoneField("Домашний телефон");
+        formLayout.addComponent(homePhoneField);
+
+        emailField = new EmailField("E-Mail");
+        formLayout.addComponent(emailField);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
         // Документы контакта
-        personForm.addComponent(new FormGroupHeader("Документы"));
+        formLayout.addComponent(new FormGroupHeader("Документы"));
         docFilesEditor = new FilesManageField(PersonFileContainer.class);
-        personForm.addComponent(docFilesEditor);
+        formLayout.addComponent(docFilesEditor);
 
-
-        // Форма просмотра истории продаж
-//        final FormLayout salesForm = createSalesForm();
-//        tabsheet.addTab(salesForm).setCaption("История продаж");
-//
-
-        return personForm;
+        return formLayout;
     }
 
     private void setBusinessInfoStatus(final Boolean isOwner) {

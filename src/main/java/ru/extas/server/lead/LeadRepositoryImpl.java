@@ -9,14 +9,13 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 import ru.extas.server.contacts.CompanyRepository;
+import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.sale.SaleRepository;
@@ -53,6 +52,8 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     //    @Inject private RuntimeService runtimeService;
     @Inject
     private PersonRepository personRepository;
+    @Inject
+    private LegalEntityRepository legalEntityRepository;
     @Inject
     private SalePointRepository salePointRepository;
     @Inject
@@ -199,7 +200,11 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
             // При этом необходимо сделать “видимыми” все связанные объекты лида:
             // Клиент
             final Collection<Pair<Employee, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
-            personRepository.permitAndSave(lead.getClient(), readers, salePoints, companies, regions, brands);
+            if (lead.getClient() != null)
+                if (lead.getClient() instanceof Person)
+                    personRepository.permitAndSave((Person) lead.getClient(), readers, salePoints, companies, regions, brands);
+                else if (lead.getClient() instanceof LegalEntity)
+                    legalEntityRepository.permitAndSave((LegalEntity) lead.getClient(), readers, salePoints, companies, regions, brands);
             // Продавец (торговая точка или компания)
             salePointRepository.permitAndSave(lead.getVendor(), readers, salePoints, companies, regions, brands);
             // Компания продавца

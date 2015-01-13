@@ -77,16 +77,26 @@ public class InsuranceCalculatorImpl implements InsuranceCalculator {
     @Override
     public BigDecimal calcPropInsPremium(final Insurance ins) {
         checkArgument(ins != null, "Can't calculate premium. No insurance paramenets.");
-        checkArgument(ins.getRiskSum() != null, "Can't calculate premium. No insurance risk sum.");
-        checkArgument(ins.getMotorBrand() != null, "Can't calculate premium. No insurance motor brand.");
-        checkArgument(ins.getCoverTime() != null, "Can't calculate premium. No period of cover.");
 
-        final BigDecimal tarif = findTarif(ins.getMotorBrand(), ins.getCoverTime(), ins.isUsedMotor());
+        final String motorBrand = ins.getMotorBrand();
+        final Insurance.PeriodOfCover coverTime = ins.getCoverTime();
+        final boolean usedMotor = ins.isUsedMotor();
+        final BigDecimal riskSum = ins.getRiskSum();
+        return calcPropInsPremium(motorBrand, riskSum, coverTime, usedMotor);
+    }
+
+    @Override
+    public BigDecimal calcPropInsPremium(final String motorBrand, final BigDecimal riskSum, final Insurance.PeriodOfCover coverTime, final boolean usedMotor) {
+        checkArgument(riskSum != null, "Can't calculate premium. No insurance risk sum.");
+        checkArgument(motorBrand != null, "Can't calculate premium. No insurance motor brand.");
+        checkArgument(coverTime != null, "Can't calculate premium. No period of cover.");
+
+        final BigDecimal tarif = findTarif(motorBrand, coverTime, usedMotor);
 
         if (tarif == null)
             throw new IllegalArgumentException("Unsupported motor brand");
 
-        return ins.getRiskSum().multiply(tarif);
+        return riskSum.multiply(tarif);
     }
 
     /**

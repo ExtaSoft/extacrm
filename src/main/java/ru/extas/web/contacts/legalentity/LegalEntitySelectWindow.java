@@ -80,8 +80,8 @@ public class LegalEntitySelectWindow extends CloseOnlylWindow {
 	 *
 	 * @return a {@link ru.extas.model.contacts.LegalEntity} object.
 	 */
-	public LegalEntity getSelected() {
-		return (LegalEntity) selected;
+	public Set<LegalEntity> getSelected() {
+		return selected;
 	}
 
     public SupplierSer<Company> getCompanySupplier() {

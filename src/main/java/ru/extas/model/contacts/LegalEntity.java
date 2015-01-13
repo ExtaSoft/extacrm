@@ -22,8 +22,9 @@ import static com.google.common.collect.Lists.newArrayList;
  * @since 0.3
  */
 @Entity
-@Table(name = "LEGAL_ENTITY", indexes = {@Index(columnList = "NAME")})
-public class LegalEntity extends Contact implements ArchivedObject {
+@Table(name = "LEGAL_ENTITY")
+@DiscriminatorValue("L")
+public class LegalEntity extends Client implements ArchivedObject {
 
     // Компания
     @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})

@@ -1,0 +1,67 @@
+@mixin exta-filtertablestate {
+
+  .w-filtertablestate-item {
+    &:hover {
+      color: $v-selection-color;
+    }
+  }
+
+  .w-filtertablestate-button {
+    display: inline-block;
+    font-family: 'FontAwesome';
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    border-radius: 4px;
+    &:hover {
+      color: $v-background-color;
+      background-color: $v-selection-color;
+    }
+  }
+
+  .w-filtertablestate-profile-layout {
+
+    .gwt-HTML {
+      white-space: nowrap;
+    }
+
+    .w-filtertablestate-item {
+      display: inline-block;
+    }
+
+    .w-filtertablestate-profile-add-layout {
+      white-space: nowrap;
+    }
+
+  }
+
+  input.w-filtertablestate-textfield.v-textfield {
+    //      width: 100%;
+    //      margin-right: 34px;
+    //      width: unquote("-moz-calc(100% - 34px)");
+    //      width: -webkit-calc(100% - 34px);
+//    width: calc(100% - 34px);
+    width: auto;
+  }
+
+  @include filtertablestate-button(addbutton, '\f067');
+  @include filtertablestate-button(resetbutton, '\f12d');
+  @include filtertablestate-button(deletebutton, '\f014');
+  @include filtertablestate-button(defaultprofilebutton, '\f192');
+  @include filtertablestate-button(defaultprofilebutton-open, '\f08d');
+  @include filtertablestate-button(resavebutton, '\f0c7');
+  @include filtertablestate-button(savebutton, '\f0c7');
+}
+
+@mixin filtertablestate-button($button-name, $button-icon) {
+  .w-filtertablestate-#{$button-name} {
+    @extend .v_icon;
+    background-image: none;
+    margin-top: 0;
+
+    font-weight: normal;
+    &:before {
+      content: $button-icon;
+    }
+  }
+}

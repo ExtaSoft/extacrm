@@ -1,6 +1,7 @@
 package ru.extas.model.contacts;
 
 import org.joda.time.LocalDate;
+import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.FileContainer;
 
 import javax.persistence.*;
@@ -19,8 +20,9 @@ import static com.google.common.collect.Lists.newArrayList;
  * @since 0.3
  */
 @Entity
-@Table(name = "PERSON", indexes = {@Index(columnList = "NAME")})
-public class Person extends Contact {
+@Table(name = "PERSON")
+@DiscriminatorValue("P")
+public class Person extends Client implements ArchivedObject {
 
     private static final long serialVersionUID = -7891940552175345858L;
     public static final int BIRTH_PLACE_LENGTH = 60;

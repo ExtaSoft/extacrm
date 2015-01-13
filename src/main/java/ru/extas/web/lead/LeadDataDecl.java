@@ -42,7 +42,7 @@ class LeadDataDecl extends GridDataDecl {
         addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         super.addDefaultMappings();
         if (grid.getStatus() == Lead.Status.NEW) {
-            addMapping("to_work", "", new ComponentColumnGenerator() {
+            addMapping("to_work", "В работу", new ComponentColumnGenerator() {
                 @Override
                 public Object generateCell(final Object columnId, final Item item, final Object itemId) {
                     final Button button = new Button("В работу", Fontello.CHECK_2);

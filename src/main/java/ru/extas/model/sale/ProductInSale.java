@@ -1,6 +1,7 @@
 package ru.extas.model.sale;
 
 import ru.extas.model.common.AuditedObject;
+import ru.extas.model.contacts.Employee;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -38,6 +39,10 @@ public class ProductInSale extends AuditedObject {
 	@Column(name = "DOWNPAYMENT", precision = 32, scale = 4)
 	private BigDecimal downpayment;
 
+	// Ответственный сотрудник (Ответственный за продукт)
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	private Employee responsible;
+
 	/**
 	 * <p>Constructor for ProductInSale.</p>
 	 */
@@ -51,6 +56,14 @@ public class ProductInSale extends AuditedObject {
 	 */
 	public ProductInSale(final Sale sale) {
 		this.sale = sale;
+	}
+
+	public Employee getResponsible() {
+		return responsible;
+	}
+
+	public void setResponsible(final Employee responsible) {
+		this.responsible = responsible;
 	}
 
 	/**

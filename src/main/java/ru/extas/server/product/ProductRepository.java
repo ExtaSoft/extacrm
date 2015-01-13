@@ -1,15 +1,15 @@
-package ru.extas.server.sale;
+package ru.extas.server.product;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.extas.model.sale.ProdCredit;
+import ru.extas.model.sale.Product;
 
 import java.util.List;
 
 /**
- * Интерфейс доступа к базе продуктов "Кредит"
+ * Интерфейс доступа к базе всех типов продуктов
  *
  * @author Valery Orlov
  *         Date: 16.01.14
@@ -19,13 +19,13 @@ import java.util.List;
  */
 @Repository
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public interface ProdCreditRepository extends JpaRepository<ProdCredit, String> {
+public interface ProductRepository extends JpaRepository<Product, String> {
 
 	/**
-	 * <p>findByActive.</p>
+	 * <p>findByActiveOrderByNameAsc.</p>
 	 *
 	 * @param active a boolean.
 	 * @return a {@link java.util.List} object.
 	 */
-	List<ProdCredit> findByActive(boolean active);
+	List<Product> findByActiveOrderByNameAsc(boolean active);
 }

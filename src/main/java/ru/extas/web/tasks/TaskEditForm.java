@@ -13,6 +13,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.FormType;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.task.Task;
+import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
@@ -185,11 +186,11 @@ public class TaskEditForm extends ExtaEditForm<Task> {
 
     private Component createClientContent(final String processId) {
         // Запрос данных
-        final Person person = queryPerson(processId);
+        final Client client = queryPerson(processId);
 
-        if (person != null) {
+        if (client != null) {
             final PersonField personField = new PersonField("Клиент");
-            personField.setPropertyDataSource(new ObjectProperty(person));
+            personField.setPropertyDataSource(new ObjectProperty(client));
             return personField;
         } else {
             final Label label = new Label("Нет связанного с процессом лида, информация о клиенте недоступна.");
@@ -198,7 +199,7 @@ public class TaskEditForm extends ExtaEditForm<Task> {
         }
     }
 
-    private Person queryPerson(final String processId) {
+    private Client queryPerson(final String processId) {
         final Lead lead = queryLead(processId);
         return lead != null ? lead.getClient() : null;
     }
