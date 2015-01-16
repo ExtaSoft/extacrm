@@ -179,6 +179,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
     }
 
     public void doQualifyLead(final Object itemId) {
+        refreshContainerItem(itemId);
         final Lead curObj = GridItem.extractBean(table.getItem(itemId));
 
         final LeadEditForm editWin = new LeadEditForm(curObj, true);
