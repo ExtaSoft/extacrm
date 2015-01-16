@@ -84,7 +84,7 @@ public class Sale extends SecuredObject {
     private Result result;
 
 	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
-	private List<ProductInSale> productInSales;
+	private List<ProductInSale> productInSales = newArrayList();
 
     // Ответственный с нашей стороны
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
