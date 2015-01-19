@@ -165,7 +165,9 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         beneficiaryField.setNewItemsAllowed(true);
         beneficiaryField.setRequired(true);
         beneficiaryField.setWidth(25, Unit.EM);
-        fillBeneficiariesChoice(getEntity().getClient().getName());
+        final Client client = getEntity().getClient();
+        if(client != null)
+            fillBeneficiariesChoice(client.getName());
         form.addComponent(beneficiaryField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
