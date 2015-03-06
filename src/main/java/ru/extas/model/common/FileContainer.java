@@ -2,6 +2,7 @@ package ru.extas.model.common;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Arrays;
 
 /**
  * Модель данных для хранения файлов прикрепляемых к объектам системы
@@ -47,6 +48,21 @@ public abstract class FileContainer extends AuditedObject {
     @Basic(fetch= FetchType.LAZY)
     private byte[] fileData;
 
+    /**
+     * Копирующий конструктор
+     * @param file - исходный объект
+     */
+    public FileContainer(String ownerId, FileContainer file) {
+        this.ownerId = ownerId;
+        description = file.getDescription();
+        name = file.getName();
+        mimeType = file.getMimeType();
+        fileSize = file.getFileSize();
+        fileData = Arrays.copyOf(file.getFileData(), file.getFileData().length);
+    }
+
+    public FileContainer() {
+    }
 
     /**
      * <p>Getter for the field <code>ownerId</code>.</p>

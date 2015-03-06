@@ -11,8 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.LeadFileContainer;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.SaleFileContainer;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 import ru.extas.server.contacts.CompanyRepository;
@@ -75,10 +77,17 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale.setMotorModel(lead.getMotorModel());
         sale.setMotorPrice(lead.getMotorPrice());
         sale.setDealer(lead.getVendor());
+        sale.setDealerManager(lead.getDealerManager());
         sale.setComment(lead.getComment());
         sale.setProcessId(lead.getProcessId());
         sale.setLead(lead);
         sale.setResponsible(lead.getResponsible());
+        sale.setResponsibleAssist(lead.getResponsibleAssist());
+        for (LeadFileContainer leadFile : lead.getFiles()) {
+            List<SaleFileContainer> saleFiles = newArrayList();
+            saleFiles.add(new SaleFileContainer(leadFile));
+            sale.setFiles(saleFiles);
+        }
 
         return saleRepository.secureSave(sale);
     }

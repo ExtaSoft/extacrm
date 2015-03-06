@@ -2,7 +2,10 @@
 <project version="4">
   <component name="dataSourceStorageLocal">
     <data-source name="LocalMySql" uuid="5c42dca0-ad6e-40b7-a5b9-c8db19f4f902">
-      <secret-storage>memory</secret-storage>
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>extacrm.*</schema-pattern>
+      <default-schemas>extacrm.*</default-schemas>
     </data-source>
   </component>
 </project>

@@ -12,13 +12,16 @@ import com.vaadin.ui.*;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.LeadFileContainer;
 import ru.extas.model.sale.Sale;
 import ru.extas.server.lead.LeadRepository;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
-import ru.extas.web.contacts.*;
+import ru.extas.web.contacts.ClientField;
+import ru.extas.web.contacts.ContactDataDecl;
+import ru.extas.web.contacts.employee.DealerEmployeeField;
 import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
@@ -82,11 +85,18 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("vendor")
     private SalePointField vendorField;
 
-    @PropertyId("responsible")
-    private EmployeeField responsibleField;
-
     @PropertyId("comment")
     private TextArea commentField;
+
+    @PropertyId("responsible")
+    private EmployeeField responsibleField;
+    @PropertyId("responsibleAssist")
+    private EmployeeField responsibleAssistField;
+    @PropertyId("dealerManager")
+    private EmployeeField dealerManagerField;
+
+    @PropertyId("files")
+    private FilesManageField docFilesEditor;
 
     private final boolean qualifyForm;
     private ExtaJpaContainer<SalePoint> vendorsContainer;
@@ -210,10 +220,18 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         responsibleField.setRequired(getEntity().getStatus() != Lead.Status.NEW || qualifyForm);
         form.addComponent(responsibleField);
 
+        responsibleAssistField = new EAEmployeeField("Заместитель", "Выберите или введите заместителя ответственного менеджера");
+        form.addComponent(responsibleAssistField);
+
         commentField = new TextArea("Примечание");
         commentField.setRows(3);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Документы"));
+        docFilesEditor = new FilesManageField(LeadFileContainer.class);
+        form.addComponent(docFilesEditor);
 
         return form;
     }
@@ -222,6 +240,10 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         vendorField = new SalePointField("Мотосалон", "Название мотосалона");
         vendorField.setRequired(true);
         form.addComponent(vendorField);
+
+        dealerManagerField = new DealerEmployeeField("Менеджер", "Выберите или введите ответственного менеджера со стороны дилера");
+        dealerManagerField.setSalePointSupplier(() -> vendorField.getValue());
+        form.addComponent(dealerManagerField);
     }
 
     private Component createVendorPanel(final Lead lead) {

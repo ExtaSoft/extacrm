@@ -1,6 +1,7 @@
 package ru.extas.model.sale;
 
 import ru.extas.model.common.FileContainer;
+import ru.extas.model.lead.LeadFileContainer;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -13,4 +14,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "SALE_FILE")
 public class SaleFileContainer extends FileContainer {
+    public SaleFileContainer(String ownerId, FileContainer file) {
+        super(ownerId, file);
+    }
+
+    public SaleFileContainer() {
+    }
+
+    public SaleFileContainer(FileContainer file) {
+        this(null, file);
+    }
 }
