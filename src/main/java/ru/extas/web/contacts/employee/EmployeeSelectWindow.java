@@ -7,20 +7,19 @@ import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
-import ru.extas.web.commons.window.CloseOnlylWindow;
+import ru.extas.web.commons.window.CloseOnlyWindow;
 
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * @author Valery Orlov
  *         Date: 21.10.2014
  *         Time: 22:52
  */
-public class EmployeeSelectWindow extends CloseOnlylWindow {
+public class EmployeeSelectWindow extends CloseOnlyWindow {
     private Set<Employee> selected;
     private boolean selectPressed;
     private SupplierSer<Company> companySupplier;

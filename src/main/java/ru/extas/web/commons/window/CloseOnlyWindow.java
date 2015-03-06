@@ -1,7 +1,6 @@
 package ru.extas.web.commons.window;
 
 import com.vaadin.ui.*;
-import com.vaadin.ui.Button.ClickEvent;
 import ru.extas.web.commons.ExtaGrid;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
@@ -13,7 +12,7 @@ import ru.extas.web.commons.Fontello;
  * @version $Id: $Id
  * @since 0.3
  */
-public class CloseOnlylWindow extends Window {
+public class CloseOnlyWindow extends Window {
 
     private static final long serialVersionUID = -1869372339151029572L;
     private boolean okPressed = false;
@@ -26,7 +25,7 @@ public class CloseOnlylWindow extends Window {
      * @param caption a {@link java.lang.String} object.
      * @param content a {@link com.vaadin.ui.Component} object.
      */
-    public CloseOnlylWindow(final String caption, final Component content) {
+    public CloseOnlyWindow(final String caption, final Component content) {
         super(caption);
         initInputWindow();
         setContent(content);
@@ -37,14 +36,14 @@ public class CloseOnlylWindow extends Window {
      *
      * @param caption a {@link java.lang.String} object.
      */
-    public CloseOnlylWindow(final String caption) {
+    public CloseOnlyWindow(final String caption) {
         super(caption);
         initInputWindow();
     }
 
     private void initInputWindow() {
         closeBtn = new Button("Закрыть", event -> {
-            CloseOnlylWindow.this.okPressed = true;
+            CloseOnlyWindow.this.okPressed = true;
             close();
         });
         closeBtn.setIcon(Fontello.OK);

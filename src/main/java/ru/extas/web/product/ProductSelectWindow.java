@@ -4,13 +4,12 @@ import ru.extas.model.sale.Product;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
-import ru.extas.web.commons.window.CloseOnlylWindow;
+import ru.extas.web.commons.window.CloseOnlyWindow;
 
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * Окно для выбора продукта
@@ -21,7 +20,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProductSelectWindow extends CloseOnlylWindow {
+public class ProductSelectWindow extends CloseOnlyWindow {
 	private Set<Product> selected;
 	private boolean selectPressed;
 

@@ -51,6 +51,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         commentsContainer.setColumns(1);
         commentsContainer.setSelectable(false);
         commentsContainer.setContainerDataSource(container);
+        commentsContainer.setReadOnly(isReadOnly());
         commentsContainer.setItemGenerator((pSource, pItemId) -> new ItemComponent(pSource, pItemId));
         root.addComponent(commentsContainer);
 
@@ -63,6 +64,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
             } catch (final Throwable ex) {
             }
         });
+        addBtn.setVisible(!isReadOnly());
         root.addComponent(addBtn);
 
         addReadOnlyStatusChangeListener(e -> {

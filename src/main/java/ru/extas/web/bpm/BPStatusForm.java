@@ -12,7 +12,7 @@ import org.activiti.engine.task.TaskQuery;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
-import ru.extas.web.commons.window.CloseOnlylWindow;
+import ru.extas.web.commons.window.CloseOnlyWindow;
 import ru.extas.web.tasks.TaskEditForm;
 import ru.extas.web.users.LoginToUserNameConverter;
 
@@ -31,7 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class BPStatusForm extends CloseOnlylWindow {
+public class BPStatusForm extends CloseOnlyWindow {
 
     /**
 	 * <p>Constructor for BPStatusForm.</p>
