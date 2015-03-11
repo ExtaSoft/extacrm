@@ -29,7 +29,8 @@ public class CategoryServiceImpl implements CategoryService {
                             COMPANY_CAT_DEALER,
                             COMPANY_CAT_DISTRIBUTOR,
                             COMPANY_CAT_BANK,
-                            COMPANY_CAT_ASSURANCE));
+                            COMPANY_CAT_ASSURANCE,
+                            COMPANY_CAT_CALLCENTER));
         }
     }
 

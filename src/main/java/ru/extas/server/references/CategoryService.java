@@ -15,6 +15,7 @@ public interface CategoryService {
     public static final String COMPANY_CAT_DISTRIBUTOR = "Дистрибьютор";
     public static final String COMPANY_CAT_BANK = "Банк";
     public static final String COMPANY_CAT_ASSURANCE = "Страховая компания";
+    public static final String COMPANY_CAT_CALLCENTER = "Колл-центр";
 
 
     /**
