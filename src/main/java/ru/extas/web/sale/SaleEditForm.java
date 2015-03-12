@@ -52,7 +52,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private ClientField clientField;
     // Тип техники
     @PropertyId("motorType")
-    private ComboBox motorTypeField;
+    private MotorTypeSelect motorTypeField;
     // Марка техники
     @PropertyId("motorBrand")
     private MotorBrandSelect motorBrandField;
@@ -109,6 +109,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         motorBrandField = new MotorBrandSelect();
         motorBrandField.setRequired(true);
+        motorBrandField.linkToType(motorTypeField);
         form.addComponent(motorBrandField);
 
         motorModelField = new EditField("Модель техники", "Введите модель техники");
