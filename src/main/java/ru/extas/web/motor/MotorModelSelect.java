@@ -1,9 +1,7 @@
 package ru.extas.web.motor;
 
-import com.vaadin.data.Property;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorModelRepository;
 
 import java.util.List;
@@ -41,10 +39,14 @@ public class MotorModelSelect extends ComboBox {
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setImmediate(true);
         setNullSelectionAllowed(false);
-        setNewItemsAllowed(false);
+        setInvalidAllowed(true);
+        setNewItemsAllowed(true);
+        setNewItemHandler(newValue -> {
+            addItem(newValue);
+            setValue(newValue);
+        });
         setFilteringMode(FilteringMode.CONTAINS);
-        setWidth(13, Unit.EM);
-        fillItems(null);
+        setWidth(15, Unit.EM);
     }
 
     /**
@@ -54,38 +56,31 @@ public class MotorModelSelect extends ComboBox {
      */
     protected void fillItems(final String type, final String brand) {
         final MotorModelRepository modelRepository = lookup(MotorModelRepository.class);
-        final List<String> brands;
-        if(type == null || brand == null)
-            brands = modelRepository.loadAllNames();
-        else
-            brands = modelRepository.loadNamesByTypeAndBrand(type);
+        if (type != null && brand != null) {
+            final List<String> models = modelRepository.loadNamesByTypeAndBrand(type, brand);
 
-        final String curBrand = (String) getValue();
-        removeAllItems();
-        for (final String item : brands)
-            addItem(item);
+            final String curModel = (String) getValue();
+            removeAllItems();
+            for (final String item : models)
+                addItem(item);
 
-        if(curBrand != null) {
-            if(!brands.contains(curBrand))
-                setValue(null);
-            else
-                setValue(curBrand);
+            if (curModel != null) {
+                if (!models.contains(curModel)) {
+                    addItem(curModel);
+                    setValue(curModel);
+                } else
+                    setValue(curModel);
+            }
         }
-
     }
 
-    /**
-     * <p>linkToType.</p>
-     *
-     * @param typeField a {@link MotorTypeSelect} object.
-     */
-    public void linkToType(final MotorTypeSelect typeField) {
-        typeField.addValueChangeListener(event -> {
-            final Property prop = event.getProperty();
-            if(prop != null) {
-                final String type = (String) prop.getValue();
-                fillItems(type);
-            }
-        });
+    public void linkToTypeAndBrand(final MotorTypeSelect typeField, final MotorBrandSelect brandField) {
+        ValueChangeListener listener = event -> {
+            final String type = (String) typeField.getValue();
+            final String brand = (String) brandField.getValue();
+            fillItems(type, brand);
+        };
+        typeField.addValueChangeListener(listener);
+        brandField.addValueChangeListener(listener);
     }
 }

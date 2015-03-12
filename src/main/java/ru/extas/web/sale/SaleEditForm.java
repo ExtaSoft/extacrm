@@ -1,7 +1,6 @@
 package ru.extas.web.sale;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
@@ -27,11 +26,11 @@ import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
+import ru.extas.web.motor.MotorModelSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.List;
 
 import static ru.extas.model.common.ModelUtils.evictCache;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -58,7 +57,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private MotorBrandSelect motorBrandField;
     // Модель техники
     @PropertyId("motorModel")
-    private EditField motorModelField;
+    private MotorModelSelect motorModelField;
     // Стоимость техники
     @PropertyId("motorPrice")
     private EditField mototPriceField;
@@ -112,9 +111,11 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         motorBrandField.linkToType(motorTypeField);
         form.addComponent(motorBrandField);
 
-        motorModelField = new EditField("Модель техники", "Введите модель техники");
-        motorModelField.setColumns(15);
+        motorModelField = new MotorModelSelect("Модель техники");
         motorModelField.setRequired(true);
+        motorModelField.linkToTypeAndBrand(motorTypeField, motorBrandField);
+        if(getEntity().getMotorModel() != null)
+            motorModelField.addItem(getEntity().getMotorModel());
         form.addComponent(motorModelField);
 
         mototPriceField = new EditField("Цена техники");
