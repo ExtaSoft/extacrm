@@ -21,6 +21,6 @@ public class EAEmployeeField extends EmployeeField {
     }
 
     private Company getOurCompany() {
-        return lookup(CompanyRepository.class).findOurCompany();
+        return lookup(CompanyRepository.class).findEACompany();
     }
 }

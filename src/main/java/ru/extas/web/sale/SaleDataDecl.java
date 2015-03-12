@@ -57,7 +57,7 @@ class SaleDataDecl extends GridDataDecl {
             final int COMMENT_SIZE = 27;
 
             @Override
-            public Object generateCell(Object columnId, Item item, Object itemId) {
+            public Object generateCell(final Object columnId, final Item item, final Object itemId) {
                 final Sale sale = GridItem.extractBean(item);
                 final SaleComment lastCommentObj = getLast(sale.getComments(), null);
                 String lastComment = "";

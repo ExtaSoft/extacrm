@@ -165,7 +165,7 @@ public class Lead extends SecuredObject {
         return files;
     }
 
-    public void setFiles(List<LeadFileContainer> files) {
+    public void setFiles(final List<LeadFileContainer> files) {
         this.files = files;
     }
 
@@ -189,7 +189,7 @@ public class Lead extends SecuredObject {
         return responsibleAssist;
     }
 
-    public void setResponsibleAssist(Employee responsibleAssist) {
+    public void setResponsibleAssist(final Employee responsibleAssist) {
         this.responsibleAssist = responsibleAssist;
     }
 
@@ -197,7 +197,7 @@ public class Lead extends SecuredObject {
         return dealerManager;
     }
 
-    public void setDealerManager(Employee dealerManager) {
+    public void setDealerManager(final Employee dealerManager) {
         this.dealerManager = dealerManager;
     }
 

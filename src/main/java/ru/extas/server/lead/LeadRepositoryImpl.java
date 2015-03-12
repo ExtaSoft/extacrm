@@ -135,6 +135,11 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         // Ответственный пользователь как Редактор
         if (lead.getResponsible() != null)
             users.add(new ImmutablePair<>(lead.getResponsible(), AccessRole.EDITOR));
+        if (lead.getResponsibleAssist() != null)
+            users.add(new ImmutablePair<>(lead.getResponsibleAssist(), AccessRole.EDITOR));
+        // Сотрудник дилера как читатель
+        if (lead.getDealerManager() != null)
+            users.add(new ImmutablePair<>(lead.getDealerManager(), AccessRole.READER));
 
         return users;
     }

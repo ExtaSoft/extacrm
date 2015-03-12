@@ -201,7 +201,7 @@ public class ProductInSaleField extends CustomField<List> {
         protected final BeanItem<ProductInSale> productInSaleItem;
         protected BeanFieldGroup<ProductInSale> fieldGroup;
 
-        public ProductItemComponent(final Object itemId, final String panelCaption, FontIcon icon) {
+        public ProductItemComponent(final Object itemId, final String panelCaption, final FontIcon icon) {
             this.itemId = itemId;
             this.panelCaption = panelCaption;
             productInSaleItem = container.getItem(itemId);
@@ -254,7 +254,7 @@ public class ProductInSaleField extends CustomField<List> {
             fieldGroup.getFields().forEach(Field::validate);
         }
 
-        public void updateSubValue(Property.ValueChangeEvent event) {
+        public void updateSubValue(final Property.ValueChangeEvent event) {
             fireValueChange(false);
         }
     }

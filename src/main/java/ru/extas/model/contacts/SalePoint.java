@@ -69,7 +69,7 @@ public class SalePoint extends Contact implements ArchivedObject {
         return curator;
     }
 
-    public void setCurator(Employee curator) {
+    public void setCurator(final Employee curator) {
         this.curator = curator;
     }
 

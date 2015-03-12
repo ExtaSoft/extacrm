@@ -52,7 +52,7 @@ public abstract class FileContainer extends AuditedObject {
      * Копирующий конструктор
      * @param file - исходный объект
      */
-    public FileContainer(String ownerId, FileContainer file) {
+    public FileContainer(final String ownerId, final FileContainer file) {
         this.ownerId = ownerId;
         description = file.getDescription();
         name = file.getName();

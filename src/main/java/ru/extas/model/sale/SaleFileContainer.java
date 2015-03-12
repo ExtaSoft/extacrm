@@ -14,14 +14,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "SALE_FILE")
 public class SaleFileContainer extends FileContainer {
-    public SaleFileContainer(String ownerId, FileContainer file) {
+    public SaleFileContainer(final String ownerId, final FileContainer file) {
         super(ownerId, file);
     }
 
     public SaleFileContainer() {
     }
 
-    public SaleFileContainer(FileContainer file) {
+    public SaleFileContainer(final FileContainer file) {
         this(null, file);
     }
 }

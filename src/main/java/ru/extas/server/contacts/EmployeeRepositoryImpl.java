@@ -28,10 +28,13 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public class EmployeeRepositoryImpl extends AbstractSecuredRepository<Employee> {
+public class EmployeeRepositoryImpl extends AbstractSecuredRepository<Employee> implements EmployeeService{
 
     @Inject
     private EmployeeRepository entityRepository;
+
+    @Inject
+    private CompanyRepository companyRepository;
 
     /** {@inheritDoc} */
     @Override
@@ -66,5 +69,49 @@ public class EmployeeRepositoryImpl extends AbstractSecuredRepository<Employee> 
         if(employee.getRegAddress() != null && !isNullOrEmpty(employee.getRegAddress().getRegion()))
             return newHashSet(employee.getRegAddress().getRegion());
         return null;
+    }
+
+    /**
+     * Определяет является ли переданный сотрудник, сотрудником Экстрим Ассистанс
+     *
+     * @param employee проверяемый сотрудник
+     * @return true если сотрудник Экстрим Ассистанс, иначе false
+     */
+    @Override
+    public boolean isEAEmployee(final Employee employee) {
+        return employee != null && employee.getCompany() != null && companyRepository.isExtremeAssistance(employee.getCompany());
+    }
+
+    /**
+     * Определяет является ли переданный сотрудник, сотрудником банка
+     *
+     * @param employee проверяемый сотрудник
+     * @return true если сотрудник банка, иначе false
+     */
+    @Override
+    public boolean isBankEmployee(final Employee employee) {
+        return employee != null && employee.getCompany() != null && companyRepository.isBank(employee.getCompany());
+    }
+
+    /**
+     * Определяет является ли переданный сотрудник, сотрудником дилера
+     *
+     * @param employee проверяемый сотрудник
+     * @return true если сотрудник дилера, иначе false
+     */
+    @Override
+    public boolean isDealerEmployee(final Employee employee) {
+        return employee != null && employee.getCompany() != null && companyRepository.isDealer(employee.getCompany());
+    }
+
+    /**
+     * Определяет является ли переданный сотрудник, сотрудником колл-центра
+     *
+     * @param employee проверяемый сотрудник
+     * @return true если сотрудник колл-центра, иначе false
+     */
+    @Override
+    public boolean isCallcenterEmployee(final Employee employee) {
+        return employee != null && employee.getCompany() != null && companyRepository.isCallcenter(employee.getCompany());
     }
 }

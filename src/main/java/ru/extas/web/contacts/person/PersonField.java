@@ -118,10 +118,10 @@ public class PersonField extends CustomField<Person> {
 
     public static class PopupForm extends ExtaFormLayout {
 
-        private Label emailField;
-        private Label birthdayField;
-        private Label phoneField;
-        private Button viewBtn;
+        private final Label emailField;
+        private final Label birthdayField;
+        private final Label phoneField;
+        private final Button viewBtn;
         private PersonSelectField personSelectField;
         private final Field field;
 
