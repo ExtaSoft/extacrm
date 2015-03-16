@@ -109,8 +109,7 @@ public class ProductInSaleField extends CustomField<List> {
             final BeanItem<ProductInSale> item = container.getItem(pItemId);
             final Product product = item.getBean().getProduct();
             if (product instanceof ProdCredit)
-                return new Disclosure("" +
-                        "credit", new CreditItemComponent(pItemId));
+                return new CreditItemComponent(pItemId);
             else if (product instanceof ProdInsurance)
                 return new InsuranceItemComponent(pItemId);
             else if (product instanceof ProdInstallments)
@@ -218,7 +217,7 @@ public class ProductInSaleField extends CustomField<List> {
             panelCaptionLayout.addComponent(productMenu);
 
             addComponent(panelCaptionLayout);
-            addComponent(createProductForm());
+            addComponent(new Disclosure("Подробнее...", createProductForm()));
         }
 
         protected MenuBar createMenuBar() {
@@ -234,7 +233,7 @@ public class ProductInSaleField extends CustomField<List> {
             return productMenu;
         }
 
-        protected abstract Component createProductForm();
+        protected abstract AbstractComponent createProductForm();
 
         public void commit() throws SourceException, Validator.InvalidValueException {
             try {
@@ -276,7 +275,7 @@ public class ProductInSaleField extends CustomField<List> {
         }
 
         @Override
-        protected Component createProductForm() {
+        protected AbstractComponent createProductForm() {
             final ExtaFormLayout form = new ExtaFormLayout();
 
             form.addComponent(new FormGroupHeader("Характеристики продукта"));
@@ -452,7 +451,7 @@ public class ProductInSaleField extends CustomField<List> {
         }
 
         @Override
-        protected Component createProductForm() {
+        protected AbstractComponent createProductForm() {
             final ExtaFormLayout form = new ExtaFormLayout();
 
             form.addComponent(new FormGroupHeader("Характеристики продукта"));
@@ -733,7 +732,7 @@ public class ProductInSaleField extends CustomField<List> {
         }
 
         @Override
-        protected Component createProductForm() {
+        protected AbstractComponent createProductForm() {
 
             final ExtaFormLayout form = new ExtaFormLayout();
 

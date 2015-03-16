@@ -24,7 +24,7 @@ public class Disclosure extends CssLayout {
     public Disclosure(String caption) {
         this.caption.setCaption(caption);
         setPrimaryStyleName(STYLE);
-        this.caption.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+        this.caption.addStyleName(ValoTheme.BUTTON_LINK);
         this.caption.setIcon(FontAwesome.CHEVRON_RIGHT);
         this.caption.addStyleName(STYLE_CAPTION);
         super.addComponent(this.caption);
