@@ -30,6 +30,7 @@
         <vaadin.itemlayout.version>2.0.1</vaadin.itemlayout.version>
         <vaadin.confirmdialog.version>2.1.2</vaadin.confirmdialog.version>
         <vaadin.sizereporter.version>0.1.3</vaadin.sizereporter.version>
+        <vaadin.animator.version>2.0.0</vaadin.animator.version>
 
         <servlet-api.version>2.5</servlet-api.version>
         <activiti-version>5.17.0</activiti-version>
@@ -46,6 +47,7 @@
         <mysql.connector.version>5.1.26</mysql.connector.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <hibernate-validator.version>4.3.2.Final</hibernate-validator.version>
+        <vaadin.dom.version>0.1.0</vaadin.dom.version>
     </properties>
 
     <profiles>
@@ -300,6 +302,16 @@
             <groupId>com.vaadin.addon</groupId>
             <artifactId>jpacontainer</artifactId>
             <version>${vaadin.jpacontainer.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.addons</groupId>
+            <artifactId>animator</artifactId>
+            <version>${vaadin.animator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.addons</groupId>
+            <artifactId>dom</artifactId>
+            <version>${vaadin.dom.version}</version>
         </dependency>
         <!--<dependency>-->
             <!--<groupId>com.vaadin.addon</groupId>-->

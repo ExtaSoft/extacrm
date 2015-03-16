@@ -24,10 +24,7 @@ import ru.extas.server.product.ProdInsuranceRepository;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
-import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.component.FormGroupHeader;
-import ru.extas.web.commons.component.PercentOfField;
+import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.product.ProdCreditField;
@@ -112,7 +109,8 @@ public class ProductInSaleField extends CustomField<List> {
             final BeanItem<ProductInSale> item = container.getItem(pItemId);
             final Product product = item.getBean().getProduct();
             if (product instanceof ProdCredit)
-                return new CreditItemComponent(pItemId);
+                return new Disclosure("" +
+                        "credit", new CreditItemComponent(pItemId));
             else if (product instanceof ProdInsurance)
                 return new InsuranceItemComponent(pItemId);
             else if (product instanceof ProdInstallments)

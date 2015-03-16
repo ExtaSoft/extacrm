@@ -47,6 +47,13 @@ public class MotorModelSelect extends ComboBox {
         });
         setFilteringMode(FilteringMode.CONTAINS);
         setWidth(15, Unit.EM);
+        addValueChangeListener(e -> {
+            final String value = (String) e.getProperty().getValue();
+            if (value != null && !containsId(value)) {
+                addItem(value);
+                //setValue(value);
+            }
+        });
     }
 
     /**
@@ -56,21 +63,16 @@ public class MotorModelSelect extends ComboBox {
      */
     protected void fillItems(final String type, final String brand) {
         final MotorModelRepository modelRepository = lookup(MotorModelRepository.class);
+        final String curModel = (String) getValue();
         if (type != null && brand != null) {
             final List<String> models = modelRepository.loadNamesByTypeAndBrand(type, brand);
 
-            final String curModel = (String) getValue();
             removeAllItems();
             for (final String item : models)
                 addItem(item);
-
-            if (curModel != null) {
-                if (!models.contains(curModel)) {
-                    addItem(curModel);
-                    setValue(curModel);
-                } else
-                    setValue(curModel);
-            }
+        }
+        if (curModel != null) {
+            setValue(curModel);
         }
     }
 
