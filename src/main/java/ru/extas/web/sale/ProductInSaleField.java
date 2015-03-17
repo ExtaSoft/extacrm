@@ -28,6 +28,7 @@ import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.product.ProdCreditField;
+import ru.extas.web.product.ProdInSaleStateSelect;
 import ru.extas.web.product.ProdInstallmentsField;
 import ru.extas.web.product.ProdInsuranceField;
 
@@ -217,7 +218,7 @@ public class ProductInSaleField extends CustomField<List> {
             panelCaptionLayout.addComponent(productMenu);
 
             addComponent(panelCaptionLayout);
-            addComponent(new Disclosure("Подробнее...", createProductForm()));
+            addComponent(createProductForm());
         }
 
         protected MenuBar createMenuBar() {
@@ -278,18 +279,17 @@ public class ProductInSaleField extends CustomField<List> {
         protected AbstractComponent createProductForm() {
             final ExtaFormLayout form = new ExtaFormLayout();
 
-            form.addComponent(new FormGroupHeader("Характеристики продукта"));
             productField = new ProdInsuranceField("Продукт", "Введите название продукта");
             productField.setRequired(true);
             productField.addValueChangeListener(e -> refreshProductFields());
-            form.addComponent(productField);
 
+            form.addComponent(new FormGroupHeader("Характеристики продукта"));
             vendorLabel = new Label();
             vendorLabel.setCaption("Страховщик");
             form.addComponent(vendorLabel);
 
             tariffLabel = new Label();
-            tariffLabel.setCaption("Первоначальный взнос");
+            tariffLabel.setCaption("Тариф");
             tariffLabel.setConverter(lookup(StringToPercentConverter.class));
             form.addComponent(tariffLabel);
 
@@ -333,7 +333,14 @@ public class ProductInSaleField extends CustomField<List> {
             // Инициализация взаимосвязей
             initRelations();
 
-            return form;
+            final VerticalLayout mainLayout = new VerticalLayout();
+            mainLayout.addComponent(new ExtaFormLayout(productField));
+            final Disclosure disclosure = new Disclosure("Подробнее...", "Свернуть...", form);
+            if(productInSaleItem.getBean().isNew())
+                disclosure.open();
+            mainLayout.addComponent(disclosure);
+
+            return mainLayout;
         }
 
         private void initRelations() {
@@ -373,11 +380,15 @@ public class ProductInSaleField extends CustomField<List> {
             final Insurance.PeriodOfCover period =
                     Optional.ofNullable(numPeriod).map(
                             n -> n.equals(6) ? Insurance.PeriodOfCover.HALF_A_YEAR : Insurance.PeriodOfCover.YEAR).orElse(null);
-            final boolean canCalculate = insurance != null && price != null && brand != null && period != null;
+            boolean canCalculate = insurance != null && price != null && brand != null && period != null;
             if (canCalculate) {
                 final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
-                final BigDecimal premium = calc.calcPropInsPremium(brand, price, period, false);
-                premiumLabel.setValue(MessageFormat.format("{0, number, currency}", premium));
+                final BigDecimal tarif = calc.findTarif(brand, period, false);
+                if(tarif != null) {
+                    final BigDecimal premium = calc.calcPropInsPremium(brand, price, period, false);
+                    premiumLabel.setValue(MessageFormat.format("{0, number, currency}", premium));
+                } else
+                    canCalculate = false;
             }
             // Гасим поля, если нечего в них показывать
             premiumLabel.setVisible(canCalculate);
@@ -404,8 +415,10 @@ public class ProductInSaleField extends CustomField<List> {
                 if (canFindTarif) {
                     final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
                     final BigDecimal premium = calc.findTarif(brand, period, false);
-                    tariffLabel.setPropertyDataSource(new ObjectProperty<>(premium));
-                    tariffLabel.setVisible(true);
+                    if(premium != null) {
+                        tariffLabel.setPropertyDataSource(new ObjectProperty<>(premium));
+                        tariffLabel.setVisible(true);
+                    }
                 } else
                     tariffLabel.setVisible(false);
                 vendorLabel.setVisible(true);
@@ -440,6 +453,8 @@ public class ProductInSaleField extends CustomField<List> {
         private ProdInstallmentsField productField;
         @PropertyId("responsible")
         private EmployeeField responsibleField;
+        @PropertyId("state")
+        private ProdInSaleStateSelect stateField;
 
         private Label vendorLabel;
         private Label downpaymentLabel;
@@ -454,12 +469,13 @@ public class ProductInSaleField extends CustomField<List> {
         protected AbstractComponent createProductForm() {
             final ExtaFormLayout form = new ExtaFormLayout();
 
-            form.addComponent(new FormGroupHeader("Характеристики продукта"));
             productField = new ProdInstallmentsField("Продукт", "Введите название продукта");
             productField.setRequired(true);
             productField.addValueChangeListener(e -> refreshProductFields());
-            form.addComponent(productField);
 
+            stateField = new ProdInSaleStateSelect("Статус рассмотрения", "Укажите статус рассмотрения заявки на продукт");
+
+            form.addComponent(new FormGroupHeader("Характеристики продукта"));
             vendorLabel = new Label();
             vendorLabel.setCaption("Эммитент");
             form.addComponent(vendorLabel);
@@ -521,7 +537,14 @@ public class ProductInSaleField extends CustomField<List> {
             // Инициализация взаимосвязей
             initRelations();
 
-            return form;
+            final VerticalLayout mainLayout = new VerticalLayout();
+            mainLayout.addComponent(new ExtaFormLayout(productField, stateField));
+            final Disclosure disclosure = new Disclosure("Подробнее...", "Свернуть...", form);
+            if (productInSaleItem.getBean().isNew())
+                disclosure.open();
+            mainLayout.addComponent(disclosure);
+
+            return mainLayout;
         }
 
         /**
@@ -701,6 +724,8 @@ public class ProductInSaleField extends CustomField<List> {
         private ProdCreditField productField;
         @PropertyId("responsible")
         private EmployeeField responsibleField;
+        @PropertyId("state")
+        private ProdInSaleStateSelect stateField;
 
         private Label vendorLabel;
         private Label programTypeLabel;
@@ -736,12 +761,13 @@ public class ProductInSaleField extends CustomField<List> {
 
             final ExtaFormLayout form = new ExtaFormLayout();
 
-            form.addComponent(new FormGroupHeader("Характеристики продукта"));
             productField = new ProdCreditField("Продукт", "Введите название продукта");
             productField.setRequired(true);
             productField.addValueChangeListener(e -> refreshProductFields());
-            form.addComponent(productField);
 
+            stateField = new ProdInSaleStateSelect("Статус рассмотрения", "Укажите статус рассмотрения заявки на продукт");
+
+            form.addComponent(new FormGroupHeader("Характеристики продукта"));
             vendorLabel = new Label();
             vendorLabel.setCaption("Банк");
             form.addComponent(vendorLabel);
@@ -833,7 +859,14 @@ public class ProductInSaleField extends CustomField<List> {
             // Инициализация взаимосвязей
             initRelations();
 
-            return form;
+            final VerticalLayout mainLayout = new VerticalLayout();
+            mainLayout.addComponent(new ExtaFormLayout(productField, stateField));
+            final Disclosure disclosure = new Disclosure("Подробнее...", "Свернуть...", form);
+            if (productInSaleItem.getBean().isNew())
+                disclosure.open();
+            mainLayout.addComponent(disclosure);
+
+            return mainLayout;
         }
 
         private void initRelations() {

@@ -11,6 +11,7 @@ import ru.extas.model.insurance.Insurance;
 import ru.extas.model.insurance.Policy;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.ProdCredit;
+import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.*;
 import ru.extas.web.commons.converters.*;
@@ -23,6 +24,7 @@ import ru.extas.web.insurance.StringToPolicyConverter;
 import ru.extas.web.lead.StringToLeadResult;
 import ru.extas.web.lead.StringToLeadStatus;
 import ru.extas.web.product.String2CreditProgramType;
+import ru.extas.web.product.String2ProdInSaleState;
 import ru.extas.web.sale.StringToSaleResult;
 import ru.extas.web.users.*;
 
@@ -145,6 +147,10 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 		// Конвертер уровня образования
 		if (presentationType == String.class && modelType == TypeOfEmployment.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToTypeOfEmployment.class);
+
+		// Конвертер статуса продукта в продаже
+		if (presentationType == String.class && modelType == ProductInSale.State.class)
+			return (Converter<PRESENTATION, MODEL>) lookup(String2ProdInSaleState.class);
 
 		// Let default factory handle the rest
 		return super.findConverter(presentationType, modelType);

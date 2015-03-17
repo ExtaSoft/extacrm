@@ -21,8 +21,13 @@ public class Disclosure extends CssLayout {
     protected Button caption = new Button();
     protected boolean open = false;
 
-    public Disclosure(String caption) {
-        this.caption.setCaption(caption);
+    private String openCaption;
+    private String closeCaption;
+
+    public Disclosure(String openCaption, String closeCaption) {
+        this.openCaption = openCaption;
+        this.closeCaption = closeCaption;
+        this.caption.setCaption(openCaption);
         setPrimaryStyleName(STYLE);
         this.caption.addStyleName(ValoTheme.BUTTON_LINK);
         this.caption.setIcon(FontAwesome.CHEVRON_RIGHT);
@@ -37,8 +42,8 @@ public class Disclosure extends CssLayout {
                 });
     }
 
-    public Disclosure(String caption, AbstractComponent content) {
-        this(caption);
+    public Disclosure(String openCaption, String closeCaption, AbstractComponent content) {
+        this(openCaption, closeCaption);
         setContent(content);
     }
 
@@ -78,6 +83,7 @@ public class Disclosure extends CssLayout {
             caption.addStyleName(STYLE_CAPTION_OPEN);
             open = true;
             caption.setIcon(FontAwesome.CHEVRON_DOWN);
+            caption.setCaption(closeCaption);
         }
         return this;
     }
@@ -93,6 +99,7 @@ public class Disclosure extends CssLayout {
             caption.removeStyleName(STYLE_CAPTION_OPEN);
             open = false;
             caption.setIcon(FontAwesome.CHEVRON_RIGHT);
+            caption.setCaption(openCaption);
         }
         return this;
     }
