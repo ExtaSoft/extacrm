@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.analytics.AnalyticsView;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -264,6 +265,8 @@ public class ExtaCrmUI extends UI {
                 SalesView.class, EnumSet.of(ExtaDomain.SALES_OPENED, ExtaDomain.SALES_SUCCESSFUL, ExtaDomain.SALES_CANCELED));
         mainMenu.addChapter("Страхование", "Раздел посвященный страхованию", Fontello.UMBRELLA_1,
                 InsuranceView.class, EnumSet.of(ExtaDomain.INSURANCE_PROP, ExtaDomain.INSURANCE_BSO, ExtaDomain.INSURANCE_A_7, ExtaDomain.INSURANCE_TRANSFER));
+        mainMenu.addChapter("Аналитика", "Раздел аналитической и статистической информации", Fontello.CHART,
+                AnalyticsView.class, ExtaDomain.ANALYTICS);
         mainMenu.addChapter("Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", Fontello.BASKET,
                 ProductView.class, EnumSet.of(ExtaDomain.PROD_CREDIT, ExtaDomain.PROD_INSURANCE, ExtaDomain.PROD_INSTALL));
         mainMenu.addChapter("Техника", "Раздел посвященный информации о технике", Fontello.COG,

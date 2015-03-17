@@ -313,11 +313,11 @@
             <artifactId>dom</artifactId>
             <version>${vaadin.dom.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.vaadin.addon</groupId>-->
-            <!--<artifactId>vaadin-charts</artifactId>-->
-            <!--<version>${vaadin.charts.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.vaadin.addon</groupId>
+            <artifactId>vaadin-charts</artifactId>
+            <version>${vaadin.charts.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>filteringtable</artifactId>
