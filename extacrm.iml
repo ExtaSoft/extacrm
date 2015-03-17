@@ -23,7 +23,7 @@
         <setting name="compilerParameters" value="-compileReport" />
         <setting name="compilerMaxHeapSize" value="512" />
         <setting name="gwtScriptOutputStyle" value="OBF" />
-        <setting name="gwtSdkUrl" value="file://D:\MavenRepo/com/vaadin/vaadin-client/7.4.1" />
+        <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/7.4.1" />
         <setting name="gwtSdkType" value="Vaadin-Maven" />
         <setting name="webFacet" value="Web" />
       </configuration>
@@ -67,6 +67,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.vaadin.addon:vaadin-charts:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:1.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tika:tika-core:1.5" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.libphonenumber:libphonenumber:6.0" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.wikitext:textile-core:1.4" level="project" />

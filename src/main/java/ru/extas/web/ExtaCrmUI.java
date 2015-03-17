@@ -3,7 +3,6 @@ package ru.extas.web;
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
@@ -265,7 +264,7 @@ public class ExtaCrmUI extends UI {
                 SalesView.class, EnumSet.of(ExtaDomain.SALES_OPENED, ExtaDomain.SALES_SUCCESSFUL, ExtaDomain.SALES_CANCELED));
         mainMenu.addChapter("Страхование", "Раздел посвященный страхованию", Fontello.UMBRELLA_1,
                 InsuranceView.class, EnumSet.of(ExtaDomain.INSURANCE_PROP, ExtaDomain.INSURANCE_BSO, ExtaDomain.INSURANCE_A_7, ExtaDomain.INSURANCE_TRANSFER));
-        mainMenu.addChapter("Аналитика", "Раздел аналитической и статистической информации", Fontello.CHART,
+        mainMenu.addChapter("Аналитика", "Раздел аналитической и статистической информации", FontAwesome.BAR_CHART_O,
                 AnalyticsView.class, ExtaDomain.ANALYTICS);
         mainMenu.addChapter("Продукты", "Раздел посвященный предоставляемым продуктам (услугам)", Fontello.BASKET,
                 ProductView.class, EnumSet.of(ExtaDomain.PROD_CREDIT, ExtaDomain.PROD_INSURANCE, ExtaDomain.PROD_INSTALL));
