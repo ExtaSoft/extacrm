@@ -51,7 +51,7 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Employee> container = new SecuredDataContainer<>(Employee.class, ExtaDomain.EMPLOYEE);
+        final SecuredDataContainer<Employee> container = SecuredDataContainer.create(Employee.class, ExtaDomain.EMPLOYEE);
         container.addNestedContainerProperty("company.name");
         container.sort(new Object[]{"company.name", "name"}, new boolean[]{true, true});
         if (salePointSupplier != null) {

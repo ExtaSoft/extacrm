@@ -12,18 +12,18 @@ import ru.extas.model.security.SecureAction;
 public class GridUtils {
 
     public static boolean isPermitEdit(final Container container, final Object entity) {
-        if(container instanceof AbstractSecuredDataContainer && entity instanceof IdentifiedObject) {
-            final AbstractSecuredDataContainer secContainer = (AbstractSecuredDataContainer) container;
-            return secContainer.isItemPermitAction(((IdentifiedObject)entity).getId(), SecureAction.EDIT);
+        if(container instanceof SecuredDataContainer && entity instanceof IdentifiedObject) {
+            final SecuredDataContainer secContainer = (SecuredDataContainer) container;
+            return secContainer.getSecurityFilter().isItemPermitAction(((IdentifiedObject)entity).getId(), SecureAction.EDIT);
         }
         return true;
     }
 
 
     public static boolean isPermitInsert(final Container container) {
-        if (container instanceof AbstractSecuredDataContainer) {
-            final AbstractSecuredDataContainer secContainer = (AbstractSecuredDataContainer) container;
-            return secContainer.isInsertPermitted();
+        if (container instanceof SecuredDataContainer) {
+            final SecuredDataContainer secContainer = (SecuredDataContainer) container;
+            return secContainer.getSecurityFilter().isInsertPermitted();
         }
         return true;
     }

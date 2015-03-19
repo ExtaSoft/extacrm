@@ -1,25 +1,12 @@
 package ru.extas.web.analytics;
 
-import com.google.common.collect.HashBasedTable;
-import com.vaadin.addon.charts.Chart;
-import com.vaadin.addon.charts.model.*;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Company_;
-import ru.extas.model.sale.*;
 import ru.extas.web.commons.ExtaAbstractView;
 import ru.extas.web.commons.ExtaTheme;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-
-import java.util.Set;
-
-import static ru.extas.server.ServiceLocator.lookup;
+import ru.extas.web.commons.component.LazyTabSheet;
 
 /**
  * Реализует экран аналитики
@@ -41,13 +28,13 @@ public class AnalyticsView extends ExtaAbstractView {
     protected Component createContent() {
         logger.info("Creating view content...");
 
-        final TabSheet analyticsSheet = new TabSheet();
+        final LazyTabSheet analyticsSheet = new LazyTabSheet();
         analyticsSheet.setSizeFull();
-        analyticsSheet.addTab(new SalesChartMain(), "Продажи");
-        analyticsSheet.addTab(new SalesChartByBanks(), "Банки");
-        analyticsSheet.addTab(new AgreedRejectedSalesChart(), "Одобрения/Отказы");
-        analyticsSheet.addTab(new SalesChartByProduct(), "Продукты");
-        analyticsSheet.addTab(new SalesChartByMotor(), "Техника");
+        analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new SalesChartMain()), "Продажи");
+        analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new SalesChartByBanks()), "Банки");
+        analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new AgreedRejectedSalesChart()), "Одобрения/Отказы");
+        analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new SalesChartByProduct()), "Продукты");
+        analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new SalesChartByMotor()), "Техника");
 
         return analyticsSheet;
     }

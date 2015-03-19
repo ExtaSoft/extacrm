@@ -1,6 +1,5 @@
-package ru.extas.web.commons;
+package ru.extas.security;
 
-import com.vaadin.addon.jpacontainer.util.DefaultQueryModifierDelegate;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.common.IdentifiedObject_;
 import ru.extas.model.contacts.Employee;
@@ -16,54 +15,31 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.List;
+import java.io.Serializable;
 
 import static com.google.common.collect.Iterables.getFirst;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
- * @author Valery Orlov
- *         Date: 18.09.2014
- *         Time: 17:17
+ * Абстрактный класс создающий предикат на основе прав доступа к объекту
+ *
+ * Created by valery on 20.03.15.
  */
-public abstract class AbstractSecuredDataContainer<TEntityType extends IdentifiedObject> extends ExtaJpaContainer<TEntityType> {
+public abstract class AbstractSecurityFilter<TEntityType extends IdentifiedObject> implements Serializable {
+
     protected final ExtaDomain domain;
+    final Class<TEntityType> entityClass;
 
-    public AbstractSecuredDataContainer(final Class<TEntityType> entityClass, final ExtaDomain domain) {
-        super(entityClass);
+    public AbstractSecurityFilter(Class<TEntityType> entityClass, ExtaDomain domain) {
         this.domain = domain;
-
-        // Установить фильтр в соответствии с правами доступа пользователя
-        setSecurityFilter();
+        this.entityClass = entityClass;
     }
 
-    /**
-     * <p>setSecurityFilter.</p>
-     */
-    private void setSecurityFilter() {
+    public Predicate createSecurityPredicate(final CriteriaBuilder cb, final CriteriaQuery<?> cq) {
+        // Все разрешено для админа
+        if (lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN))
+            return null;
 
-        getEntityProvider().setQueryModifierDelegate(
-                new DefaultQueryModifierDelegate() {
-                    @Override
-                    public void filtersWillBeAdded(final CriteriaBuilder cb, final CriteriaQuery<?> cq, final List<Predicate> predicates) {
-                        if (cb == null || cq == null || predicates == null)
-                            return;
-
-                        if (lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN))
-                            return;
-
-                        final Predicate predicate = createSecurityPredicate(cb, cq);
-                        if (predicate != null) {
-                            predicates.add(predicate);
-                            cq.distinct(true);
-                        }
-                    }
-                }
-        );
-
-    }
-
-    private Predicate createSecurityPredicate(final CriteriaBuilder cb, final CriteriaQuery<?> cq) {
         Predicate predicate;
         final Root<TEntityType> objectRoot = (Root<TEntityType>) getFirst(cq.getRoots(), null);
         final UserManagementService securityService = lookup(UserManagementService.class);
@@ -148,5 +124,13 @@ public abstract class AbstractSecuredDataContainer<TEntityType extends Identifie
 
         endSecurityFilter();
         return results != 0;
+    }
+
+    public ExtaDomain getDomain() {
+        return domain;
+    }
+
+    public Class<TEntityType> getEntityClass() {
+        return entityClass;
     }
 }

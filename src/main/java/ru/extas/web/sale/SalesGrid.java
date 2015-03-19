@@ -6,7 +6,9 @@ import com.vaadin.data.util.filter.Compare;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.CustomTable;
 import com.vaadin.ui.UI;
-import org.joda.time.*;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -98,7 +100,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Sale> container = new SecuredDataContainer<>(Sale.class, domain);
+        final ExtaJpaContainer<Sale> container = SecuredDataContainer.create(Sale.class, domain);
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
         container.addNestedContainerProperty("dealer.name");

@@ -15,14 +15,14 @@ import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.gwt.thirdparty.guava.common.collect.Maps.newHashMap;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -68,7 +68,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Insurance> container = new SecuredDataContainer<>(Insurance.class, ExtaDomain.INSURANCE_PROP);
+        final ExtaJpaContainer<Insurance> container = SecuredDataContainer.create(Insurance.class, ExtaDomain.INSURANCE_PROP);
         container.addNestedContainerProperty("dealer.name");
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
