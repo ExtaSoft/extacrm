@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -21,39 +22,45 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 19.03.2015
  *         Time: 16:32
  */
-public class SalesChartByBanks extends VerticalLayout {
+public class SalesChartByBanks extends AbstractSalesChart {
 
-    /**
-     * Constructs an empty VerticalLayout.
-     */
-    public SalesChartByBanks() {
+    private Chart chartByBankStatus;
+    private Chart allReqChart;
 
+    @Override
+    protected void addChartContent() {
         addComponent(createAllRequestChart());
         addComponent(createSalesChartByBankStatus());
     }
 
+    @Override
+    protected void updateChartData() {
+        updateAllReqData();
+        updateDataByBankStatus();
+    }
+
     private Chart createSalesChartByBankStatus() {
-        Chart chart = new Chart(ChartType.COLUMN);
-        chart.setSizeFull();
+        chartByBankStatus = new Chart(ChartType.COLUMN);
+        chartByBankStatus.setSizeFull();
 
         // Modify the default configuration a bit
-        Configuration conf = chart.getConfiguration();
+        Configuration conf = chartByBankStatus.getConfiguration();
         conf.setTitle("Заявки по банкам");
         conf.setSubTitle("Общее количество заявок по статусам рассмотрения");
 
         Legend legend = new Legend();
-//        legend.setLayout(LayoutDirection.VERTICAL);
-//        legend.setBackgroundColor("#FFFFFF");
-//        legend.setHorizontalAlign(HorizontalAlign.LEFT);
-//        legend.setVerticalAlign(VerticalAlign.TOP);
-//        legend.setX(100);
-//        legend.setY(70);
-//        legend.setFloating(true);
         legend.setShadow(true);
         conf.setLegend(legend);
 
         // The data
-        final ListSeries listSeries = new ListSeries();
+        updateDataByBankStatus();
+        return chartByBankStatus;
+    }
+
+    private void updateDataByBankStatus() {
+        Configuration conf = chartByBankStatus.getConfiguration();
+        conf.setSeries(newArrayList());
+
         final EntityManager em = lookup(EntityManager.class);
         final CriteriaBuilder cb = em.getCriteriaBuilder();
         final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
@@ -70,6 +77,7 @@ public class SalesChartByBanks extends VerticalLayout {
         cq.where(cb.notEqual(saleProductJoin.type(), ProdInsurance.class));
         cq.groupBy(bank.get(Company_.id), productInSaleState);
 
+        applyFilters(cb, cq, root);
         final TypedQuery<Tuple> tq = em.createQuery(cq);
 
         final HashBasedTable<ProductInSale.State, String, Long> dataTable = HashBasedTable.create();
@@ -86,6 +94,7 @@ public class SalesChartByBanks extends VerticalLayout {
         conf.addyAxis(y);
         XAxis x = new XAxis();
         x.setCategories(bankSet.toArray(new String[bankSet.size()]));
+        conf.removexAxes();
         conf.addxAxis(x);
         ListSeries openedSeries = new ListSeries("На рассмотрении");
         ListSeries closedSeries = new ListSeries("Одобренные");
@@ -98,15 +107,15 @@ public class SalesChartByBanks extends VerticalLayout {
         conf.addSeries(openedSeries);
         conf.addSeries(closedSeries);
         conf.addSeries(rejectedSeries);
-        return chart;
+        chartByBankStatus.drawChart();
     }
 
     private Chart createAllRequestChart() {
-        Chart chart = new Chart(ChartType.PIE);
-        chart.setSizeFull();
+        allReqChart = new Chart(ChartType.PIE);
+        allReqChart.setSizeFull();
 
         // Modify the default configuration a bit
-        Configuration conf = chart.getConfiguration();
+        Configuration conf = allReqChart.getConfiguration();
         conf.setTitle("Заявки по банкам");
         conf.setSubTitle("Общее количество заявок");
         conf.getLegend().setEnabled(true); // Disable legend
@@ -119,7 +128,13 @@ public class SalesChartByBanks extends VerticalLayout {
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
 
-        // The data
+        return allReqChart;
+    }
+
+    private void updateAllReqData() {
+        Configuration conf = allReqChart.getConfiguration();
+        conf.setSeries(newArrayList());
+
         EntityManager em = lookup(EntityManager.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
@@ -134,6 +149,8 @@ public class SalesChartByBanks extends VerticalLayout {
         cq.where(cb.notEqual(saleProductJoin.type(), ProdInsurance.class));
         cq.groupBy(bank);
 
+        applyFilters(cb, cq, root);
+
         TypedQuery<Tuple> tq = em.createQuery(cq);
         DataSeries series = new DataSeries("Заявки за период");
 
@@ -144,7 +161,7 @@ public class SalesChartByBanks extends VerticalLayout {
             series.add(item);
         }
         conf.addSeries(series);
-        return chart;
+        allReqChart.drawChart();
     }
 
 }

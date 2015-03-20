@@ -10,12 +10,16 @@ import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
 
-public class SalesChartByProduct extends VerticalLayout {
+public class SalesChartByProduct extends AbstractSalesChart {
 
-    public SalesChartByProduct() {
-        Chart chart = new Chart(ChartType.PIE);
+    private Chart chart;
+
+    @Override
+    protected void addChartContent() {
+        chart = new Chart(ChartType.PIE);
         chart.setWidth("100%");
         //chart.setHeight("300px");
 
@@ -32,7 +36,14 @@ public class SalesChartByProduct extends VerticalLayout {
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
 
-        // The data
+        addComponent(chart);
+    }
+
+    @Override
+    protected void updateChartData() {
+        Configuration conf = chart.getConfiguration();
+        conf.setSeries(newArrayList());
+
         EntityManager em = lookup(EntityManager.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
@@ -51,6 +62,7 @@ public class SalesChartByProduct extends VerticalLayout {
                 cb.notEqual(proTypeExpr, ProdInsurance.class)));
         cq.groupBy(proTypeExpr);
 
+        applyFilters(cb, cq, root);
         TypedQuery<Tuple> tq = em.createQuery(cq);
         DataSeries series = new DataSeries("Продажи");
 
@@ -69,8 +81,7 @@ public class SalesChartByProduct extends VerticalLayout {
             series.add(item);
         }
         conf.addSeries(series);
-
-        addComponent(chart);
+        chart.drawChart();
     }
 
 }

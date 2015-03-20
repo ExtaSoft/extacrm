@@ -11,6 +11,7 @@ import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -18,13 +19,13 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 19.03.2015
  *         Time: 16:30
  */
-public class AgreedRejectedSalesChart extends VerticalLayout {
+public class AgreedRejectedSalesChart extends AbstractSalesChart {
 
-    /**
-     * Constructs an empty VerticalLayout.
-     */
-    public AgreedRejectedSalesChart() {
-        Chart chart = new Chart(ChartType.PIE);
+    private Chart chart;
+
+    @Override
+    protected void addChartContent() {
+        chart = new Chart(ChartType.PIE);
         chart.setWidth("100%");
         //chart.setHeight("300px");
 
@@ -34,7 +35,6 @@ public class AgreedRejectedSalesChart extends VerticalLayout {
         conf.setSubTitle("Отмены по инициторам");
         conf.getLegend().setEnabled(true); // Disable legend
 
-
         PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);
         Labels dataLabels = new Labels(true);
@@ -42,7 +42,13 @@ public class AgreedRejectedSalesChart extends VerticalLayout {
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
 
-        // The data
+        addComponent(chart);
+    }
+
+    private void updateAgreedRejectedData() {
+        Configuration conf = chart.getConfiguration();
+        conf.setSeries(newArrayList());
+
         EntityManager em = lookup(EntityManager.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
@@ -56,6 +62,7 @@ public class AgreedRejectedSalesChart extends VerticalLayout {
         cq.groupBy(resultPath);
 //        cq.orderBy(cb.desc(resultPath));
 
+        applyFilters(cb, cq, root);
         TypedQuery<Tuple> tq = em.createQuery(cq);
         DataSeries series = new DataSeries("Продажи");
 
@@ -76,7 +83,11 @@ public class AgreedRejectedSalesChart extends VerticalLayout {
             series.add(item);
         }
         conf.addSeries(series);
+        chart.drawChart();
+    }
 
-        addComponent(chart);
+    @Override
+    protected void updateChartData() {
+        updateAgreedRejectedData();
     }
 }

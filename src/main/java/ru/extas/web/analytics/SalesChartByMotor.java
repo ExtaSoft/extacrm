@@ -2,7 +2,6 @@ package ru.extas.web.analytics;
 
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
-import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.Sale_;
 
@@ -11,6 +10,7 @@ import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -18,23 +18,30 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 19.03.2015
  *         Time: 16:34
  */
-public class SalesChartByMotor extends VerticalLayout {
+public class SalesChartByMotor extends AbstractSalesChart {
 
-    /**
-     * Constructs an empty VerticalLayout.
-     */
-    public SalesChartByMotor() {
 
+    private Chart typeChart;
+    private Chart brandChart;
+
+    @Override
+    protected void addChartContent() {
         addComponent(createTypeChart());
         addComponent(createBrandChart());
     }
 
+    @Override
+    protected void updateChartData() {
+        updateTypeData();
+        updateBrandData();
+    }
+
     private Chart createTypeChart() {
-        Chart chart = new Chart(ChartType.PIE);
-        chart.setWidth("100%");
+        typeChart = new Chart(ChartType.PIE);
+        typeChart.setWidth("100%");
 
         // Modify the default configuration a bit
-        Configuration conf = chart.getConfiguration();
+        Configuration conf = typeChart.getConfiguration();
         conf.setTitle("Продажи техники по типам");
         conf.setSubTitle("Общее количество проданной техники по типам");
 
@@ -45,7 +52,13 @@ public class SalesChartByMotor extends VerticalLayout {
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
 
-        // The data
+        return typeChart;
+    }
+
+    private void updateTypeData() {
+        Configuration conf = typeChart.getConfiguration();
+        conf.setSeries(newArrayList());
+
         EntityManager em = lookup(EntityManager.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
@@ -59,6 +72,7 @@ public class SalesChartByMotor extends VerticalLayout {
         cq.where(cb.equal(saleStatus, Sale.Status.FINISHED));
         cq.groupBy(mTypePath);
 
+        applyFilters(cb, cq, root);
         TypedQuery<Tuple> tq = em.createQuery(cq);
         DataSeries series = new DataSeries("Единицы техники");
 
@@ -68,15 +82,15 @@ public class SalesChartByMotor extends VerticalLayout {
             series.add(new DataSeriesItem(mType, mBrandCount));
         }
         conf.addSeries(series);
-        return chart;
+        typeChart.drawChart();
     }
 
     private Chart createBrandChart() {
-        Chart chart = new Chart(ChartType.PIE);
-        chart.setWidth("100%");
+        brandChart = new Chart(ChartType.PIE);
+        brandChart.setWidth("100%");
 
         // Modify the default configuration a bit
-        Configuration conf = chart.getConfiguration();
+        Configuration conf = brandChart.getConfiguration();
         conf.setTitle("Продажи техники по брендам");
         conf.setSubTitle("Общее количество проданной техники по брендам");
 
@@ -87,7 +101,13 @@ public class SalesChartByMotor extends VerticalLayout {
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
 
-        // The data
+        return brandChart;
+    }
+
+    private void updateBrandData() {
+        Configuration conf = brandChart.getConfiguration();
+        conf.setSeries(newArrayList());
+
         EntityManager em = lookup(EntityManager.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createTupleQuery();
@@ -101,6 +121,7 @@ public class SalesChartByMotor extends VerticalLayout {
         cq.where(cb.equal(saleStatus, Sale.Status.FINISHED));
         cq.groupBy(mBrandPath);
 
+        applyFilters(cb, cq, root);
         TypedQuery<Tuple> tq = em.createQuery(cq);
         DataSeries series = new DataSeries("Единицы техники");
 
@@ -110,6 +131,6 @@ public class SalesChartByMotor extends VerticalLayout {
             series.add(new DataSeriesItem(mBrand, mBrandCount));
         }
         conf.addSeries(series);
-        return chart;
+        brandChart.drawChart();
     }
 }
