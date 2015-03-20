@@ -3,7 +3,6 @@ package ru.extas.web.analytics;
 import com.google.common.collect.HashBasedTable;
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
-import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Company_;
 import ru.extas.model.sale.*;
@@ -52,8 +51,6 @@ public class SalesChartByBanks extends AbstractSalesChart {
         legend.setShadow(true);
         conf.setLegend(legend);
 
-        // The data
-        updateDataByBankStatus();
         return chartByBankStatus;
     }
 
@@ -91,6 +88,7 @@ public class SalesChartByBanks extends AbstractSalesChart {
         YAxis y = new YAxis();
         y.setMin(0);
         y.setTitle("Заявки");
+        conf.removeyAxes();
         conf.addyAxis(y);
         XAxis x = new XAxis();
         x.setCategories(bankSet.toArray(new String[bankSet.size()]));
