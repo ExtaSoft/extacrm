@@ -14,6 +14,7 @@ import javax.persistence.criteria.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -42,7 +43,7 @@ public class SalesChartMain extends AbstractSalesChart {
         // Modify the default configuration a bit
         Configuration conf = flowChart.getConfiguration();
         conf.setTitle("Динамика продаж");
-        conf.setSubTitle("Динамика продаж по статусам рассмотрения");
+        conf.setSubTitle("Динамика продаж по месяцам");
 
         Legend legend = new Legend();
         legend.setShadow(true);
@@ -111,16 +112,21 @@ public class SalesChartMain extends AbstractSalesChart {
             final Long count = t.get(saleCount);
             dataTable.put(status, LocalDate.of(year, month, 1), count);
         }
-        final List<LocalDate> periodSet = newArrayList(dataTable.columnKeySet().stream().sorted().iterator());
+
         YAxis y = new YAxis();
         y.setMin(0);
         y.setTitle("Продажи");
         conf.removeyAxes();
         conf.addyAxis(y);
+
+        final List<LocalDate> periodSet = newArrayList(dataTable.columnKeySet().stream().sorted().iterator());
         XAxis x = new XAxis();
-        x.setCategories(newArrayList(periodSet.stream().map(d -> d.format(DateTimeFormatter.ofPattern("MMM YYYY"))).iterator()).toArray(new String[periodSet.size()]));
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM YYYY", lookup(Locale.class));
+        x.setCategories(newArrayList(periodSet.stream().map(d -> d.format(formatter)).iterator())
+                .toArray(new String[periodSet.size()]));
         conf.removexAxes();
         conf.addxAxis(x);
+
         ListSeries openedSeries = new ListSeries("Открытые");
         ListSeries closedSeries = new ListSeries("Завершенные");
         ListSeries rejectedSeries = new ListSeries("Отмененные");

@@ -49,6 +49,9 @@ public class SalePointField extends CustomField<SalePoint> {
         setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setBuffered(true);
+        addValueChangeListener(e -> {
+            popupView.markAsDirty();
+        });
     }
 
     /**
@@ -127,9 +130,9 @@ public class SalePointField extends CustomField<SalePoint> {
             setContainerFilter();
             container.refresh();
             final SalePoint salePoint = (SalePoint) getConvertedValue();
-            if(salePoint != null)
-            if (companySupplier != null && !Objects.equals(salePoint.getCompany(), companySupplier.get()))
-                setConvertedValue(null);
+            if (salePoint != null)
+                if (companySupplier != null && !Objects.equals(salePoint.getCompany(), companySupplier.get()))
+                    setConvertedValue(null);
         }
 
         protected void setContainerFilter() {
@@ -278,7 +281,8 @@ public class SalePointField extends CustomField<SalePoint> {
             if (phoneField != null) phoneField.setPropertyDataSource(beanItem.getItemProperty("phone"));
             // Адрес
             if (cityField != null) cityField.setPropertyDataSource(beanItem.getItemProperty("regAddress.city"));
-            if (addressField != null) addressField.setPropertyDataSource(beanItem.getItemProperty("regAddress.streetBld"));
+            if (addressField != null)
+                addressField.setPropertyDataSource(beanItem.getItemProperty("regAddress.streetBld"));
         }
     }
 

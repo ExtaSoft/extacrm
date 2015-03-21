@@ -1,5 +1,6 @@
 package ru.extas.web.analytics;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -117,14 +118,23 @@ public abstract class AbstractSalesChart extends VerticalLayout {
                 "Укажите торговую точку для которой будет строиться аналитика");
         filterForm.addComponent(salePointField);
 
-        final Button button = new Button("Применить", e -> {
+        final Button runButton = new Button("Применить", e -> updateChartData());
+        runButton.addStyleName(ExtaTheme.BUTTON_SMALL);
+        runButton.addStyleName(ExtaTheme.BUTTON_PRIMARY);
+        runButton.setIcon(FontAwesome.BOLT);
+        final Button clearButton = new Button("Очистить", e -> {
+            intervalField.setValue(null);
+            regionSelect.setValue(null);
+            companyField.setValue(null);
+            salePointField.setValue(null);
             updateChartData();
         });
-        button.addStyleName(ExtaTheme.BUTTON_SMALL);
-        button.addStyleName(ExtaTheme.BUTTON_PRIMARY);
-        HorizontalLayout runFilter = new HorizontalLayout(button);
-        runFilter.setMargin(new MarginInfo(true, false, false, false));
-        filterForm.addComponent(runFilter);
+        clearButton.addStyleName(ExtaTheme.BUTTON_SMALL);
+        clearButton.setIcon(FontAwesome.ERASER);
+        HorizontalLayout toolBar = new HorizontalLayout(runButton, clearButton);
+        toolBar.setSpacing(true);
+        toolBar.setMargin(new MarginInfo(true, false, false, false));
+        filterForm.addComponent(toolBar);
 
         return filterForm;
     }

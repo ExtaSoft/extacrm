@@ -131,6 +131,10 @@ public class PastDateIntervalField extends CustomField<Interval> {
     public PastDateIntervalField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
+        addValueChangeListener(e -> {
+            if(e.getProperty().getValue() == null)
+                namedIntervalField.setValue(NamedInterval.ALL_TIME);
+        });
     }
 
     /**
