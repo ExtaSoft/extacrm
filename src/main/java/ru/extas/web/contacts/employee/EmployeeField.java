@@ -187,6 +187,7 @@ public class EmployeeField extends CustomField<Employee> {
             formLayout.addComponent(new FormGroupHeader("Сотрудник"));
 
             selectField = new EmployeeSelectField("Имя", "Введите или выберите имя сотрудника");
+            selectField.setBuffered(true);
             selectField.setPropertyDataSource(getPropertyDataSource());
             selectField.setNewItemsAllowed(true);
             selectField.setNewItemHandler(newItemCaption -> {

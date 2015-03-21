@@ -800,6 +800,9 @@ public class ProductInSaleField extends CustomField<List> {
             form.addComponent(new FormGroupHeader("Параметры кредита"));
             downpaymentField = new PercentOfField("Первоначальный взнос", "Введите сумму первоначального взноса по кредиту");
             downpaymentField.setRequired(true);
+            downpaymentField.addValueChangeListener(e -> {
+                System.out.print("periodField");
+            });
             form.addComponent(downpaymentField);
 
             periodField = new ComboBox("Срок кредитования");
@@ -810,6 +813,9 @@ public class ProductInSaleField extends CustomField<List> {
             periodField.setWidth(6, Unit.EM);
             // Наполняем возможными сроками кредита
             fillPeriodFieldItems();
+            periodField.addValueChangeListener(e -> {
+                System.out.print("periodField");
+            });
             form.addComponent(periodField);
 
             summField = new EditField("Сумма кредита", "Введите сумму кредита (Также может рассчитываться автоматически)");
