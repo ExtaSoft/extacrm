@@ -42,7 +42,6 @@ public class SalePointField extends CustomField<SalePoint> {
      *
      * @param caption     a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
-     * @param company     a {@link ru.extas.model.contacts.Company} object.
      */
     public SalePointField(final String caption, final String description) {
         setCaption(caption);
@@ -50,7 +49,8 @@ public class SalePointField extends CustomField<SalePoint> {
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setBuffered(true);
         addValueChangeListener(e -> {
-            popupView.markAsDirty();
+            if (popupView != null)
+                popupView.markAsDirty();
         });
     }
 

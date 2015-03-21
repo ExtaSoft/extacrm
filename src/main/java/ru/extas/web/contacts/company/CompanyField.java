@@ -42,7 +42,8 @@ public class CompanyField extends CustomField<Company> {
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setBuffered(true);
         addValueChangeListener(e -> {
-            popupView.markAsDirty();
+            if (popupView != null)
+                popupView.markAsDirty();
         });
     }
 
