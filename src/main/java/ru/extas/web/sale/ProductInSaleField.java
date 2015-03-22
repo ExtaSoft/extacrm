@@ -24,6 +24,7 @@ import ru.extas.server.product.ProdInsuranceRepository;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.contacts.employee.EmployeeField;
@@ -153,10 +154,15 @@ public class ProductInSaleField extends CustomField<List> {
     }
 
     private void addProduct(final Product product) {
-        final ProductInSale productInSale = new ProductInSale(sale);
-        productInSale.setProduct(product);
-        container.addBean(productInSale);
-        setValue(container.getItemIds());
+        if (priceSupplier.get() != null && brandSupplier.get() != null) {
+            final ProductInSale productInSale = new ProductInSale(sale);
+            productInSale.setProduct(product);
+            container.addBean(productInSale);
+            setValue(container.getItemIds());
+        } else {
+            NotificationUtil.showWarning("Невозможно добавить продукт",
+                    "Для добавления продукта необходимо заполнить поля <b>'Цена техники'</b> и <b>'Макра техники'</b>");
+        }
     }
 
     @Override
@@ -336,7 +342,7 @@ public class ProductInSaleField extends CustomField<List> {
             final VerticalLayout mainLayout = new VerticalLayout();
             mainLayout.addComponent(new ExtaFormLayout(productField));
             final Disclosure disclosure = new Disclosure("Подробнее...", "Свернуть...", form);
-            if(productInSaleItem.getBean().isNew())
+            if (productInSaleItem.getBean().isNew())
                 disclosure.open();
             mainLayout.addComponent(disclosure);
 
@@ -384,7 +390,7 @@ public class ProductInSaleField extends CustomField<List> {
             if (canCalculate) {
                 final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
                 final BigDecimal tarif = calc.findTarif(brand, period, false);
-                if(tarif != null) {
+                if (tarif != null) {
                     final BigDecimal premium = calc.calcPropInsPremium(brand, price, period, false);
                     premiumLabel.setValue(MessageFormat.format("{0, number, currency}", premium));
                 } else
@@ -415,7 +421,7 @@ public class ProductInSaleField extends CustomField<List> {
                 if (canFindTarif) {
                     final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
                     final BigDecimal premium = calc.findTarif(brand, period, false);
-                    if(premium != null) {
+                    if (premium != null) {
                         tariffLabel.setPropertyDataSource(new ObjectProperty<>(premium));
                         tariffLabel.setVisible(true);
                     }
@@ -983,10 +989,11 @@ public class ProductInSaleField extends CustomField<List> {
         private void initValidators() {
             downpaymentField.addValidator(value -> {
                 ProdCredit prod = productField.getValue();
-                if (prod != null) {
+                final BigDecimal price = priceSupplier.get();
+                if (prod != null && price != null) {
                     BigDecimal newDownpayment = (BigDecimal) value;
-                    BigDecimal minDownpayment = prod.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
-                    BigDecimal maxDownpayment = prod.getMaxDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
+                    BigDecimal minDownpayment = prod.getMinDownpayment().multiply(price, MathContext.DECIMAL128);
+                    BigDecimal maxDownpayment = prod.getMaxDownpayment().multiply(price, MathContext.DECIMAL128);
                     if (newDownpayment.compareTo(minDownpayment) < 0 ||
                             newDownpayment.compareTo(maxDownpayment) > 0) {
                         throw new Validator.InvalidValueException(
