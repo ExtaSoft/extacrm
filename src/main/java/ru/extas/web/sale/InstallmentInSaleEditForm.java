@@ -2,18 +2,19 @@ package ru.extas.web.sale;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.sale.ProdInstallments;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.component.*;
+import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.component.PercentOfField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.product.ProdInSaleStateSelect;
 import ru.extas.web.product.ProdInstallmentsField;
@@ -59,7 +60,7 @@ public class InstallmentInSaleEditForm extends ExtaEditForm<ProductInSale> {
      * @param priceSupplier
      * @param brandSupplier
      */
-    protected InstallmentInSaleEditForm(String caption, ProductInSale productInSale, SupplierSer<BigDecimal> priceSupplier, SupplierSer<String> brandSupplier) {
+    protected InstallmentInSaleEditForm(final String caption, final ProductInSale productInSale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
         super(caption, productInSale);
         this.priceSupplier = priceSupplier;
         this.brandSupplier = brandSupplier;
@@ -71,7 +72,7 @@ public class InstallmentInSaleEditForm extends ExtaEditForm<ProductInSale> {
      * @param productInSale a TEditObject object.
      */
     @Override
-    protected void initEntity(ProductInSale productInSale) {
+    protected void initEntity(final ProductInSale productInSale) {
 
     }
 
@@ -81,7 +82,7 @@ public class InstallmentInSaleEditForm extends ExtaEditForm<ProductInSale> {
      * @param productInSale a TEditObject object.
      */
     @Override
-    protected ProductInSale saveEntity(ProductInSale productInSale) {
+    protected ProductInSale saveEntity(final ProductInSale productInSale) {
         return productInSale;
     }
 

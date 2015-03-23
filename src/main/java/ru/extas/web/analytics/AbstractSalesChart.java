@@ -43,7 +43,7 @@ public abstract class AbstractSalesChart extends VerticalLayout {
      */
     public AbstractSalesChart() {
         // Форма фильтра
-        ExtaFormLayout filterForm = createFilterForm();
+        final ExtaFormLayout filterForm = createFilterForm();
         addComponent(filterForm);
         addChartContent();
         updateChartData();
@@ -53,11 +53,11 @@ public abstract class AbstractSalesChart extends VerticalLayout {
 
     protected abstract void updateChartData();
 
-    protected void applyFilters(CriteriaBuilder cb, CriteriaQuery<Tuple> cq, Root<Sale> root) {
-        List<Predicate> predicateList = newArrayList();
+    protected void applyFilters(final CriteriaBuilder cb, final CriteriaQuery<Tuple> cq, final Root<Sale> root) {
+        final List<Predicate> predicateList = newArrayList();
 
         // Уже наложенный фильтр
-        Predicate userPredicate = cq.getRestriction();
+        final Predicate userPredicate = cq.getRestriction();
         if (userPredicate != null)
             predicateList.add(userPredicate);
 
@@ -65,7 +65,7 @@ public abstract class AbstractSalesChart extends VerticalLayout {
         createAnalyticFilter(cb, root, predicateList);
 
         // Фильтр безопасности
-        Predicate securityPredicate = new SecurityFilter<>(Sale.class, ExtaDomain.SALES_OPENED).createSecurityPredicate(cb, cq);
+        final Predicate securityPredicate = new SecurityFilter<>(Sale.class, ExtaDomain.SALES_OPENED).createSecurityPredicate(cb, cq);
         if (securityPredicate != null)
             predicateList.add(securityPredicate);
 
@@ -74,32 +74,32 @@ public abstract class AbstractSalesChart extends VerticalLayout {
             cq.where(cb.and(predicateList.toArray(new Predicate[predicateList.size()])));
     }
 
-    private void createAnalyticFilter(CriteriaBuilder cb, Root<Sale> root, List<Predicate> predicateList) {
+    private void createAnalyticFilter(final CriteriaBuilder cb, final Root<Sale> root, final List<Predicate> predicateList) {
         // - Временной интервал
-        Interval interval = intervalField.getValue();
+        final Interval interval = intervalField.getValue();
         if (interval != null) {
             predicateList.add(cb.between(root.get(Sale_.createdDate), interval.getStart(), interval.getEnd()));
         }
         // - Регион
-        String region = (String) regionSelect.getValue();
+        final String region = (String) regionSelect.getValue();
         if (region != null) {
             predicateList.add(cb.equal(root.get(Sale_.region), region));
         }
         // - Компания
-        Company company = companyField.getValue();
+        final Company company = companyField.getValue();
         if (company != null) {
-            Join<SalePoint, Company> companyPath = root.join(Sale_.dealer).join(SalePoint_.company);
+            final Join<SalePoint, Company> companyPath = root.join(Sale_.dealer).join(SalePoint_.company);
             predicateList.add(cb.equal(companyPath, company));
         }
         // Торговая точка
-        SalePoint salePoint = salePointField.getValue();
+        final SalePoint salePoint = salePointField.getValue();
         if(salePoint != null) {
             predicateList.add(cb.equal(root.get(Sale_.dealer), salePoint));
         }
     }
 
     protected ExtaFormLayout createFilterForm() {
-        ExtaFormLayout filterForm = new ExtaFormLayout();
+        final ExtaFormLayout filterForm = new ExtaFormLayout();
         filterForm.addComponent(new FormGroupHeader("Фильтр данных"));
         intervalField = new PastDateIntervalField("Временной интервал",
                 "Установите временной интервал за который будет производится анализ данных");
@@ -131,7 +131,7 @@ public abstract class AbstractSalesChart extends VerticalLayout {
         });
         clearButton.addStyleName(ExtaTheme.BUTTON_SMALL);
         clearButton.setIcon(FontAwesome.ERASER);
-        HorizontalLayout toolBar = new HorizontalLayout(runButton, clearButton);
+        final HorizontalLayout toolBar = new HorizontalLayout(runButton, clearButton);
         toolBar.setSpacing(true);
         toolBar.setMargin(new MarginInfo(true, false, false, false));
         filterForm.addComponent(toolBar);

@@ -121,10 +121,14 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
     }
 
     public void closeForm() {
-        fireCloseForm();
+        HasComponents parent = getParent();
+        if (parent instanceof Window)
+            ((Window) parent).close();
+        else
+            fireCloseForm();
     }
 
-    protected void fireCloseForm() {
+    public void fireCloseForm() {
         fireEvent(new CloseFormEvent(this));
     }
 

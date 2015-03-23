@@ -1,21 +1,18 @@
 package ru.extas.web.sale;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.sale.ProdInsurance;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.component.Disclosure;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.converters.StringToPercentConverter;
@@ -56,7 +53,7 @@ public class InsuranceInSaleEditForm extends ExtaEditForm<ProductInSale> {
      * @param priceSupplier
      * @param brandSupplier
      */
-    protected InsuranceInSaleEditForm(String caption, ProductInSale productInSale, SupplierSer<BigDecimal> priceSupplier, SupplierSer<String> brandSupplier) {
+    protected InsuranceInSaleEditForm(final String caption, final ProductInSale productInSale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
         super(caption, productInSale);
         this.priceSupplier = priceSupplier;
         this.brandSupplier = brandSupplier;
@@ -68,7 +65,7 @@ public class InsuranceInSaleEditForm extends ExtaEditForm<ProductInSale> {
      * @param productInSale a TEditObject object.
      */
     @Override
-    protected void initEntity(ProductInSale productInSale) {
+    protected void initEntity(final ProductInSale productInSale) {
 
     }
 
@@ -78,7 +75,7 @@ public class InsuranceInSaleEditForm extends ExtaEditForm<ProductInSale> {
      * @param productInSale a TEditObject object.
      */
     @Override
-    protected ProductInSale saveEntity(ProductInSale productInSale) {
+    protected ProductInSale saveEntity(final ProductInSale productInSale) {
         return productInSale;
     }
 

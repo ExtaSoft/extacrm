@@ -30,7 +30,7 @@ public abstract class AbstractSecurityFilter<TEntityType extends IdentifiedObjec
     protected final ExtaDomain domain;
     final Class<TEntityType> entityClass;
 
-    public AbstractSecurityFilter(Class<TEntityType> entityClass, ExtaDomain domain) {
+    public AbstractSecurityFilter(final Class<TEntityType> entityClass, final ExtaDomain domain) {
         this.domain = domain;
         this.entityClass = entityClass;
     }

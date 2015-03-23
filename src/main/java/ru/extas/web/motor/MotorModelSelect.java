@@ -77,7 +77,7 @@ public class MotorModelSelect extends ComboBox {
     }
 
     public void linkToTypeAndBrand(final MotorTypeSelect typeField, final MotorBrandSelect brandField) {
-        ValueChangeListener listener = event -> {
+        final ValueChangeListener listener = event -> {
             final String type = (String) typeField.getValue();
             final String brand = (String) brandField.getValue();
             fillItems(type, brand);

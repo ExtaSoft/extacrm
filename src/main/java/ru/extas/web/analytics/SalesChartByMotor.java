@@ -41,13 +41,13 @@ public class SalesChartByMotor extends AbstractSalesChart {
         typeChart.setWidth("100%");
 
         // Modify the default configuration a bit
-        Configuration conf = typeChart.getConfiguration();
+        final Configuration conf = typeChart.getConfiguration();
         conf.setTitle("Продажи техники по типам");
         conf.setSubTitle("Общее количество проданной техники по типам");
 
-        PlotOptionsPie plotOptions = new PlotOptionsPie();
+        final PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);
-        Labels dataLabels = new Labels(true);
+        final Labels dataLabels = new Labels(true);
         dataLabels.setFormatter("''+ this.point.name +': '+ this.percentage.toFixed(2) +' %'");
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
@@ -56,29 +56,29 @@ public class SalesChartByMotor extends AbstractSalesChart {
     }
 
     private void updateTypeData() {
-        Configuration conf = typeChart.getConfiguration();
+        final Configuration conf = typeChart.getConfiguration();
         conf.setSeries(newArrayList());
 
-        EntityManager em = lookup(EntityManager.class);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Tuple> cq = cb.createTupleQuery();
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
 
-        Root<Sale> root = cq.from(Sale.class);
+        final Root<Sale> root = cq.from(Sale.class);
         final Path<Sale.Status> saleStatus = root.get(Sale_.status);
-        Path<String> mTypePath = root.get(Sale_.motorType);
-        Expression<Long> mTypeCountEx = cb.count(mTypePath);
+        final Path<String> mTypePath = root.get(Sale_.motorType);
+        final Expression<Long> mTypeCountEx = cb.count(mTypePath);
 
         cq.multiselect(mTypePath, mTypeCountEx);
         cq.where(cb.equal(saleStatus, Sale.Status.FINISHED));
         cq.groupBy(mTypePath);
 
         applyFilters(cb, cq, root);
-        TypedQuery<Tuple> tq = em.createQuery(cq);
-        DataSeries series = new DataSeries("Единицы техники");
+        final TypedQuery<Tuple> tq = em.createQuery(cq);
+        final DataSeries series = new DataSeries("Единицы техники");
 
-        for (Tuple t : tq.getResultList()) {
-            String mType = t.get(mTypePath);
-            Long mBrandCount = t.get(mTypeCountEx);
+        for (final Tuple t : tq.getResultList()) {
+            final String mType = t.get(mTypePath);
+            final Long mBrandCount = t.get(mTypeCountEx);
             series.add(new DataSeriesItem(mType, mBrandCount));
         }
         conf.addSeries(series);
@@ -90,13 +90,13 @@ public class SalesChartByMotor extends AbstractSalesChart {
         brandChart.setWidth("100%");
 
         // Modify the default configuration a bit
-        Configuration conf = brandChart.getConfiguration();
+        final Configuration conf = brandChart.getConfiguration();
         conf.setTitle("Продажи техники по брендам");
         conf.setSubTitle("Общее количество проданной техники по брендам");
 
-        PlotOptionsPie plotOptions = new PlotOptionsPie();
+        final PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);
-        Labels dataLabels = new Labels(true);
+        final Labels dataLabels = new Labels(true);
         dataLabels.setFormatter("''+ this.point.name +': '+ this.percentage.toFixed(2) +' %'");
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
@@ -105,29 +105,29 @@ public class SalesChartByMotor extends AbstractSalesChart {
     }
 
     private void updateBrandData() {
-        Configuration conf = brandChart.getConfiguration();
+        final Configuration conf = brandChart.getConfiguration();
         conf.setSeries(newArrayList());
 
-        EntityManager em = lookup(EntityManager.class);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Tuple> cq = cb.createTupleQuery();
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
 
-        Root<Sale> root = cq.from(Sale.class);
+        final Root<Sale> root = cq.from(Sale.class);
         final Path<Sale.Status> saleStatus = root.get(Sale_.status);
-        Path<String> mBrandPath = root.get(Sale_.motorBrand);
-        Expression<Long> mBrandCountEx = cb.count(mBrandPath);
+        final Path<String> mBrandPath = root.get(Sale_.motorBrand);
+        final Expression<Long> mBrandCountEx = cb.count(mBrandPath);
 
         cq.multiselect(mBrandPath, mBrandCountEx);
         cq.where(cb.equal(saleStatus, Sale.Status.FINISHED));
         cq.groupBy(mBrandPath);
 
         applyFilters(cb, cq, root);
-        TypedQuery<Tuple> tq = em.createQuery(cq);
-        DataSeries series = new DataSeries("Единицы техники");
+        final TypedQuery<Tuple> tq = em.createQuery(cq);
+        final DataSeries series = new DataSeries("Единицы техники");
 
-        for (Tuple t : tq.getResultList()) {
-            String mBrand = t.get(mBrandPath);
-            Long mBrandCount = t.get(mBrandCountEx);
+        for (final Tuple t : tq.getResultList()) {
+            final String mBrand = t.get(mBrandPath);
+            final Long mBrandCount = t.get(mBrandCountEx);
             series.add(new DataSeriesItem(mBrand, mBrandCount));
         }
         conf.addSeries(series);

@@ -52,7 +52,7 @@ public class SecuredDataContainer<TEntityType extends IdentifiedObject> extends 
         return securityFilter;
     }
 
-    public static <TSecuredType extends SecuredObject> SecuredDataContainer<TSecuredType> create(Class<TSecuredType> entityClass, ExtaDomain domain) {
+    public static <TSecuredType extends SecuredObject> SecuredDataContainer<TSecuredType> create(final Class<TSecuredType> entityClass, final ExtaDomain domain) {
         return new SecuredDataContainer<TSecuredType>(new SecurityFilter<TSecuredType>(entityClass, domain));
     }
 }

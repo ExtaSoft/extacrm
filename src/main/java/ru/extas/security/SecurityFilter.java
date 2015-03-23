@@ -24,7 +24,7 @@ public class SecurityFilter<TEntityType extends SecuredObject> extends AbstractS
 
     private Join<TEntityType, ObjectSecurityRule> securityRuleJoin;
 
-    public SecurityFilter(Class<TEntityType> entityClass, ExtaDomain domain) {
+    public SecurityFilter(final Class<TEntityType> entityClass, final ExtaDomain domain) {
         super(entityClass, domain);
     }
 

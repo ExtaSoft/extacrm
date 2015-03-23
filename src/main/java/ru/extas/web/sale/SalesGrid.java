@@ -78,7 +78,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
             final CustomTable.CellStyleGenerator defGen = table.getCellStyleGenerator();
             table.setCellStyleGenerator((source, itemId, propertyId) -> {
                 String style = null;
-                if(defGen != null) // Если уже есть генератор
+                if (defGen != null) // Если уже есть генератор
                     style = defGen.getStyle(source, itemId, propertyId);
                 if (style == null) {
                     final Sale sale = getEntity(itemId);
@@ -110,10 +110,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
         container.addContainerFilter(new Compare.Equal("status",
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
                         domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
-        if (domain != ExtaDomain.SALES_OPENED)
-            container.sort(new Object[]{"createdDate"}, new boolean[]{false});
-        else
-            container.sort(new Object[]{"lastModifiedDate"}, new boolean[]{true});
+        container.sort(new Object[]{"lastModifiedDate"}, new boolean[]{true});
         return container;
     }
 

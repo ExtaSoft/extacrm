@@ -13,7 +13,7 @@ import ru.extas.web.util.ComponentUtil;
  */
 public class ProdInSaleStateSelect extends ComboBox {
 
-    public ProdInSaleStateSelect(String caption, String description) {
+    public ProdInSaleStateSelect(final String caption, final String description) {
         super(caption);
 
         setDescription(description);

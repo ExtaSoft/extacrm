@@ -161,7 +161,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity(),
                 () -> (BigDecimal) mototPriceField.getConvertedValue(),
                 () -> (String) motorBrandField.getValue());
-        productInSaleField.setRequired(true);
+//        productInSaleField.setRequired(true);
         form.addComponent(productInSaleField);
 
         ////////////////////////////////////////////////////////////////////////////

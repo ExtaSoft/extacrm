@@ -71,7 +71,7 @@ public class ProductInSale extends AuditedObject {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(final State state) {
         this.state = state;
     }
 

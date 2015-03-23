@@ -96,7 +96,7 @@ public class LoanCalculatorImpl implements LoanCalculator {
     }
 
     @Override
-    public BigDecimal   calcInterest(final ProdCredit product, final BigDecimal downPayment, final int period) {
+    public BigDecimal calcInterest(final ProdCredit product, final BigDecimal downPayment, final int period) {
         final List<ProdCreditPercent> percents = newArrayList(product.getPercents());
         if (percents.size() < 2)
             return percents.stream()

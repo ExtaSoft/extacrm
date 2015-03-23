@@ -2,7 +2,6 @@ package ru.extas.web.analytics;
 
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
-import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.Sale_;
 
@@ -30,14 +29,14 @@ public class AgreedRejectedSalesChart extends AbstractSalesChart {
         //chart.setHeight("300px");
 
         // Modify the default configuration a bit
-        Configuration conf = chart.getConfiguration();
+        final Configuration conf = chart.getConfiguration();
         conf.setTitle("Отмененные продажи за период");
         conf.setSubTitle("Отмены по инициторам");
         conf.getLegend().setEnabled(true); // Disable legend
 
-        PlotOptionsPie plotOptions = new PlotOptionsPie();
+        final PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);
-        Labels dataLabels = new Labels(true);
+        final Labels dataLabels = new Labels(true);
         dataLabels.setFormatter("''+ this.point.name +': '+ this.percentage.toFixed(2) +' %'");
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
@@ -46,16 +45,16 @@ public class AgreedRejectedSalesChart extends AbstractSalesChart {
     }
 
     private void updateAgreedRejectedData() {
-        Configuration conf = chart.getConfiguration();
+        final Configuration conf = chart.getConfiguration();
         conf.setSeries(newArrayList());
 
-        EntityManager em = lookup(EntityManager.class);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Tuple> cq = cb.createTupleQuery();
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
 
-        Root<Sale> root = cq.from(Sale.class);
+        final Root<Sale> root = cq.from(Sale.class);
         final Path<Sale.Result> resultPath = root.get(Sale_.result);
-        Expression<Long> saleCount = cb.count(resultPath);
+        final Expression<Long> saleCount = cb.count(resultPath);
 
         cq.multiselect(resultPath, saleCount);
         cq.where(resultPath.in(Sale.Result.CLIENT_REJECTED, Sale.Result.VENDOR_REJECTED));
@@ -63,10 +62,10 @@ public class AgreedRejectedSalesChart extends AbstractSalesChart {
 //        cq.orderBy(cb.desc(resultPath));
 
         applyFilters(cb, cq, root);
-        TypedQuery<Tuple> tq = em.createQuery(cq);
-        DataSeries series = new DataSeries("Продажи");
+        final TypedQuery<Tuple> tq = em.createQuery(cq);
+        final DataSeries series = new DataSeries("Продажи");
 
-        for (Tuple t : tq.getResultList()) {
+        for (final Tuple t : tq.getResultList()) {
             final Sale.Result result = t.get(resultPath);
             final Long countL = t.get(saleCount);
             final DataSeriesItem item = new DataSeriesItem();

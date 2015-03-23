@@ -2,7 +2,6 @@ package ru.extas.web.analytics;
 
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
-import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.sale.*;
 
 import javax.persistence.EntityManager;
@@ -24,14 +23,14 @@ public class SalesChartByProduct extends AbstractSalesChart {
         //chart.setHeight("300px");
 
         // Modify the default configuration a bit
-        Configuration conf = chart.getConfiguration();
+        final Configuration conf = chart.getConfiguration();
         conf.setTitle("Продукты в успешных продажах");
         conf.setSubTitle("Распределение продуктов в успешных продажах");
 
 
-        PlotOptionsPie plotOptions = new PlotOptionsPie();
+        final PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);
-        Labels dataLabels = new Labels(true);
+        final Labels dataLabels = new Labels(true);
         dataLabels.setFormatter("''+ this.point.name +': '+ this.percentage.toFixed(2) +' %'");
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
@@ -41,19 +40,19 @@ public class SalesChartByProduct extends AbstractSalesChart {
 
     @Override
     protected void updateChartData() {
-        Configuration conf = chart.getConfiguration();
+        final Configuration conf = chart.getConfiguration();
         conf.setSeries(newArrayList());
 
-        EntityManager em = lookup(EntityManager.class);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Tuple> cq = cb.createTupleQuery();
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
 
-        Root<Sale> root = cq.from(Sale.class);
+        final Root<Sale> root = cq.from(Sale.class);
         final Path<Sale.Result> resultPath = root.get(Sale_.result);
         final ListJoin<Sale, ProductInSale> productInSaleJoin = root.join(Sale_.productInSales);
         final Path<ProductInSale.State> productInSaleState = productInSaleJoin.get(ProductInSale_.state);
         final Join<ProductInSale, Product> saleProductJoin = productInSaleJoin.join(ProductInSale_.product);
-        Expression<Long> saleCount = cb.count(resultPath);
+        final Expression<Long> saleCount = cb.count(resultPath);
 
         final Expression<Class<? extends Product>> proTypeExpr = saleProductJoin.type();
         cq.multiselect(proTypeExpr, saleCount);
@@ -63,11 +62,11 @@ public class SalesChartByProduct extends AbstractSalesChart {
         cq.groupBy(proTypeExpr);
 
         applyFilters(cb, cq, root);
-        TypedQuery<Tuple> tq = em.createQuery(cq);
-        DataSeries series = new DataSeries("Продажи");
+        final TypedQuery<Tuple> tq = em.createQuery(cq);
+        final DataSeries series = new DataSeries("Продажи");
 
-        for (Tuple t : tq.getResultList()) {
-            Class<? extends Product> prodType = t.get(proTypeExpr);
+        for (final Tuple t : tq.getResultList()) {
+            final Class<? extends Product> prodType = t.get(proTypeExpr);
             final Long countL = t.get(saleCount);
             final DataSeriesItem item = new DataSeriesItem();
             item.setY(countL);

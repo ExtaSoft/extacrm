@@ -41,15 +41,15 @@ public class SalesChartMain extends AbstractSalesChart {
         flowChart.setSizeFull();
 
         // Modify the default configuration a bit
-        Configuration conf = flowChart.getConfiguration();
+        final Configuration conf = flowChart.getConfiguration();
         conf.setTitle("Динамика продаж");
         conf.setSubTitle("Динамика продаж по месяцам");
 
-        Legend legend = new Legend();
+        final Legend legend = new Legend();
         legend.setShadow(true);
         conf.setLegend(legend);
 
-        PlotOptionsArea plotOptions = new PlotOptionsArea();
+        final PlotOptionsArea plotOptions = new PlotOptionsArea();
         plotOptions.setStacking(Stacking.NORMAL);
         conf.setPlotOptions(plotOptions);
 
@@ -61,15 +61,15 @@ public class SalesChartMain extends AbstractSalesChart {
         chart.setWidth("100%");
 
         // Modify the default configuration a bit
-        Configuration conf = chart.getConfiguration();
+        final Configuration conf = chart.getConfiguration();
         conf.setTitle("Продажи за период");
         conf.setSubTitle("Общее количество продаж по статусам");
         conf.getLegend().setEnabled(true); // Disable legend
 
 
-        PlotOptionsPie plotOptions = new PlotOptionsPie();
+        final PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);
-        Labels dataLabels = new Labels(true);
+        final Labels dataLabels = new Labels(true);
         dataLabels.setFormatter("''+ this.point.name +': '+ this.percentage.toFixed(2) +' %'");
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
@@ -84,7 +84,7 @@ public class SalesChartMain extends AbstractSalesChart {
     }
 
     private void updateSaleFlowData() {
-        Configuration conf = flowChart.getConfiguration();
+        final Configuration conf = flowChart.getConfiguration();
         conf.setSeries(newArrayList());
 
         final EntityManager em = lookup(EntityManager.class);
@@ -93,10 +93,10 @@ public class SalesChartMain extends AbstractSalesChart {
 
         final Root<Sale> root = cq.from(Sale.class);
         final Path<Sale.Status> saleStatus = root.get(Sale_.status);
-        Path<DateTime> createDatePath = root.get(Sale_.createdDate);
-        Expression<Integer> yearEx = cb.function("YEAR", Integer.class, createDatePath);
-        Expression<Integer> monthEx = cb.function("MONTH", Integer.class, createDatePath);
-        Expression<Long> saleCount = cb.count(saleStatus);
+        final Path<DateTime> createDatePath = root.get(Sale_.createdDate);
+        final Expression<Integer> yearEx = cb.function("YEAR", Integer.class, createDatePath);
+        final Expression<Integer> monthEx = cb.function("MONTH", Integer.class, createDatePath);
+        final Expression<Long> saleCount = cb.count(saleStatus);
 
         cq.multiselect(saleStatus, yearEx, monthEx, saleCount);
         cq.groupBy(saleStatus, yearEx, monthEx);
@@ -105,32 +105,32 @@ public class SalesChartMain extends AbstractSalesChart {
         final TypedQuery<Tuple> tq = em.createQuery(cq);
 
         final HashBasedTable<Sale.Status, LocalDate, Long> dataTable = HashBasedTable.create();
-        for (Tuple t : tq.getResultList()) {
-            Sale.Status status = t.get(saleStatus);
-            Integer year = t.get(yearEx);
-            Integer month = t.get(monthEx);
+        for (final Tuple t : tq.getResultList()) {
+            final Sale.Status status = t.get(saleStatus);
+            final Integer year = t.get(yearEx);
+            final Integer month = t.get(monthEx);
             final Long count = t.get(saleCount);
             dataTable.put(status, LocalDate.of(year, month, 1), count);
         }
 
-        YAxis y = new YAxis();
+        final YAxis y = new YAxis();
         y.setMin(0);
         y.setTitle("Продажи");
         conf.removeyAxes();
         conf.addyAxis(y);
 
         final List<LocalDate> periodSet = newArrayList(dataTable.columnKeySet().stream().sorted().iterator());
-        XAxis x = new XAxis();
+        final XAxis x = new XAxis();
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM YYYY", lookup(Locale.class));
         x.setCategories(newArrayList(periodSet.stream().map(d -> d.format(formatter)).iterator())
                 .toArray(new String[periodSet.size()]));
         conf.removexAxes();
         conf.addxAxis(x);
 
-        ListSeries openedSeries = new ListSeries("Открытые");
-        ListSeries closedSeries = new ListSeries("Завершенные");
-        ListSeries rejectedSeries = new ListSeries("Отмененные");
-        for (LocalDate period : periodSet) {
+        final ListSeries openedSeries = new ListSeries("Открытые");
+        final ListSeries closedSeries = new ListSeries("Завершенные");
+        final ListSeries rejectedSeries = new ListSeries("Отмененные");
+        for (final LocalDate period : periodSet) {
             openedSeries.addData(dataTable.get(Sale.Status.NEW, period));
             closedSeries.addData(dataTable.get(Sale.Status.FINISHED, period));
             rejectedSeries.addData(dataTable.get(Sale.Status.CANCELED, period));
@@ -143,16 +143,16 @@ public class SalesChartMain extends AbstractSalesChart {
     }
 
     private void updateSalePieData() {
-        Configuration conf = chart.getConfiguration();
+        final Configuration conf = chart.getConfiguration();
         conf.setSeries(newArrayList());
 
-        EntityManager em = lookup(EntityManager.class);
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Tuple> cq = cb.createTupleQuery();
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
 
-        Root<Sale> root = cq.from(Sale.class);
+        final Root<Sale> root = cq.from(Sale.class);
         final Path<Sale.Status> saleStatus = root.get(Sale_.status);
-        Expression<Long> saleCount = cb.count(saleStatus);
+        final Expression<Long> saleCount = cb.count(saleStatus);
 
         cq.multiselect(saleStatus, saleCount);
         cq.groupBy(saleStatus);
@@ -160,10 +160,10 @@ public class SalesChartMain extends AbstractSalesChart {
 
         applyFilters(cb, cq, root);
 
-        TypedQuery<Tuple> tq = em.createQuery(cq);
-        DataSeries series = new DataSeries("Продажи");
+        final TypedQuery<Tuple> tq = em.createQuery(cq);
+        final DataSeries series = new DataSeries("Продажи");
 
-        for (Tuple t : tq.getResultList()) {
+        for (final Tuple t : tq.getResultList()) {
             final Sale.Status statusEn = t.get(saleStatus);
             final Long countL = t.get(saleCount);
             final DataSeriesItem item = new DataSeriesItem();

@@ -101,14 +101,23 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         switch (result) {
             case SUCCESSFUL:
                 sale.setStatus(Sale.Status.FINISHED);
+                sale.getProductInSales().stream()
+                        .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
+                        .forEach(p -> p.setState(ProductInSale.State.AGREED));
                 leadResult = Lead.Result.SUCCESSFUL;
                 break;
             case VENDOR_REJECTED:
                 sale.setStatus(Sale.Status.CANCELED);
+                sale.getProductInSales().stream()
+                        .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
+                        .forEach(p -> p.setState(ProductInSale.State.REJECTED));
                 leadResult = Lead.Result.VENDOR_REJECTED;
                 break;
             case CLIENT_REJECTED:
                 sale.setStatus(Sale.Status.CANCELED);
+                sale.getProductInSales().stream()
+                        .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
+                        .forEach(p -> p.setState(ProductInSale.State.REJECTED));
                 leadResult = Lead.Result.CLIENT_REJECTED;
                 break;
         }

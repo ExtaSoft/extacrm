@@ -1,15 +1,9 @@
 package ru.extas.web.commons;
 
-import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
-import com.ejt.vaadin.sizereporter.ComponentResizeListener;
 import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.server.Sizeable;
-import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-
-import java.text.MessageFormat;
-import java.util.UUID;
 
 /**
  * Вспомогательные методы для работы с формами ввода/редактирования
@@ -31,7 +25,7 @@ public class FormUtils {
         if (editWin.getWinWidth() != Sizeable.SIZE_UNDEFINED)
             window.setWidth(editWin.getWinWidth(), editWin.getWinWidthUnit());
 
-        window.addCloseListener(event -> editWin.closeForm());
+        window.addCloseListener(event -> editWin.fireCloseForm());
         editWin.addCloseFormListener(event -> window.close());
 
         if (editWin.getWinHeight() != Sizeable.SIZE_UNDEFINED && editWin.getWinWidth() != Sizeable.SIZE_UNDEFINED)

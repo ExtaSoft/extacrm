@@ -18,13 +18,13 @@ public class Disclosure extends CssLayout {
     public static final String STYLE_CAPTION_OPEN = STYLE_CAPTION + "-open";
 
     protected AbstractComponent content;
-    protected Button caption = new Button();
+    protected final Button caption = new Button();
     protected boolean open = false;
 
-    private String openCaption;
-    private String closeCaption;
+    private final String openCaption;
+    private final String closeCaption;
 
-    public Disclosure(String openCaption, String closeCaption) {
+    public Disclosure(final String openCaption, final String closeCaption) {
         this.openCaption = openCaption;
         this.closeCaption = closeCaption;
         this.caption.setCaption(openCaption);
@@ -42,7 +42,7 @@ public class Disclosure extends CssLayout {
                 });
     }
 
-    public Disclosure(String openCaption, String closeCaption, AbstractComponent content) {
+    public Disclosure(final String openCaption, final String closeCaption, final AbstractComponent content) {
         this(openCaption, closeCaption);
         setContent(content);
     }
@@ -51,11 +51,11 @@ public class Disclosure extends CssLayout {
         return caption.getCaption();
     }
 
-    public void setDisclosureCaption(String caption) {
+    public void setDisclosureCaption(final String caption) {
         this.caption.setCaption(caption);
     }
 
-    public Disclosure setContent(AbstractComponent newContent) {
+    public Disclosure setContent(final AbstractComponent newContent) {
         if (content != newContent) {
             if (content != null && content.getParent() != null) {
                 removeComponent(content);
@@ -105,7 +105,7 @@ public class Disclosure extends CssLayout {
     }
 
     @Override
-    public void addComponent(Component c) {
+    public void addComponent(final Component c) {
         if (content == null) {
             setContent((AbstractComponent) c);
         } else {

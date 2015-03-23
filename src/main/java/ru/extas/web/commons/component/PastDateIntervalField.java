@@ -6,8 +6,10 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
-import org.joda.time.*;
-import ru.extas.web.commons.ExtaTheme;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -114,7 +116,7 @@ public class PastDateIntervalField extends CustomField<Interval> {
         private final String caption;
         private final String description;
 
-        NamedInterval(String caption, String description) {
+        NamedInterval(final String caption, final String description) {
             this.caption = caption;
             this.description = description;
         }
@@ -164,9 +166,9 @@ public class PastDateIntervalField extends CustomField<Interval> {
         namedIntervalField.setInvalidAllowed(false);
         namedIntervalField.setNullSelectionAllowed(false);
 //        namedIntervalField.addStyleName(ExtaTheme.COMBOBOX_BORDERLESS);
-        for (NamedInterval intervalName : NamedInterval.values()) {
-            Item intervalItem = namedIntervalField.addItem(intervalName);
-            String intervalNameCaption = intervalName.getCaption();
+        for (final NamedInterval intervalName : NamedInterval.values()) {
+            final Item intervalItem = namedIntervalField.addItem(intervalName);
+            final String intervalNameCaption = intervalName.getCaption();
             namedIntervalField.setItemCaption(intervalName, intervalNameCaption);
         }
         namedIntervalField.addValueChangeListener(e -> {
@@ -198,8 +200,8 @@ public class PastDateIntervalField extends CustomField<Interval> {
         layout.addComponent(namedIntervalField);
 
         final ValueChangeListener dateListener = e -> {
-            LocalDate startDate = (LocalDate) startDateField.getConvertedValue();
-            LocalDate endDate = (LocalDate) endDateField.getConvertedValue();
+            final LocalDate startDate = (LocalDate) startDateField.getConvertedValue();
+            final LocalDate endDate = (LocalDate) endDateField.getConvertedValue();
             if (startDate != null && endDate != null)
                 setValue(new Interval(startDate.toDateTimeAtCurrentTime(), endDate.toDateTimeAtCurrentTime()));
         };
@@ -222,74 +224,74 @@ public class PastDateIntervalField extends CustomField<Interval> {
         return layout;
     }
 
-    private Interval getIntervalByName(NamedInterval intervalName) {
+    private Interval getIntervalByName(final NamedInterval intervalName) {
         Interval interval = null;
-        DateTime today = new DateTime();
+        final DateTime today = new DateTime();
         switch (intervalName) {
 
             case THIS_WEEK: {
-                DateTime startDate = today.dayOfWeek().withMinimumValue();
-                DateTime endDate = today;
+                final DateTime startDate = today.dayOfWeek().withMinimumValue();
+                final DateTime endDate = today;
                 interval = new Interval(startDate, endDate);
             }
             break;
             case LAST_WEEK: {
-                DateTime startDate = today.minus(Period.weeks(1)).dayOfWeek().withMinimumValue();
-                DateTime endDate = startDate.dayOfWeek().withMaximumValue();
+                final DateTime startDate = today.minus(Period.weeks(1)).dayOfWeek().withMinimumValue();
+                final DateTime endDate = startDate.dayOfWeek().withMaximumValue();
                 interval = new Interval(startDate, endDate);
             }
             break;
             case WEEK_AGO: {
-                DateTime startDate = today.minus(Period.weeks(1));
-                DateTime endDate = today;
+                final DateTime startDate = today.minus(Period.weeks(1));
+                final DateTime endDate = today;
                 interval = new Interval(startDate, endDate);
             }
             break;
             case THIS_MONTH: {
-                DateTime startDate = today.dayOfMonth().withMinimumValue();
-                DateTime endDate = today;
+                final DateTime startDate = today.dayOfMonth().withMinimumValue();
+                final DateTime endDate = today;
                 interval = new Interval(startDate, endDate);
             }
             break;
             case LAST_MONTH: {
-                DateTime startDate = today.minus(Period.months(1)).dayOfMonth().withMinimumValue();
-                DateTime endDate = startDate.dayOfMonth().withMaximumValue();
+                final DateTime startDate = today.minus(Period.months(1)).dayOfMonth().withMinimumValue();
+                final DateTime endDate = startDate.dayOfMonth().withMaximumValue();
                 interval = new Interval(startDate, endDate);
             }
             break;
             case MONTH_AGO: {
-                DateTime startDate = today.minus(Period.months(1));
-                DateTime endDate = today;
+                final DateTime startDate = today.minus(Period.months(1));
+                final DateTime endDate = today;
                 interval = new Interval(startDate, endDate);
             }
             break;
             case THREE_MONTH_AGO: {
-                DateTime startDate = today.minus(Period.months(3));
-                DateTime endDate = today;
+                final DateTime startDate = today.minus(Period.months(3));
+                final DateTime endDate = today;
                 interval = new Interval(startDate, endDate);
             }
             break;
             case HALF_YEAR_AGO: {
-                DateTime startDate = today.minus(Period.months(6));
-                DateTime endDate = today;
+                final DateTime startDate = today.minus(Period.months(6));
+                final DateTime endDate = today;
                 interval = new Interval(startDate, endDate);
             }
             break;
             case THIS_YEAR: {
-                DateTime startDate = today.dayOfYear().withMinimumValue();
-                DateTime endDate = today;
+                final DateTime startDate = today.dayOfYear().withMinimumValue();
+                final DateTime endDate = today;
                 interval = new Interval(startDate, endDate);
             }
             break;
             case LAST_YEAR: {
-                DateTime startDate = today.minus(Period.years(1)).dayOfYear().withMinimumValue();
-                DateTime endDate = startDate.dayOfYear().withMaximumValue();
+                final DateTime startDate = today.minus(Period.years(1)).dayOfYear().withMinimumValue();
+                final DateTime endDate = startDate.dayOfYear().withMaximumValue();
                 interval = new Interval(startDate, endDate);
             }
             break;
             case YEAR_AGO: {
-                DateTime startDate = today.minus(Period.years(1));
-                DateTime endDate = today;
+                final DateTime startDate = today.minus(Period.years(1));
+                final DateTime endDate = today;
                 interval = new Interval(startDate, endDate);
             }
             break;
