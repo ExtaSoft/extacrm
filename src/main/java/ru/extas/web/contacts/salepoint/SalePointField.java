@@ -7,6 +7,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.SalePoint_;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
@@ -105,17 +106,18 @@ public class SalePointField extends CustomField<SalePoint> {
             setInputPrompt("Торговая точка...");
             setWidth(15, Unit.EM);
             setImmediate(true);
+            setScrollToSelectedItem(true);
 
             // Инициализация контейнера
             container = new ExtaJpaContainer<>(SalePoint.class);
-            container.sort(new Object[]{"name"}, new boolean[]{true});
+            container.sort(new Object[]{SalePoint_.name.getName()}, new boolean[]{true});
             setContainerFilter();
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
-            setItemCaptionPropertyId("name");
+            setItemCaptionPropertyId(SalePoint_.name.getName());
             setConverter(new SingleSelectConverter<SalePoint>(this));
 
             // Функционал добавления нового контакта
