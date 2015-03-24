@@ -78,7 +78,11 @@ public abstract class AbstractSalesChart extends VerticalLayout {
         // - Временной интервал
         final Interval interval = intervalField.getValue();
         if (interval != null) {
-            predicateList.add(cb.between(root.get(Sale_.createdDate), interval.getStart(), interval.getEnd()));
+            predicateList.add(
+                    cb.between(
+                            root.get(Sale_.createdDate),
+                            interval.getStart().withTimeAtStartOfDay(),
+                            interval.getEnd().withTime(23, 59, 59, 999)));
         }
         // - Регион
         final String region = (String) regionSelect.getValue();

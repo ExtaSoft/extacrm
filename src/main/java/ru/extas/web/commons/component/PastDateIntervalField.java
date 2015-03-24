@@ -10,6 +10,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
+import ru.extas.model.contacts.Employee;
+import ru.extas.web.commons.ExtaTheme;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -26,10 +28,14 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class PastDateIntervalField extends CustomField<Interval> {
 
     public static final String DATES_DELIMITER = FontAwesome.MINUS.getHtml();
-    private LocalDateField startDateField;
-    private LocalDateField endDateField;
+
+    private InlineDateField startDateField;
+    private InlineDateField endDateField;
     private ComboBox namedIntervalField;
     private Label datesLabel;
+
+    private PopupIntervalContent entityContent;
+    private PopupView popupView;
 
     /**
      * Именованные интервалы
@@ -133,10 +139,22 @@ public class PastDateIntervalField extends CustomField<Interval> {
     public PastDateIntervalField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
-        addValueChangeListener(e -> {
-            if(e.getProperty().getValue() == null)
+        addValueChangeListener(e ->
+                updateDates((Interval) e.getProperty().getValue()));
+    }
+
+    private void updateDates(Interval interval) {
+        if (interval == null) {
+            if (namedIntervalField != null)
                 namedIntervalField.setValue(NamedInterval.ALL_TIME);
-        });
+        } else {
+            if (startDateField != null)
+                startDateField.setConvertedValue(interval.getStart().toLocalDate());
+            if (endDateField != null)
+                endDateField.setConvertedValue(interval.getEnd().toLocalDate());
+        }
+        if (datesLabel != null)
+            datesLabel.setValue(getIntervalLabel(interval));
     }
 
     /**
@@ -151,77 +169,97 @@ public class PastDateIntervalField extends CustomField<Interval> {
      */
     @Override
     protected Component initContent() {
-        final HorizontalLayout layout = new HorizontalLayout();
-        layout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
-        layout.setMargin(new MarginInfo(true, false, true, false));
-        layout.setSpacing(true);
+        entityContent = new PopupIntervalContent();
+        popupView = new PopupView(entityContent);
+        popupView.setHideOnMouseOut(false);
+        return popupView;
+    }
 
-        namedIntervalField = new ComboBox();
-        namedIntervalField.setWidth(31, Unit.EX);
-        namedIntervalField.setPageLength(15);
-        namedIntervalField.setItemCaptionMode(AbstractSelect.ItemCaptionMode.EXPLICIT);
-        namedIntervalField.setFilteringMode(FilteringMode.OFF);
-        namedIntervalField.setNewItemsAllowed(false);
-        namedIntervalField.setTextInputAllowed(false);
-        namedIntervalField.setInvalidAllowed(false);
-        namedIntervalField.setNullSelectionAllowed(false);
-//        namedIntervalField.addStyleName(ExtaTheme.COMBOBOX_BORDERLESS);
-        for (final NamedInterval intervalName : NamedInterval.values()) {
-            final Item intervalItem = namedIntervalField.addItem(intervalName);
-            final String intervalNameCaption = intervalName.getCaption();
-            namedIntervalField.setItemCaption(intervalName, intervalNameCaption);
+    private class PopupIntervalContent implements PopupView.Content {
+
+        @Override
+        public String getMinimizedValueAsHTML() {
+            return getIntervalLabel(getValue());
         }
-        namedIntervalField.addValueChangeListener(e -> {
-            boolean isDatesVisible = false;
-            String label = DATES_DELIMITER;
-            final NamedInterval namedInterval = (NamedInterval) namedIntervalField.getValue();
-            Interval interval = getIntervalByName(namedInterval);
-            if (interval != null) {
-                setValue(interval);
-                label = MessageFormat.format(" ({0} - {1})",
-                        interval.getStart().toString("dd.MM.yyyy", lookup(Locale.class)),
-                        interval.getEnd().toString("dd.MM.yyyy", lookup(Locale.class)));
-            } else if (namedInterval == NamedInterval.CUSTOM_INTERVAL) {
-                isDatesVisible = true;
-                label = DATES_DELIMITER;
-                interval = getValue();
-                if (interval != null) {
-                    startDateField.setConvertedValue(interval.getStart().toLocalDate());
-                    endDateField.setConvertedValue(interval.getEnd().toLocalDate());
-                }
-            } else if (namedInterval == NamedInterval.ALL_TIME) {
-                setValue(null);
-                label = "Весь диапазон значений";
+
+        @Override
+        public Component getPopupComponent() {
+            VerticalLayout layout = new VerticalLayout();
+            layout.setMargin(true);
+            Label popupCaption = new Label("Выбор временного интервала");
+            popupCaption.addStyleName(ExtaTheme.LABEL_H3);
+            popupCaption.addStyleName(ExtaTheme.LABEL_COLORED);
+            layout.addComponent(popupCaption);
+
+            final HorizontalLayout namedLayout = new HorizontalLayout();
+            namedLayout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
+            namedLayout.setSpacing(true);
+
+            namedIntervalField = new ComboBox();
+            namedIntervalField.setWidth(31, Unit.EX);
+            namedIntervalField.setPageLength(15);
+            namedIntervalField.setItemCaptionMode(AbstractSelect.ItemCaptionMode.EXPLICIT);
+            namedIntervalField.setFilteringMode(FilteringMode.OFF);
+            namedIntervalField.setNewItemsAllowed(false);
+            namedIntervalField.setTextInputAllowed(false);
+            namedIntervalField.setInvalidAllowed(false);
+            namedIntervalField.setNullSelectionAllowed(false);
+            namedIntervalField.addStyleName(ExtaTheme.COMBOBOX_SMALL);
+            for (final NamedInterval intervalName : NamedInterval.values()) {
+                final Item intervalItem = namedIntervalField.addItem(intervalName);
+                final String intervalNameCaption = intervalName.getCaption();
+                namedIntervalField.setItemCaption(intervalName, intervalNameCaption);
             }
-            startDateField.setVisible(isDatesVisible);
-            endDateField.setVisible(isDatesVisible);
-            datesLabel.setValue(label);
-        });
-        layout.addComponent(namedIntervalField);
+            namedIntervalField.addValueChangeListener(e -> {
+                final NamedInterval namedInterval = (NamedInterval) namedIntervalField.getValue();
+                Interval interval = getIntervalByName(namedInterval);
+                if (interval != null) {
+                    setValue(interval);
+                } else if (namedInterval == NamedInterval.ALL_TIME) {
+                    setValue(null);
+                }
+            });
+            namedLayout.addComponent(namedIntervalField);
 
-        final ValueChangeListener dateListener = e -> {
-            final LocalDate startDate = (LocalDate) startDateField.getConvertedValue();
-            final LocalDate endDate = (LocalDate) endDateField.getConvertedValue();
-            if (startDate != null && endDate != null)
-                setValue(new Interval(startDate.toDateTimeAtCurrentTime(), endDate.toDateTimeAtCurrentTime()));
-        };
-        startDateField = new LocalDateField();
-        startDateField.addValueChangeListener(dateListener);
-        layout.addComponent(startDateField);
+            datesLabel = new Label(DATES_DELIMITER, ContentMode.HTML);
+            namedLayout.addComponent(datesLabel);
 
-        datesLabel = new Label(DATES_DELIMITER, ContentMode.HTML);
-        layout.addComponent(datesLabel);
+            HorizontalLayout datesLayout = new HorizontalLayout();
+            datesLayout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
 
-        endDateField = new LocalDateField();
-        endDateField.addValueChangeListener(dateListener);
-        layout.addComponent(endDateField);
+            final ValueChangeListener dateListener = e -> {
+                final LocalDate startDate = (LocalDate) startDateField.getConvertedValue();
+                final LocalDate endDate = (LocalDate) endDateField.getConvertedValue();
+                if (startDate != null && endDate != null)
+                    setValue(new Interval(startDate.toDateTimeAtCurrentTime(), endDate.toDateTimeAtCurrentTime()));
+            };
+            startDateField = new InlineDateField("Начало");
+            startDateField.setConverter(LocalDate.class);
+            startDateField.addValueChangeListener(dateListener);
+            datesLayout.addComponent(startDateField);
 
-        startDateField.setVisible(false);
-        endDateField.setVisible(false);
+            datesLayout.addComponent(new Label(DATES_DELIMITER, ContentMode.HTML));
 
-        namedIntervalField.setValue(NamedInterval.ALL_TIME);
+            endDateField = new InlineDateField("Конец");
+            endDateField.setConverter(LocalDate.class);
+            endDateField.addValueChangeListener(dateListener);
+            datesLayout.addComponent(endDateField);
 
-        return layout;
+            updateDates(getValue());
+
+            layout.addComponents(namedLayout, datesLayout);
+
+            return layout;
+        }
+    }
+
+    private String getIntervalLabel(Interval interval) {
+        if (interval != null) {
+            return MessageFormat.format(" [ {0} - {1} ]",
+                    interval.getStart().toString("dd.MM.yyyy", lookup(Locale.class)),
+                    interval.getEnd().toString("dd.MM.yyyy", lookup(Locale.class)));
+        } else
+            return NamedInterval.ALL_TIME.getCaption();
     }
 
     private Interval getIntervalByName(final NamedInterval intervalName) {
