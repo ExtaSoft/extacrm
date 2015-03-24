@@ -73,6 +73,7 @@ public class UserContactSelectField extends CustomField<Employee> {
             setInputPrompt("контакт...");
             setWidth(25, Unit.EM);
             setImmediate(true);
+            setScrollToSelectedItem(true);
 
             // Инициализация контейнера
             this.container = new ExtaJpaContainer<>(Employee.class);

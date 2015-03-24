@@ -47,6 +47,7 @@ public class A7Select extends ComboBox {
         setWidth(20, Unit.EM);
         setImmediate(true);
         setNullSelectionAllowed(false);
+        setScrollToSelectedItem(true);
 
         final A7FormRepository a7FormRepository = lookup(A7FormRepository.class);
         final A7FormRepository a7FormService = lookup(A7FormRepository.class);

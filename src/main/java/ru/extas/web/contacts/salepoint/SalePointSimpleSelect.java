@@ -46,6 +46,7 @@ public class SalePointSimpleSelect extends com.vaadin.ui.ComboBox {
         setInputPrompt("контакт...");
         setWidth(25, Unit.EM);
         setImmediate(true);
+        setScrollToSelectedItem(true);
 
         // Инициализация контейнера
         container = new ExtaJpaContainer<>(SalePoint.class);

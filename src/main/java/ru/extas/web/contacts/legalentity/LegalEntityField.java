@@ -101,6 +101,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             setDescription(description);
             setInputPrompt("ООО \"Рога и Копыта\"");
             setImmediate(true);
+            setScrollToSelectedItem(true);
 
             // Инициализация контейнера
             container = new ExtaJpaContainer<>(LegalEntity.class);

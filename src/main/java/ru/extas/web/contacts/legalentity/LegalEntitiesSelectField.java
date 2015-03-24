@@ -86,8 +86,8 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
                         final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
                         editWin.addCloseFormListener(e -> {
                             if(editWin.isSaved()) {
-                                setValue(null, true); // Форсируем изменения
                                 setValue(newHashSet(((ExtaBeanContainer<LegalEntity>) container).getItemIds()));
+                                fireValueChange(false);
                             }
                         });
                         FormUtils.showModalWin(editWin);

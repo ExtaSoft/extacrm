@@ -226,10 +226,12 @@ public class ProductInSaleField extends CustomField<List> {
 
     private void deleteProduct(final ProductInSale itemId) {
         container.removeItem(itemId);
+        setValue(newArrayList(container.getItemIds()));
     }
 
     private void editProduct(final ProductInSale productInSale) {
         final ExtaEditForm form = createEditForm(productInSale);
+        form.setReadOnly(isReadOnly());
         form.addCloseFormListener(ev -> {
             if (form.isSaved()) {
                 final ArrayList<ProductInSale> newFieldValue = newArrayList(container.getItemIds());
@@ -261,6 +263,7 @@ public class ProductInSaleField extends CustomField<List> {
             final ProductInSale productInSale = new ProductInSale(sale);
             productInSale.setProduct(product);
             final ExtaEditForm form = createEditForm(productInSale);
+            form.setModified(true);
             form.addCloseFormListener(ev -> {
                 if (form.isSaved()) {
                     container.addBean(productInSale);

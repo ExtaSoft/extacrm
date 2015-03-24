@@ -1,5 +1,6 @@
 package ru.extas.web.sale;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
@@ -161,12 +162,13 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity(),
                 () -> (BigDecimal) mototPriceField.getConvertedValue(),
                 () -> (String) motorBrandField.getValue());
-//        productInSaleField.setRequired(true);
+        productInSaleField.addValueChangeListener(forceModified);
         form.addComponent(productInSaleField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Коментарии"));
         commentsField = new CommentsField<>(SaleComment.class);
+        commentsField.addValueChangeListener(forceModified);
         form.addComponent(commentsField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

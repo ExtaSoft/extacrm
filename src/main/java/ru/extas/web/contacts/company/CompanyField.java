@@ -88,6 +88,7 @@ public class CompanyField extends CustomField<Company> {
             setInputPrompt("Название компании...");
             setWidth(25, Unit.EM);
             setImmediate(true);
+            setScrollToSelectedItem(true);
 
             // Инициализация контейнера
             container = new ExtaJpaContainer<>(Company.class);

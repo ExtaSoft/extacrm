@@ -38,6 +38,7 @@ public class MotorModelSelect extends ComboBox {
         setInputPrompt("Выберите...");
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setImmediate(true);
+        setScrollToSelectedItem(true);
         setNullSelectionAllowed(false);
         setInvalidAllowed(true);
         setNewItemsAllowed(true);

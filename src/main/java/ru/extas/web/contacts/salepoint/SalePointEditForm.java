@@ -179,6 +179,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     private Component createLegalsForm() {
         legalsField = new LegalEntitiesSelectField();
+        legalsField.addValueChangeListener(forceModified);
         legalsField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
         legalsField.setSizeFull();
         return legalsField;

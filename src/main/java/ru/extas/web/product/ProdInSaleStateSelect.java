@@ -18,6 +18,8 @@ public class ProdInSaleStateSelect extends ComboBox {
 
         setDescription(description);
         setWidth(15, Unit.EM);
+        setImmediate(true);
+        setScrollToSelectedItem(true);
 
         setNullSelectionAllowed(false);
         setNewItemsAllowed(false);

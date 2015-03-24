@@ -120,6 +120,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
                                 if (dialog.isConfirmed()) {
                                     container.removeItem(itemId);
                                     setValue(container.getItemIds());
+                                    fireValueChange(false);
                                 }
                             }));
             delMenuItem.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);

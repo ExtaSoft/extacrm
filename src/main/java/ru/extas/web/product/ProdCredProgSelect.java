@@ -25,7 +25,8 @@ public class ProdCredProgSelect extends ComboBox {
 		super(caption);
 		setDescription(description);
 		setWidth(30, Unit.EM);
-
+        setImmediate(true);
+        setScrollToSelectedItem(true);
 		setNullSelectionAllowed(false);
 		setNewItemsAllowed(false);
 		ComponentUtil.fillSelectByEnum(this, ProdCredit.ProgramType.class);

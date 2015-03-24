@@ -27,6 +27,7 @@ public class MotorTypeSelect extends ComboBox {
         setInputPrompt("Выберите...");
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setImmediate(true);
+        setScrollToSelectedItem(true);
         setNullSelectionAllowed(false);
         setNewItemsAllowed(false);
         setFilteringMode(FilteringMode.CONTAINS);

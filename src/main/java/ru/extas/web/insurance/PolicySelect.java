@@ -47,6 +47,7 @@ public class PolicySelect extends ComboBox {
         setWidth(20, Unit.EM);
         setImmediate(true);
         setNullSelectionAllowed(false);
+        setScrollToSelectedItem(true);
 
         // Инициализация контейнера
 // final LazyJdoContainer<Policy> container = new LazyJdoContainer<Policy>(Policy.class, 50, "key");

@@ -113,6 +113,7 @@ public class EmployeeField extends CustomField<Employee> {
             setDescription(description);
             setInputPrompt("ФИО");
             setImmediate(true);
+            setScrollToSelectedItem(true);
 
             // Инициализация контейнера
             container = new ExtaJpaContainer<>(Employee.class);
