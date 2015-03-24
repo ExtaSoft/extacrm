@@ -96,7 +96,7 @@ public class LoanCalculatorImpl implements LoanCalculator {
     }
 
     @Override
-    public BigDecimal   calcInterest(final ProdCredit product, final BigDecimal downPayment, final int period) {
+    public BigDecimal calcInterest(final ProdCredit product, final BigDecimal downPayment, final int period) {
         final List<ProdCreditPercent> percents = newArrayList(product.getPercents());
         if (percents.size() < 2)
             return percents.stream()
@@ -132,9 +132,9 @@ public class LoanCalculatorImpl implements LoanCalculator {
      * @return список полностью рассчитанных кредитных продуктов
      */
     @Override
-    public List<LoanInfo> findSuitableProducts(BigDecimal price, BigDecimal downPayment, int period) {
+    public List<LoanInfo> findSuitableProducts(final BigDecimal price, final BigDecimal downPayment, final int period) {
         // Выбрать все продукты подходящие под параметры
-        List<ProdCredit> products = creditRepository.findSuitableProducts(price, downPayment, period);
+        final List<ProdCredit> products = creditRepository.findSuitableProducts(price, downPayment, period);
         // TODO: To implement
         return null;
     }
@@ -148,7 +148,7 @@ public class LoanCalculatorImpl implements LoanCalculator {
      * @return список полностью рассчитанных кредитных продуктов
      */
     @Override
-    public List<LoanInfo> findSuitableProducts(BigDecimal price, BigDecimal downPayment) {
+    public List<LoanInfo> findSuitableProducts(final BigDecimal price, final BigDecimal downPayment) {
         // TODO: To implement
         return null;
     }
@@ -162,7 +162,7 @@ public class LoanCalculatorImpl implements LoanCalculator {
      * @return список полностью рассчитанных кредитных продуктов
      */
     @Override
-    public List<LoanInfo> findSuitableProducts(BigDecimal price, int period) {
+    public List<LoanInfo> findSuitableProducts(final BigDecimal price, final int period) {
         // TODO: To implement
         return null;
     }
@@ -176,7 +176,7 @@ public class LoanCalculatorImpl implements LoanCalculator {
      * @return список полностью рассчитанных кредитных продуктов
      */
     @Override
-    public List<LoanInfo> findSuitableProducts(BigDecimal price) {
+    public List<LoanInfo> findSuitableProducts(final BigDecimal price) {
         // TODO: To implement
         return null;
     }
@@ -189,7 +189,7 @@ public class LoanCalculatorImpl implements LoanCalculator {
      * @return список полностью рассчитанных кредитных продуктов
      */
     @Override
-    public List<LoanInfo> findSuitableProductsByMonthlyPay(BigDecimal price, BigDecimal monthlyPay) {
+    public List<LoanInfo> findSuitableProductsByMonthlyPay(final BigDecimal price, final BigDecimal monthlyPay) {
         // TODO: To implement
         return null;
     }

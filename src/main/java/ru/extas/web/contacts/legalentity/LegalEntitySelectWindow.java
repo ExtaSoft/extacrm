@@ -6,7 +6,7 @@ import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
-import ru.extas.web.commons.window.CloseOnlylWindow;
+import ru.extas.web.commons.window.CloseOnlyWindow;
 
 import java.util.List;
 import java.util.Set;
@@ -22,7 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class LegalEntitySelectWindow extends CloseOnlylWindow {
+public class LegalEntitySelectWindow extends CloseOnlyWindow {
 
     private SupplierSer<Company> companySupplier;
     private Set<LegalEntity> selected;

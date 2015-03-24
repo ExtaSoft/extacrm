@@ -58,6 +58,7 @@ public class StringToExtaDomainConverter extends String2EnumConverter<ExtaDomain
         map.put(ExtaDomain.USERS, "ПОЛЬЗОВАТЕЛИ/ПОЛЬЗОВАТЕЛИ");
         map.put(ExtaDomain.USER_GROUPS, "ПОЛЬЗОВАТЕЛИ/ГРУППЫ");
         map.put(ExtaDomain.SETTINGS, "НАСТРОЙКИ");
+        map.put(ExtaDomain.ANALYTICS, "АНАЛИТИКА");
         return map;
     }
 }

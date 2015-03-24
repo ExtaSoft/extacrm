@@ -11,8 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.LeadFileContainer;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.SaleFileContainer;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 import ru.extas.server.contacts.CompanyRepository;
@@ -75,10 +77,17 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale.setMotorModel(lead.getMotorModel());
         sale.setMotorPrice(lead.getMotorPrice());
         sale.setDealer(lead.getVendor());
+        sale.setDealerManager(lead.getDealerManager());
         sale.setComment(lead.getComment());
         sale.setProcessId(lead.getProcessId());
         sale.setLead(lead);
         sale.setResponsible(lead.getResponsible());
+        sale.setResponsibleAssist(lead.getResponsibleAssist());
+        for (final LeadFileContainer leadFile : lead.getFiles()) {
+            final List<SaleFileContainer> saleFiles = newArrayList();
+            saleFiles.add(new SaleFileContainer(leadFile));
+            sale.setFiles(saleFiles);
+        }
 
         return saleRepository.secureSave(sale);
     }
@@ -92,14 +101,23 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         switch (result) {
             case SUCCESSFUL:
                 sale.setStatus(Sale.Status.FINISHED);
+                sale.getProductInSales().stream()
+                        .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
+                        .forEach(p -> p.setState(ProductInSale.State.AGREED));
                 leadResult = Lead.Result.SUCCESSFUL;
                 break;
             case VENDOR_REJECTED:
                 sale.setStatus(Sale.Status.CANCELED);
+                sale.getProductInSales().stream()
+                        .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
+                        .forEach(p -> p.setState(ProductInSale.State.REJECTED));
                 leadResult = Lead.Result.VENDOR_REJECTED;
                 break;
             case CLIENT_REJECTED:
                 sale.setStatus(Sale.Status.CANCELED);
+                sale.getProductInSales().stream()
+                        .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
+                        .forEach(p -> p.setState(ProductInSale.State.REJECTED));
                 leadResult = Lead.Result.CLIENT_REJECTED;
                 break;
         }

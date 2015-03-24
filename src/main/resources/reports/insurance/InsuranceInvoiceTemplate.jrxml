@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
-<!-- 2014-12-02T18:25:11 -->
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-03-21T19:35:15 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InsuranceInvoiceTemplate" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f5ef38dd-f014-47f7-82c3-cd72f28baee6">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<import value="com.programmisty.numerals.Numerals"/>
@@ -26,12 +26,12 @@
 		<band height="79" splitType="Stretch">
 			<staticText>
 				<reportElement style="Title" x="0" y="0" width="555" height="24" uuid="0f9553b7-956f-4bdc-83dd-450c15347813"/>
-				<text><![CDATA[ООО «Экстрим Ассистанс»]]></text>
+				<text><![CDATA[Индивидуальный предприниматель Сладкевич Андрей Анатольевич]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="24" width="555" height="41" uuid="42f176f4-1f47-48e6-bc95-1c45776007a2"/>
-				<text><![CDATA[Адрес: 117546, г. Москва, Ступинский проезд, дом 1а, стр. 7
-Тел.: (800) 250-47-08]]></text>
+				<text><![CDATA[Адрес: 142840,  М.О., Ступинский район, п. Михнево, Сенной тупик, 4
+Тел.: +7-967-024-63-42]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -60,7 +60,7 @@
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
-					<text><![CDATA[ИНН 7724871630]]></text>
+					<text><![CDATA[ИНН 504507713803]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="StaticTableCell" x="140" y="0" width="140" height="20" uuid="40b6cba4-3030-455a-b950-a09b519fd9e6">
@@ -71,7 +71,7 @@
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
-					<text><![CDATA[КПП 772401001]]></text>
+					<text><![CDATA[КПП]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="StaticTableCell" x="0" y="20" width="280" height="40" uuid="f9bf29e6-d583-420e-a4bf-bd13faf34980">
@@ -85,7 +85,7 @@
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<text><![CDATA[Получатель
-ООО «Экстрим Ассистанс»]]></text>
+ИП Сладкевич Андрей Анатольевич]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="StaticTableCell" x="0" y="60" width="280" height="40" uuid="270cd1cb-1594-419c-a3c9-3e4ced03d52d">
@@ -108,7 +108,7 @@
 						<property name="local_mesure_unitheight" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<text><![CDATA[40701810601400000092]]></text>
+					<text><![CDATA[40802810801400000403]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="StaticTableCell" x="320" y="60" width="235" height="40" uuid="a223ea5b-3ac7-40a6-a424-58ba37117c8c">
@@ -354,24 +354,18 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="278" splitType="Stretch">
+		<band height="224" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="103" width="161" height="20" uuid="f03ac07a-ace8-4026-b4e7-c278d3f34288"/>
-				<text><![CDATA[Генеральный директор]]></text>
+				<reportElement x="10" y="78" width="161" height="37" uuid="f03ac07a-ace8-4026-b4e7-c278d3f34288"/>
+				<text><![CDATA[Индивидуальный предприниматель]]></text>
 			</staticText>
 			<image>
-				<reportElement x="150" y="3" width="325" height="221" uuid="84413fd1-74b5-47cf-83ae-254fe9100b0d">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<reportElement x="135" y="25" width="419" height="154" uuid="68c4e0f4-903d-4dfb-b06a-880b59883c4f">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/EAFacsimile.png")]]></imageExpression>
+				<imageExpression><![CDATA["D:/Projects/extacrm/src/main/resources/reports/insurance/IP.Sladkevich.Faximile.png"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="370" y="103" width="120" height="20" uuid="00f12c52-e994-4eca-bd02-3c74778cdb8c"/>
-				<text><![CDATA[/Сладкевич А.А./]]></text>
-			</staticText>
 		</band>
 	</summary>
 </jasperReport>

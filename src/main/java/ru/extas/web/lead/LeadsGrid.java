@@ -80,7 +80,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Lead> container = new SecuredDataContainer<>(Lead.class,
+        final ExtaJpaContainer<Lead> container = SecuredDataContainer.create(Lead.class,
                 status == Lead.Status.NEW ? ExtaDomain.LEADS_NEW :
                         status == Lead.Status.QUALIFIED ? ExtaDomain.LEADS_QUAL :
                                 ExtaDomain.LEADS_CLOSED);

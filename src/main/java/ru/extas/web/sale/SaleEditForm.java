@@ -1,14 +1,17 @@
 package ru.extas.web.sale;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.model.sale.SaleFileContainer;
+import ru.extas.server.contacts.EmployeeRepository;
+import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.CommentsField;
@@ -24,6 +27,7 @@ import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
+import ru.extas.web.motor.MotorModelSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 
 import java.math.BigDecimal;
@@ -48,13 +52,13 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private ClientField clientField;
     // Тип техники
     @PropertyId("motorType")
-    private ComboBox motorTypeField;
+    private MotorTypeSelect motorTypeField;
     // Марка техники
     @PropertyId("motorBrand")
     private MotorBrandSelect motorBrandField;
     // Модель техники
     @PropertyId("motorModel")
-    private EditField motorModelField;
+    private MotorModelSelect motorModelField;
     // Стоимость техники
     @PropertyId("motorPrice")
     private EditField mototPriceField;
@@ -105,11 +109,14 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         motorBrandField = new MotorBrandSelect();
         motorBrandField.setRequired(true);
+        motorBrandField.linkToType(motorTypeField);
         form.addComponent(motorBrandField);
 
-        motorModelField = new EditField("Модель техники", "Введите модель техники");
-        motorModelField.setColumns(15);
+        motorModelField = new MotorModelSelect("Модель техники");
         motorModelField.setRequired(true);
+        motorModelField.linkToTypeAndBrand(motorTypeField, motorBrandField);
+        if(getEntity().getMotorModel() != null)
+            motorModelField.addItem(getEntity().getMotorModel());
         form.addComponent(motorModelField);
 
         mototPriceField = new EditField("Цена техники");
@@ -120,7 +127,14 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         form.addComponent(new FormGroupHeader("Дилер"));
         dealerField = new SalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
-        dealerField.addValueChangeListener(e -> dealerManagerField.changeSalePoint());
+        dealerField.addValueChangeListener(e -> {
+            dealerManagerField.changeSalePoint();
+            if (responsibleField.getValue() == null) {
+                SalePoint sp = dealerField.getValue();
+                if (sp.getCurator() != null)
+                    responsibleField.setValue(sp.getCurator());
+            }
+        });
         form.addComponent(dealerField);
 
         dealerManagerField = new DealerEmployeeField("Менеджер", "Выберите или введите ответственного менеджера со стороны дилера");
@@ -148,12 +162,13 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity(),
                 () -> (BigDecimal) mototPriceField.getConvertedValue(),
                 () -> (String) motorBrandField.getValue());
-        productInSaleField.setRequired(true);
+        productInSaleField.addValueChangeListener(forceModified);
         form.addComponent(productInSaleField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Коментарии"));
         commentsField = new CommentsField<>(SaleComment.class);
+        commentsField.addValueChangeListener(forceModified);
         form.addComponent(commentsField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,11 +192,37 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
             final UserManagementService userService = lookup(UserManagementService.class);
             final Employee user = userService.getCurrentUserEmployee();
             if (user != null) {
-                if (user.getWorkPlace() != null)
-                    sale.setDealer(user.getWorkPlace());
+                final EmployeeRepository employeeRepository = lookup(EmployeeRepository.class);
+                if (employeeRepository.isEAEmployee(user)) {
+                    // Для сотрудника ЕА:
+                    // * Устанавливаем ТТ которую курирует сотрудник
+                    final SalePointRepository salePointRepository = lookup(SalePointRepository.class);
+                    salePointRepository.findByCurator(user)
+                            .stream().findFirst().ifPresent(sp -> sale.setDealer(sp));
+                    // * Ответственный - сотрудник вводящий лид.
+                    sale.setResponsible(user);
+                    // * Заместитель - пусто.
+                    // * Менеджер(дилер) - пусто.
+                } else if (employeeRepository.isDealerEmployee(user)) {
+                    // Для сотрудника дилера:
+                    final SalePoint salePoint = user.getWorkPlace();
+                    if (salePoint != null) {
+                        // * Устанавливаем ТТ сотрудника дилера
+                        sale.setDealer(salePoint);
+                        // * Ответственный - сотрудник ЕА который курирует данную торговую точку дилера.
+                        if (salePoint.getCurator() != null)
+                            sale.setResponsible(salePoint.getCurator());
+                    }
+                    // * Заместитель - пусто.
+                    // * Менеджер(дилер) - сотрудник который вводит лид.
+                    sale.setDealerManager(user);
+                } else if (employeeRepository.isCallcenterEmployee(user)) {
+                    // Для сотрудника колл-центра:
+                    // * Ответственный - сотрудник ЕА который курирует торговую точку дилера (если определена).
+                    // * Заместитель - пусто.
+                    // * Менеджер(дилер) - пусто.
+                }
             }
-            final Employee userContact = lookup(UserManagementService.class).getCurrentUserEmployee();
-            sale.setResponsible(userContact);
         }
     }
 

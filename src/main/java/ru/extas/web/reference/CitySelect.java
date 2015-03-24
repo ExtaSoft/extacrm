@@ -26,6 +26,7 @@ public class CitySelect extends ComboBox {
         setDescription("Введите город");
         setInputPrompt("Город");
         setImmediate(true);
+        setScrollToSelectedItem(true);
         setNewItemsAllowed(true);
         setNullSelectionAllowed(false);
         setFilteringMode(FilteringMode.CONTAINS);

@@ -22,10 +22,10 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class LoanCalculatorForm extends OkCancelWindow {
 
-    private EditField priceField;
-    private PercentOfField downpaymentField;
-    private ComboBox periodField;
-    private EditField summField;
+    private final EditField priceField;
+    private final PercentOfField downpaymentField;
+    private final ComboBox periodField;
+    private final EditField summField;
 
     public LoanCalculatorForm() {
         super("Рассчет кредита и подбор кредитного продукта");
@@ -62,7 +62,7 @@ public class LoanCalculatorForm extends OkCancelWindow {
 
     private void fillPeriodFieldItems() {
         // Наполняем возможными сроками кредита
-        ProdCreditRepository rep = lookup(ProdCreditRepository.class);
+        final ProdCreditRepository rep = lookup(ProdCreditRepository.class);
         final int start = rep.getMinPeriod();
         final int end = rep.getMaxPeriod();
         final int step = rep.getPeriodMinStep();

@@ -1,6 +1,6 @@
 package ru.extas.model.lead;
 
-import org.hibernate.validator.constraints.Email;
+import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.ModelUtils;
 import ru.extas.model.contacts.*;
 import ru.extas.model.motor.MotorBrand;
@@ -11,6 +11,9 @@ import ru.extas.model.security.SecuredObject;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Модель данных для Лида
@@ -133,6 +136,16 @@ public class Lead extends SecuredObject {
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee responsible;
 
+    // Помощник ответственного с нашей стороны
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "RESPONSIBLE_ASSIST_ID")
+    private Employee responsibleAssist;
+
+    // Ответственный со стороны дилера
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "DEALER_MANAGER_ID")
+    private Employee dealerManager;
+
     @Enumerated(EnumType.STRING)
     @Column(length = ModelUtils.ENUM_STRING_LENGTH)
     private Status status = Status.NEW;
@@ -143,6 +156,18 @@ public class Lead extends SecuredObject {
     @Enumerated(EnumType.STRING)
     @Column(length = ModelUtils.ENUM_STRING_LENGTH)
     private Result result;
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    private List<LeadFileContainer> files = newArrayList();
+
+    public List<LeadFileContainer> getFiles() {
+        return files;
+    }
+
+    public void setFiles(final List<LeadFileContainer> files) {
+        this.files = files;
+    }
 
     public Employee getResponsible() {
         return responsible;
@@ -158,6 +183,22 @@ public class Lead extends SecuredObject {
 
     public void setNum(final Long num) {
         this.num = num;
+    }
+
+    public Employee getResponsibleAssist() {
+        return responsibleAssist;
+    }
+
+    public void setResponsibleAssist(final Employee responsibleAssist) {
+        this.responsibleAssist = responsibleAssist;
+    }
+
+    public Employee getDealerManager() {
+        return dealerManager;
+    }
+
+    public void setDealerManager(final Employee dealerManager) {
+        this.dealerManager = dealerManager;
     }
 
     /**

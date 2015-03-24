@@ -11,6 +11,7 @@ import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
+import ru.extas.server.references.CategoryService;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -30,7 +31,7 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 @Component
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
-public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
+public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> implements CompanyService {
 
     @Inject
     private CompanyRepository companyRepository;
@@ -99,5 +100,53 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> {
             salePointRepository.permitAndSave(company.getSalePoints(), readers, salePoints, companies, regions, brands);
         }
         return company;
+    }
+
+    /**
+     * Определяет является ли переданная компания Экстрим Ассистанс
+     *
+     * @param company проверяемая компания
+     * @return true если компания Экстрим Ассистанс
+     */
+    @Override
+    public boolean isExtremeAssistance(final Company company) {
+        return company != null && !company.isNew()
+                && company.getId().equals(EXTREME_ASSISTANCE_ID);
+    }
+
+    /**
+     * Определяет является ли переданная компания банком
+     *
+     * @param company проверяемая компания
+     * @return true если компания является банком
+     */
+    @Override
+    public boolean isBank(final Company company) {
+        return company != null && !company.isNew()
+                && company.getCategories().contains(CategoryService.COMPANY_CAT_BANK);
+    }
+
+    /**
+     * Определяет является ли переданная компания дилером
+     *
+     * @param company проверяемая компания
+     * @return true если компания является дилером
+     */
+    @Override
+    public boolean isDealer(final Company company) {
+        return company != null && !company.isNew()
+                && company.getCategories().contains(CategoryService.COMPANY_CAT_DEALER);
+    }
+
+    /**
+     * Определяет является ли переданная компания колл-центром
+     *
+     * @param company проверяемая компания
+     * @return true если компания является колл-центром
+     */
+    @Override
+    public boolean isCallcenter(final Company company) {
+        return company != null && !company.isNew()
+                && company.getCategories().contains(CategoryService.COMPANY_CAT_CALLCENTER);
     }
 }

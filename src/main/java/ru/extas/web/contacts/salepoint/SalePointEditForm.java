@@ -13,6 +13,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.AddressInfoField;
+import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeFieldMulty;
 import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.legalentity.LegalEntitiesSelectField;
@@ -66,6 +67,9 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     private EditField setelemCodeField;
     @PropertyId("extaCode")
     private EditField extaCodeField;
+
+    @PropertyId("curator")
+    private EAEmployeeField curatorField;
 
     public SalePointEditForm(final SalePoint salePoint) {
         super(salePoint.isNew() ? "Ввод новой торговой точки в систему" :
@@ -175,6 +179,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     private Component createLegalsForm() {
         legalsField = new LegalEntitiesSelectField();
+        legalsField.addValueChangeListener(forceModified);
         legalsField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
         legalsField.setSizeFull();
         return legalsField;
@@ -218,6 +223,9 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
         regAddressField = new AddressInfoField();
         formLayout.addComponent(regAddressField);
+
+        curatorField = new EAEmployeeField("Куратор ЭА", "Укажите куратора торговой точки со стороны Экстрим Ассистанс");
+        formLayout.addComponent(curatorField);
 
         return formLayout;
     }

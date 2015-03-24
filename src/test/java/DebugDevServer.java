@@ -20,10 +20,10 @@ public class DebugDevServer {
      *
      * @param args an array of {@link java.lang.String} objects.
      */
-    public static void main(String[] args) throws NumberParseException {
+    public static void main(final String[] args) throws NumberParseException {
 
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        String country = "RU";
+        final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        final String country = "RU";
         Phonenumber.PhoneNumber phone = null;
 
         phone = phoneUtil.parse("89876543232, 123", country);

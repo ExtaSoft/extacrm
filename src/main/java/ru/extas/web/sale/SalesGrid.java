@@ -4,16 +4,22 @@ import com.google.common.base.Joiner;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.CustomTable;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.UI;
-import org.joda.time.*;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tepi.filtertable.FilterGenerator;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.component.PastDateIntervalField;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -76,7 +82,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
             final CustomTable.CellStyleGenerator defGen = table.getCellStyleGenerator();
             table.setCellStyleGenerator((source, itemId, propertyId) -> {
                 String style = null;
-                if(defGen != null) // Если уже есть генератор
+                if (defGen != null) // Если уже есть генератор
                     style = defGen.getStyle(source, itemId, propertyId);
                 if (style == null) {
                     final Sale sale = getEntity(itemId);
@@ -98,7 +104,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Sale> container = new SecuredDataContainer<>(Sale.class, domain);
+        final ExtaJpaContainer<Sale> container = SecuredDataContainer.create(Sale.class, domain);
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
         container.addNestedContainerProperty("dealer.name");
@@ -108,10 +114,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
         container.addContainerFilter(new Compare.Equal("status",
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
                         domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
-        if (domain != ExtaDomain.SALES_OPENED)
-            container.sort(new Object[]{"createdDate"}, new boolean[]{false});
-        else
-            container.sort(new Object[]{"lastModifiedDate"}, new boolean[]{true});
+        container.sort(new Object[]{"lastModifiedDate"}, new boolean[]{true});
         return container;
     }
 

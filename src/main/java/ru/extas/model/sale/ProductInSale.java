@@ -19,6 +19,12 @@ import java.math.BigDecimal;
 @Table(name = "PRODUCT_IN_SALE")
 public class ProductInSale extends AuditedObject {
 
+    public enum State {
+        IN_PROGRESS,
+        AGREED,
+        REJECTED
+    }
+
 	// Продажа
 	@ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Sale sale;
@@ -43,6 +49,9 @@ public class ProductInSale extends AuditedObject {
 	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Employee responsible;
 
+    @Enumerated
+    private State state = State.IN_PROGRESS;
+
 	/**
 	 * <p>Constructor for ProductInSale.</p>
 	 */
@@ -58,7 +67,15 @@ public class ProductInSale extends AuditedObject {
 		this.sale = sale;
 	}
 
-	public Employee getResponsible() {
+    public State getState() {
+        return state;
+    }
+
+    public void setState(final State state) {
+        this.state = state;
+    }
+
+    public Employee getResponsible() {
 		return responsible;
 	}
 

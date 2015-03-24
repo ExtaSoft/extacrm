@@ -5,20 +5,13 @@ package ru.extas.web.contacts.legalentity;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
-import ru.extas.model.contacts.AddressInfo_;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
-import ru.extas.model.contacts.LegalEntity_;
-import ru.extas.model.security.ExtaDomain;
+import ru.extas.security.LegalEntitySecurityFilter;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -64,25 +57,9 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<LegalEntity> container = new SecuredDataContainer<LegalEntity>(LegalEntity.class, ExtaDomain.LEGAL_ENTITY) {
-            @Override
-            protected Predicate createAreaPredicate(final CriteriaBuilder cb, final Root objectRoot, Predicate predicate, final Set permitRegions, final Set permitBrands) {
-                if (!permitRegions.isEmpty()) {
-                    final Predicate regPredicate =
-                            objectRoot.get(LegalEntity_.regAddress)
-                                    .get(AddressInfo_.region)
-                                    .in(permitRegions);
-                    predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
-                }
-                if (!permitBrands.isEmpty()) {
-                    final Predicate brPredicate =
-                            objectRoot.join(LegalEntity_.motorBrands, JoinType.LEFT)
-                                    .in(permitBrands);
-                    predicate = predicate == null ? brPredicate : cb.and(predicate, brPredicate);
-                }
-                return predicate;
-            }
-        };
+        final ExtaJpaContainer<LegalEntity> container =
+                new SecuredDataContainer<LegalEntity>(new LegalEntitySecurityFilter());
+
         if (companySupplier != null)
             container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
         container.addNestedContainerProperty("regAddress.region");
@@ -118,4 +95,5 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
     public void setCompanySupplier(final SupplierSer<Company> companySupplier) {
         this.companySupplier = companySupplier;
     }
+
 }

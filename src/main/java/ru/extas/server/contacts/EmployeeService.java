@@ -14,4 +14,32 @@ import ru.extas.security.SecuredRepository;
  */
 public interface EmployeeService extends SecuredRepository<Employee> {
 
+    /**
+     * Определяет является ли переданный сотрудник, сотрудником Экстрим Ассистанс
+     * @param employee проверяемый сотрудник
+     * @return true если сотрудник Экстрим Ассистанс, иначе false
+     */
+    boolean isEAEmployee(Employee employee);
+
+    /**
+     * Определяет является ли переданный сотрудник, сотрудником банка
+     * @param employee проверяемый сотрудник
+     * @return true если сотрудник банка, иначе false
+     */
+    boolean isBankEmployee(Employee employee);
+
+    /**
+     * Определяет является ли переданный сотрудник, сотрудником дилера
+     * @param employee проверяемый сотрудник
+     * @return true если сотрудник дилера, иначе false
+     */
+    boolean isDealerEmployee(Employee employee);
+
+    /**
+     * Определяет является ли переданный сотрудник, сотрудником колл-центра
+     * @param employee проверяемый сотрудник
+     * @return true если сотрудник колл-центра, иначе false
+     */
+    boolean isCallcenterEmployee(Employee employee);
+
 }

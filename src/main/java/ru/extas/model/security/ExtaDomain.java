@@ -124,7 +124,12 @@ public enum ExtaDomain {
     /**
      * Тип техники
      */
-    MOTOR_TYPE("motor/types");
+    MOTOR_TYPE("motor/types"),
+
+    /**
+     * Аналитика
+     */
+    ANALYTICS("analytics");
 
 	/**
 	 * <p>Constructor for ExtaDomain.</p>

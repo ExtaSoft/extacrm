@@ -5,13 +5,12 @@ import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
-import ru.extas.web.commons.window.CloseOnlylWindow;
+import ru.extas.web.commons.window.CloseOnlyWindow;
 
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * Окно выбора группы пользователей
@@ -22,7 +21,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class UserGroupSelectWindow extends CloseOnlylWindow {
+public class UserGroupSelectWindow extends CloseOnlyWindow {
 
     private Set<UserGroup> selected;
     private boolean selectPressed;

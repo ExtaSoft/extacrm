@@ -12,13 +12,18 @@ import com.vaadin.ui.*;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.LeadFileContainer;
 import ru.extas.model.sale.Sale;
+import ru.extas.server.contacts.EmployeeRepository;
+import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.lead.LeadRepository;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
-import ru.extas.web.contacts.*;
+import ru.extas.web.contacts.ClientField;
+import ru.extas.web.contacts.ContactDataDecl;
+import ru.extas.web.contacts.employee.DealerEmployeeField;
 import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
@@ -82,11 +87,18 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("vendor")
     private SalePointField vendorField;
 
-    @PropertyId("responsible")
-    private EmployeeField responsibleField;
-
     @PropertyId("comment")
     private TextArea commentField;
+
+    @PropertyId("responsible")
+    private EmployeeField responsibleField;
+    @PropertyId("responsibleAssist")
+    private EmployeeField responsibleAssistField;
+    @PropertyId("dealerManager")
+    private EmployeeField dealerManagerField;
+
+    @PropertyId("files")
+    private FilesManageField docFilesEditor;
 
     private final boolean qualifyForm;
     private ExtaJpaContainer<SalePoint> vendorsContainer;
@@ -210,10 +222,18 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         responsibleField.setRequired(getEntity().getStatus() != Lead.Status.NEW || qualifyForm);
         form.addComponent(responsibleField);
 
+        responsibleAssistField = new EAEmployeeField("Заместитель", "Выберите или введите заместителя ответственного менеджера");
+        form.addComponent(responsibleAssistField);
+
         commentField = new TextArea("Примечание");
         commentField.setRows(3);
         commentField.setNullRepresentation("");
         form.addComponent(commentField);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Документы"));
+        docFilesEditor = new FilesManageField(LeadFileContainer.class);
+        form.addComponent(docFilesEditor);
 
         return form;
     }
@@ -221,7 +241,19 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private void createVendorSelectField(final FormLayout form) {
         vendorField = new SalePointField("Мотосалон", "Название мотосалона");
         vendorField.setRequired(true);
+        vendorField.addValueChangeListener(e -> {
+            dealerManagerField.changeSalePoint();
+            if(responsibleField.getValue() == null) {
+                SalePoint sp = vendorField.getValue();
+                if(sp.getCurator() != null)
+                    responsibleField.setValue(sp.getCurator());
+            }
+        });
         form.addComponent(vendorField);
+
+        dealerManagerField = new DealerEmployeeField("Менеджер", "Выберите или введите ответственного менеджера со стороны дилера");
+        dealerManagerField.setSalePointSupplier(() -> vendorField.getValue());
+        form.addComponent(dealerManagerField);
     }
 
     private Component createVendorPanel(final Lead lead) {
@@ -346,7 +378,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         final MenuBar menuBar = new MenuBar();
         menuBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
         final MenuBar.MenuItem newMenu = menuBar.addItem("Новый клиент", Fontello.DOC_NEW, null);
-        newMenu.addItem("Физическое лицо", FontAwesome.USER, e-> {
+        newMenu.addItem("Физическое лицо", FontAwesome.USER, e -> {
             final Person newObj = new Person();
             fillClientFromLead(lead, newObj);
 
@@ -361,7 +393,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             });
             FormUtils.showModalWin(editWin);
         });
-        newMenu.addItem("Юридическое лицо", FontAwesome.BUILDING, e-> {
+        newMenu.addItem("Юридическое лицо", FontAwesome.BUILDING, e -> {
             final LegalEntity newObj = new LegalEntity();
             fillClientFromLead(lead, newObj);
 
@@ -458,14 +490,38 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             final UserManagementService userService = lookup(UserManagementService.class);
             final Employee user = userService.getCurrentUserEmployee();
             if (user != null) {
-                if (user.getWorkPlace() != null) {
+                final EmployeeRepository employeeRepository = lookup(EmployeeRepository.class);
+                if (employeeRepository.isEAEmployee(user)) {
+                    // Для сотрудника ЕА:
+                    // * Устанавливаем ТТ которую курирует сотрудник
+                    final SalePointRepository salePointRepository = lookup(SalePointRepository.class);
+                    salePointRepository.findByCurator(user)
+                            .stream().findFirst().ifPresent(sp -> lead.setVendor(sp));
+                    // * Ответственный - сотрудник вводящий лид.
+                    lead.setResponsible(user);
+                    // * Заместитель - пусто.
+                    // * Менеджер(дилер) - пусто.
+                } else if (employeeRepository.isDealerEmployee(user)) {
+                    // Для сотрудника дилера:
                     final SalePoint salePoint = user.getWorkPlace();
-                    lead.setVendor(salePoint);
-                    lead.setPointOfSale(salePoint.getName());
+                    if (salePoint != null) {
+                        // * Устанавливаем ТТ сотрудника дилера
+                        lead.setVendor(salePoint);
+                        lead.setPointOfSale(salePoint.getName());
+                        // * Ответственный - сотрудник ЕА который курирует данную торговую точку дилера.
+                        if(salePoint.getCurator() != null)
+                            lead.setResponsible(salePoint.getCurator());
+                    }
+                    // * Заместитель - пусто.
+                    // * Менеджер(дилер) - сотрудник который вводит лид.
+                    lead.setDealerManager(user);
+                } else if(employeeRepository.isCallcenterEmployee(user)) {
+                    // Для сотрудника колл-центра:
+                    // * Ответственный - сотрудник ЕА который курирует торговую точку дилера (если определена).
+                    // * Заместитель - пусто.
+                    // * Менеджер(дилер) - пусто.
                 }
             }
-            final Employee userContact = lookup(UserManagementService.class).getCurrentUserEmployee();
-            lead.setResponsible(userContact);
         }
     }
 

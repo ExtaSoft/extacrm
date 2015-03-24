@@ -19,7 +19,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Выбор компании с возможностью добавления нового
- * <p/>
+ * <p>
  * Date: 12.09.13
  * Time: 12:15
  *
@@ -41,6 +41,10 @@ public class CompanyField extends CustomField<Company> {
         setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setBuffered(true);
+        addValueChangeListener(e -> {
+            if (popupView != null)
+                popupView.markAsDirty();
+        });
     }
 
 
@@ -84,6 +88,7 @@ public class CompanyField extends CustomField<Company> {
             setInputPrompt("Название компании...");
             setWidth(25, Unit.EM);
             setImmediate(true);
+            setScrollToSelectedItem(true);
 
             // Инициализация контейнера
             container = new ExtaJpaContainer<>(Company.class);

@@ -21,10 +21,13 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "SALE_POINT", indexes = {@Index(columnList = "NAME")})
 public class SalePoint extends Contact implements ArchivedObject {
 
-    private static final int CODE_LENGTH = 15;
+    private static final int CODE_LENGTH = 50;
     // Компания
     @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Company company;
+
+    @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    private Employee curator;
 
     // Юр. лица работающие на торговой точке
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -61,6 +64,14 @@ public class SalePoint extends Contact implements ArchivedObject {
     @Column(name = "SETELEM_CODE", length = CODE_LENGTH)
     @Size(max = CODE_LENGTH)
     private String setelemCode;
+
+    public Employee getCurator() {
+        return curator;
+    }
+
+    public void setCurator(final Employee curator) {
+        this.curator = curator;
+    }
 
     /**
      * <p>Getter for the field <code>legalEntities</code>.</p>

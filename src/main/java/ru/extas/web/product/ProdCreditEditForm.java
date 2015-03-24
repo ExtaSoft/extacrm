@@ -144,6 +144,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 		form.addComponent(maxPeriodField);
 
 		percentsField = new ProdCredPercentField("Процентные ставки", "Введите процентные ставки по кредиту в зависимости от начальных параментов кредита", getEntity());
+        percentsField.addValueChangeListener(forceModified);
 		percentsField.setRequired(true);
 		form.addComponent(percentsField);
 

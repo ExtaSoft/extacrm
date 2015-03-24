@@ -26,6 +26,7 @@ public class DocumentSelect extends ComboBox {
 		setDescription("Выберите вид документа");
 		setInputPrompt("Выберите документ...");
 		setImmediate(true);
+        setScrollToSelectedItem(true);
 		setNullSelectionAllowed(false);
 		setNewItemsAllowed(false);
 		setFilteringMode(FilteringMode.CONTAINS);

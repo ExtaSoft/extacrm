@@ -22,5 +22,6 @@ public class ExtaFormLayout extends FormLayout {
 
     public ExtaFormLayout(final Component... children) {
         super(children);
+        init();
     }
 }

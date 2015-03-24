@@ -45,5 +45,12 @@
 
     <inherits name="com.ejt.vaadin.sizereporter.WidgetSet" />
 
-    
+    <inherits name="org.vaadin.jouni.animator.AnimatorWidgetset" />
+
+    <inherits name="org.vaadin.jouni.dom.DomWidgetset" />
+
+
+    <inherits name="com.vaadin.addon.charts.Widgetset" />
+
+    <inherits name="com.vaadin.addon.timeline.gwt.TimelineWidgetSet" />
 </module>

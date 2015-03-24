@@ -72,6 +72,7 @@ public class ProdCredPercentField extends CustomField<List> {
                 final ProdCreditPercent newObj = new ProdCreditPercent(product);
 
                 final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Новая процентная ставка", newObj);
+                editWin.setModified(true);
                 editWin.addCloseFormListener(event1 -> {
                     if (editWin.isSaved()) {
                         container.addBean(newObj);
@@ -86,6 +87,11 @@ public class ProdCredPercentField extends CustomField<List> {
                 if (procentTable.getValue() != null) {
                     final BeanItem<ProdCreditPercent> percentItem = (BeanItem<ProdCreditPercent>) procentTable.getItem(procentTable.getValue());
                     final ProdCreditPercentForm editWin = new ProdCreditPercentForm("Редактирование процентной ставки", percentItem.getBean());
+                    editWin.addCloseFormListener(event1 -> {
+                        if (editWin.isSaved()) {
+                            fireValueChange(false);
+                        }
+                    });
                     FormUtils.showModalWin(editWin);
                 }
             });

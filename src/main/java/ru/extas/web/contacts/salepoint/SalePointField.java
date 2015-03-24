@@ -7,6 +7,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.SalePoint_;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
@@ -42,13 +43,16 @@ public class SalePointField extends CustomField<SalePoint> {
      *
      * @param caption     a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
-     * @param company     a {@link ru.extas.model.contacts.Company} object.
      */
     public SalePointField(final String caption, final String description) {
         setCaption(caption);
         setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setBuffered(true);
+        addValueChangeListener(e -> {
+            if (popupView != null)
+                popupView.markAsDirty();
+        });
     }
 
     /**
@@ -102,17 +106,18 @@ public class SalePointField extends CustomField<SalePoint> {
             setInputPrompt("Торговая точка...");
             setWidth(15, Unit.EM);
             setImmediate(true);
+            setScrollToSelectedItem(true);
 
             // Инициализация контейнера
             container = new ExtaJpaContainer<>(SalePoint.class);
-            container.sort(new Object[]{"name"}, new boolean[]{true});
+            container.sort(new Object[]{SalePoint_.name.getName()}, new boolean[]{true});
             setContainerFilter();
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
-            setItemCaptionPropertyId("name");
+            setItemCaptionPropertyId(SalePoint_.name.getName());
             setConverter(new SingleSelectConverter<SalePoint>(this));
 
             // Функционал добавления нового контакта
@@ -127,9 +132,9 @@ public class SalePointField extends CustomField<SalePoint> {
             setContainerFilter();
             container.refresh();
             final SalePoint salePoint = (SalePoint) getConvertedValue();
-            if(salePoint != null)
-            if (companySupplier != null && !Objects.equals(salePoint.getCompany(), companySupplier.get()))
-                setConvertedValue(null);
+            if (salePoint != null)
+                if (companySupplier != null && !Objects.equals(salePoint.getCompany(), companySupplier.get()))
+                    setConvertedValue(null);
         }
 
         protected void setContainerFilter() {
@@ -278,7 +283,8 @@ public class SalePointField extends CustomField<SalePoint> {
             if (phoneField != null) phoneField.setPropertyDataSource(beanItem.getItemProperty("phone"));
             // Адрес
             if (cityField != null) cityField.setPropertyDataSource(beanItem.getItemProperty("regAddress.city"));
-            if (addressField != null) addressField.setPropertyDataSource(beanItem.getItemProperty("regAddress.streetBld"));
+            if (addressField != null)
+                addressField.setPropertyDataSource(beanItem.getItemProperty("regAddress.streetBld"));
         }
     }
 

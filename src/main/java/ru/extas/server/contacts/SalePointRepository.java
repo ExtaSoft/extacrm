@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
 
@@ -31,7 +32,15 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      * @return список найденных торговых точек
      */
     @Query("select s from SalePoint s, s.employees e where e = :employee")
-    List<SalePoint> findByEmployee(@Param("employee") Person employee);
+    List<SalePoint> findByEmployee(@Param("employee") Employee employee);
+
+    /**
+     * Ищет торговые точки которые курируются указанным сотрудником
+     * @param employee куратор - сотрудник ЭА
+     * @return список куририуемых торговых точек
+     */
+    @Query("select s from SalePoint s where s.curator = :employee")
+    List<SalePoint> findByCurator(@Param("employee") Employee employee);
 
     /**
      * <p>countByRegion.</p>

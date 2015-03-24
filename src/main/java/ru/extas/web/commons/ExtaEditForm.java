@@ -3,6 +3,7 @@
  */
 package ru.extas.web.commons;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
@@ -37,6 +38,7 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
     private static final long serialVersionUID = -5592353839008000742L;
     private final String caption;
     protected boolean saved = false;
+    protected Property.ValueChangeListener forceModified = e -> setModified(true);
     private HorizontalLayout buttonsPanel;
     private BeanFieldGroup<TEntity> fieldGroup;
     private boolean modified;
@@ -121,10 +123,14 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
     }
 
     public void closeForm() {
-        fireCloseForm();
+        HasComponents parent = getParent();
+        if (parent instanceof Window)
+            ((Window) parent).close();
+        else
+            fireCloseForm();
     }
 
-    protected void fireCloseForm() {
+    public void fireCloseForm() {
         fireEvent(new CloseFormEvent(this));
     }
 

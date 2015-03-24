@@ -77,16 +77,17 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
 //        // Привязать процесс к лиду
 //        lead.setProcessId(processInstance.getId());
 
-        // Обновляем поля лида
-        lead.setContactName(lead.getClient().getName());
-
-        // Статус
-        lead.setStatus(Lead.Status.QUALIFIED);
-        // Сохранить изменения
-        lead = leadRepository.secureSave(lead);
-
         // Создать продажу на базе лида
         final Sale sale = saleRepository.ctreateSaleByLead(lead);
+
+        // Обновляем поля лида
+        lead.setContactName(lead.getClient().getName());
+        // Статус
+        lead.setStatus(Lead.Status.QUALIFIED);
+        // Убираем файлы, чтобы не дублировать с продажей
+        lead.getFiles().clear();
+        // Сохранить изменения
+        lead = leadRepository.secureSave(lead);
 
         // Привязать лид к процессу
 //        runtimeService.setVariable(processInstance.getId(), "lead", lead);
@@ -134,6 +135,11 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
         // Ответственный пользователь как Редактор
         if (lead.getResponsible() != null)
             users.add(new ImmutablePair<>(lead.getResponsible(), AccessRole.EDITOR));
+        if (lead.getResponsibleAssist() != null)
+            users.add(new ImmutablePair<>(lead.getResponsibleAssist(), AccessRole.EDITOR));
+        // Сотрудник дилера как читатель
+        if (lead.getDealerManager() != null)
+            users.add(new ImmutablePair<>(lead.getDealerManager(), AccessRole.READER));
 
         return users;
     }

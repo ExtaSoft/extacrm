@@ -20,6 +20,7 @@ import ru.extas.model.contacts.Company;
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public interface CompanyRepository extends JpaRepository<Company, String>, CompanyService {
 
-    @Query("SELECT c FROM Company c WHERE c.id = '598EB4D6-BC0A-4A2F-B445-52BEF27AC873'")
-    Company findOurCompany();
+    @Query("SELECT c FROM Company c WHERE c.id = '" + EXTREME_ASSISTANCE_ID + "'")
+    Company findEACompany();
+
 }

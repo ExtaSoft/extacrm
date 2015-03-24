@@ -101,6 +101,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             setDescription(description);
             setInputPrompt("ООО \"Рога и Копыта\"");
             setImmediate(true);
+            setScrollToSelectedItem(true);
 
             // Инициализация контейнера
             container = new ExtaJpaContainer<>(LegalEntity.class);
@@ -175,10 +176,10 @@ public class LegalEntityField extends CustomField<LegalEntity> {
         private final SupplierSer<Company> companySupplier;
         private final Field field;
         private LESelectField selectField;
-        private Label emailField;
-        private Label innField;
-        private Label phoneField;
-        private Button viewBtn;
+        private final Label emailField;
+        private final Label innField;
+        private final Label phoneField;
+        private final Button viewBtn;
 
         public PopupForm(final Field field, final PopupView popupView, final SupplierSer<Company> companySupplier) {
 

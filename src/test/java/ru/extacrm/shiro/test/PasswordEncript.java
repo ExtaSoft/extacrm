@@ -25,7 +25,7 @@ public class PasswordEncript {
     public static void main(final String[] args) {
 
         final String plainTextPassword = "123qwe";
-        UserProfile user = new UserProfile();
+        final UserProfile user = new UserProfile();
         user.setPassword(plainTextPassword);
         UserRealm.securePassword(user);
 

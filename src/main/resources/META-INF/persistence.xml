@@ -48,6 +48,7 @@
         <class>ru.extas.model.insurance.InsuranceFileContainer</class>
         <class>ru.extas.model.insurance.Policy</class>
         <class>ru.extas.model.lead.Lead</class>
+        <class>ru.extas.model.lead.LeadFileContainer</class>
         <class>ru.extas.model.sale.Sale</class>
         <class>ru.extas.model.sale.SaleComment</class>
         <class>ru.extas.model.sale.SaleFileContainer</class>
