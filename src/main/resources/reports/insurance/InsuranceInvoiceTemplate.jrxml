@@ -364,7 +364,7 @@
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<imageExpression><![CDATA["D:/Projects/extacrm/src/main/resources/reports/insurance/IP.Sladkevich.Faximile.png"]]></imageExpression>
+				<imageExpression><![CDATA[this.getClass().getResourceAsStream("/reports/insurance/IP.Sladkevich.Faximile.png")]]></imageExpression>
 			</image>
 		</band>
 	</summary>
