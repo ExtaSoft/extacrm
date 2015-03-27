@@ -8,11 +8,9 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.contacts.SalePoint_;
+import ru.extas.security.SalePointSecurityFilter;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaJpaContainer;
-import ru.extas.web.commons.ExtaTheme;
-import ru.extas.web.commons.Fontello;
-import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.converters.PhoneConverter;
@@ -33,18 +31,23 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class SalePointField extends CustomField<SalePoint> {
 
+    private final boolean secured;
     private SupplierSer<Company> companySupplier;
 
     private PopupView popupView;
     private PopupSalePointContent salePointContent;
 
-    /**
-     * <p>Constructor for SalePointSelect.</p>
-     *
-     * @param caption     a {@link java.lang.String} object.
-     * @param description a {@link java.lang.String} object.
-     */
     public SalePointField(final String caption, final String description) {
+        this(caption, description, false);
+    }
+        /**
+         * <p>Constructor for SalePointSelect.</p>
+         *
+         * @param caption     a {@link java.lang.String} object.
+         * @param description a {@link java.lang.String} object.
+         */
+    public SalePointField(final String caption, final String description, boolean secured) {
+        this.secured = secured;
         setCaption(caption);
         setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
@@ -109,7 +112,10 @@ public class SalePointField extends CustomField<SalePoint> {
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
-            container = new ExtaJpaContainer<>(SalePoint.class);
+            if (secured)
+                container = new SecuredDataContainer<SalePoint>(new SalePointSecurityFilter());
+            else
+                container = new ExtaJpaContainer<>(SalePoint.class);
             container.sort(new Object[]{SalePoint_.name.getName()}, new boolean[]{true});
             setContainerFilter();
 

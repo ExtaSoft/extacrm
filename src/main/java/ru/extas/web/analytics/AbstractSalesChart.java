@@ -111,15 +111,19 @@ public abstract class AbstractSalesChart extends VerticalLayout {
 
         // Указанному региону
         regionSelect = new RegionSelect("Регион");
+        regionSelect.addValueChangeListener(e -> companyField.changeRegion());
         filterForm.addComponent(regionSelect);
 
         // Указанной Компании
-        companyField = new CompanyField("Компания");
+        companyField = new CompanyField("Компания", true);
+        companyField.setRegionSupplier(() -> (String)regionSelect.getValue());
+        companyField.addValueChangeListener(e -> salePointField.changeCompany());
         filterForm.addComponent(companyField);
 
         // Указанной ТТ внутри региона;
         salePointField = new SalePointField("Торговая точка",
-                "Укажите торговую точку для которой будет строиться аналитика");
+                "Укажите торговую точку для которой будет строиться аналитика", true);
+        salePointField.setCompanySupplier(() -> companyField.getValue());
         filterForm.addComponent(salePointField);
 
         final Button runButton = new Button("Применить", e -> updateChartData());
