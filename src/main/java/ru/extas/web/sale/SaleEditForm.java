@@ -1,6 +1,5 @@
 package ru.extas.web.sale;
 
-import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
@@ -25,7 +24,7 @@ import ru.extas.web.contacts.ClientField;
 import ru.extas.web.contacts.employee.DealerEmployeeField;
 import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
-import ru.extas.web.contacts.salepoint.SalePointField;
+import ru.extas.web.contacts.salepoint.DealerSalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorModelSelect;
 import ru.extas.web.motor.MotorTypeSelect;
@@ -64,7 +63,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private EditField mototPriceField;
     // Мотосалон
     @PropertyId("dealer")
-    private SalePointField dealerField;
+    private DealerSalePointField dealerField;
     @PropertyId("comment")
     private TextArea commentField;
     @PropertyId("productInSales")
@@ -125,7 +124,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
-        dealerField = new SalePointField("Мотосалон", "Введите точку продаж");
+        dealerField = new DealerSalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
         dealerField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();

@@ -29,8 +29,8 @@ import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
 import ru.extas.web.contacts.person.ClientDataDecl;
 import ru.extas.web.contacts.person.PersonEditForm;
+import ru.extas.web.contacts.salepoint.DealerSalePointField;
 import ru.extas.web.contacts.salepoint.SalePointEditForm;
-import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
@@ -85,7 +85,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("client")
     private ClientField clientField;
     @PropertyId("vendor")
-    private SalePointField vendorField;
+    private DealerSalePointField vendorField;
 
     @PropertyId("comment")
     private TextArea commentField;
@@ -239,7 +239,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     }
 
     private void createVendorSelectField(final FormLayout form) {
-        vendorField = new SalePointField("Мотосалон", "Название мотосалона");
+        vendorField = new DealerSalePointField("Мотосалон", "Название мотосалона");
         vendorField.setRequired(true);
         vendorField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();

@@ -1,7 +1,9 @@
 package ru.extas.web.contacts.company;
 
 import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
+import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.And;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
@@ -33,6 +35,7 @@ public class CompanyField extends CustomField<Company> {
     private PopupView popupView;
     private PopupCompanyContent companyContent;
     private SupplierSer<String> regionSupplier;
+    private Container.Filter filter;
 
     public CompanyField(final String caption) {
         this(caption, "Введите или выберите компанию", false);
@@ -90,6 +93,14 @@ public class CompanyField extends CustomField<Company> {
 
     public void setRegionSupplier(SupplierSer<String> regionSupplier) {
         this.regionSupplier = regionSupplier;
+    }
+
+    public Container.Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Container.Filter filter) {
+        this.filter = filter;
     }
 
     private class CompanyComboBox extends ComboBox {
@@ -151,8 +162,13 @@ public class CompanyField extends CustomField<Company> {
 
         protected void setContainerFilter() {
             container.removeAllContainerFilters();
-            if (regionSupplier != null)
-                container.addContainerFilter(new Compare.Equal(Company_.region.getName(), regionSupplier.get()));
+            Container.Filter fltr = null;
+            if (regionSupplier != null && regionSupplier.get() != null)
+                fltr = new Compare.Equal(Company_.region.getName(), regionSupplier.get());
+            if (filter != null)
+                fltr = fltr != null ? new And(fltr, filter) : filter;
+            if (fltr != null)
+                container.addContainerFilter(fltr);
         }
     }
 

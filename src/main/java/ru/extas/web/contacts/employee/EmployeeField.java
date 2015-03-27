@@ -149,9 +149,9 @@ public class EmployeeField extends CustomField<Employee> {
             container.removeAllContainerFilters();
 
             Filter fltr = null;
-            if (salePointSupplier != null) {
+            if (salePointSupplier != null && salePointSupplier.get() != null) {
                 fltr = new Compare.Equal("workPlace", salePointSupplier.get());
-            } else if (companySupplier != null)
+            } else if (companySupplier != null && companySupplier.get() != null)
                 fltr = new Compare.Equal("company", companySupplier.get());
             if (filter != null)
                 fltr = fltr != null ? new And(fltr, filter) : filter;

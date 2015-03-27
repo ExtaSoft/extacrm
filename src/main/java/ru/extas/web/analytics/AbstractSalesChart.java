@@ -18,6 +18,8 @@ import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.PastDateIntervalField;
 import ru.extas.web.contacts.company.CompanyField;
+import ru.extas.web.contacts.company.DealerCompanyField;
+import ru.extas.web.contacts.salepoint.DealerSalePointField;
 import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.reference.RegionSelect;
 
@@ -115,15 +117,15 @@ public abstract class AbstractSalesChart extends VerticalLayout {
         filterForm.addComponent(regionSelect);
 
         // Указанной Компании
-        companyField = new CompanyField("Компания", true);
+        companyField = new DealerCompanyField("Компания", true);
         companyField.setRegionSupplier(() -> (String)regionSelect.getValue());
         companyField.addValueChangeListener(e -> salePointField.changeCompany());
         filterForm.addComponent(companyField);
 
         // Указанной ТТ внутри региона;
-        salePointField = new SalePointField("Торговая точка",
+        salePointField = new DealerSalePointField("Торговая точка",
                 "Укажите торговую точку для которой будет строиться аналитика", true);
-        salePointField.setCompanySupplier(() -> companyField.getValue());
+        salePointField.setCompanySupplier(companyField::getValue);
         filterForm.addComponent(salePointField);
 
         final Button runButton = new Button("Применить", e -> updateChartData());

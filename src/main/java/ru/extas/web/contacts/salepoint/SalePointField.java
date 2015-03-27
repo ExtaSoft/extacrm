@@ -1,7 +1,9 @@
 package ru.extas.web.contacts.salepoint;
 
 import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
+import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.And;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
@@ -33,6 +35,7 @@ public class SalePointField extends CustomField<SalePoint> {
 
     private final boolean secured;
     private SupplierSer<Company> companySupplier;
+    private Container.Filter filter;
 
     private PopupView popupView;
     private PopupSalePointContent salePointContent;
@@ -40,12 +43,13 @@ public class SalePointField extends CustomField<SalePoint> {
     public SalePointField(final String caption, final String description) {
         this(caption, description, false);
     }
-        /**
-         * <p>Constructor for SalePointSelect.</p>
-         *
-         * @param caption     a {@link java.lang.String} object.
-         * @param description a {@link java.lang.String} object.
-         */
+
+    /**
+     * <p>Constructor for SalePointSelect.</p>
+     *
+     * @param caption     a {@link java.lang.String} object.
+     * @param description a {@link java.lang.String} object.
+     */
     public SalePointField(final String caption, final String description, boolean secured) {
         this.secured = secured;
         setCaption(caption);
@@ -87,6 +91,14 @@ public class SalePointField extends CustomField<SalePoint> {
                 }
             }
         }
+    }
+
+    public Container.Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Container.Filter filter) {
+        this.filter = filter;
     }
 
     private class SalePointComboBox extends ComboBox {
@@ -145,8 +157,13 @@ public class SalePointField extends CustomField<SalePoint> {
 
         protected void setContainerFilter() {
             container.removeAllContainerFilters();
-            if (companySupplier != null)
-                container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
+            Filter fltr = null;
+            if (companySupplier != null && companySupplier.get() != null)
+                fltr = new Compare.Equal("company", companySupplier.get());
+            if (filter != null)
+                fltr = fltr != null ? new And(fltr, filter) : filter;
+            if (fltr != null)
+                container.addContainerFilter(fltr);
         }
 
     }
