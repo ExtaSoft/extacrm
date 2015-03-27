@@ -5,12 +5,16 @@ package ru.extas.web.contacts.salepoint;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
+import com.vaadin.data.util.filter.Like;
+import com.vaadin.ui.AbstractField;
+import org.tepi.filtertable.FilterGenerator;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.security.SalePointSecurityFilter;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -24,17 +28,16 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class SalePointsGrid extends ExtaGrid<SalePoint> {
 
-	private static final long serialVersionUID = 2299363623807745654L;
+    private static final long serialVersionUID = 2299363623807745654L;
 
     private SupplierSer<Company> companySupplier;
 
     /**
-	 * <p>Constructor for SalePointsGrid.</p>
-	 *
-	 */
-	public SalePointsGrid() {
-		super(SalePoint.class);
-	}
+     * <p>Constructor for SalePointsGrid.</p>
+     */
+    public SalePointsGrid() {
+        super(SalePoint.class);
+    }
 
     @Override
     public ExtaEditForm<SalePoint> createEditForm(final SalePoint salePoint, final boolean isInsert) {
@@ -46,41 +49,68 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
     @Override
     public SalePoint createEntity() {
         final SalePoint entity = super.createEntity();
-        if(companySupplier != null)
+        if (companySupplier != null)
             entity.setCompany(companySupplier.get());
         return entity;
     }
 
-    /** {@inheritDoc} */
-	@Override
-	protected GridDataDecl createDataDecl() {
-		return new SalePointsDataDecl();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected GridDataDecl createDataDecl() {
+        return new SalePointsDataDecl();
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected Container createContainer() {
-		// Запрос данных
-		final ExtaJpaContainer<SalePoint> container = new SecuredDataContainer<SalePoint>(new SalePointSecurityFilter());
-		container.addNestedContainerProperty("regAddress.region");
-		container.addNestedContainerProperty("regAddress.city");
-		container.addNestedContainerProperty("regAddress.streetBld");
-		container.addNestedContainerProperty("company.name");
-		if (companySupplier != null)
-			container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
-		return container;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Container createContainer() {
+        // Запрос данных
+        final ExtaJpaContainer<SalePoint> container = new SecuredDataContainer<SalePoint>(new SalePointSecurityFilter());
+        container.addNestedContainerProperty("regAddress.region");
+        container.addNestedContainerProperty("regAddress.city");
+        container.addNestedContainerProperty("regAddress.streetBld");
+        container.addNestedContainerProperty("company.name");
+        if (companySupplier != null)
+            container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
+        return container;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected List<UIAction> createActions() {
-		final List<UIAction> actions = newArrayList();
+    @Override
+    protected FilterGenerator createFilterGenerator() {
+        return new CommonFilterGenerator() {
+            @Override
+            public Container.Filter generateFilter(Object propertyId, Object value) {
+                if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS)) {
+                    return new Like("legalEntities.motorBrands", MessageFormat.format("%{0}%", value), false);
+                } else
+                    return super.generateFilter(propertyId, value);
+            }
 
-		actions.add(new NewObjectAction("Новый", "Ввод новой торговой точки в систему"));
+            @Override
+            public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+//                if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS))
+//                    return new EditField();
+//                else
+                    return super.getCustomFilterComponent(propertyId);
+            }
+        };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected List<UIAction> createActions() {
+        final List<UIAction> actions = newArrayList();
+
+        actions.add(new NewObjectAction("Новый", "Ввод новой торговой точки в систему"));
         actions.add(new EditObjectAction("Изменить", "Редактирование данных торговой точки"));
 
         return actions;
-	}
+    }
 
     public SupplierSer<Company> getCompanySupplier() {
         return companySupplier;
