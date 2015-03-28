@@ -677,6 +677,7 @@
                     <filesets>
                         <fileset>
                             <directory>src/main/webapp/VAADIN/widgetsets</directory>
+                            <directory>src/main/webapp/VAADIN/gwt-unitCache</directory>
                         </fileset>
                     </filesets>
                 </configuration>
@@ -696,6 +697,8 @@
                         way compatible with Vaadin eclipse plugin. -->
                     <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
                     <hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
+                    <persistentunitcachedir>${project.build.directory}</persistentunitcachedir>
+                    <deploy>${project.build.directory}/gwt-deploy</deploy>
                     <noServer>true</noServer>
                     <!-- Remove draftCompile when project is ready -->
                     <draftCompile>false</draftCompile>
