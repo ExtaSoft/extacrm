@@ -92,6 +92,7 @@ public class PersonField extends CustomField<Person> {
             setInputPrompt("контакт...");
             setWidth(25, Unit.EM);
             setImmediate(true);
+            setBuffered(true);
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
@@ -137,7 +138,7 @@ public class PersonField extends CustomField<Person> {
             if (!isReadOnly()) {
                 personSelectField = new PersonSelectField("Имя", "Введите или выберите имя контакта");
                 personSelectField.setInputPrompt("Фамилия Имя Отчество");
-                personSelectField.setValue(field.getValue());
+                personSelectField.setPropertyDataSource(field.getPropertyDataSource());
                 personSelectField.setNewItemsAllowed(true);
                 personSelectField.setNewItemHandler(newItemCaption -> {
                     final Person newObj = new Person();

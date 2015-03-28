@@ -3,23 +3,28 @@ package ru.extas.web.commons;
 import com.vaadin.addon.jpacontainer.EntityContainer;
 import com.vaadin.addon.jpacontainer.EntityManagerProvider;
 import com.vaadin.addon.jpacontainer.JPAContainer;
+import com.vaadin.addon.jpacontainer.SortBy;
 import com.vaadin.addon.jpacontainer.filter.util.FilterConverter;
 import com.vaadin.addon.jpacontainer.provider.MutableLocalEntityProvider;
 import com.vaadin.addon.jpacontainer.util.CollectionUtil;
 import com.vaadin.data.util.filter.Compare;
+import org.eclipse.persistence.jpa.JpaEntityManager;
+import org.eclipse.persistence.jpa.JpaQuery;
+import org.eclipse.persistence.queries.DatabaseQuery;
+import org.eclipse.persistence.sessions.DatabaseRecord;
 import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.server.SpringEntityManagerProvider;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -84,6 +89,17 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
 
     public Set<TEntityType> getEntitiesSet() {
         return newHashSet(getItemIds().stream().map(id -> getItem(id).getEntity()).iterator());
+    }
+
+    @Override
+    public int indexOfId(Object itemId) {
+        return doGetEntityProvider().getIndexOfId(this,
+                itemId, getAppliedFiltersAsConjunction(), getSortByList());
+    }
+
+    @Override
+    protected ExtaLocalEntityProvider<TEntityType> doGetEntityProvider() throws IllegalStateException {
+        return (ExtaLocalEntityProvider<TEntityType>) super.doGetEntityProvider();
     }
 
     protected static class InjectEntityManagerProvider implements EntityManagerProvider, Serializable {
@@ -196,5 +212,80 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
             }
         }
 
+        public int getIndexOfId(ExtaJpaContainer<TEntityType> container, Object itemId, Filter filter, List<SortBy> sortBy) {
+            if (sortBy == null)
+                sortBy = Collections.emptyList();
+
+            final String entityIdPropertyName = getEntityClassMetadata()
+                    .getIdentifierProperty().getName();
+
+            final EntityManager em = doGetEntityManager();
+            final CriteriaBuilder cb = em.getCriteriaBuilder();
+            final CriteriaQuery query = cb.createQuery();
+            final Root<TEntityType> root = query.from(getEntityClassMetadata().getMappedClass());
+
+            tellDelegateQueryWillBeBuilt(container, cb, query);
+
+            final List<Predicate> predicates = new ArrayList<Predicate>();
+            if (filter != null) {
+                predicates.add(FilterConverter.convertFilter(filter, cb, root));
+            }
+            tellDelegateFiltersWillBeAdded(container, cb, query, predicates);
+            if (!predicates.isEmpty()) {
+                query.where(CollectionUtil.toArray(Predicate.class, predicates));
+            }
+            tellDelegateFiltersWereAdded(container, cb, query);
+
+            List<Order> orderBy = newArrayList();
+            if (sortBy != null && sortBy.size() > 0) {
+                for (SortBy sortedProperty : sortBy) {
+                    orderBy.add(translateSortBy(sortedProperty, false, cb,
+                            root));
+                }
+            }
+            tellDelegateOrderByWillBeAdded(container, cb, query, orderBy);
+            query.orderBy(orderBy);
+            tellDelegateOrderByWereAdded(container, cb, query);
+
+            final Path<Object> idPath = root.get(entityIdPropertyName);
+            query.select(idPath).distinct(true);
+
+            tellDelegateQueryHasBeenBuilt(container, cb, query);
+            final TypedQuery<Long> tq = em.createQuery(query);
+            final DatabaseQuery databaseQuery = tq.unwrap(JpaQuery.class).getDatabaseQuery();
+            final DatabaseRecord translationRow = new DatabaseRecord();
+            final JpaEntityManager jpaEm = em.unwrap(JpaEntityManager.class);
+            databaseQuery.prepareCall(jpaEm.getSession(), translationRow);
+            String querySql = databaseQuery.getTranslatedSQLString(jpaEm.getSession(), translationRow);
+            Query nativeQuery = em.createNativeQuery(
+                    MessageFormat.format(
+                            "SELECT q.rownum AS indx " +
+                                    "FROM (SELECT s.{2} AS id, @rownum:=@rownum + 1 AS rownum " +
+                                    "           FROM (SELECT @rownum:=0) i, ({0}) s) q " +
+                                    "WHERE q.id = ''{1}''", querySql, itemId, entityIdPropertyName));
+//            nativeQuery.unwrap(JpaQuery.class).getDatabaseQuery().setTranslationRow(translationRow);
+            Object result = nativeQuery.getSingleResult();
+
+            return result != null ? (int) (double) result : -1;
+        }
+
+        private void tellDelegateOrderByWillBeAdded(EntityContainer<TEntityType> container,
+                                                    CriteriaBuilder cb, CriteriaQuery<?> query, List<Order> orderBy) {
+            if (getQueryModifierDelegate() != null) {
+                getQueryModifierDelegate().orderByWillBeAdded(cb, query, orderBy);
+            } else if (container.getQueryModifierDelegate() != null) {
+                container.getQueryModifierDelegate().orderByWillBeAdded(cb, query,
+                        orderBy);
+            }
+        }
+
+        private void tellDelegateOrderByWereAdded(EntityContainer<TEntityType> container,
+                                                  CriteriaBuilder cb, CriteriaQuery<?> query) {
+            if (getQueryModifierDelegate() != null) {
+                getQueryModifierDelegate().orderByWasAdded(cb, query);
+            } else if (container.getQueryModifierDelegate() != null) {
+                container.getQueryModifierDelegate().orderByWasAdded(cb, query);
+            }
+        }
     }
 }
