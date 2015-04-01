@@ -3,10 +3,7 @@ package ru.extas.model.sale;
 import ru.extas.model.common.Comment;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.ModelUtils;
-import ru.extas.model.contacts.AddressInfo;
-import ru.extas.model.contacts.Client;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.model.motor.MotorModel;
@@ -72,6 +69,9 @@ public class Sale extends SecuredObject {
 	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private SalePoint dealer;
 
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	private LegalEntity dealerLE;
+
     @Column(name = "COMMENT")
     @Size(max = 255)
 	private String comment;
@@ -111,6 +111,14 @@ public class Sale extends SecuredObject {
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
 	private List<SaleFileContainer> files = newArrayList();
+
+	public LegalEntity getDealerLE() {
+		return dealerLE;
+	}
+
+	public void setDealerLE(LegalEntity dealerLE) {
+		this.dealerLE = dealerLE;
+	}
 
 	public List<SaleFileContainer> getFiles() {
 		return files;
