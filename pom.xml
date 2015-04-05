@@ -18,7 +18,7 @@
         <joda-time.version>2.7</joda-time.version>
         <gson.version>2.3.1</gson.version>
 
-        <vaadin.version>7.4.2</vaadin.version>
+        <vaadin.version>7.4.3</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin.charts.version>2.0.0</vaadin.charts.version>
         <vaadin.jpacontainer.version>3.2.0</vaadin.jpacontainer.version>

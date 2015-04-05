@@ -132,6 +132,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         dealerField.setRequired(true);
         dealerField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();
+            dealerLEField.changeSalePoint();
             if (responsibleField.getValue() == null) {
                 SalePoint sp = dealerField.getValue();
                 if (sp.getCurator() != null)
@@ -141,6 +142,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         form.addComponent(dealerField);
 
         dealerLEField = new SPLegalEntityField("Юр. лицо", "Укажите юридическое лицо дилера осуществляющее продажу");
+        dealerLEField.setSalePointSupplier(() -> dealerField.getValue());
         dealerLEField.addValidator(value -> {
             if(value != null && value instanceof LegalEntity) {
                 final LegalEntity legalEntity = (LegalEntity) value;
@@ -156,7 +158,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
                         if(prod instanceof ProdCredit) {
                             if( !legalEntity.getCredProducts().contains(prod))
                                 throw new Validator.InvalidValueException(
-                                        MessageFormat.format("Выбранное Юридическое лицо не аккредитовано для продукта '{0}'", prod.getName()));
+                                        MessageFormat.format("Выбранное Юридическое лицо не аккредитовано для продукта ''{0}''", prod.getName()));
                         }
                     }
                 }
