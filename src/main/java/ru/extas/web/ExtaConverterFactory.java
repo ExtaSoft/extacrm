@@ -25,7 +25,7 @@ import ru.extas.web.lead.StringToLeadResult;
 import ru.extas.web.lead.StringToLeadStatus;
 import ru.extas.web.product.String2CreditProgramType;
 import ru.extas.web.product.String2ProdInSaleState;
-import ru.extas.web.sale.StringToSaleResult;
+import ru.extas.web.sale.StringToSaleCancelReason;
 import ru.extas.web.users.*;
 
 import java.math.BigDecimal;
@@ -98,7 +98,7 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 
 		// Конвертор результата завершения Продажи
 		if (presentationType == String.class && modelType == Sale.Result.class)
-			return (Converter<PRESENTATION, MODEL>) lookup(StringToSaleResult.class);
+			return (Converter<PRESENTATION, MODEL>) lookup(StringToSaleCancelReason.class);
 
 		// Конвертор статуса лида
 		if (presentationType == String.class && modelType == Lead.Status.class)

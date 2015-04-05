@@ -7,6 +7,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Panel;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
+import ru.extas.model.sale.Sale_;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
 import ru.extas.web.commons.window.CloseOnlyWindow;
@@ -49,7 +50,7 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("dealer.name", "Мотосалон", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("pointOfSale", "Регион | Мотосалон", new SalePointColumnGenerator("dealer", null, "region"), null);
         addMapping("region", "Регион", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
+        addMapping(Sale_.cancelReason.getName(), "Причина отмены", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("responsible.name", "Ответственный", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         addMapping("responsibleAssist.name", "Заместитель", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         addMapping("dealerManager.name", "Представитель дилера", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
