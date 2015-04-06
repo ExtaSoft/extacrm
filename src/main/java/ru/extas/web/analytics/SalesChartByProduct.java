@@ -2,15 +2,6 @@ package ru.extas.web.analytics;
 
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
-import ru.extas.model.sale.*;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static ru.extas.server.ServiceLocator.lookup;
 
 public class SalesChartByProduct extends AbstractSalesChart {
 
@@ -40,47 +31,48 @@ public class SalesChartByProduct extends AbstractSalesChart {
 
     @Override
     protected void updateChartData() {
-        final Configuration conf = chart.getConfiguration();
-        conf.setSeries(newArrayList());
-
-        final EntityManager em = lookup(EntityManager.class);
-        final CriteriaBuilder cb = em.getCriteriaBuilder();
-        final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
-
-        final Root<Sale> root = cq.from(Sale.class);
-        final Path<Sale.Result> resultPath = root.get(Sale_.result);
-        final ListJoin<Sale, ProductInSale> productInSaleJoin = root.join(Sale_.productInSales);
-        final Path<ProductInSale.State> productInSaleState = productInSaleJoin.get(ProductInSale_.state);
-        final Join<ProductInSale, Product> saleProductJoin = productInSaleJoin.join(ProductInSale_.product);
-        final Expression<Long> saleCount = cb.count(resultPath);
-
-        final Expression<Class<? extends Product>> proTypeExpr = saleProductJoin.type();
-        cq.multiselect(proTypeExpr, saleCount);
-        cq.where(cb.and(cb.equal(resultPath, Sale.Result.SUCCESSFUL),
-                cb.equal(productInSaleState, ProductInSale.State.AGREED),
-                cb.notEqual(proTypeExpr, ProdInsurance.class)));
-        cq.groupBy(proTypeExpr);
-
-        applyFilters(cb, cq, root);
-        final TypedQuery<Tuple> tq = em.createQuery(cq);
-        final DataSeries series = new DataSeries("Продажи");
-
-        for (final Tuple t : tq.getResultList()) {
-            final Class<? extends Product> prodType = t.get(proTypeExpr);
-            final Long countL = t.get(saleCount);
-            final DataSeriesItem item = new DataSeriesItem();
-            item.setY(countL);
-            if (prodType == ProdCredit.class) {
-                item.setName("Кредит");
-                item.setSliced(true);
-                item.setSelected(true);
-            } else if (prodType == ProdInstallments.class) {
-                item.setName("Рассрочка");
-            } // TODO: Добавить лизинг
-            series.add(item);
-        }
-        conf.addSeries(series);
-        chart.drawChart();
+        // FIXME: implement chart
+//        final Configuration conf = chart.getConfiguration();
+//        conf.setSeries(newArrayList());
+//
+//        final EntityManager em = lookup(EntityManager.class);
+//        final CriteriaBuilder cb = em.getCriteriaBuilder();
+//        final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
+//
+//        final Root<Sale> root = cq.from(Sale.class);
+//        final Path<Sale.Result> resultPath = root.get(Sale_.result);
+//        final ListJoin<Sale, ProductInSale> productInSaleJoin = root.join(Sale_.productInSales);
+//        final Path<ProductInSale.State> productInSaleState = productInSaleJoin.get(ProductInSale_.state);
+//        final Join<ProductInSale, Product> saleProductJoin = productInSaleJoin.join(ProductInSale_.product);
+//        final Expression<Long> saleCount = cb.count(resultPath);
+//
+//        final Expression<Class<? extends Product>> proTypeExpr = saleProductJoin.type();
+//        cq.multiselect(proTypeExpr, saleCount);
+//        cq.where(cb.and(cb.equal(resultPath, Sale.Result.SUCCESSFUL),
+//                cb.equal(productInSaleState, ProductInSale.State.AGREED),
+//                cb.notEqual(proTypeExpr, ProdInsurance.class)));
+//        cq.groupBy(proTypeExpr);
+//
+//        applyFilters(cb, cq, root);
+//        final TypedQuery<Tuple> tq = em.createQuery(cq);
+//        final DataSeries series = new DataSeries("Продажи");
+//
+//        for (final Tuple t : tq.getResultList()) {
+//            final Class<? extends Product> prodType = t.get(proTypeExpr);
+//            final Long countL = t.get(saleCount);
+//            final DataSeriesItem item = new DataSeriesItem();
+//            item.setY(countL);
+//            if (prodType == ProdCredit.class) {
+//                item.setName("Кредит");
+//                item.setSliced(true);
+//                item.setSelected(true);
+//            } else if (prodType == ProdInstallments.class) {
+//                item.setName("Рассрочка");
+//            } // TODO: Добавить лизинг
+//            series.add(item);
+//        }
+//        conf.addSeries(series);
+//        chart.drawChart();
     }
 
 }

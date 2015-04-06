@@ -47,10 +47,11 @@ public void execute(final DelegateExecution execution) throws Exception {
 	if (processVariables.containsKey("sale")) {
 		final Sale sale = (Sale) processVariables.get("sale");
 		sale.setStatus(Sale.Status.CANCELED);
-		if (processVariables.containsKey("getBankResponseTaskResult") && processVariables.get("getBankResponseTaskResult").equals("Rejected")) {
-			sale.setResult(Sale.Result.VENDOR_REJECTED);
-		} else
-			sale.setResult(Sale.Result.CLIENT_REJECTED);
+		// FIXME: отмена продажи в БП
+//		if (processVariables.containsKey("getBankResponseTaskResult") && processVariables.get("getBankResponseTaskResult").equals("Rejected")) {
+//			sale.setResult(Sale.Result.VENDOR_REJECTED);
+//		} else
+//			sale.setResult(Sale.Result.CLIENT_REJECTED);
 		final SaleRepository saleRepository = lookup(SaleRepository.class);
 		saleRepository.secureSave(sale);
 	}

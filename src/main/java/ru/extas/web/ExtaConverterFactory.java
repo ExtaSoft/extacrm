@@ -97,7 +97,7 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToA7StatusConverter.class);
 
 		// Конвертор результата завершения Продажи
-		if (presentationType == String.class && modelType == Sale.Result.class)
+		if (presentationType == String.class && modelType == Sale.CancelReason.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToSaleCancelReason.class);
 
 		// Конвертор статуса лида

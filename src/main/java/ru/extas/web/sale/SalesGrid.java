@@ -4,22 +4,18 @@ import com.google.common.base.Joiner;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.CustomTable;
-import com.vaadin.ui.Field;
 import com.vaadin.ui.UI;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tepi.filtertable.FilterGenerator;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.*;
-import ru.extas.web.commons.component.PastDateIntervalField;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -157,52 +153,53 @@ public class SalesGrid extends ExtaGrid<Sale> {
                             MessageFormat.format("Вы уверены, что хотите завершить продажу № {0}?",
                                     Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
                             "Да", "Нет", () -> {
-                                lookup(SaleRepository.class).finishSales(sales, Sale.Result.SUCCESSFUL);
+                                lookup(SaleRepository.class).finishSales(sales);
                                 refreshContainer();
                                 NotificationUtil.showSuccess("Продажа успешно завершена");
                             });
                 }
             });
 
-            actions.add(new UIActionGroup("Отменить", "Отмена продажи", Fontello.CANCEL) {
-                @Override
-                protected List<UIAction> makeActionsGroup() {
-                    final List<UIAction> group = newArrayList();
-                    group.add(new ItemAction("Отказ контрагента (банка, дилера)", "Отказ банка или дилера в предоставлении услуги", FontAwesome.BANK) {
-                        @Override
-                        public void fire(final Set itemIds) {
-                            final Set<Sale> sales = getEntities(itemIds);
-                            ConfirmDialog.show(UI.getCurrent(),
-                                    "Подтвердите действие...",
-                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа контрагента (банка, дилера)?",
-                                            Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
-                                    "Да", "Нет", () -> {
-                                        lookup(SaleRepository.class).finishSales(sales, Sale.Result.VENDOR_REJECTED);
-                                        refreshContainer();
-                                        NotificationUtil.showSuccess("Продажа отменена контрагентом");
-                                    });
-                        }
-                    });
-
-                    group.add(new ItemAction("Отказ клиента", "Отказ клиента от услуги", FontAwesome.USER) {
-                        @Override
-                        public void fire(final Set itemIds) {
-                            final Set<Sale> sales = getEntities(itemIds);
-                            ConfirmDialog.show(UI.getCurrent(),
-                                    "Подтвердите действие...",
-                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа клиента?",
-                                            Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
-                                    "Да", "Нет", () -> {
-                                        lookup(SaleRepository.class).finishSales(sales, Sale.Result.CLIENT_REJECTED);
-                                        refreshContainer();
-                                        NotificationUtil.showSuccess("Продажа отменена клиентом");
-                                    });
-                        }
-                    });
-
-                    return group;
-                }
-            });
+            // FIXME: Cancel sale
+//            actions.add(new UIActionGroup("Отменить", "Отмена продажи", Fontello.CANCEL) {
+//                @Override
+//                protected List<UIAction> makeActionsGroup() {
+//                    final List<UIAction> group = newArrayList();
+//                    group.add(new ItemAction("Отказ контрагента (банка, дилера)", "Отказ банка или дилера в предоставлении услуги", FontAwesome.BANK) {
+//                        @Override
+//                        public void fire(final Set itemIds) {
+//                            final Set<Sale> sales = getEntities(itemIds);
+//                            ConfirmDialog.show(UI.getCurrent(),
+//                                    "Подтвердите действие...",
+//                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа контрагента (банка, дилера)?",
+//                                            Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
+//                                    "Да", "Нет", () -> {
+//                                        lookup(SaleRepository.class).finishSales(sales, Sale.Result.VENDOR_REJECTED);
+//                                        refreshContainer();
+//                                        NotificationUtil.showSuccess("Продажа отменена контрагентом");
+//                                    });
+//                        }
+//                    });
+//
+//                    group.add(new ItemAction("Отказ клиента", "Отказ клиента от услуги", FontAwesome.USER) {
+//                        @Override
+//                        public void fire(final Set itemIds) {
+//                            final Set<Sale> sales = getEntities(itemIds);
+//                            ConfirmDialog.show(UI.getCurrent(),
+//                                    "Подтвердите действие...",
+//                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа клиента?",
+//                                            Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
+//                                    "Да", "Нет", () -> {
+//                                        lookup(SaleRepository.class).finishSales(sales, Sale.Result.CLIENT_REJECTED);
+//                                        refreshContainer();
+//                                        NotificationUtil.showSuccess("Продажа отменена клиентом");
+//                                    });
+//                        }
+//                    });
+//
+//                    return group;
+//                }
+//            });
         }
 
 //		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязана текущая продажа", Fontello.SITEMAP) {
