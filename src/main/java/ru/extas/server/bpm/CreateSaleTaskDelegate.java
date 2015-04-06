@@ -40,7 +40,7 @@ public void execute(final DelegateExecution execution) throws Exception {
 	if (processVariables.containsKey("lead")) {
 		final Lead lead = (Lead) processVariables.get("lead");
         final SaleRepository saleRepository = lookup(SaleRepository.class);
-		final Sale sale = saleRepository.ctreateSaleByLead(lead);
+		final Sale sale = saleRepository.createSaleByLead(lead);
 		execution.setVariable("sale", sale);
 	}
 }

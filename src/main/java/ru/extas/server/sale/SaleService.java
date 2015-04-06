@@ -16,21 +16,21 @@ import java.util.Set;
  * @since 0.3
  */
 public interface SaleService extends SecuredRepository<Sale> {
+
     /**
      * Создает продажу на основе лида
      *
      * @param lead лид для которого создается продажа
      * @return созданная продажа
      */
-    Sale ctreateSaleByLead(Lead lead);
+    Sale createSaleByLead(Lead lead);
 
     /**
-     * Завершает продажу с указанным результатом
+     * Завершает продажу
      *
      * @param sale продажа
-     * @param result результат завершения
      */
-    void finishSale(Sale sale, Sale.Result result);
+    void finishSale(Sale sale);
 
     /**
      * Возобновляет продажу и перемещает ее в открытые
@@ -46,10 +46,24 @@ public interface SaleService extends SecuredRepository<Sale> {
     void reopenSales(Set<Sale> sales);
 
     /**
-     * Завершает продажи с указанным результатом
+     * Завершает продажи
      *
      * @param sales   продажи
-     * @param result результат завершения
      */
-    void finishSales(Set<Sale> sales, Sale.Result result);
+    void finishSales(Set<Sale> sales);
+
+    /**
+     * Отменяет продажу с указанной причиной
+     *
+     * @param sale продажа
+     * @param reason причина отмены
+     */
+    void cancelSale(Sale sale, Sale.CancelReason reason);
+
+    /**
+     * Отменяет набор продаж с указанной причиной
+     * @param sales продажи
+     * @param reason причина отмены
+     */
+    void cancelSales(Set<Sale> sales, Sale.CancelReason reason);
 }

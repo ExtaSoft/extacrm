@@ -78,7 +78,7 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
 //        lead.setProcessId(processInstance.getId());
 
         // Создать продажу на базе лида
-        final Sale sale = saleRepository.ctreateSaleByLead(lead);
+        final Sale sale = saleRepository.createSaleByLead(lead);
 
         // Обновляем поля лида
         lead.setContactName(lead.getClient().getName());
