@@ -3,6 +3,7 @@ package ru.extas.web.analytics;
 import com.google.common.collect.HashBasedTable;
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
+import com.vaadin.addon.charts.model.style.SolidColor;
 import org.joda.time.DateTime;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.Sale_;
@@ -26,6 +27,9 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class SalesChartMain extends AbstractSalesChart {
 
+    private final SolidColor canceledColor = new SolidColor("#EB6464");
+    private final SolidColor finishedColor = new SolidColor("#97DE58");
+    private final SolidColor openedColor = new SolidColor("#308FEF");
     private Chart chart;
     private Chart flowChart;
 
@@ -128,16 +132,28 @@ public class SalesChartMain extends AbstractSalesChart {
         conf.addxAxis(x);
 
         final ListSeries openedSeries = new ListSeries("Открытые");
-        final ListSeries closedSeries = new ListSeries("Завершенные");
-        final ListSeries rejectedSeries = new ListSeries("Отмененные");
+//        final PlotOptionsArea openedPlot = new PlotOptionsArea();
+//        openedPlot.setFillColor(openedColor);
+//        openedSeries.setPlotOptions(openedPlot);
+
+        final ListSeries finishedSeries = new ListSeries("Завершенные");
+//        final PlotOptionsArea closedPlot = new PlotOptionsArea();
+//        closedPlot.setFillColor(finishedColor);
+//        finishedSeries.setPlotOptions(closedPlot);
+
+        final ListSeries canceledSeries = new ListSeries("Отмененные");
+//        final PlotOptionsArea canceledPlot = new PlotOptionsArea();
+//        canceledPlot.setFillColor(canceledColor);
+//        canceledSeries.setPlotOptions(canceledPlot);
+
         for (final LocalDate period : periodSet) {
             openedSeries.addData(dataTable.get(Sale.Status.NEW, period));
-            closedSeries.addData(dataTable.get(Sale.Status.FINISHED, period));
-            rejectedSeries.addData(dataTable.get(Sale.Status.CANCELED, period));
+            finishedSeries.addData(dataTable.get(Sale.Status.FINISHED, period));
+            canceledSeries.addData(dataTable.get(Sale.Status.CANCELED, period));
         }
         conf.addSeries(openedSeries);
-        conf.addSeries(closedSeries);
-        conf.addSeries(rejectedSeries);
+        conf.addSeries(canceledSeries);
+        conf.addSeries(finishedSeries);
         flowChart.drawChart();
 
     }
@@ -170,12 +186,15 @@ public class SalesChartMain extends AbstractSalesChart {
             item.setY(countL);
             if (statusEn == Sale.Status.NEW) {
                 item.setName("Открытые");
+                item.getMarker().setFillColor(openedColor);
             } else if (statusEn == Sale.Status.FINISHED) {
                 item.setName("Завершенные");
+                item.getMarker().setFillColor(finishedColor);
                 item.setSliced(true);
                 item.setSelected(true);
             } else {
                 item.setName("Отмененные");
+                item.getMarker().setFillColor(canceledColor);
             }
             series.add(item);
         }
