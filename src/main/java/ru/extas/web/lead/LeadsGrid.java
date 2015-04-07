@@ -67,17 +67,6 @@ public class LeadsGrid extends ExtaGrid<Lead> {
      * {@inheritDoc}
      */
     @Override
-    protected void initTable(final Mode mode) {
-        super.initTable(mode);
-        // Покозываем колонку результата в закрытых
-        if (status == Lead.Status.CLOSED)
-            table.setColumnCollapsed("result", false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected Container createContainer() {
         // Запрос данных
         final ExtaJpaContainer<Lead> container = SecuredDataContainer.create(Lead.class,

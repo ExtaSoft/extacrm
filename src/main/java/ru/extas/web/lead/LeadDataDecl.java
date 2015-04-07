@@ -39,7 +39,6 @@ class LeadDataDecl extends GridDataDecl {
         addMapping("region", "Регион", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("responsible.name", "Ответственный", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         addMapping("status", "Статус", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("result", "Результат завершения", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         super.addDefaultMappings();
         if (grid.getStatus() == Lead.Status.NEW) {
             addMapping("to_work", "В работу", new ComponentColumnGenerator() {

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.Sale_;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.*;
@@ -71,7 +72,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     protected void initTable(final Mode mode) {
         super.initTable(mode);
         if (domain == ExtaDomain.SALES_CANCELED)
-            table.setColumnCollapsed("result", false);
+            table.setColumnCollapsed(Sale_.cancelReason.getName(), false);
 
         // Раскрашиваем "протухшие" продажи
         if (domain == ExtaDomain.SALES_OPENED) {
@@ -110,7 +111,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
         container.addContainerFilter(new Compare.Equal("status",
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
                         domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
-        container.sort(new Object[]{"lastModifiedDate"}, new boolean[]{true});
+        container.sort(new Object[]{Sale_.lastModifiedDate.getName()}, new boolean[]{domain == ExtaDomain.SALES_OPENED});
         return container;
     }
 
@@ -131,14 +132,15 @@ public class SalesGrid extends ExtaGrid<Sale> {
                 @Override
                 public void fire(final Set itemIds) {
                     final Set<Sale> sales = getEntities(itemIds);
+                    final String numList = getSalesNumList(sales);
                     ConfirmDialog.show(UI.getCurrent(),
                             "Подтвердите действие...",
-                            MessageFormat.format("Вы уверены, что хотите возобновить продажу № {0} и переместить ее в открытые?",
-                                    Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
+                            MessageFormat.format("Вы уверены, что хотите возобновить продажи № {0} и переместить их в открытые?",
+                                    numList),
                             "Да", "Нет", () -> {
                                 lookup(SaleRepository.class).reopenSales(sales);
                                 refreshContainer();
-                                NotificationUtil.showSuccess("Продажа(и) успешно возобновлена(ы)");
+                                NotificationUtil.showSuccess(MessageFormat.format("Продажи ({0}) успешно возобновлены", numList));
                             });
                 }
             });
@@ -148,58 +150,35 @@ public class SalesGrid extends ExtaGrid<Sale> {
                 @Override
                 public void fire(final Set itemIds) {
                     final Set<Sale> sales = getEntities(itemIds);
+                    final String numList = getSalesNumList(sales);
                     ConfirmDialog.show(UI.getCurrent(),
                             "Подтвердите действие...",
-                            MessageFormat.format("Вы уверены, что хотите завершить продажу № {0}?",
-                                    Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
+                            MessageFormat.format("Вы уверены, что хотите завершить выбранные продажи № {0}?", numList),
                             "Да", "Нет", () -> {
                                 lookup(SaleRepository.class).finishSales(sales);
                                 refreshContainer();
-                                NotificationUtil.showSuccess("Продажа успешно завершена");
+                                NotificationUtil.showSuccess(MessageFormat.format("Продажи ({0}) успешно завершены", numList));
                             });
                 }
             });
 
-            // FIXME: Cancel sale
-//            actions.add(new UIActionGroup("Отменить", "Отмена продажи", Fontello.CANCEL) {
-//                @Override
-//                protected List<UIAction> makeActionsGroup() {
-//                    final List<UIAction> group = newArrayList();
-//                    group.add(new ItemAction("Отказ контрагента (банка, дилера)", "Отказ банка или дилера в предоставлении услуги", FontAwesome.BANK) {
-//                        @Override
-//                        public void fire(final Set itemIds) {
-//                            final Set<Sale> sales = getEntities(itemIds);
-//                            ConfirmDialog.show(UI.getCurrent(),
-//                                    "Подтвердите действие...",
-//                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа контрагента (банка, дилера)?",
-//                                            Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
-//                                    "Да", "Нет", () -> {
-//                                        lookup(SaleRepository.class).finishSales(sales, Sale.Result.VENDOR_REJECTED);
-//                                        refreshContainer();
-//                                        NotificationUtil.showSuccess("Продажа отменена контрагентом");
-//                                    });
-//                        }
-//                    });
-//
-//                    group.add(new ItemAction("Отказ клиента", "Отказ клиента от услуги", FontAwesome.USER) {
-//                        @Override
-//                        public void fire(final Set itemIds) {
-//                            final Set<Sale> sales = getEntities(itemIds);
-//                            ConfirmDialog.show(UI.getCurrent(),
-//                                    "Подтвердите действие...",
-//                                    MessageFormat.format("Вы уверены, что хотите отменить продажу № {0} по причине отказа клиента?",
-//                                            Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray())),
-//                                    "Да", "Нет", () -> {
-//                                        lookup(SaleRepository.class).finishSales(sales, Sale.Result.CLIENT_REJECTED);
-//                                        refreshContainer();
-//                                        NotificationUtil.showSuccess("Продажа отменена клиентом");
-//                                    });
-//                        }
-//                    });
-//
-//                    return group;
-//                }
-//            });
+            actions.add(new ItemAction("Отменить", "Отмена продажи", Fontello.CANCEL) {
+                @Override
+                public void fire(Set itemIds) {
+                    final Set<Sale> sales = getEntities(itemIds);
+                    final String numList = getSalesNumList(sales);
+                    ConfirmSaleClosingWindow win = new ConfirmSaleClosingWindow();
+                    win.setCaption(MessageFormat.format("Вы уверены, что хотите отменить выбранные продажи № {0}?", numList));
+                    win.addCloseListener(e -> {
+                        if (win.isOkPressed()) {
+                            lookup(SaleRepository.class).cancelSales(sales, win.getReason());
+                            refreshContainer();
+                            NotificationUtil.showSuccess(MessageFormat.format("Продажи ({0}) отменены", numList));
+                        }
+                    });
+                    win.showModal();
+                }
+            });
         }
 
 //		actions.add(new ItemAction("Статус БП", "Показать панель статуса бизнес процесса к которому привязана текущая продажа", Fontello.SITEMAP) {
@@ -226,6 +205,10 @@ public class SalesGrid extends ExtaGrid<Sale> {
 //        });
 
         return actions;
+    }
+
+    private String getSalesNumList(Set<Sale> sales) {
+        return Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray());
     }
 
 }

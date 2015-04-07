@@ -135,6 +135,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         Lead.Result leadResult = Lead.Result.CLIENT_REJECTED;
 
         sale.setStatus(Sale.Status.CANCELED);
+        sale.setCancelReason(reason);
         sale.getProductInSales().stream()
                 .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
                 .forEach(p -> p.setState(ProductInSale.State.REJECTED));

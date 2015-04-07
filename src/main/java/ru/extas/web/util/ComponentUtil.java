@@ -7,7 +7,7 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.AbstractSelect;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
-import org.vaadin.tokenfield.TokenField;
+import org.vaadin.viritin.fields.CaptionGenerator;
 import ru.extas.web.commons.component.ExtaTokenField;
 
 import java.util.EnumSet;
@@ -51,5 +51,25 @@ public class ComponentUtil {
         for (final TEnum en : enums) {
             component.setTokenCaption(en, converter.convertToPresentation(en, null, null));
         }
+    }
+
+    /**
+     * Создает и возвращает генератор заголовков перечисления для EnumSelect.
+     * Реализация генератора предпологает, что в системе зарегестрирован соответствующий конвертер перечисления в строку.
+     *
+     * @param enumClass класс перечисления
+     * @param <TEnum> Тип перечисления
+     * @return новый генератор заголовков
+     */
+    public static <TEnum extends Enum<TEnum>> CaptionGenerator<TEnum> getEnumCaptionGenerator(Class<TEnum> enumClass) {
+        return new CaptionGenerator<TEnum>() {
+            private final Converter<String, TEnum> converter = VaadinSession.getCurrent().getConverterFactory()
+                    .createConverter(String.class, enumClass);
+
+            @Override
+            public String getCaption(TEnum option) {
+                return converter.convertToPresentation(option, null, null);
+            }
+        };
     }
 }
