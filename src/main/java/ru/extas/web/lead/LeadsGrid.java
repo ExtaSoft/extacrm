@@ -11,6 +11,7 @@ import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.lead.LeadRepository;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 
 import java.text.MessageFormat;
@@ -92,11 +93,12 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 
         actions.add(new EditObjectAction(status == Lead.Status.NEW ? "Изменить" : "Просмотреть", "Редактировать выделенный в списке лид"));
 
-        if (status == Lead.Status.NEW) {
+        if (status == Lead.Status.NEW && lookup(UserManagementService.class).isItOurUser()) {
             actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {
                 @Override
                 public void fire(final Set itemIds) {
-                    doQualifyLead(itemIds.stream().findFirst().orElse(null));
+                    final Object itemId = itemIds.stream().findFirst().orElse(null);
+                    doQualifyLead(itemId);
                 }
             });
 

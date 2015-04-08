@@ -3,12 +3,15 @@ package ru.extas.web.lead;
 import com.vaadin.data.Item;
 import com.vaadin.ui.Button;
 import ru.extas.model.lead.Lead;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
 import ru.extas.web.contacts.Name2ShortNameConverter;
 import ru.extas.web.motor.MotorColumnGenerator;
 
 import java.util.EnumSet;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * @author Valery Orlov
@@ -40,7 +43,7 @@ class LeadDataDecl extends GridDataDecl {
         addMapping("responsible.name", "Ответственный", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
         addMapping("status", "Статус", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         super.addDefaultMappings();
-        if (grid.getStatus() == Lead.Status.NEW) {
+        if (grid.getStatus() == Lead.Status.NEW && lookup(UserManagementService.class).isItOurUser()) {
             addMapping("to_work", "В работу", new ComponentColumnGenerator() {
                 @Override
                 public Object generateCell(final Object columnId, final Item item, final Object itemId) {

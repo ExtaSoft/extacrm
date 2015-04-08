@@ -94,6 +94,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         return getClass().getName();
     }
 
+    public Container getContainer() {
+        return container;
+    }
+
     public enum Mode {
         TABLE,
         DETAIL_LIST

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.security.*;
+import ru.extas.server.contacts.CompanyRepository;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Имплементация сервиса управления пользователями и правами доступа
@@ -209,6 +211,11 @@ public class UserManagementServiceImpl implements UserManagementService {
     public SecuredObject saveObjectAccess(final SecuredObject securedObject, final ObjectSecurityRule rule) {
         securedObject.setSecurityRule(rule);
         return em.merge(securedObject);
+    }
+
+    @Override
+    public boolean isItOurUser() {
+        return getCurrentUserEmployee().getCompany().equals(lookup(CompanyRepository.class).findEACompany());
     }
 
 }

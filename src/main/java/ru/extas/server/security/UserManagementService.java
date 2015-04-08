@@ -122,4 +122,9 @@ public interface UserManagementService {
     boolean isPermittedDomain(ExtaDomain domain);
 
     SecuredObject saveObjectAccess(SecuredObject securedObject, ObjectSecurityRule rule);
+
+    /**
+     * Определяет является ли текущий пользователь "нашим" (сотрудником ЕА)
+     */
+    boolean isItOurUser();
 }
