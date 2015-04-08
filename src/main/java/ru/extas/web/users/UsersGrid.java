@@ -50,8 +50,8 @@ public class UsersGrid extends ExtaGrid<UserProfile> {
 	protected Container createContainer() {
 		// Запрос данных
 		final JpaLazyListContainer<UserProfile> container = new JpaLazyListContainer<>(UserProfile.class);
-		//container.addNestedContainerProperty("employee.name");
-        container.sort(new Object[]{"employee.name"}, new boolean[]{true});
+		container.addNestedContainerProperty("employee.name");
+//        container.sort(new Object[]{"employee.name"}, new boolean[]{true});
 		return container;
 	}
 

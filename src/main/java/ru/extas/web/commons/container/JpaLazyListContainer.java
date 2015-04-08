@@ -1,6 +1,6 @@
 package ru.extas.web.commons.container;
 
-import org.vaadin.viritin.FilterableListContainer;
+import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.SortableLazyList;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.common.IdentifiedObject_;
@@ -10,8 +10,10 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collection;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -21,15 +23,27 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 08.04.2015
  *         Time: 18:58
  */
-public class JpaLazyListContainer<TEntityType extends IdentifiedObject> extends FilterableListContainer<TEntityType> {
+public class JpaLazyListContainer<TEntityType extends IdentifiedObject> extends ListContainer<TEntityType> {
 
     private static final int CONTAINER_PAGE_SIZE = 50;
     private final Class<TEntityType> entityClass;
+    private final List<String> nestedProps = newArrayList();
 
     public JpaLazyListContainer(Class<TEntityType> type) {
         super(type);
         this.entityClass = type;
         setCollection(new SortableLazyList<TEntityType>(new LazyEntityProvider(), CONTAINER_PAGE_SIZE));
+    }
+
+    public void addNestedContainerProperty(String nestedProp) {
+        nestedProps.add(nestedProp);
+    }
+
+    @Override
+    public Collection<String> getContainerPropertyIds() {
+        final Collection<String> propertyIds = super.getContainerPropertyIds();
+        propertyIds.addAll(nestedProps);
+        return propertyIds;
     }
 
     private class LazyEntityProvider implements SortableLazyList.SortableEntityProvider {
@@ -55,7 +69,8 @@ public class JpaLazyListContainer<TEntityType extends IdentifiedObject> extends 
             final Root<TEntityType> root = query.from(entityClass);
 
             query.select(root);
-            query.orderBy(sortAscending ? cb.asc(root.get(property)) : cb.asc(root.get(property)));
+            if(property != null)
+                query.orderBy(sortAscending ? cb.asc(root.get(property)) : cb.asc(root.get(property)));
 
             final TypedQuery<TEntityType> tq = em.createQuery(query);
             tq.setFirstResult(firstRow);
