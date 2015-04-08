@@ -92,7 +92,7 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
     }
 
     @Override
-    public int indexOfId(Object itemId) {
+    public int indexOfId(final Object itemId) {
         return doGetEntityProvider().getIndexOfId(this,
                 itemId, getAppliedFiltersAsConjunction(), getSortByList());
     }
@@ -212,7 +212,7 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
             }
         }
 
-        public int getIndexOfId(ExtaJpaContainer<TEntityType> container, Object itemId, Filter filter, List<SortBy> sortBy) {
+        public int getIndexOfId(final ExtaJpaContainer<TEntityType> container, final Object itemId, final Filter filter, List<SortBy> sortBy) {
             if (sortBy == null)
                 sortBy = Collections.emptyList();
 
@@ -236,9 +236,9 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
             }
             tellDelegateFiltersWereAdded(container, cb, query);
 
-            List<Order> orderBy = newArrayList();
+            final List<Order> orderBy = newArrayList();
             if (sortBy != null && sortBy.size() > 0) {
-                for (SortBy sortedProperty : sortBy) {
+                for (final SortBy sortedProperty : sortBy) {
                     orderBy.add(translateSortBy(sortedProperty, false, cb,
                             root));
                 }
@@ -256,21 +256,21 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
             final DatabaseRecord translationRow = new DatabaseRecord();
             final JpaEntityManager jpaEm = em.unwrap(JpaEntityManager.class);
             databaseQuery.prepareCall(jpaEm.getSession(), translationRow);
-            String querySql = databaseQuery.getTranslatedSQLString(jpaEm.getSession(), translationRow);
-            Query nativeQuery = em.createNativeQuery(
+            final String querySql = databaseQuery.getTranslatedSQLString(jpaEm.getSession(), translationRow);
+            final Query nativeQuery = em.createNativeQuery(
                     MessageFormat.format(
                             "SELECT q.rownum AS indx " +
                                     "FROM (SELECT s.{2} AS id, @rownum:=@rownum + 1 AS rownum " +
                                     "           FROM (SELECT @rownum:=0) i, ({0}) s) q " +
                                     "WHERE q.id = ''{1}''", querySql, itemId, entityIdPropertyName));
 //            nativeQuery.unwrap(JpaQuery.class).getDatabaseQuery().setTranslationRow(translationRow);
-            Object result = nativeQuery.getSingleResult();
+            final Object result = nativeQuery.getSingleResult();
 
             return result != null ? (int) (double) result : -1;
         }
 
-        private void tellDelegateOrderByWillBeAdded(EntityContainer<TEntityType> container,
-                                                    CriteriaBuilder cb, CriteriaQuery<?> query, List<Order> orderBy) {
+        private void tellDelegateOrderByWillBeAdded(final EntityContainer<TEntityType> container,
+                                                    final CriteriaBuilder cb, final CriteriaQuery<?> query, final List<Order> orderBy) {
             if (getQueryModifierDelegate() != null) {
                 getQueryModifierDelegate().orderByWillBeAdded(cb, query, orderBy);
             } else if (container.getQueryModifierDelegate() != null) {
@@ -279,8 +279,8 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
             }
         }
 
-        private void tellDelegateOrderByWereAdded(EntityContainer<TEntityType> container,
-                                                  CriteriaBuilder cb, CriteriaQuery<?> query) {
+        private void tellDelegateOrderByWereAdded(final EntityContainer<TEntityType> container,
+                                                  final CriteriaBuilder cb, final CriteriaQuery<?> query) {
             if (getQueryModifierDelegate() != null) {
                 getQueryModifierDelegate().orderByWasAdded(cb, query);
             } else if (container.getQueryModifierDelegate() != null) {

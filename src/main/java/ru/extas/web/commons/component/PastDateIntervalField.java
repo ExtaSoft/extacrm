@@ -2,7 +2,6 @@ package ru.extas.web.commons.component;
 
 import com.vaadin.data.Item;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
@@ -10,7 +9,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
-import ru.extas.model.contacts.Employee;
 import ru.extas.web.commons.ExtaTheme;
 
 import java.text.MessageFormat;
@@ -143,7 +141,7 @@ public class PastDateIntervalField extends CustomField<Interval> {
                 updateDates((Interval) e.getProperty().getValue()));
     }
 
-    private void updateDates(Interval interval) {
+    private void updateDates(final Interval interval) {
         if (interval == null) {
             if (namedIntervalField != null)
                 namedIntervalField.setValue(NamedInterval.ALL_TIME);
@@ -184,9 +182,9 @@ public class PastDateIntervalField extends CustomField<Interval> {
 
         @Override
         public Component getPopupComponent() {
-            VerticalLayout layout = new VerticalLayout();
+            final VerticalLayout layout = new VerticalLayout();
             layout.setMargin(true);
-            Label popupCaption = new Label("Выбор временного интервала");
+            final Label popupCaption = new Label("Выбор временного интервала");
             popupCaption.addStyleName(ExtaTheme.LABEL_H3);
             popupCaption.addStyleName(ExtaTheme.LABEL_COLORED);
             layout.addComponent(popupCaption);
@@ -212,7 +210,7 @@ public class PastDateIntervalField extends CustomField<Interval> {
             }
             namedIntervalField.addValueChangeListener(e -> {
                 final NamedInterval namedInterval = (NamedInterval) namedIntervalField.getValue();
-                Interval interval = getIntervalByName(namedInterval);
+                final Interval interval = getIntervalByName(namedInterval);
                 if (interval != null) {
                     setValue(interval);
                 } else if (namedInterval == NamedInterval.ALL_TIME) {
@@ -224,7 +222,7 @@ public class PastDateIntervalField extends CustomField<Interval> {
             datesLabel = new Label(DATES_DELIMITER, ContentMode.HTML);
             namedLayout.addComponent(datesLabel);
 
-            HorizontalLayout datesLayout = new HorizontalLayout();
+            final HorizontalLayout datesLayout = new HorizontalLayout();
             datesLayout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
 
             final ValueChangeListener dateListener = e -> {
@@ -253,7 +251,7 @@ public class PastDateIntervalField extends CustomField<Interval> {
         }
     }
 
-    private String getIntervalLabel(Interval interval) {
+    private String getIntervalLabel(final Interval interval) {
         if (interval != null) {
             return MessageFormat.format(" [ {0} - {1} ]",
                     interval.getStart().toString("dd.MM.yyyy", lookup(Locale.class)),

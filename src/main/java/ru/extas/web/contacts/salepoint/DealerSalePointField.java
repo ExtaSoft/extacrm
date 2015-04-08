@@ -10,12 +10,12 @@ import ru.extas.server.references.CategoryService;
  *         Time: 14:22
  */
 public class DealerSalePointField extends SalePointField {
-    public DealerSalePointField(String caption, String description) {
+    public DealerSalePointField(final String caption, final String description) {
         super(caption, description);
         initFilter();
     }
 
-    public DealerSalePointField(String caption, String description, boolean secured) {
+    public DealerSalePointField(final String caption, final String description, final boolean secured) {
         super(caption, description, secured);
         initFilter();
     }

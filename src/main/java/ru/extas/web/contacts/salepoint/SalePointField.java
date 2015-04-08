@@ -50,7 +50,7 @@ public class SalePointField extends CustomField<SalePoint> {
      * @param caption     a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
      */
-    public SalePointField(final String caption, final String description, boolean secured) {
+    public SalePointField(final String caption, final String description, final boolean secured) {
         this.secured = secured;
         setCaption(caption);
         setDescription(description);
@@ -97,7 +97,7 @@ public class SalePointField extends CustomField<SalePoint> {
         return filter;
     }
 
-    public void setFilter(Container.Filter filter) {
+    public void setFilter(final Container.Filter filter) {
         this.filter = filter;
     }
 

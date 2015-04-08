@@ -61,13 +61,13 @@ public class ComponentUtil {
      * @param <TEnum> Тип перечисления
      * @return новый генератор заголовков
      */
-    public static <TEnum extends Enum<TEnum>> CaptionGenerator<TEnum> getEnumCaptionGenerator(Class<TEnum> enumClass) {
+    public static <TEnum extends Enum<TEnum>> CaptionGenerator<TEnum> getEnumCaptionGenerator(final Class<TEnum> enumClass) {
         return new CaptionGenerator<TEnum>() {
             private final Converter<String, TEnum> converter = VaadinSession.getCurrent().getConverterFactory()
                     .createConverter(String.class, enumClass);
 
             @Override
-            public String getCaption(TEnum option) {
+            public String getCaption(final TEnum option) {
                 return converter.convertToPresentation(option, null, null);
             }
         };

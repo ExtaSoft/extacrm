@@ -25,7 +25,7 @@ public abstract class Client extends Contact {
         return secondPhone;
     }
 
-    public void setSecondPhone(String secondPhone) {
+    public void setSecondPhone(final String secondPhone) {
         this.secondPhone = secondPhone;
     }
 }

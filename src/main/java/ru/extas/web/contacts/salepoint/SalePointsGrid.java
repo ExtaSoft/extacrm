@@ -82,7 +82,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
     protected FilterGenerator createFilterGenerator() {
         return new CommonFilterGenerator() {
             @Override
-            public Container.Filter generateFilter(Object propertyId, Object value) {
+            public Container.Filter generateFilter(final Object propertyId, final Object value) {
                 if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS)) {
                     return new Like("legalEntities.motorBrands", MessageFormat.format("%{0}%", value), false);
                 } else
@@ -90,7 +90,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
             }
 
             @Override
-            public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+            public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
 //                if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS))
 //                    return new EditField();
 //                else

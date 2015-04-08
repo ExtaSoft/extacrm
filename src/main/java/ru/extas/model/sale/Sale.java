@@ -116,7 +116,7 @@ public class Sale extends SecuredObject {
 		return cancelReason;
 	}
 
-	public void setCancelReason(CancelReason cancelReason) {
+	public void setCancelReason(final CancelReason cancelReason) {
 		this.cancelReason = cancelReason;
 	}
 
@@ -124,7 +124,7 @@ public class Sale extends SecuredObject {
 		return dealerLE;
 	}
 
-	public void setDealerLE(LegalEntity dealerLE) {
+	public void setDealerLE(final LegalEntity dealerLE) {
 		this.dealerLE = dealerLE;
 	}
 

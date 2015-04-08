@@ -130,7 +130,7 @@ public class SalesChartMain extends AbstractSalesChart {
         final TypedQuery<Tuple> tq = em.createQuery(cq);
         final DataSeries series = new DataSeries("Продажи");
 
-        CaptionGenerator<Sale.CancelReason> captionGenerator = ComponentUtil.getEnumCaptionGenerator(Sale.CancelReason.class);
+        final CaptionGenerator<Sale.CancelReason> captionGenerator = ComponentUtil.getEnumCaptionGenerator(Sale.CancelReason.class);
         for (final Tuple t : tq.getResultList()) {
             final Sale.CancelReason reason = t.get(reasonPath);
             final Long countL = t.get(saleCount);

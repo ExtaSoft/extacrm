@@ -45,11 +45,11 @@ public class CompanyField extends CustomField<Company> {
         this(caption, "Введите или выберите компанию", false);
     }
 
-    public CompanyField(final String caption, boolean secured) {
+    public CompanyField(final String caption, final boolean secured) {
         this(caption, "Введите или выберите компанию", secured);
     }
 
-    public CompanyField(final String caption, final String description, boolean secured) {
+    public CompanyField(final String caption, final String description, final boolean secured) {
         this.secured = secured;
         setCaption(caption);
         setDescription(description);
@@ -91,7 +91,7 @@ public class CompanyField extends CustomField<Company> {
         return regionSupplier;
     }
 
-    public void setRegionSupplier(SupplierSer<String> regionSupplier) {
+    public void setRegionSupplier(final SupplierSer<String> regionSupplier) {
         this.regionSupplier = regionSupplier;
     }
 
@@ -99,7 +99,7 @@ public class CompanyField extends CustomField<Company> {
         return filter;
     }
 
-    public void setFilter(Container.Filter filter) {
+    public void setFilter(final Container.Filter filter) {
         this.filter = filter;
     }
 

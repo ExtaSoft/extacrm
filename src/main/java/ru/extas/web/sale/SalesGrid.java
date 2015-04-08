@@ -164,10 +164,10 @@ public class SalesGrid extends ExtaGrid<Sale> {
 
             actions.add(new ItemAction("Отменить", "Отмена продажи", Fontello.CANCEL) {
                 @Override
-                public void fire(Set itemIds) {
+                public void fire(final Set itemIds) {
                     final Set<Sale> sales = getEntities(itemIds);
                     final String numList = getSalesNumList(sales);
-                    ConfirmSaleClosingWindow win = new ConfirmSaleClosingWindow();
+                    final ConfirmSaleClosingWindow win = new ConfirmSaleClosingWindow();
                     win.setCaption(MessageFormat.format("Вы уверены, что хотите отменить выбранные продажи № {0}?", numList));
                     win.addCloseListener(e -> {
                         if (win.isOkPressed()) {
@@ -207,7 +207,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
         return actions;
     }
 
-    private String getSalesNumList(Set<Sale> sales) {
+    private String getSalesNumList(final Set<Sale> sales) {
         return Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray());
     }
 

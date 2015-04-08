@@ -857,16 +857,16 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
     protected class CommonFilterGenerator implements FilterGenerator {
         @Override
-        public Container.Filter generateFilter(Object propertyId, Object value) {
+        public Container.Filter generateFilter(final Object propertyId, final Object value) {
             return null;
         }
 
         @Override
-        public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+        public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
             if (originatingField instanceof PastDateIntervalField) {
-                Interval interval = (Interval) originatingField.getValue();
+                final Interval interval = (Interval) originatingField.getValue();
                 if (interval != null) {
-                    Class<?> type = container.getType(propertyId);
+                    final Class<?> type = container.getType(propertyId);
                     if (type == LocalDate.class)
                         return new Between(propertyId,
                                 interval.getStart().toLocalDate(),
@@ -881,25 +881,25 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         }
 
         @Override
-        public AbstractField<?> getCustomFilterComponent(Object propertyId) {
-            Class<?> type = container.getType(propertyId);
+        public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
+            final Class<?> type = container.getType(propertyId);
             if (type == DateTime.class || type == LocalDate.class)
                 return new PastDateIntervalField("", "Нажмите для изменения временного интервала фильтра");
             return null;
         }
 
         @Override
-        public void filterRemoved(Object propertyId) {
+        public void filterRemoved(final Object propertyId) {
 
         }
 
         @Override
-        public void filterAdded(Object propertyId, Class<? extends Container.Filter> filterType, Object value) {
+        public void filterAdded(final Object propertyId, final Class<? extends Container.Filter> filterType, final Object value) {
 
         }
 
         @Override
-        public Container.Filter filterGeneratorFailed(Exception reason, Object propertyId, Object value) {
+        public Container.Filter filterGeneratorFailed(final Exception reason, final Object propertyId, final Object value) {
             return null;
         }
     }

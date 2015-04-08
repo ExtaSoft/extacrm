@@ -35,12 +35,12 @@ public class SalePointsDataDecl extends GridDataDecl {
         addMapping("company.name", "Компания", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 		addMapping(SALEPOINT_BRANDS, "Бренды", new GridColumnGenerator() {
 			@Override
-			public String generateCell(Object columnId, Item item, Object itemId) {
+			public String generateCell(final Object columnId, final Item item, final Object itemId) {
 				return Joiner.on(", ").join(lookup(SalePointRepository.class).findSalePointBrands(GridItem.extractBean(item)));
 			}
 
 			@Override
-			public Property getCellProperty(Object columnId, Item item) {
+			public Property getCellProperty(final Object columnId, final Item item) {
 				return null;
 			}
 

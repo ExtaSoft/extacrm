@@ -12,22 +12,22 @@ import ru.extas.server.references.CategoryService;
  */
 public class DealerCompanyField extends CompanyField {
 
-    public DealerCompanyField(String caption) {
+    public DealerCompanyField(final String caption) {
         super(caption);
         initFilter();
     }
 
-    public DealerCompanyField(String caption, String description) {
+    public DealerCompanyField(final String caption, final String description) {
         super(caption, description);
         initFilter();
     }
 
-    public DealerCompanyField(String caption, boolean secured) {
+    public DealerCompanyField(final String caption, final boolean secured) {
         super(caption, secured);
         initFilter();
     }
 
-    public DealerCompanyField(String caption, String description, boolean secured) {
+    public DealerCompanyField(final String caption, final String description, final boolean secured) {
         super(caption, description, secured);
         initFilter();
     }

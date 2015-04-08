@@ -31,9 +31,7 @@ public class SecurityUtils {
         domain2Class.put(ExtaDomain.LEGAL_ENTITY, LegalEntity.class);
         domain2Class.put(ExtaDomain.SALE_POINT, SalePoint.class);
         domain2Class.put(ExtaDomain.EMPLOYEE, Employee.class);
-        domain2Class.put(ExtaDomain.LEADS_NEW, Lead.class);
-        domain2Class.put(ExtaDomain.LEADS_QUAL, Class.class);
-        domain2Class.put(ExtaDomain.LEADS_CLOSED, Class.class);
+        domain2Class.put(ExtaDomain.SALES_LEADS, Lead.class);
         domain2Class.put(ExtaDomain.SALES_OPENED, Class.class);
         domain2Class.put(ExtaDomain.SALES_SUCCESSFUL, Class.class);
         domain2Class.put(ExtaDomain.SALES_CANCELED, Class.class);

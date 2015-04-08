@@ -123,7 +123,7 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
     }
 
     public void closeForm() {
-        HasComponents parent = getParent();
+        final HasComponents parent = getParent();
         if (parent instanceof Window)
             ((Window) parent).close();
         else

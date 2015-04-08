@@ -131,8 +131,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 
     @Transactional
     @Override
-    public void cancelSale(Sale sale, Sale.CancelReason reason) {
-        Lead.Result leadResult = Lead.Result.CLIENT_REJECTED;
+    public void cancelSale(Sale sale, final Sale.CancelReason reason) {
+        final Lead.Result leadResult = Lead.Result.CLIENT_REJECTED;
 
         sale.setStatus(Sale.Status.CANCELED);
         sale.setCancelReason(reason);
@@ -147,7 +147,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 
     @Transactional
     @Override
-    public void cancelSales(Set<Sale> sales, Sale.CancelReason reason) {
+    public void cancelSales(final Set<Sale> sales, final Sale.CancelReason reason) {
         sales.forEach(s -> cancelSale(s, reason));
     }
 

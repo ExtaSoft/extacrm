@@ -70,10 +70,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Lead> container = SecuredDataContainer.create(Lead.class,
-                status == Lead.Status.NEW ? ExtaDomain.LEADS_NEW :
-                        status == Lead.Status.QUALIFIED ? ExtaDomain.LEADS_QUAL :
-                                ExtaDomain.LEADS_CLOSED);
+        final ExtaJpaContainer<Lead> container = SecuredDataContainer.create(Lead.class, ExtaDomain.SALES_LEADS);
         container.addNestedContainerProperty("responsible.name");
         container.addContainerFilter(new Compare.Equal("status", status));
         container.sort(new Object[]{"createdDate"}, new boolean[]{false});

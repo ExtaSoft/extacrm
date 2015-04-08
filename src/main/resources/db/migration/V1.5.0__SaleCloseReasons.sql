@@ -19,3 +19,21 @@ WHERE
 ALTER TABLE SALE DROP COLUMN RESULT;
 
 
+#######################################################################################################################
+# Упразняем раздел лидов
+
+# удалить сущ. права доступа
+DELETE a.* FROM ACCESS_PERMISSION_ACTION a
+  JOIN ACCESS_PERMISSION p ON a.ExtaPermission_ID = p.ID
+WHERE
+  p.DOMAIN IN ('leads/qualified', 'leads/closed');
+
+DELETE FROM ACCESS_PERMISSION
+WHERE
+  DOMAIN IN ('leads/qualified', 'leads/closed');
+
+# обновить раздел новых лидов
+UPDATE ACCESS_PERMISSION
+SET
+  DOMAIN = 'sales/leads'
+WHERE DOMAIN = 'leads/new';

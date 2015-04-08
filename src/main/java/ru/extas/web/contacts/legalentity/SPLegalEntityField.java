@@ -55,7 +55,7 @@ public class SPLegalEntityField extends CustomField<LegalEntity> {
         return salePointSupplier;
     }
 
-    public void setSalePointSupplier(SupplierSer<SalePoint> salePointSupplier) {
+    public void setSalePointSupplier(final SupplierSer<SalePoint> salePointSupplier) {
         this.salePointSupplier = salePointSupplier;
     }
 
@@ -72,7 +72,7 @@ public class SPLegalEntityField extends CustomField<LegalEntity> {
 
     public void changeSalePoint() {
         if (salePointSupplier != null) {
-            SalePoint salePoint = salePointSupplier.get();
+            final SalePoint salePoint = salePointSupplier.get();
             final LegalEntity legalEntity = getValue();
             if (legalEntity != null && salePoint != null) {
                 entityContent.refreshFields();
@@ -121,7 +121,7 @@ public class SPLegalEntityField extends CustomField<LegalEntity> {
         public void refreshContainer() {
             container.removeAllItems();
             if (salePointSupplier != null) {
-                SalePoint salePoint = salePointSupplier.get();
+                final SalePoint salePoint = salePointSupplier.get();
                 if (salePoint != null) {
                     container.addAll(salePoint.getLegalEntities());
 //                    LegalEntity legalEntity = (LegalEntity) getConvertedValue();
