@@ -1027,4 +1027,5 @@ public class Person extends Client implements ArchivedObject {
     public void setSpouseCitizenship(final String spouseCitizenship) {
         this.spouseCitizenship = spouseCitizenship;
     }
+
 }

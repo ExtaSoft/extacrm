@@ -42,5 +42,8 @@ public class PhoneField extends EditField {
         initField();
     }
 
-
+    @Override
+    public String getConvertedValue() {
+        return (String) super.getConvertedValue();
+    }
 }
