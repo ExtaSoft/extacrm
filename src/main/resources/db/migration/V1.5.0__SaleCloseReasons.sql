@@ -37,3 +37,9 @@ UPDATE ACCESS_PERMISSION
 SET
   DOMAIN = 'sales/leads'
 WHERE DOMAIN = 'leads/new';
+
+#######################################################################################################################
+# CRM-288 Расширить наименование банка до 100 символов
+
+ALTER TABLE `extacrm`.`company`
+CHANGE COLUMN `NAME` `NAME` VARCHAR(100) NULL DEFAULT NULL;
