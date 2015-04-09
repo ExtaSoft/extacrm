@@ -1,14 +1,12 @@
 package ru.extas.web.users;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import ru.extas.model.security.UserGroup;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

@@ -3,7 +3,6 @@ package ru.extas.web.tasks;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomTable;
@@ -17,6 +16,7 @@ import ru.extas.model.security.UserRole;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.bpm.BPStatusForm;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 import ru.extas.web.commons.converters.StringToDateTimeConverter;
 
 import java.util.List;

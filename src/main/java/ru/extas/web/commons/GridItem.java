@@ -3,6 +3,7 @@ package ru.extas.web.commons;
 import com.vaadin.addon.jpacontainer.EntityItem;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
+import ru.extas.web.commons.container.NListContainer;
 
 /**
  * Позволяет создать элемент редактирования по EntityItem или BeanItem
@@ -34,9 +35,12 @@ public class GridItem<BT> extends BeanItem<BT> {
 	public static <BT> BT extractBean(final Item item) {
 		if (item instanceof EntityItem) {
 			return ((EntityItem<BT>) item).getEntity();
-		} else {
+		} else if (item instanceof NListContainer.DynaBeanItem) {
+			return ((NListContainer<BT>.DynaBeanItem<BT>) item).getBean();
+		} else if (item instanceof BeanItem) {
 			return ((BeanItem<BT>) item).getBean();
-		}
+		} else
+			throw new IllegalArgumentException("Not supported Item type");
 	}
 
 }

@@ -3,6 +3,7 @@ package ru.extas.web.commons;
 import com.vaadin.data.Container;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.security.SecureAction;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 /**
  * @author Valery Orlov

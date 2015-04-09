@@ -8,6 +8,8 @@ import ru.extas.model.insurance.A7Form;
 import ru.extas.security.A7FormSecurityFilter;
 import ru.extas.server.insurance.A7FormRepository;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.util.List;
 import java.util.Set;
@@ -59,7 +61,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
      */
     @Override
     protected Container createContainer() {
-        final ExtaJpaContainer<A7Form> cnt = new A7SecuredContainer();
+        final ExtaDbContainer<A7Form> cnt = new A7SecuredContainer();
         cnt.addNestedContainerProperty("owner.name");
         return cnt;
     }

@@ -3,9 +3,9 @@ package ru.extas.web.contacts.person;
 import com.vaadin.data.Container;
 import ru.extas.model.contacts.Person;
 import ru.extas.web.commons.DefaultAction;
-import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.window.CloseOnlyWindow;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public class PersonSelectWindow extends CloseOnlyWindow {
 	private class SelectGrid extends PersonsGrid {
         @Override
         protected Container createContainer() {
-            final ExtaJpaContainer<Person> container = new ExtaJpaContainer<>(Person.class);
+            final ExtaDbContainer<Person> container = new ExtaDbContainer<>(Person.class);
             container.addNestedContainerProperty("regAddress.region");
             return container;
         }

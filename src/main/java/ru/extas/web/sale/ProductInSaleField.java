@@ -14,7 +14,11 @@ import ru.extas.server.product.ProdCreditRepository;
 import ru.extas.server.product.ProdInstallmentsRepository;
 import ru.extas.server.product.ProdInsuranceRepository;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;

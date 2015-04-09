@@ -31,6 +31,9 @@ import ru.extas.server.common.ArchiveService;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.server.settings.UserGridStateService;
 import ru.extas.web.commons.component.PastDateIntervalField;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.JpaLazyListContainer;
+import ru.extas.web.commons.container.RefreshBeanContainer;
 import ru.extas.web.commons.window.DownloadFileWindow;
 import ru.extas.web.users.SecuritySettingsForm;
 
@@ -710,10 +713,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      */
     protected void refreshContainer() {
         final Object itemId = table.getValue();
-        if (container instanceof ExtaJpaContainer)
-            ((ExtaJpaContainer) container).refresh();
+        if (container instanceof ExtaDbContainer)
+            ((ExtaDbContainer) container).refresh();
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
+        else if(container instanceof JpaLazyListContainer)
+            ((JpaLazyListContainer) container).refresh();
         table.setValue(itemId);
     }
 
@@ -723,10 +728,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      * @param itemId a {@link java.lang.Object} object.
      */
     protected void refreshContainerItem(final Object itemId) {
-        if (container instanceof ExtaJpaContainer)
-            ((ExtaJpaContainer) container).refreshItem(itemId);
+        if (container instanceof ExtaDbContainer)
+            ((ExtaDbContainer) container).refreshItem(itemId);
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
+        else if (container instanceof JpaLazyListContainer)
+            ((JpaLazyListContainer) container).refreshItem(itemId);
     }
 
     public void adjustGridHeight() {

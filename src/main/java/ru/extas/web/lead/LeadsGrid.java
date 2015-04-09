@@ -13,6 +13,8 @@ import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.lead.LeadRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -70,7 +72,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Lead> container = SecuredDataContainer.create(Lead.class, ExtaDomain.SALES_LEADS);
+        final ExtaDbContainer<Lead> container = SecuredDataContainer.create(Lead.class, ExtaDomain.SALES_LEADS);
         container.addNestedContainerProperty("responsible.name");
         container.addContainerFilter(new Compare.Equal("status", status));
         container.sort(new Object[]{"createdDate"}, new boolean[]{false});

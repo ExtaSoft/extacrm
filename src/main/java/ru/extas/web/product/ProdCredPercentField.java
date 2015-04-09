@@ -3,15 +3,13 @@ package ru.extas.web.product;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditPercent;
-import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 
 import java.util.ArrayList;

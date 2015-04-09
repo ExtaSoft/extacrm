@@ -5,12 +5,12 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
-import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Optional;
@@ -78,7 +78,7 @@ public class PersonField extends CustomField<Person> {
     private static class PersonSelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaJpaContainer<Person> container;
+        protected final ExtaDbContainer<Person> container;
 
         protected PersonSelectField(final String caption) {
             this(caption, "Выберите существующий контакт или введите новый");
@@ -96,7 +96,7 @@ public class PersonField extends CustomField<Person> {
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
-            container = new ExtaJpaContainer<>(Person.class);
+            container = new ExtaDbContainer<>(Person.class);
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);

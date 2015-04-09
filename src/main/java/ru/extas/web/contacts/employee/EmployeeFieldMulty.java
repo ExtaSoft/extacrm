@@ -10,7 +10,7 @@ import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.ExtaJpaContainer;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 import java.util.Optional;
 import java.util.Set;
@@ -49,7 +49,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
 
             @Override
             protected Container createContainer() {
-                final ExtaJpaContainer<Employee> cont = (ExtaJpaContainer<Employee>) super.createContainer();
+                final ExtaDbContainer<Employee> cont = (ExtaDbContainer<Employee>) super.createContainer();
                 Optional.ofNullable(legalEntitySupplier)
                         .ifPresent(s -> cont.addContainerFilter(new Compare.Equal("legalWorkPlace", s.get())));
 
@@ -61,7 +61,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
                 final EmployeeEditForm form = (EmployeeEditForm) super.createEditForm(employee, isInsert);
                 form.addCloseFormListener(e -> {
                     if (form.isSaved() && isInsert)
-                        setValue(((ExtaJpaContainer) container).getEntitiesSet());
+                        setValue(((ExtaDbContainer) container).getEntitiesSet());
                 });
                 form.setCompanySupplier(companySupplier);
                 form.setSalePointSupplier(salePointSupplier);

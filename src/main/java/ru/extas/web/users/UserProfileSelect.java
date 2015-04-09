@@ -4,7 +4,7 @@ import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.security.UserProfile;
-import ru.extas.web.commons.ExtaJpaContainer;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 /**
  * Выбор пользователя по имени
@@ -42,7 +42,7 @@ public class UserProfileSelect extends ComboBox {
 		setScrollToSelectedItem(true);
 
 		// Инициализация контейнера
-		final ExtaJpaContainer<UserProfile> container = new ExtaJpaContainer<>(UserProfile.class);
+		final ExtaDbContainer<UserProfile> container = new ExtaDbContainer<>(UserProfile.class);
 		container.addNestedContainerProperty("employee.name");
 
 		// Устанавливаем контент выбора

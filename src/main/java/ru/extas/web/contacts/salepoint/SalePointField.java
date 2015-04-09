@@ -12,9 +12,13 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.contacts.SalePoint_;
 import ru.extas.security.SalePointSecurityFilter;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Objects;
@@ -103,7 +107,7 @@ public class SalePointField extends CustomField<SalePoint> {
 
     private class SalePointComboBox extends ComboBox {
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaJpaContainer<SalePoint> container;
+        protected final ExtaDbContainer<SalePoint> container;
 
         public SalePointComboBox() {
             this("Название");
@@ -127,7 +131,7 @@ public class SalePointField extends CustomField<SalePoint> {
             if (secured)
                 container = new SecuredDataContainer<SalePoint>(new SalePointSecurityFilter());
             else
-                container = new ExtaJpaContainer<>(SalePoint.class);
+                container = new ExtaDbContainer<>(SalePoint.class);
             container.sort(new Object[]{SalePoint_.name.getName()}, new boolean[]{true});
             setContainerFilter();
 

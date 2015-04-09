@@ -13,9 +13,13 @@ import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.RunnableSer;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.PredictConfirmedAction;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Objects;
@@ -99,7 +103,7 @@ public class EmployeeField extends CustomField<Employee> {
     private class EmployeeSelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaJpaContainer<Employee> container;
+        protected final ExtaDbContainer<Employee> container;
 
         protected EmployeeSelectField(final String caption) {
             this(caption, "Выберите существующего сотрудника или введите нового");
@@ -116,7 +120,7 @@ public class EmployeeField extends CustomField<Employee> {
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
-            container = new ExtaJpaContainer<>(Employee.class);
+            container = new ExtaDbContainer<>(Employee.class);
             container.sort(new Object[]{"name"}, new boolean[]{true});
             setContainerFilter();
 

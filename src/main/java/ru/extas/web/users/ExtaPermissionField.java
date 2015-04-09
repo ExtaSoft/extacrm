@@ -6,9 +6,13 @@ import com.vaadin.ui.*;
 import ru.extas.model.security.*;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.container.RefreshBeanContainer;
 import ru.extas.web.util.ComponentUtil;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;

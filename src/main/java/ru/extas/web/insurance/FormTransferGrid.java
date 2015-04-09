@@ -3,13 +3,17 @@
  */
 package ru.extas.web.insurance;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.data.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.insurance.FormTransfer;
 import ru.extas.security.FormTransferSecurityFilter;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.util.List;
 
@@ -61,7 +65,7 @@ public class FormTransferGrid extends ExtaGrid<FormTransfer> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final JPAContainer<FormTransfer> container = new FormTransferSecuredContainer();
+        final ExtaDbContainer<FormTransfer> container = new FormTransferSecuredContainer();
         container.addNestedContainerProperty("fromContact.name");
         container.addNestedContainerProperty("toContact.name");
 

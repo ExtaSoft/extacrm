@@ -3,10 +3,14 @@ package ru.extas.web.users;
 import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.*;
-import ru.extas.model.security.*;
+import ru.extas.model.security.AccessRole;
+import ru.extas.model.security.ObjectSecurityRule;
+import ru.extas.model.security.SecuredObject;
+import ru.extas.model.security.UserObjectAccess;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.container.RefreshBeanContainer;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.util.ComponentUtil;
 
@@ -15,7 +19,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**

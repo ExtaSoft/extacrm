@@ -4,12 +4,13 @@ import com.vaadin.data.Property;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.motor.MotorType;
-import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.component.ExtaTokenField;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static ru.extas.web.commons.GridItem.extractBean;
 
 /**
  * Реализует редактирование списка тип техники
@@ -49,7 +50,7 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
         //tokenField.setInputWidth(13, Unit.EX);
         //tokenField.setTokenInsertPosition(TokenField.InsertPosition.BEFORE);
 
-        final ExtaJpaContainer<MotorType> container = new ExtaJpaContainer<>(MotorType.class);
+        final ExtaDbContainer<MotorType> container = new ExtaDbContainer<>(MotorType.class);
         container.sort(new Object[]{"name"}, new boolean[]{true});
         tokenField.setContainerDataSource(container);
         tokenField.setTokenCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
@@ -58,7 +59,7 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
             final Set selected = (Set) tokenField.getValue();
             final Set objValue = newHashSet();
             for (final Object id : selected)
-                objValue.add(container.getItem(id).getEntity());
+                objValue.add(extractBean(container.getItem(id)));
             setValue(objValue);
         });
         final Property dataSource = getPropertyDataSource();

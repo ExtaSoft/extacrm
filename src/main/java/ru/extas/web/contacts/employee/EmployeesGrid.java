@@ -7,7 +7,12 @@ import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.util.List;
 
@@ -51,8 +56,8 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Employee> container = salePointSupplier != null || companySupplier != null ?
-                new ExtaJpaContainer<>(Employee.class) :
+        final ExtaDbContainer<Employee> container = salePointSupplier != null || companySupplier != null ?
+                new ExtaDbContainer<>(Employee.class) :
                 SecuredDataContainer.create(Employee.class, ExtaDomain.EMPLOYEE);
         container.addNestedContainerProperty("company.name");
         container.sort(new Object[]{"company.name", "name"}, new boolean[]{true, true});

@@ -5,7 +5,11 @@ package ru.extas.web.insurance;
 
 import com.vaadin.data.Container;
 import ru.extas.model.insurance.Policy;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 import java.util.List;
 
@@ -43,7 +47,7 @@ public class PolicyGrid extends ExtaGrid<Policy> {
 	/** {@inheritDoc} */
 	@Override
 	protected Container createContainer() {
-		return new ExtaJpaContainer<>(Policy.class);
+		return new ExtaDbContainer<>(Policy.class);
 	}
 
 	/** {@inheritDoc} */

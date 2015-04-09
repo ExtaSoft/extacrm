@@ -9,8 +9,8 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.*;
 import ru.extas.model.sale.Product;
-import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 /**
  * Компонент выбора продукта
@@ -51,7 +51,7 @@ public abstract class ProductField<TProduct extends Product> extends CustomField
         productSelect.setNullSelectionAllowed(false);
 
         // Инициализация контейнера
-        final ExtaJpaContainer<TProduct> clientsCont = new ExtaJpaContainer<>(productCls);
+        final ExtaDbContainer<TProduct> clientsCont = new ExtaDbContainer<>(productCls);
         clientsCont.addContainerFilter(new Compare.Equal("active", true));
         clientsCont.sort(new Object[]{"name"}, new boolean[]{true});
 

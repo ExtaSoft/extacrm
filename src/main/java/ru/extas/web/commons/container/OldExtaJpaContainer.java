@@ -1,4 +1,4 @@
-package ru.extas.web.commons;
+package ru.extas.web.commons.container;
 
 import com.vaadin.addon.jpacontainer.EntityContainer;
 import com.vaadin.addon.jpacontainer.EntityManagerProvider;
@@ -16,6 +16,7 @@ import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.server.SpringEntityManagerProvider;
+import ru.extas.web.commons.ArchivedContainer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -41,7 +42,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3.0
  */
-public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAContainer<TEntityType> implements ArchivedContainer {
+public class OldExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAContainer<TEntityType> implements ArchivedContainer {
 
     private static final long serialVersionUID = -7891940552175752858L;
 
@@ -51,9 +52,9 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
     /**
      * <p>Constructor for ExtaDataContainer.</p>
      *
-     * @param entityClass a {@link java.lang.Class} object.
+     * @param entityClass a {@link Class} object.
      */
-    public ExtaJpaContainer(final Class<TEntityType> entityClass) {
+    public OldExtaJpaContainer(final Class<TEntityType> entityClass) {
         super(entityClass);
         // We need an entity provider to create a container
         setEntityProvider(new ExtaLocalEntityProvider<>(entityClass));
@@ -212,7 +213,7 @@ public class ExtaJpaContainer<TEntityType extends IdentifiedObject> extends JPAC
             }
         }
 
-        public int getIndexOfId(final ExtaJpaContainer<TEntityType> container, final Object itemId, final Filter filter, List<SortBy> sortBy) {
+        public int getIndexOfId(final OldExtaJpaContainer<TEntityType> container, final Object itemId, final Filter filter, List<SortBy> sortBy) {
             if (sortBy == null)
                 sortBy = Collections.emptyList();
 

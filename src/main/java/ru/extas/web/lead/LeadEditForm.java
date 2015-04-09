@@ -22,6 +22,7 @@ import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.contacts.ClientField;
 import ru.extas.web.contacts.ContactDataDecl;
 import ru.extas.web.contacts.employee.DealerEmployeeField;
@@ -102,8 +103,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private FilesManageField docFilesEditor;
 
     private final boolean qualifyForm;
-    private ExtaJpaContainer<SalePoint> vendorsContainer;
-    private ExtaJpaContainer<Client> clientsContainer;
+    private ExtaDbContainer<SalePoint> vendorsContainer;
+    private ExtaDbContainer<Client> clientsContainer;
 
     public LeadEditForm(final Lead lead, final boolean qualifyForm) {
         super(lead.isNew() ? "Ввод нового лида в систему" :
@@ -265,7 +266,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         final Table table = new Table();
         table.setRequired(true);
         // Запрос данных
-        vendorsContainer = new ExtaJpaContainer<>(SalePoint.class);
+        vendorsContainer = new ExtaDbContainer<>(SalePoint.class);
         vendorsContainer.addNestedContainerProperty("regAddress.region");
         setVendorsFilter(lead.getPointOfSale(), lead.getRegion());
 
@@ -372,7 +373,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         layout.addComponent(info);
 
         // Запрос данных
-        clientsContainer = new ExtaJpaContainer<>(Client.class);
+        clientsContainer = new ExtaDbContainer<>(Client.class);
         clientsContainer.addNestedContainerProperty("regAddress.region");
 
         final MenuBar menuBar = new MenuBar();

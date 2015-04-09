@@ -12,7 +12,12 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.security.SalePointSecurityFilter;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -68,7 +73,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<SalePoint> container = new SecuredDataContainer<SalePoint>(new SalePointSecurityFilter());
+        final ExtaDbContainer<SalePoint> container = new SecuredDataContainer<SalePoint>(new SalePointSecurityFilter());
         container.addNestedContainerProperty("regAddress.region");
         container.addNestedContainerProperty("regAddress.city");
         container.addNestedContainerProperty("regAddress.streetBld");

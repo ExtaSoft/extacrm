@@ -11,10 +11,14 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Company_;
 import ru.extas.security.CompanySecurityFilter;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.WebSiteLinkField;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -105,7 +109,7 @@ public class CompanyField extends CustomField<Company> {
 
     private class CompanyComboBox extends ComboBox {
 
-        protected final ExtaJpaContainer<Company> container;
+        protected final ExtaDbContainer<Company> container;
 
         /**
          * <p>Constructor for CompanySelect.</p>
@@ -136,7 +140,7 @@ public class CompanyField extends CustomField<Company> {
             if (secured)
                 container = new SecuredDataContainer<Company>(new CompanySecurityFilter());
             else
-                container = new ExtaJpaContainer<>(Company.class);
+                container = new ExtaDbContainer<>(Company.class);
             container.sort(new Object[]{"name"}, new boolean[]{true});
             setContainerFilter();
 

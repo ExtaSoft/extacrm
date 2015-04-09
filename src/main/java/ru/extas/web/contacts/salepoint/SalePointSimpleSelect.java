@@ -5,7 +5,7 @@ import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.web.commons.ExtaJpaContainer;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 /**
  * Выбор контакта - юр. лица
@@ -21,7 +21,7 @@ import ru.extas.web.commons.ExtaJpaContainer;
 public class SalePointSimpleSelect extends com.vaadin.ui.ComboBox {
 
     private static final long serialVersionUID = -8005905898383483037L;
-    protected final ExtaJpaContainer<SalePoint> container;
+    protected final ExtaDbContainer<SalePoint> container;
 
     /**
      * <p>Constructor for CompanySelect.</p>
@@ -49,7 +49,7 @@ public class SalePointSimpleSelect extends com.vaadin.ui.ComboBox {
         setScrollToSelectedItem(true);
 
         // Инициализация контейнера
-        container = new ExtaJpaContainer<>(SalePoint.class);
+        container = new ExtaDbContainer<>(SalePoint.class);
 
         // Устанавливаем контент выбора
         setFilteringMode(FilteringMode.CONTAINS);

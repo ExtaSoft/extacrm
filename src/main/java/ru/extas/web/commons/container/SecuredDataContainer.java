@@ -1,6 +1,5 @@
-package ru.extas.web.commons;
+package ru.extas.web.commons.container;
 
-import com.vaadin.addon.jpacontainer.util.DefaultQueryModifierDelegate;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.SecuredObject;
@@ -10,6 +9,7 @@ import ru.extas.security.SecurityFilter;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -22,7 +22,7 @@ import java.util.List;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SecuredDataContainer<TEntityType extends IdentifiedObject> extends ExtaJpaContainer<TEntityType> {
+public class SecuredDataContainer<TEntityType extends IdentifiedObject> extends ExtaDbContainer<TEntityType> {
 
     private final AbstractSecurityFilter<TEntityType> securityFilter;
 
@@ -30,22 +30,18 @@ public class SecuredDataContainer<TEntityType extends IdentifiedObject> extends 
         super(securityFilter.getEntityClass());
 
         this.securityFilter = securityFilter;
-        // Установить фильтр в соответствии с правами доступа пользователя
-        getEntityProvider().setQueryModifierDelegate(
-                new DefaultQueryModifierDelegate() {
-                    @Override
-                    public void filtersWillBeAdded(final CriteriaBuilder cb, final CriteriaQuery<?> cq, final List<Predicate> predicates) {
-                        if (cb == null || cq == null || predicates == null)
-                            return;
+    }
 
-                        final Predicate predicate = securityFilter.createSecurityPredicate(cb, cq);
-                        if (predicate != null) {
-                            predicates.add(predicate);
-                            cq.distinct(true);
-                        }
-                    }
-                }
-        );
+    @Override
+    protected List<Predicate> createContainerFilterPredicates(final CriteriaBuilder cb, final CriteriaQuery<?> query, final Root<TEntityType> root) {
+        final List<Predicate> predicates = super.createContainerFilterPredicates(cb, query, root);
+        // Установить фильтр в соответствии с правами доступа пользователя
+        final Predicate predicate = securityFilter.createSecurityPredicate(cb, query);
+        if (predicate != null) {
+            predicates.add(predicate);
+            query.distinct(true);
+        }
+        return predicates;
     }
 
     public AbstractSecurityFilter<TEntityType> getSecurityFilter() {

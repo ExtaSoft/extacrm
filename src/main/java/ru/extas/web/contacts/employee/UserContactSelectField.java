@@ -9,7 +9,7 @@ import com.vaadin.ui.CustomField;
 import com.vaadin.ui.PopupView;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.Person;
-import ru.extas.web.commons.ExtaJpaContainer;
+import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.contacts.NameUtils;
 
 /**
@@ -60,7 +60,7 @@ public class UserContactSelectField extends CustomField<Employee> {
     private class UserContactSelect extends com.vaadin.ui.ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaJpaContainer<Employee> container;
+        protected final ExtaDbContainer<Employee> container;
 
         protected UserContactSelect() {
             super("");
@@ -76,7 +76,7 @@ public class UserContactSelectField extends CustomField<Employee> {
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
-            this.container = new ExtaJpaContainer<>(Employee.class);
+            this.container = new ExtaDbContainer<>(Employee.class);
             if (filter != null) {
                 this.container.addContainerFilter(filter);
             }

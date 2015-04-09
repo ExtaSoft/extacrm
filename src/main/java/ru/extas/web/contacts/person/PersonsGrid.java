@@ -7,6 +7,8 @@ import com.vaadin.data.Container;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class PersonsGrid extends ExtaGrid<Person> {
      */
     @Override
     protected Container createContainer() {
-        final ExtaJpaContainer<Person> container = SecuredDataContainer.create(Person.class, ExtaDomain.PERSON);
+        final ExtaDbContainer<Person> container = SecuredDataContainer.create(Person.class, ExtaDomain.PERSON);
         container.addNestedContainerProperty("regAddress.region");
         return container;
     }

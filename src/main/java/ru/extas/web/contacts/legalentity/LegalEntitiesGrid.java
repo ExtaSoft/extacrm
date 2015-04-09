@@ -9,7 +9,12 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.security.LegalEntitySecurityFilter;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.util.List;
 
@@ -57,7 +62,7 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<LegalEntity> container =
+        final ExtaDbContainer<LegalEntity> container =
                 new SecuredDataContainer<LegalEntity>(new LegalEntitySecurityFilter());
 
         if (companySupplier != null)

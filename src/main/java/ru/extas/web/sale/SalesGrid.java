@@ -17,6 +17,8 @@ import ru.extas.model.sale.Sale_;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -101,7 +103,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Sale> container = SecuredDataContainer.create(Sale.class, domain);
+        final ExtaDbContainer<Sale> container = SecuredDataContainer.create(Sale.class, domain);
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
         container.addNestedContainerProperty("dealer.name");

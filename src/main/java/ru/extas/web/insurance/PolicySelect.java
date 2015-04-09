@@ -3,12 +3,11 @@
  */
 package ru.extas.web.insurance;
 
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.PolicyRepository;
-import ru.extas.web.commons.ExtaBeanContainer;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 
 import java.util.Collection;
 
