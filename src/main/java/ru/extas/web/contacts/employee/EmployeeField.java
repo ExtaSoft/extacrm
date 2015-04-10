@@ -1,6 +1,5 @@
 package ru.extas.web.contacts.employee;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.And;
@@ -129,7 +128,7 @@ public class EmployeeField extends CustomField<Employee> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-            setConverter(new SingleSelectConverter<Employee>(this));
+//            setConverter(new SingleSelectConverter<Employee>(this));
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -210,7 +209,7 @@ public class EmployeeField extends CustomField<Employee> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             selectField.refreshContainer();
-                            selectField.setValue(editWin.getEntityId());
+                            selectField.setValue(editWin.getEntityItemId());
                         }
                         popupView.setPopupVisible(true);
                     });

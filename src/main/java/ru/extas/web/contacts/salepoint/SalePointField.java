@@ -1,6 +1,5 @@
 package ru.extas.web.contacts.salepoint;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.And;
@@ -140,7 +139,7 @@ public class SalePointField extends CustomField<SalePoint> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId(SalePoint_.name.getName());
-            setConverter(new SingleSelectConverter<SalePoint>(this));
+//            setConverter(new SingleSelectConverter<SalePoint>(this));
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -214,7 +213,7 @@ public class SalePointField extends CustomField<SalePoint> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             contactSelect.refreshContainer();
-                            contactSelect.setValue(editWin.getEntityId());
+                            contactSelect.setValue(editWin.getEntityItemId());
                         }
                         popupView.setPopupVisible(true);
                     });

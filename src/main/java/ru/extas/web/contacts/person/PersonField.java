@@ -1,10 +1,10 @@
 package ru.extas.web.contacts.person;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Person_;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -97,13 +97,14 @@ public class PersonField extends CustomField<Person> {
 
             // Инициализация контейнера
             container = new ExtaDbContainer<>(Person.class);
+            container.sort(new Object[]{Person_.name.getName()}, new boolean[]{true});
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-            setConverter(new SingleSelectConverter<Person>(this));
+//            setConverter(new SingleSelectConverter<Person>(this));
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -151,7 +152,7 @@ public class PersonField extends CustomField<Person> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             personSelectField.refreshContainer();
-                            personSelectField.setValue(editWin.getEntityId());
+                            personSelectField.setValue(editWin.getEntityItemId());
                         }
                         popupView.setPopupVisible(true);
                     });

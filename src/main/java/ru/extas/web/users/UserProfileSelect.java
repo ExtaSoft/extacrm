@@ -1,6 +1,5 @@
 package ru.extas.web.users;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.security.UserProfile;
@@ -44,13 +43,14 @@ public class UserProfileSelect extends ComboBox {
 		// Инициализация контейнера
 		final ExtaDbContainer<UserProfile> container = new ExtaDbContainer<>(UserProfile.class);
 		container.addNestedContainerProperty("employee.name");
+		container.sort(new Object[]{"employee.name"}, new boolean[]{true});
 
 		// Устанавливаем контент выбора
 		setFilteringMode(FilteringMode.CONTAINS);
 		setContainerDataSource(container);
 		setItemCaptionMode(ItemCaptionMode.PROPERTY);
 		setItemCaptionPropertyId("employee.name");
-		setConverter(new SingleSelectConverter<UserProfile>(this));
+//		setConverter(new SingleSelectConverter<UserProfile>(this));
 
 		// Функционал добавления нового контакта
 		setNullSelectionAllowed(false);

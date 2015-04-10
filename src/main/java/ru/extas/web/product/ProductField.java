@@ -3,7 +3,6 @@
  */
 package ru.extas.web.product;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
@@ -65,7 +64,7 @@ public abstract class ProductField<TProduct extends Product> extends CustomField
         productSelect.setPropertyDataSource(getPropertyDataSource());
         productSelect.addValueChangeListener(e -> setValue((TProduct) productSelect.getConvertedValue()));
 //        productSelect.setValue(getValue());
-        productSelect.setConverter(new SingleSelectConverter<TProduct>(productSelect));
+//        productSelect.setConverter(new SingleSelectConverter<TProduct>(productSelect));
 
         productSelect.setWidth(100, Unit.PERCENTAGE);
         box.addComponent(productSelect);

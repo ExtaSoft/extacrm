@@ -1,10 +1,10 @@
 package ru.extas.web.contacts.salepoint;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.SalePoint_;
 import ru.extas.web.commons.container.ExtaDbContainer;
 
 /**
@@ -50,13 +50,14 @@ public class SalePointSimpleSelect extends com.vaadin.ui.ComboBox {
 
         // Инициализация контейнера
         container = new ExtaDbContainer<>(SalePoint.class);
+        container.sort(new Object[]{SalePoint_.name.getName()}, new boolean[]{true});
 
         // Устанавливаем контент выбора
         setFilteringMode(FilteringMode.CONTAINS);
         setContainerDataSource(container);
         setItemCaptionMode(ItemCaptionMode.PROPERTY);
         setItemCaptionPropertyId("name");
-        setConverter(new SingleSelectConverter<SalePoint>(this));
+//        setConverter(new SingleSelectConverter<SalePoint>(this));
 
         // Функционал добавления нового контакта
         setNullSelectionAllowed(false);

@@ -290,7 +290,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             editWin.addCloseFormListener(event1 -> {
                 if (editWin.isSaved()) {
                     vendorsContainer.refresh();
-                    table.setValue(editWin.getEntityId());
+                    table.setValue(editWin.getEntityItemId());
                 }
             });
             FormUtils.showModalWin(editWin);
@@ -389,7 +389,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             editWin.addCloseFormListener(event1 -> {
                 if (editWin.isSaved()) {
                     clientsContainer.refresh();
-                    table.setValue(editWin.getEntityId());
+                    table.setValue(editWin.getEntityItemId());
                 }
             });
             FormUtils.showModalWin(editWin);
@@ -404,7 +404,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             editWin.addCloseFormListener(event1 -> {
                 if (editWin.isSaved()) {
                     clientsContainer.refresh();
-                    table.setValue(editWin.getEntityId());
+                    table.setValue(editWin.getEntityItemId());
                 }
             });
             FormUtils.showModalWin(editWin);

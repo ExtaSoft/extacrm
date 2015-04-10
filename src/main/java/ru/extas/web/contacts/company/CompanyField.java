@@ -1,6 +1,5 @@
 package ru.extas.web.contacts.company;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.And;
@@ -149,7 +148,7 @@ public class CompanyField extends CustomField<Company> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-            setConverter(new SingleSelectConverter<Company>(this));
+//            setConverter(new SingleSelectConverter<Company>(this));
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -214,7 +213,7 @@ public class CompanyField extends CustomField<Company> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             select.refreshContainer();
-                            select.setValue(editWin.getEntityId());
+                            select.setValue(editWin.getEntityItemId());
                         }
                         popupView.setPopupVisible(true);
                     });

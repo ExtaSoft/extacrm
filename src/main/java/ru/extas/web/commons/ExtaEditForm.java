@@ -91,6 +91,10 @@ public abstract class ExtaEditForm<TEntity> extends VerticalLayout {
         return entity;
     }
 
+    public Object getEntityItemId() {
+        return getEntity();
+    }
+
     public static class CloseFormEvent extends Component.Event {
 
         /**

@@ -125,9 +125,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         public void open4Edit(final ExtaEditForm form) {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
-                    grid.refreshContainerItem(form.getEntityId());
+                    grid.refreshContainerItem(form.getEntityItemId());
                 }
-                grid.selectObject(form.getEntityId());
+                grid.selectObject(form.getEntityItemId());
             });
             FormUtils.showModalWin(form);
         }
@@ -137,7 +137,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
                     grid.refreshContainer();
-                    grid.selectObject(form.getEntityId());
+                    grid.selectObject(form.getEntityItemId());
                 }
             });
             FormUtils.showModalWin(form);

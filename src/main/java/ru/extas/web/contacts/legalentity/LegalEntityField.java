@@ -1,6 +1,5 @@
 package ru.extas.web.contacts.legalentity;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
@@ -113,7 +112,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-            setConverter(new SingleSelectConverter<LegalEntity>(this));
+//            setConverter(new SingleSelectConverter<LegalEntity>(this));
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -205,7 +204,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             selectField.refreshContainer();
-                            selectField.setValue(editWin.getEntityId());
+                            selectField.setValue(editWin.getEntityItemId());
                         }
                         popupView.setPopupVisible(true);
                     });
