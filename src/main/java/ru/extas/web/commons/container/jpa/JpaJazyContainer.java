@@ -53,7 +53,7 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
 
     private static final int CONTAINER_PAGE_SIZE = LazyList.DEFAULT_PAGE_SIZE;
     private final Class<TEntityType> entityClass;
-    private final LazyList<TEntityType> entityList;
+    private final JpaLazyProvider<TEntityType> entityList;
     private final AdvancedFilterableSupport filterSupport;
     private final List<String> nestedProps = newArrayList();
     private List<Pair<String, Boolean>> sortByList = newLinkedList();
@@ -68,7 +68,7 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
         this.dynaClass = WrapDynaClass.createDynaClass(type);
         this.entityClass = type;
         this.entityClassMetadata = MetadataFactory.getInstance().getEntityClassMetadata(entityClass);
-        entityList = new LazyList<TEntityType>(new LazyEntityProvider(), CONTAINER_PAGE_SIZE);
+        entityList = new JpaLazyProvider<TEntityType>();
         setCollection(entityList);
         this.filterSupport = new AdvancedFilterableSupport();
         this.filterSupport.addListener(e -> refresh());
