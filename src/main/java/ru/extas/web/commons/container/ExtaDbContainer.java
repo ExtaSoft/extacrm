@@ -5,10 +5,12 @@ import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.web.commons.ArchivedContainer;
+import ru.extas.web.commons.container.jpa.JpaJazyContainer;
 
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -20,7 +22,7 @@ import static com.google.common.collect.Sets.newHashSet;
  * @version $Id: $Id
  * @since 0.3.0
  */
-public class ExtaDbContainer<TEntityType extends IdentifiedObject> extends JpaLazyListContainer<TEntityType> implements ArchivedContainer {
+public class ExtaDbContainer<TEntityType extends IdentifiedObject> extends JpaJazyContainer<TEntityType> implements ArchivedContainer {
 
     private static final long serialVersionUID = -7891940552175752858L;
 
@@ -60,7 +62,7 @@ public class ExtaDbContainer<TEntityType extends IdentifiedObject> extends JpaLa
     }
 
     public List<TEntityType> getEntitiesList() {
-        return getBackingList();
+        return newArrayList(getEntityItemList().stream().map(i -> i.getBean()).iterator());
     }
 
     public Set<TEntityType> getEntitiesSet() {

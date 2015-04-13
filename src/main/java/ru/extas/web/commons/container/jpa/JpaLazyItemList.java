@@ -1,38 +1,67 @@
 package ru.extas.web.commons.container.jpa;
 
+import com.vaadin.addon.jpacontainer.filter.util.AdvancedFilterableSupport;
+import com.vaadin.addon.jpacontainer.filter.util.FilterConverter;
+import com.vaadin.addon.jpacontainer.metadata.EntityClassMetadata;
+import com.vaadin.addon.jpacontainer.metadata.MetadataFactory;
+import com.vaadin.addon.jpacontainer.metadata.PropertyKind;
+import com.vaadin.addon.jpacontainer.util.CollectionUtil;
+import com.vaadin.data.Container;
+import org.apache.commons.lang3.tuple.Pair;
 import ru.extas.model.common.IdentifiedObject;
+import ru.extas.model.common.IdentifiedObject_;
+import ru.extas.utils.SupplierSer;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.util.*;
+
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
+import static com.google.common.collect.Lists.newLinkedList;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * @author Valery Orlov
  *         Date: 10.04.2015
  *         Time: 17:28
  */
-public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends AbstractList<TEntityType> implements Serializable {
+public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends AbstractList<JpaEntityItem<TEntityType>> implements Serializable {
 
     // Vaadin table by default has 15 rows, 2x that to cache up an down
     // With this setting it is maximum of 2 requests that happens. With
     // normal scrolling just 0-1 per user interaction
     public static final int DEFAULT_PAGE_SIZE = 15 + 15 * 2;
 
-    private List<TEntityType> currentPage;
-    private List<TEntityType> prevPage;
-    private List<TEntityType> nextPage;
+    private List<JpaEntityItem> currentPage;
+    private List<JpaEntityItem> prevPage;
+    private List<JpaEntityItem> nextPage;
 
     private int pageIndex = -10;
     private final int pageSize = DEFAULT_PAGE_SIZE;
 
+    private final Class<TEntityType> entityClass;
+    private final SupplierSer<List<Pair<String, Boolean>>> sortBySupplier;
+    private final EntityClassMetadata<TEntityType> entityClassMetadata;
+    private final SupplierSer<Container.Filter> filterSupplier;
+    private final JpaPropertyProvider propertyProvider;
 
+    public JpaLazyItemList(Class<TEntityType> entityClass, SupplierSer<List<Pair<String, Boolean>>> sortBySupplier, SupplierSer<Container.Filter> filterSupplier, JpaPropertyProvider propertyProvider) {
+        this.entityClass = entityClass;
+        this.sortBySupplier = sortBySupplier;
+        this.filterSupplier = filterSupplier;
+        this.propertyProvider = propertyProvider;
+        this.entityClassMetadata = MetadataFactory.getInstance().getEntityClassMetadata(entityClass);
+    }
 
     @Override
-    public TEntityType get(final int index) {
+    public JpaEntityItem<TEntityType> get(final int index) {
         final int pageIndexForReqest = index / pageSize;
         final int indexOnPage = index % pageSize;
 
         // Find page from cache
-        List<TEntityType> page = null;
+        List<JpaEntityItem> page = null;
         if (pageIndex == pageIndexForReqest) {
             page = currentPage;
         } else if (pageIndex - 1 == pageIndexForReqest && prevPage != null) {
@@ -60,7 +89,7 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
             }
             pageIndex = pageIndexForReqest;
             if (currentPage == null) {
-                currentPage = findEntities(pageIndex * pageSize);
+                currentPage = queryEntities(pageIndex * pageSize);
             }
             if (currentPage == null) {
                 return null;
@@ -68,12 +97,87 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
                 page = currentPage;
             }
         }
-        final TEntityType get = page.get(indexOnPage);
+        final JpaEntityItem<TEntityType> get = page.get(indexOnPage);
         return get;
     }
 
-    protected List findEntities(int i) {
-        return pageProvider.findEntities(i);
+    private List<JpaEntityItem> queryEntities(int firstRow) {
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery<JpaEntityItem> query = cb.createQuery(JpaEntityItem.class);
+        final Root<TEntityType> root = query.from(entityClass);
+
+        // формируем возвращаемое значение
+        final List<String> nestedProps = propertyProvider.getNestedProps();
+        List<Selection> cParams = newArrayListWithCapacity(1 + nestedProps.size());
+        cParams.add(root);
+        for (String prop : nestedProps) {
+            cParams.add(getPropertyPath(root, prop));
+        }
+        query.select(cb.construct(JpaEntityItem.class, cParams.toArray(new Selection[cParams.size()])));
+
+        // Добавляем фильтр контейнера
+        final List<Predicate> predicates = createContainerFilterPredicates(cb, query, root);
+        if (!predicates.isEmpty()) {
+            query.where(CollectionUtil.toArray(Predicate.class, predicates));
+        }
+
+        // Добавляем сортировку
+        List<Pair<String, Boolean>> sortByList = sortBySupplier.get();
+        if (!sortByList.isEmpty()) {
+            final List<Order> orders = newArrayListWithCapacity(sortByList.size());
+            for (final Pair<String, Boolean> sortBy : sortByList)
+                orders.add(translateSortBy(sortBy, cb, root));
+            query.orderBy(orders);
+        }
+
+        final TypedQuery<JpaEntityItem> tq = em.createQuery(query);
+        tq.setFirstResult(firstRow);
+        tq.setMaxResults(pageSize);
+        return tq.getResultList();
+    }
+
+    private Order translateSortBy(final Pair<String, Boolean> sortBy, final CriteriaBuilder cb, final Root<TEntityType> root) {
+        final String sortedPropId = sortBy.getLeft();
+        Path<TEntityType> path = getPropertyPath(root, sortedPropId);
+
+        // Make and return the Order instances.
+        if (sortBy.getRight()) {
+            return cb.asc(path);
+        } else {
+            return cb.desc(path);
+        }
+    }
+
+    private Path<TEntityType> getPropertyPath(Root<TEntityType> root, String propId) {
+        Path<TEntityType> path;
+        if (propertyProvider.isNestedProp(propId)) {
+            // First split the id and build a Path.
+            final String[] idStrings = propId.split("\\.");
+            if (!isEmbedded(idStrings[0])) {
+                // пробуем найти join
+                //root.getJoins().stream().filter(j -> j.)
+                // This is a nested property, we need to LEFT JOIN
+                path = root.join(idStrings[0], JoinType.LEFT);
+                for (int i = 1; i < idStrings.length; i++) {
+                    if (i < idStrings.length - 1) {
+                        path = ((Join<?, ?>) path)
+                                .join(idStrings[i], JoinType.LEFT);
+                    } else {
+                        path = path.get(idStrings[i]);
+                    }
+                }
+            } else
+                path = AdvancedFilterableSupport.getPropertyPathTyped(root, propId);
+        } else {
+            // non-nested or embedded, we can select as usual
+            path = AdvancedFilterableSupport.getPropertyPathTyped(root, propId);
+        }
+        return path;
+    }
+
+    private boolean isEmbedded(final String propertyId) {
+        return entityClassMetadata.getProperty(propertyId).getPropertyKind() == PropertyKind.EMBEDDED;
     }
 
     private Integer cachedSize;
@@ -81,16 +185,44 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
     @Override
     public int size() {
         if (cachedSize == null) {
-            cachedSize = countProvider.size();
+            cachedSize = querySize();
         }
         return cachedSize;
     }
 
-    private transient WeakHashMap<TEntityType, Integer> indexCache;
+    private int querySize() {
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        final Root<TEntityType> root = query.from(entityClass);
 
-    private Map<TEntityType, Integer> getIndexCache() {
+        query.select(cb.countDistinct(root.get(IdentifiedObject_.id)));
+        // Добавляем фильтр контейнера
+        final List<Predicate> predicates = createContainerFilterPredicates(cb, query, root);
+        if (!predicates.isEmpty()) {
+            query.where(CollectionUtil.toArray(Predicate.class, predicates));
+        }
+
+        final TypedQuery<Long> tq = em.createQuery(query);
+        return tq.getSingleResult().intValue();
+    }
+
+    protected List<Predicate> createContainerFilterPredicates(final CriteriaBuilder cb,
+                                                              final CriteriaQuery<?> query,
+                                                              final Root<TEntityType> root) {
+        final Container.Filter filter = filterSupplier.get();
+        final List<Predicate> predicates = newLinkedList();
+        if (filter != null) {
+            predicates.add(FilterConverter.convertFilter(filter, cb, root));
+        }
+        return predicates;
+    }
+
+    private transient WeakHashMap<JpaEntityItem<TEntityType>, Integer> indexCache;
+
+    private Map<JpaEntityItem<TEntityType>, Integer> getIndexCache() {
         if (indexCache == null) {
-            indexCache = new WeakHashMap<TEntityType, Integer>();
+            indexCache = new WeakHashMap<JpaEntityItem<TEntityType>, Integer>();
         }
         return indexCache;
     }
@@ -125,7 +257,7 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
              * finally again this method with the same object (possibly on other page). Thus, to avoid heavy iterating,
              * cache the location.
              */
-            getIndexCache().put((TEntityType) o, indexViaCache);
+            getIndexCache().put((JpaEntityItem<TEntityType>) o, indexViaCache);
             return indexViaCache;
         }
         // fall back to iterating, this will most likely be sloooooow....
@@ -151,8 +283,8 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
     }
 
     @Override
-    public Iterator<TEntityType> iterator() {
-        return new Iterator<TEntityType>() {
+    public Iterator<JpaEntityItem<TEntityType>> iterator() {
+        return new Iterator<JpaEntityItem<TEntityType>>() {
 
             private int index = -1;
             private final int size = size();
@@ -163,7 +295,7 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
             }
 
             @Override
-            public TEntityType next() {
+            public JpaEntityItem<TEntityType> next() {
                 index++;
                 return get(index);
             }

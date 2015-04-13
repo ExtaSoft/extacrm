@@ -123,12 +123,7 @@ public class JpaEntityItem<TEntityType extends IdentifiedObject> implements Item
 
         @Override
         public boolean isReadOnly() {
-            try {
-                return PropertyUtils.getPropertyDescriptor(bean, propertyName).getWriteMethod() == null;
-            } catch (final Throwable e) {
-                propagate(e);
-            }
-            return true;
+            return propertyProvider.isPropReadOnly(bean, propertyName);
         }
 
         @Override
@@ -162,7 +157,7 @@ public class JpaEntityItem<TEntityType extends IdentifiedObject> implements Item
 
         @Override
         public boolean isReadOnly() {
-                return propertyProvider.isPropReadOnly(propertyName);
+            return propertyProvider.isPropReadOnly(bean, propertyName);
         }
 
         @Override

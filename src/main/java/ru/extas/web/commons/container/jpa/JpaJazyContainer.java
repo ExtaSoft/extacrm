@@ -1,10 +1,6 @@
 package ru.extas.web.commons.container.jpa;
 
 import com.vaadin.addon.jpacontainer.filter.util.AdvancedFilterableSupport;
-import com.vaadin.addon.jpacontainer.filter.util.FilterConverter;
-import com.vaadin.addon.jpacontainer.metadata.EntityClassMetadata;
-import com.vaadin.addon.jpacontainer.metadata.MetadataFactory;
-import com.vaadin.addon.jpacontainer.metadata.PropertyKind;
 import com.vaadin.addon.jpacontainer.util.CollectionUtil;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -12,29 +8,20 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
 import com.vaadin.data.util.filter.And;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
-import org.apache.commons.beanutils.*;
-import org.apache.commons.beanutils.expression.DefaultResolver;
-import org.apache.commons.beanutils.expression.Resolver;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.vaadin.viritin.LazyList;
 import ru.extas.model.common.IdentifiedObject;
-import ru.extas.model.common.IdentifiedObject_;
+import ru.extas.utils.SupplierSer;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.beans.PropertyDescriptor;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Collection;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Throwables.propagate;
-import static com.google.common.collect.Lists.*;
+import static com.google.common.collect.Lists.newLinkedList;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
@@ -53,27 +40,30 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
 
     private static final int CONTAINER_PAGE_SIZE = LazyList.DEFAULT_PAGE_SIZE;
     private final Class<TEntityType> entityClass;
-    private final JpaLazyItemList<TEntityType> entityList;
-    private final AdvancedFilterableSupport filterSupport;
-    private final List<String> nestedProps = newArrayList();
-    private List<Pair<String, Boolean>> sortByList = newLinkedList();
-    private final EntityClassMetadata<TEntityType> entityClassMetadata;
-    private List<TEntityType> backingList;
-    private Resolver resolver = new DefaultResolver();
-    private transient WrapDynaClass dynaClass;
+    private final JpaLazyItemList<TEntityType> entityItemList;
 
+    private final JpaPropertyProvider propertyProvider;
+    private final AdvancedFilterableSupport filterSupport;
+    private List<Pair<String, Boolean>> sortByList = newLinkedList();
 
     public JpaJazyContainer(final Class<TEntityType> type) {
-        this.backingList = new ArrayList<TEntityType>();
-        this.dynaClass = WrapDynaClass.createDynaClass(type);
         this.entityClass = type;
-        this.entityClassMetadata = MetadataFactory.getInstance().getEntityClassMetadata(entityClass);
-        entityList = new JpaLazyItemList<TEntityType>();
-        setCollection(entityList);
+        this.propertyProvider = new JpaPropertyProvider(entityClass);
+        entityItemList = createJpaEntityItemList(this.entityClass, () -> sortByList,
+                () -> getAppliedFiltersAsConjunction(), this.propertyProvider);
         this.filterSupport = new AdvancedFilterableSupport();
         this.filterSupport.addListener(e -> refresh());
 
         updateFilterablePropertyIds();
+    }
+
+    protected JpaLazyItemList<TEntityType> createJpaEntityItemList(Class<TEntityType> typeClass, SupplierSer<List<Pair<String, Boolean>>> sortBySupplier, SupplierSer<Filter> filterSupplierSer, JpaPropertyProvider jpaPropertyProvider) {
+        return new JpaLazyItemList<TEntityType>(typeClass,
+                sortBySupplier, filterSupplierSer, jpaPropertyProvider);
+    }
+
+    public JpaLazyItemList<TEntityType> getEntityItemList() {
+        return entityItemList;
     }
 
     protected void updateFilterablePropertyIds() {
@@ -81,14 +71,13 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
     }
 
     public void addNestedContainerProperty(final String nestedProp) {
-        if (resolver.hasNested(nestedProp))
-            nestedProps.add(nestedProp);
+        propertyProvider.addNestedContainerProperty(nestedProp);
         updateFilterablePropertyIds();
         fireContainerPropertySetChange();
     }
 
     public void refresh() {
-        entityList.reset();
+        entityItemList.reset();
         fireItemSetChange();
     }
 
@@ -176,118 +165,10 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
         }
     }
 
-    private int listSize() {
-        final EntityManager em = lookup(EntityManager.class);
-        final CriteriaBuilder cb = em.getCriteriaBuilder();
-        final CriteriaQuery<Long> query = cb.createQuery(Long.class);
-        final Root<TEntityType> root = query.from(entityClass);
-
-        query.select(cb.countDistinct(root.get(IdentifiedObject_.id)));
-        // Добавляем фильтр контейнера
-        final List<Predicate> predicates = createContainerFilterPredicates(cb, query, root);
-        if (!predicates.isEmpty()) {
-            query.where(CollectionUtil.toArray(Predicate.class, predicates));
-        }
-
-        final TypedQuery<Long> tq = em.createQuery(query);
-        return tq.getSingleResult().intValue();
-    }
-
-
-    public List findListEntities(final int firstRow) {
-        final EntityManager em = lookup(EntityManager.class);
-        final CriteriaBuilder cb = em.getCriteriaBuilder();
-        final CriteriaQuery<TEntityType> query = cb.createQuery(entityClass);
-        final Root<TEntityType> root = query.from(entityClass);
-
-        query.select(root);
-
-        // Добавляем фильтр контейнера
-        final List<Predicate> predicates = createContainerFilterPredicates(cb, query, root);
-        if (!predicates.isEmpty()) {
-            query.where(CollectionUtil.toArray(Predicate.class, predicates));
-        }
-
-        // Добавляем сортировку
-        if (!sortByList.isEmpty()) {
-            final List<Order> orders = newArrayListWithCapacity(sortByList.size());
-            for (final Pair<String, Boolean> sortBy : sortByList)
-                orders.add(translateSortBy(sortBy, cb, root));
-            query.orderBy(orders);
-        }
-
-        final TypedQuery<TEntityType> tq = em.createQuery(query);
-        tq.setFirstResult(firstRow);
-        tq.setMaxResults(CONTAINER_PAGE_SIZE);
-        return tq.getResultList();
-    }
-
-    protected List<Predicate> createContainerFilterPredicates(final CriteriaBuilder cb, final CriteriaQuery<?> query, final Root<TEntityType> root) {
-        final Filter filter = getAppliedFiltersAsConjunction();
-        final List<Predicate> predicates = newLinkedList();
-        if (filter != null) {
-            predicates.add(FilterConverter.convertFilter(filter, cb, root));
-        }
-        return predicates;
-    }
-
-    private Order translateSortBy(final Pair<String, Boolean> sortBy, final CriteriaBuilder cb, final Root<TEntityType> root) {
-        final String sortedPropId = sortBy.getLeft();
-        // First split the id and build a Path.
-        final String[] idStrings = sortedPropId.split("\\.");
-        Path<TEntityType> path = null;
-        if (idStrings.length > 1 && !isEmbedded(idStrings[0])) {
-            // This is a nested property, we need to LEFT JOIN
-            path = root.join(idStrings[0], JoinType.LEFT);
-            for (int i = 1; i < idStrings.length; i++) {
-                if (i < idStrings.length - 1) {
-                    path = ((Join<?, ?>) path)
-                            .join(idStrings[i], JoinType.LEFT);
-                } else {
-                    path = path.get(idStrings[i]);
-                }
-            }
-        } else {
-            // non-nested or embedded, we can select as usual
-            path = AdvancedFilterableSupport.getPropertyPathTyped(root, sortedPropId);
-        }
-
-        // Make and return the Order instances.
-        if (sortBy.getRight()) {
-            return cb.asc(path);
-        } else {
-            return cb.codesc(path);
-        }
-    }
-
-    private boolean isEmbedded(final String propertyId) {
-        return entityClassMetadata.getProperty(propertyId).getPropertyKind() == PropertyKind.EMBEDDED;
-    }
-
-    public final void setCollection(final Collection<TEntityType> backingList1) {
-        if (backingList1 instanceof List) {
-            this.backingList = (List<TEntityType>) backingList1;
-        } else {
-            this.backingList = new ArrayList<TEntityType>(backingList1);
-        }
-        fireItemSetChange();
-    }
-
-    protected List<TEntityType> getBackingList() {
-        return backingList;
-    }
-
-    private WrapDynaClass getDynaClass() {
-        if (dynaClass == null && !backingList.isEmpty()) {
-            dynaClass = WrapDynaClass.createDynaClass(backingList.get(0).
-                    getClass());
-        }
-        return dynaClass;
-    }
 
     @Override
     public int indexOfId(final Object itemId) {
-        return getBackingList().indexOf(itemId);
+        return entityItemList.indexOf(itemId);
     }
 
     public int indexOf(final TEntityType bean) {
@@ -295,18 +176,18 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
     }
 
     @Override
-    public TEntityType getIdByIndex(final int index) {
-        return getBackingList().get(index);
+    public Object getIdByIndex(final int index) {
+        return entityItemList.get(index).getBean();
     }
 
     @Override
-    public List<TEntityType> getItemIds(final int startIndex, final int numberOfItems) {
+    public List getItemIds(final int startIndex, final int numberOfItems) {
         // Whooo!? Vaadin calls this method with numberOfItems == -1
         if (numberOfItems < 0) {
             throw new IllegalArgumentException();
         }
 
-        return getBackingList().subList(startIndex, startIndex + numberOfItems);
+        return entityItemList.subList(startIndex, startIndex + numberOfItems);
     }
 
     @Override
@@ -316,37 +197,35 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
 
     @Override
     public Item addItemAt(final int index, final Object newItemId) throws UnsupportedOperationException {
-        backingList.add(index, (TEntityType) newItemId);
-        fireItemSetChange();
-        return getItem(newItemId);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public TEntityType nextItemId(final Object itemId) {
-        final int i = getBackingList().indexOf(itemId) + 1;
-        if (getBackingList().size() == i) {
+    public Object nextItemId(final Object itemId) {
+        final int i = entityItemList.indexOf(itemId) + 1;
+        if (entityItemList.size() == i) {
             return null;
         }
-        return getBackingList().get(i);
+        return entityItemList.get(i);
     }
 
     @Override
-    public TEntityType prevItemId(final Object itemId) {
-        final int i = getBackingList().indexOf(itemId) - 1;
+    public Object prevItemId(final Object itemId) {
+        final int i = entityItemList.indexOf(itemId) - 1;
         if (i < 0) {
             return null;
         }
-        return getBackingList().get(i);
+        return entityItemList.get(i);
     }
 
     @Override
-    public TEntityType firstItemId() {
-        return (getBackingList().isEmpty()) ? null : getBackingList().get(0);
+    public Object firstItemId() {
+        return (entityItemList.isEmpty()) ? null : entityItemList.get(0);
     }
 
     @Override
-    public TEntityType lastItemId() {
-        return getBackingList().isEmpty() ? null : getBackingList().get(getBackingList().size() - 1);
+    public Object lastItemId() {
+        return entityItemList.isEmpty() ? null : entityItemList.get(entityItemList.size() - 1);
     }
 
     @Override
@@ -374,32 +253,17 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
         if (itemId == null) {
             return null;
         }
-        return new DynaBeanItem<TEntityType>((TEntityType) itemId);
+        return ((JpaEntityItem<TEntityType>) itemId);
     }
 
     @Override
     public Collection<String> getContainerPropertyIds() {
-        final ArrayList<String> properties = new ArrayList<String>();
-        if (getDynaClass() != null) {
-            for (final DynaProperty db : getDynaClass().getDynaProperties()) {
-                if (db.getType() != null) {
-                    properties.add(db.getName());
-                } else {
-                    // type may be null in some cases
-                    Logger.getLogger(JpaJazyContainer.class.getName()).log(
-                            Level.FINE, "Type not detected for property {0}",
-                            db.getName());
-                }
-            }
-            properties.remove("class");
-            properties.addAll(nestedProps);
-        }
-        return properties;
+        return propertyProvider.getPropertyIds();
     }
 
     @Override
     public Collection<?> getItemIds() {
-        return getBackingList();
+        return entityItemList;
     }
 
     @Override
@@ -409,55 +273,22 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
 
     @Override
     public Class<?> getType(final Object propertyId) {
-        final String propName = propertyId.toString();
-        final DynaProperty dynaProperty = getDynaClass().getDynaProperty(propName);
-        final Class<?> type;
-        if (dynaProperty != null)
-            type = dynaProperty.getType();
-        else if (nestedProps.contains(propName))
-            type = getNestedPropType(propName);
-        else
-            throw new IllegalArgumentException("Wrong propertyId");
-
-        if (type.isPrimitive()) {
-            // Vaadin can't handle primitive types in _all_ places, so use
-            // wrappers instead. FieldGroup works, but e.g. Table in _editable_
-            // mode fails for some reason
-            return ClassUtils.primitiveToWrapper(type);
-        }
-        return type;
-    }
-
-    private Class<?> getNestedPropType(String nestedProp) {
-        WrapDynaClass propClass = getDynaClass();
-        String prop = null;
-        Class<?> propType = Object.class;
-        while (resolver.hasNested(nestedProp)) {
-            prop = resolver.next(nestedProp);
-
-            propType = propClass.getDynaProperty(prop).getType();
-            propClass = WrapDynaClass.createDynaClass(propType);
-
-            nestedProp = resolver.remove(nestedProp);
-        }
-        return propType;
+        return propertyProvider.getPropType((String) propertyId);
     }
 
     @Override
     public int size() {
-        return getBackingList().size();
+        return entityItemList.size();
     }
 
     @Override
     public boolean containsId(final Object itemId) {
-        return getBackingList().contains((TEntityType) itemId);
+        return entityItemList.contains((JpaEntityItem<TEntityType>) itemId);
     }
 
     @Override
     public Item addItem(final Object itemId) throws UnsupportedOperationException {
-        backingList.add((TEntityType) itemId);
-        fireItemSetChange();
-        return getItem(itemId);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -467,11 +298,7 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
 
     @Override
     public boolean removeItem(final Object itemId) throws UnsupportedOperationException {
-        final boolean remove = backingList.remove((TEntityType) itemId);
-        if (remove) {
-            fireItemSetChange();
-        }
-        return remove;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -487,15 +314,7 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
 
     @Override
     public boolean removeAllItems() throws UnsupportedOperationException {
-        backingList.clear();
-        fireItemSetChange();
-        return true;
-    }
-
-    public JpaJazyContainer<TEntityType> addAll(final Collection<TEntityType> beans) {
-        backingList.addAll(beans);
-        fireItemSetChange();
-        return this;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void addItemSetChangeListener(
@@ -517,144 +336,5 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
     }
 
 
-    public class DynaBeanItem<T> implements Item {
-
-        private final Map<Object, Property> propertyIdToProperty = new HashMap<Object, Property>();
-
-        private class NestedProperty implements Property {
-
-            private final String propertyName;
-
-            public NestedProperty(final String property) {
-                propertyName = property;
-            }
-
-            @Override
-            public Object getValue() {
-                try {
-                    return PropertyUtils.getNestedProperty(bean, propertyName);
-                } catch (final Throwable e) {
-                    propagate(e);
-                }
-                return null;
-            }
-
-            @Override
-            public void setValue(final Object newValue) throws ReadOnlyException {
-                try {
-                    PropertyUtils.setNestedProperty(bean, propertyName, newValue);
-                } catch (final Throwable e) {
-                    propagate(e);
-                }
-            }
-
-            @Override
-            public Class getType() {
-                return JpaJazyContainer.this.getType(propertyName);
-            }
-
-            @Override
-            public boolean isReadOnly() {
-                try {
-                    return PropertyUtils.getPropertyDescriptor(bean, propertyName).getWriteMethod() == null;
-                } catch (final Throwable e) {
-                    propagate(e);
-                }
-                return true;
-            }
-
-            @Override
-            public void setReadOnly(final boolean newStatus) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        }
-
-        private class DynaProperty implements Property {
-
-            private final String propertyName;
-
-            public DynaProperty(final String property) {
-                propertyName = property;
-            }
-
-            @Override
-            public Object getValue() {
-                return getDynaBean().get(propertyName);
-            }
-
-            @Override
-            public void setValue(final Object newValue) throws ReadOnlyException {
-                getDynaBean().set(propertyName, newValue);
-            }
-
-            @Override
-            public Class getType() {
-                return JpaJazyContainer.this.getType(propertyName);
-            }
-
-            @Override
-            public boolean isReadOnly() {
-                final PropertyDescriptor descriptor = getDynaClass().getPropertyDescriptor(propertyName);
-                if (descriptor != null)
-                    return descriptor.getWriteMethod() == null;
-                else
-                    throw new IllegalStateException("Wrong property name");
-            }
-
-            @Override
-            public void setReadOnly(final boolean newStatus) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-        }
-
-        private T bean;
-
-        private transient DynaBean db;
-
-        public DynaBeanItem(final T bean) {
-            this.bean = bean;
-        }
-
-        public T getBean() {
-            return bean;
-        }
-
-        private DynaBean getDynaBean() {
-            if (db == null) {
-                db = new WrapDynaBean(bean);
-            }
-            return db;
-        }
-
-        @Override
-        public Property getItemProperty(final Object id) {
-            Property prop = propertyIdToProperty.get(id);
-            if (prop == null) {
-                if (nestedProps.contains(id))
-                    prop = new NestedProperty(id.toString());
-                else
-                    prop = new DynaProperty(id.toString());
-                propertyIdToProperty.put(id, prop);
-            }
-            return prop;
-        }
-
-        @Override
-        public Collection<String> getItemPropertyIds() {
-            return JpaJazyContainer.this.getContainerPropertyIds();
-        }
-
-        @Override
-        public boolean addItemProperty(final Object id, final Property property) throws UnsupportedOperationException {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public boolean removeItemProperty(final Object id) throws UnsupportedOperationException {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-    }
 }
 
