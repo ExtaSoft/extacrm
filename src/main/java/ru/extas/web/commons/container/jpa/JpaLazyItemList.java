@@ -10,7 +10,7 @@ import java.util.*;
  *         Date: 10.04.2015
  *         Time: 17:28
  */
-public class JpaLazyProvider<TEntityType extends IdentifiedObject> extends AbstractList<TEntityType> implements Serializable {
+public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends AbstractList<TEntityType> implements Serializable {
 
     // Vaadin table by default has 15 rows, 2x that to cache up an down
     // With this setting it is maximum of 2 requests that happens. With
