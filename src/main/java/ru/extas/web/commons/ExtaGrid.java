@@ -15,7 +15,6 @@ import com.vaadin.ui.*;
 import com.wcs.wcslib.vaadin.widget.filtertablestate.api.FilterTableStateHandler;
 import com.wcs.wcslib.vaadin.widget.filtertablestate.api.model.FilterTableStateProfile;
 import com.wcs.wcslib.vaadin.widget.filtertablestate.extension.FilterTableState;
-import com.wcs.wcslib.vaadin.widget.filtertablestate.extension.FilterTableStateGenerator;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
@@ -25,6 +24,7 @@ import org.tepi.filtertable.FilterGenerator;
 import org.tepi.filtertable.FilterTable;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.common.ArchivedObject;
+import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.security.SecuredObject;
 import ru.extas.model.security.UserRole;
 import ru.extas.model.settings.UserGridState;
@@ -32,6 +32,8 @@ import ru.extas.server.common.ArchiveService;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.server.settings.UserGridStateService;
 import ru.extas.web.commons.component.PastDateIntervalField;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.RefreshBeanContainer;
 import ru.extas.web.commons.window.DownloadFileWindow;
 import ru.extas.web.users.SecuritySettingsForm;
 
@@ -41,9 +43,11 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
@@ -93,6 +97,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         return getClass().getName();
     }
 
+    public Container getContainer() {
+        return container;
+    }
+
     public enum Mode {
         TABLE,
         DETAIL_LIST
@@ -117,9 +125,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         public void open4Edit(final ExtaEditForm form) {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
-                    grid.refreshContainerItem(form.getEntityId());
+                    grid.refreshContainerEntity(form.getEntity());
                 }
-                grid.selectObject(form.getEntityId());
+                grid.selectEntity(form.getEntity());
             });
             FormUtils.showModalWin(form);
         }
@@ -129,11 +137,25 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
                     grid.refreshContainer();
-                    grid.selectObject(form.getEntityId());
+                    grid.selectEntity(form.getEntity());
                 }
             });
             FormUtils.showModalWin(form);
         }
+    }
+
+    public void selectEntity(final TEntity entity) {
+        Object itemId = entity;
+        if (container instanceof ExtaDbContainer)
+            itemId = ((ExtaDbContainer) container).getEntityItemId((IdentifiedObject) entity);
+        selectObject(itemId);
+    }
+
+    protected void refreshContainerEntity(final TEntity entity) {
+        Object itemId = entity;
+        if(container instanceof ExtaDbContainer)
+            itemId = ((ExtaDbContainer)container).getEntityItemId((IdentifiedObject) entity);
+        refreshContainerItem(itemId);
     }
 
     /**
@@ -520,54 +542,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         // Создаем таблицу
         table = new FilterTable();
         // Поддержка фильтрации
-        table.setFilterGenerator(new FilterGenerator() {
-            @Override
-            public Container.Filter generateFilter(Object propertyId, Object value) {
-                return null;
-            }
-
-            @Override
-            public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
-                if (originatingField instanceof PastDateIntervalField) {
-                    Interval interval = (Interval) originatingField.getValue();
-                    if (interval != null) {
-                        Class<?> type = container.getType(propertyId);
-                        if (type == LocalDate.class)
-                            return new Between(propertyId,
-                                    interval.getStart().toLocalDate(),
-                                    interval.getEnd().toLocalDate());
-                        else
-                            return new Between(propertyId,
-                                    interval.getStart().withTimeAtStartOfDay(),
-                                    interval.getEnd().withTime(23,59,59,999));
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            public AbstractField<?> getCustomFilterComponent(Object propertyId) {
-                Class<?> type = container.getType(propertyId);
-                if (type == DateTime.class || type == LocalDate.class)
-                    return new PastDateIntervalField("", "Нажмите для изменения временного интервала фильтра");
-                return null;
-            }
-
-            @Override
-            public void filterRemoved(Object propertyId) {
-
-            }
-
-            @Override
-            public void filterAdded(Object propertyId, Class<? extends Container.Filter> filterType, Object value) {
-
-            }
-
-            @Override
-            public Container.Filter filterGeneratorFailed(Exception reason, Object propertyId, Object value) {
-                return null;
-            }
-        });
+        table.setFilterGenerator(createFilterGenerator());
 
         // Общие настройки таблицы
         table.setContainerDataSource(container);
@@ -642,6 +617,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
         // Сохранение состояния таблицы
         new FilterTableState().extend(table, createFilterTableStateHandler());
+    }
+
+    protected FilterGenerator createFilterGenerator() {
+        return new CommonFilterGenerator();
     }
 
     private FilterTableStateHandler createFilterTableStateHandler() {
@@ -748,8 +727,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      */
     protected void refreshContainer() {
         final Object itemId = table.getValue();
-        if (container instanceof ExtaJpaContainer)
-            ((ExtaJpaContainer) container).refresh();
+        if (container instanceof ExtaDbContainer)
+            ((ExtaDbContainer) container).refresh();
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
         table.setValue(itemId);
@@ -761,8 +740,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
      * @param itemId a {@link java.lang.Object} object.
      */
     protected void refreshContainerItem(final Object itemId) {
-        if (container instanceof ExtaJpaContainer)
-            ((ExtaJpaContainer) container).refreshItem(itemId);
+        if (container instanceof ExtaDbContainer)
+            ((ExtaDbContainer) container).refreshItem(itemId);
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
     }
@@ -890,6 +869,55 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         public void fire(final Set itemIds) {
             final TEntity entity = getFirstEntity(itemIds);
             doEditObject(entity);
+        }
+    }
+
+    protected class CommonFilterGenerator implements FilterGenerator {
+        @Override
+        public Container.Filter generateFilter(final Object propertyId, final Object value) {
+            return null;
+        }
+
+        @Override
+        public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
+            if (originatingField instanceof PastDateIntervalField) {
+                final Interval interval = (Interval) originatingField.getValue();
+                if (interval != null) {
+                    final Class<?> type = container.getType(propertyId);
+                    if (type == LocalDate.class)
+                        return new Between(propertyId,
+                                interval.getStart().toLocalDate(),
+                                interval.getEnd().toLocalDate());
+                    else
+                        return new Between(propertyId,
+                                interval.getStart().withTimeAtStartOfDay(),
+                                interval.getEnd().withTime(23,59,59,999));
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
+            final Class<?> type = container.getType(propertyId);
+            if (type == DateTime.class || type == LocalDate.class)
+                return new PastDateIntervalField("", "Нажмите для изменения временного интервала фильтра");
+            return null;
+        }
+
+        @Override
+        public void filterRemoved(final Object propertyId) {
+
+        }
+
+        @Override
+        public void filterAdded(final Object propertyId, final Class<? extends Container.Filter> filterType, final Object value) {
+
+        }
+
+        @Override
+        public Container.Filter filterGeneratorFailed(final Exception reason, final Object propertyId, final Object value) {
+            return null;
         }
     }
 }

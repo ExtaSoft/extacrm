@@ -31,7 +31,6 @@ public class AnalyticsView extends ExtaAbstractView {
         final LazyTabSheet analyticsSheet = new LazyTabSheet();
         analyticsSheet.setSizeFull();
         analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new SalesChartMain()), "Продажи");
-        analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new SalesChartByBanks()), "Банки");
         analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new AgreedRejectedSalesChart()), "Одобрения/Отказы");
         analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new SalesChartByProduct()), "Продукты");
         analyticsSheet.addTab(new LazyTabSheet.LazyTab(() -> new SalesChartByMotor()), "Техника");

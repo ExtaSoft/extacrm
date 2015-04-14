@@ -52,15 +52,7 @@ public enum ExtaDomain {
 	/**
 	 * Лиды новые
 	 */
-	LEADS_NEW("leads/new"),
-	/**
-	 * Лиды квалифицированные
-	 */
-	LEADS_QUAL("leads/qualified"),
-	/**
-	 * Лиды закрытые
-	 */
-	LEADS_CLOSED("leads/closed"),
+	SALES_LEADS("sales/leads"),
 	/**
 	 * Продажи "Открытые"
 	 */

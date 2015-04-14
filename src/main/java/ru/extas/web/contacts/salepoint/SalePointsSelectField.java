@@ -1,14 +1,14 @@
 package ru.extas.web.contacts.salepoint;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.web.commons.*;
-import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
-import ru.extas.web.contacts.legalentity.LegalEntitySelectWindow;
-import ru.extas.web.contacts.salepoint.SalePointsGrid;
+import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.ItemAction;
+import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 
 import java.util.List;
 import java.util.Set;

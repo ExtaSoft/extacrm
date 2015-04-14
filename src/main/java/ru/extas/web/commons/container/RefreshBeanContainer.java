@@ -1,6 +1,4 @@
-package ru.extas.web.commons;
-
-import com.vaadin.data.util.BeanItemContainer;
+package ru.extas.web.commons.container;
 
 import java.util.Collection;
 

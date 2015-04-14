@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.security.UserProfile;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class UsersGrid extends ExtaGrid<UserProfile> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaJpaContainer<UserProfile> container = new ExtaJpaContainer<>(UserProfile.class);
+		final ExtaDbContainer<UserProfile> container = new ExtaDbContainer<>(UserProfile.class);
 		container.addNestedContainerProperty("employee.name");
         container.sort(new Object[]{"employee.name"}, new boolean[]{true});
 		return container;

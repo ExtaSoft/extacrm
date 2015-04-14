@@ -6,6 +6,7 @@ package ru.extas.web.commons;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.converter.Converter;
+import ru.extas.model.common.AuditedObject_;
 import ru.extas.web.commons.DataDeclMapping.PresentFlag;
 import ru.extas.web.users.LoginToUserNameConverter;
 
@@ -132,15 +133,15 @@ public class GridDataDecl implements Serializable {
      * Добавляет маркеры создания/модификации записи
      */
     protected void addDefaultMappings() {
-	    addMapping("lastModifiedBy", "Кто изменил", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
-	    addMapping("lastModifiedDate", "Когда изменил", EnumSet.of(PresentFlag.COLLAPSED)/*
+	    addMapping(AuditedObject_.lastModifiedBy.getName(), "Кто изменил", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
+	    addMapping(AuditedObject_.lastModifiedDate.getName(), "Дата изменения", EnumSet.of(PresentFlag.COLLAPSED)/*
                                                                                      * ,
 																					 * StringToJodaDTConverter
 																					 * .
 																					 * class
 																					 */);
-	    addMapping("createdBy", "Кто создал", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
-	    addMapping("createdDate", "Когда создал", EnumSet.of(PresentFlag.COLLAPSED)/*
+	    addMapping(AuditedObject_.createdBy.getName(), "Кто создал", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
+	    addMapping(AuditedObject_.createdDate.getName(), "Дата создания", EnumSet.of(PresentFlag.COLLAPSED)/*
                                                                                  * ,
 																				 * StringToJodaDTConverter
 																				 * .

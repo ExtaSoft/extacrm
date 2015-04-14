@@ -3,6 +3,7 @@ package ru.extas.web.users;
 import com.vaadin.data.Container;
 import ru.extas.model.security.UserGroup;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 import java.util.List;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class UserGroupGrid extends ExtaGrid<UserGroup> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<UserGroup> container = new ExtaJpaContainer<>(UserGroup.class);
+        final ExtaDbContainer<UserGroup> container = new ExtaDbContainer<>(UserGroup.class);
         return container;
     }
 

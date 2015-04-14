@@ -2,19 +2,18 @@ package ru.extas.web.contacts.employee;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 import java.util.Optional;
 import java.util.Set;
-
-import static com.google.common.collect.Sets.newHashSet;
-import static ru.extas.web.commons.TableUtils.fullInitTable;
 
 /**
  * Реализует ввод/редактирование списка сотрудников для компании и торговой точки
@@ -43,13 +42,14 @@ public class EmployeeFieldMulty extends CustomField<Set> {
     @Override
     protected Component initContent() {
         grid = new EmployeesGrid() {
+            {
+                setCompanySupplier(companySupplier);
+                setSalePointSupplier(salePointSupplier);
+            }
+
             @Override
             protected Container createContainer() {
-                final ExtaJpaContainer<Employee> cont = (ExtaJpaContainer<Employee>) super.createContainer();
-                Optional.ofNullable(companySupplier)
-                        .ifPresent(s -> cont.addContainerFilter(new Compare.Equal("company", s.get())));
-                Optional.ofNullable(salePointSupplier)
-                        .ifPresent(s -> cont.addContainerFilter(new Compare.Equal("workPlace", s.get())));
+                final ExtaDbContainer<Employee> cont = (ExtaDbContainer<Employee>) super.createContainer();
                 Optional.ofNullable(legalEntitySupplier)
                         .ifPresent(s -> cont.addContainerFilter(new Compare.Equal("legalWorkPlace", s.get())));
 
@@ -61,7 +61,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
                 final EmployeeEditForm form = (EmployeeEditForm) super.createEditForm(employee, isInsert);
                 form.addCloseFormListener(e -> {
                     if (form.isSaved() && isInsert)
-                        setValue(((ExtaJpaContainer) container).getEntitiesSet());
+                        setValue(((ExtaDbContainer) container).getEntitiesSet());
                 });
                 form.setCompanySupplier(companySupplier);
                 form.setSalePointSupplier(salePointSupplier);

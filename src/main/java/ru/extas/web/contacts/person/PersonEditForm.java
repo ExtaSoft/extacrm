@@ -52,6 +52,8 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private OptionGroup sexField;
     @PropertyId("phone")
     private PhoneField cellPhoneField;
+    @PropertyId("secondPhone")
+    private PhoneField secondPhoneField;
     @PropertyId("workPhone")
     private PhoneField workPhoneField;
     @PropertyId("homePhone")
@@ -798,6 +800,9 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         formLayout.addComponent(new FormGroupHeader("Контактные данные"));
         cellPhoneField = new PhoneField("Мобильный телефон");
         formLayout.addComponent(cellPhoneField);
+
+        secondPhoneField = new PhoneField("Доп. мобильный телефон");
+        formLayout.addComponent(secondPhoneField);
 
         workPhoneField = new PhoneField("Рабочий телефон");
         formLayout.addComponent(workPhoneField);

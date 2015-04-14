@@ -13,6 +13,8 @@ import ru.extas.model.insurance.Insurance;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
 import java.io.ByteArrayOutputStream;
@@ -68,7 +70,7 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Insurance> container = SecuredDataContainer.create(Insurance.class, ExtaDomain.INSURANCE_PROP);
+        final ExtaDbContainer<Insurance> container = SecuredDataContainer.create(Insurance.class, ExtaDomain.INSURANCE_PROP);
         container.addNestedContainerProperty("dealer.name");
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");

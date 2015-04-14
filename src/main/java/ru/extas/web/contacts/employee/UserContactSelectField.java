@@ -1,6 +1,5 @@
 package ru.extas.web.contacts.employee;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.filter.IsNull;
 import com.vaadin.data.util.filter.Not;
 import com.vaadin.shared.ui.combobox.FilteringMode;
@@ -8,8 +7,9 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.PopupView;
 import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.Employee_;
 import ru.extas.model.contacts.Person;
-import ru.extas.web.commons.ExtaJpaContainer;
+import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.contacts.NameUtils;
 
 /**
@@ -60,7 +60,7 @@ public class UserContactSelectField extends CustomField<Employee> {
     private class UserContactSelect extends com.vaadin.ui.ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaJpaContainer<Employee> container;
+        protected final ExtaDbContainer<Employee> container;
 
         protected UserContactSelect() {
             super("");
@@ -76,17 +76,18 @@ public class UserContactSelectField extends CustomField<Employee> {
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
-            this.container = new ExtaJpaContainer<>(Employee.class);
+            this.container = new ExtaDbContainer<>(Employee.class);
             if (filter != null) {
                 this.container.addContainerFilter(filter);
             }
+            container.sort(new Object[]{Employee_.name.getName()}, new boolean[]{true});
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);
             setContainerDataSource(this.container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-            setConverter(new SingleSelectConverter<Employee>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);

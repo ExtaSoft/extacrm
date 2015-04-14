@@ -3,11 +3,13 @@
  */
 package ru.extas.web.sale;
 
+import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.ExtaGrid;
 import ru.extas.web.commons.SubdomainInfo;
 import ru.extas.web.commons.SubdomainInfoImpl;
 import ru.extas.web.commons.SubdomainView;
+import ru.extas.web.lead.LeadsGrid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,19 +39,25 @@ public class SalesView extends SubdomainView {
     @Override
     protected List<SubdomainInfo> getSubdomainInfo() {
         final ArrayList<SubdomainInfo> ret = newArrayList();
-        ret.add(new SubdomainInfoImpl("Открытые", ExtaDomain.SALES_OPENED) {
+        ret.add(new SubdomainInfoImpl("Новые лиды", ExtaDomain.SALES_LEADS) {
+            @Override
+            public ExtaGrid createGrid() {
+                return new LeadsGrid(Lead.Status.NEW);
+            }
+        });
+        ret.add(new SubdomainInfoImpl("Открытые продажи", ExtaDomain.SALES_OPENED) {
             @Override
             public ExtaGrid createGrid() {
                 return new SalesGrid(ExtaDomain.SALES_OPENED);
             }
         });
-        ret.add(new SubdomainInfoImpl("Завершенные", ExtaDomain.SALES_SUCCESSFUL) {
+        ret.add(new SubdomainInfoImpl("Завершенные продажи", ExtaDomain.SALES_SUCCESSFUL) {
             @Override
             public ExtaGrid createGrid() {
                 return new SalesGrid(ExtaDomain.SALES_SUCCESSFUL);
             }
         });
-        ret.add(new SubdomainInfoImpl("Отмененные", ExtaDomain.SALES_CANCELED) {
+        ret.add(new SubdomainInfoImpl("Отмененные продажи", ExtaDomain.SALES_CANCELED) {
             @Override
             public ExtaGrid createGrid() {
                 return new SalesGrid(ExtaDomain.SALES_CANCELED);

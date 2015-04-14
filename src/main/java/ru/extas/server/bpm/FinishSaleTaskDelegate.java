@@ -44,7 +44,6 @@ public void execute(final DelegateExecution execution) throws Exception {
 	if (processVariables.containsKey("sale")) {
 		final Sale sale = (Sale) processVariables.get("sale");
 		sale.setStatus(Sale.Status.FINISHED);
-		sale.setResult(Sale.Result.SUCCESSFUL);
 		final SaleRepository saleRepository = lookup(SaleRepository.class);
 		saleRepository.secureSave(sale);
 	}

@@ -33,7 +33,6 @@ import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
 import ru.extas.web.insurance.InsuranceView;
-import ru.extas.web.lead.LeadsView;
 import ru.extas.web.motor.MotorView;
 import ru.extas.web.product.ProductView;
 import ru.extas.web.sale.SalesView;
@@ -258,10 +257,8 @@ public class ExtaCrmUI extends UI {
                 TasksView.class, EnumSet.of(ExtaDomain.TASKS_TODAY, ExtaDomain.TASKS_WEEK, ExtaDomain.TASKS_MONTH, ExtaDomain.TASKS_ALL));
         mainMenu.addChapter("Контакты", "Клиенты, контрагенты и сотрудники", Fontello.CONTACTS,
                 ContactsView.class, EnumSet.of(ExtaDomain.PERSON, ExtaDomain.COMPANY, ExtaDomain.LEGAL_ENTITY, ExtaDomain.SALE_POINT, ExtaDomain.EMPLOYEE));
-        mainMenu.addChapter("Лиды", "Входящие лиды", Fontello.INBOX_ALT,
-                LeadsView.class, EnumSet.of(ExtaDomain.LEADS_NEW, ExtaDomain.LEADS_QUAL, ExtaDomain.LEADS_CLOSED));
         mainMenu.addChapter("Продажи", "Раздел управления продажами", Fontello.DOLLAR,
-                SalesView.class, EnumSet.of(ExtaDomain.SALES_OPENED, ExtaDomain.SALES_SUCCESSFUL, ExtaDomain.SALES_CANCELED));
+                SalesView.class, EnumSet.of(ExtaDomain.SALES_LEADS, ExtaDomain.SALES_OPENED, ExtaDomain.SALES_SUCCESSFUL, ExtaDomain.SALES_CANCELED));
         mainMenu.addChapter("Страхование", "Раздел посвященный страхованию", Fontello.UMBRELLA_1,
                 InsuranceView.class, EnumSet.of(ExtaDomain.INSURANCE_PROP, ExtaDomain.INSURANCE_BSO, ExtaDomain.INSURANCE_A_7, ExtaDomain.INSURANCE_TRANSFER));
         mainMenu.addChapter("Аналитика", "Раздел аналитической и статистической информации", FontAwesome.BAR_CHART_O,

@@ -5,12 +5,10 @@ import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 import java.util.Set;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Поле ввода/редактирования списка торговых точек компании
@@ -44,7 +42,7 @@ public class SalePointsField extends CustomField<Set> {
                 final ExtaEditForm<SalePoint> form = super.createEditForm(salePoint, isInsert);
                 form.addCloseFormListener(e -> {
                     if (form.isSaved() && isInsert)
-                        setValue(((ExtaJpaContainer) container).getEntitiesSet());
+                        setValue(((ExtaDbContainer) container).getEntitiesSet());
                 });
                 form.setReadOnly(isReadOnly());
                 return form;

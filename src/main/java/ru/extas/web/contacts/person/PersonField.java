@@ -1,16 +1,16 @@
 package ru.extas.web.contacts.person;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Person;
-import ru.extas.web.commons.ExtaJpaContainer;
+import ru.extas.model.contacts.Person_;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Optional;
@@ -78,7 +78,7 @@ public class PersonField extends CustomField<Person> {
     private static class PersonSelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaJpaContainer<Person> container;
+        protected final ExtaDbContainer<Person> container;
 
         protected PersonSelectField(final String caption) {
             this(caption, "Выберите существующий контакт или введите новый");
@@ -92,17 +92,19 @@ public class PersonField extends CustomField<Person> {
             setInputPrompt("контакт...");
             setWidth(25, Unit.EM);
             setImmediate(true);
+            setBuffered(true);
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
-            container = new ExtaJpaContainer<>(Person.class);
+            container = new ExtaDbContainer<>(Person.class);
+            container.sort(new Object[]{Person_.name.getName()}, new boolean[]{true});
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-            setConverter(new SingleSelectConverter<Person>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -137,7 +139,7 @@ public class PersonField extends CustomField<Person> {
             if (!isReadOnly()) {
                 personSelectField = new PersonSelectField("Имя", "Введите или выберите имя контакта");
                 personSelectField.setInputPrompt("Фамилия Имя Отчество");
-                personSelectField.setValue(field.getValue());
+                personSelectField.setPropertyDataSource(field.getPropertyDataSource());
                 personSelectField.setNewItemsAllowed(true);
                 personSelectField.setNewItemHandler(newItemCaption -> {
                     final Person newObj = new Person();
@@ -150,7 +152,7 @@ public class PersonField extends CustomField<Person> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             personSelectField.refreshContainer();
-                            personSelectField.setValue(editWin.getEntityId());
+                            personSelectField.setConvertedValue(editWin.getEntity());
                         }
                         popupView.setPopupVisible(true);
                     });

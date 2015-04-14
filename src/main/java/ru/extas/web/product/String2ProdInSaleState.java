@@ -1,13 +1,9 @@
 package ru.extas.web.product;
 
 import com.google.common.collect.HashBiMap;
-import com.vaadin.data.util.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.web.commons.converters.String2EnumConverter;
-
-import java.util.Locale;
 
 /**
  * Строковое представление статусов продукта в продаже
@@ -34,6 +30,8 @@ public class String2ProdInSaleState extends String2EnumConverter {
         map.put(ProductInSale.State.IN_PROGRESS, "На рассмотрении");
         map.put(ProductInSale.State.AGREED, "Одобрен");
         map.put(ProductInSale.State.REJECTED, "Отклонен");
+        map.put(ProductInSale.State.SOLD_OUT, "Сделка оформлена");
+        map.put(ProductInSale.State.NEW, "Новая заявка");
         return map;
     }
 

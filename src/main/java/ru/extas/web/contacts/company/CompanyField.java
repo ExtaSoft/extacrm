@@ -1,21 +1,26 @@
 package ru.extas.web.contacts.company;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
+import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.And;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
-import ru.extas.web.commons.ExtaJpaContainer;
+import ru.extas.model.contacts.Company_;
+import ru.extas.security.CompanySecurityFilter;
+import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.WebSiteLinkField;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
+import java.util.Objects;
 import java.util.Optional;
-
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Выбор компании с возможностью добавления нового
@@ -29,14 +34,26 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class CompanyField extends CustomField<Company> {
 
+    private final boolean secured;
     private PopupView popupView;
     private PopupCompanyContent companyContent;
+    private SupplierSer<String> regionSupplier;
+    private Container.Filter filter;
 
     public CompanyField(final String caption) {
-        this(caption, "Введите или выберите компанию");
+        this(caption, "Введите или выберите компанию", false);
     }
 
     public CompanyField(final String caption, final String description) {
+        this(caption, "Введите или выберите компанию", false);
+    }
+
+    public CompanyField(final String caption, final boolean secured) {
+        this(caption, "Введите или выберите компанию", secured);
+    }
+
+    public CompanyField(final String caption, final String description, final boolean secured) {
+        this.secured = secured;
         setCaption(caption);
         setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
@@ -61,9 +78,37 @@ public class CompanyField extends CustomField<Company> {
         return Company.class;
     }
 
+    public void changeRegion() {
+        if (regionSupplier != null) {
+            final Company company = getValue();
+            if (company != null) {
+                if (!Objects.equals(this.regionSupplier.get(), company.getRegion())) {
+                    companyContent.refreshFields(null);
+                    markAsDirtyRecursive();
+                }
+            }
+        }
+    }
+
+    public SupplierSer<String> getRegionSupplier() {
+        return regionSupplier;
+    }
+
+    public void setRegionSupplier(final SupplierSer<String> regionSupplier) {
+        this.regionSupplier = regionSupplier;
+    }
+
+    public Container.Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(final Container.Filter filter) {
+        this.filter = filter;
+    }
+
     private class CompanyComboBox extends ComboBox {
 
-        protected final ExtaJpaContainer<Company> container;
+        protected final ExtaDbContainer<Company> container;
 
         /**
          * <p>Constructor for CompanySelect.</p>
@@ -91,22 +136,42 @@ public class CompanyField extends CustomField<Company> {
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
-            container = new ExtaJpaContainer<>(Company.class);
+            if (secured)
+                container = new SecuredDataContainer<Company>(new CompanySecurityFilter());
+            else
+                container = new ExtaDbContainer<>(Company.class);
             container.sort(new Object[]{"name"}, new boolean[]{true});
+            setContainerFilter();
 
             // Устанавливаем контент выбора
             setFilteringMode(FilteringMode.CONTAINS);
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-            setConverter(new SingleSelectConverter<Company>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
         }
 
         public void refreshContainer() {
+            setContainerFilter();
             container.refresh();
+            final Company company = (Company) getConvertedValue();
+            if (company != null)
+                if (regionSupplier != null && !Objects.equals(company.getRegion(), regionSupplier.get()))
+                    setConvertedValue(null);
+        }
+
+        protected void setContainerFilter() {
+            container.removeAllContainerFilters();
+            Container.Filter fltr = null;
+            if (regionSupplier != null && regionSupplier.get() != null)
+                fltr = new Compare.Equal(Company_.region.getName(), regionSupplier.get());
+            if (filter != null)
+                fltr = fltr != null ? new And(fltr, filter) : filter;
+            if (fltr != null)
+                container.addContainerFilter(fltr);
         }
     }
 
@@ -148,7 +213,7 @@ public class CompanyField extends CustomField<Company> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             select.refreshContainer();
-                            select.setValue(editWin.getEntityId());
+                            select.setConvertedValue(editWin.getEntity());
                         }
                         popupView.setPopupVisible(true);
                     });

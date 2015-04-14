@@ -115,6 +115,11 @@
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager"/>
+    <bean id="sharedTransactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"/>
+        <!--<property name="isolationLevelName" value="ISOLATION_READ_UNCOMMITTED"/>-->
+        <!--<property name="timeout" value="30"/>-->
+    </bean>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- BPMN Process Engine Configuration -->

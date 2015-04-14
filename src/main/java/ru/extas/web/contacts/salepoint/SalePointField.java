@@ -1,20 +1,23 @@
 package ru.extas.web.contacts.salepoint;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
+import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.filter.And;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.contacts.SalePoint_;
+import ru.extas.security.SalePointSecurityFilter;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Objects;
@@ -33,10 +36,16 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class SalePointField extends CustomField<SalePoint> {
 
+    private final boolean secured;
     private SupplierSer<Company> companySupplier;
+    private Container.Filter filter;
 
     private PopupView popupView;
     private PopupSalePointContent salePointContent;
+
+    public SalePointField(final String caption, final String description) {
+        this(caption, description, false);
+    }
 
     /**
      * <p>Constructor for SalePointSelect.</p>
@@ -44,7 +53,8 @@ public class SalePointField extends CustomField<SalePoint> {
      * @param caption     a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
      */
-    public SalePointField(final String caption, final String description) {
+    public SalePointField(final String caption, final String description, final boolean secured) {
+        this.secured = secured;
         setCaption(caption);
         setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
@@ -86,9 +96,17 @@ public class SalePointField extends CustomField<SalePoint> {
         }
     }
 
+    public Container.Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(final Container.Filter filter) {
+        this.filter = filter;
+    }
+
     private class SalePointComboBox extends ComboBox {
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaJpaContainer<SalePoint> container;
+        protected final ExtaDbContainer<SalePoint> container;
 
         public SalePointComboBox() {
             this("Название");
@@ -109,7 +127,10 @@ public class SalePointField extends CustomField<SalePoint> {
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
-            container = new ExtaJpaContainer<>(SalePoint.class);
+            if (secured)
+                container = new SecuredDataContainer<SalePoint>(new SalePointSecurityFilter());
+            else
+                container = new ExtaDbContainer<>(SalePoint.class);
             container.sort(new Object[]{SalePoint_.name.getName()}, new boolean[]{true});
             setContainerFilter();
 
@@ -118,7 +139,7 @@ public class SalePointField extends CustomField<SalePoint> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId(SalePoint_.name.getName());
-            setConverter(new SingleSelectConverter<SalePoint>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -139,8 +160,13 @@ public class SalePointField extends CustomField<SalePoint> {
 
         protected void setContainerFilter() {
             container.removeAllContainerFilters();
-            if (companySupplier != null)
-                container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
+            Filter fltr = null;
+            if (companySupplier != null && companySupplier.get() != null)
+                fltr = new Compare.Equal("company", companySupplier.get());
+            if (filter != null)
+                fltr = fltr != null ? new And(fltr, filter) : filter;
+            if (fltr != null)
+                container.addContainerFilter(fltr);
         }
 
     }
@@ -187,7 +213,7 @@ public class SalePointField extends CustomField<SalePoint> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             contactSelect.refreshContainer();
-                            contactSelect.setValue(editWin.getEntityId());
+                            contactSelect.setConvertedValue(editWin.getEntity());
                         }
                         popupView.setPopupVisible(true);
                     });

@@ -23,13 +23,13 @@ import static com.google.common.collect.Sets.newHashSet;
 public class Company extends SecuredObject {
 
     private static final long serialVersionUID = -5681940552175752858L;
-    private static final int CATEGORY_LENGTH = 50;
 
-    private static final String BANK_CATEGORY = "";
+    private static final int CATEGORY_LENGTH = 50;
+    private static final int NAME_LENGTH = 100;
 
     // Имя контакта
-    @Column(length = Contact.NAME_LENGTH)
-    @Size(max = Contact.NAME_LENGTH)
+    @Column(length = NAME_LENGTH)
+    @Size(max = NAME_LENGTH)
     @NotNull
     private String name;
 

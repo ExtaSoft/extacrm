@@ -7,7 +7,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>1.4.2</version>
+    <version>1.5.0</version>
 
     <properties>
         <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
@@ -18,7 +18,7 @@
         <joda-time.version>2.7</joda-time.version>
         <gson.version>2.3.1</gson.version>
 
-        <vaadin.version>7.4.2</vaadin.version>
+        <vaadin.version>7.4.3</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <vaadin.charts.version>2.0.0</vaadin.charts.version>
         <vaadin.jpacontainer.version>3.2.0</vaadin.jpacontainer.version>
@@ -31,6 +31,8 @@
         <vaadin.confirmdialog.version>2.1.2</vaadin.confirmdialog.version>
         <vaadin.sizereporter.version>0.1.3</vaadin.sizereporter.version>
         <vaadin.animator.version>2.0.0</vaadin.animator.version>
+        <vaadin.dom.version>0.1.0</vaadin.dom.version>
+        <vaadin.viritin.version>1.31</vaadin.viritin.version>
 
         <servlet-api.version>2.5</servlet-api.version>
         <activiti-version>5.17.0</activiti-version>
@@ -40,14 +42,13 @@
 
         <spring.version>4.1.5.RELEASE</spring.version>
         <spring-data.version>1.7.2.RELEASE</spring-data.version>
-        <eclipselink.version>2.6.0-M3</eclipselink.version>
+        <eclipselink.version>2.6.0</eclipselink.version>
         <jasperreports.version>6.0.0</jasperreports.version>
         <groovy.version>2.3.7</groovy.version>
         <guava.version>18.0</guava.version>
         <mysql.connector.version>5.1.26</mysql.connector.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <hibernate-validator.version>4.3.2.Final</hibernate-validator.version>
-        <vaadin.dom.version>0.1.0</vaadin.dom.version>
     </properties>
 
     <profiles>
@@ -364,6 +365,11 @@
             <artifactId>sizereporter</artifactId>
             <version>${vaadin.sizereporter.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.vaadin</groupId>
+            <artifactId>viritin</artifactId>
+            <version>${vaadin.viritin.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -672,6 +678,9 @@
                         <fileset>
                             <directory>src/main/webapp/VAADIN/widgetsets</directory>
                         </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/VAADIN/gwt-unitCache</directory>
+                        </fileset>
                     </filesets>
                 </configuration>
             </plugin>
@@ -690,6 +699,8 @@
                         way compatible with Vaadin eclipse plugin. -->
                     <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
                     <hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
+                    <persistentunitcachedir>${project.build.directory}</persistentunitcachedir>
+                    <deploy>${project.build.directory}/gwt-deploy</deploy>
                     <noServer>true</noServer>
                     <!-- Remove draftCompile when project is ready -->
                     <draftCompile>false</draftCompile>

@@ -1,8 +1,9 @@
-package ru.extas.web.commons;
+package ru.extas.web.commons.container;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Compare;
 import ru.extas.model.common.ArchivedObject;
+import ru.extas.web.commons.ArchivedContainer;
 
 import java.util.Collection;
 

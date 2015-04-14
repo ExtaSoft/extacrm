@@ -1,15 +1,14 @@
 package ru.extas.web.sale;
 
-import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.sale.Sale;
-import ru.extas.model.sale.SaleComment;
-import ru.extas.model.sale.SaleFileContainer;
+import ru.extas.model.sale.*;
 import ru.extas.server.contacts.EmployeeRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.sale.SaleRepository;
@@ -25,13 +24,15 @@ import ru.extas.web.contacts.ClientField;
 import ru.extas.web.contacts.employee.DealerEmployeeField;
 import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
-import ru.extas.web.contacts.salepoint.SalePointField;
+import ru.extas.web.contacts.legalentity.SPLegalEntityField;
+import ru.extas.web.contacts.salepoint.DealerSalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorModelSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.List;
 
 import static ru.extas.model.common.ModelUtils.evictCache;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -64,7 +65,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private EditField mototPriceField;
     // Мотосалон
     @PropertyId("dealer")
-    private SalePointField dealerField;
+    private DealerSalePointField dealerField;
+    @PropertyId("dealerLE")
+    private SPLegalEntityField dealerLEField;
     @PropertyId("comment")
     private TextArea commentField;
     @PropertyId("productInSales")
@@ -125,10 +128,11 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
-        dealerField = new SalePointField("Мотосалон", "Введите точку продаж");
+        dealerField = new DealerSalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
         dealerField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();
+            dealerLEField.changeSalePoint();
             if (responsibleField.getValue() == null) {
                 SalePoint sp = dealerField.getValue();
                 if (sp.getCurator() != null)
@@ -136,6 +140,31 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
             }
         });
         form.addComponent(dealerField);
+
+        dealerLEField = new SPLegalEntityField("Юр. лицо", "Укажите юридическое лицо дилера осуществляющее продажу");
+        dealerLEField.setSalePointSupplier(() -> dealerField.getValue());
+        dealerLEField.addValidator(value -> {
+            if(value != null && value instanceof LegalEntity) {
+                final LegalEntity legalEntity = (LegalEntity) value;
+                // Проваерить что юрик работает с этим брендом
+                String brand = (String) motorBrandField.getValue();
+                if(!legalEntity.getMotorBrands().contains(brand))
+                    throw new Validator.InvalidValueException("Выбранное Юридическое лицо не работает с данным брендом техники");
+                // Проверить что юрик аккредитован для данного продукта
+                List<ProductInSale> productInSaleList = productInSaleField.getValue();
+                if(productInSaleList != null) {
+                    for (ProductInSale prodInSale : productInSaleList) {
+                        Product prod = prodInSale.getProduct();
+                        if(prod instanceof ProdCredit) {
+                            if( !legalEntity.getCredProducts().contains(prod))
+                                throw new Validator.InvalidValueException(
+                                        MessageFormat.format("Выбранное Юридическое лицо не аккредитовано для продукта ''{0}''", prod.getName()));
+                        }
+                    }
+                }
+            }
+        });
+        form.addComponent(dealerLEField);
 
         dealerManagerField = new DealerEmployeeField("Менеджер", "Выберите или введите ответственного менеджера со стороны дилера");
         dealerManagerField.setSalePointSupplier(() -> dealerField.getValue());

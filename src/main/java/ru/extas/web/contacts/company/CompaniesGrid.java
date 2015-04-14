@@ -6,7 +6,12 @@ package ru.extas.web.contacts.company;
 import com.vaadin.data.Container;
 import ru.extas.model.contacts.Company;
 import ru.extas.security.CompanySecurityFilter;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.util.List;
 
@@ -49,7 +54,7 @@ public class CompaniesGrid extends ExtaGrid<Company> {
     @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Company> container = new SecuredDataContainer<Company>(new CompanySecurityFilter());
+        final ExtaDbContainer<Company> container = new SecuredDataContainer<Company>(new CompanySecurityFilter());
         container.sort(new Object[]{"name"}, new boolean[]{true});
         return container;
     }

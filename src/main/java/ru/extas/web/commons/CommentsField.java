@@ -2,7 +2,6 @@ package ru.extas.web.commons;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
@@ -12,6 +11,7 @@ import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.common.Comment;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 import ru.extas.web.users.LoginToUserNameConverter;
 
 import java.util.ArrayList;

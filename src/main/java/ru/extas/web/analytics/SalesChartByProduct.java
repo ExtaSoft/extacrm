@@ -48,15 +48,15 @@ public class SalesChartByProduct extends AbstractSalesChart {
         final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
 
         final Root<Sale> root = cq.from(Sale.class);
-        final Path<Sale.Result> resultPath = root.get(Sale_.result);
+        final Path<Sale.Status> statusPath = root.get(Sale_.status);
         final ListJoin<Sale, ProductInSale> productInSaleJoin = root.join(Sale_.productInSales);
         final Path<ProductInSale.State> productInSaleState = productInSaleJoin.get(ProductInSale_.state);
         final Join<ProductInSale, Product> saleProductJoin = productInSaleJoin.join(ProductInSale_.product);
-        final Expression<Long> saleCount = cb.count(resultPath);
+        final Expression<Long> saleCount = cb.count(statusPath);
 
         final Expression<Class<? extends Product>> proTypeExpr = saleProductJoin.type();
         cq.multiselect(proTypeExpr, saleCount);
-        cq.where(cb.and(cb.equal(resultPath, Sale.Result.SUCCESSFUL),
+        cq.where(cb.and(cb.equal(statusPath, Sale.Status.FINISHED),
                 cb.equal(productInSaleState, ProductInSale.State.AGREED),
                 cb.notEqual(proTypeExpr, ProdInsurance.class)));
         cq.groupBy(proTypeExpr);

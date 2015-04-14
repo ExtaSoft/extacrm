@@ -3,12 +3,11 @@
  */
 package ru.extas.web.insurance;
 
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.PolicyRepository;
-import ru.extas.web.commons.ExtaBeanContainer;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 
 import java.util.Collection;
 
@@ -50,21 +49,6 @@ public class PolicySelect extends ComboBox {
         setScrollToSelectedItem(true);
 
         // Инициализация контейнера
-// final LazyJdoContainer<Policy> container = new LazyJdoContainer<Policy>(Policy.class, 50, "key");
-// Filter filter = new And(new IsNull("issueDate"),
-// new Compare.Less("bookTime", DateTime.now().minusHours(1)));
-// if (forceNum != null) {
-// filter = new Or(new Compare.Equal("regNum", forceNum), filter);
-// }
-// container.addContainerFilter(filter);
-//
-// // Устанавливаем контент выбора
-// setFilteringMode(FilteringMode.STARTSWITH);
-// setContainerDataSource(container);
-// setItemCaptionMode(ItemCaptionMode.PROPERTY);
-// setItemCaptionPropertyId("regNum");
-//
-// setConverter(new SingleSelectConverter<Policy>(this, container));
         final PolicyRepository policyRepository = lookup(PolicyRepository.class);
         final PolicyRepository policyService = lookup(PolicyRepository.class);
         final Collection<Policy> policies = policyService.loadAvailable();

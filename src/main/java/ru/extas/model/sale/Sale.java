@@ -3,10 +3,7 @@ package ru.extas.model.sale;
 import ru.extas.model.common.Comment;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.ModelUtils;
-import ru.extas.model.contacts.AddressInfo;
-import ru.extas.model.contacts.Client;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.model.motor.MotorModel;
@@ -72,6 +69,9 @@ public class Sale extends SecuredObject {
 	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private SalePoint dealer;
 
+	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	private LegalEntity dealerLE;
+
     @Column(name = "COMMENT")
     @Size(max = 255)
 	private String comment;
@@ -80,8 +80,8 @@ public class Sale extends SecuredObject {
 	private String processId;
 
 	@Enumerated(EnumType.STRING)
-    @Column(length = ModelUtils.ENUM_STRING_LENGTH)
-    private Result result;
+    @Column(name = "CANCEL_REASON", length = ModelUtils.ENUM_STRING_LENGTH)
+    private CancelReason cancelReason;
 
 	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<ProductInSale> productInSales = newArrayList();
@@ -111,6 +111,22 @@ public class Sale extends SecuredObject {
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
 	private List<SaleFileContainer> files = newArrayList();
+
+	public CancelReason getCancelReason() {
+		return cancelReason;
+	}
+
+	public void setCancelReason(final CancelReason cancelReason) {
+		this.cancelReason = cancelReason;
+	}
+
+	public LegalEntity getDealerLE() {
+		return dealerLE;
+	}
+
+	public void setDealerLE(final LegalEntity dealerLE) {
+		this.dealerLE = dealerLE;
+	}
 
 	public List<SaleFileContainer> getFiles() {
 		return files;
@@ -167,24 +183,6 @@ public class Sale extends SecuredObject {
     public void setNum(final Long num) {
         this.num = num;
     }
-
-    /**
-	 * <p>Getter for the field <code>result</code>.</p>
-	 *
-	 * @return a {@link ru.extas.model.sale.Sale.Result} object.
-	 */
-	public Result getResult() {
-		return result;
-	}
-
-	/**
-	 * <p>Setter for the field <code>result</code>.</p>
-	 *
-	 * @param result a {@link ru.extas.model.sale.Sale.Result} object.
-	 */
-	public void setResult(final Result result) {
-		this.result = result;
-	}
 
 	/**
 	 * <p>Getter for the field <code>processId</code>.</p>
@@ -394,20 +392,59 @@ public class Sale extends SecuredObject {
 	}
 
 	/**
-	 * Результат завершения продажи
+	 * Причина отказа продажи
 	 */
-	public enum Result {
+	public enum CancelReason {
 		/**
-		 * Успешное выполнение (кредит получен).
-		 */
-		SUCCESSFUL,
-		/**
-		 * Отказ контрагента (банка, дилера).
+		 * 1. Отказ контрагентов при рассмотрении заявки (банков, лизинговых компаний и пр.)
 		 */
 		VENDOR_REJECTED,
 		/**
-		 * Отказ клиента.
+		 * 2. Отказ клиента по причине отсутствия техники у дилера
 		 */
-		CLIENT_REJECTED
+		MOTOR_LOST,
+		/**
+		 * 3. Отказ клиента по причине недостатка средств для первоначального взноса
+		 */
+		DOWNPAYMENT_TO_BIG,
+		/**
+		 * 4. Отказ клиента по причине не устроивших условий доставки техники
+		 */
+		DELIVER_ISSUE,
+		/**
+		 * 5. Отказ клиента в связи с высоким % по кредиту
+		 */
+		PERCENT_TO_BIG,
+		/**
+		 * 6. Отказ клиента в связи с высокой стоимостью техники
+		 */
+		PRICE_TO_BIG,
+		/**
+		 * 7. Несоответствие клиента требованиям контрагента (банков, лизинговых компаний и пр.)
+		 */
+		FIRST_CHECK_ISSUE,
+		/**
+		 * 8. Отсутствие у дилера аккредитации у контрагента/отсутствие контрагента в регионе
+		 */
+		DEALER_ACCRED_ISSUE,
+		/**
+		 * 9. Прочие.
+		 */
+		OTHER
 	}
+
+//	public enum Result {
+//		/**
+//		 * Успешное выполнение (кредит получен).
+//		 */
+//		SUCCESSFUL,
+//		/**
+//		 * Отказ контрагента (банка, дилера).
+//		 */
+//		VENDOR_REJECTED,
+//		/**
+//		 * Отказ клиента.
+//		 */
+//		CLIENT_REJECTED
+//	}
 }

@@ -19,10 +19,30 @@ import java.math.BigDecimal;
 @Table(name = "PRODUCT_IN_SALE")
 public class ProductInSale extends AuditedObject {
 
+	/**
+	 * Статусы заявок на кредиты
+	 */
     public enum State {
+		/**
+		 * На рассмотрении
+		 */
         IN_PROGRESS,
+		/**
+		 * Одобрена
+		 */
         AGREED,
-        REJECTED
+		/**
+		 * Отклонен
+		 */
+        REJECTED,
+		/**
+		 * Сделка оформлена
+		 */
+		SOLD_OUT,
+		/**
+		 * Новая заявка
+		 */
+		NEW
     }
 
 	// Продажа
@@ -50,7 +70,7 @@ public class ProductInSale extends AuditedObject {
 	private Employee responsible;
 
     @Enumerated
-    private State state = State.IN_PROGRESS;
+    private State state = State.NEW;
 
 	/**
 	 * <p>Constructor for ProductInSale.</p>

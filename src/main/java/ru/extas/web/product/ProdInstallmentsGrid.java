@@ -2,7 +2,11 @@ package ru.extas.web.product;
 
 import com.vaadin.data.Container;
 import ru.extas.model.sale.ProdInstallments;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 import java.util.List;
 
@@ -38,7 +42,7 @@ public class ProdInstallmentsGrid extends ExtaGrid<ProdInstallments> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaJpaContainer<ProdInstallments> container = new ExtaJpaContainer<>(ProdInstallments.class);
+		final ExtaDbContainer<ProdInstallments> container = new ExtaDbContainer<>(ProdInstallments.class);
 		container.sort(new Object[]{"createdDate"}, new boolean[]{false});
 		container.addNestedContainerProperty("vendor.name");
 		return container;

@@ -1,6 +1,5 @@
 package ru.extas.web.contacts.legalentity;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.SingleSelectConverter;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
@@ -8,12 +7,12 @@ import com.vaadin.ui.*;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaJpaContainer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.Objects;
@@ -85,7 +84,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
     private static class LESelectField extends ComboBox {
 
         private static final long serialVersionUID = -8005905898383483037L;
-        protected final ExtaJpaContainer<LegalEntity> container;
+        protected final ExtaDbContainer<LegalEntity> container;
         private final SupplierSer<Company> companySupplier;
 
         protected LESelectField(final String caption, final SupplierSer<Company> companySupplier) {
@@ -104,7 +103,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             setScrollToSelectedItem(true);
 
             // Инициализация контейнера
-            container = new ExtaJpaContainer<>(LegalEntity.class);
+            container = new ExtaDbContainer<>(LegalEntity.class);
             container.sort(new Object[]{"name"}, new boolean[]{true});
             setContainerFilter();
 
@@ -113,7 +112,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-            setConverter(new SingleSelectConverter<LegalEntity>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -205,7 +204,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             selectField.refreshContainer();
-                            selectField.setValue(editWin.getEntityId());
+                            selectField.setConvertedValue(editWin.getEntity());
                         }
                         popupView.setPopupVisible(true);
                     });

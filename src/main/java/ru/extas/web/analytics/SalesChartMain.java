@@ -3,9 +3,12 @@ package ru.extas.web.analytics;
 import com.google.common.collect.HashBasedTable;
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
+import com.vaadin.addon.charts.model.style.SolidColor;
 import org.joda.time.DateTime;
+import org.vaadin.viritin.fields.CaptionGenerator;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.Sale_;
+import ru.extas.web.util.ComponentUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
@@ -28,12 +31,35 @@ public class SalesChartMain extends AbstractSalesChart {
 
     private Chart chart;
     private Chart flowChart;
+    private Chart cancelReasonsChart;
 
     @Override
     protected void addChartContent() {
         // Визуализация
         addSalePie();
         addSaleFlow();
+        addCancelReasonsChart();
+    }
+
+    private void addCancelReasonsChart() {
+        cancelReasonsChart = new Chart(ChartType.PIE);
+        cancelReasonsChart.setWidth("100%");
+        //cancelReasonsChart.setHeight("300px");
+
+        // Modify the default configuration a bit
+        final Configuration conf = cancelReasonsChart.getConfiguration();
+        conf.setTitle("Отмененные продажи за период");
+        conf.setSubTitle("Причины отмены продаж");
+        conf.getLegend().setEnabled(false); // Disable legend
+
+        final PlotOptionsPie plotOptions = new PlotOptionsPie();
+        plotOptions.setCursor(Cursor.POINTER);
+        final Labels dataLabels = new Labels(true);
+        dataLabels.setFormatter("''+ this.point.name +': '+ this.percentage.toFixed(2) +' %'");
+        plotOptions.setDataLabels(dataLabels);
+        conf.setPlotOptions(plotOptions);
+
+        addComponent(cancelReasonsChart);
     }
 
     private void addSaleFlow() {
@@ -64,8 +90,7 @@ public class SalesChartMain extends AbstractSalesChart {
         final Configuration conf = chart.getConfiguration();
         conf.setTitle("Продажи за период");
         conf.setSubTitle("Общее количество продаж по статусам");
-        conf.getLegend().setEnabled(true); // Disable legend
-
+        conf.getLegend().setEnabled(false); // Disable legend
 
         final PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);
@@ -81,6 +106,46 @@ public class SalesChartMain extends AbstractSalesChart {
     protected void updateChartData() {
         updateSalePieData();
         updateSaleFlowData();
+        updateAgreedRejectedData();
+    }
+
+    private void updateAgreedRejectedData() {
+        final Configuration conf = cancelReasonsChart.getConfiguration();
+        conf.setSeries(newArrayList());
+
+        final EntityManager em = lookup(EntityManager.class);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+        final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
+
+        final Root<Sale> root = cq.from(Sale.class);
+        final Path<Sale.CancelReason> reasonPath = root.get(Sale_.cancelReason);
+        final Expression<Long> saleCount = cb.count(reasonPath);
+
+        cq.multiselect(reasonPath, saleCount);
+        cq.where(cb.equal(root.get(Sale_.status), Sale.Status.CANCELED));
+        cq.groupBy(reasonPath);
+//        cq.orderBy(cb.desc(reasonPath));
+
+        applyFilters(cb, cq, root);
+        final TypedQuery<Tuple> tq = em.createQuery(cq);
+        final DataSeries series = new DataSeries("Продажи");
+
+        final CaptionGenerator<Sale.CancelReason> captionGenerator = ComponentUtil.getEnumCaptionGenerator(Sale.CancelReason.class);
+        for (final Tuple t : tq.getResultList()) {
+            final Sale.CancelReason reason = t.get(reasonPath);
+            final Long countL = t.get(saleCount);
+            final DataSeriesItem item = new DataSeriesItem();
+            item.setY(countL);
+            item.setName(captionGenerator.getCaption(reason));
+            if (reason == Sale.CancelReason.VENDOR_REJECTED) {
+                item.setSliced(true);
+                item.setSelected(true);
+//                item.setColor(SolidColor.LIGHTGREEN);
+            }
+            series.add(item);
+        }
+        conf.addSeries(series);
+        cancelReasonsChart.drawChart();
     }
 
     private void updateSaleFlowData() {
@@ -128,16 +193,28 @@ public class SalesChartMain extends AbstractSalesChart {
         conf.addxAxis(x);
 
         final ListSeries openedSeries = new ListSeries("Открытые");
-        final ListSeries closedSeries = new ListSeries("Завершенные");
-        final ListSeries rejectedSeries = new ListSeries("Отмененные");
+        final PlotOptionsArea openedPlot = new PlotOptionsArea();
+        openedPlot.setFillColor(new SolidColor(48, 143, 239, .5));
+        openedSeries.setPlotOptions(openedPlot);
+
+        final ListSeries finishedSeries = new ListSeries("Завершенные");
+        final PlotOptionsArea closedPlot = new PlotOptionsArea();
+        closedPlot.setFillColor(new SolidColor(151, 222, 88, .5));
+        finishedSeries.setPlotOptions(closedPlot);
+
+        final ListSeries canceledSeries = new ListSeries("Отмененные");
+        final PlotOptionsArea canceledPlot = new PlotOptionsArea();
+        canceledPlot.setFillColor(new SolidColor(235, 100, 100, .5));
+        canceledSeries.setPlotOptions(canceledPlot);
+
         for (final LocalDate period : periodSet) {
             openedSeries.addData(dataTable.get(Sale.Status.NEW, period));
-            closedSeries.addData(dataTable.get(Sale.Status.FINISHED, period));
-            rejectedSeries.addData(dataTable.get(Sale.Status.CANCELED, period));
+            finishedSeries.addData(dataTable.get(Sale.Status.FINISHED, period));
+            canceledSeries.addData(dataTable.get(Sale.Status.CANCELED, period));
         }
         conf.addSeries(openedSeries);
-        conf.addSeries(closedSeries);
-        conf.addSeries(rejectedSeries);
+        conf.addSeries(canceledSeries);
+        conf.addSeries(finishedSeries);
         flowChart.drawChart();
 
     }
@@ -170,12 +247,15 @@ public class SalesChartMain extends AbstractSalesChart {
             item.setY(countL);
             if (statusEn == Sale.Status.NEW) {
                 item.setName("Открытые");
+                item.setColor(new SolidColor("#308FEF"));
             } else if (statusEn == Sale.Status.FINISHED) {
                 item.setName("Завершенные");
+                item.setColor(new SolidColor("#97DE58"));
                 item.setSliced(true);
                 item.setSelected(true);
             } else {
                 item.setName("Отмененные");
+                item.setColor(new SolidColor("#EB6464"));
             }
             series.add(item);
         }

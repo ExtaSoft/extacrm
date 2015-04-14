@@ -11,7 +11,10 @@ import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.lead.LeadRepository;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.container.SecuredDataContainer;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -67,23 +70,9 @@ public class LeadsGrid extends ExtaGrid<Lead> {
      * {@inheritDoc}
      */
     @Override
-    protected void initTable(final Mode mode) {
-        super.initTable(mode);
-        // Покозываем колонку результата в закрытых
-        if (status == Lead.Status.CLOSED)
-            table.setColumnCollapsed("result", false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected Container createContainer() {
         // Запрос данных
-        final ExtaJpaContainer<Lead> container = SecuredDataContainer.create(Lead.class,
-                status == Lead.Status.NEW ? ExtaDomain.LEADS_NEW :
-                        status == Lead.Status.QUALIFIED ? ExtaDomain.LEADS_QUAL :
-                                ExtaDomain.LEADS_CLOSED);
+        final ExtaDbContainer<Lead> container = SecuredDataContainer.create(Lead.class, ExtaDomain.SALES_LEADS);
         container.addNestedContainerProperty("responsible.name");
         container.addContainerFilter(new Compare.Equal("status", status));
         container.sort(new Object[]{"createdDate"}, new boolean[]{false});
@@ -103,11 +92,12 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 
         actions.add(new EditObjectAction(status == Lead.Status.NEW ? "Изменить" : "Просмотреть", "Редактировать выделенный в списке лид"));
 
-        if (status == Lead.Status.NEW) {
+        if (status == Lead.Status.NEW && lookup(UserManagementService.class).isItOurUser()) {
             actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {
                 @Override
                 public void fire(final Set itemIds) {
-                    doQualifyLead(itemIds.stream().findFirst().orElse(null));
+                    final Object itemId = itemIds.stream().findFirst().orElse(null);
+                    doQualifyLead(itemId);
                 }
             });
 

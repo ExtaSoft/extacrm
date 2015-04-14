@@ -1,8 +1,6 @@
 package ru.extas.web.commons;
 
 import com.google.common.io.ByteStreams;
-import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
@@ -15,13 +13,13 @@ import org.vaadin.addon.itemlayout.grid.ItemGrid;
 import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
 import ru.extas.model.common.FileContainer;
 import ru.extas.web.commons.component.FileUploader;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 import ru.extas.web.commons.window.DownloadFileWindow;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Strings.isNullOrEmpty;

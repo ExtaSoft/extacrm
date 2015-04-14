@@ -1,7 +1,6 @@
 package ru.extas.web.contacts.employee;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.Company;
@@ -9,8 +8,8 @@ import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaBeanContainer;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 
 import java.util.Set;
 

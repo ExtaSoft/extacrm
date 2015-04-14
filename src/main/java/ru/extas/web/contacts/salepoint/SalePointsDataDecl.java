@@ -3,13 +3,17 @@
  */
 package ru.extas.web.contacts.salepoint;
 
-import ru.extas.web.commons.DataDeclMapping;
-import ru.extas.web.commons.EmailLinkColumnGen;
-import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.UrlLinkColumnGen;
+import com.google.common.base.Joiner;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+import ru.extas.model.contacts.SalePoint_;
+import ru.extas.server.contacts.SalePointRepository;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
 
 import java.util.EnumSet;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Опции отображения контактов в списке
@@ -20,6 +24,8 @@ import java.util.EnumSet;
  */
 public class SalePointsDataDecl extends GridDataDecl {
 
+	public static final String SALEPOINT_BRANDS = SalePoint_.legalEntities.getName();//"salepoint_brands";
+
 	/**
 	 * <p>Constructor for SalePointsDataDecl.</p>
 	 */
@@ -27,7 +33,23 @@ public class SalePointsDataDecl extends GridDataDecl {
 		super();
 		addMapping("name", "Имя");
         addMapping("company.name", "Компания", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("phone", "Телефон", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), PhoneConverter.class);
+		addMapping(SALEPOINT_BRANDS, "Бренды", new GridColumnGenerator() {
+			@Override
+			public String generateCell(final Object columnId, final Item item, final Object itemId) {
+				return Joiner.on(", ").join(lookup(SalePointRepository.class).findSalePointBrands(GridItem.extractBean(item)));
+			}
+
+			@Override
+			public Property getCellProperty(final Object columnId, final Item item) {
+				return null;
+			}
+
+			@Override
+			public Class<?> getType() {
+				return String.class;
+			}
+		}, EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
+		addMapping("phone", "Телефон", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), PhoneConverter.class);
 		addMapping("email", "E-Mail", new EmailLinkColumnGen(), EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 		addMapping("www", "WWW", new UrlLinkColumnGen(), EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 		addMapping("regAddress.region", "Регион");

@@ -1,22 +1,21 @@
 package ru.extas.web.contacts.company;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.container.ExtaBeanContainer;
 import ru.extas.web.contacts.employee.EmployeeSelectWindow;
 import ru.extas.web.contacts.employee.EmployeesGrid;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
-import static ru.extas.web.commons.TableUtils.fullInitTable;
 
 /**
  * Поле для ввода/редактирования списка владельцев компании

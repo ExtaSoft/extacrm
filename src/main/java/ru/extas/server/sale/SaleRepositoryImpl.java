@@ -66,7 +66,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
      */
     @Transactional
     @Override
-    public Sale ctreateSaleByLead(final Lead lead) {
+    public Sale createSaleByLead(final Lead lead) {
         final Sale sale = new Sale();
 
         sale.setClient(lead.getClient());
@@ -93,33 +93,14 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 
     @Transactional
     @Override
-    public void finishSale(Sale sale, final Sale.Result result) {
+    public void finishSale(Sale sale) {
         Lead.Result leadResult = Lead.Result.SUCCESSFUL;
-        sale.setResult(result);
 
-        switch (result) {
-            case SUCCESSFUL:
-                sale.setStatus(Sale.Status.FINISHED);
-                sale.getProductInSales().stream()
-                        .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
-                        .forEach(p -> p.setState(ProductInSale.State.AGREED));
-                leadResult = Lead.Result.SUCCESSFUL;
-                break;
-            case VENDOR_REJECTED:
-                sale.setStatus(Sale.Status.CANCELED);
-                sale.getProductInSales().stream()
-                        .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
-                        .forEach(p -> p.setState(ProductInSale.State.REJECTED));
-                leadResult = Lead.Result.VENDOR_REJECTED;
-                break;
-            case CLIENT_REJECTED:
-                sale.setStatus(Sale.Status.CANCELED);
-                sale.getProductInSales().stream()
-                        .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
-                        .forEach(p -> p.setState(ProductInSale.State.REJECTED));
-                leadResult = Lead.Result.CLIENT_REJECTED;
-                break;
-        }
+        sale.setStatus(Sale.Status.FINISHED);
+        sale.getProductInSales().stream()
+                .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
+                .forEach(p -> p.setState(ProductInSale.State.AGREED));
+        leadResult = Lead.Result.SUCCESSFUL;
         sale = secureSave(sale);
         final Lead lead = sale.getLead();
         if (lead != null)
@@ -129,7 +110,6 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     @Transactional
     @Override
     public void reopenSale(Sale sale) {
-        sale.setResult(null);
         sale.setStatus(Sale.Status.NEW);
         sale = secureSave(sale);
         final Lead lead = sale.getLead();
@@ -145,8 +125,30 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 
     @Transactional
     @Override
-    public void finishSales(final Set<Sale> sales, final Sale.Result result) {
-        sales.forEach(s -> finishSale(s, result));
+    public void finishSales(final Set<Sale> sales) {
+        sales.forEach(s -> finishSale(s));
+    }
+
+    @Transactional
+    @Override
+    public void cancelSale(Sale sale, final Sale.CancelReason reason) {
+        final Lead.Result leadResult = Lead.Result.CLIENT_REJECTED;
+
+        sale.setStatus(Sale.Status.CANCELED);
+        sale.setCancelReason(reason);
+        sale.getProductInSales().stream()
+                .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
+                .forEach(p -> p.setState(ProductInSale.State.REJECTED));
+        sale = secureSave(sale);
+        final Lead lead = sale.getLead();
+        if (lead != null)
+            leadRepository.finishLead(lead, leadResult);
+    }
+
+    @Transactional
+    @Override
+    public void cancelSales(final Set<Sale> sales, final Sale.CancelReason reason) {
+        sales.forEach(s -> cancelSale(s, reason));
     }
 
     /**
@@ -185,7 +187,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         final List<Company> companies = newArrayList();
 
         // Добавляем в область видимости компании дилера
-        if(sale.getDealer() != null)
+        if (sale.getDealer() != null)
             companies.add(sale.getDealer().getCompany());
 
         return companies;

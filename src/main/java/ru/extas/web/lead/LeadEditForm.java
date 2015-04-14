@@ -5,6 +5,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.filter.Like;
 import com.vaadin.data.util.filter.Or;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -21,6 +22,7 @@ import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
+import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.contacts.ClientField;
 import ru.extas.web.contacts.ContactDataDecl;
 import ru.extas.web.contacts.employee.DealerEmployeeField;
@@ -29,8 +31,8 @@ import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
 import ru.extas.web.contacts.person.ClientDataDecl;
 import ru.extas.web.contacts.person.PersonEditForm;
+import ru.extas.web.contacts.salepoint.DealerSalePointField;
 import ru.extas.web.contacts.salepoint.SalePointEditForm;
-import ru.extas.web.contacts.salepoint.SalePointField;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
@@ -85,7 +87,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("client")
     private ClientField clientField;
     @PropertyId("vendor")
-    private SalePointField vendorField;
+    private DealerSalePointField vendorField;
 
     @PropertyId("comment")
     private TextArea commentField;
@@ -101,8 +103,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private FilesManageField docFilesEditor;
 
     private final boolean qualifyForm;
-    private ExtaJpaContainer<SalePoint> vendorsContainer;
-    private ExtaJpaContainer<Client> clientsContainer;
+    private ExtaDbContainer<SalePoint> vendorsContainer;
+    private ExtaDbContainer<Client> clientsContainer;
 
     public LeadEditForm(final Lead lead, final boolean qualifyForm) {
         super(lead.isNew() ? "Ввод нового лида в систему" :
@@ -239,7 +241,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     }
 
     private void createVendorSelectField(final FormLayout form) {
-        vendorField = new SalePointField("Мотосалон", "Название мотосалона");
+        vendorField = new DealerSalePointField("Мотосалон", "Название мотосалона");
         vendorField.setRequired(true);
         vendorField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();
@@ -264,7 +266,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         final Table table = new Table();
         table.setRequired(true);
         // Запрос данных
-        vendorsContainer = new ExtaJpaContainer<>(SalePoint.class);
+        vendorsContainer = new ExtaDbContainer<>(SalePoint.class);
         vendorsContainer.addNestedContainerProperty("regAddress.region");
         setVendorsFilter(lead.getPointOfSale(), lead.getRegion());
 
@@ -288,7 +290,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             editWin.addCloseFormListener(event1 -> {
                 if (editWin.isSaved()) {
                     vendorsContainer.refresh();
-                    table.setValue(editWin.getEntityId());
+                    table.setValue(vendorsContainer.getEntityItemId(editWin.getEntity()));
                 }
             });
             FormUtils.showModalWin(editWin);
@@ -371,9 +373,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         layout.addComponent(info);
 
         // Запрос данных
-        clientsContainer = new ExtaJpaContainer<>(Client.class);
+        clientsContainer = new ExtaDbContainer<>(Client.class);
         clientsContainer.addNestedContainerProperty("regAddress.region");
-        setClientsFilter(lead.getContactName(), lead.getContactPhone(), lead.getContactEmail());
 
         final MenuBar menuBar = new MenuBar();
         menuBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
@@ -388,7 +389,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             editWin.addCloseFormListener(event1 -> {
                 if (editWin.isSaved()) {
                     clientsContainer.refresh();
-                    table.setValue(editWin.getEntityId());
+                    table.setValue(clientsContainer.getEntityItemId(editWin.getEntity()));
                 }
             });
             FormUtils.showModalWin(editWin);
@@ -403,7 +404,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             editWin.addCloseFormListener(event1 -> {
                 if (editWin.isSaved()) {
                     clientsContainer.refresh();
-                    table.setValue(editWin.getEntityId());
+                    table.setValue(clientsContainer.getEntityItemId(editWin.getEntity()));
                 }
             });
             FormUtils.showModalWin(editWin);
@@ -416,21 +417,18 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         name.setIcon(Fontello.FILTER);
         name.setValue(lead.getContactName());
 
-        final EditField phone = new PhoneField("Телефон");
+        final PhoneField phone = new PhoneField("Телефон");
         phone.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         phone.setIcon(Fontello.FILTER);
         phone.setValue(lead.getContactPhone());
 
-        final EditField email = new EditField("E-mail");
-        email.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
-        email.setIcon(Fontello.FILTER);
-        email.setValue(lead.getContactEmail());
+        final FieldEvents.TextChangeListener textChangeListener =
+                e -> setClientsFilter(name.getValue(), phone.getConvertedValue());
+        name.addTextChangeListener(textChangeListener);
+        phone.addTextChangeListener(textChangeListener);
+        setClientsFilter(name.getValue(), phone.getConvertedValue());
 
-        name.addTextChangeListener(e -> setClientsFilter(e.getText(), email.getValue(), phone.getValue()));
-        email.addTextChangeListener(e -> setClientsFilter(name.getValue(), e.getText(), phone.getValue()));
-        phone.addTextChangeListener(e -> setClientsFilter(name.getValue(), email.getValue(), e.getText()));
-
-        final HorizontalLayout searchLay = new HorizontalLayout(name, phone, email);
+        final HorizontalLayout searchLay = new HorizontalLayout(name, phone);
         searchLay.setSpacing(true);
         layout.addComponent(searchLay);
 
@@ -463,7 +461,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         return components;
     }
 
-    private void setClientsFilter(final String name, final String email, final String cellPhone) {
+    private void setClientsFilter(final String name, final String cellPhone) {
         clientsContainer.removeAllContainerFilters();
         final List<Container.Filter> filters = newArrayListWithCapacity(3);
         if (!Strings.isNullOrEmpty(name)) {
@@ -471,9 +469,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         }
         if (!Strings.isNullOrEmpty(cellPhone)) {
             filters.add(new Like("phone", MessageFormat.format("%{0}%", cellPhone), false));
-        }
-        if (!Strings.isNullOrEmpty(email)) {
-            filters.add(new Like("email", MessageFormat.format("%{0}%", email), false));
+            filters.add(new Like("secondPhone", MessageFormat.format("%{0}%", cellPhone), false));
         }
         if (!filters.isEmpty())
             clientsContainer.addContainerFilter(new Or(filters.toArray(new Container.Filter[filters.size()])));

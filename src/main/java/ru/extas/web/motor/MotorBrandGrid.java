@@ -2,7 +2,11 @@ package ru.extas.web.motor;
 
 import com.vaadin.data.Container;
 import ru.extas.model.motor.MotorBrand;
-import ru.extas.web.commons.*;
+import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaGrid;
+import ru.extas.web.commons.GridDataDecl;
+import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.container.ExtaDbContainer;
 
 import java.util.List;
 
@@ -39,7 +43,7 @@ public class MotorBrandGrid extends ExtaGrid<MotorBrand> {
 	@Override
 	protected Container createContainer() {
 		// Запрос данных
-		final ExtaJpaContainer<MotorBrand> container = new ExtaJpaContainer<>(MotorBrand.class);
+		final ExtaDbContainer<MotorBrand> container = new ExtaDbContainer<>(MotorBrand.class);
 		container.sort(new Object[]{"name"}, new boolean[]{true});
 		return container;
 	}
