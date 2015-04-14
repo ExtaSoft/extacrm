@@ -139,7 +139,7 @@ public class SalePointField extends CustomField<SalePoint> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId(SalePoint_.name.getName());
-//            setConverter(new SingleSelectConverter<SalePoint>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -213,7 +213,7 @@ public class SalePointField extends CustomField<SalePoint> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             contactSelect.refreshContainer();
-                            contactSelect.setValue(editWin.getEntityItemId());
+                            contactSelect.setConvertedValue(editWin.getEntity());
                         }
                         popupView.setPopupVisible(true);
                     });

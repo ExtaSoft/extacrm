@@ -50,7 +50,7 @@ public class UserProfileSelect extends ComboBox {
 		setContainerDataSource(container);
 		setItemCaptionMode(ItemCaptionMode.PROPERTY);
 		setItemCaptionPropertyId("employee.name");
-//		setConverter(new SingleSelectConverter<UserProfile>(this));
+		container.setSingleSelectConverter(this);
 
 		// Функционал добавления нового контакта
 		setNullSelectionAllowed(false);

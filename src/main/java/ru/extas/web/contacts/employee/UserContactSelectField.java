@@ -87,7 +87,7 @@ public class UserContactSelectField extends CustomField<Employee> {
             setContainerDataSource(this.container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-//            setConverter(new SingleSelectConverter<Employee>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);

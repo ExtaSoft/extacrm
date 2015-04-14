@@ -148,7 +148,7 @@ public class CompanyField extends CustomField<Company> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-//            setConverter(new SingleSelectConverter<Company>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -213,7 +213,7 @@ public class CompanyField extends CustomField<Company> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             select.refreshContainer();
-                            select.setValue(editWin.getEntityItemId());
+                            select.setConvertedValue(editWin.getEntity());
                         }
                         popupView.setPopupVisible(true);
                     });

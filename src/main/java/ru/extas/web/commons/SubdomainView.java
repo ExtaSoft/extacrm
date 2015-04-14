@@ -179,10 +179,10 @@ public abstract class SubdomainView extends ExtaAbstractView {
                 NavigationUtils.setUriFragment(uri);
                 form.addCloseFormListener(event -> {
                     uri.setMode(ExtaUri.Mode.GRID);
-                    final Object objectId = form.getEntityItemId();
+                    final Object entity = form.getEntity();
                     uri.setId(null);
-                    if(objectId != null) {
-                        grid.selectObject(objectId);
+                    if(entity != null) {
+                        grid.selectEntity(entity);
                     }
                     NavigationUtils.setUriFragment(uri);
                 });
@@ -195,9 +195,9 @@ public abstract class SubdomainView extends ExtaAbstractView {
             public void open4Edit(final ExtaEditForm form) {
                 form.addCloseFormListener(event -> {
                     if (form.isSaved()) {
-                        grid.refreshContainerItem(form.getEntityItemId());
+                        grid.refreshContainerEntity(form.getEntity());
                     }
-                    grid.selectObject(form.getEntityItemId());
+                    grid.selectEntity(form.getEntity());
                     contentContainer.switchToTabsheet();
                 });
                 contentContainer.switchToForm(form);
@@ -208,7 +208,7 @@ public abstract class SubdomainView extends ExtaAbstractView {
                 form.addCloseFormListener(event -> {
                     if (form.isSaved()) {
                         grid.refreshContainer();
-                        grid.selectObject(form.getEntityItemId());
+                        grid.selectEntity(form.getEntity());
                     }
                     contentContainer.switchToTabsheet();
                 });

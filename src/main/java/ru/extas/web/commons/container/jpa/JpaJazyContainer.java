@@ -8,21 +8,17 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
 import com.vaadin.data.util.filter.And;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.transaction.support.TransactionTemplate;
+import com.vaadin.ui.AbstractSelect;
 import org.vaadin.viritin.LazyList;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.utils.SupplierSer;
 
-import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newLinkedList;
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * @author Valery Orlov
@@ -44,7 +40,7 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
 
     private final JpaPropertyProvider propertyProvider;
     private final AdvancedFilterableSupport filterSupport;
-    private List<Pair<String, Boolean>> sortByList = newLinkedList();
+    private List<JpaSortBy> sortByList = newLinkedList();
 
     public JpaJazyContainer(final Class<TEntityType> type) {
         this.entityClass = type;
@@ -52,12 +48,14 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
         entityItemList = createJpaEntityItemList(this.entityClass, () -> sortByList,
                 () -> getAppliedFiltersAsConjunction(), this.propertyProvider);
         this.filterSupport = new AdvancedFilterableSupport();
-        this.filterSupport.addListener(e -> refresh());
+        this.filterSupport.addListener(e -> {
+            entityItemList.reset();
+        });
 
         updateFilterablePropertyIds();
     }
 
-    protected JpaLazyItemList<TEntityType> createJpaEntityItemList(Class<TEntityType> typeClass, SupplierSer<List<Pair<String, Boolean>>> sortBySupplier, SupplierSer<Filter> filterSupplierSer, JpaPropertyProvider jpaPropertyProvider) {
+    protected JpaLazyItemList<TEntityType> createJpaEntityItemList(final Class<TEntityType> typeClass, final SupplierSer<List<JpaSortBy>> sortBySupplier, final SupplierSer<Filter> filterSupplierSer, final JpaPropertyProvider jpaPropertyProvider) {
         return new JpaLazyItemList<TEntityType>(typeClass,
                 sortBySupplier, filterSupplierSer, jpaPropertyProvider);
     }
@@ -86,26 +84,12 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
     }
 
     public TEntityType refreshItem(final Object itemId) {
-        final TEntityType entity = (TEntityType) itemId;
-        // Refresh from DB
-        final EntityManager em = lookup(EntityManager.class);
-        final TEntityType freshEntity =
-                lookup(TransactionTemplate.class).execute(
-                        status -> {
-                            final TEntityType e = em.find(entityClass, entity.getId());
-                            if (e != null)
-                                em.refresh(e);
-                            return e;
-                        });
+        final JpaEntityItem<TEntityType> item = (JpaEntityItem<TEntityType>) getItem(itemId);
+        final TEntityType freshEntity = entityItemList.refreshItem(item);
         // Сущность была удалена
         if (freshEntity == null) {
-            fireItemSetChange();
-            return freshEntity;
+            refresh();
         }
-//        Collection<String> itemPropertyIds = getItemPropertyIds();
-//        for (String string : itemPropertyIds) {
-//            getItemProperty(string).fireValueChangeEvent();
-//        }
         return freshEntity;
     }
 
@@ -118,7 +102,7 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
         if (propertyId.length > 0) {
             sortByList.clear();
             for (int i = 0; i < propertyId.length; i++) {
-                sortByList.add(new ImmutablePair<>((String) propertyId[i], ascending[i]));
+                sortByList.add(new JpaSortBy((String) propertyId[i], ascending[i]));
             }
             refresh();
         }
@@ -171,13 +155,9 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
         return entityItemList.indexOf(itemId);
     }
 
-    public int indexOf(final TEntityType bean) {
-        return indexOfId(bean);
-    }
-
     @Override
     public Object getIdByIndex(final int index) {
-        return entityItemList.get(index).getBean();
+        return entityItemList.get(index);
     }
 
     @Override
@@ -250,10 +230,14 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
 
     @Override
     public Item getItem(final Object itemId) {
-        if (itemId == null) {
+        if (itemId == null)
             return null;
-        }
-        return ((JpaEntityItem<TEntityType>) itemId);
+
+        final JpaEntityItem<TEntityType> entityItem = (JpaEntityItem<TEntityType>) itemId;
+        if (entityItem.isCached())
+            return entityItem;
+        else
+            return entityItemList.get(indexOfId(entityItem));
     }
 
     @Override
@@ -336,5 +320,16 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
     }
 
 
+    public void setSingleSelectConverter(final AbstractSelect selectField) {
+        selectField.setConverter(new JpaSingleSelectConverter<TEntityType>(selectField));
+    }
+
+    public JpaEntityItem<TEntityType> getItemByEntity(final TEntityType entity) {
+        return new JpaEntityItem<TEntityType>(entity, propertyProvider);
+    }
+
+    public Object getEntityItemId(final TEntityType entity) {
+        return getItemByEntity(entity);
+    }
 }
 

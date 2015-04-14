@@ -57,7 +57,7 @@ public class SalePointSimpleSelect extends com.vaadin.ui.ComboBox {
         setContainerDataSource(container);
         setItemCaptionMode(ItemCaptionMode.PROPERTY);
         setItemCaptionPropertyId("name");
-//        setConverter(new SingleSelectConverter<SalePoint>(this));
+        container.setSingleSelectConverter(this);
 
         // Функционал добавления нового контакта
         setNullSelectionAllowed(false);

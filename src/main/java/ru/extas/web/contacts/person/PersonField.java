@@ -104,7 +104,7 @@ public class PersonField extends CustomField<Person> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-//            setConverter(new SingleSelectConverter<Person>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -152,7 +152,7 @@ public class PersonField extends CustomField<Person> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             personSelectField.refreshContainer();
-                            personSelectField.setValue(editWin.getEntityItemId());
+                            personSelectField.setConvertedValue(editWin.getEntity());
                         }
                         popupView.setPopupVisible(true);
                     });

@@ -1,6 +1,5 @@
 package ru.extas.web.commons.container;
 
-import org.apache.commons.lang3.tuple.Pair;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.SecuredObject;
@@ -9,6 +8,7 @@ import ru.extas.security.SecurityFilter;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.container.jpa.JpaLazyItemList;
 import ru.extas.web.commons.container.jpa.JpaPropertyProvider;
+import ru.extas.web.commons.container.jpa.JpaSortBy;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -37,10 +37,10 @@ public class SecuredDataContainer<TEntityType extends IdentifiedObject> extends 
     }
 
     @Override
-    protected JpaLazyItemList<TEntityType> createJpaEntityItemList(Class<TEntityType> tEntityTypeClass, SupplierSer<List<Pair<String, Boolean>>> sortBySupplier, SupplierSer<Filter> filterSupplierSer, JpaPropertyProvider jpaPropertyProvider) {
+    protected JpaLazyItemList<TEntityType> createJpaEntityItemList(final Class<TEntityType> tEntityTypeClass, final SupplierSer<List<JpaSortBy>> sortBySupplier, final SupplierSer<Filter> filterSupplierSer, final JpaPropertyProvider jpaPropertyProvider) {
         return new JpaLazyItemList<TEntityType>(tEntityTypeClass, sortBySupplier, filterSupplierSer, jpaPropertyProvider) {
             @Override
-            protected List<Predicate> createContainerFilterPredicates(CriteriaBuilder cb, CriteriaQuery query, Root root) {
+            protected List<Predicate> createContainerFilterPredicates(final CriteriaBuilder cb, final CriteriaQuery query, final Root root) {
                 final List<Predicate> predicates = super.createContainerFilterPredicates(cb, query, root);
                 // Установить фильтр в соответствии с правами доступа пользователя
                 final Predicate predicate = securityFilter.createSecurityPredicate(cb, query);

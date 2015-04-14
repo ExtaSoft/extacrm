@@ -112,7 +112,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-//            setConverter(new SingleSelectConverter<LegalEntity>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -204,7 +204,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             selectField.refreshContainer();
-                            selectField.setValue(editWin.getEntityItemId());
+                            selectField.setConvertedValue(editWin.getEntity());
                         }
                         popupView.setPopupVisible(true);
                     });

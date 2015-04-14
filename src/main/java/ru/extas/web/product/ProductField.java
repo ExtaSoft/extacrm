@@ -64,7 +64,7 @@ public abstract class ProductField<TProduct extends Product> extends CustomField
         productSelect.setPropertyDataSource(getPropertyDataSource());
         productSelect.addValueChangeListener(e -> setValue((TProduct) productSelect.getConvertedValue()));
 //        productSelect.setValue(getValue());
-//        productSelect.setConverter(new SingleSelectConverter<TProduct>(productSelect));
+        clientsCont.setSingleSelectConverter(productSelect);
 
         productSelect.setWidth(100, Unit.PERCENTAGE);
         box.addComponent(productSelect);

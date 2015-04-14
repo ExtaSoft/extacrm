@@ -128,7 +128,7 @@ public class EmployeeField extends CustomField<Employee> {
             setContainerDataSource(container);
             setItemCaptionMode(ItemCaptionMode.PROPERTY);
             setItemCaptionPropertyId("name");
-//            setConverter(new SingleSelectConverter<Employee>(this));
+            container.setSingleSelectConverter(this);
 
             // Функционал добавления нового контакта
             setNullSelectionAllowed(false);
@@ -209,7 +209,7 @@ public class EmployeeField extends CustomField<Employee> {
                     editWin.addCloseFormListener(event -> {
                         if (editWin.isSaved()) {
                             selectField.refreshContainer();
-                            selectField.setValue(editWin.getEntityItemId());
+                            selectField.setConvertedValue(editWin.getEntity());
                         }
                         popupView.setPopupVisible(true);
                     });

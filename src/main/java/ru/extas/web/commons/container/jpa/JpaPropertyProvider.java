@@ -30,7 +30,7 @@ public class JpaPropertyProvider<TEntityType extends IdentifiedObject> implement
     private final WrapDynaClass dynaClass;
     private transient Resolver resolver = new DefaultResolver();
 
-    public JpaPropertyProvider(Class<TEntityType> entityClass) {
+    public JpaPropertyProvider(final Class<TEntityType> entityClass) {
         this.entityClass = entityClass;
         dynaClass = WrapDynaClass.createDynaClass(entityClass);
     }
@@ -39,11 +39,11 @@ public class JpaPropertyProvider<TEntityType extends IdentifiedObject> implement
         return nestedProps;
     }
 
-    public int getNestedIndex(String propertyName) {
+    public int getNestedIndex(final String propertyName) {
         return nestedProps.indexOf(propertyName);
     }
 
-    public Class getPropType(String propertyName) {
+    public Class getPropType(final String propertyName) {
         final String propName = propertyName.toString();
         final DynaProperty dynaProperty = getDynaClass().getDynaProperty(propName);
         final Class<?> type;
@@ -79,7 +79,7 @@ public class JpaPropertyProvider<TEntityType extends IdentifiedObject> implement
         return propType;
     }
 
-    public Object getBeanProp(TEntityType bean, String propertyName) {
+    public Object getBeanProp(final TEntityType bean, final String propertyName) {
         try {
             return PropertyUtils.getProperty(bean, propertyName);
         } catch (final Throwable e) {
@@ -88,7 +88,7 @@ public class JpaPropertyProvider<TEntityType extends IdentifiedObject> implement
         return null;
     }
 
-    public void setBeanProp(TEntityType bean, String propertyName, Object newValue) {
+    public void setBeanProp(final TEntityType bean, final String propertyName, final Object newValue) {
         try {
             PropertyUtils.setNestedProperty(bean, propertyName, newValue);
         } catch (final Throwable e) {
@@ -96,7 +96,7 @@ public class JpaPropertyProvider<TEntityType extends IdentifiedObject> implement
         }
     }
 
-    public boolean isPropReadOnly(TEntityType bean, String propertyName){
+    public boolean isPropReadOnly(final TEntityType bean, final String propertyName){
         try {
             return PropertyUtils.getPropertyDescriptor(bean, propertyName).getWriteMethod() == null;
         } catch (final Throwable e) {
@@ -106,7 +106,7 @@ public class JpaPropertyProvider<TEntityType extends IdentifiedObject> implement
 
     }
 
-    public boolean isNestedProp(Object id) {
+    public boolean isNestedProp(final Object id) {
         return nestedProps.contains(id);
     }
 
@@ -130,7 +130,7 @@ public class JpaPropertyProvider<TEntityType extends IdentifiedObject> implement
 
     }
 
-    public void addNestedContainerProperty(String nestedProp) {
+    public void addNestedContainerProperty(final String nestedProp) {
         if (resolver.hasNested(nestedProp))
             nestedProps.add(nestedProp);
     }

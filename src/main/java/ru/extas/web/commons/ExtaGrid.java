@@ -24,6 +24,7 @@ import org.tepi.filtertable.FilterGenerator;
 import org.tepi.filtertable.FilterTable;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.common.ArchivedObject;
+import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.security.SecuredObject;
 import ru.extas.model.security.UserRole;
 import ru.extas.model.settings.UserGridState;
@@ -32,7 +33,6 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.server.settings.UserGridStateService;
 import ru.extas.web.commons.component.PastDateIntervalField;
 import ru.extas.web.commons.container.ExtaDbContainer;
-import ru.extas.web.commons.container.JpaLazyListContainer;
 import ru.extas.web.commons.container.RefreshBeanContainer;
 import ru.extas.web.commons.window.DownloadFileWindow;
 import ru.extas.web.users.SecuritySettingsForm;
@@ -125,9 +125,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         public void open4Edit(final ExtaEditForm form) {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
-                    grid.refreshContainerItem(form.getEntityItemId());
+                    grid.refreshContainerEntity(form.getEntity());
                 }
-                grid.selectObject(form.getEntityItemId());
+                grid.selectEntity(form.getEntity());
             });
             FormUtils.showModalWin(form);
         }
@@ -137,11 +137,25 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             form.addCloseFormListener(event -> {
                 if (form.isSaved()) {
                     grid.refreshContainer();
-                    grid.selectObject(form.getEntityItemId());
+                    grid.selectEntity(form.getEntity());
                 }
             });
             FormUtils.showModalWin(form);
         }
+    }
+
+    public void selectEntity(final TEntity entity) {
+        Object itemId = entity;
+        if (container instanceof ExtaDbContainer)
+            itemId = ((ExtaDbContainer) container).getEntityItemId((IdentifiedObject) entity);
+        selectObject(itemId);
+    }
+
+    protected void refreshContainerEntity(final TEntity entity) {
+        Object itemId = entity;
+        if(container instanceof ExtaDbContainer)
+            itemId = ((ExtaDbContainer)container).getEntityItemId((IdentifiedObject) entity);
+        refreshContainerItem(itemId);
     }
 
     /**
@@ -717,8 +731,6 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             ((ExtaDbContainer) container).refresh();
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
-        else if(container instanceof JpaLazyListContainer)
-            ((JpaLazyListContainer) container).refresh();
         table.setValue(itemId);
     }
 
@@ -732,8 +744,6 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
             ((ExtaDbContainer) container).refreshItem(itemId);
         else if (container instanceof RefreshBeanContainer)
             ((RefreshBeanContainer) container).refreshItems();
-        else if (container instanceof JpaLazyListContainer)
-            ((JpaLazyListContainer) container).refreshItem(itemId);
     }
 
     public void adjustGridHeight() {
