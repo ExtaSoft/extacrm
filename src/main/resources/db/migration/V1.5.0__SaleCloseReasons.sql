@@ -41,5 +41,5 @@ WHERE DOMAIN = 'leads/new';
 #######################################################################################################################
 # CRM-288 Расширить наименование банка до 100 символов
 
-ALTER TABLE `extacrm`.`company`
+ALTER TABLE COMPANY
 CHANGE COLUMN `NAME` `NAME` VARCHAR(100) NULL DEFAULT NULL;
