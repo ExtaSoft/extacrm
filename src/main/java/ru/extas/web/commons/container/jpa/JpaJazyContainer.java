@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newLinkedList;
 
 /**
@@ -167,7 +168,7 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
             throw new IllegalArgumentException();
         }
 
-        return entityItemList.subList(startIndex, startIndex + numberOfItems);
+        return newArrayList(entityItemList.subList(startIndex, startIndex + numberOfItems));
     }
 
     @Override

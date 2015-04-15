@@ -275,7 +275,7 @@ public class SalePointField extends CustomField<SalePoint> {
                     final SalePointSelectWindow selectWindow = new SalePointSelectWindow("Выберите торговую точку или введите новую", companySupplier);
                     selectWindow.addCloseListener(e -> {
                         if (selectWindow.isSelectPressed()) {
-                            contactSelect.setConvertedValue(selectWindow.getSelected());
+                            contactSelect.setConvertedValue(selectWindow.getSelected().stream().findFirst().orElse(null));
                         }
                         popupView.setPopupVisible(true);
                     });
