@@ -132,8 +132,6 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     @Transactional
     @Override
     public void cancelSale(Sale sale, final Sale.CancelReason reason) {
-        final Lead.Result leadResult = Lead.Result.CLIENT_REJECTED;
-
         sale.setStatus(Sale.Status.CANCELED);
         sale.setCancelReason(reason);
         sale.getProductInSales().stream()
@@ -142,7 +140,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale = secureSave(sale);
         final Lead lead = sale.getLead();
         if (lead != null)
-            leadRepository.finishLead(lead, leadResult);
+            leadRepository.finishLead(lead, Lead.Result.CLIENT_REJECTED);
     }
 
     @Transactional

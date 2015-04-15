@@ -151,6 +151,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
             actions.add(new ItemAction("Завершить", "Успешное завершение продажи", FontAwesome.FLAG_CHECKERED) {
                 @Override
                 public void fire(final Set itemIds) {
+                    refreshContainerItems(itemIds);
                     final Set<Sale> sales = getEntities(itemIds);
                     final String numList = getSalesNumList(sales);
                     ConfirmDialog.show(UI.getCurrent(),
@@ -167,6 +168,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
             actions.add(new ItemAction("Отменить", "Отмена продажи", Fontello.CANCEL) {
                 @Override
                 public void fire(final Set itemIds) {
+                    refreshContainerItems(itemIds);
                     final Set<Sale> sales = getEntities(itemIds);
                     final String numList = getSalesNumList(sales);
                     final ConfirmSaleClosingWindow win = new ConfirmSaleClosingWindow();

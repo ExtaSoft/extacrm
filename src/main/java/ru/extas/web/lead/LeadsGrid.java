@@ -175,7 +175,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
         final LeadEditForm editWin = new LeadEditForm(curObj, true);
         editWin.addCloseFormListener(event -> {
             if (editWin.isSaved()) {
-                refreshContainerItem(itemId);
+                refreshContainer();
             }
         });
         FormUtils.showModalWin(editWin);
