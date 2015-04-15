@@ -101,7 +101,7 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     public void finishLead(final Lead lead, final Lead.Result result) {
         lead.setResult(result);
         lead.setStatus(Lead.Status.CLOSED);
-        secureSave(lead);
+        leadRepository.save(lead);
     }
 
     @Transactional
@@ -109,7 +109,7 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     public void reopenLead(final Lead lead) {
         lead.setResult(null);
         lead.setStatus(Lead.Status.NEW);
-        secureSave(lead);
+        leadRepository.save(lead);
     }
 
     @Transactional
