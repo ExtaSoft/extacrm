@@ -25,7 +25,7 @@ public class PersonExpense extends IdentifiedObject {
     @Column(precision = 32, scale = 4)
     private BigDecimal expense;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person owner;
 
     public PersonExpense() {

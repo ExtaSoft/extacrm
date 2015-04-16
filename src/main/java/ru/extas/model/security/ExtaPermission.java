@@ -27,17 +27,17 @@ public class ExtaPermission extends AuditedObject implements Permission {
     @Column(name = "DOMAIN")
     private ExtaDomain domain;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "ACCESS_PERMISSION_ACTION")
     private Set<SecureAction> actions = newHashSet();
 
     @Column(name = "TARGET")
     private SecureTarget target;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private UserProfile user;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private UserGroup group;
 
 

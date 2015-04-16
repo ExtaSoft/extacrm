@@ -94,6 +94,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     @Transactional
     @Override
     public void finishSale(Sale sale) {
+        logger.info("BEGIN Finish sale");
         Lead.Result leadResult = Lead.Result.SUCCESSFUL;
 
         sale.setStatus(Sale.Status.FINISHED);
@@ -101,10 +102,14 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
                 .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
                 .forEach(p -> p.setState(ProductInSale.State.AGREED));
         leadResult = Lead.Result.SUCCESSFUL;
+        logger.info("Save sale during Finishing");
         sale = secureSave(sale);
         final Lead lead = sale.getLead();
-        if (lead != null)
+        if (lead != null) {
+            logger.info("Save lead during Finishing");
             leadRepository.finishLead(lead, leadResult);
+        }
+        logger.info("END Finish sale");
     }
 
     @Transactional
@@ -132,15 +137,20 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     @Transactional
     @Override
     public void cancelSale(Sale sale, final Sale.CancelReason reason) {
+        logger.info("BEGIN Cancel sale");
         sale.setStatus(Sale.Status.CANCELED);
         sale.setCancelReason(reason);
         sale.getProductInSales().stream()
                 .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
                 .forEach(p -> p.setState(ProductInSale.State.REJECTED));
+        logger.info("Save sale during Canceling");
         sale = secureSave(sale);
         final Lead lead = sale.getLead();
-        if (lead != null)
+        if (lead != null) {
+            logger.info("Cancel lead during Canceling");
             leadRepository.finishLead(lead, Lead.Result.CLIENT_REJECTED);
+        }
+        logger.info("END Cancel sale");
     }
 
     @Transactional

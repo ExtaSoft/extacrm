@@ -85,7 +85,7 @@ public class Company extends SecuredObject {
     private String city;
 
     // Собственник(и) Компании
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "COMPANY_OWNER",
             joinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")},
@@ -94,22 +94,22 @@ public class Company extends SecuredObject {
     private Set<Employee> owners = newHashSet();
 
     // Сотрудники компании
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     private Set<Employee> employees = newHashSet();
 
     // Юридические лица компании
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     private Set<LegalEntity> legalEntities = newHashSet();
 
     // Торговые точки компании
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     private Set<SalePoint> salePoints = newHashSet();
 
     // Привязка обхекта к категориям
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "COMPANY_CATEGORY",
             joinColumns = {@JoinColumn(name = "COMPANY_ID")},
             indexes = {

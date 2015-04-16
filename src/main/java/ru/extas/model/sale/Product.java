@@ -44,7 +44,7 @@ public abstract class Product extends AuditedObject {
 	private String name;
 
 	// Поставщик продукта
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	private Company vendor;
 
 	// Признак активности продукта

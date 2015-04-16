@@ -36,7 +36,7 @@ public class ProdCreditDoc extends AuditedObject {
 	@Column(name = "IS_REQUIRED")
 	private boolean required;
 
-	@ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private ProdCredit product;
 
 	/**

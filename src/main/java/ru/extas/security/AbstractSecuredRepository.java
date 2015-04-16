@@ -2,6 +2,8 @@ package ru.extas.security;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
@@ -29,6 +31,8 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  * @since 0.3.0
  */
 public abstract class AbstractSecuredRepository<Entity extends SecuredObject> implements SecuredRepository<Entity> {
+
+    private final static Logger logger = LoggerFactory.getLogger(AbstractSecuredRepository.class);
 
     @Inject
     protected UserManagementService userService;
@@ -94,6 +98,7 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
                                 final Collection<String> regions,
                                 final Collection<String> brands) {
         if (entity != null) {
+            logger.info("BEGIN Base Secure Save (BSS): Type - {}; Entity ID - {}", entity.getClass().getSimpleName(), entity.getId());
             // Доступ пользователей к объекту
             entity.addSecurityUserAccess(users);
             // Видимость объекта в разрезе Торговых точек
@@ -104,7 +109,9 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
             entity.addSecurityRegions(regions);
             // Видимость объекта в разрезе брендов
             entity.addSecurityBrands(brands);
-            return getEntityRepository().save(entity);
+            final Entity save = getEntityRepository().save(entity);
+            logger.info("END Base Secure Save (BSS): Type - {}; Entity ID - {}", entity.getClass().getSimpleName(), entity.getId());
+            return save;
         }
         return entity;
     }

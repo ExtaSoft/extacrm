@@ -28,7 +28,7 @@ public class PersonIncome extends IdentifiedObject {
     @Column(name = "SPOUSE_INCOME", precision = 32, scale = 4)
     private BigDecimal spouseIncome;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person owner;
 
     public PersonIncome() {

@@ -42,7 +42,7 @@ public class PayAccount extends AuditedObject {
     private String settlementAccount;
 
     // Контакт которому относится счет
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Company contact;
 
     /**
