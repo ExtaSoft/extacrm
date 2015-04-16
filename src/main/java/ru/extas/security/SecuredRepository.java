@@ -3,9 +3,6 @@ package ru.extas.security;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.model.security.SecuredObject;
 
@@ -51,9 +48,9 @@ public interface SecuredRepository<Entity extends SecuredObject> {
      */
     @Transactional
     Entity permitAndSave(Entity entity,
-                         Collection<Pair<Employee, AccessRole>> users,
-                         Collection<SalePoint> salePoints,
-                         Collection<Company> companies,
+                         Collection<Pair<String, AccessRole>> users,
+                         Collection<String> salePoints,
+                         Collection<String> companies,
                          Collection<String> regions,
                          Collection<String> brands);
 
@@ -69,9 +66,9 @@ public interface SecuredRepository<Entity extends SecuredObject> {
      */
     @Transactional
     List<Entity> permitAndSave(Collection<Entity> entities,
-                               Collection<Pair<Employee, AccessRole>> users,
-                               Collection<SalePoint> salePoints,
-                               Collection<Company> companies,
+                               Collection<Pair<String, AccessRole>> users,
+                               Collection<String> salePoints,
+                               Collection<String> companies,
                                Collection<String> regions,
                                Collection<String> brands);
 
@@ -83,6 +80,6 @@ public interface SecuredRepository<Entity extends SecuredObject> {
      * @return a Entity object.
      */
     @Transactional
-    Entity permitAndSave(Entity entity, Pair<Employee, AccessRole> user);
+    Entity permitAndSave(Entity entity, Pair<String, AccessRole> user);
 
 }

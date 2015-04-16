@@ -5,9 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.model.security.SecuredObject;
 import ru.extas.server.security.UserManagementService;
@@ -46,29 +44,29 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
         return permitAndSave(entity, getObjectUsers(entity), getObjectSalePoints(entity), getObjectCompanies(entity), getObjectRegions(entity), getObjectBrands(entity));
     }
 
-    protected abstract Collection<Pair<Employee, AccessRole>> getObjectUsers(Entity entity);
+    protected abstract Collection<Pair<String, AccessRole>> getObjectUsers(Entity entity);
 
-    protected Pair<Employee, AccessRole> getCurUserAccess(final Entity entity) {
+    protected Pair<String, AccessRole> getCurUserAccess(final Entity entity) {
         final Employee currentUserContact;
         if (userService.isUserAuthenticated())
             currentUserContact = userService.getCurrentUserEmployee();
         else
             currentUserContact = userService.findUserEmployeeByLogin("admin");
 
-        return new ImmutablePair<>(currentUserContact, entity.isNew() ? AccessRole.OWNER : AccessRole.EDITOR);
+        return new ImmutablePair<>(currentUserContact.getId(), entity.isNew() ? AccessRole.OWNER : AccessRole.EDITOR);
     }
 
-    protected Collection<Pair<Employee, AccessRole>> reassigneRole(final Collection<Pair<Employee, AccessRole>> users, final AccessRole role) {
-        final List<Pair<Employee, AccessRole>> newUsers = newArrayListWithCapacity(users.size());
+    protected Collection<Pair<String, AccessRole>> reassigneRole(final Collection<Pair<String, AccessRole>> users, final AccessRole role) {
+        final List<Pair<String, AccessRole>> newUsers = newArrayListWithCapacity(users.size());
 
         users.forEach(p -> newUsers.add(new ImmutablePair<>(p.getLeft(), role)));
 
         return newUsers;
     }
 
-    protected abstract Collection<Company> getObjectCompanies(Entity entity);
+    protected abstract Collection<String> getObjectCompanies(Entity entity);
 
-    protected abstract Collection<SalePoint> getObjectSalePoints(Entity entity);
+    protected abstract Collection<String> getObjectSalePoints(Entity entity);
 
     /**
      * <p>getObjectBrands.</p>
@@ -92,9 +90,9 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
     @Transactional
     @Override
     public Entity permitAndSave(final Entity entity,
-                                final Collection<Pair<Employee, AccessRole>> users,
-                                final Collection<SalePoint> salePoints,
-                                final Collection<Company> companies,
+                                final Collection<Pair<String, AccessRole>> users,
+                                final Collection<String> salePoints,
+                                final Collection<String> companies,
                                 final Collection<String> regions,
                                 final Collection<String> brands) {
         if (entity != null) {
@@ -122,9 +120,9 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
     @Transactional
     @Override
     public List<Entity> permitAndSave(final Collection<Entity> entities,
-                                      final Collection<Pair<Employee, AccessRole>> users,
-                                      final Collection<SalePoint> salePoints,
-                                      final Collection<Company> companies,
+                                      final Collection<Pair<String, AccessRole>> users,
+                                      final Collection<String> salePoints,
+                                      final Collection<String> companies,
                                       final Collection<String> regions,
                                       final Collection<String> brands) {
         final List<Entity> result = new ArrayList<>();
@@ -142,9 +140,9 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
      */
     @Transactional
     @Override
-    public Entity permitAndSave(final Entity entity, final Pair<Employee, AccessRole> user) {
+    public Entity permitAndSave(final Entity entity, final Pair<String, AccessRole> user) {
         if (entity != null) {
-            final ArrayList<Pair<Employee, AccessRole>> users = newArrayList(user);
+            final ArrayList<Pair<String, AccessRole>> users = newArrayList(user);
             users.addAll(getObjectUsers(entity));
             return permitAndSave(entity, users, getObjectSalePoints(entity), getObjectCompanies(entity), getObjectRegions(entity), getObjectBrands(entity));
         }

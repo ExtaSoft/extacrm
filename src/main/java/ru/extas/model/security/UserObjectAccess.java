@@ -1,7 +1,6 @@
 package ru.extas.model.security;
 
 import ru.extas.model.common.AuditedObject;
-import ru.extas.model.contacts.Employee;
 
 import javax.persistence.*;
 
@@ -18,15 +17,14 @@ public class UserObjectAccess extends AuditedObject {
     @JoinColumn(name = "SECURITY_RULE_ID")
     private ObjectSecurityRule securityRule;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "USER_ID")
-    private Employee user;
+    @Column(name = "USER_ID", length = ID_SIZE)
+    private String userId;
 
     private AccessRole role;
 
-    public UserObjectAccess(final ObjectSecurityRule securityRule, final Employee user, final AccessRole role) {
+    public UserObjectAccess(final ObjectSecurityRule securityRule, final String userId, final AccessRole role) {
         this.securityRule = securityRule;
-        this.user = user;
+        this.userId = userId;
         this.role = role;
     }
 
@@ -41,12 +39,12 @@ public class UserObjectAccess extends AuditedObject {
         this.securityRule = securityRule;
     }
 
-    public Employee getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(final Employee user) {
-        this.user = user;
+    public void setUserId(final String userId) {
+        this.userId = userId;
     }
 
     public AccessRole getRole() {

@@ -2,9 +2,6 @@ package ru.extas.model.security;
 
 import org.apache.commons.lang3.tuple.Pair;
 import ru.extas.model.common.AuditedObject;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -40,17 +37,17 @@ public class SecuredObject extends AuditedObject {
         this.securityRule = securityRule;
     }
 
-    public void addSecurityUserAccess(final Employee user, final AccessRole role) {
-        checkNotNull(user);
+    public void addSecurityUserAccess(final String userId, final AccessRole role) {
+        checkNotNull(userId);
         checkNotNull(role);
         final ObjectSecurityRule rule = getSecurityRule();
-        final Map<Employee, UserObjectAccess> users = rule.getUsers();
-        if (users.containsKey(user)) {
-            final UserObjectAccess access = users.get(user);
+        final Map<String, UserObjectAccess> users = rule.getUsers();
+        if (users.containsKey(userId)) {
+            final UserObjectAccess access = users.get(userId);
             if (access.getRole() == null || access.getRole().ordinal() < role.ordinal())
                 access.setRole(role);
         } else
-            users.put(user, new UserObjectAccess(rule, user, role));
+            users.put(userId, new UserObjectAccess(rule, userId, role));
     }
 
     public void addSecurityRegions(final Collection<String> regions) {
@@ -65,22 +62,22 @@ public class SecuredObject extends AuditedObject {
             rule.getBrands().addAll(brands);
     }
 
-    public void addSecurityUserAccess(final Collection<Pair<Employee, AccessRole>> users) {
+    public void addSecurityUserAccess(final Collection<Pair<String, AccessRole>> users) {
         final ObjectSecurityRule rule = getSecurityRule();
         if (!isEmpty(users))
             users.forEach(p -> addSecurityUserAccess(p.getLeft(), p.getRight()));
     }
 
-    public void addSecuritySalePoints(final Collection<SalePoint> salePoints) {
+    public void addSecuritySalePoints(final Collection<String> salePointIds) {
         final ObjectSecurityRule rule = getSecurityRule();
-        if (!isEmpty(salePoints))
-            rule.getSalePoints().addAll(salePoints);
+        if (!isEmpty(salePointIds))
+            rule.getSalePointIds().addAll(salePointIds);
     }
 
-    public void addSecurityCompanies(final Collection<Company> companies) {
+    public void addSecurityCompanies(final Collection<String> companyIds) {
         final ObjectSecurityRule rule = getSecurityRule();
-        if (!isEmpty(companies))
-            rule.getCompanies().addAll(companies);
+        if (!isEmpty(companyIds))
+            rule.getCompanyIds().addAll(companyIds);
 
     }
 }

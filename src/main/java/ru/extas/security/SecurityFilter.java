@@ -1,9 +1,7 @@
 package ru.extas.security;
 
 import ru.extas.model.common.IdentifiedObject_;
-import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.*;
 import ru.extas.server.security.UserManagementService;
 
@@ -36,29 +34,28 @@ public class SecurityFilter<TEntityType extends SecuredObject> extends AbstractS
 
         switch (target) {
             case OWNONLY: {
-                final Join<UserObjectAccess, Employee> usersRoot =
+                final MapJoin<ObjectSecurityRule, String, UserObjectAccess> usersRoot =
                         getSecurityRoleJoin(objectRoot)
-                                .join(ObjectSecurityRule_.users, JoinType.LEFT)
-                                .join(UserObjectAccess_.user, JoinType.LEFT);
-                predicate = cb.equal(usersRoot, curUserContact);
+                                .join(ObjectSecurityRule_.users, JoinType.LEFT);
+                predicate = cb.equal(usersRoot.get(UserObjectAccess_.userId), curUserContact.getId());
                 break;
             }
             case SALE_POINT: {
-                final SetJoin<ObjectSecurityRule, SalePoint> salePointsRoot =
+                final SetJoin<ObjectSecurityRule, String> salePointsRoot =
                         getSecurityRoleJoin(objectRoot)
-                                .join(ObjectSecurityRule_.salePoints, JoinType.LEFT);
-                final Set<SalePoint> workPlaces = newHashSet();
-                workPlaces.add(curUserContact.getWorkPlace());
+                                .join(ObjectSecurityRule_.salePointIds, JoinType.LEFT);
+                final Set<String> workPlaces = newHashSet();
+                workPlaces.add(Optional.ofNullable(curUserContact.getWorkPlace()).map(w -> w.getId()).orElse(null));
                 Optional.ofNullable(curUserContact.getUserProfile())
                         .map(p -> p.getSalePoints())
-                        .ifPresent(s -> workPlaces.addAll(s));
+                        .ifPresent(s -> s.forEach(w -> workPlaces.add(w.getId())));
                 predicate = composeWithAreaFilter(cb, objectRoot, salePointsRoot.in(workPlaces));
                 break;
             }
             case CORPORATE: {
-                final SetJoin<ObjectSecurityRule, Company> companiesRoot = getSecurityRoleJoin(objectRoot)
-                        .join(ObjectSecurityRule_.companies, JoinType.LEFT);
-                predicate = composeWithAreaFilter(cb, objectRoot, cb.equal(companiesRoot, curUserContact.getCompany()));
+                final SetJoin<ObjectSecurityRule, String> companiesRoot = getSecurityRoleJoin(objectRoot)
+                        .join(ObjectSecurityRule_.companyIds, JoinType.LEFT);
+                predicate = composeWithAreaFilter(cb, objectRoot, cb.equal(companiesRoot, curUserContact.getCompany().getId()));
                 break;
             }
             case ALL:
@@ -125,16 +122,16 @@ public class SecurityFilter<TEntityType extends SecuredObject> extends AbstractS
         final CriteriaQuery cq = cb.createQuery();
         final Root<TEntityType> root = cq.from(getEntityClass());
 
-        final MapJoin<ObjectSecurityRule, Employee, UserObjectAccess> join = getSecurityRoleJoin(root)
+        final MapJoin<ObjectSecurityRule, String, UserObjectAccess> join = getSecurityRoleJoin(root)
                 .join(ObjectSecurityRule_.users, JoinType.LEFT);
         cq.where(cb.and(
-                cb.equal(join.join(UserObjectAccess_.user, JoinType.LEFT), curUserContact),
+                cb.equal(join.join(UserObjectAccess_.userId, JoinType.LEFT), curUserContact.getId()),
                 cb.equal(root.get(IdentifiedObject_.id), itemId)));
         cq.select(join.value().get(UserObjectAccess_.role));
 
         final Query qry = em.createQuery(cq);
         final AccessRole result = (AccessRole) qry.getSingleResult();
-        if(result != null){
+        if (result != null) {
             switch (result) {
                 case READER:
                     return action == SecureAction.VIEW;

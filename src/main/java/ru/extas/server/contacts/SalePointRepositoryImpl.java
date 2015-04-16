@@ -6,8 +6,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
@@ -43,17 +41,17 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
     }
 
     @Override
-    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final SalePoint salePoint) {
+    protected Collection<Pair<String, AccessRole>> getObjectUsers(final SalePoint salePoint) {
         return newArrayList(getCurUserAccess(salePoint));
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(final SalePoint salePoint) {
+    protected Collection<String> getObjectCompanies(final SalePoint salePoint) {
         return null;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(final SalePoint salePoint) {
+    protected Collection<String> getObjectSalePoints(final SalePoint salePoint) {
         return null;
     }
 
@@ -75,16 +73,16 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
     @Transactional
     @Override
     public SalePoint permitAndSave(SalePoint salePoint,
-                                   final Collection<Pair<Employee, AccessRole>> users,
-                                   final Collection<SalePoint> salePoints,
-                                   final Collection<Company> companies,
+                                   final Collection<Pair<String, AccessRole>> users,
+                                   final Collection<String> salePoints,
+                                   final Collection<String> companies,
                                    final Collection<String> regions,
                                    final Collection<String> brands) {
         if (salePoint != null) {
             salePoint = super.permitAndSave(salePoint, users, salePoints, companies, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты торговой точки:
             // Юр. лица работающие на торговой точке
-            final Collection<Pair<Employee, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            final Collection<Pair<String, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
             legalEntityRepository.permitAndSave(salePoint.getLegalEntities(), readers, salePoints, companies, regions, brands);
             // Сотрудники торговой точки
             employeeRepository.permitAndSave(salePoint.getEmployees(), readers, salePoints, companies, regions, brands);

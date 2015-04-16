@@ -391,7 +391,7 @@ public class LeadInputFormUI extends UI {
         if (user == null)
             user = userService.findUserEmployeeByLogin("admin");
 
-        leadRepository.permitAndSave(lead, new ImmutablePair<>(user, AccessRole.OWNER));
+        leadRepository.permitAndSave(lead, new ImmutablePair<>(user.getId(), AccessRole.OWNER));
     }
 
 
