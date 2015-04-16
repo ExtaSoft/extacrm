@@ -23,14 +23,14 @@ public class SalePoint extends Contact implements ArchivedObject {
 
     private static final int CODE_LENGTH = 50;
     // Компания
-    @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Company company;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee curator;
 
     // Юр. лица работающие на торговой точке
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "SALEPOINT_LEGALENTITY",
             joinColumns = {@JoinColumn(name = "SALEPOINT_ID", referencedColumnName = "ID")},
@@ -39,7 +39,7 @@ public class SalePoint extends Contact implements ArchivedObject {
     private Set<LegalEntity> legalEntities = newHashSet();
 
     // Сотрудники
-    @OneToMany(mappedBy = "workPlace", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToMany(mappedBy = "workPlace", fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @OrderBy("name ASC")
     private Set<Employee> employees = newHashSet();
 

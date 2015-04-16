@@ -28,7 +28,7 @@ public class ProdCreditPercent extends AuditedObject {
 	@Column(name = "DOWNPAYMENT", precision = 32, scale = 4)
 	private BigDecimal downpayment;
 
-	@ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private ProdCredit product;
 
 	/**

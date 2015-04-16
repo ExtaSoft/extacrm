@@ -28,13 +28,13 @@ public class FormTransfer extends AuditedObject {
     /**
      * Контакт от которого принимаются бланки
      */
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee fromContact;
 
     /**
      * Контакт которому передются бланки
      */
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee toContact;
 
     /**
@@ -45,7 +45,7 @@ public class FormTransfer extends AuditedObject {
     /**
      * Список номеров передаваемых бланков
      */
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "FORM_TRANSFER_NUMS",
             joinColumns = {@JoinColumn(name = "FORM_TRANSFER_ID")},
             indexes = {

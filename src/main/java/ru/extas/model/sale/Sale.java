@@ -34,7 +34,7 @@ public class Sale extends SecuredObject {
     private Long num;
 
     // Клиент
-	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name = "CLIENT", referencedColumnName = "ID")
 	private Client client;
 
@@ -66,10 +66,10 @@ public class Sale extends SecuredObject {
 	private BigDecimal motorPrice;
 
 	// Мотосалон
-	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private SalePoint dealer;
 
-	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private LegalEntity dealerLE;
 
     @Column(name = "COMMENT")
@@ -83,24 +83,24 @@ public class Sale extends SecuredObject {
     @Column(name = "CANCEL_REASON", length = ModelUtils.ENUM_STRING_LENGTH)
     private CancelReason cancelReason;
 
-	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
+	@OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<ProductInSale> productInSales = newArrayList();
 
     // Ответственный с нашей стороны
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee responsible;
 
     // Помощник ответственного с нашей стороны
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "RESPONSIBLE_ASSIST_ID")
     private Employee responsibleAssist;
 
     // Ответственный со стороны дилера
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "DEALER_MANAGER_ID")
     private Employee dealerManager;
 
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Lead lead;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

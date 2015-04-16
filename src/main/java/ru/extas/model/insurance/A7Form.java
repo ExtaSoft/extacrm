@@ -69,7 +69,7 @@ public class A7Form extends AuditedObject {
     /**
      * Владелец квитанции
      */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Employee owner;
 
     /**

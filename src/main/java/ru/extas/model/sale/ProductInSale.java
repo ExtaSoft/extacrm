@@ -46,11 +46,11 @@ public class ProductInSale extends AuditedObject {
     }
 
 	// Продажа
-	@ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Sale sale;
 
 	// Продукт
-	@OneToOne
+	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	private Product product;
 
 	// Сумма
@@ -66,7 +66,7 @@ public class ProductInSale extends AuditedObject {
 	private BigDecimal downpayment;
 
 	// Ответственный сотрудник (Ответственный за продукт)
-	@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Employee responsible;
 
     @Enumerated

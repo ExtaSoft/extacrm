@@ -32,12 +32,12 @@ public class UserGroup extends AuditedObject {
     @Size(max = 255)
     private String description;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "USER_GROUP_REGION",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
     private Set<String> permitRegions = newHashSet();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "USER_GROUP_BRAND",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
     private Set<String> permitBrands = newHashSet();
@@ -48,7 +48,7 @@ public class UserGroup extends AuditedObject {
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ExtaPermission> permissions = newHashSet();
 
-    @ManyToMany(mappedBy = "groupList", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(mappedBy = "groupList", fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Set<UserProfile> users = newHashSet();
 
     public UserGroup createCopy() {

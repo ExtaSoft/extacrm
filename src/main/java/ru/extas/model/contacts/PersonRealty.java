@@ -42,7 +42,7 @@ public class PersonRealty extends IdentifiedObject {
     @Size(max = 50)
     private String way2purchase;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person owner;
 
     public PersonRealty() {

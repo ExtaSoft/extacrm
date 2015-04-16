@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "SECURITY_RULE_USER")
 public class UserObjectAccess extends AuditedObject {
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "SECURITY_RULE_ID")
     private ObjectSecurityRule securityRule;
 

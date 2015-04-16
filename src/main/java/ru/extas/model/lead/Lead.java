@@ -124,25 +124,25 @@ public class Lead extends SecuredObject {
     // -----------------------------------
 
     // Клиент
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "CLIENT", referencedColumnName = "ID")
     private Client client;
 
     // Продавец (дилер, страх. компания)
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private SalePoint vendor;
 
     // Ответственный
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee responsible;
 
     // Помощник ответственного с нашей стороны
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "RESPONSIBLE_ASSIST_ID")
     private Employee responsibleAssist;
 
     // Ответственный со стороны дилера
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "DEALER_MANAGER_ID")
     private Employee dealerManager;
 

@@ -25,7 +25,7 @@ public class PersonChild extends IdentifiedObject {
     @NotNull
     private LocalDate birthday;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Person parent;
 
     public PersonChild() {
