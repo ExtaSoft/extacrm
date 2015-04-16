@@ -1,9 +1,6 @@
 package ru.extas.model.security;
 
 import ru.extas.model.common.AuditedObject;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
 import java.util.Map;
@@ -33,23 +30,29 @@ import static com.google.common.collect.Sets.newHashSet;
 public class ObjectSecurityRule extends AuditedObject {
 
     // Привязка объекта к Торговой точке
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinTable(name = "SECURITY_RULE_SALE_POINT",
-            joinColumns = {@JoinColumn(name = "SECURITY_RULE_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "SALE_POINT_ID", referencedColumnName = "ID")} )
-    private Set<SalePoint> salePoints = newHashSet();
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "SECURITY_RULE_SALE_POINT",
+            joinColumns = {@JoinColumn(name = "SECURITY_RULE_ID")},
+            indexes = {
+                    @Index(columnList = "SECURITY_RULE_ID, SALE_POINT_ID")
+            })
+    @Column(name = "SALE_POINT_ID", length = ID_SIZE)
+    private Set<String> salePointIds = newHashSet();
 
     // Привязка объекта к Компании
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinTable(name = "SECURITY_RULE_COMPANY",
-            joinColumns = {@JoinColumn(name = "SECURITY_RULE_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")})
-    private Set<Company> companies = newHashSet();
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "SECURITY_RULE_COMPANY",
+            joinColumns = {@JoinColumn(name = "SECURITY_RULE_ID")},
+            indexes = {
+                    @Index(columnList = "SECURITY_RULE_ID, COMPANY_ID")
+            })
+    @Column(name = "COMPANY_ID", length = ID_SIZE)
+    private Set<String> companyIds = newHashSet();
 
     // Привязка объекта к пользователям
     @OneToMany(mappedBy = "securityRule", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapKey(name = "user")
-    private Map<Employee, UserObjectAccess> users = newHashMap();
+    @MapKey(name = "userId")
+    private Map<String, UserObjectAccess> users = newHashMap();
 
     // Привязка обхекта к регионам
     @ElementCollection(fetch = FetchType.LAZY)
@@ -70,27 +73,27 @@ public class ObjectSecurityRule extends AuditedObject {
     private Set<String> brands = newHashSet();
 
 
-    public Set<SalePoint> getSalePoints() {
-        return salePoints;
+    public Set<String> getSalePointIds() {
+        return salePointIds;
     }
 
-    public void setSalePoints(final Set<SalePoint> salePoints) {
-        this.salePoints = salePoints;
+    public void setSalePointIds(Set<String> salePointIds) {
+        this.salePointIds = salePointIds;
     }
 
-    public Set<Company> getCompanies() {
-        return companies;
+    public Set<String> getCompanyIds() {
+        return companyIds;
     }
 
-    public void setCompanies(final Set<Company> companies) {
-        this.companies = companies;
+    public void setCompanyIds(Set<String> companyIds) {
+        this.companyIds = companyIds;
     }
 
-    public Map<Employee, UserObjectAccess> getUsers() {
+    public Map<String, UserObjectAccess> getUsers() {
         return users;
     }
 
-    public void setUsers(final Map<Employee, UserObjectAccess> users) {
+    public void setUsers(final Map<String, UserObjectAccess> users) {
         this.users = users;
     }
 

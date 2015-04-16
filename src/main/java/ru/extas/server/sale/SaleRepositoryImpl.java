@@ -9,7 +9,9 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.contacts.*;
+import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.Person;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.lead.LeadFileContainer;
 import ru.extas.model.sale.ProductInSale;
@@ -168,46 +170,46 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     }
 
     @Override
-    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final Sale sale) {
-        final ArrayList<Pair<Employee, AccessRole>> users = newArrayList();
+    protected Collection<Pair<String, AccessRole>> getObjectUsers(final Sale sale) {
+        final ArrayList<Pair<String, AccessRole>> users = newArrayList();
 
         // Текущий пользователь как Владелец
         users.add(getCurUserAccess(sale));
         // Ответственный пользователь как Редактор
         if (sale.getResponsible() != null)
-            users.add(new ImmutablePair<>(sale.getResponsible(), AccessRole.EDITOR));
+            users.add(new ImmutablePair<>(sale.getResponsible().getId(), AccessRole.EDITOR));
         if (sale.getResponsibleAssist() != null)
-            users.add(new ImmutablePair<>(sale.getResponsibleAssist(), AccessRole.EDITOR));
+            users.add(new ImmutablePair<>(sale.getResponsibleAssist().getId(), AccessRole.EDITOR));
         if (sale.getDealerManager() != null)
-            users.add(new ImmutablePair<>(sale.getDealerManager(), AccessRole.READER));
+            users.add(new ImmutablePair<>(sale.getDealerManager().getId(), AccessRole.READER));
         // Ответственные по продуктам
         for (final ProductInSale productInSale : sale.getProductInSales()) {
             final Employee prodResponsible = productInSale.getResponsible();
             if (prodResponsible != null) {
-                users.add(new ImmutablePair<>(prodResponsible, AccessRole.READER));
+                users.add(new ImmutablePair<>(prodResponsible.getId(), AccessRole.READER));
             }
         }
         return users;
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(final Sale sale) {
-        final List<Company> companies = newArrayList();
+    protected Collection<String> getObjectCompanies(final Sale sale) {
+        final List<String> companies = newArrayList();
 
         // Добавляем в область видимости компании дилера
         if (sale.getDealer() != null)
-            companies.add(sale.getDealer().getCompany());
+            companies.add(sale.getDealer().getCompany().getId());
 
         return companies;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(final Sale sale) {
-        final List<SalePoint> salePoints = newArrayList();
+    protected Collection<String> getObjectSalePoints(final Sale sale) {
+        final List<String> salePoints = newArrayList();
 
         // Добавляем в область видимости торговой точки
         if (sale.getDealer() != null)
-            salePoints.add(sale.getDealer());
+            salePoints.add(sale.getDealer().getId());
 
         return salePoints;
     }
@@ -244,16 +246,16 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     @Transactional
     @Override
     public Sale permitAndSave(Sale sale,
-                              final Collection<Pair<Employee, AccessRole>> users,
-                              final Collection<SalePoint> salePoints,
-                              final Collection<Company> companies,
+                              final Collection<Pair<String, AccessRole>> users,
+                              final Collection<String> salePoints,
+                              final Collection<String> companies,
                               final Collection<String> regions,
                               final Collection<String> brands) {
         if (sale != null) {
             sale = super.permitAndSave(sale, users, salePoints, companies, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты лида:
             // Клиент
-            final Collection<Pair<Employee, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            final Collection<Pair<String, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
             if (sale.getClient() != null)
                 if (sale.getClient() instanceof Person)
                     personRepository.permitAndSave((Person) sale.getClient(), readers, salePoints, companies, regions, brands);

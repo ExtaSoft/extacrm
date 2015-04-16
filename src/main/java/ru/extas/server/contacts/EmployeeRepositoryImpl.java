@@ -4,9 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 
@@ -43,17 +41,17 @@ public class EmployeeRepositoryImpl extends AbstractSecuredRepository<Employee> 
     }
 
     @Override
-    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final Employee employee) {
+    protected Collection<Pair<String, AccessRole>> getObjectUsers(final Employee employee) {
         return newArrayList(getCurUserAccess(employee));
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(final Employee employee) {
+    protected Collection<String> getObjectCompanies(final Employee employee) {
         return null;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(final Employee employee) {
+    protected Collection<String> getObjectSalePoints(final Employee employee) {
         return null;
     }
 

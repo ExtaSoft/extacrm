@@ -6,8 +6,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 import ru.extas.server.references.CategoryService;
@@ -48,17 +46,17 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> im
     }
 
     @Override
-    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final Company company) {
+    protected Collection<Pair<String, AccessRole>> getObjectUsers(final Company company) {
         return newArrayList(getCurUserAccess(company));
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(final Company company) {
+    protected Collection<String> getObjectCompanies(final Company company) {
         return null;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(final Company company) {
+    protected Collection<String> getObjectSalePoints(final Company company) {
         return null;
     }
 

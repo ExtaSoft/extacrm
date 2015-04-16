@@ -9,7 +9,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.extas.model.contacts.*;
+import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.Person;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.AccessRole;
@@ -127,41 +128,41 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     }
 
     @Override
-    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final Lead lead) {
-        final ArrayList<Pair<Employee, AccessRole>> users = newArrayList();
+    protected Collection<Pair<String, AccessRole>> getObjectUsers(final Lead lead) {
+        final ArrayList<Pair<String, AccessRole>> users = newArrayList();
 
         // Текущий пользователь как Владелец
         users.add(getCurUserAccess(lead));
         // Ответственный пользователь как Редактор
         if (lead.getResponsible() != null)
-            users.add(new ImmutablePair<>(lead.getResponsible(), AccessRole.EDITOR));
+            users.add(new ImmutablePair<>(lead.getResponsible().getId(), AccessRole.EDITOR));
         if (lead.getResponsibleAssist() != null)
-            users.add(new ImmutablePair<>(lead.getResponsibleAssist(), AccessRole.EDITOR));
+            users.add(new ImmutablePair<>(lead.getResponsibleAssist().getId(), AccessRole.EDITOR));
         // Сотрудник дилера как читатель
         if (lead.getDealerManager() != null)
-            users.add(new ImmutablePair<>(lead.getDealerManager(), AccessRole.READER));
+            users.add(new ImmutablePair<>(lead.getDealerManager().getId(), AccessRole.READER));
 
         return users;
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(final Lead lead) {
-        final List<Company> companies = newArrayList();
+    protected Collection<String> getObjectCompanies(final Lead lead) {
+        final List<String> companies = newArrayList();
 
         // Добавляем в область видимости компании дилера
         if (lead.getVendor() != null)
-            companies.add(lead.getVendor().getCompany());
+            companies.add(lead.getVendor().getCompany().getId());
 
         return companies;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(final Lead lead) {
-        final List<SalePoint> salePoints = newArrayList();
+    protected Collection<String> getObjectSalePoints(final Lead lead) {
+        final List<String> salePoints = newArrayList();
 
         // Добавляем в область видимости торговой точки
         if (lead.getVendor() != null)
-            salePoints.add(lead.getVendor());
+            salePoints.add(lead.getVendor().getId());
 
         return salePoints;
     }
@@ -196,16 +197,16 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     @Transactional
     @Override
     public Lead permitAndSave(Lead lead,
-                              final Collection<Pair<Employee, AccessRole>> users,
-                              final Collection<SalePoint> salePoints,
-                              final Collection<Company> companies,
+                              final Collection<Pair<String, AccessRole>> users,
+                              final Collection<String> salePoints,
+                              final Collection<String> companies,
                               final Collection<String> regions,
                               final Collection<String> brands) {
         if (lead != null) {
             lead = super.permitAndSave(lead, users, salePoints, companies, regions, brands);
             // При этом необходимо сделать “видимыми” все связанные объекты лида:
             // Клиент
-            final Collection<Pair<Employee, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            final Collection<Pair<String, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
             if (lead.getClient() != null)
                 if (lead.getClient() instanceof Person)
                     personRepository.permitAndSave((Person) lead.getClient(), readers, salePoints, companies, regions, brands);

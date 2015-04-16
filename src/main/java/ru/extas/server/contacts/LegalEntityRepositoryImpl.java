@@ -5,10 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
-import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 
@@ -54,8 +51,8 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
     }
 
     @Override
-    protected Collection<Pair<Employee, AccessRole>> getObjectUsers(final LegalEntity legalEntity) {
-        final ArrayList<Pair<Employee, AccessRole>> users = newArrayList();
+    protected Collection<Pair<String, AccessRole>> getObjectUsers(final LegalEntity legalEntity) {
+        final ArrayList<Pair<String, AccessRole>> users = newArrayList();
 
         // Текущий пользователь как Владелец или Редактор
         users.add(getCurUserAccess(legalEntity));
@@ -64,12 +61,12 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
     }
 
     @Override
-    protected Collection<Company> getObjectCompanies(final LegalEntity legalEntity) {
+    protected Collection<String> getObjectCompanies(final LegalEntity legalEntity) {
         return null;
     }
 
     @Override
-    protected Collection<SalePoint> getObjectSalePoints(final LegalEntity legalEntity) {
+    protected Collection<String> getObjectSalePoints(final LegalEntity legalEntity) {
         return null;
     }
 

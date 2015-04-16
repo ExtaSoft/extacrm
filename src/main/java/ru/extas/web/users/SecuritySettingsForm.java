@@ -61,7 +61,7 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
     private void updateAccess(final RefreshBeanContainer<UserObjectAccess> container) {
         rule.getUsers().clear();
         for (final UserObjectAccess access : container.getItemIds()) {
-            rule.getUsers().put(access.getUser(), access);
+            rule.getUsers().put(access.getUserId(), access);
         }
         SecuritySettingsForm.this.setModified(true);
     }
