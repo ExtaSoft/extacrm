@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
@@ -75,28 +76,28 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> im
     }
 
     /** {@inheritDoc} */
-//    @Transactional
-//    @Override
-//    public Company permitAndSave(Company company,
-//                                 final Collection<Pair<Employee, AccessRole>> users,
-//                                 final Collection<SalePoint> salePoints,
-//                                 final Collection<Company> companies,
-//                                 final Collection<String> regions,
-//                                 final Collection<String> brands) {
-//        if (company != null) {
-//            company = super.permitAndSave(company, users, salePoints, companies, regions, brands);
-//            // При этом необходимо сделать “видимыми” все связанные объекты компании:
-//            // Собственник(и) Компании
-//            final Collection<Pair<Employee, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
-//            // Сотрудники компании
-//            employeeRepository.permitAndSave(company.getEmployees(), readers, salePoints, companies, regions, brands);
-//            // Юридические лица компании
-//            legEntRepository.permitAndSave(company.getLegalEntities(), readers, salePoints, companies, regions, brands);
-//            // Торговые точки компании
-//            salePointRepository.permitAndSave(company.getSalePoints(), readers, salePoints, companies, regions, brands);
-//        }
-//        return company;
-//    }
+    @Transactional
+    @Override
+    public Company permitAndSave(Company company,
+                                 final Collection<Pair<String, AccessRole>> users,
+                                 final Collection<String> salePoints,
+                                 final Collection<String> companies,
+                                 final Collection<String> regions,
+                                 final Collection<String> brands) {
+        if (company != null) {
+            company = super.permitAndSave(company, users, salePoints, companies, regions, brands);
+            // При этом необходимо сделать “видимыми” все связанные объекты компании:
+            // Собственник(и) Компании
+            final Collection<Pair<String, AccessRole>> readers = reassigneRole(users, AccessRole.READER);
+            // Сотрудники компании
+            employeeRepository.permitAndSave(company.getEmployees(), readers, salePoints, companies, regions, brands);
+            // Юридические лица компании
+            legEntRepository.permitAndSave(company.getLegalEntities(), readers, salePoints, companies, regions, brands);
+            // Торговые точки компании
+            salePointRepository.permitAndSave(company.getSalePoints(), readers, salePoints, companies, regions, brands);
+        }
+        return company;
+    }
 
     /**
      * Определяет является ли переданная компания Экстрим Ассистанс
