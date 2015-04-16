@@ -27,7 +27,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class LegalEntity extends Client implements ArchivedObject {
 
     // Компания
-    @ManyToOne(optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Company company;
 
     // ОГРН/ОГРИП
@@ -83,15 +83,15 @@ public class LegalEntity extends Client implements ArchivedObject {
     private AddressInfo postAddress = new AddressInfo();
 
     // Генеральный директор
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee director;
 
     // Главный бухгалтер
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee accountant;
 
     // Банки и кредитные продукты
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "LEGAL_ENTITY_PROD_CREDIT",
             joinColumns = {@JoinColumn(name = "LEGAL_ENTITY_ID", referencedColumnName = "ID")},
@@ -100,7 +100,7 @@ public class LegalEntity extends Client implements ArchivedObject {
     private List<ProdCredit> credProducts;
 
     // Дилерство
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "LEGAL_ENTITY_MOTOR_BRAND")
     private Set<String> motorBrands;
 

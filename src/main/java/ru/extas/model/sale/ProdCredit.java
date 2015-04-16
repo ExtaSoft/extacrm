@@ -55,7 +55,7 @@ public class ProdCredit extends Product {
 	private int maxPeriod;
 
 	// Процент по кредиту: процент ; срок ; первый взнос
-	@OneToMany(mappedBy = "product", targetEntity = ProdCreditPercent.class, cascade = {CascadeType.ALL}, orphanRemoval = true)
+	@OneToMany(mappedBy = "product", targetEntity = ProdCreditPercent.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
 	@OrderBy("percent")
 	private List<ProdCreditPercent> percents;
 
@@ -67,7 +67,7 @@ public class ProdCredit extends Product {
 	private BigDecimal dealerSubsidy;
 
 	// Комплект документов
-	@OneToMany(mappedBy = "product", targetEntity = ProdCreditDoc.class, orphanRemoval = true, cascade = {CascadeType.ALL})
+	@OneToMany(mappedBy = "product", targetEntity = ProdCreditDoc.class, orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	@OrderBy("required DESC")
 	private List<ProdCreditDoc> docList;
 

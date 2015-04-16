@@ -6,10 +6,9 @@ import ru.extas.model.security.UserProfile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.*;
+import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Сотрудник компании, торговой точки или юр. лица
@@ -22,19 +21,19 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "EMPLOYEE", indexes = {@Index(columnList = "NAME")})
 public class Employee extends Contact {
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")
     private Company company;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "SALE_POINT_ID", referencedColumnName = "ID")
     private SalePoint workPlace;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "LEGAL_ENTITY_ID", referencedColumnName = "ID")
     private LegalEntity legalWorkPlace;
 
-    @OneToOne(mappedBy = "employee", cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private UserProfile userProfile;
 
     // Дата рождения

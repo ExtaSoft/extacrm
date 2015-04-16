@@ -6,7 +6,6 @@ import ru.extas.model.contacts.SalePoint;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -30,7 +29,7 @@ public class UserProfile extends AuditedObject {
     @Size(max = LOGIN_LENGTH)
     private String login;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "USER_LOGIN_ALIAS",
             joinColumns = {@JoinColumn(name = "USER_PROFILE_ID")},
             indexes = {
@@ -41,7 +40,7 @@ public class UserProfile extends AuditedObject {
     private Set<String> aliases = newHashSet();
 
     // Ссылка на контакт
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Employee employee;
 
     // Password (hash)
@@ -61,7 +60,7 @@ public class UserProfile extends AuditedObject {
     private UserRole role;
 
     // Группы в которых состоит пользователь
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(name = "USER_GROUP_LINK",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")})
@@ -71,22 +70,22 @@ public class UserProfile extends AuditedObject {
     // Пользователь заблокирован
     private boolean blocked;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "USER_PROFILE_REGION",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
     private Set<String> permitRegions = newHashSet();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "USER_PROFILE_BRAND",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
     private Set<String> permitBrands = newHashSet();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("domain ASC")
     Set<ExtaPermission> permissions;
 
     // Торговые точки к которым пользователь имеет доступ
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(name = "USER_SALE_POINT",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "SALE_POINT_ID", referencedColumnName = "ID")})

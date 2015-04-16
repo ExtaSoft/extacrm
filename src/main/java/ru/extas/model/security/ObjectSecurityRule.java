@@ -33,26 +33,26 @@ import static com.google.common.collect.Sets.newHashSet;
 public class ObjectSecurityRule extends AuditedObject {
 
     // Привязка объекта к Торговой точке
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(name = "SECURITY_RULE_SALE_POINT",
             joinColumns = {@JoinColumn(name = "SECURITY_RULE_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "SALE_POINT_ID", referencedColumnName = "ID")} )
     private Set<SalePoint> salePoints = newHashSet();
 
     // Привязка объекта к Компании
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(name = "SECURITY_RULE_COMPANY",
             joinColumns = {@JoinColumn(name = "SECURITY_RULE_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")})
     private Set<Company> companies = newHashSet();
 
     // Привязка объекта к пользователям
-    @OneToMany(mappedBy = "securityRule", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "securityRule", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapKey(name = "user")
     private Map<Employee, UserObjectAccess> users = newHashMap();
 
     // Привязка обхекта к регионам
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "SECURITY_RULE_REGION",
             joinColumns = {@JoinColumn(name = "SECURITY_RULE_ID")},
             indexes = {
@@ -61,7 +61,7 @@ public class ObjectSecurityRule extends AuditedObject {
     private Set<String> regions = newHashSet();
 
     // Привязка объекта к брендам
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "SECURITY_RULE_BRAND",
             joinColumns = {@JoinColumn(name = "SECURITY_RULE_ID")},
             indexes = {
