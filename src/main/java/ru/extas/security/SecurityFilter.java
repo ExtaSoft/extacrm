@@ -125,7 +125,7 @@ public class SecurityFilter<TEntityType extends SecuredObject> extends AbstractS
         final MapJoin<ObjectSecurityRule, String, UserObjectAccess> join = getSecurityRoleJoin(root)
                 .join(ObjectSecurityRule_.users, JoinType.LEFT);
         cq.where(cb.and(
-                cb.equal(join.join(UserObjectAccess_.userId, JoinType.LEFT), curUserContact.getId()),
+                cb.equal(join.get(UserObjectAccess_.userId), curUserContact.getId()),
                 cb.equal(root.get(IdentifiedObject_.id), itemId)));
         cq.select(join.value().get(UserObjectAccess_.role));
 
