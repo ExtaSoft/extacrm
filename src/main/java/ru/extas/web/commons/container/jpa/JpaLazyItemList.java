@@ -16,10 +16,7 @@ import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.common.IdentifiedObject_;
 import ru.extas.utils.SupplierSer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -300,7 +297,12 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
                                 "           FROM (SELECT @rownum:=0) i, ({0}) s) q " +
                                 "WHERE q.id = ''{1}''", querySql, itemId, IdentifiedObject_.id.getName()));
 //            nativeQuery.unwrap(JpaQuery.class).getDatabaseQuery().setTranslationRow(translationRow);
-        final Object result = nativeQuery.getSingleResult();
+        final Object result;
+        try {
+            result = nativeQuery.getSingleResult();
+        } catch (NoResultException e) {
+            return -1;
+        }
 
         return result != null ? (int) (double) result : -1;
     }
