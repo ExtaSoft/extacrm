@@ -27,7 +27,7 @@ public class ExtaPermission extends AuditedObject implements Permission {
     @Column(name = "DOMAIN")
     private ExtaDomain domain;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection
     @CollectionTable(name = "ACCESS_PERMISSION_ACTION")
     private Set<SecureAction> actions = newHashSet();
 

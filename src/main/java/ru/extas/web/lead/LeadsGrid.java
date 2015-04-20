@@ -74,6 +74,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
         // Запрос данных
         final ExtaDbContainer<Lead> container = SecuredDataContainer.create(Lead.class, ExtaDomain.SALES_LEADS);
         container.addNestedContainerProperty("responsible.name");
+        container.addNestedContainerProperty("responsibleAssist.name");
         container.addContainerFilter(new Compare.Equal("status", status));
         container.sort(new Object[]{"createdDate"}, new boolean[]{false});
         return container;
