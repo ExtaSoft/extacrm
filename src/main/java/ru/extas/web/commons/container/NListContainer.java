@@ -399,6 +399,8 @@ public class NListContainer<T> extends AbstractContainer implements
             public Object getValue() {
                 try {
                     return PropertyUtils.getNestedProperty(bean, propertyName);
+                } catch (final NestedNullException ne) {
+                    return null;
                 } catch (final Throwable e) {
                     propagate(e);
                 }

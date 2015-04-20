@@ -2,6 +2,7 @@ package ru.extas.web.commons.container.jpa;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import ru.extas.model.common.IdentifiedObject;
 
@@ -181,6 +182,8 @@ public class JpaEntityItem<TEntityType extends IdentifiedObject> implements Item
                     return nestedProps.get(propIndex);
                 else
                     return PropertyUtils.getNestedProperty(bean, propertyName);
+            } catch (final NestedNullException ne) {
+                return null;
             } catch (final Throwable e) {
                 propagate(e);
             }

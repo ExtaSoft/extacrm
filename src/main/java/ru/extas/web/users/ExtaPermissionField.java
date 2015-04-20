@@ -1,6 +1,8 @@
 package ru.extas.web.users;
 
+import com.google.common.base.Joiner;
 import com.vaadin.data.Container;
+import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.*;
 import ru.extas.model.security.*;
@@ -16,6 +18,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Ввод/редактирование списка прав доступа. Основной компонент - грид.
@@ -96,7 +99,23 @@ public class ExtaPermissionField extends CustomField<Set> {
                     {
                         addMapping("domain", "Раздел");
                         addMapping("target", "Целевые объекты");
-                        addMapping("actions", "Разрешенные действия");
+                        addMapping("actions", "Разрешенные действия", new ComponentColumnGenerator() {
+                            @Override
+                            public Object generateCell(Object columnId, Item item, Object itemId) {
+                                ExtaPermission permission = GridItem.extractBean(item);
+                                final StringToSecureActionConverter cnv = lookup(StringToSecureActionConverter.class);
+                                return new Label(
+                                        Joiner.on(", ")
+                                                .join(permission.getActions().stream()
+                                                        .map(a -> cnv.convertToPresentation(a, String.class, null))
+                                                        .iterator()));
+                            }
+
+                            @Override
+                            public Class<?> getType() {
+                                return String.class;
+                            }
+                        });
                         super.addDefaultMappings();
                     }
 
