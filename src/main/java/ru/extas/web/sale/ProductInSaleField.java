@@ -216,35 +216,37 @@ public class ProductInSaleField extends CustomField<List> {
     }
 
     private void fillProductItems() {
-        addProductBtn.removeChildren();
+        if (addProductBtn != null) {
+            addProductBtn.removeChildren();
 
-        SalePoint salePoint = Optional.ofNullable(salePointSupplier).map(s -> s.get()).orElse(null);
+            SalePoint salePoint = Optional.ofNullable(salePointSupplier).map(s -> s.get()).orElse(null);
 
-        final Map<Product.Type, List<Product>> availableProducts = lookup(ProductRepository.class).findAvailableProducts(salePoint);
-        final List<Product> credProducts = availableProducts.get(Product.Type.CREDIT);
-        if (!credProducts.isEmpty()) {
-            final MenuBar.MenuItem creditMn = addProductBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
-            // TODO: Реализовать вызов формы калькулятора
-//        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
-//            new LoanCalculatorForm().showModal();
-//        });
-//        creditMn.addSeparator();
-            for (final Product prod : credProducts)
-                creditMn.addItem(prod.getName(), e -> addProduct(prod));
-        }
+            final Map<Product.Type, List<Product>> availableProducts = lookup(ProductRepository.class).findAvailableProducts(salePoint);
+            final List<Product> credProducts = availableProducts.get(Product.Type.CREDIT);
+            if (!credProducts.isEmpty()) {
+                final MenuBar.MenuItem creditMn = addProductBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
+                // TODO: Реализовать вызов формы калькулятора
+    //        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
+    //            new LoanCalculatorForm().showModal();
+    //        });
+    //        creditMn.addSeparator();
+                for (final Product prod : credProducts)
+                    creditMn.addItem(prod.getName(), e -> addProduct(prod));
+            }
 
-        final List<Product> installProducts = availableProducts.get(Product.Type.PAYMENT_BY_INSTALLMENTS);
-        if (!installProducts.isEmpty()) {
-            final MenuBar.MenuItem instMn = addProductBtn.addItem("Рассрочка", FontAwesome.MONEY, null);
-            for (final Product prod : installProducts)
-                instMn.addItem(prod.getName(), e -> addProduct(prod));
-        }
+            final List<Product> installProducts = availableProducts.get(Product.Type.PAYMENT_BY_INSTALLMENTS);
+            if (!installProducts.isEmpty()) {
+                final MenuBar.MenuItem instMn = addProductBtn.addItem("Рассрочка", FontAwesome.MONEY, null);
+                for (final Product prod : installProducts)
+                    instMn.addItem(prod.getName(), e -> addProduct(prod));
+            }
 
-        final List<Product> insProducts = availableProducts.get(Product.Type.INSURANCE);
-        if (!insProducts.isEmpty()) {
-            final MenuBar.MenuItem insurMn = addProductBtn.addItem("Страховка", FontAwesome.UMBRELLA, null);
-            for (final Product prod : insProducts)
-                insurMn.addItem(prod.getName(), e -> addProduct(prod));
+            final List<Product> insProducts = availableProducts.get(Product.Type.INSURANCE);
+            if (!insProducts.isEmpty()) {
+                final MenuBar.MenuItem insurMn = addProductBtn.addItem("Страховка", FontAwesome.UMBRELLA, null);
+                for (final Product prod : insProducts)
+                    insurMn.addItem(prod.getName(), e -> addProduct(prod));
+            }
         }
     }
 
@@ -309,4 +311,7 @@ public class ProductInSaleField extends CustomField<List> {
         return List.class;
     }
 
+    public void refreshSalePoint() {
+        fillProductItems();
+    }
 }

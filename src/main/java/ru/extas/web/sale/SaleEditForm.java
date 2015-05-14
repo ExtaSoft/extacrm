@@ -131,6 +131,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         dealerField = new DealerSalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
         dealerField.addValueChangeListener(e -> {
+            productInSaleField.refreshSalePoint();
             dealerManagerField.changeSalePoint();
             dealerLEField.changeSalePoint();
             if (responsibleField.getValue() == null) {

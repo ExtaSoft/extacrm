@@ -23,7 +23,7 @@
         <setting name="compilerParameters" value="-compileReport" />
         <setting name="compilerMaxHeapSize" value="512" />
         <setting name="gwtScriptOutputStyle" value="OBF" />
-        <setting name="gwtSdkUrl" value="file://D:\MavenRepo/com/vaadin/vaadin-client/7.4.4" />
+        <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/7.4.5" />
         <setting name="gwtSdkType" value="Vaadin-Maven" />
         <setting name="webFacet" value="Web" />
       </configuration>
@@ -142,19 +142,19 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:1.9.5" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.12" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-jdk14:1.7.12" level="project" />
-    <orderEntry type="library" name="Maven: com.vaadin:vaadin-server:7.4.4" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-server:7.4.5" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-sass-compiler:0.9.12" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin.external.flute:flute:1.3.0.gg2" level="project" />
-    <orderEntry type="library" name="Maven: com.vaadin:vaadin-shared:7.4.4" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-shared:7.4.5" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin.external.streamhtmlparser:streamhtmlparser-jsilver:0.0.10.vaadin1" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin.external.google:guava:16.0.1.vaadin1" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.8.1" level="project" />
-    <orderEntry type="library" name="Maven: com.vaadin:vaadin-client-compiled:7.4.4" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.vaadin:vaadin-client:7.4.4" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-client-compiled:7.4.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.vaadin:vaadin-client:7.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.w3c.css:sac:1.3" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.validation:validation-api:sources:1.0.0.GA" level="project" />
-    <orderEntry type="library" name="Maven: com.vaadin:vaadin-themes:7.4.4" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-themes:7.4.5" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin.addon:jpacontainer:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:animator:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:dom:0.1.0" level="project" />
