@@ -190,7 +190,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         form.addComponent(new FormGroupHeader("Продукты"));
         productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity(),
                 () -> (BigDecimal) mototPriceField.getConvertedValue(),
-                () -> (String) motorBrandField.getValue());
+                () -> (String) motorBrandField.getValue(),
+                () -> dealerField.getValue());
         productInSaleField.addValueChangeListener(forceModified);
         form.addComponent(productInSaleField);
 

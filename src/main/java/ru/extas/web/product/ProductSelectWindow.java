@@ -50,7 +50,7 @@ public class ProductSelectWindow extends CloseOnlyWindow {
 		protected List<UIAction> createActions() {
 			final List<UIAction> actions = newArrayList();
 
-			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке контакт и закрыть окно", Fontello.CHECK) {
+			actions.add(new DefaultAction("Выбрать", "Выбрать выделенный в списке продукт и закрыть окно", Fontello.CHECK) {
 				@Override
 				public void fire(final Set itemIds) {
 
