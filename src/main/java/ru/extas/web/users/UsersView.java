@@ -42,10 +42,16 @@ public class UsersView extends SubdomainView {
                 return new UsersGrid();
             }
         });
-        ret.add(new SubdomainInfoImpl("Группы", ExtaDomain.USER_GROUPS) {
+        ret.add(new SubdomainInfoImpl("Группы пользователей", ExtaDomain.USER_GROUPS) {
             @Override
             public ExtaGrid createGrid() {
                 return new UserGroupGrid();
+            }
+        });
+        ret.add(new SubdomainInfoImpl("Группы кураторов", ExtaDomain.CURATORS_GROUPS) {
+            @Override
+            public ExtaGrid createGrid() {
+                return new CuratorsGroupGrid();
             }
         });
         return ret;

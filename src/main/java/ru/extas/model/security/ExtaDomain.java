@@ -101,6 +101,10 @@ public enum ExtaDomain {
      * Группы пользователей
      */
     USER_GROUPS("security/groups"),
+	/**
+	 * Группы кураторов
+	 */
+    CURATORS_GROUPS("security/curators"),
     /**
 	 * Настройки
 	 */
