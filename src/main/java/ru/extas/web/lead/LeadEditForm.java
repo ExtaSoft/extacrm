@@ -15,6 +15,7 @@ import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.lead.LeadFileContainer;
 import ru.extas.model.sale.Sale;
+import ru.extas.model.security.CuratorsGroup;
 import ru.extas.server.contacts.EmployeeRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.lead.LeadRepository;
@@ -247,8 +248,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             dealerManagerField.changeSalePoint();
             if(responsibleField.getValue() == null) {
                 SalePoint sp = vendorField.getValue();
-                if(sp.getCurator() != null)
-                    responsibleField.setValue(sp.getCurator());
+                final CuratorsGroup curatorsGroup = sp.getCuratorsGroup();
+                if(curatorsGroup != null && !curatorsGroup.getCurators().isEmpty())
+                    responsibleField.setValue(curatorsGroup.getCurators().iterator().next());
             }
         });
         form.addComponent(vendorField);
@@ -505,8 +507,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                         lead.setVendor(salePoint);
                         lead.setPointOfSale(salePoint.getName());
                         // * Ответственный - сотрудник ЕА который курирует данную торговую точку дилера.
-                        if(salePoint.getCurator() != null)
-                            lead.setResponsible(salePoint.getCurator());
+                        final CuratorsGroup curatorsGroup = salePoint.getCuratorsGroup();
+                        if(curatorsGroup != null && !curatorsGroup.getCurators().isEmpty())
+                            lead.setResponsible(curatorsGroup.getCurators().iterator().next());
                     }
                     // * Заместитель - пусто.
                     // * Менеджер(дилер) - сотрудник который вводит лид.

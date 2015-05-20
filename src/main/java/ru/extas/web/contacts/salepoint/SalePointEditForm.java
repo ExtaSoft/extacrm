@@ -1,21 +1,31 @@
 package ru.extas.web.contacts.salepoint;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Panel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.viritin.layouts.MVerticalLayout;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.SalePointComment;
+import ru.extas.model.security.CuratorsGroup;
+import ru.extas.model.security.UserRole;
 import ru.extas.server.contacts.SalePointRepository;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.utils.SupplierSer;
+import ru.extas.web.commons.CommentsField;
 import ru.extas.web.commons.ExtaEditForm;
+import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.AddressInfoField;
+import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeFieldMulty;
-import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.legalentity.LegalEntitiesSelectField;
 import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
 
@@ -68,8 +78,12 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     @PropertyId("extaCode")
     private EditField extaCodeField;
 
-    @PropertyId("curator")
+//    @PropertyId("curator")
     private EAEmployeeField curatorField;
+
+    @PropertyId("comments")
+    private CommentsField<SalePointComment> commentsField;
+
 
     public SalePointEditForm(final SalePoint salePoint) {
         super(salePoint.isNew() ? "Ввод новой торговой точки в систему" :
@@ -150,7 +164,39 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         final Component identityForm = createIdentityForm();
         tabsheet.addTab(identityForm).setCaption("Идентификация");
 
+        // Вкладка - "Комментарии"
+        if (isCommentAvailable()) {
+            final Component commentsForm = createCommentsForm();
+            tabsheet.addTab(commentsForm).setCaption("Комментарии");
+        }
+
         return tabsheet;
+    }
+
+    private boolean isCommentAvailable() {
+        final UserManagementService userManagementService = lookup(UserManagementService.class);
+        final boolean isAdmin = userManagementService.isCurUserHasRole(UserRole.ADMIN);
+
+        boolean isCurator = false;
+        final SalePoint salePoint = getEntity();
+        final CuratorsGroup curatorsGroup = salePoint.getCuratorsGroup();
+        if(curatorsGroup != null) {
+            isCurator = curatorsGroup.getCurators().contains(userManagementService.getCurrentUserEmployee());
+        }
+
+        return isAdmin || isCurator;
+    }
+
+    private Component createCommentsForm() {
+        final Panel panel = new Panel();
+        panel.setSizeFull();
+        panel.addStyleName(ExtaTheme.PANEL_BORDERLESS);
+
+        commentsField = new CommentsField<>(SalePointComment.class);
+        commentsField.addValueChangeListener(forceModified);
+        panel.setContent(commentsField);
+
+        return new MVerticalLayout(panel).withMargin(true);
     }
 
     private Component createIdentityForm() {

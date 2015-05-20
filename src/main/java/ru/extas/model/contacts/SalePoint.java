@@ -1,11 +1,15 @@
 package ru.extas.model.contacts;
 
 import ru.extas.model.common.ArchivedObject;
+import ru.extas.model.common.Comment;
+import ru.extas.model.security.CuratorsGroup;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -27,7 +31,8 @@ public class SalePoint extends Contact implements ArchivedObject {
     private Company company;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Employee curator;
+    @JoinColumn(name = "CURATORS_GROUP_ID")
+    private CuratorsGroup curatorsGroup;
 
     // Юр. лица работающие на торговой точке
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -65,12 +70,25 @@ public class SalePoint extends Contact implements ArchivedObject {
     @Size(max = CODE_LENGTH)
     private String setelemCode;
 
-    public Employee getCurator() {
-        return curator;
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = Comment.OWNER_ID_COLUMN)
+    @OrderBy("createdDate")
+    private List<SalePointComment> comments = newArrayList();
+
+    public List<SalePointComment> getComments() {
+        return comments;
     }
 
-    public void setCurator(final Employee curator) {
-        this.curator = curator;
+    public void setComments(List<SalePointComment> comments) {
+        this.comments = comments;
+    }
+
+    public CuratorsGroup getCuratorsGroup() {
+        return curatorsGroup;
+    }
+
+    public void setCuratorsGroup(CuratorsGroup curatorsGroup) {
+        this.curatorsGroup = curatorsGroup;
     }
 
     /**
