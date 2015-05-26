@@ -4,18 +4,19 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
-import org.springframework.cache.CacheManager;
 import ru.extas.model.security.CuratorsGroup;
+import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.security.CuratorsGroupRegistry;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.contacts.employee.EmployeeMultySelect;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
- * Форма ввода редактирования группы польователей
+ * Форма ввода редактирования группы кураторов
  *
  * @author Valery Orlov
  *         Date: 21.06.2014
@@ -31,10 +32,13 @@ public class CuratorsGroupEditForm extends ExtaEditForm<CuratorsGroup> {
     @PropertyId("description")
     private TextArea descriptionField;
 
+    @PropertyId("curators")
+    private EmployeeMultySelect employeesField;
+
     public CuratorsGroupEditForm(final CuratorsGroup curatorsGroup) {
         super(curatorsGroup.isNew() ?
-        "Ввод новой группы пользователей" :
-        "Редактирование группы", curatorsGroup);
+        "Ввод новой группы кураторов" :
+        "Редактирование группы кураторов", curatorsGroup);
 
         setWinWidth(1000, Unit.PIXELS);
         setWinHeight(600, Unit.PIXELS);
@@ -53,7 +57,6 @@ public class CuratorsGroupEditForm extends ExtaEditForm<CuratorsGroup> {
     protected CuratorsGroup saveEntity(CuratorsGroup group) {
         final CuratorsGroupRegistry groupRegistry = lookup(CuratorsGroupRegistry.class);
         group = groupRegistry.save(group);
-        lookup("cacheManager", CacheManager.class).getCache("userByLogin").clear();
         NotificationUtil.showSuccess("Группа сохранена");
         return group;
     }
@@ -79,6 +82,12 @@ public class CuratorsGroupEditForm extends ExtaEditForm<CuratorsGroup> {
         descriptionField.setNullRepresentation("");
         descriptionField.setRows(2);
         form.addComponent(descriptionField);
+
+        employeesField = new EmployeeMultySelect();
+        employeesField.setCompanySupplier(() -> lookup(CompanyRepository.class).findEACompany());
+//        employeesField.setSalePointSupplier(super::getEntity);
+        employeesField.setSizeFull();
+        form.addComponent(employeesField);
 
         return form;
     }
