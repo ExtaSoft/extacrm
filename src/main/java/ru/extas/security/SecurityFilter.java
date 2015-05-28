@@ -3,6 +3,7 @@ package ru.extas.security;
 import ru.extas.model.common.IdentifiedObject_;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.security.*;
+import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.security.UserManagementService;
 
 import javax.persistence.EntityManager;
@@ -41,6 +42,7 @@ public class SecurityFilter<TEntityType extends SecuredObject> extends AbstractS
                 break;
             }
             case SALE_POINT: {
+                final SalePointRepository salePointRepository = lookup(SalePointRepository.class);
                 final SetJoin<ObjectSecurityRule, String> salePointsRoot =
                         getSecurityRoleJoin(objectRoot)
                                 .join(ObjectSecurityRule_.salePointIds, JoinType.LEFT);
@@ -49,6 +51,7 @@ public class SecurityFilter<TEntityType extends SecuredObject> extends AbstractS
                 Optional.ofNullable(curUserContact.getUserProfile())
                         .map(p -> p.getSalePoints())
                         .ifPresent(s -> s.forEach(w -> workPlaces.add(w.getId())));
+                salePointRepository.findByCurator(curUserContact).stream().forEach(w -> workPlaces.add(w.getId()));
                 predicate = composeWithAreaFilter(cb, objectRoot, salePointsRoot.in(workPlaces));
                 break;
             }

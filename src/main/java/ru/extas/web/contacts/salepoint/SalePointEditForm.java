@@ -24,10 +24,10 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.AddressInfoField;
 import ru.extas.web.contacts.company.CompanyField;
-import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeFieldMulty;
 import ru.extas.web.contacts.legalentity.LegalEntitiesSelectField;
 import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
+import ru.extas.web.users.CuratorsGroupField;
 
 import java.text.MessageFormat;
 import java.util.Optional;
@@ -78,8 +78,8 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     @PropertyId("extaCode")
     private EditField extaCodeField;
 
-//    @PropertyId("curator")
-    private EAEmployeeField curatorField;
+    @PropertyId("curatorsGroup")
+    private CuratorsGroupField curatorField;
 
     @PropertyId("comments")
     private CommentsField<SalePointComment> commentsField;
@@ -270,8 +270,10 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         regAddressField = new AddressInfoField();
         formLayout.addComponent(regAddressField);
 
-        curatorField = new EAEmployeeField("Куратор ЭА", "Укажите куратора торговой точки со стороны Экстрим Ассистанс");
-        formLayout.addComponent(curatorField);
+        if(lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN)) {
+            curatorField = new CuratorsGroupField("Группа кураторов ЭА", "Укажите группу кураторов торговой точки со стороны Экстрим Ассистанс");
+            formLayout.addComponent(curatorField);
+        }
 
         return formLayout;
     }

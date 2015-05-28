@@ -38,7 +38,8 @@ public class EmployeeMultySelect extends CustomField<Set> {
     private EmployeesGrid grid;
     private ExtaBeanContainer<Employee> beanContainer;
 
-    public EmployeeMultySelect() {
+    public EmployeeMultySelect(String caption) {
+        setCaption(caption);
         setBuffered(true);
     }
 
@@ -94,8 +95,10 @@ public class EmployeeMultySelect extends CustomField<Set> {
             }
         };
 
+        grid.setSizeFull();
         grid.setReadOnly(isReadOnly());
         addReadOnlyStatusChangeListener(e -> grid.setReadOnly(isReadOnly()));
+
         return grid;
     }
 

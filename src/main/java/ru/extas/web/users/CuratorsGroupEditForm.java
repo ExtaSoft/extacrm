@@ -83,10 +83,10 @@ public class CuratorsGroupEditForm extends ExtaEditForm<CuratorsGroup> {
         descriptionField.setRows(2);
         form.addComponent(descriptionField);
 
-        employeesField = new EmployeeMultySelect();
+        employeesField = new EmployeeMultySelect("Члены группы");
         employeesField.setCompanySupplier(() -> lookup(CompanyRepository.class).findEACompany());
-//        employeesField.setSalePointSupplier(super::getEntity);
-        employeesField.setSizeFull();
+        employeesField.setWidth(100, Unit.PERCENTAGE);
+        employeesField.setHeight(370, Unit.PIXELS);
         form.addComponent(employeesField);
 
         return form;
