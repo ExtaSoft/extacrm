@@ -51,6 +51,7 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
         this.filterSupport = new AdvancedFilterableSupport();
         this.filterSupport.addListener(e -> {
             entityItemList.reset();
+            fireItemSetChange();
         });
 
         updateFilterablePropertyIds();

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 /**
  * <p>PhoneConverter class.</p>
  *
@@ -23,7 +25,7 @@ public class PhoneConverter implements Converter<String, String> {
     /** {@inheritDoc} */
     @Override
     public String convertToModel(final String value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
-        if (value == null)
+        if (isNullOrEmpty(value))
             return null;
 
         final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();

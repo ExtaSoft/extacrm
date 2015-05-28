@@ -3,9 +3,9 @@ package ru.extas.web.lead;
 import com.google.common.base.Strings;
 import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.filter.Like;
 import com.vaadin.data.util.filter.Or;
-import com.vaadin.event.FieldEvents;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -24,6 +24,7 @@ import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.container.ExtaDbContainer;
+import ru.extas.web.commons.converters.PhoneConverter;
 import ru.extas.web.contacts.ClientField;
 import ru.extas.web.contacts.ContactDataDecl;
 import ru.extas.web.contacts.employee.DealerEmployeeField;
@@ -424,11 +425,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         phone.setIcon(Fontello.FILTER);
         phone.setValue(lead.getContactPhone());
 
-        final FieldEvents.TextChangeListener textChangeListener =
-                e -> setClientsFilter(name.getValue(), phone.getConvertedValue());
-        name.addTextChangeListener(textChangeListener);
-        phone.addTextChangeListener(textChangeListener);
-        setClientsFilter(name.getValue(), phone.getConvertedValue());
+        name.addTextChangeListener(e -> setClientsFilter(e.getText(), getPartOfPhoneValue(phone.getValue())));
+        phone.addTextChangeListener(e -> setClientsFilter(name.getValue(), getPartOfPhoneValue(e.getText())));
+        setClientsFilter(name.getValue(), getPartOfPhoneValue(phone.getValue()));
 
         final HorizontalLayout searchLay = new HorizontalLayout(name, phone);
         searchLay.setSpacing(true);
@@ -461,6 +460,16 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         final VerticalLayout components = new VerticalLayout(panel);
         components.setMargin(new MarginInfo(true, false, true, false));
         return components;
+    }
+
+    private String getPartOfPhoneValue(String phone) {
+        String value = null;
+        try {
+            value = lookup(PhoneConverter.class).convertToModel(phone, String.class, null);
+        } catch (Converter.ConversionException e) {
+            value = phone;
+        }
+        return value;
     }
 
     private void setClientsFilter(final String name, final String cellPhone) {
