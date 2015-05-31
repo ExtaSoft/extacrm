@@ -39,7 +39,7 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      * @param employee куратор - сотрудник ЭА
      * @return список куририуемых торговых точек
      */
-    @Query("select s from SalePoint s where s.curator = :employee")
+    @Query("select distinct(s) from SalePoint s join s.curatorsGroup.curators c where c = :employee")
     List<SalePoint> findByCurator(@Param("employee") Employee employee);
 
     /**

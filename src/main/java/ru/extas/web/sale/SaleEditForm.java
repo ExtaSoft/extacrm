@@ -9,6 +9,7 @@ import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.sale.*;
+import ru.extas.model.security.CuratorsGroup;
 import ru.extas.server.contacts.EmployeeRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.sale.SaleRepository;
@@ -131,12 +132,14 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         dealerField = new DealerSalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
         dealerField.addValueChangeListener(e -> {
+            productInSaleField.refreshSalePoint();
             dealerManagerField.changeSalePoint();
             dealerLEField.changeSalePoint();
             if (responsibleField.getValue() == null) {
-                SalePoint sp = dealerField.getValue();
-                if (sp.getCurator() != null)
-                    responsibleField.setValue(sp.getCurator());
+                final SalePoint sp = dealerField.getValue();
+                final CuratorsGroup curatorsGroup = sp.getCuratorsGroup();
+                if (curatorsGroup != null && !curatorsGroup.getCurators().isEmpty())
+                    responsibleField.setValue(curatorsGroup.getCurators().iterator().next());
             }
         });
         form.addComponent(dealerField);
@@ -190,7 +193,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         form.addComponent(new FormGroupHeader("Продукты"));
         productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity(),
                 () -> (BigDecimal) mototPriceField.getConvertedValue(),
-                () -> (String) motorBrandField.getValue());
+                () -> (String) motorBrandField.getValue(),
+                () -> dealerField.getValue());
         productInSaleField.addValueChangeListener(forceModified);
         form.addComponent(productInSaleField);
 
@@ -239,8 +243,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
                         // * Устанавливаем ТТ сотрудника дилера
                         sale.setDealer(salePoint);
                         // * Ответственный - сотрудник ЕА который курирует данную торговую точку дилера.
-                        if (salePoint.getCurator() != null)
-                            sale.setResponsible(salePoint.getCurator());
+                        final CuratorsGroup curatorsGroup = salePoint.getCuratorsGroup();
+                        if (curatorsGroup != null && !curatorsGroup.getCurators().isEmpty())
+                            sale.setResponsible(curatorsGroup.getCurators().iterator().next());
                     }
                     // * Заместитель - пусто.
                     // * Менеджер(дилер) - сотрудник который вводит лид.

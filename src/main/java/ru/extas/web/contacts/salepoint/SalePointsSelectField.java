@@ -67,7 +67,7 @@ public class SalePointsSelectField extends CustomField<Set> {
                 });
 
                 actions.add(new EditObjectAction("Изменить", "Редактирование данных торговой точки"));
-                actions.add(new ItemAction("Удалить", "Убрать доступ к торговой точке", Fontello.TRASH) {
+                actions.add(new ItemAction("Удалить", "Убрать торговую точку из списка", Fontello.TRASH) {
                     @Override
                     public void fire(final Set itemIds) {
                         itemIds.forEach(id -> beanContainer.removeItem(id));

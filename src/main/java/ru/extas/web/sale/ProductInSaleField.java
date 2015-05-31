@@ -9,10 +9,9 @@ import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import org.apache.commons.lang3.ArrayUtils;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.sale.*;
-import ru.extas.server.product.ProdCreditRepository;
-import ru.extas.server.product.ProdInstallmentsRepository;
-import ru.extas.server.product.ProdInsuranceRepository;
+import ru.extas.server.product.ProductRepository;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaTheme;
@@ -22,9 +21,7 @@ import ru.extas.web.commons.container.ExtaBeanContainer;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -42,29 +39,33 @@ public class ProductInSaleField extends CustomField<List> {
 
     private final SupplierSer<BigDecimal> priceSupplier;
     private final SupplierSer<String> brandSupplier;
+    private final SupplierSer<SalePoint> salePointSupplier;
     private final Sale sale;
     private ExtaBeanContainer<ProductInSale> container;
     private Grid grid;
+    private MenuBar.MenuItem addProductBtn;
     //    private ItemGrid productsContainer;
 
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
      */
-    public ProductInSaleField(final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
-        this("Продукты в продаже", sale, priceSupplier, brandSupplier);
+    public ProductInSaleField(final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, SupplierSer<SalePoint> salePointSupplier) {
+        this("Продукты в продаже", sale, priceSupplier, brandSupplier, salePointSupplier);
     }
 
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
      *
-     * @param caption       a {@link String} object.
+     * @param caption           a {@link String} object.
      * @param sale
      * @param brandSupplier
+     * @param salePointSupplier
      */
-    public ProductInSaleField(final String caption, final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
+    public ProductInSaleField(final String caption, final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, SupplierSer<SalePoint> salePointSupplier) {
         this.priceSupplier = priceSupplier;
         this.sale = sale;
         this.brandSupplier = brandSupplier;
+        this.salePointSupplier = salePointSupplier;
         setWidth(100, Unit.PERCENTAGE);
         setCaption(caption);
 //        addValidator(value -> {
@@ -93,24 +94,10 @@ public class ProductInSaleField extends CustomField<List> {
         final MenuBar productMenu = new MenuBar();
         productMenu.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
         productMenu.addStyleName(ExtaTheme.MENUBAR_SMALL);
-        final MenuBar.MenuItem addBtn = productMenu.addItem("Добавить продукт", FontAwesome.PLUS, null);
 
-        final MenuBar.MenuItem creditMn = addBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
-        // TODO: Реализовать вызов формы калькулятора
-//        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
-//            new LoanCalculatorForm().showModal();
-//        });
-//        creditMn.addSeparator();
-        for (final ProdCredit prod : lookup(ProdCreditRepository.class).findByActiveOrderByNameAsc(true))
-            creditMn.addItem(prod.getName(), e -> addProduct(prod));
-
-        final MenuBar.MenuItem instMn = addBtn.addItem("Рассрочка", FontAwesome.MONEY, null);
-        for (final ProdInstallments prod : lookup(ProdInstallmentsRepository.class).findByActiveOrderByNameAsc(true))
-            instMn.addItem(prod.getName(), e -> addProduct(prod));
-
-        final MenuBar.MenuItem insurMn = addBtn.addItem("Страховка", FontAwesome.UMBRELLA, null);
-        for (final ProdInsurance prod : lookup(ProdInsuranceRepository.class).findByActiveOrderByNameAsc(true))
-            insurMn.addItem(prod.getName(), e -> addProduct(prod));
+        // Продукты доступные для добавления в данную продажу
+        addProductBtn = productMenu.addItem("Добавить продукт", FontAwesome.PLUS, null);
+        fillProductItems();
 
         final MenuBar.MenuItem edMenuItem = productMenu.addItem("Редактировать", FontAwesome.EDIT, null);
         edMenuItem.setCommand(e -> {
@@ -213,7 +200,7 @@ public class ProductInSaleField extends CustomField<List> {
 
         addReadOnlyStatusChangeListener(e -> {
             final boolean isRedOnly = isReadOnly();
-            addBtn.setVisible(!isRedOnly);
+            addProductBtn.setVisible(!isRedOnly);
             grid.setReadOnly(isRedOnly);
             delMenuItem.setVisible(!isRedOnly);
         });
@@ -221,11 +208,46 @@ public class ProductInSaleField extends CustomField<List> {
         addValueChangeListener(e -> {
             container.removeAllItems();
             final Collection<ProductInSale> value = (Collection<ProductInSale>) e.getProperty().getValue();
-            if(value != null)
+            if (value != null)
                 container.addAll(value);
         });
 
         return root;
+    }
+
+    private void fillProductItems() {
+        if (addProductBtn != null) {
+            addProductBtn.removeChildren();
+
+            SalePoint salePoint = Optional.ofNullable(salePointSupplier).map(s -> s.get()).orElse(null);
+
+            final Map<Product.Type, List<Product>> availableProducts = lookup(ProductRepository.class).findAvailableProducts(salePoint);
+            final List<Product> credProducts = availableProducts.get(Product.Type.CREDIT);
+            if (!credProducts.isEmpty()) {
+                final MenuBar.MenuItem creditMn = addProductBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
+                // TODO: Реализовать вызов формы калькулятора
+    //        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
+    //            new LoanCalculatorForm().showModal();
+    //        });
+    //        creditMn.addSeparator();
+                for (final Product prod : credProducts)
+                    creditMn.addItem(prod.getName(), e -> addProduct(prod));
+            }
+
+            final List<Product> installProducts = availableProducts.get(Product.Type.PAYMENT_BY_INSTALLMENTS);
+            if (!installProducts.isEmpty()) {
+                final MenuBar.MenuItem instMn = addProductBtn.addItem("Рассрочка", FontAwesome.MONEY, null);
+                for (final Product prod : installProducts)
+                    instMn.addItem(prod.getName(), e -> addProduct(prod));
+            }
+
+            final List<Product> insProducts = availableProducts.get(Product.Type.INSURANCE);
+            if (!insProducts.isEmpty()) {
+                final MenuBar.MenuItem insurMn = addProductBtn.addItem("Страховка", FontAwesome.UMBRELLA, null);
+                for (final Product prod : insProducts)
+                    insurMn.addItem(prod.getName(), e -> addProduct(prod));
+            }
+        }
     }
 
     private void deleteProduct(final ProductInSale itemId) {
@@ -289,4 +311,7 @@ public class ProductInSaleField extends CustomField<List> {
         return List.class;
     }
 
+    public void refreshSalePoint() {
+        fillProductItems();
+    }
 }

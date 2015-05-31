@@ -2,7 +2,7 @@ package ru.extas.model.contacts;
 
 import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.FileContainer;
-import ru.extas.model.sale.ProdCredit;
+import ru.extas.model.sale.Product;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -97,7 +97,7 @@ public class LegalEntity extends Client implements ArchivedObject {
             joinColumns = {@JoinColumn(name = "LEGAL_ENTITY_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "PROD_CREDIT_ID", referencedColumnName = "ID")})
     @OrderBy("name ASC")
-    private List<ProdCredit> credProducts;
+    private List<Product> credProducts;
 
     // Дилерство
     @ElementCollection(fetch = FetchType.LAZY)
@@ -239,7 +239,7 @@ public class LegalEntity extends Client implements ArchivedObject {
      *
      * @return a {@link java.util.List} object.
      */
-    public List<ProdCredit> getCredProducts() {
+    public List<Product> getCredProducts() {
         return credProducts;
     }
 
@@ -248,7 +248,7 @@ public class LegalEntity extends Client implements ArchivedObject {
      *
      * @param credProducts a {@link java.util.List} object.
      */
-    public void setCredProducts(final List<ProdCredit> credProducts) {
+    public void setCredProducts(final List<Product> credProducts) {
         this.credProducts = credProducts;
     }
 

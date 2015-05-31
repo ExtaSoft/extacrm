@@ -63,6 +63,8 @@
         <class>ru.extas.model.motor.MotorBrand</class>
         <class>ru.extas.model.motor.MotorModel</class>
         <class>ru.extas.model.settings.UserGridState</class>
+        <class>ru.extas.model.security.CuratorsGroup</class>
+        <class>ru.extas.model.contacts.SalePointComment</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
