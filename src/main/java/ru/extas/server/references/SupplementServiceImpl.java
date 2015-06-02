@@ -92,6 +92,7 @@ public class SupplementServiceImpl implements SupplementService {
             INSTANCE.put("Кемеровская область", "Кемерово");
             INSTANCE.put("Кировская область", "Киров");
             INSTANCE.put("Костромская область", "Кострома");
+            INSTANCE.put("Крым", "Симферополь");
             INSTANCE.put("Курганская область", "Курган");
             INSTANCE.put("Курская область", "Курск");
             INSTANCE.put("Ленинградская область", "Пушкин");
@@ -114,6 +115,7 @@ public class SupplementServiceImpl implements SupplementService {
             INSTANCE.put("Сахалинская область", "Южно-Сахалинск");
             INSTANCE.put("Свердловская область", "Екатеринбург");
             INSTANCE.put("Смоленская область", "Смоленск");
+            INSTANCE.put("Севастополь", "Севастополь");
             INSTANCE.put("Тамбовская область", "Тамбов");
             INSTANCE.put("Тверская область", "Тверь");
             INSTANCE.put("Томская область", "Томск");
