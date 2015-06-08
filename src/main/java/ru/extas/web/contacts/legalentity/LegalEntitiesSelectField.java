@@ -35,6 +35,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
      */
     public LegalEntitiesSelectField() {
         setBuffered(true);
+        setRequiredError("Юридическое лицо обязательно для заполнения!");
         setWidth(600, Unit.PIXELS);
         setHeight(300, Unit.PIXELS);
     }

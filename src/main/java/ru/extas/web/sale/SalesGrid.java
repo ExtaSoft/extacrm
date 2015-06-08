@@ -3,6 +3,7 @@ package ru.extas.web.sale;
 import com.google.common.base.Joiner;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
+import com.vaadin.data.util.filter.Or;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.CustomTable;
 import com.vaadin.ui.UI;
@@ -12,10 +13,12 @@ import org.joda.time.Days;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.Sale_;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.sale.SaleRepository;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
@@ -40,15 +43,18 @@ public class SalesGrid extends ExtaGrid<Sale> {
     private static final long serialVersionUID = 4876073256421755574L;
     private final static Logger logger = LoggerFactory.getLogger(SalesGrid.class);
     private final ExtaDomain domain;
+    private final boolean isMyOnly;
 
     /**
      * <p>Constructor for SalesGrid.</p>
      *
-     * @param domain a {@link ru.extas.model.security.ExtaDomain} object.
+     * @param domain a {@link ExtaDomain} object.
+     * @param isMyOnly
      */
-    public SalesGrid(final ExtaDomain domain) {
+    public SalesGrid(final ExtaDomain domain, final boolean isMyOnly) {
         super(Sale.class);
         this.domain = domain;
+        this.isMyOnly = isMyOnly;
         setReadOnly(domain != ExtaDomain.SALES_OPENED);
     }
 
@@ -113,6 +119,13 @@ public class SalesGrid extends ExtaGrid<Sale> {
         container.addContainerFilter(new Compare.Equal("status",
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
                         domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
+        if (isMyOnly) {
+            final Employee user = lookup(UserManagementService.class).getCurrentUserEmployee();
+            container.addContainerFilter(
+                    new Or(
+                            new Compare.Equal("responsible", user),
+                            new Compare.Equal("responsibleAssist", user)));
+        }
         container.sort(new Object[]{Sale_.lastModifiedDate.getName()}, new boolean[]{domain == ExtaDomain.SALES_OPENED});
         return container;
     }

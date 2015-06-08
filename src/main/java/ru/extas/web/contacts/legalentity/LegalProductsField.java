@@ -36,6 +36,7 @@ public class LegalProductsField extends CustomField<List> {
      */
     public LegalProductsField() {
         setBuffered(true);
+        setRequiredError("Необходимо выбрать хотябы один продукт!");
         setWidth(600, Unit.PIXELS);
         setHeight(300, Unit.PIXELS);
     }

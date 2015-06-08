@@ -10,6 +10,7 @@ import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.converters.PhoneConverter;
@@ -23,7 +24,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 31.03.2015
  *         Time: 18:50
  */
-public class SPLegalEntityField extends CustomField<LegalEntity> {
+public class SPLegalEntityField extends ExtaCustomField<LegalEntity> {
 
     private SupplierSer<SalePoint> salePointSupplier;
 
@@ -46,8 +47,7 @@ public class SPLegalEntityField extends CustomField<LegalEntity> {
      * @param description a {@link java.lang.String} object.
      */
     public SPLegalEntityField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
+        super(caption, description);
         setBuffered(true);
     }
 

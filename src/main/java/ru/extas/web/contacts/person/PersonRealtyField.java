@@ -32,6 +32,8 @@ public class PersonRealtyField extends CustomField<List> {
     private VerticalLayout root;
 
     public PersonRealtyField(final Person person) {
+        setRequiredError("Необходимо предоставить информацию о недвижимости!");
+
         this.person = person;
         addStyleName(ExtaTheme.NO_CAPTION_COMPLEX_FIELD);
     }

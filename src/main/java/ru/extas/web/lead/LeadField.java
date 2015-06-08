@@ -5,6 +5,7 @@ import com.vaadin.ui.*;
 import ru.extas.model.lead.Lead;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaCustomField;
 
 /**
  * Поле расширенного просмотра лида.
@@ -15,7 +16,7 @@ import ru.extas.web.commons.FormUtils;
  * @version $Id: $Id
  * @since 0.3
  */
-public class LeadField extends CustomField<Lead> {
+public class LeadField extends ExtaCustomField<Lead> {
 
 	private BeanItem<Lead> leadItem;
 
@@ -25,7 +26,7 @@ public class LeadField extends CustomField<Lead> {
 	 * @param caption a {@link java.lang.String} object.
 	 */
 	public LeadField(final String caption) {
-		setCaption(caption);
+		super(caption, "");
 	}
 
 	/**

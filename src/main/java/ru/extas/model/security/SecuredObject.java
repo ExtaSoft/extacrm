@@ -51,33 +51,27 @@ public class SecuredObject extends AuditedObject {
     }
 
     public void addSecurityRegions(final Collection<String> regions) {
-        final ObjectSecurityRule rule = getSecurityRule();
         if (!isEmpty(regions))
-            rule.getRegions().addAll(regions);
+            getSecurityRule().getRegions().addAll(regions);
     }
 
     public void addSecurityBrands(final Collection<String> brands) {
-        final ObjectSecurityRule rule = getSecurityRule();
         if (!isEmpty(brands))
-            rule.getBrands().addAll(brands);
+            getSecurityRule().getBrands().addAll(brands);
     }
 
     public void addSecurityUserAccess(final Collection<Pair<String, AccessRole>> users) {
-        final ObjectSecurityRule rule = getSecurityRule();
         if (!isEmpty(users))
             users.forEach(p -> addSecurityUserAccess(p.getLeft(), p.getRight()));
     }
 
     public void addSecuritySalePoints(final Collection<String> salePointIds) {
-        final ObjectSecurityRule rule = getSecurityRule();
         if (!isEmpty(salePointIds))
-            rule.getSalePointIds().addAll(salePointIds);
+            getSecurityRule().getSalePointIds().addAll(salePointIds);
     }
 
     public void addSecurityCompanies(final Collection<String> companyIds) {
-        final ObjectSecurityRule rule = getSecurityRule();
         if (!isEmpty(companyIds))
-            rule.getCompanyIds().addAll(companyIds);
-
+            getSecurityRule().getCompanyIds().addAll(companyIds);
     }
 }

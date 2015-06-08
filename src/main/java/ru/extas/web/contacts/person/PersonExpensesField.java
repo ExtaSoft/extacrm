@@ -35,6 +35,7 @@ public class PersonExpensesField extends CustomField<List> {
     private Table table;
 
     public PersonExpensesField(final Person person) {
+        setRequiredError("Необходимо предоставить информацию о расходах!");
         this.person = person;
         addStyleName(ExtaTheme.NO_CAPTION_COMPLEX_FIELD);
     }

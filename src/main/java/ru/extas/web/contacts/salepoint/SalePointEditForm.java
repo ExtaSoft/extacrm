@@ -1,10 +1,7 @@
 package ru.extas.web.contacts.salepoint;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.layouts.MVerticalLayout;
@@ -83,6 +80,8 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
     @PropertyId("comments")
     private CommentsField<SalePointComment> commentsField;
+    @PropertyId("apiExpose")
+    private CheckBox apiExposeField;
 
 
     public SalePointEditForm(final SalePoint salePoint) {
@@ -273,6 +272,9 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         if(lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN)) {
             curatorField = new CuratorsGroupField("Группа кураторов ЭА", "Укажите группу кураторов торговой точки со стороны Экстрим Ассистанс");
             formLayout.addComponent(curatorField);
+
+            apiExposeField = new CheckBox("Видна через внешнее API");
+            formLayout.addComponent(apiExposeField);
         }
 
         return formLayout;

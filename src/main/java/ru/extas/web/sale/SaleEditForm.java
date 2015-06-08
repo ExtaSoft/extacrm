@@ -33,6 +33,7 @@ import ru.extas.web.motor.MotorTypeSelect;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.List;
 
 import static ru.extas.model.common.ModelUtils.evictCache;
@@ -136,10 +137,14 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
             dealerManagerField.changeSalePoint();
             dealerLEField.changeSalePoint();
             if (responsibleField.getValue() == null) {
-                final SalePoint sp = dealerField.getValue();
+                SalePoint sp = dealerField.getValue();
                 final CuratorsGroup curatorsGroup = sp.getCuratorsGroup();
-                if (curatorsGroup != null && !curatorsGroup.getCurators().isEmpty())
-                    responsibleField.setValue(curatorsGroup.getCurators().iterator().next());
+                if (curatorsGroup != null && !curatorsGroup.getCurators().isEmpty()) {
+                    final Iterator<Employee> employeeIterator = curatorsGroup.getCurators().iterator();
+                    responsibleField.setValue(employeeIterator.next());
+                    if (employeeIterator.hasNext())
+                        responsibleAssistField.setValue(employeeIterator.next());
+                }
             }
         });
         form.addComponent(dealerField);

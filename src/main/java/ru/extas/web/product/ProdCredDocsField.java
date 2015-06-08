@@ -8,6 +8,7 @@ import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditDoc;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.container.ExtaBeanContainer;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdCredDocsField extends CustomField<List> {
+public class ProdCredDocsField extends ExtaCustomField<List> {
 
 	private final ProdCredit product;
 	private Table docTable;
@@ -38,11 +39,10 @@ public class ProdCredDocsField extends CustomField<List> {
 	 * @param product a {@link ru.extas.model.sale.ProdCredit} object.
 	 */
 	public ProdCredDocsField(final String caption, final String description, final ProdCredit product) {
+		super(caption, description);
 		this.product = product;
-        setWidth(100, Unit.PERCENTAGE);
-        setHeight(300, Unit.PIXELS);
-        setCaption(caption);
-		setDescription(description);
+		setWidth(100, Unit.PERCENTAGE);
+		setHeight(300, Unit.PIXELS);
 	}
 
 	/** {@inheritDoc} */

@@ -1,7 +1,5 @@
 package ru.extas.web.commons.component;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.*;
 import ru.extas.web.commons.ExtaTheme;
@@ -16,22 +14,18 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  *         Date: 20.10.2014
  *         Time: 13:40
  */
-public class WebSiteLinkField extends CustomField<String> {
+public class WebSiteLinkField extends ExtaCustomField<String> {
 
     private Link link;
     private EditField linkEdit;
     private Button editBtn;
-
-    public WebSiteLinkField() {
-    }
 
     public WebSiteLinkField(final String caption) {
         this(caption, "Введите ввылку на web страницу");
     }
 
     public WebSiteLinkField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
+        super(caption, description);
     }
 
     @Override

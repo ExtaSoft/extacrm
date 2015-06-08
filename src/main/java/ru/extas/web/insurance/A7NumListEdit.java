@@ -7,12 +7,12 @@ import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
 import com.vaadin.data.Validator.InvalidValueException;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.window.GetValueWindowLong;
 import ru.extas.web.commons.window.GetValueWindowLongRange;
 
@@ -28,7 +28,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @since 0.3
  */
 @SuppressWarnings("rawtypes")
-public class A7NumListEdit extends CustomField<List> {
+public class A7NumListEdit extends ExtaCustomField<List> {
 
     private static final long serialVersionUID = 4372821418602379921L;
     private Table formNums;
@@ -39,7 +39,7 @@ public class A7NumListEdit extends CustomField<List> {
      * @param caption Заголовок
      */
     public A7NumListEdit(final String caption) {
-        this.setCaption(caption);
+        super(caption, "");
         setWidth(100, Unit.PERCENTAGE);
         setHeight(300, Unit.PIXELS);
     }

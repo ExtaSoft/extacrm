@@ -34,6 +34,7 @@ public class EmployeeFieldMulty extends CustomField<Set> {
 
     public EmployeeFieldMulty() {
         setBuffered(true);
+        setRequiredError("Необходимо выбрать хотябы одного сотрудника!");
     }
 
     /**

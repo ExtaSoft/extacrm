@@ -38,6 +38,7 @@ public class CompanyOwnersField extends CustomField<Set> {
      * @param company
      */
     public CompanyOwnersField() {
+        setRequiredError("Необходимо выбрать хотябы одного владельца компании!");
     }
 
     /**

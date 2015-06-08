@@ -7,14 +7,14 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.security.CuratorsGroup;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorTypeRepository;
@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.Iterator;
 import java.util.Optional;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -337,6 +338,14 @@ public class LeadRestService {
                 newLead.setPointOfSale(salePoint.getName());
                 if (salePoint.getRegAddress() != null)
                     newLead.setRegion(salePoint.getRegAddress().getRegion());
+                // Ответственные по умолчанию
+                final CuratorsGroup curatorsGroup = salePoint.getCuratorsGroup();
+                if (curatorsGroup != null && !curatorsGroup.getCurators().isEmpty()) {
+                    final Iterator<Employee> employeeIterator = curatorsGroup.getCurators().iterator();
+                    newLead.setResponsible(employeeIterator.next());
+                    if (employeeIterator.hasNext())
+                        newLead.setResponsibleAssist(employeeIterator.next());
+                }
             }
         }
         newLead.setPointOfSale(lead.getDealer());
@@ -359,8 +368,8 @@ public class LeadRestService {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     public ResponseEntity<String> handleIOException(final Throwable ex) {
-        logger.error("Ошибка обработки запроса", ex);
-        if(ex instanceof ConstraintViolationException) {
+        logger.error("Ошибка обработки REST-запроса", ex);
+        if (ex instanceof ConstraintViolationException) {
             final ConstraintViolationException ce = (ConstraintViolationException) ex;
             for (final ConstraintViolation<?> violation : ce.getConstraintViolations()) {
                 logger.error(violation.getMessage());

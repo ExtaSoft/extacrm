@@ -8,6 +8,7 @@ import ru.extas.model.security.CuratorsGroup;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.container.ExtaDbContainer;
@@ -19,14 +20,13 @@ import ru.extas.web.commons.container.ExtaDbContainer;
  *         Date: 22.10.2014
  *         Time: 16:25
  */
-public class CuratorsGroupField extends CustomField<CuratorsGroup> {
+public class CuratorsGroupField extends ExtaCustomField<CuratorsGroup> {
 
     private PopupView popupView;
     private PopupGroupContent entityContent;
 
     public CuratorsGroupField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
+        super(caption, description);
         setBuffered(true);
     }
 

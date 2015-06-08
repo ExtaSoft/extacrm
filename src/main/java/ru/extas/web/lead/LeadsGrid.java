@@ -3,11 +3,13 @@ package ru.extas.web.lead;
 import com.google.common.base.Joiner;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
+import com.vaadin.data.util.filter.Or;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.dialogs.ConfirmDialog;
+import ru.extas.model.contacts.Employee;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.lead.LeadRepository;
@@ -36,15 +38,18 @@ public class LeadsGrid extends ExtaGrid<Lead> {
     private static final long serialVersionUID = 4876073256421755574L;
     private final static Logger logger = LoggerFactory.getLogger(LeadsGrid.class);
     private final Lead.Status status;
+    private final boolean isMyOnly;
 
     /**
      * <p>Constructor for LeadsGrid.</p>
      *
-     * @param status a {@link ru.extas.model.lead.Lead.Status} object.
+     * @param status a {@link Lead.Status} object.
+     * @param isMyOnly
      */
-    public LeadsGrid(final Lead.Status status) {
+    public LeadsGrid(final Lead.Status status, final boolean isMyOnly) {
         super(Lead.class);
         this.status = status;
+        this.isMyOnly = isMyOnly;
     }
 
     public Lead.Status getStatus() {
@@ -76,6 +81,13 @@ public class LeadsGrid extends ExtaGrid<Lead> {
         container.addNestedContainerProperty("responsible.name");
         container.addNestedContainerProperty("responsibleAssist.name");
         container.addContainerFilter(new Compare.Equal("status", status));
+        if (isMyOnly) {
+            final Employee user = lookup(UserManagementService.class).getCurrentUserEmployee();
+            container.addContainerFilter(
+                    new Or(
+                            new Compare.Equal("responsible", user),
+                            new Compare.Equal("responsibleAssist", user)));
+        }
         container.sort(new Object[]{"createdDate"}, new boolean[]{false});
         return container;
     }
@@ -97,8 +109,9 @@ public class LeadsGrid extends ExtaGrid<Lead> {
             actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {
                 @Override
                 public void fire(final Set itemIds) {
-                    final Object itemId = itemIds.stream().findFirst().orElse(null);
-                    doQualifyLead(itemId);
+                    itemIds.stream()
+                            .findFirst()
+                            .ifPresent(itemId -> doQualifyLead(itemId));
                 }
             });
 

@@ -110,6 +110,12 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
         final CriteriaQuery<Tuple> query = cb.createTupleQuery();
         final Root<TEntityType> root = query.from(entityClass);
 
+        // Добавляем фильтр контейнера
+        final List<Predicate> predicates = createContainerFilterPredicates(cb, query, root);
+        if (!predicates.isEmpty()) {
+            query.where(CollectionUtil.toArray(Predicate.class, predicates));
+        }
+
         // формируем возвращаемое значение
         final List<String> nestedProps = propertyProvider.getNestedProps();
         final List<Selection<?>> selectionList = newArrayListWithCapacity(1 + nestedProps.size());
@@ -118,12 +124,6 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
             selectionList.add(getPropertyPath(root, prop));
         }
         query.multiselect(selectionList);
-
-        // Добавляем фильтр контейнера
-        final List<Predicate> predicates = createContainerFilterPredicates(cb, query, root);
-        if (!predicates.isEmpty()) {
-            query.where(CollectionUtil.toArray(Predicate.class, predicates));
-        }
 
         // Добавляем сортировку
         final List<JpaSortBy> sortByList = sortBySupplier.get();
@@ -137,17 +137,21 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
         final TypedQuery<Tuple> tq = em.createQuery(query);
         tq.setFirstResult(firstRow);
         tq.setMaxResults(pageSize);
-        return newArrayList(
-                tq.getResultList()
-                        .stream()
-                        .map(tuple -> {
-                            final Object[] nestedArray = new Object[nestedProps.size()];
-                            for (int i = 0; i < nestedProps.size(); i++) {
-                                nestedArray[i] = tuple.get(i + 1);
-                            }
-                            return new JpaEntityItem<TEntityType>(tuple.get(root), propertyProvider, true, nestedArray);
-                        })
-                        .iterator());
+        final List<Tuple> resultList = tq.getResultList();
+        if (resultList.isEmpty())
+            return null;
+        else
+            return newArrayList(
+                    resultList
+                            .stream()
+                            .map(tuple -> {
+                                final Object[] nestedArray = new Object[nestedProps.size()];
+                                for (int i = 0; i < nestedProps.size(); i++) {
+                                    nestedArray[i] = tuple.get(i + 1);
+                                }
+                                return new JpaEntityItem<TEntityType>(tuple.get(root), propertyProvider, true, nestedArray);
+                            })
+                            .iterator());
     }
 
     private Order translateSortBy(final JpaSortBy sortBy, final CriteriaBuilder cb, final Root<TEntityType> root) {
@@ -163,7 +167,7 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
     }
 
     private Path<TEntityType> getPropertyPath(final Root<TEntityType> root, final String propId) {
-        Path<TEntityType> path;
+        Path path;
         if (propertyProvider.isNestedProp(propId)) {
             // First split the id and build a Path.
             final String[] idStrings = propId.split("\\.");
@@ -300,7 +304,7 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
         final Object result;
         try {
             result = nativeQuery.getSingleResult();
-        } catch (NoResultException e) {
+        } catch (final NoResultException e) {
             return -1;
         }
 

@@ -3,11 +3,10 @@ package ru.extas.web.motor;
 import com.vaadin.data.Property;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
 import com.vaadin.ui.HorizontalLayout;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
-import org.vaadin.tokenfield.TokenField;
 import ru.extas.server.motor.MotorBrandRepository;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaTokenField;
 
 import java.util.Collection;
@@ -25,7 +24,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class MotorBrandMultiselect extends CustomField<Set> {
+public class MotorBrandMultiselect extends ExtaCustomField<Set> {
 
 
     /**
@@ -34,8 +33,8 @@ public class MotorBrandMultiselect extends CustomField<Set> {
      * @param caption a {@link java.lang.String} object.
      */
     public MotorBrandMultiselect(final String caption) {
+        super(caption, "");
         setBuffered(true);
-        setCaption(caption);
     }
 
 	/** {@inheritDoc} */

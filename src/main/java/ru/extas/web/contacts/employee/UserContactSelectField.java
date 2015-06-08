@@ -4,11 +4,11 @@ import com.vaadin.data.util.filter.IsNull;
 import com.vaadin.data.util.filter.Not;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
 import com.vaadin.ui.PopupView;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.Employee_;
 import ru.extas.model.contacts.Person;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.contacts.NameUtils;
 
@@ -17,9 +17,10 @@ import ru.extas.web.contacts.NameUtils;
  *         Date: 06.10.2014
  *         Time: 16:51
  */
-public class UserContactSelectField extends CustomField<Employee> {
+public class UserContactSelectField extends ExtaCustomField<Employee> {
+
     public UserContactSelectField(final String caption) {
-        setCaption(caption);
+        super(caption, "");
     }
 
     @Override
