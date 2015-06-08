@@ -42,25 +42,25 @@ public class SalesView extends SubdomainView {
         ret.add(new SubdomainInfoImpl("Новые лиды", ExtaDomain.SALES_LEADS) {
             @Override
             public ExtaGrid createGrid() {
-                return new LeadsGrid(Lead.Status.NEW);
+                return new LeadsGrid(Lead.Status.NEW, false);
             }
         });
         ret.add(new SubdomainInfoImpl("Открытые продажи", ExtaDomain.SALES_OPENED) {
             @Override
             public ExtaGrid createGrid() {
-                return new SalesGrid(ExtaDomain.SALES_OPENED);
+                return new SalesGrid(ExtaDomain.SALES_OPENED, false);
             }
         });
         ret.add(new SubdomainInfoImpl("Завершенные продажи", ExtaDomain.SALES_SUCCESSFUL) {
             @Override
             public ExtaGrid createGrid() {
-                return new SalesGrid(ExtaDomain.SALES_SUCCESSFUL);
+                return new SalesGrid(ExtaDomain.SALES_SUCCESSFUL, false);
             }
         });
         ret.add(new SubdomainInfoImpl("Отмененные продажи", ExtaDomain.SALES_CANCELED) {
             @Override
             public ExtaGrid createGrid() {
-                return new SalesGrid(ExtaDomain.SALES_CANCELED);
+                return new SalesGrid(ExtaDomain.SALES_CANCELED, false);
             }
         });
         return ret;

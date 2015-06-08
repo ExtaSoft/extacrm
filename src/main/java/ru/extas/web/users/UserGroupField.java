@@ -31,6 +31,8 @@ public class UserGroupField extends CustomField<Set> {
      */
     public UserGroupField() {
         setBuffered(true);
+        setRequiredError("Необходимо указать хотябы одну группу пользователей!");
+
         addStyleName(ExtaTheme.BASE_VIEW);
         setSizeFull();
         setWidth(600, Unit.PIXELS);

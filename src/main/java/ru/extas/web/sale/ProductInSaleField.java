@@ -6,7 +6,10 @@ import com.vaadin.data.util.PropertyValueGenerator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.grid.HeightMode;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import org.apache.commons.lang3.ArrayUtils;
 import ru.extas.model.contacts.SalePoint;
@@ -17,6 +20,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.container.ExtaBeanContainer;
 
 import java.math.BigDecimal;
@@ -35,7 +39,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProductInSaleField extends CustomField<List> {
+public class ProductInSaleField extends ExtaCustomField<List> {
 
     private final SupplierSer<BigDecimal> priceSupplier;
     private final SupplierSer<String> brandSupplier;
@@ -49,7 +53,7 @@ public class ProductInSaleField extends CustomField<List> {
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
      */
-    public ProductInSaleField(final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, SupplierSer<SalePoint> salePointSupplier) {
+    public ProductInSaleField(final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, final SupplierSer<SalePoint> salePointSupplier) {
         this("Продукты в продаже", sale, priceSupplier, brandSupplier, salePointSupplier);
     }
 
@@ -61,13 +65,13 @@ public class ProductInSaleField extends CustomField<List> {
      * @param brandSupplier
      * @param salePointSupplier
      */
-    public ProductInSaleField(final String caption, final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, SupplierSer<SalePoint> salePointSupplier) {
+    public ProductInSaleField(final String caption, final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, final SupplierSer<SalePoint> salePointSupplier) {
+        super(caption, "");
         this.priceSupplier = priceSupplier;
         this.sale = sale;
         this.brandSupplier = brandSupplier;
         this.salePointSupplier = salePointSupplier;
         setWidth(100, Unit.PERCENTAGE);
-        setCaption(caption);
 //        addValidator(value -> {
 //            if (productsContainer != null) {
 //                for (final Component component : newArrayList(productsContainer)) {
@@ -219,7 +223,7 @@ public class ProductInSaleField extends CustomField<List> {
         if (addProductBtn != null) {
             addProductBtn.removeChildren();
 
-            SalePoint salePoint = Optional.ofNullable(salePointSupplier).map(s -> s.get()).orElse(null);
+            final SalePoint salePoint = Optional.ofNullable(salePointSupplier).map(s -> s.get()).orElse(null);
 
             final Map<Product.Type, List<Product>> availableProducts = lookup(ProductRepository.class).findAvailableProducts(salePoint);
             final List<Product> credProducts = availableProducts.get(Product.Type.CREDIT);

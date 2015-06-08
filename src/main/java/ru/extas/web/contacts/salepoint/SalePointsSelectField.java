@@ -27,6 +27,10 @@ public class SalePointsSelectField extends CustomField<Set> {
 
     private ExtaBeanContainer<SalePoint> beanContainer;
 
+    public SalePointsSelectField() {
+        setRequiredError("Необходимо указать хотябы одну торговую точку!");
+    }
+
     /**
      * {@inheritDoc}
      */

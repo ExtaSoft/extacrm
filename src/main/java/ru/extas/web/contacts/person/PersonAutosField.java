@@ -32,6 +32,8 @@ public class PersonAutosField extends CustomField<List> {
     private VerticalLayout root;
 
     public PersonAutosField(final Person person) {
+        setRequiredError("Необходимо заполнить информацию об автотранспорте!");
+
         this.person = person;
         addStyleName(ExtaTheme.NO_CAPTION_COMPLEX_FIELD);
     }

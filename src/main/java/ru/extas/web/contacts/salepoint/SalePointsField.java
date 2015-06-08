@@ -29,7 +29,8 @@ public class SalePointsField extends CustomField<Set> {
 	 * @param company a {@link ru.extas.model.contacts.Company} object.
 	 */
 	public SalePointsField() {
-		setBuffered(true);
+        setRequiredError("Необходимо указать хотябы одну торговую точку!");
+        setBuffered(true);
 	}
 
 	/** {@inheritDoc} */

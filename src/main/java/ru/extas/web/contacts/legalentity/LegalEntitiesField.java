@@ -32,7 +32,8 @@ public class LegalEntitiesField extends CustomField<Set> {
 	 */
 	public LegalEntitiesField() {
 		setBuffered(true);
-	}
+        setRequiredError("Необходимо выбрать хотябы одно юридическое лицо!");
+    }
 
 	/** {@inheritDoc} */
 	@Override

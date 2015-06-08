@@ -14,6 +14,7 @@ import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.container.ExtaDbContainer;
@@ -34,7 +35,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SalePointField extends CustomField<SalePoint> {
+public class SalePointField extends ExtaCustomField<SalePoint> {
 
     private final boolean secured;
     private SupplierSer<Company> companySupplier;
@@ -54,9 +55,8 @@ public class SalePointField extends CustomField<SalePoint> {
      * @param description a {@link java.lang.String} object.
      */
     public SalePointField(final String caption, final String description, final boolean secured) {
+        super(caption, description);
         this.secured = secured;
-        setCaption(caption);
-        setDescription(description);
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setBuffered(true);
         addValueChangeListener(e -> {

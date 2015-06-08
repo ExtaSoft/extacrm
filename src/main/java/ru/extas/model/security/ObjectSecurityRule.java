@@ -77,7 +77,7 @@ public class ObjectSecurityRule extends AuditedObject {
         return salePointIds;
     }
 
-    public void setSalePointIds(Set<String> salePointIds) {
+    public void setSalePointIds(final Set<String> salePointIds) {
         this.salePointIds = salePointIds;
     }
 
@@ -85,7 +85,7 @@ public class ObjectSecurityRule extends AuditedObject {
         return companyIds;
     }
 
-    public void setCompanyIds(Set<String> companyIds) {
+    public void setCompanyIds(final Set<String> companyIds) {
         this.companyIds = companyIds;
     }
 

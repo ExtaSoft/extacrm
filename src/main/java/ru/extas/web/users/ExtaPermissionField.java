@@ -36,6 +36,7 @@ public class ExtaPermissionField extends CustomField<Set> {
 
     private ExtaPermissionField() {
         setBuffered(true);
+        setRequiredError("Необходимо указать правила доступа!");
         setWidth(100, Unit.PERCENTAGE);
         setHeight(300, Unit.PIXELS);
     }
@@ -101,8 +102,8 @@ public class ExtaPermissionField extends CustomField<Set> {
                         addMapping("target", "Целевые объекты");
                         addMapping("actions", "Разрешенные действия", new ComponentColumnGenerator() {
                             @Override
-                            public Object generateCell(Object columnId, Item item, Object itemId) {
-                                ExtaPermission permission = GridItem.extractBean(item);
+                            public Object generateCell(final Object columnId, final Item item, final Object itemId) {
+                                final ExtaPermission permission = GridItem.extractBean(item);
                                 final StringToSecureActionConverter cnv = lookup(StringToSecureActionConverter.class);
                                 return new Label(
                                         Joiner.on(", ")

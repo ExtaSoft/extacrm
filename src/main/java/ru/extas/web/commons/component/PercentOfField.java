@@ -1,6 +1,5 @@
 package ru.extas.web.commons.component;
 
-import com.vaadin.data.Buffered;
 import com.vaadin.data.Validator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
@@ -20,7 +19,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * <p>
  * Created by valery on 13.12.14.
  */
-public class PercentOfField extends CustomField<BigDecimal> {
+public class PercentOfField extends ExtaCustomField<BigDecimal> {
 
     private EditField inputField;
     private Label alterLabel;
@@ -35,8 +34,7 @@ public class PercentOfField extends CustomField<BigDecimal> {
 
 
     public PercentOfField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
+        super(caption, description);
         addValueChangeListener(e -> updateState());
     }
 

@@ -2,6 +2,7 @@ package ru.extas.server.contacts;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -43,13 +44,52 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
     List<SalePoint> findByCurator(@Param("employee") Employee employee);
 
     /**
-     * <p>countByRegion.</p>
+     * Возвращает бренды доступные на данной торговой точке
      *
-     * @param region a {@link java.lang.String} object.
+     * @param salePoint торговая точка для которой ищутся брэнды
+     * @return список найденных брэндов
+     */
+    @Query("select b from SalePoint s join s.legalEntities e join e.motorBrands b where s = :salePoint")
+    List<String> findSalePointBrands(@Param("salePoint") SalePoint salePoint);
+
+    /**
+     * Возвращает число актуальных (не архивных и доступных извне) торговых точек
+     *
+     * @return колличество торговых точек
+     */
+    @Query("select count(s) from SalePoint s where (s.archived = false and s.apiExpose = true)")
+    long countActual();
+
+    /**
+     * Возвращает количество торговых точек работаюцих с указанными брендами
+     *
+     * @param brands срисок брендов
+     * @return число торговых точек
+     */
+    @Query("select count(distinct s) from SalePoint s  join s.legalEntities e join e.motorBrands b " +
+            "where (s.archived = false and s.apiExpose = true) and b in :brands")
+    long countActualByBrand(@Param("brands") List<String> brands);
+
+    /**
+     * Возвращает количество торговых точек в указанных регионах, работающих с указанными брендами техники
+     *
+     * @param region список регионов торговой техники
+     * @param brands срисок брендов
+     * @return число торговых точек
+     */
+    @Query("select count(distinct s) from SalePoint s  join s.legalEntities e join e.motorBrands b " +
+            "where (s.archived = false and s.apiExpose = true) and s.regAddress.region in :regions and b in :brands")
+    long countActualByRegionAndBrand(@Param("regions") List<String> regions,
+                                     @Param("brands") List<String> brands);
+
+    /**
+     * <p>countActualByRegion.</p>
+     *
+     * @param region a {@link String} object.
      * @return a long.
      */
-    @Query("select count(s) from SalePoint s where s.regAddress.region = :region")
-    long countByRegion(@Param("region") String region);
+    @Query("select count(s) from SalePoint s where (s.archived = false and s.apiExpose = true) and s.regAddress.region in :regions")
+    long countActualByRegion(@Param("regions") List<String> regions);
 
     /**
      * <p>findByRegion.</p>
@@ -61,11 +101,49 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
     List<SalePoint> findByRegion(@Param("region") String region);
 
     /**
-     * Возвращает бренды доступные на данной торговой точке
+     * Возвращает актуальные (не архивные и доступные извне) торговые точеки
      *
-     * @param salePoint торговая точка для которой ищутся брэнды
-     * @return список найденных брэндов
+     * @return список торговых точек
+     * @param pageable
      */
-    @Query("select b from SalePoint s join s.legalEntities e join e.motorBrands b where s = :salePoint")
-    List<String> findSalePointBrands(@Param("salePoint") SalePoint salePoint);
+    @Query("select s from SalePoint s where (s.archived = false and s.apiExpose = true) order by s.name asc")
+    List<SalePoint> findActual(Pageable pageable);
+
+    /**
+     * Возвращает список актуальных торговых точек, работающих в указанных регионах
+     *
+     * @param region список целевых регионов
+     * @param pageable
+     * @return
+     */
+    @Query("select s from SalePoint s " +
+            "where (s.archived = false and s.apiExpose = true) and s.regAddress.region in :regions " +
+            "order by s.name asc")
+    List<SalePoint> findActualByRegion(@Param("regions") List<String> region, Pageable pageable);
+
+    /**
+     * Возвращает список торговых точек работаюцих с указанными брендами
+     *
+     * @param brands срисок брендов
+     * @param pageable
+     * @return список торговых точек
+     */
+    @Query("select distinct s from SalePoint s  join s.legalEntities e join e.motorBrands b " +
+            "where (s.archived = false and s.apiExpose = true) and b in :brands " +
+            "order by s.name asc")
+    List<SalePoint> findActualByBrand(@Param("brands") List<String> brands, Pageable pageable);
+
+    /**
+     * Возвращает список торговых точек в указанных регионах, работающих с указанными брендами техники
+     *
+     * @param region список регионов
+     * @param brands срисок брендов
+     * @param pageable
+     * @return список торговых точек
+     */
+    @Query("select distinct s from SalePoint s  join s.legalEntities e join e.motorBrands b " +
+            "where (s.archived = false and s.apiExpose = true) and s.regAddress.region in :regions and b in :brands " +
+            "order by s.name asc")
+    List<SalePoint> findActualByRegionAndBrand(@Param("regions") List<String> regions,
+                                               @Param("brands") List<String> brands, Pageable pageable);
 }

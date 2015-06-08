@@ -24,18 +24,18 @@ public class ProductRepositoryImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Map<Product.Type, List<Product>> findAvailableProducts(SalePoint salePoint) {
-        List<Product> prodList;
+    public Map<Product.Type, List<Product>> findAvailableProducts(final SalePoint salePoint) {
+        final List<Product> prodList;
         if(salePoint == null)
             prodList = productRepository.findByActiveOrderByNameAsc(true);
         else
             prodList = productRepository.findBySalePoint(salePoint);
 
-        Map<Product.Type, List<Product>> prodMap = newHashMap();
-        List<Product> creditList = newArrayList();
-        List<Product> installList = newArrayList();
-        List<Product> insurList = newArrayList();
-        for (Product product : prodList) {
+        final Map<Product.Type, List<Product>> prodMap = newHashMap();
+        final List<Product> creditList = newArrayList();
+        final List<Product> installList = newArrayList();
+        final List<Product> insurList = newArrayList();
+        for (final Product product : prodList) {
             if(product instanceof ProdCredit)
                 creditList.add(product);
             else if(product instanceof ProdInstallments)

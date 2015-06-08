@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.ExtaAbstractView;
-import ru.extas.web.commons.ExtaGrid;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.lead.LeadsGrid;
@@ -41,8 +40,8 @@ public class HomeView extends ExtaAbstractView {
 
         final TabSheet saleSheet = new TabSheet();
         saleSheet.setSizeFull();
-        saleSheet.addTab(new LeadsGrid(Lead.Status.NEW), "Новые Лиды", Fontello.INBOX_ALT);
-        saleSheet.addTab(new SalesGrid(ExtaDomain.SALES_OPENED), "Мои Продажи", Fontello.DOLLAR);
+        saleSheet.addTab(new LeadsGrid(Lead.Status.NEW, true), "Новые Лиды", Fontello.INBOX_ALT);
+        saleSheet.addTab(new SalesGrid(ExtaDomain.SALES_OPENED, true), "Мои Продажи", Fontello.DOLLAR);
         verticalSplitPanel.setFirstComponent(saleSheet);
 
         final HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();

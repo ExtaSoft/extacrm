@@ -3,12 +3,16 @@ package ru.extas.web.contacts.person;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.PersonChild;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.LocalDateField;
 import ru.extas.web.commons.container.ExtaBeanContainer;
 
@@ -22,7 +26,7 @@ import static com.google.common.collect.Lists.newArrayList;
  *         Date: 09.09.2014
  *         Time: 13:02
  */
-public class PersonChildrenField extends CustomField<List> {
+public class PersonChildrenField extends ExtaCustomField<List> {
 
 
     private final Person person;
@@ -30,7 +34,7 @@ public class PersonChildrenField extends CustomField<List> {
     private VerticalLayout root;
 
     public PersonChildrenField(final String caption, final Person person) {
-        setCaption(caption);
+        super(caption, "");
         this.person = person;
     }
 

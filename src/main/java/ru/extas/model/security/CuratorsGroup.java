@@ -79,7 +79,7 @@ public class CuratorsGroup extends AuditedObject {
         return curators;
     }
 
-    public void setCurators(Set<Employee> curators) {
+    public void setCurators(final Set<Employee> curators) {
         this.curators = curators;
     }
 

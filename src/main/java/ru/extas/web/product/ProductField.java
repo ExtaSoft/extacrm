@@ -6,9 +6,13 @@ package ru.extas.web.product;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
-import com.vaadin.ui.*;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.sale.Product;
 import ru.extas.web.commons.ExtaTheme;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.container.ExtaDbContainer;
 
 /**
@@ -18,7 +22,7 @@ import ru.extas.web.commons.container.ExtaDbContainer;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class ProductField<TProduct extends Product> extends CustomField<TProduct> {
+public abstract class ProductField<TProduct extends Product> extends ExtaCustomField<TProduct> {
 
     private static final long serialVersionUID = 6004206917183679455L;
     private final Class<TProduct> productCls;
@@ -33,9 +37,8 @@ public abstract class ProductField<TProduct extends Product> extends CustomField
 
 
     public ProductField(final String caption, final String description, final Class<TProduct> productCls) {
+        super(caption, description);
         this.productCls = productCls;
-        setCaption(caption);
-        setDescription(description);
     }
 
     @Override

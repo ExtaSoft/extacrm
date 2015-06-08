@@ -1,11 +1,13 @@
 package ru.extas.web.contacts;
 
-import com.vaadin.ui.*;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.PopupView;
+import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
-import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.component.FormGroupHeader;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.contacts.legalentity.LegalEntityField;
 import ru.extas.web.contacts.person.PersonField;
 
@@ -16,7 +18,7 @@ import ru.extas.web.contacts.person.PersonField;
  *         Date: 02.12.2014
  *         Time: 18:26
  */
-public class ClientField extends CustomField<Client> {
+public class ClientField extends ExtaCustomField<Client> {
 
     private PopupView popupView;
     private PopupClientContent entityContent;
@@ -26,8 +28,7 @@ public class ClientField extends CustomField<Client> {
     }
 
     public ClientField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
+        super(caption, description);
         setBuffered(true);
     }
 

@@ -2,8 +2,12 @@ package ru.extas.web.motor;
 
 import com.vaadin.data.Property;
 import com.vaadin.shared.ui.combobox.FilteringMode;
-import com.vaadin.ui.*;
+import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.motor.MotorType;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaTokenField;
 import ru.extas.web.commons.container.ExtaDbContainer;
 
@@ -19,7 +23,7 @@ import static ru.extas.web.commons.GridItem.extractBean;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class MotorTypeObjMultiselect extends CustomField<Set> {
+public class MotorTypeObjMultiselect extends ExtaCustomField<Set> {
 
 
     /**
@@ -28,8 +32,8 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
      * @param caption a {@link java.lang.String} object.
      */
     public MotorTypeObjMultiselect(final String caption) {
+        super(caption, "");
         setBuffered(true);
-        setCaption(caption);
     }
 
 	/** {@inheritDoc} */
@@ -51,6 +55,7 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
         //tokenField.setTokenInsertPosition(TokenField.InsertPosition.BEFORE);
 
         final ExtaDbContainer<MotorType> container = new ExtaDbContainer<>(MotorType.class);
+//        container.setSingleSelectConverter(tokenField);
         container.sort(new Object[]{"name"}, new boolean[]{true});
         tokenField.setContainerDataSource(container);
         tokenField.setTokenCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
@@ -67,7 +72,7 @@ public class MotorTypeObjMultiselect extends CustomField<Set> {
         if (set != null) {
             final Set idValue = newHashSet();
             for(final MotorType type : set)
-                idValue.add(type.getId());
+                idValue.add(container.getEntityItemId(type));
             tokenField.setValue(idValue);
         }
 
