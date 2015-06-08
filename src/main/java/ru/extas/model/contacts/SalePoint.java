@@ -83,7 +83,7 @@ public class SalePoint extends Contact implements ArchivedObject {
         return apiExpose;
     }
 
-    public void setApiExpose(boolean apiExpose) {
+    public void setApiExpose(final boolean apiExpose) {
         this.apiExpose = apiExpose;
     }
 
@@ -91,7 +91,7 @@ public class SalePoint extends Contact implements ArchivedObject {
         return comments;
     }
 
-    public void setComments(List<SalePointComment> comments) {
+    public void setComments(final List<SalePointComment> comments) {
         this.comments = comments;
     }
 
@@ -99,7 +99,7 @@ public class SalePoint extends Contact implements ArchivedObject {
         return curatorsGroup;
     }
 
-    public void setCuratorsGroup(CuratorsGroup curatorsGroup) {
+    public void setCuratorsGroup(final CuratorsGroup curatorsGroup) {
         this.curatorsGroup = curatorsGroup;
     }
 

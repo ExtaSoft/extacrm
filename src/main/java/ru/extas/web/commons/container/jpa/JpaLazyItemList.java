@@ -304,7 +304,7 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
         final Object result;
         try {
             result = nativeQuery.getSingleResult();
-        } catch (NoResultException e) {
+        } catch (final NoResultException e) {
             return -1;
         }
 

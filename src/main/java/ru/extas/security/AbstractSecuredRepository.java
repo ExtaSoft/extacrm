@@ -118,7 +118,7 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
     private void skipELValidationException(final Runnable runnable) {
         try {
             runnable.run();
-        } catch (ValidationException e) {
+        } catch (final ValidationException e) {
             logger.warn("EclipseLink ValidationException skipped!!!", e);
         }
     }

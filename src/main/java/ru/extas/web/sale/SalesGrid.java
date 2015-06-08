@@ -51,7 +51,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
      * @param domain a {@link ExtaDomain} object.
      * @param isMyOnly
      */
-    public SalesGrid(final ExtaDomain domain, boolean isMyOnly) {
+    public SalesGrid(final ExtaDomain domain, final boolean isMyOnly) {
         super(Sale.class);
         this.domain = domain;
         this.isMyOnly = isMyOnly;
@@ -120,7 +120,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
                         domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
         if (isMyOnly) {
-            Employee user = lookup(UserManagementService.class).getCurrentUserEmployee();
+            final Employee user = lookup(UserManagementService.class).getCurrentUserEmployee();
             container.addContainerFilter(
                     new Or(
                             new Compare.Equal("responsible", user),

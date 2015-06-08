@@ -53,7 +53,7 @@ public class ProductInSaleField extends ExtaCustomField<List> {
     /**
      * <p>Constructor for ProductInSaleGrid.</p>
      */
-    public ProductInSaleField(final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, SupplierSer<SalePoint> salePointSupplier) {
+    public ProductInSaleField(final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, final SupplierSer<SalePoint> salePointSupplier) {
         this("Продукты в продаже", sale, priceSupplier, brandSupplier, salePointSupplier);
     }
 
@@ -65,7 +65,7 @@ public class ProductInSaleField extends ExtaCustomField<List> {
      * @param brandSupplier
      * @param salePointSupplier
      */
-    public ProductInSaleField(final String caption, final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, SupplierSer<SalePoint> salePointSupplier) {
+    public ProductInSaleField(final String caption, final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, final SupplierSer<SalePoint> salePointSupplier) {
         super(caption, "");
         this.priceSupplier = priceSupplier;
         this.sale = sale;
@@ -223,7 +223,7 @@ public class ProductInSaleField extends ExtaCustomField<List> {
         if (addProductBtn != null) {
             addProductBtn.removeChildren();
 
-            SalePoint salePoint = Optional.ofNullable(salePointSupplier).map(s -> s.get()).orElse(null);
+            final SalePoint salePoint = Optional.ofNullable(salePointSupplier).map(s -> s.get()).orElse(null);
 
             final Map<Product.Type, List<Product>> availableProducts = lookup(ProductRepository.class).findAvailableProducts(salePoint);
             final List<Product> credProducts = availableProducts.get(Product.Type.CREDIT);

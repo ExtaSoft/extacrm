@@ -38,7 +38,7 @@ public class EmployeeMultySelect extends ExtaCustomField<Set> {
     private EmployeesGrid grid;
     private ExtaBeanContainer<Employee> beanContainer;
 
-    public EmployeeMultySelect(String caption) {
+    public EmployeeMultySelect(final String caption) {
         super(caption, "");
         setBuffered(true);
     }

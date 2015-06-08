@@ -46,7 +46,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
      * @param status a {@link Lead.Status} object.
      * @param isMyOnly
      */
-    public LeadsGrid(final Lead.Status status, boolean isMyOnly) {
+    public LeadsGrid(final Lead.Status status, final boolean isMyOnly) {
         super(Lead.class);
         this.status = status;
         this.isMyOnly = isMyOnly;
@@ -82,7 +82,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
         container.addNestedContainerProperty("responsibleAssist.name");
         container.addContainerFilter(new Compare.Equal("status", status));
         if (isMyOnly) {
-            Employee user = lookup(UserManagementService.class).getCurrentUserEmployee();
+            final Employee user = lookup(UserManagementService.class).getCurrentUserEmployee();
             container.addContainerFilter(
                     new Or(
                             new Compare.Equal("responsible", user),

@@ -143,17 +143,17 @@ public class SalePointRestService {
         return new ResponseEntity(NumberFormat.getInstance().format(count), headers, HttpStatus.OK);
     }
 
-    private void checkBrands(List<String> brands) {
-        List<String> allBrands = brandRepository.loadAllNames();
-        for (String brand : brands) {
+    private void checkBrands(final List<String> brands) {
+        final List<String> allBrands = brandRepository.loadAllNames();
+        for (final String brand : brands) {
             if (!allBrands.contains(brand))
                 throw new IllegalArgumentException(MessageFormat.format("Неверное наименование брэнда: ''{0}''", brand));
         }
     }
 
-    private void checkRegions(List<String> region) {
+    private void checkRegions(final List<String> region) {
         final Collection<String> allRegions = supplementService.loadRegions();
-        for (String reg : region) {
+        for (final String reg : region) {
             if (!allRegions.contains(reg))
                 throw new IllegalArgumentException(MessageFormat.format("Неверное наименование региона: ''{0}''", reg));
         }

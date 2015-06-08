@@ -467,11 +467,11 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         return components;
     }
 
-    private String getPartOfPhoneValue(String phone) {
+    private String getPartOfPhoneValue(final String phone) {
         String value = null;
         try {
             value = lookup(PhoneConverter.class).convertToModel(phone, String.class, null);
-        } catch (Converter.ConversionException e) {
+        } catch (final Converter.ConversionException e) {
             value = phone;
         }
         return value;
