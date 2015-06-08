@@ -42,6 +42,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
     public FilesManageField(final Class<TFileContainer> containerClass) {
         this.containerClass = containerClass;
         setBuffered(true);
+        setRequiredError("Раздел файлов должен содержать хотябы один файл!");
     }
 
 

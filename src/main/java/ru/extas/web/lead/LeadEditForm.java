@@ -41,6 +41,7 @@ import ru.extas.web.reference.RegionSelect;
 import ru.extas.web.sale.SaleEditForm;
 
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
@@ -250,8 +251,12 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             if(responsibleField.getValue() == null) {
                 SalePoint sp = vendorField.getValue();
                 final CuratorsGroup curatorsGroup = sp.getCuratorsGroup();
-                if(curatorsGroup != null && !curatorsGroup.getCurators().isEmpty())
-                    responsibleField.setValue(curatorsGroup.getCurators().iterator().next());
+                if(curatorsGroup != null && !curatorsGroup.getCurators().isEmpty()) {
+                    final Iterator<Employee> employeeIterator = curatorsGroup.getCurators().iterator();
+                    responsibleField.setValue(employeeIterator.next());
+                    if(employeeIterator.hasNext())
+                        responsibleAssistField.setValue(employeeIterator.next());
+                }
             }
         });
         form.addComponent(vendorField);

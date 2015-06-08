@@ -23,7 +23,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 20.03.2015
  *         Time: 12:53
  */
-public class PastDateIntervalField extends CustomField<Interval> {
+public class PastDateIntervalField extends ExtaCustomField<Interval> {
 
     public static final String DATES_DELIMITER = FontAwesome.MINUS.getHtml();
 
@@ -135,8 +135,7 @@ public class PastDateIntervalField extends CustomField<Interval> {
     }
 
     public PastDateIntervalField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
+        super(caption, description);
         addValueChangeListener(e ->
                 updateDates((Interval) e.getProperty().getValue()));
     }

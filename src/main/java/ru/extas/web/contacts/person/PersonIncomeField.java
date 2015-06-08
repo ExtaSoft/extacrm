@@ -37,6 +37,7 @@ public class PersonIncomeField extends CustomField<List> {
     private Table table;
 
     public PersonIncomeField(final Person person) {
+        setRequiredError("Необходимо предоставить информацию о доходах!");
         this.person = person;
         addStyleName(ExtaTheme.NO_CAPTION_COMPLEX_FIELD);
     }

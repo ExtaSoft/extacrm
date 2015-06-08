@@ -3,12 +3,16 @@ package ru.extas.web.product;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.Table;
 import ru.extas.model.sale.ProdCredit;
 import ru.extas.model.sale.ProdCreditPercent;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.container.ExtaBeanContainer;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 
@@ -27,7 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3
  */
-public class ProdCredPercentField extends CustomField<List> {
+public class ProdCredPercentField extends ExtaCustomField<List> {
 
     private final ProdCredit product;
     private Table procentTable;
@@ -41,11 +45,10 @@ public class ProdCredPercentField extends CustomField<List> {
      * @param product     a {@link ru.extas.model.sale.ProdCredit} object.
      */
     public ProdCredPercentField(final String caption, final String description, final ProdCredit product) {
+        super(caption, description);
         this.product = product;
         setWidth(100, Unit.PERCENTAGE);
         setHeight(200, Unit.PIXELS);
-        setCaption(caption);
-        setDescription(description);
     }
 
     /**

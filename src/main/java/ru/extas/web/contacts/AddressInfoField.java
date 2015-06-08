@@ -12,6 +12,7 @@ import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
@@ -19,7 +20,6 @@ import ru.extas.web.reference.RegionSelect;
 import java.util.List;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -32,7 +32,7 @@ import static ru.extas.web.UiUtils.showValidationError;
  *         Date: 19.10.2014
  *         Time: 18:02
  */
-public class AddressInfoField extends CustomField<AddressInfo> {
+public class AddressInfoField extends ExtaCustomField<AddressInfo> {
 
     private PopupView popupView;
 
@@ -41,8 +41,7 @@ public class AddressInfoField extends CustomField<AddressInfo> {
     }
 
     public AddressInfoField(final String caption) {
-        setCaption(caption);
-        setDescription("Введите полный почтовый адрес");
+        super(caption, "Введите полный почтовый адрес");
         setRequiredError(String.format("Поле '%s' не может быть пустым", caption));
         setBuffered(true);
     }

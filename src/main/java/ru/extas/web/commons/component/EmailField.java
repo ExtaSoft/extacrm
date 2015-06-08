@@ -1,6 +1,5 @@
 package ru.extas.web.commons.component;
 
-import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.*;
 import ru.extas.web.commons.ExtaTheme;
@@ -19,7 +18,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  * @version $Id: $Id
  * @since 0.3
  */
-public class EmailField extends CustomField<String> {
+public class EmailField extends ExtaCustomField<String> {
 
     private Link link;
     private EditField linkEdit;
@@ -32,9 +31,7 @@ public class EmailField extends CustomField<String> {
      * @param description a {@link java.lang.String} object.
      */
     public EmailField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
-        setRequiredError(String.format("Поле '%s' необходимо заполнить", caption));
+        super(caption, description);
     }
 
     /**

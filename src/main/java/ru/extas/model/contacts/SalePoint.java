@@ -75,6 +75,18 @@ public class SalePoint extends Contact implements ArchivedObject {
     @OrderBy("createdDate")
     private List<SalePointComment> comments = newArrayList();
 
+    @Column(name = "IS_API_EXPOSE")
+    private boolean apiExpose = true;
+
+
+    public boolean isApiExpose() {
+        return apiExpose;
+    }
+
+    public void setApiExpose(boolean apiExpose) {
+        this.apiExpose = apiExpose;
+    }
+
     public List<SalePointComment> getComments() {
         return comments;
     }

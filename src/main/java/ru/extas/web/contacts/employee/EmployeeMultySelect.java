@@ -2,7 +2,6 @@ package ru.extas.web.contacts.employee;
 
 import com.vaadin.data.Container;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
@@ -12,6 +11,7 @@ import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.ItemAction;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.container.ExtaBeanContainer;
 
 import java.util.List;
@@ -29,7 +29,7 @@ import static com.google.common.collect.Sets.newHashSet;
  * @version $Id: $Id
  * @since 0.3
  */
-public class EmployeeMultySelect extends CustomField<Set> {
+public class EmployeeMultySelect extends ExtaCustomField<Set> {
 
     private SupplierSer<Company> companySupplier;
     private SupplierSer<SalePoint> salePointSupplier;
@@ -39,7 +39,7 @@ public class EmployeeMultySelect extends CustomField<Set> {
     private ExtaBeanContainer<Employee> beanContainer;
 
     public EmployeeMultySelect(String caption) {
-        setCaption(caption);
+        super(caption, "");
         setBuffered(true);
     }
 

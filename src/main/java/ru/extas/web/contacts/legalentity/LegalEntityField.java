@@ -10,6 +10,7 @@ import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.container.ExtaDbContainer;
@@ -30,7 +31,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * @version $Id: $Id
  * @since 0.3.0
  */
-public class LegalEntityField extends CustomField<LegalEntity> {
+public class LegalEntityField extends ExtaCustomField<LegalEntity> {
 
     private SupplierSer<Company> companySupplier;
 
@@ -53,8 +54,7 @@ public class LegalEntityField extends CustomField<LegalEntity> {
      * @param description a {@link java.lang.String} object.
      */
     public LegalEntityField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
+        super(caption, description);
         setBuffered(true);
     }
 

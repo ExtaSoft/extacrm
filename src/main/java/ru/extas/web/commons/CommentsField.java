@@ -35,6 +35,7 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
     public CommentsField(final Class<TComment> commentClass) {
         this.commentClass = commentClass;
         setBuffered(true);
+        setRequiredError("Комментарий обязателен для заполнения!");
     }
 
     @Override

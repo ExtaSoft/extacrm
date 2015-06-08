@@ -36,6 +36,7 @@ public class ExtaPermissionField extends CustomField<Set> {
 
     private ExtaPermissionField() {
         setBuffered(true);
+        setRequiredError("Необходимо указать правила доступа!");
         setWidth(100, Unit.PERCENTAGE);
         setHeight(300, Unit.PIXELS);
     }

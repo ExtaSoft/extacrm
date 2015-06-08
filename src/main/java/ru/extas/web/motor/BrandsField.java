@@ -26,6 +26,7 @@ public class BrandsField extends CustomField<Set> {
 	 * <p>Constructor for BrandsField.</p>
 	 */
 	public BrandsField() {
+		setRequiredError("Необходимо указать хотябы один бренд!");
 		setBuffered(true);
 	}
 

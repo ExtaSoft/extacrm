@@ -16,6 +16,7 @@ import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.PredictConfirmedAction;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.container.ExtaDbContainer;
@@ -34,7 +35,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 22.10.2014
  *         Time: 16:25
  */
-public class EmployeeField extends CustomField<Employee> {
+public class EmployeeField extends ExtaCustomField<Employee> {
 
     private SupplierSer<Company> companySupplier;
     private SupplierSer<SalePoint> salePointSupplier;
@@ -46,8 +47,7 @@ public class EmployeeField extends CustomField<Employee> {
     private PredictConfirmedAction newEmployeePrecondition;
 
     public EmployeeField(final String caption, final String description) {
-        setCaption(caption);
-        setDescription(description);
+        super(caption, description);
         setBuffered(true);
     }
 

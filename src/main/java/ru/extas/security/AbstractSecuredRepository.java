@@ -2,6 +2,7 @@ package ru.extas.security;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.eclipse.persistence.exceptions.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,20 +99,28 @@ public abstract class AbstractSecuredRepository<Entity extends SecuredObject> im
         if (entity != null) {
             logger.info("BEGIN Base Secure Save (BSS): Type - {}; Entity ID - {}", entity.getClass().getSimpleName(), entity.getId());
             // Доступ пользователей к объекту
-            entity.addSecurityUserAccess(users);
+            skipELValidationException(() -> entity.addSecurityUserAccess(users));
             // Видимость объекта в разрезе Торговых точек
-            entity.addSecuritySalePoints(salePoints);
+            skipELValidationException(() -> entity.addSecuritySalePoints(salePoints));
             // Видимость объекта в разрезе Компаний
-            entity.addSecurityCompanies(companies);
+            skipELValidationException(() -> entity.addSecurityCompanies(companies));
             // Видимость объекта в разрезе регионов
-            entity.addSecurityRegions(regions);
+            skipELValidationException(() -> entity.addSecurityRegions(regions));
             // Видимость объекта в разрезе брендов
-            entity.addSecurityBrands(brands);
+            skipELValidationException(() -> entity.addSecurityBrands(brands));
             final Entity save = getEntityRepository().save(entity);
             logger.info("END Base Secure Save (BSS): Type - {}; Entity ID - {}", entity.getClass().getSimpleName(), entity.getId());
             return save;
         }
         return entity;
+    }
+
+    private void skipELValidationException(final Runnable runnable) {
+        try {
+            runnable.run();
+        } catch (ValidationException e) {
+            logger.warn("EclipseLink ValidationException skipped!!!", e);
+        }
     }
 
     /**

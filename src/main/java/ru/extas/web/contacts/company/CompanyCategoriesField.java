@@ -1,19 +1,17 @@
 package ru.extas.web.contacts.company;
 
-import com.google.common.collect.ImmutableList;
-import com.vaadin.data.Property;
-import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
 import ru.extas.server.references.CategoryService;
-import ru.extas.server.references.SupplementService;
+import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaTokenField;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -24,12 +22,12 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 04.11.2014
  *         Time: 14:18
  */
-public class CompanyCategoriesField extends CustomField<Set> {
+public class CompanyCategoriesField extends ExtaCustomField<Set> {
 
     private final ExtaTokenField tokenField = new ExtaTokenField();
 
     public CompanyCategoriesField(final String caption) {
-        setCaption(caption);
+        super(caption, "Укажите категории компании");
         setBuffered(true);
         addReadOnlyStatusChangeListener(e -> tokenField.setReadOnly(isReadOnly()));
     }

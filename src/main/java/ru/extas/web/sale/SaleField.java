@@ -3,11 +3,11 @@ package ru.extas.web.sale;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
 import com.vaadin.ui.VerticalLayout;
 import ru.extas.model.sale.Sale;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
+import ru.extas.web.commons.component.ExtaCustomField;
 
 /**
  * Поле расширенного просмотра продажи.
@@ -19,7 +19,7 @@ import ru.extas.web.commons.FormUtils;
  * @version $Id: $Id
  * @since 0.3
  */
-public class SaleField extends CustomField<Sale> {
+public class SaleField extends ExtaCustomField<Sale> {
 
     private BeanItem<Sale> saleItem;
     private ProductInSaleField productInSaleField;
@@ -37,7 +37,7 @@ public class SaleField extends CustomField<Sale> {
      * @param caption a {@link java.lang.String} object.
      */
     public SaleField(final String caption) {
-        setCaption(caption);
+        super(caption, "");
     }
 
     /**

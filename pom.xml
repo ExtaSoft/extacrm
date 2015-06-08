@@ -7,7 +7,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
 
     <properties>
         <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
@@ -156,7 +156,7 @@
 
     <dependencies>
 
-       <dependency>
+        <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
             <version>1.5</version>
@@ -456,12 +456,12 @@
         <plugins>
 
             <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-resources-plugin</artifactId>-->
-                <!--<version>2.7</version>-->
-                <!--<configuration>-->
-                    <!--<encoding>IBM866</encoding>-->
-                <!--</configuration>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-resources-plugin</artifactId>-->
+            <!--<version>2.7</version>-->
+            <!--<configuration>-->
+            <!--<encoding>IBM866</encoding>-->
+            <!--</configuration>-->
             <!--</plugin>-->
 
             <plugin>
@@ -474,32 +474,32 @@
                         <configuration>
                             <target>
 
-                                <property name="compile_classpath" refid="maven.compile.classpath" />
+                                <property name="compile_classpath" refid="maven.compile.classpath"/>
 
-                                <echo message="Delete jaspers..." />
+                                <echo message="Delete jaspers..."/>
 
                                 <delete>
-                                    <fileset dir="src/main/resources/reports" includes="**/*.jasper" />
+                                    <fileset dir="src/main/resources/reports" includes="**/*.jasper"/>
                                 </delete>
 
-                                <echo message="Compile reports..." />
+                                <echo message="Compile reports..."/>
 
-                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask" />
+                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"/>
                                 <jrc destdir="src/main/resources/reports">
                                     <src>
                                         <fileset dir="src/main/resources/reports">
-                                            <include name="**/*.jrxml" />
+                                            <include name="**/*.jrxml"/>
                                         </fileset>
                                     </src>
                                     <classpath>
-                                        <path path="${compile_classpath}" />
+                                        <path path="${compile_classpath}"/>
                                     </classpath>
                                 </jrc>
 
-                                <echo message="Copy reports..." />
+                                <echo message="Copy reports..."/>
 
                                 <copy todir="target/classes/reports" overwrite="true">
-                                    <fileset dir="src/main/resources/reports" />
+                                    <fileset dir="src/main/resources/reports"/>
                                 </copy>
 
                             </target>
@@ -522,9 +522,9 @@
                         </exclusions>
                     </dependency>
                     <!--<dependency>-->
-                        <!--<groupId>org.eclipse.jdt</groupId>-->
-                        <!--<artifactId>core</artifactId>-->
-                        <!--<version>3.1.1</version>-->
+                    <!--<groupId>org.eclipse.jdt</groupId>-->
+                    <!--<artifactId>core</artifactId>-->
+                    <!--<version>3.1.1</version>-->
                     <!--</dependency>-->
 
                     <dependency>
@@ -599,10 +599,15 @@
 
                     <!--<tomcatLoggingFile>${project.basedir}/src/main/webapp/WEB-INF/logging-dev.properties</tomcatLoggingFile>-->
 
+                    <charset>UTF-8</charset>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <useBodyEncodingForURI>true</useBodyEncodingForURI>
+
                     <!-- optional path to a context file -->
                     <!--<contextFile>\${tomcatContextXml}</contextFile>-->
                     <!-- optional system propoerties you want to add -->
                     <systemProperties>
+                        <!--<maven.tomcat.uriEncoding>UTF-8</maven.tomcat.uriEncoding>-->
                         <extacrm.ssl.pattern>NONE</extacrm.ssl.pattern>
                         <IS_DEV_ENV>true</IS_DEV_ENV>
                         <appserver.base>${project.build.directory}/appserver-base</appserver.base>
