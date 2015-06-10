@@ -7,6 +7,7 @@ import ru.extas.model.security.CuratorsGroup;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -136,13 +137,17 @@ public class SalePoint extends Contact implements ArchivedObject {
      * @param employees a {@link java.util.List} object.
      */
     public void setEmployees(final Set<Employee> employees) {
-        // Обрываем сущесвующую связь
-        if (this.employees != null)
-            this.employees.forEach(e -> e.setWorkPlace(null));
-        // Устанавливаем новую связь
-        this.employees = employees;
-        if (this.employees != null)
-            this.employees.forEach(e -> e.setWorkPlace(this));
+        if(!Objects.equals(employees, this.employees)) {
+            synchronized (this) {
+                // Обрываем сущесвующую связь
+                if (this.employees != null)
+                    this.employees.forEach(e -> e.setWorkPlace(null));
+                // Устанавливаем новую связь
+                this.employees = employees;
+                if (this.employees != null)
+                    this.employees.forEach(e -> e.setWorkPlace(this));
+            }
+        }
     }
 
     /**
