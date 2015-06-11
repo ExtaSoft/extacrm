@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.server.motor.MotorBrandRepository;
+import ru.extas.server.references.CategoryService;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.HelpContent;
 
@@ -119,23 +120,23 @@ public class SalePointRestService {
      * @param region a {@link java.lang.String} object.
      * @return a {@link org.springframework.http.HttpEntity} object.
      */
-    @RequestMapping(value = "/count", method = RequestMethod.GET, headers = "charset=utf-8")
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity<String> count(
             @RequestParam(value = "region", required = false) final List<String> region,
             @RequestParam(value = "brand", required = false) final List<String> brands) {
         final long count;
         if (isEmpty(region) && isEmpty(brands))
-            count = repository.countActual();
+            count = repository.countActual(CategoryService.COMPANY_CAT_DEALER);
         else if (isEmpty(brands)) {
             checkRegions(region);
-            count = repository.countActualByRegion(region);
+            count = repository.countActualByRegion(CategoryService.COMPANY_CAT_DEALER, region);
         } else if (isEmpty(region)) {
             checkBrands(brands);
-            count = repository.countActualByBrand(brands);
+            count = repository.countActualByBrand(CategoryService.COMPANY_CAT_DEALER, brands);
         } else {
             checkRegions(region);
             checkBrands(brands);
-            count = repository.countActualByRegionAndBrand(region, brands);
+            count = repository.countActualByRegionAndBrand(CategoryService.COMPANY_CAT_DEALER, region, brands);
         }
 
         final HttpHeaders headers = new HttpHeaders();
@@ -179,17 +180,17 @@ public class SalePointRestService {
             pageable = new PageRequest(page, size);
 
         if (isEmpty(region) && isEmpty(brands))
-            salePoints = repository.findActual(pageable);
+            salePoints = repository.findActual(CategoryService.COMPANY_CAT_DEALER, pageable);
         else if (isEmpty(brands)) {
             checkRegions(region);
-            salePoints = repository.findActualByRegion(region, pageable);
+            salePoints = repository.findActualByRegion(CategoryService.COMPANY_CAT_DEALER, region, pageable);
         } else if (isEmpty(region)) {
             checkBrands(brands);
-            salePoints = repository.findActualByBrand(brands, pageable);
+            salePoints = repository.findActualByBrand(CategoryService.COMPANY_CAT_DEALER, brands, pageable);
         } else {
             checkRegions(region);
             checkBrands(brands);
-            salePoints = repository.findActualByRegionAndBrand(region, brands, pageable);
+            salePoints = repository.findActualByRegionAndBrand(CategoryService.COMPANY_CAT_DEALER, region, brands, pageable);
         }
         result.addAll(salePoints.stream().map(RestSalePoint::new).collect(java.util.stream.Collectors.toList()));
 
