@@ -102,8 +102,8 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
                 insurance.setMotorModel(oldIns.getMotorModel());
                 insurance.setMotorVin(oldIns.getMotorVin());
                 insurance.setCoverTime(oldIns.getCoverTime());
-                // СС сумма при пролонгации = СС в первоначальном полисе – 20%
-                insurance.setRiskSum(oldIns.getRiskSum().multiply(BigDecimal.valueOf(8L, 1)));
+                // СС сумма при пролонгации = СС в первоначальном полисе
+                insurance.setRiskSum(oldIns.getRiskSum());
                 final InsuranceCalculator calc = lookup(InsuranceCalculator.class);
                 final BigDecimal premium = calc.calcPropInsPremium(insurance);
                 insurance.setPremium(premium);
