@@ -8,6 +8,7 @@ import com.vaadin.ui.*;
 import org.joda.time.DateTime;
 import org.vaadin.addon.itemlayout.grid.ItemGrid;
 import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
+import org.vaadin.addon.itemlayout.layout.model.ItemGenerator;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.common.Comment;
 import ru.extas.server.security.UserManagementService;
@@ -53,7 +54,17 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         commentsContainer.setSelectable(false);
         commentsContainer.setContainerDataSource(container);
         commentsContainer.setReadOnly(isReadOnly());
-        commentsContainer.setItemGenerator((pSource, pItemId) -> new ItemComponent(pSource, pItemId));
+        commentsContainer.setItemGenerator(new ItemGenerator() {
+            @Override
+            public Component generateItem(AbstractItemLayout pSource, Object pItemId) {
+                return new ItemComponent(pSource, pItemId);
+            }
+
+            @Override
+            public boolean canBeGenerated(AbstractItemLayout pSource, Object pItemId, Object pPropertyChanged) {
+                return true;
+            }
+        });
         root.addComponent(commentsContainer);
 
         final Button addBtn = new Button("Оставить комментарий", FontAwesome.PLUS);
