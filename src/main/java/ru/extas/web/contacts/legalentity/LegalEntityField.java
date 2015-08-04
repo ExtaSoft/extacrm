@@ -74,6 +74,7 @@ public class LegalEntityField extends ExtaCustomField<LegalEntity> {
             final LegalEntity legalEntity = getValue();
             if (legalEntity != null) {
                 if (!Objects.equals(this.companySupplier.get(), legalEntity.getCompany())) {
+                    setValue(null);
                     entityContent.refreshFields();
                     markAsDirtyRecursive();
                 }
@@ -167,7 +168,8 @@ public class LegalEntityField extends ExtaCustomField<LegalEntity> {
         }
 
         public void refreshFields() {
-            form.refreshFields(null);
+            if(form != null)
+                form.refreshFields(null);
         }
     }
 
