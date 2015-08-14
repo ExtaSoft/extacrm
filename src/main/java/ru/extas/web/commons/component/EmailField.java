@@ -54,7 +54,9 @@ public class EmailField extends ExtaCustomField<String> {
         linkEdit.setNullRepresentation("");
         linkEdit.setInputPrompt("e-mail");
         linkEdit.setPropertyDataSource(getPropertyDataSource());
-        linkEdit.addValueChangeListener(e -> setValue((String) e.getProperty().getValue()));
+        linkEdit.addValueChangeListener(e -> {
+            setValue((String) e.getProperty().getValue());
+        });
         linkEdit.addBlurListener(e -> {
             if (!linkEdit.isModified())
                 refreshFieldState(getValue());
