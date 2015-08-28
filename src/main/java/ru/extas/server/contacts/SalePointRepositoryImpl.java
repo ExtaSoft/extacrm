@@ -6,12 +6,14 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.Set;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
@@ -30,11 +32,16 @@ import static com.google.common.collect.Sets.newHashSet;
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint> {
 
-    @Inject private SalePointRepository salePointRepository;
-    @Inject private LegalEntityRepository legalEntityRepository;
-    @Inject private EmployeeRepository employeeRepository;
+    @Inject
+    private SalePointRepository salePointRepository;
+    @Inject
+    private LegalEntityRepository legalEntityRepository;
+    @Inject
+    private EmployeeRepository employeeRepository;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpaRepository<SalePoint, ?> getEntityRepository() {
         return salePointRepository;
@@ -47,29 +54,47 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
 
     @Override
     protected Collection<String> getObjectCompanies(final SalePoint salePoint) {
-        return null;
+        if (salePoint != null && salePoint.getCompany() != null)
+            return newHashSet(salePoint.getCompany().getId());
+        else
+            return null;
     }
 
     @Override
     protected Collection<String> getObjectSalePoints(final SalePoint salePoint) {
-        return null;
+        if (salePoint != null && salePoint.getId() != null)
+            return newHashSet(salePoint.getId());
+        else
+            return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Collection<String> getObjectBrands(final SalePoint salePoint) {
-        return null;
+        if (salePoint != null) {
+            Set<String> brands = newHashSet();
+            for (LegalEntity le : salePoint.getLegalEntities())
+                brands.addAll(le.getMotorBrands());
+            return brands;
+        } else
+            return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Collection<String> getObjectRegions(final SalePoint salePoint) {
-        if(salePoint.getRegAddress() != null && !isNullOrEmpty(salePoint.getRegAddress().getRegion()))
+        if (salePoint.getRegAddress() != null && !isNullOrEmpty(salePoint.getRegAddress().getRegion()))
             return newHashSet(salePoint.getRegAddress().getRegion());
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public SalePoint permitAndSave(SalePoint salePoint,
