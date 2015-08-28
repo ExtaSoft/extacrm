@@ -47,7 +47,10 @@ public class EmployeeRepositoryImpl extends AbstractSecuredRepository<Employee> 
 
     @Override
     protected Collection<String> getObjectCompanies(final Employee employee) {
-        return null;
+        if (employee != null && employee.getCompany() != null)
+            return newHashSet(employee.getCompany().getId());
+        else
+            return null;
     }
 
     @Override

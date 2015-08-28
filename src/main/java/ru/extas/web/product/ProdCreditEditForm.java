@@ -157,7 +157,7 @@ public class ProdCreditEditForm extends ExtaEditForm<ProdCredit> {
 		dealerSubsidyField.setConverter(lookup(StringToPercentConverter.class));
 		form.addComponent(dealerSubsidyField);
 
-		docListField = new ProdCredDocsField("Кмплект документов", "Введите комплект докуметнов по продукту (обязательные и на выбор", getEntity());
+		docListField = new ProdCredDocsField("Комплект документов", "Введите комплект докуметнов по продукту (обязательные и на выбор", getEntity());
 		docListField.setRequired(true);
 		form.addComponent(docListField);
 

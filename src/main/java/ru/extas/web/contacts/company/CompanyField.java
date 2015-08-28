@@ -249,16 +249,18 @@ public class CompanyField extends ExtaCustomField<Company> {
             final HorizontalLayout toolbar = new HorizontalLayout();
             viewBtn = new Button("Просмотр", event -> {
                 final Company company = getValue();
-                final CompanyEditForm editWin = new CompanyEditForm(company);
-                editWin.setReadOnly(isReadOnly());
-                editWin.addCloseFormListener(e -> {
-                    if (editWin.isSaved()) {
-                        refreshFields(company);
-                    }
-                    popupView.setPopupVisible(true);
-                });
-                popupView.setPopupVisible(false);
-                FormUtils.showModalWin(editWin);
+                if (company != null) {
+                    final CompanyEditForm editWin = new CompanyEditForm(company);
+                    editWin.setReadOnly(isReadOnly());
+                    editWin.addCloseFormListener(e -> {
+                        if (editWin.isSaved()) {
+                            refreshFields(company);
+                        }
+                        popupView.setPopupVisible(true);
+                    });
+                    popupView.setPopupVisible(false);
+                    FormUtils.showModalWin(editWin);
+                }
             });
             viewBtn.setDescription("Открыть форму ввода/редактирования компании");
             viewBtn.setIcon(Fontello.EDIT_3);

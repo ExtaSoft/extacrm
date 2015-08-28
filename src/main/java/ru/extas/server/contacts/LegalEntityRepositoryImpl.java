@@ -62,7 +62,10 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
 
     @Override
     protected Collection<String> getObjectCompanies(final LegalEntity legalEntity) {
-        return null;
+        if (legalEntity != null && legalEntity.getCompany() != null)
+            return newHashSet(legalEntity.getCompany().getId());
+        else
+            return null;
     }
 
     @Override
