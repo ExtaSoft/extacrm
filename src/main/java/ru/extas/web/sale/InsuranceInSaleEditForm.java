@@ -53,7 +53,7 @@ public class InsuranceInSaleEditForm extends ExtaEditForm<ProductInSale> {
      * @param priceSupplier
      * @param brandSupplier
      */
-    protected InsuranceInSaleEditForm(final String caption, final ProductInSale productInSale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
+    public InsuranceInSaleEditForm(final String caption, final ProductInSale productInSale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
         super(caption, productInSale);
         this.priceSupplier = priceSupplier;
         this.brandSupplier = brandSupplier;

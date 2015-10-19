@@ -7,7 +7,7 @@
           <option name="checksumPolicy" value="FAIL" />
           <option name="failureBehavior" value="FAST" />
           <option name="localRepository" value="" />
-          <option name="mavenHome" value="" />
+          <option name="mavenHome" value="/usr/local/Cellar/maven/3.3.1/libexec" />
           <option name="nonRecursive" value="false" />
           <option name="outputLevel" value="INFO" />
           <option name="pluginUpdatePolicy" value="DEFAULT" />
@@ -41,6 +41,7 @@
           <option name="goals">
             <list>
               <option value="tomcat7:run" />
+              <option value="-e" />
             </list>
           </option>
           <option name="profilesMap">

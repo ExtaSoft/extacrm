@@ -13,6 +13,7 @@ import com.vaadin.ui.*;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.LeadComment;
 import ru.extas.model.lead.LeadFileContainer;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.CuratorsGroup;
@@ -40,10 +41,12 @@ import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
 import ru.extas.web.sale.SaleEditForm;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static ru.extas.model.common.ModelUtils.evictCache;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -69,6 +72,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     // Эл. почта
     @PropertyId("contactEmail")
     private EmailField contactEmailField;
+    // Маркетинговый источник
+    @PropertyId("marketingChannel")
+    private ComboBox marketingChannelField;
     // Регион покупки техники
     @PropertyId("region")
     private RegionSelect regionField;
@@ -92,6 +98,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("vendor")
     private DealerSalePointField vendorField;
 
+    @PropertyId("productInLead")
+    private ProductInLeadField productInLeadField;
     @PropertyId("comment")
     private TextArea commentField;
 
@@ -101,6 +109,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private EmployeeField responsibleAssistField;
     @PropertyId("dealerManager")
     private EmployeeField dealerManagerField;
+
+    @PropertyId("comments")
+    private CommentsField<LeadComment> commentsField;
 
     @PropertyId("files")
     private FilesManageField docFilesEditor;
@@ -173,12 +184,34 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
                 contactEmailField = new EmailField("E-Mail");
                 form.addComponent(contactEmailField);
+
+                marketingChannelField = new ComboBox("Маркетинговый источник",
+                        newArrayList("Сайт «Экспресс-рассрочка»", "СМИ", "Автосалон", "Партнеры КА", "Печатная продукция", "Наружная реклама", "Повторное обращение"));
+                marketingChannelField.setDescription("Укажите источник из которого клиент узнал о Экстрим Ассистанс");
+                marketingChannelField.setWidth(15, Unit.EM);
+                marketingChannelField.setNullSelectionAllowed(false);
+                marketingChannelField.setNewItemsAllowed(true);
+                form.addComponent(marketingChannelField);
             }
         } else {
             clientField = new ClientField("Клиент");
             clientField.setRequired(true);
             form.addComponent(clientField);
         }
+
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Продукты"));
+/*        productInLeadField = new ProductInLeadField("Продукты в продаже", getEntity(),
+                () -> (BigDecimal) mototPriceField.getConvertedValue(),
+                () -> (String) motorBrandField.getValue(),
+                () -> vendorField.getValue());
+        productInLeadField.addValueChangeListener(forceModified);
+        form.addComponent(productInLeadField);*/
+
+        commentField = new TextArea("Примечание");
+        commentField.setRows(3);
+        commentField.setNullRepresentation("");
+        form.addComponent(commentField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Техника"));
@@ -222,7 +255,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         }
 
         ////////////////////////////////////////////////////////////////////////////
-        form.addComponent(new FormGroupHeader("Дополнительно"));
+        form.addComponent(new FormGroupHeader("Ответственные"));
         responsibleField = new EAEmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
         responsibleField.setRequired(getEntity().getStatus() != Lead.Status.NEW || qualifyForm);
         form.addComponent(responsibleField);
@@ -230,10 +263,11 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         responsibleAssistField = new EAEmployeeField("Заместитель", "Выберите или введите заместителя ответственного менеджера");
         form.addComponent(responsibleAssistField);
 
-        commentField = new TextArea("Примечание");
-        commentField.setRows(3);
-        commentField.setNullRepresentation("");
-        form.addComponent(commentField);
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Комментарии"));
+        commentsField = new CommentsField<>(LeadComment.class);
+        commentsField.addValueChangeListener(forceModified);
+        form.addComponent(commentsField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Документы"));
