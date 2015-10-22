@@ -495,17 +495,17 @@
 
                                 <echo message="Compile reports..."/>
 
-                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"/>
+                                <!-- <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"/>
                                 <jrc destdir="src/main/resources/reports">
                                     <src>
                                         <fileset dir="src/main/resources/reports">
                                             <include name="**/*.jrxml"/>
                                         </fileset>
                                     </src>
-                                    <classpath>
+                                     <classpath>
                                         <path path="${compile_classpath}"/>
                                     </classpath>
-                                </jrc>
+                                </jrc> -->
 
                                 <echo message="Copy reports..."/>
 
@@ -604,6 +604,8 @@
                 <version>2.2</version>
                 <configuration>
                     <!-- http port -->
+                    <url>http://176.112.195.71:8080/manager/text</url>
+                    <server>17611219571</server>
                     <port>8080</port>
                     <!-- application path always starts with /-->
                     <path>/</path>
