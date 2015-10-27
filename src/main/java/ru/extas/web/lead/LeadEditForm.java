@@ -125,6 +125,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                 qualifyForm ? MessageFormat.format("Квалификация лида № {0}", lead.getNum()) :
                         MessageFormat.format("Редактирование лида № {0}", lead.getNum()), lead);
         this.qualifyForm = qualifyForm;
+        setWinWidth(800, Unit.PIXELS);
         if (qualifyForm) setWinWidth(1000, Unit.PIXELS);
 
         addAttachListener(e -> setFieldsStatus());
@@ -216,20 +217,16 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Техника"));
         motorTypeField = new MotorTypeSelect();
-        motorTypeField.setRequired(qualifyForm);
         form.addComponent(motorTypeField);
 
         motorBrandField = new MotorBrandSelect();
-        motorBrandField.setRequired(qualifyForm);
         form.addComponent(motorBrandField);
 
         motorModelField = new EditField("Модель техники", "Введите модель техники");
-        motorModelField.setRequired(qualifyForm);
         motorModelField.setColumns(15);
         form.addComponent(motorModelField);
 
         mototPriceField = new EditField("Цена техники");
-        mototPriceField.setRequired(qualifyForm);
         form.addComponent(mototPriceField);
 
         ////////////////////////////////////////////////////////////////////////////
@@ -279,7 +276,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
     private void createVendorSelectField(final FormLayout form) {
         vendorField = new DealerSalePointField("Мотосалон", "Название мотосалона");
-        vendorField.setRequired(true);
+        ///vendorField.setRequired(true);
         vendorField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();
             if(responsibleField.getValue() == null) {
