@@ -24,11 +24,9 @@ import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.container.ExtaBeanContainer;
-import ru.extas.web.sale.InstallmentInSaleEditForm;
-import ru.extas.web.sale.InsuranceInSaleEditForm;
-import ru.extas.web.sale.LoanInSaleEditForm;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -90,8 +88,8 @@ public class ProductInLeadField extends ExtaCustomField<List> {
     protected Component initContent() {
         final List<ProductInLead> list = getValue() != null ? (List<ProductInLead>) getValue() : new ArrayList<>();
         container = new ExtaBeanContainer<>(ProductInLead.class, list);
-///        final String productNamePath = MessageFormat.format("{0}.{1}", ProductInSale_.product.getName(), Product_.name.getName());
-///        container.addNestedContainerProperty(productNamePath);
+        final String productNamePath = MessageFormat.format("{0}.{1}", ProductInSale_.product.getName(), Product_.name.getName());
+        container.addNestedContainerProperty(productNamePath);
 
         final VerticalLayout root = new VerticalLayout();
         root.setMargin(new MarginInfo(false, false, true, false));
@@ -123,8 +121,7 @@ public class ProductInLeadField extends ExtaCustomField<List> {
 //        final String DELETE_BTN = "delete_btn";
         final String[] visibleProps = new String[]{
                 PROD_TYPE_ICON,
-///                productNamePath,
-                "*********",
+                productNamePath,
                 ProductInSale_.state.getName()
         };
         final GeneratedPropertyContainer gridContainer = new GeneratedPropertyContainer(container);
@@ -279,13 +276,13 @@ public class ProductInLeadField extends ExtaCustomField<List> {
     private ExtaEditForm createEditForm(final ProductInLead productInLead) {
         final ExtaEditForm form;
         final Product product = productInLead.getProduct();
-/*        if (product instanceof ProdCredit) {
-            form = new LoanInSaleEditForm("Кредитный продукт", productInLead, priceSupplier, brandSupplier);
+        if (product instanceof ProdCredit) {
+            form = new LoanInLeadEditForm("Кредитный продукт", productInLead, priceSupplier, brandSupplier);
         } else if (product instanceof ProdInsurance) {
-            form = new InsuranceInSaleEditForm("Страховой продукт", productInLead, priceSupplier, brandSupplier);
+            form = new InsuranceInLeadEditForm("Страховой продукт", productInLead, priceSupplier, brandSupplier);
         } else if (product instanceof ProdInstallments) {
-            form = new InstallmentInSaleEditForm("Рассрочка", productInLead, priceSupplier, brandSupplier);
-        } else*/
+            form = new InstallmentInLeadEditForm("Рассрочка", productInLead, priceSupplier, brandSupplier);
+        } else
             form = null;
         return form;
     }

@@ -200,14 +200,18 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             form.addComponent(clientField);
         }
 
+        mototPriceField = new EditField("Цена техники");
+        motorBrandField = new MotorBrandSelect();
+        createVendorSelectField(form);
+
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-/*        productInLeadField = new ProductInLeadField("Продукты в продаже", getEntity(),
+        productInLeadField = new ProductInLeadField("Продукты в продаже", getEntity(),
                 () -> (BigDecimal) mototPriceField.getConvertedValue(),
                 () -> (String) motorBrandField.getValue(),
                 () -> vendorField.getValue());
         productInLeadField.addValueChangeListener(forceModified);
-        form.addComponent(productInLeadField);*/
+        form.addComponent(productInLeadField);
 
         commentField = new TextArea("Примечание");
         commentField.setRows(3);
@@ -219,14 +223,12 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         motorTypeField = new MotorTypeSelect();
         form.addComponent(motorTypeField);
 
-        motorBrandField = new MotorBrandSelect();
         form.addComponent(motorBrandField);
 
         motorModelField = new EditField("Модель техники", "Введите модель техники");
         motorModelField.setColumns(15);
         form.addComponent(motorModelField);
 
-        mototPriceField = new EditField("Цена техники");
         form.addComponent(mototPriceField);
 
         ////////////////////////////////////////////////////////////////////////////
@@ -245,10 +247,10 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                     form.addComponent(pointOfSaleField);
                 }
             } else {
-                createVendorSelectField(form);
+                placeVendorSelectField(form);
             }
         } else {
-            createVendorSelectField(form);
+            placeVendorSelectField(form);
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -290,10 +292,13 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                 }
             }
         });
-        form.addComponent(vendorField);
 
         dealerManagerField = new DealerEmployeeField("Менеджер", "Выберите или введите ответственного менеджера со стороны дилера");
         dealerManagerField.setSalePointSupplier(() -> vendorField.getValue());
+    }
+
+    private void placeVendorSelectField(final FormLayout form) {
+        form.addComponent(vendorField);
         form.addComponent(dealerManagerField);
     }
 
