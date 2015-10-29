@@ -71,6 +71,10 @@ public class LeadInputFormUI extends UI {
 
     private final static Logger logger = LoggerFactory.getLogger(LeadInputFormUI.class);
 
+    // Имя контакта
+    @PropertyId("contactName")
+    private EditField contactNameField;
+
     @PropertyId("contactPhone")
     private PhoneField cellPhoneField;
     // Эл. почта
@@ -125,7 +129,7 @@ public class LeadInputFormUI extends UI {
         final FormLayout form = new ExtaFormLayout();
         form.setSizeUndefined();
 
-        final EditField contactNameField = new EditField("Имя", "Введите фамилию имя отчество");
+        contactNameField = new EditField("Имя", "Введите фамилию имя отчество");
         contactNameField.setInputPrompt("Фамилия Имя Отчество");
         contactNameField.setColumns(25);
         contactNameField.setRequired(true);
