@@ -3,6 +3,7 @@ package ru.extas.model.lead;
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.sale.Product;
+import ru.extas.model.sale.ProductInSale;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,32 +17,6 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "PRODUCT_IN_LEAD")
 public class ProductInLead extends AuditedObject {
-
-    /**
-     * Статусы заявок на кредиты
-     */
-    public enum State {
-        /**
-         * На рассмотрении
-         */
-        IN_PROGRESS,
-        /**
-         * Одобрена
-         */
-        AGREED,
-        /**
-         * Отклонен
-         */
-        REJECTED,
-        /**
-         * Сделка оформлена
-         */
-        SOLD_OUT,
-        /**
-         * Новая заявка
-         */
-        NEW
-    }
 
     // Продажа
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -68,7 +43,7 @@ public class ProductInLead extends AuditedObject {
     private Employee responsible;
 
     @Enumerated
-    private State state = State.NEW;
+    private ProductInSale.State state = ProductInSale.State.NEW;
 
     /**
      * <p>Constructor for ProductInSale.</p>
@@ -85,11 +60,11 @@ public class ProductInLead extends AuditedObject {
         this.lead = lead;
     }
 
-    public State getState() {
+    public ProductInSale.State getState() {
         return state;
     }
 
-    public void setState(final State state) {
+    public void setState(final ProductInSale.State state) {
         this.state = state;
     }
 
@@ -124,7 +99,7 @@ public class ProductInLead extends AuditedObject {
      *
      * @return a {@link ru.extas.model.sale.Sale} object.
      */
-    public Lead getSale() {
+    public Lead getLead() {
         return lead;
     }
 
@@ -133,7 +108,7 @@ public class ProductInLead extends AuditedObject {
      *
      * @param sale a {@link ru.extas.model.sale.Sale} object.
      */
-    public void setSale(final Lead lead) {
+    public void setLead(final Lead lead) {
         this.lead = lead;
     }
 

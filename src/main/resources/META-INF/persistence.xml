@@ -65,6 +65,8 @@
         <class>ru.extas.model.settings.UserGridState</class>
         <class>ru.extas.model.security.CuratorsGroup</class>
         <class>ru.extas.model.contacts.SalePointComment</class>
+        <class>ru.extas.model.lead.LeadComment</class>
+        <class>ru.extas.model.lead.ProductInLead</class>
         <class>ru.extas.model.notification.Notice</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 

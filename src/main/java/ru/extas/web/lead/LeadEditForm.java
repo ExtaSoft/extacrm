@@ -98,7 +98,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("vendor")
     private DealerSalePointField vendorField;
 
-    @PropertyId("productInLead")
+    @PropertyId("productInLeads")
     private ProductInLeadField productInLeadField;
     @PropertyId("comment")
     private TextArea commentField;

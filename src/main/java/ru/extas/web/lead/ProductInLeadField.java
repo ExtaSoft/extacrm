@@ -15,6 +15,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.lead.ProductInLead;
+import ru.extas.model.lead.ProductInLead_;
 import ru.extas.model.sale.*;
 import ru.extas.server.product.ProductRepository;
 import ru.extas.utils.SupplierSer;
@@ -88,7 +89,7 @@ public class ProductInLeadField extends ExtaCustomField<List> {
     protected Component initContent() {
         final List<ProductInLead> list = getValue() != null ? (List<ProductInLead>) getValue() : new ArrayList<>();
         container = new ExtaBeanContainer<>(ProductInLead.class, list);
-        final String productNamePath = MessageFormat.format("{0}.{1}", ProductInSale_.product.getName(), Product_.name.getName());
+        final String productNamePath = MessageFormat.format("{0}.{1}", ProductInLead_.product.getName(), Product_.name.getName());
         container.addNestedContainerProperty(productNamePath);
 
         final VerticalLayout root = new VerticalLayout();
@@ -122,14 +123,14 @@ public class ProductInLeadField extends ExtaCustomField<List> {
         final String[] visibleProps = new String[]{
                 PROD_TYPE_ICON,
                 productNamePath,
-                ProductInSale_.state.getName()
+                ProductInLead_.state.getName()
         };
         final GeneratedPropertyContainer gridContainer = new GeneratedPropertyContainer(container);
         gridContainer.addGeneratedProperty(PROD_TYPE_ICON, new PropertyValueGenerator<String>() {
             @Override
             public String getValue(final Item item, final Object itemId, final Object propertyId) {
-                final ProductInLead productInSale = (ProductInLead) itemId;
-                final Product product = productInSale.getProduct();
+                final ProductInLead productInLead = (ProductInLead) itemId;
+                final Product product = productInLead.getProduct();
                 if (product instanceof ProdCredit)
                     return FontAwesome.CREDIT_CARD.getHtml();
                 else if (product instanceof ProdInsurance)
@@ -180,14 +181,14 @@ public class ProductInLeadField extends ExtaCustomField<List> {
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
         grid.setColumnOrder(visibleProps);
 ///        grid.getColumn(productNamePath).setHeaderCaption("Продукт");
-        grid.getColumn(ProductInSale_.state.getName()).setHeaderCaption("Статус рассмотрения");
+        grid.getColumn(ProductInLead_.state.getName()).setHeaderCaption("Статус рассмотрения");
         grid.getColumn(PROD_TYPE_ICON).setHeaderCaption("");
         grid.getColumn(PROD_TYPE_ICON).setRenderer(new HtmlRenderer());
         grid.getColumn(PROD_TYPE_ICON).setWidth(40);
         grid.addItemClickListener(e -> {
             if (e.isDoubleClick()) { // Открываем форму ввода/редактирования
-                final ProductInLead productInSale = (ProductInLead) e.getItemId();
-                editProduct(productInSale);
+                final ProductInLead productInLead = (ProductInLead) e.getItemId();
+                editProduct(productInLead);
             }
         });
         grid.addSelectionListener(e -> {
@@ -258,8 +259,8 @@ public class ProductInLeadField extends ExtaCustomField<List> {
         setValue(newArrayList(container.getItemIds()));
     }
 
-    private void editProduct(final ProductInLead productInSale) {
-        final ExtaEditForm form = createEditForm(productInSale);
+    private void editProduct(final ProductInLead productInLead) {
+        final ExtaEditForm form = createEditForm(productInLead);
         form.setReadOnly(isReadOnly());
         form.addCloseFormListener(ev -> {
             if (form.isSaved()) {
