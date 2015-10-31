@@ -70,7 +70,6 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
     public Lead qualify(Lead lead) {
         checkNotNull(lead);
         checkState(lead.getClient() != null, "Невозможно квалифицировать, поскольку не привязан клиент!");
-        checkState(lead.getVendor() != null, "Невозможно квалифицировать, поскольку не привязан Мото салон!");
         checkState(lead.getStatus() == Lead.Status.NEW, "Квалифицировать можно только новый лид!");
 
 //        // запуск БП
