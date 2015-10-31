@@ -13,9 +13,12 @@ import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.LeadComment;
 import ru.extas.model.lead.LeadFileContainer;
+import ru.extas.model.lead.ProductInLead;
 import ru.extas.model.sale.ProductInSale;
 import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.SaleComment;
 import ru.extas.model.sale.SaleFileContainer;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
@@ -85,6 +88,34 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale.setLead(lead);
         sale.setResponsible(lead.getResponsible());
         sale.setResponsibleAssist(lead.getResponsibleAssist());
+
+        final List<ProductInSale> productInSales = newArrayList();
+        for (ProductInLead productInLead : lead.getProductInLeads()) {
+            ProductInSale productInSale = new ProductInSale();
+            productInSale.setArchived(productInLead.isArchived());
+            productInSale.setCreatedBy(productInLead.getCreatedBy());
+            productInSale.setCreatedDate(productInLead.getCreatedDate());
+            productInSale.setLastModifiedBy(productInLead.getLastModifiedBy());
+            productInSale.setLastModifiedDate(productInLead.getLastModifiedDate());
+            productInSale.setSale(sale);
+            productInSale.setProduct(productInLead.getProduct());
+            productInSale.setSumm(productInLead.getSumm());
+            productInSale.setPeriod(productInLead.getPeriod());
+            productInSale.setDownpayment(productInLead.getDownpayment());
+            productInSale.setResponsible(productInLead.getResponsible());
+            productInSale.setState(productInLead.getState());
+            productInSales.add(productInSale);
+        }
+        sale.setProductInSales(productInSales);
+
+        final List<SaleComment> saleComments = newArrayList();
+        for (final LeadComment leadComment : lead.getComments()) {
+            SaleComment saleComment = new SaleComment(leadComment);
+            saleComment.setOwnerId(sale.getId());
+            saleComments.add(saleComment);
+        }
+        sale.setComments(saleComments);
+
         final List<SaleFileContainer> saleFiles = newArrayList();
         for (final LeadFileContainer leadFile : lead.getFiles())
             saleFiles.add(new SaleFileContainer(leadFile));

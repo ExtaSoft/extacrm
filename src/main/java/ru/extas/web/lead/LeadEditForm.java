@@ -378,6 +378,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.addValueChangeListener(event -> {
             final SalePoint curObj = extractBean(table.getItem(table.getValue()));
             lead.setVendor(curObj);
+            vendorField.setValue(curObj);
             setModified(true);
         });
         layout.addComponent(table);
