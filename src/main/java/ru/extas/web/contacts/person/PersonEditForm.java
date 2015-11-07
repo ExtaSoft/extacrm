@@ -5,18 +5,21 @@ package ru.extas.web.contacts.person;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Chars;
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.common.Address;
 import ru.extas.model.contacts.*;
 import ru.extas.model.contacts.Person.Sex;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
+import ru.extas.web.commons.component.todelete.*;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
@@ -241,6 +244,9 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private PersonIncomeField incomesField;
     @PropertyId("expenses")
     private PersonExpensesField expensesField;
+
+    @PropertyId("address")
+    private SuggestingComboBox addressComboBox;
 
 
     public PersonEditForm(final Person person) {
@@ -769,6 +775,46 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Персональные данные"));
+
+/*        AddressAccessService addressAccessService = new AddressAccessServiceImpl();
+        AddressSuggestingContainer addressSuggestingContainer = new AddressSuggestingContainer(addressAccessService);
+        addressComboBox = new AddressComboBox("ААААААА");
+        addressComboBox.setImmediate(true);
+        addressComboBox.setNewItemsAllowed(false);
+
+        addressComboBox.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+//                Notification.show("Selected item: " + event.getProperty().getValue(), Notification.Type.HUMANIZED_MESSAGE);
+                // tell the custom container that a value has been selected. This is necessary to ensure that the
+                // selected value is displayed by the ComboBox
+                addressSuggestingContainer.setSelectedAddress((Address) event.getProperty().getValue());
+            }
+        });
+
+
+        addressComboBox.setContainerDataSource(addressSuggestingContainer);
+
+        formLayout.addComponent(addressComboBox);*/
+
+        final DatabaseAccessService databaseAccessService = new DatabaseAccessServiceImpl();
+
+        final SuggestingContainer container = new SuggestingContainer(databaseAccessService);
+        addressComboBox = new SuggestingComboBox("Адрес");
+        addressComboBox.setImmediate(true);
+        addressComboBox.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                /// Notification.show("Selected item: " + event.getProperty().getValue(), Notification.Type.HUMANIZED_MESSAGE);
+                // tell the custom container that a value has been selected. This is necessary to ensure that the
+                // selected value is displayed by the ComboBox
+                container.setSelectedAddress((Address) event.getProperty().getValue());
+            }
+        });
+        addressComboBox.setContainerDataSource(container);
+        formLayout.addComponent(addressComboBox);
+
+
         nameField = new EditField("Имя");
         nameField.setColumns(30);
         nameField.setDescription("Введите имя (ФИО) контакта");
