@@ -13,27 +13,20 @@ import java.util.List;
  * {@link com.vaadin.data.util.AbstractInMemoryContainer#addFilter(Filter)}.
  * This method is called internally by the filtering code of a ComboBox.
  */
-public class SuggestingContainer extends BeanItemContainer<Address> {
+public class AddressSuggestingContainer extends BeanItemContainer<Address> {
 
-  /*private CountryBean defaultCountry;*/
-  private DatabaseAccessService service;
+  private AddressAccessService service;
 
-  public SuggestingContainer(DatabaseAccessService service) throws IllegalArgumentException {
+  public AddressSuggestingContainer(AddressAccessService service) throws IllegalArgumentException {
     super(Address.class);
     this.service = service;
   }
 
-/*  public SuggestingContainer(DatabaseAccessService service, CountryBean defaultCountry) throws IllegalArgumentException {
-    this(service);
-    addBean(defaultCountry);
-    this.defaultCountry = defaultCountry;
-  }*/
-
   /**
    * This method will be called by ComboBox each time the user has entered a new
    * value into the text field of the ComboBox. For our custom ComboBox class
-   * {@link SuggestingComboBox} it is assured by
-   * {@link SuggestingComboBox#buildFilter(String, com.vaadin.shared.ui.combobox.FilteringMode)}
+   * {@link AddressSuggestingComboBox} it is assured by
+   * {@link AddressSuggestingComboBox#buildFilter(String, com.vaadin.shared.ui.combobox.FilteringMode)}
    * that only instances of {@link SuggestionFilter} are passed into this
    * method. We can therefore safely cast the filter to this class. Then we
    * simply get the filterString from this filter and call the database service
@@ -50,11 +43,6 @@ public class SuggestingContainer extends BeanItemContainer<Address> {
 
   private void filterItems(String filterString) {
     if ("".equals(filterString)) {
-/*      if (defaultCountry != null) {
-        // if "nothing" has been selected from the dropdown list and a default value is defined, add this default
-        // value to this container so that it can be selected as the current value.
-        addBean(defaultCountry);
-      }*/
       return;
     }
 
@@ -76,7 +64,7 @@ public class SuggestingContainer extends BeanItemContainer<Address> {
   /**
    * The sole purpose of this {@link Filter} implementation is to transport the
    * current filterString (which is a private property of ComboBox) to our
-   * custom container implementation {@link SuggestingContainer}. Our container
+   * custom container implementation {@link AddressSuggestingContainer}. Our container
    * needs that filterString in order to fetch a filtered country list from the
    * database.
    */

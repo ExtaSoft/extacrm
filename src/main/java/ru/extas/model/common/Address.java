@@ -1,8 +1,8 @@
 package ru.extas.model.common;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.*;
 import ru.extas.model.contacts.Contact;
 
 import javax.persistence.Column;
@@ -23,6 +23,8 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 @Table(name = "ADDRESS")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address extends AuditedObject {
 
     /**
@@ -50,6 +52,7 @@ public class Address extends AuditedObject {
      */
     @Column(name = "POSTAL_CODE", length = 6)
     @Size(max = 6)
+    @JsonProperty("data.postal_code")
     private String postalCode;
 
     /**

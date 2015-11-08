@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Some service that fetches country data from the database.
  */
-public interface DatabaseAccessService {
+public interface AddressAccessService {
 
   /**
    * Fetches a list of country objects whose names begin with the given filter

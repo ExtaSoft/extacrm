@@ -246,7 +246,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private PersonExpensesField expensesField;
 
     @PropertyId("address")
-    private SuggestingComboBox addressComboBox;
+    private AddressSuggestingComboBox addressComboBox;
 
 
     public PersonEditForm(final Person person) {
@@ -776,38 +776,14 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Персональные данные"));
 
-/*        AddressAccessService addressAccessService = new AddressAccessServiceImpl();
-        AddressSuggestingContainer addressSuggestingContainer = new AddressSuggestingContainer(addressAccessService);
-        addressComboBox = new AddressComboBox("ААААААА");
-        addressComboBox.setImmediate(true);
-        addressComboBox.setNewItemsAllowed(false);
+        final AddressAccessService databaseAccessService = new AddressAccessServiceImpl();
 
-        addressComboBox.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-//                Notification.show("Selected item: " + event.getProperty().getValue(), Notification.Type.HUMANIZED_MESSAGE);
-                // tell the custom container that a value has been selected. This is necessary to ensure that the
-                // selected value is displayed by the ComboBox
-                addressSuggestingContainer.setSelectedAddress((Address) event.getProperty().getValue());
-            }
-        });
-
-
-        addressComboBox.setContainerDataSource(addressSuggestingContainer);
-
-        formLayout.addComponent(addressComboBox);*/
-
-        final DatabaseAccessService databaseAccessService = new DatabaseAccessServiceImpl();
-
-        final SuggestingContainer container = new SuggestingContainer(databaseAccessService);
-        addressComboBox = new SuggestingComboBox("Адрес");
+        final AddressSuggestingContainer container = new AddressSuggestingContainer(databaseAccessService);
+        addressComboBox = new AddressSuggestingComboBox("Адрес");
         addressComboBox.setImmediate(true);
         addressComboBox.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                /// Notification.show("Selected item: " + event.getProperty().getValue(), Notification.Type.HUMANIZED_MESSAGE);
-                // tell the custom container that a value has been selected. This is necessary to ensure that the
-                // selected value is displayed by the ComboBox
                 container.setSelectedAddress((Address) event.getProperty().getValue());
             }
         });
