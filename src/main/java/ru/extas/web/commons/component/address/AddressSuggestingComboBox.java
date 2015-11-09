@@ -1,18 +1,32 @@
 package ru.extas.web.commons.component.address;
 
+import com.vaadin.data.Property;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
+import ru.extas.model.common.Address;
 
 public class AddressSuggestingComboBox extends ComboBox {
 
   public AddressSuggestingComboBox(String caption) {
     super(caption);
+
+    final AddressAccessService databaseAccessService = new AddressAccessServiceImpl();
+    final AddressSuggestingContainer container = new AddressSuggestingContainer(databaseAccessService);
+
     setItemCaptionMode(ItemCaptionMode.PROPERTY);
     setItemCaptionPropertyId("value");
+    setImmediate(true);
+    addValueChangeListener(new Property.ValueChangeListener() {
+      @Override
+      public void valueChange(Property.ValueChangeEvent event) {
+        container.setSelectedAddress((Address) event.getProperty().getValue());
+      }
+    });
+    setContainerDataSource(container);
   }
 
   public AddressSuggestingComboBox() {
-    this(null);
+    this("Адрес");
   }
 
   /**
@@ -25,4 +39,6 @@ public class AddressSuggestingComboBox extends ComboBox {
   protected Filter buildFilter(String filterString, FilteringMode filteringMode) {
     return new AddressSuggestingContainer.SuggestionFilter(filterString);
   }
+
+
 }

@@ -19,6 +19,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
+import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
 import ru.extas.web.contacts.AddressInfoField;
 import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.employee.EmployeeFieldMulty;
@@ -61,6 +62,10 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     private WebSiteLinkField wwwField;
     @PropertyId("regAddress")
     private AddressInfoField regAddressField;
+
+    @PropertyId("posAddress")
+    private AddressSuggestingComboBox posAddressComboBox;
+
     @PropertyId("legalEntities")
     private LegalEntitiesSelectField legalsField;
     @PropertyId("employees")
@@ -117,8 +122,8 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
             if (companySupplier != null)
                 salePoint.setCompany(companySupplier.get());
         }
-        if (salePoint.getRegAddress() == null)
-            salePoint.setRegAddress(new AddressInfo());
+/*        if (salePoint.getRegAddress() == null)
+            salePoint.setRegAddress(new AddressInfo());*/
     }
 
 
@@ -266,8 +271,11 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         wwwField = new WebSiteLinkField("WWW", "Введите адрес сайта торговой точки");
         formLayout.addComponent(wwwField);
 
-        regAddressField = new AddressInfoField();
-        formLayout.addComponent(regAddressField);
+        posAddressComboBox = new AddressSuggestingComboBox();
+        formLayout.addComponent(posAddressComboBox);
+
+/*        regAddressField = new AddressInfoField();
+        formLayout.addComponent(regAddressField);*/
 
         if(lookup(UserManagementService.class).isCurUserHasRole(UserRole.ADMIN)) {
             curatorField = new CuratorsGroupField("Группа кураторов ЭА", "Укажите группу кураторов торговой точки со стороны Экстрим Ассистанс");

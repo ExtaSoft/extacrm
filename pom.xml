@@ -10,6 +10,8 @@
     <version>1.6.7</version>
 
     <properties>
+        <maven.tomcat.port>8282</maven.tomcat.port>
+
         <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -615,7 +617,7 @@
                     <!-- http port -->
                     <url>http://176.112.195.71:8080/manager/text</url>
                     <server>17611219571</server>
-                    <port>8080</port>
+                    <!-- port>8080</port -->
                     <!-- application path always starts with /-->
                     <path>/</path>
 

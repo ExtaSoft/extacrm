@@ -68,6 +68,7 @@
         <class>ru.extas.model.lead.LeadComment</class>
         <class>ru.extas.model.lead.ProductInLead</class>
         <class>ru.extas.model.notification.Notice</class>
+        <class>ru.extas.model.common.Address</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

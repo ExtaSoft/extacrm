@@ -1,5 +1,6 @@
 package ru.extas.web.commons.component.address;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpEntity;
@@ -49,11 +50,27 @@ public class AddressAccessServiceImpl implements AddressAccessService {
         private String query;
         private Integer count;
 
+        private Valued fromBound;
+        private Valued toBound;
+
         public AddressReq(String query, Integer count) {
             this.query = query;
             this.count = count;
         }
 
+        public AddressReq(String query, Integer count, String fromBound, String toBound) {
+            this(query, count);
+            this.fromBound = new Valued(fromBound);
+            this.toBound = new Valued(toBound);
+        }
+
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public class Valued {
+        private String value;
     }
 
 }

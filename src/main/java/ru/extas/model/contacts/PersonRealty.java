@@ -1,5 +1,6 @@
 package ru.extas.model.contacts;
 
+import ru.extas.model.common.Address;
 import ru.extas.model.common.IdentifiedObject;
 
 import javax.persistence.*;
@@ -37,6 +38,11 @@ public class PersonRealty extends IdentifiedObject {
     // Адрес объекта недвижимости
     @Size(max = 255)
     private String adress;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ADDRESS_REALTY")
+    private Address reaityAdress;
+
     // Способ приобретения (покупка, наследство/дар, другое)
     @Column(name = "WAY_2_PURCHASE", length = 50)
     @Size(max = 50)
@@ -114,5 +120,13 @@ public class PersonRealty extends IdentifiedObject {
 
     public void setOwner(final Person owner) {
         this.owner = owner;
+    }
+
+    public Address getReaityAdress() {
+        return reaityAdress;
+    }
+
+    public void setReaityAdress(Address reaityAdress) {
+        this.reaityAdress = reaityAdress;
     }
 }

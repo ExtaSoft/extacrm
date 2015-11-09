@@ -1,6 +1,7 @@
 package ru.extas.model.contacts;
 
 import org.joda.time.LocalDate;
+import ru.extas.model.common.Address;
 import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.FileContainer;
 
@@ -82,6 +83,22 @@ public class Person extends Client implements ArchivedObject {
     })
     @Valid
     private AddressInfo actualAddress = new AddressInfo();
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ADDRESS_REG")
+    private Address registerAddress;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ADDRESS_FACT")
+    private Address factAddress;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ADDRESS_WORK")
+    private Address workAddress;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ADDRESS_BUSINESS")
+    private Address businessAddress;
 
     // Паспортные данные:
     // номер
@@ -1028,4 +1045,35 @@ public class Person extends Client implements ArchivedObject {
         this.spouseCitizenship = spouseCitizenship;
     }
 
+    public Address getRegisterAddress() {
+        return registerAddress;
+    }
+
+    public void setRegisterAddress(Address registerAddress) {
+        this.registerAddress = registerAddress;
+    }
+
+    public Address getFactAddress() {
+        return factAddress;
+    }
+
+    public void setFactAddress(Address factAddress) {
+        this.factAddress = factAddress;
+    }
+
+    public Address getWorkAddress() {
+        return workAddress;
+    }
+
+    public void setWorkAddress(Address workAddress) {
+        this.workAddress = workAddress;
+    }
+
+    public Address getBusinessAddress() {
+        return businessAddress;
+    }
+
+    public void setBusinessAddress(Address businessAddress) {
+        this.businessAddress = businessAddress;
+    }
 }

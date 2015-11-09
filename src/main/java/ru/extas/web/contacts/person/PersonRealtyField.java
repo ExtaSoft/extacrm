@@ -10,6 +10,7 @@ import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.CardPanel;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
 import ru.extas.web.commons.container.ExtaBeanContainer;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 
@@ -122,14 +123,17 @@ public class PersonRealtyField extends CustomField<List> {
         areaOfLandField.addValueChangeListener(event -> updateValue());
         dataLine.addComponent(areaOfLandField);
         // Адрес объекта недвижимости
-        final TextArea adressField = new TextArea("Адрес объекта");
+        final AddressSuggestingComboBox realtyAddressComboBox = new AddressSuggestingComboBox("Адрес объекта");
+        realtyAddressComboBox.setPropertyDataSource(realtyItem.getItemProperty("reaityAdress"));
+        dataLine.addComponent(realtyAddressComboBox);
+/*        final TextArea adressField = new TextArea("Адрес объекта");
         adressField.setRows(2);
         adressField.setInputPrompt("Город, Улица, Дом ...");
         adressField.setNullRepresentation("");
         adressField.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
         adressField.setPropertyDataSource(realtyItem.getItemProperty("adress"));
         adressField.addValueChangeListener(event -> updateValue());
-        dataLine.addComponent(adressField);
+        dataLine.addComponent(adressField);*/
 
         // Способ приобретения (покупка, наследство/дар, другое)
         final ComboBox way2purchaseField = new ComboBox("Способ приобретения", newArrayList("Покупка", "Наследство/дар"));
