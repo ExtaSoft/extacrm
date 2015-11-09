@@ -1,9 +1,7 @@
-package ru.extas.web.commons.component.todelete;
+package ru.extas.web.commons.component.address;
 
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-
-import ru.extas.web.commons.component.todelete.AddressSuggestingContainer.SuggestionFilter;
 
 public class AddressSuggestingComboBox extends ComboBox {
 
@@ -20,7 +18,7 @@ public class AddressSuggestingComboBox extends ComboBox {
   /**
    * Overwrite the protected method
    * {@link ComboBox#buildFilter(String, FilteringMode)} to return a custom
-   * {@link SuggestionFilter} which is only needed to pass the given
+   * {@link AddressSuggestingContainer.SuggestionFilter} which is only needed to pass the given
    * filterString on to the {@link AddressSuggestingContainer}.
    */
   @Override

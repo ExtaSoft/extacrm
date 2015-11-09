@@ -1,4 +1,4 @@
-package ru.extas.web.commons.component.todelete;
+package ru.extas.web.commons.component.address;
 
 import ru.extas.model.common.Address;
 

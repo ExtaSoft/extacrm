@@ -1,9 +1,11 @@
 package ru.extas.model.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import ru.extas.model.contacts.Contact;
+import ru.extas.utils.AddressJsonDeserializer;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,7 @@ import javax.validation.constraints.Size;
 @Table(name = "ADDRESS")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonDeserialize(using = AddressJsonDeserializer.class)
 public class Address extends AuditedObject {
 
     /**
@@ -52,7 +55,6 @@ public class Address extends AuditedObject {
      */
     @Column(name = "POSTAL_CODE", length = 6)
     @Size(max = 6)
-    @JsonProperty("data.postal_code")
     private String postalCode;
 
     /**
@@ -179,7 +181,7 @@ public class Address extends AuditedObject {
      */
     @Column(name = "HOUSE_TYPE", length = 10)
     @Size(max = 10)
-    private String house_type;
+    private String houseType;
 
     /**
      * Тип дома.

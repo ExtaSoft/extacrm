@@ -1,4 +1,4 @@
-package ru.extas.web.commons.component.todelete;
+package ru.extas.web.commons.component.address;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
