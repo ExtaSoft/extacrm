@@ -348,15 +348,15 @@ public class Address extends AuditedObject {
     /**
      * Координаты: широта.
      */
-    @Column(name = "GEO_LAT", length = 10)
-    @Size(max = 10)
+    @Column(name = "GEO_LAT", length = 12)
+    @Size(max = 12)
     private String geoLat;
 
     /**
      * Координаты: долгота.
      */
-    @Column(name = "GEO_LON", length = 10)
-    @Size(max = 10)
+    @Column(name = "GEO_LON", length = 12)
+    @Size(max = 12)
     private String geoLon;
 
     /**
