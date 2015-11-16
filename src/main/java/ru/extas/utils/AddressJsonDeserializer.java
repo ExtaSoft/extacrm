@@ -25,60 +25,67 @@ public class AddressJsonDeserializer extends JsonDeserializer<Address> {
                 .value(node.get("value").asText())
                 .unrestrictedValue(node.get("unrestricted_value").asText())
 
-                .postalCode(data.get("postal_code").asText())
-                .postalBox(data.get("postal_box").asText())
+                .postalCode(asText(data, "postal_code"))
+                .postalBox(asText(data, "postal_box"))
 
-                .country(data.get("country").asText())
+                .country(asText(data, "country"))
 
-                .regionTypeFull(data.get("region_type_full").asText())
-                .regionType(data.get("region_type").asText())
-                .region(data.get("region").asText())
+                .regionTypeFull(asText(data, "region_type_full"))
+                .regionType(asText(data, "region_type"))
+                .region(asText(data, "region"))
 
-                .areaTypeFull(data.get("area_type_full").asText())
-                .areaType(data.get("area_type").asText())
-                .area(data.get("area").asText())
+                .areaTypeFull(asText(data, "area_type_full"))
+                .areaType(asText(data, "area_type"))
+                .area(asText(data, "area"))
 
-                .cityTypeFull(data.get("city_type_full").asText())
-                .cityType(data.get("city_type").asText())
-                .city(data.get("city").asText())
-                .cityDistrict(data.get("city_district").asText())
+                .cityTypeFull(asText(data, "city_type_full"))
+                .cityType(asText(data, "city_type"))
+                .city(asText(data, "city"))
+                .cityDistrict(asText(data, "city_district"))
 
-                .settlementTypeFull(data.get("settlement_type_full").asText())
-                .settlementType(data.get("settlement_type").asText())
-                .settlement(data.get("settlement").asText())
+                .settlementTypeFull(asText(data, "settlement_type_full"))
+                .settlementType(asText(data, "settlement_type"))
+                .settlement(asText(data, "settlement"))
 
-                .streetTypeFull(data.get("street_type_full").asText())
-                .streetType(data.get("street_type").asText())
-                .street(data.get("street").asText())
+                .streetTypeFull(asText(data, "street_type_full"))
+                .streetType(asText(data, "street_type"))
+                .street(asText(data, "street"))
 
-                .houseTypeFull(data.get("house_type_full").asText())
-                .houseType(data.get("house_type").asText())
-                .house(data.get("house").asText())
+                .houseTypeFull(asText(data, "house_type_full"))
+                .houseType(asText(data, "house_type"))
+                .house(asText(data, "house"))
 
-                .blockTypeFull(data.get("block_type_full").asText())
-                .blockType(data.get("block_type").asText())
-                .block(data.get("block_type").asText())
+                .blockTypeFull(asText(data, "block_type_full"))
+                .blockType(asText(data, "block_type"))
+                .block(asText(data, "block_type"))
 
-                .flat(data.get("flat").asText())
+                .flat(asText(data, "flat"))
 
-                .fiasId(data.get("fias_id").asText())
-                .fiasLevel(data.get("fias_level").asText())
-                .kladrId(data.get("kladr_id").asText())
+                .fiasId(asText(data, "fias_id"))
+                .fiasLevel(asText(data, "fias_level"))
+                .kladrId(asText(data, "kladr_id"))
 
-                .capitalMarker(data.get("capital_marker").asText())
-                .okato(data.get("okato").asText())
-                .oktmo(data.get("oktmo").asText())
-                .timezone(data.get("timezone").asText())
-                .geoLat(data.get("geo_lat").asText())
-                .geoLon(data.get("geo_lon").asText())
-                .unparsedParts(data.get("unparsed_parts").asText())
+                .capitalMarker(asText(data, "capital_marker"))
+                .okato(asText(data, "okato"))
+                .oktmo(asText(data, "oktmo"))
+                .timezone(asText(data, "timezone"))
+                .geoLat(asText(data, "geo_lat"))
+                .geoLon(asText(data, "geo_lon"))
+                .unparsedParts(asText(data, "unparsed_parts"))
 
-                .qcComplete(data.get("qc_complete").asText())
-                .qcHouse(data.get("qc_house").asText())
-                .qcGeo(data.get("qc_geo").asText())
-                .qc(data.get("qc").asText())
+                .qcComplete(asText(data, "qc_complete"))
+                .qcHouse(asText(data, "qc_house"))
+                .qcGeo(asText(data, "qc_geo"))
+                .qc(asText(data, "qc"))
 
                 .build();
         return address;
     }
+    
+    private String asText(JsonNode data, String name) {
+        if(data.get(name).isNull()) {
+            return null;
+        }
+        return data.get(name).asText();
+    }  
 }
