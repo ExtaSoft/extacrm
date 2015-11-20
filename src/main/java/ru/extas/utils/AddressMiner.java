@@ -26,7 +26,7 @@ import java.util.List;
  * @version 2.0
  */
 
-@Component
+//@Component
 public class AddressMiner {
 
     @Autowired

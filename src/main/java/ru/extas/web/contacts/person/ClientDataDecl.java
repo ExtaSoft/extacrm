@@ -24,7 +24,8 @@ public class ClientDataDecl extends GridDataDecl {
 		addMapping("name", "Имя");
 		addMapping("phone", "Мобильный телефон", PhoneConverter.class);
 		addMapping("email", "E-Mail", new EmailLinkColumnGen());
-		addMapping("regAddress.region", "Регион");
+		addMapping("registerAddress.region", "Регион");
+		addMapping("registerAddress.city", "Город");
 		super.addDefaultMappings();
 	}
 
