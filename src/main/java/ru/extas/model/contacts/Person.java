@@ -84,19 +84,19 @@ public class Person extends Client implements ArchivedObject {
     @Valid
     private AddressInfo actualAddress = new AddressInfo();
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_REG")
     private Address registerAddress;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_FACT")
     private Address factAddress;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_WORK")
     private Address workAddress;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_BUSINESS")
     private Address businessAddress;
 

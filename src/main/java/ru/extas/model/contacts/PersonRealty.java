@@ -39,7 +39,7 @@ public class PersonRealty extends IdentifiedObject {
     @Size(max = 255)
     private String adress;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_REALTY")
     private Address reaityAdress;
 

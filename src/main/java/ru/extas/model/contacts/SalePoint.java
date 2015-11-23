@@ -80,7 +80,7 @@ public class SalePoint extends Contact implements ArchivedObject {
     @Column(name = "IS_API_EXPOSE")
     private boolean apiExpose = true;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_POS")
     private Address posAddress;
 

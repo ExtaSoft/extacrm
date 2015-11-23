@@ -83,7 +83,7 @@ public class LegalEntity extends Client implements ArchivedObject {
     @Valid
     private AddressInfo postAddress = new AddressInfo();
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_LEGAL")
     private Address legalAddress;
 
