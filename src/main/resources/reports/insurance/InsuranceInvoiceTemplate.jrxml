@@ -99,7 +99,7 @@
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<text><![CDATA[Банк получателя
-ОАО АЛЬФА-БАНК г. Москва]]></text>
+АО АЛЬФА-БАНК г. Москва]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="StaticTableCell" x="320" y="0" width="235" height="60" uuid="e030103a-8d81-4e9a-bb8d-d08f5c955a27">
