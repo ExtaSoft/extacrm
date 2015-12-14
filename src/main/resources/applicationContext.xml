@@ -19,7 +19,7 @@
                       transaction-manager-ref="transactionManager"/>
     <bean id="extaAuditorAwareBean" class="ru.extas.model.common.ExtaAuditorAware"/>
     <!-- TODO раскоментировать аудитинг после того как отпадет необходимость в AddressMiner -->
-    <!-- jpa:auditing auditor-aware-ref="extaAuditorAwareBean"/ -->
+    <jpa:auditing auditor-aware-ref="extaAuditorAwareBean"/>
     <!-- Exception translation bean post processor -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
