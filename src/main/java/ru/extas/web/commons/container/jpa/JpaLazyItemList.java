@@ -308,7 +308,7 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
             return -1;
         }
 
-        return result != null ? ((Long)result).intValue() : -1;
+        return result != null /*&& result instanceof Number*/ ? ((Number) result).intValue() : -1;
     }
 
     private Integer getBufferIndex(final Object o) {
