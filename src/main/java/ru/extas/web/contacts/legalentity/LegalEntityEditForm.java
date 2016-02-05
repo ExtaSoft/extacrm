@@ -15,6 +15,7 @@ import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.PredictConfirmedAction;
 import ru.extas.web.commons.component.*;
+import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
 import ru.extas.web.contacts.AddressInfoField;
 import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.employee.EmployeeField;
@@ -56,6 +57,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     private WebSiteLinkField wwwField;
     @PropertyId("regAddress")
     private AddressInfoField regAddressField;
+    @PropertyId("legalAddress")
+    private AddressSuggestingComboBox legalAddressComboBox;
     @PropertyId("director")
     private EmployeeField directorField;
     @PropertyId("accountant")
@@ -218,8 +221,10 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Юридический адрес"));
-        regAddressField = new AddressInfoField();
-        formLayout.addComponent(regAddressField);
+/*        regAddressField = new AddressInfoField();
+        formLayout.addComponent(regAddressField);*/
+        legalAddressComboBox = new AddressSuggestingComboBox();
+        formLayout.addComponent(legalAddressComboBox);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Почтовый адрес"));

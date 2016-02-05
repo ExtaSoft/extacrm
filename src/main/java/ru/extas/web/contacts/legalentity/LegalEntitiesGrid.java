@@ -67,7 +67,8 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
 
         if (companySupplier != null)
             container.addContainerFilter(new Compare.Equal("company", companySupplier.get()));
-        container.addNestedContainerProperty("regAddress.region");
+        container.addNestedContainerProperty("legalAddress.region");
+        container.addNestedContainerProperty("legalAddress.city");
         container.addNestedContainerProperty("company.name");
         return container;
     }

@@ -1,5 +1,6 @@
 package ru.extas.model.contacts;
 
+import ru.extas.model.common.Address;
 import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.sale.Product;
@@ -81,6 +82,10 @@ public class LegalEntity extends Client implements ArchivedObject {
     })
     @Valid
     private AddressInfo postAddress = new AddressInfo();
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "ADDRESS_LEGAL")
+    private Address legalAddress;
 
     // Генеральный директор
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -311,5 +316,13 @@ public class LegalEntity extends Client implements ArchivedObject {
      */
     public void setFiles(final List<LegalEntityFile> files) {
         this.files = files;
+    }
+
+    public Address getLegalAddress() {
+        return legalAddress;
+    }
+
+    public void setLegalAddress(Address legalAddress) {
+        this.legalAddress = legalAddress;
     }
 }

@@ -1,21 +1,20 @@
-package ru.extas.web.sale;
+package ru.extas.web.lead;
 
-import ru.extas.model.sale.ProductInSale;
+import ru.extas.model.lead.ProductInLead;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.LoanInSmthEditForm;
 
 import java.math.BigDecimal;
 
 /**
- * @author Valery Orlov
  * @author sandarkin
+ * @version 2.0
  */
-public class LoanInSaleEditForm extends LoanInSmthEditForm<ProductInSale> {
+public class LoanInLeadEditForm extends LoanInSmthEditForm<ProductInLead> {
 
-    public LoanInSaleEditForm(final String caption, final ProductInSale targetObject,
+    public LoanInLeadEditForm(final String caption, final ProductInLead targetObject,
                               final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
         super(caption, targetObject, priceSupplier, brandSupplier);
     }
 
 }
-

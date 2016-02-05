@@ -5,18 +5,24 @@ package ru.extas.web.contacts.person;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Chars;
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.extas.model.common.Address;
 import ru.extas.model.contacts.*;
 import ru.extas.model.contacts.Person.Sex;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
+import ru.extas.web.commons.component.address.AddressAccessService;
+import ru.extas.web.commons.component.address.AddressAccessServiceImpl;
+import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
+import ru.extas.web.commons.component.address.AddressSuggestingContainer;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.reference.CitySelect;
 import ru.extas.web.reference.RegionSelect;
@@ -242,6 +248,18 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     @PropertyId("expenses")
     private PersonExpensesField expensesField;
 
+    @PropertyId("registerAddress")
+    private AddressSuggestingComboBox registerAddressComboBox;
+
+    @PropertyId("factAddress")
+    private AddressSuggestingComboBox factAddressComboBox;
+
+    @PropertyId("workAddress")
+    private AddressSuggestingComboBox workAddressComboBox;
+
+    @PropertyId("businessAddress")
+    private AddressSuggestingComboBox businessAddressComboBox;
+
 
     public PersonEditForm(final Person person) {
         super(person.isNew() ?
@@ -357,6 +375,10 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Адрес по месту постоянной регистрации"));
+
+        registerAddressComboBox = new AddressSuggestingComboBox("Адрес");
+        formLayout.addComponent(registerAddressComboBox);
+
         regRealtyKindField = new ComboBox("Отношение к недвижимости");
         regRealtyKindField.setWidth(15, Unit.EM);
         regRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
@@ -365,7 +387,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         ComponentUtil.fillSelectByEnum(regRealtyKindField, RealtyKind.class);
         formLayout.addComponent(regRealtyKindField);
 
-        regRegionField = new RegionSelect();
+/*        regRegionField = new RegionSelect();
         regRegionField.setDescription("Укажите регион проживания");
         regRegionField.addValueChangeListener(event -> {
             final String newRegion = (String) event.getProperty().getValue();
@@ -398,7 +420,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         regStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
         regStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
         regStreetBldField.setNullRepresentation("");
-        formLayout.addComponent(regStreetBldField);
+        formLayout.addComponent(regStreetBldField);*/
 
         regPeriodOfResidenceField = new ComboBox("Срок проживания");
         regPeriodOfResidenceField.setWidth(15, Unit.EM);
@@ -415,9 +437,12 @@ public class PersonEditForm extends ExtaEditForm<Person> {
             Boolean isRegIsAct = (Boolean) event.getProperty().getValue();
             if (isRegIsAct == null)
                 isRegIsAct = false;
-            setActualAdressStatus(isRegIsAct);
+            //setActualAdressStatus(isRegIsAct);
         });
         formLayout.addComponent(regNactIsSameField);
+
+        factAddressComboBox = new AddressSuggestingComboBox("Адрес");
+        formLayout.addComponent(factAddressComboBox);
 
         actRealtyKindField = new ComboBox("Отношение к недвижимости");
         actRealtyKindField.setWidth(15, Unit.EM);
@@ -427,7 +452,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         ComponentUtil.fillSelectByEnum(actRealtyKindField, RealtyKind.class);
         formLayout.addComponent(actRealtyKindField);
 
-        actRegionField = new RegionSelect();
+/*        actRegionField = new RegionSelect();
         actRegionField.setDescription("Укажите регион проживания");
         actRegionField.addValueChangeListener(event -> {
             final String newRegion = (String) event.getProperty().getValue();
@@ -460,7 +485,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         actStreetBldField.setDescription("Почтовый адрес (улица, дом, корпус, ...)");
         actStreetBldField.setInputPrompt("Улица, Дом, Корпус и т.д.");
         actStreetBldField.setNullRepresentation("");
-        formLayout.addComponent(actStreetBldField);
+        formLayout.addComponent(actStreetBldField);*/
 
         actPeriodOfResidenceField = new ComboBox("Срок проживания");
         actPeriodOfResidenceField.setWidth(15, Unit.EM);
@@ -469,7 +494,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         actPeriodOfResidenceField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(actPeriodOfResidenceField, PeriodOfResidence.class);
         formLayout.addComponent(actPeriodOfResidenceField);
-        setActualAdressStatus(getEntity().isRegNactIsSame());
+        //setActualAdressStatus(getEntity().isRegNactIsSame());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Водительское удостоверение"));
@@ -610,11 +635,13 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         officePositionField = new EditField("Должность", "Укажите должность");
         formLayout.addComponent(officePositionField);
         // Адрес (фактич.)
-        employerAdressField = new TextArea("Адрес (фактич.)");
+        workAddressComboBox = new AddressSuggestingComboBox();
+        formLayout.addComponent(workAddressComboBox);
+/*        employerAdressField = new TextArea("Адрес (фактич.)");
         employerAdressField.setRows(3);
         employerAdressField.setInputPrompt("Город, Улица, Дом ...");
         employerAdressField.setNullRepresentation("");
-        formLayout.addComponent(employerAdressField);
+        formLayout.addComponent(employerAdressField);*/
         // Сайт компании
         employerWwwField = new EditField("Сайт компании", "Укажите сайт компании");
         employerWwwField.setInputPrompt("http://...");
@@ -661,11 +688,13 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         businessPhoneField = new PhoneField("Тел/факс", "Укажите телефон или факс компании");
         formLayout.addComponent(businessPhoneField);
         // Адрес (фактич.)
-        businessAdressField = new TextArea("Адрес (фактич.)");
+        businessAddressComboBox = new AddressSuggestingComboBox();
+        formLayout.addComponent(businessAddressComboBox);
+/*        businessAdressField = new TextArea("Адрес (фактич.)");
         businessAdressField.setRows(3);
         businessAdressField.setInputPrompt("Город, Улица, Дом ...");
         businessAdressField.setNullRepresentation("");
-        formLayout.addComponent(businessAdressField);
+        formLayout.addComponent(businessAdressField);*/
         // Доля в уставном капитале, %
         businessPartField = new EditField("Доля в уставном капитале, %");
         businessPartField.setConverter(lookup(StringToPercentConverter.class));
@@ -769,6 +798,22 @@ public class PersonEditForm extends ExtaEditForm<Person> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Персональные данные"));
+
+/*        final AddressAccessService databaseAccessService = new AddressAccessServiceImpl();
+
+        final AddressSuggestingContainer container = new AddressSuggestingContainer(databaseAccessService);
+        addressComboBox = new AddressSuggestingComboBox("Адрес");
+        addressComboBox.setImmediate(true);
+        addressComboBox.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                container.setSelectedAddress((Address) event.getProperty().getValue());
+            }
+        });
+        addressComboBox.setContainerDataSource(container);
+        formLayout.addComponent(addressComboBox);*/
+
+
         nameField = new EditField("Имя");
         nameField.setColumns(30);
         nameField.setDescription("Введите имя (ФИО) контакта");
@@ -827,7 +872,8 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         businessNameField.setVisible(isOwner);
         businessINNField.setVisible(isOwner);
         businessPhoneField.setVisible(isOwner);
-        businessAdressField.setVisible(isOwner);
+        //businessAdressField.setVisible(isOwner);
+        businessAddressComboBox.setVisible(isOwner);
         businessPartField.setVisible(isOwner);
         businessMumbersEmployedField.setVisible(isOwner);
         businessBalanceField.setVisible(isOwner);
@@ -845,7 +891,8 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         employerINNField.setVisible(jobInfoVisible);
         employerPhoneField.setVisible(jobInfoVisible);
         officePositionField.setVisible(jobInfoVisible);
-        employerAdressField.setVisible(jobInfoVisible);
+        //employerAdressField.setVisible(jobInfoVisible);
+        workAddressComboBox.setVisible(jobInfoVisible);
         employerWwwField.setVisible(jobInfoVisible);
         employerDirectorNameField.setVisible(jobInfoVisible);
         employerAccountantNameField.setVisible(jobInfoVisible);

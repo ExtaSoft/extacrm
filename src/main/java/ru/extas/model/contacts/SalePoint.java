@@ -1,5 +1,6 @@
 package ru.extas.model.contacts;
 
+import ru.extas.model.common.Address;
 import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.Comment;
 import ru.extas.model.security.CuratorsGroup;
@@ -78,6 +79,10 @@ public class SalePoint extends Contact implements ArchivedObject {
 
     @Column(name = "IS_API_EXPOSE")
     private boolean apiExpose = true;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "ADDRESS_POS")
+    private Address posAddress;
 
 
     public boolean isApiExpose() {
@@ -240,5 +245,13 @@ public class SalePoint extends Contact implements ArchivedObject {
         this.company = company;
         if (company != null)
             company.getSalePoints().add(this);
+    }
+
+    public Address getPosAddress() {
+        return posAddress;
+    }
+
+    public void setPosAddress(Address posAddress) {
+        this.posAddress = posAddress;
     }
 }

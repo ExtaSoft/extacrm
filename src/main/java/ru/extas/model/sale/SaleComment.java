@@ -16,4 +16,17 @@ import javax.persistence.Table;
 @Table(name = "SALE_COMMENT")
 public class SaleComment extends Comment {
 
+    public SaleComment() {
+    }
+
+    public SaleComment(Comment comment) {
+        this.setArchived(comment.isArchived());
+        this.setCreatedBy(comment.getCreatedBy());
+        this.setCreatedDate(comment.getCreatedDate());
+        this.setLastModifiedBy(comment.getLastModifiedBy());
+        this.setLastModifiedDate(comment.getLastModifiedDate());
+        this.setOwnerId(comment.getOwnerId());
+        this.setText(comment.getText());
+    }
+
 }

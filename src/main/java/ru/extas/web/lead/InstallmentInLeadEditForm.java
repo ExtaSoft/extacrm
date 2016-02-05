@@ -1,18 +1,18 @@
-package ru.extas.web.sale;
+package ru.extas.web.lead;
 
-import ru.extas.model.sale.ProductInSale;
+import ru.extas.model.lead.ProductInLead;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.InstallmentInSmthEditForm;
 
 import java.math.BigDecimal;
 
 /**
- * @author Valery Orlov
  * @author sandarkin
+ * @version 2.0
  */
-public class InstallmentInSaleEditForm extends InstallmentInSmthEditForm<ProductInSale> {
+public class InstallmentInLeadEditForm extends InstallmentInSmthEditForm<ProductInLead> {
 
-    public InstallmentInSaleEditForm(final String caption, final ProductInSale targetObject,
+    public InstallmentInLeadEditForm(final String caption, final ProductInLead targetObject,
                                      final SupplierSer<BigDecimal> priceSupplier,
                                      final SupplierSer<String> brandSupplier) {
         super(caption, targetObject, priceSupplier, brandSupplier);

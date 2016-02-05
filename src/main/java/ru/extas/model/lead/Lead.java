@@ -1,5 +1,6 @@
 package ru.extas.model.lead;
 
+import ru.extas.model.common.Comment;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.ModelUtils;
 import ru.extas.model.contacts.*;
@@ -118,6 +119,10 @@ public class Lead extends SecuredObject {
     @Column(name = "CONTACT_REGION", length = AddressInfo.REGION_LENGTH)
     @Size(max = AddressInfo.REGION_LENGTH)
     private String contactRegion;
+    // Маркетинговый источник
+    @Column(name = "MARKETING_CHANNEL", length = 50)
+    @Size(max = 50)
+    private String marketingChannel;
 
 
     // Квалифицированные данные
@@ -160,6 +165,14 @@ public class Lead extends SecuredObject {
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
     private List<LeadFileContainer> files = newArrayList();
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = Comment.OWNER_ID_COLUMN)
+    @OrderBy("createdDate")
+    private List<LeadComment> comments = newArrayList();
+
+    @OneToMany(mappedBy = "lead", targetEntity = ProductInLead.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<ProductInLead> productInLeads = newArrayList();
 
     public List<LeadFileContainer> getFiles() {
         return files;
@@ -487,5 +500,29 @@ public class Lead extends SecuredObject {
      */
     public void setContactRegion(final String contactRegion) {
         this.contactRegion = contactRegion;
+    }
+
+    public String getMarketingChannel() {
+        return marketingChannel;
+    }
+
+    public void setMarketingChannel(String marketingChannel) {
+        this.marketingChannel = marketingChannel;
+    }
+
+    public List<LeadComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<LeadComment> comments) {
+        this.comments = comments;
+    }
+
+    public List<ProductInLead> getProductInLeads() {
+        return productInLeads;
+    }
+
+    public void setProductInLeads(List<ProductInLead> productInSales) {
+        this.productInLeads = productInSales;
     }
 }

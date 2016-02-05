@@ -11,6 +11,7 @@ import com.vaadin.ui.*;
 import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler;
 import org.vaadin.addon.itemlayout.grid.ItemGrid;
 import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
+import org.vaadin.addon.itemlayout.layout.model.ItemGenerator;
 import ru.extas.model.common.FileContainer;
 import ru.extas.web.commons.component.FileUploader;
 import ru.extas.web.commons.container.ExtaBeanContainer;
@@ -61,7 +62,18 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         filesContainer = new ItemGrid();
         filesContainer.setWidth(100, Unit.PERCENTAGE);
         filesContainer.setContainerDataSource(container);
-        filesContainer.setItemGenerator((pSource, pItemId) -> getItemComponent(pSource, (TFileContainer) pItemId));
+        filesContainer.setItemGenerator(new ItemGenerator() {
+            @Override
+            public Component generateItem(AbstractItemLayout pSource, Object pItemId) {
+                return getItemComponent(pSource, (TFileContainer) pItemId);
+            }
+
+            @Override
+            public boolean canBeGenerated(AbstractItemLayout pSource, Object pItemId, Object pPropertyChanged) {
+                return true;
+            }
+        });
+
         root.addComponent(filesContainer);
         setMode(Mode.LIST);
 
