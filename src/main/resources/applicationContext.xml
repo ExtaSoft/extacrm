@@ -17,9 +17,9 @@
     <context:component-scan base-package="ru.extas"/>
     <jpa:repositories base-package="ru.extas.server" entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>
-    <bean id="extaAuditorAwareBean" class="ru.extas.model.common.ExtaAuditorAware"/>
-    <!-- TODO раскоментировать аудитинг после того как отпадет необходимость в AddressMiner -->
-    <jpa:auditing auditor-aware-ref="extaAuditorAwareBean"/>
+    <!--<bean id="extaAuditorAwareBean" class="ru.extas.model.common.ExtaAuditorAware"/>-->
+    <!-- FIXME: раскоментировать аудитинг после того как отпадет необходимость в AddressMiner -->
+    <!--<jpa:auditing auditor-aware-ref="extaAuditorAwareBean"/>-->
     <!-- Exception translation bean post processor -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
