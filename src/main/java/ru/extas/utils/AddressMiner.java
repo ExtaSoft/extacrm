@@ -2,7 +2,6 @@ package ru.extas.utils;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import ru.extas.model.common.Address;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.LegalEntity;
@@ -19,14 +18,14 @@ import java.util.List;
 
 /**
  * Компонент преобразования старых адресов в новые.
- * TODO После того, как все адреса будут преобразованы, этот компонент надо выключить.
+ * После того, как все адреса будут преобразованы, этот компонент надо выключить.
  *
  * @author sandarkin
  * @since 2.0
  * @version 2.0
  */
 
-@Component
+//@Component
 public class AddressMiner {
 
     @Autowired
