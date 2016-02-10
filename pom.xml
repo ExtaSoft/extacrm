@@ -7,7 +7,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>1.7.1</version>
+    <version>1.7.2</version>
 
     <properties>
         <maven.tomcat.port>8282</maven.tomcat.port>
@@ -506,7 +506,7 @@
 
                                 <echo message="Compile reports..."/>
 
-                                <!-- <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"/>
+                                <taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"/>
                                 <jrc destdir="src/main/resources/reports">
                                     <src>
                                         <fileset dir="src/main/resources/reports">
@@ -516,7 +516,7 @@
                                      <classpath>
                                         <path path="${compile_classpath}"/>
                                     </classpath>
-                                </jrc> -->
+                                </jrc>
 
                                 <echo message="Copy reports..."/>
 
