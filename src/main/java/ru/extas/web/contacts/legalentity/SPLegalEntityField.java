@@ -162,7 +162,8 @@ public class SPLegalEntityField extends ExtaCustomField<LegalEntity> {
         }
 
         public void refreshFields() {
-            form.refreshFields(null);
+            if(form != null)
+                form.refreshFields(null);
         }
     }
 
