@@ -1,9 +1,13 @@
 package ru.extas.model.lead;
 
+import ru.extas.model.common.Address;
 import ru.extas.model.common.Comment;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.ModelUtils;
-import ru.extas.model.contacts.*;
+import ru.extas.model.contacts.Client;
+import ru.extas.model.contacts.Contact;
+import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.model.motor.MotorModel;
 import ru.extas.model.motor.MotorType;
@@ -68,8 +72,8 @@ public class Lead extends SecuredObject {
     private Long num;
 
     // Регион покупки техники
-    @Column(name = "REGION", length = AddressInfo.REGION_LENGTH)
-    @Size(max = AddressInfo.REGION_LENGTH)
+    @Column(name = "REGION", length = Address.REGION_LENGTH)
+    @Size(max = Address.REGION_LENGTH)
     private String region;
 
     // Тип техники
@@ -116,8 +120,8 @@ public class Lead extends SecuredObject {
     @Size(max = Contact.EMAIL_LENGTH)
     private String contactEmail;
     // Регион проживания.
-    @Column(name = "CONTACT_REGION", length = AddressInfo.REGION_LENGTH)
-    @Size(max = AddressInfo.REGION_LENGTH)
+    @Column(name = "CONTACT_REGION", length = Address.REGION_LENGTH)
+    @Size(max = Address.REGION_LENGTH)
     private String contactRegion;
     // Маркетинговый источник
     @Column(name = "MARKETING_CHANNEL", length = 50)

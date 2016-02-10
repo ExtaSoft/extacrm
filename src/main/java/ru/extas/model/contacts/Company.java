@@ -2,6 +2,7 @@ package ru.extas.model.contacts;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.URL;
+import ru.extas.model.common.Address;
 import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.*;
@@ -75,13 +76,13 @@ public class Company extends SecuredObject {
     private String youtube;
 
     // Регион
-    @Column(length = AddressInfo.REGION_LENGTH)
-    @Size(max = AddressInfo.REGION_LENGTH)
+    @Column(length = Address.REGION_LENGTH)
+    @Size(max = Address.REGION_LENGTH)
     private String region;
 
     // Город
-    @Column(length = AddressInfo.CITY_LENGTH)
-    @Size(max = AddressInfo.CITY_LENGTH)
+    @Column(length = Address.CITY_LENGTH)
+    @Size(max = Address.CITY_LENGTH)
     private String city;
 
     // Собственник(и) Компании

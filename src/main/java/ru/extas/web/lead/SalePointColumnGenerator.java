@@ -4,7 +4,7 @@ import com.vaadin.data.Item;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import ru.extas.model.contacts.AddressInfo;
+import ru.extas.model.common.Address;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.FormUtils;
@@ -44,9 +44,9 @@ public class SalePointColumnGenerator extends GridDataDecl.ComponentColumnGenera
                 FormUtils.showModalWin(editWin);
 
             });
-            final AddressInfo regAddress = salePoint.getRegAddress();
-            if(regAddress != null)
-                region = regAddress.getRegion();
+            final Address address = salePoint.getPosAddress();
+            if(address != null)
+                region = address.getRegion();
         } else if (salePointNamePropId != null) {
             region = nullToEmpty((String) item.getItemProperty(regionPropId).getValue());
             link.setCaption(nullToEmpty((String) item.getItemProperty(salePointNamePropId).getValue()));

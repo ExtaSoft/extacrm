@@ -1,10 +1,7 @@
 package ru.extas.model.common;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
-import ru.extas.model.contacts.Contact;
 import ru.extas.utils.AddressJsonDeserializer;
 
 import javax.persistence.Column;
@@ -29,6 +26,9 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @JsonDeserialize(using = AddressJsonDeserializer.class)
 public class Address extends AuditedObject {
+
+    public static final int REGION_LENGTH = 120;
+    public static final int CITY_LENGTH = 120;
 
     /**
      * Адрес, введенный в ручном режиме или пришедший из автоматической актуализации.
@@ -81,8 +81,8 @@ public class Address extends AuditedObject {
     /**
      * Регион.
      */
-    @Column(name = "REGION", length = 120)
-    @Size(max = 120)
+    @Column(name = "REGION", length = REGION_LENGTH)
+    @Size(max = REGION_LENGTH)
     private String region;
 
     /**
@@ -123,8 +123,8 @@ public class Address extends AuditedObject {
     /**
      * Город.
      */
-    @Column(name = "CITY", length = 120)
-    @Size(max = 120)
+    @Column(name = "CITY", length = CITY_LENGTH)
+    @Size(max = CITY_LENGTH)
     private String city;
 
     /**

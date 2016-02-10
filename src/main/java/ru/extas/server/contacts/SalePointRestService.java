@@ -8,7 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.extas.model.contacts.AddressInfo;
+import ru.extas.model.common.Address;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.references.CategoryService;
@@ -60,12 +60,12 @@ public class SalePointRestService {
             id = point.getId();
             name = point.getName();
             phone = point.getPhone();
-            final AddressInfo address = point.getRegAddress();
+            final Address address = point.getPosAddress();
             if (address != null) {
                 region = address.getRegion();
                 city = address.getCity();
-                postIndex = address.getPostIndex();
-                streetBld = address.getStreetBld();
+                postIndex = address.getPostalCode();
+                streetBld = address.getValue();
             }
         }
 

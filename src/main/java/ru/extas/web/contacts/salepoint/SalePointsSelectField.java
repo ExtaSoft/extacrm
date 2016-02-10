@@ -42,9 +42,9 @@ public class SalePointsSelectField extends CustomField<Set> {
             protected Container createContainer() {
                 final Set<SalePoint> list = getValue() != null ? getValue() : newHashSet();
                 beanContainer = new ExtaBeanContainer<>(SalePoint.class);
-                beanContainer.addNestedContainerProperty("regAddress.region");
-                beanContainer.addNestedContainerProperty("regAddress.city");
-                beanContainer.addNestedContainerProperty("regAddress.streetBld");
+                beanContainer.addNestedContainerProperty("posAddress.region");
+                beanContainer.addNestedContainerProperty("posAddress.city");
+                beanContainer.addNestedContainerProperty("posAddress.value");
                 beanContainer.addNestedContainerProperty("company.name");
                 beanContainer.addAll(list);
 

@@ -6,7 +6,6 @@ import ru.extas.model.common.FileContainer;
 import ru.extas.model.sale.Product;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Set;
@@ -69,19 +68,6 @@ public class LegalEntity extends Client implements ArchivedObject {
     // Фактический адрес совпадает с юридическим
     @Column(name = "REG_N_PST_IS_SAME")
     private boolean regNpstIsSame;
-
-    // Почтовый адрес
-    @Embedded()
-    @AttributeOverrides({
-            @AttributeOverride(name = "region", column = @Column(name = "PST_REGION")),
-            @AttributeOverride(name = "city", column = @Column(name = "PST_CITY")),
-            @AttributeOverride(name = "postIndex", column = @Column(name = "PST_POST_INDEX")),
-            @AttributeOverride(name = "streetBld", column = @Column(name = "PST_STREET_BLD")),
-            @AttributeOverride(name = "realtyKind", column = @Column(name = "PST_REALTY_KIND")),
-            @AttributeOverride(name = "periodOfResidence", column = @Column(name = "PST_PERIOD_OF_RESIDENCE"))
-    })
-    @Valid
-    private AddressInfo postAddress = new AddressInfo();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_LEGAL")
@@ -171,14 +157,6 @@ public class LegalEntity extends Client implements ArchivedObject {
 
     public void setBic(final String bik) {
         this.bic = bik;
-    }
-
-    public AddressInfo getPostAddress() {
-        return postAddress;
-    }
-
-    public void setPostAddress(final AddressInfo postAddress) {
-        this.postAddress = postAddress;
     }
 
     /**

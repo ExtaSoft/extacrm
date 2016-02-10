@@ -9,9 +9,7 @@ import org.hibernate.validator.constraints.URL;
 import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -33,11 +31,6 @@ public abstract class Contact extends SecuredObject{
 	public static final int PHONE_LINGHT = 20;
     public static final int EMAIL_LENGTH = 50;
     public static final int WWW_LENGTH = 50;
-
-    // Адрес Регистрации
-	@Embedded()
-    @Valid
-	private AddressInfo regAddress = new AddressInfo();
 
 	// Имя контакта
 	@Column(length = NAME_LENGTH)
@@ -114,24 +107,6 @@ public abstract class Contact extends SecuredObject{
 	 */
 	public void setEmail(final String email) {
 		this.email = email;
-	}
-
-	/**
-	 * <p>Setter for the field <code>regAddress</code>.</p>
-	 *
-	 * @param regAddress a {@link ru.extas.model.contacts.AddressInfo} object.
-	 */
-	public void setRegAddress(final AddressInfo regAddress) {
-		this.regAddress = regAddress;
-	}
-
-	/**
-	 * <p>Getter for the field <code>regAddress</code>.</p>
-	 *
-	 * @return a {@link ru.extas.model.contacts.AddressInfo} object.
-	 */
-	public AddressInfo getRegAddress() {
-		return regAddress;
 	}
 
 	/**
