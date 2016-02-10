@@ -100,7 +100,7 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
                 page = currentPage;
             }
         }
-        final JpaEntityItem<TEntityType> get = page.get(indexOnPage);
+        final JpaEntityItem<TEntityType> get = indexOnPage < 0 ? null : page.get(indexOnPage);
         return get;
     }
 

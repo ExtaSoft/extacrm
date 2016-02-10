@@ -254,7 +254,8 @@ public class JpaJazyContainer<TEntityType extends IdentifiedObject>
 
     @Override
     public Property getContainerProperty(final Object itemId, final Object propertyId) {
-        return getItem(itemId).getItemProperty(propertyId);
+        final Item item = getItem(itemId);
+        return item == null ? null : item.getItemProperty(propertyId);
     }
 
     @Override
