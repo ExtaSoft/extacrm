@@ -419,7 +419,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         // Запрос данных
         clientsContainer = new ExtaDbContainer<>(Client.class);
-        clientsContainer.addNestedContainerProperty("regAddress.region");
+//        clientsContainer.addNestedContainerProperty("regAddress.region");
 
         final MenuBar menuBar = new MenuBar();
         menuBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
