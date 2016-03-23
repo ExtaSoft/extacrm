@@ -4,6 +4,9 @@ import com.vaadin.data.Property;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
 import ru.extas.model.common.Address;
+import ru.extas.server.common.AddressAccessService;
+import ru.extas.server.common.AddressAccessServiceImpl;
+import ru.extas.web.commons.container.AddressSuggestingContainer;
 
 public class AddressSuggestingComboBox extends ComboBox {
 

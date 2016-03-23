@@ -23,12 +23,12 @@ import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.AccessRole;
+import ru.extas.server.common.AddressAccessService;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.lead.LeadRepository;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorTypeRepository;
-import ru.extas.server.references.SupplementService;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
@@ -313,7 +313,7 @@ public class LeadInputFormUI extends UI {
         String contactRegion = getParamValue("contactRegion", params);
         if (!isNullOrEmpty(contactRegion)) {
             contactRegion = contactRegion.trim();
-            final SupplementService service = lookup(SupplementService.class);
+            final AddressAccessService service = lookup(AddressAccessService.class);
             final Collection<String> regions = service.loadRegions();
             final String finalContactRegion = contactRegion;
             final Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalContactRegion));
@@ -360,7 +360,7 @@ public class LeadInputFormUI extends UI {
         String region = getParamValue("region", params);
         if (!isNullOrEmpty(region)) {
             region = region.trim();
-            final SupplementService service = lookup(SupplementService.class);
+            final AddressAccessService service = lookup(AddressAccessService.class);
             final Collection<String> regions = service.loadRegions();
             final String finalregion = region;
             final Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalregion));

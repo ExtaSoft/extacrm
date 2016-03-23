@@ -2,12 +2,11 @@ package ru.extas.server.references;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ru.extas.server.common.AddressAccessService;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorTypeRepository;
 import ru.extas.web.commons.HelpContent;
@@ -33,6 +32,7 @@ public class ReferenceRestService {
     @Inject private SupplementService supplementService;
     @Inject private MotorBrandRepository motorBrandRepository;
     @Inject private MotorTypeRepository motorTypeRepository;
+    @Inject private AddressAccessService addressAccessService;
 
     /**
      * <p>loadRegions.</p>
@@ -41,7 +41,7 @@ public class ReferenceRestService {
      */
     @RequestMapping(value = "/regions", method = RequestMethod.GET)
     public Collection<String> loadRegions() {
-        return supplementService.loadRegions();
+        return addressAccessService.loadRegions();
     }
 
     /**

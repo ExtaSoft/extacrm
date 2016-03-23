@@ -46,12 +46,12 @@ public class ExtaServlet extends VaadinServlet {
                             "<br/>Пожалуйста запишите все несохраненные данные и " +
                             "<u>кликните здесь</u> или нажмите клавишу ESC чтобы продолжить работу.");
 
-                    messages.setOutOfSyncNotificationEnabled(true);
-                    messages.setOutOfSyncCaption("Ошибка синхронизации");
-                    messages.setOutOfSyncMessage("Пожалуйста сообщите администратору." +
-                            "Что-то вызвало рассинхронизацию вашего браузера и сервера." +
-                            "<br/>Пожалуйста запишите все несохраненные данные и " +
-                            "<u>кликните здесь</u> или нажмите клавишу ESC чтобы продолжить работу.");
+//                    messages.setOutOfSyncNotificationEnabled(true);
+//                    messages.setOutOfSyncCaption("Ошибка синхронизации");
+//                    messages.setOutOfSyncMessage("Пожалуйста сообщите администратору." +
+//                            "Что-то вызвало рассинхронизацию вашего браузера и сервера." +
+//                            "<br/>Пожалуйста запишите все несохраненные данные и " +
+//                            "<u>кликните здесь</u> или нажмите клавишу ESC чтобы продолжить работу.");
 
                     messages.setCookiesDisabledNotificationEnabled(true);
                     messages.setCookiesDisabledCaption("Файлы cookie отключены");

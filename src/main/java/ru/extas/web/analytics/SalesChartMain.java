@@ -54,7 +54,7 @@ public class SalesChartMain extends AbstractSalesChart {
 
         final PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);
-        final Labels dataLabels = new Labels(true);
+        final DataLabels dataLabels = new DataLabels(true);
         dataLabels.setFormatter("''+ this.point.name +': '+ this.percentage.toFixed(2) +' %'");
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
@@ -94,7 +94,7 @@ public class SalesChartMain extends AbstractSalesChart {
 
         final PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);
-        final Labels dataLabels = new Labels(true);
+        final DataLabels dataLabels = new DataLabels(true);
         dataLabels.setFormatter("''+ this.point.name +': '+ this.percentage.toFixed(2) +' %'");
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
