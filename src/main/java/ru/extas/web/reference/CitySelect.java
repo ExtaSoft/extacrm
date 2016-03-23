@@ -2,7 +2,7 @@ package ru.extas.web.reference;
 
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.server.references.SupplementService;
+import ru.extas.server.common.AddressAccessService;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -30,7 +30,7 @@ public class CitySelect extends ComboBox {
         setNewItemsAllowed(true);
         setNullSelectionAllowed(false);
         setFilteringMode(FilteringMode.CONTAINS);
-        lookup(SupplementService.class).loadCities().forEach((final String item) -> addItem(item));
+        lookup(AddressAccessService.class).loadCities().forEach((final String item) -> addItem(item));
         setWidth(15, Unit.EM);
     }
 

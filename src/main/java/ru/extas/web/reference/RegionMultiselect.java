@@ -5,7 +5,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import org.vaadin.data.collectioncontainer.CollectionContainer;
-import ru.extas.server.references.SupplementService;
+import ru.extas.server.common.AddressAccessService;
 import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.component.ExtaTokenField;
 
@@ -62,7 +62,7 @@ public class RegionMultiselect extends ExtaCustomField<Set> {
 		if (set != null) {
 			tokenField.setValue(newHashSet(set));
 		}
-        final Collection<String> regions = lookup(SupplementService.class).loadRegions();
+        final Collection<String> regions = lookup(AddressAccessService.class).loadRegions();
         tokenField.setContainerDataSource(CollectionContainer.fromBeans(regions));
 
         final HorizontalLayout layout = new HorizontalLayout(tokenField);

@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
+import ru.extas.model.common.Address;
+import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
@@ -45,8 +47,15 @@ public class LegalEntityRepositoryImpl extends AbstractSecuredRepository<LegalEn
     @Override
     protected Collection<String> getObjectRegions(final LegalEntity legalEntity) {
         final Set<String> regions = newHashSet();
-        if(legalEntity.getRegAddress() != null && !isNullOrEmpty(legalEntity.getRegAddress().getRegion()))
-            regions.add(legalEntity.getRegAddress().getRegion());
+        final AddressInfo regAddress = legalEntity.getRegAddress();
+        if(regAddress != null && !isNullOrEmpty(regAddress.getRegion()))
+            regions.add(regAddress.getRegion());
+        final AddressInfo postAddress = legalEntity.getPostAddress();
+        if (postAddress != null && !isNullOrEmpty(postAddress.getRegion()))
+            regions.add(postAddress.getRegion());
+        final Address legalAddress = legalEntity.getLegalAddress();
+        if (legalAddress != null && !isNullOrEmpty(legalAddress.getRegionWithType()))
+            regions.add(legalAddress.getRegionWithType());
         return regions;
     }
 

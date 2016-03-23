@@ -7,11 +7,11 @@ import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.server.common.AddressAccessService;
+import ru.extas.server.common.AddressAccessServiceImpl;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.server.contacts.PersonRepository;
 import ru.extas.server.contacts.SalePointRepository;
-import ru.extas.web.commons.component.address.AddressAccessService;
-import ru.extas.web.commons.component.address.AddressAccessServiceImpl;
 
 import javax.annotation.PostConstruct;
 import java.util.List;

@@ -2,7 +2,7 @@ package ru.extas.web.reference;
 
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.ComboBox;
-import ru.extas.server.references.SupplementService;
+import ru.extas.server.common.AddressAccessService;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -34,7 +34,7 @@ public class RegionSelect extends ComboBox {
         setNewItemsAllowed(false);
         setFilteringMode(FilteringMode.CONTAINS);
         setWidth(15, Unit.EM);
-        lookup(SupplementService.class).loadRegions().forEach((final String item) -> addItem(item));
+        lookup(AddressAccessService.class).loadRegions().forEach((final String item) -> addItem(item));
     }
 
     /**
