@@ -1,9 +1,11 @@
-package ru.extas.web.commons.component.address;
+package ru.extas.web.commons.container;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
 import ru.extas.model.common.Address;
+import ru.extas.server.common.AddressAccessService;
+import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
 
 import java.util.List;
 

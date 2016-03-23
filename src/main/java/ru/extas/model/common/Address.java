@@ -1,10 +1,7 @@
 package ru.extas.model.common;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
-import ru.extas.model.contacts.Contact;
 import ru.extas.utils.AddressJsonDeserializer;
 
 import javax.persistence.Column;
@@ -29,6 +26,15 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @JsonDeserialize(using = AddressJsonDeserializer.class)
 public class Address extends AuditedObject {
+
+    public static final int FIAS_ID_LEN = 36;
+    public static final int KLADR_ID_LEN = 19;
+    public static final int REGION_TYPE_LEN = 10;
+    public static final int REGION_LEN = 120;
+    public static final int REGION_WITH_TYPE_LEN = REGION_TYPE_LEN + REGION_LEN + 1;
+    public static final int AREA_TYPE_LEN = 10;
+    public static final int AREA_LEN = 120;
+    public static final int AREA_WITH_TYPE_LEN = AREA_LEN + AREA_TYPE_LEN;
 
     /**
      * Адрес, введенный в ручном режиме или пришедший из автоматической актуализации.
@@ -58,17 +64,38 @@ public class Address extends AuditedObject {
     private String postalCode;
 
     /**
-     *
+     * Страна
      */
     @Column(name = "COUNTRY", length = 120)
     @Size(max = 120)
     private String country;
 
     /**
+     * Код ФИАС региона
+     */
+    @Column(name = "REGION_FIAS_ID", length = FIAS_ID_LEN)
+    @Size(max = FIAS_ID_LEN)
+    private String regionFiasId;
+
+    /**
+     * Код КЛАДР региона
+     */
+    @Column(name = "REGION_KLADR_ID", length = KLADR_ID_LEN)
+    @Size(max = KLADR_ID_LEN)
+    private String regionKladrId;
+
+    /**
+     * Регион с типом
+     */
+    @Column(name = "REGION_WITH_TYPE", length = REGION_WITH_TYPE_LEN)
+    @Size(max = REGION_WITH_TYPE_LEN)
+    private String regionWithType;
+
+    /**
      * Тип региона (сокращенный).
      */
-    @Column(name = "REGION_TYPE", length = 10)
-    @Size(max = 10)
+    @Column(name = "REGION_TYPE", length = REGION_TYPE_LEN)
+    @Size(max = REGION_TYPE_LEN)
     private String regionType;
 
     /**
@@ -81,15 +108,22 @@ public class Address extends AuditedObject {
     /**
      * Регион.
      */
-    @Column(name = "REGION", length = 120)
-    @Size(max = 120)
+    @Column(name = "REGION", length = REGION_LEN)
+    @Size(max = REGION_LEN)
     private String region;
+
+    /**
+     * Район в регионе с типом
+     */
+    @Column(name = "AREA_WITH_TYPE", length = AREA_WITH_TYPE_LEN)
+    @Size(max = AREA_WITH_TYPE_LEN)
+    private String areaWithType;
 
     /**
      * Тип района в регионе (сокращенный).
      */
-    @Column(name = "AREA_TYPE", length = 10)
-    @Size(max = 10)
+    @Column(name = "AREA_TYPE", length = AREA_TYPE_LEN)
+    @Size(max = AREA_TYPE_LEN)
     private String areaType;
 
     /**
@@ -102,9 +136,16 @@ public class Address extends AuditedObject {
     /**
      * Район в регионе.
      */
-    @Column(name = "AREA", length = 120)
-    @Size(max = 120)
+    @Column(name = "AREA", length = AREA_LEN)
+    @Size(max = AREA_LEN)
     private String area;
+
+    /**
+     * Город с типом
+     */
+    @Column(name = "CITY_WITH_TYPE", length = 130)
+    @Size(max = 130)
+    private String cityWithType;
 
     /**
      * Тип города (сокращенный).
@@ -126,6 +167,13 @@ public class Address extends AuditedObject {
     @Column(name = "CITY", length = 120)
     @Size(max = 120)
     private String city;
+
+    /**
+     * Населенный пункт с типом
+     */
+    @Column(name = "SETTLEMENT_WITH_TYPE", length = 130)
+    @Size(max = 130)
+    private String settlementWithType;
 
     /**
      * Тип населенного пункта (сокращенный).
@@ -154,6 +202,13 @@ public class Address extends AuditedObject {
     @Column(name = "CITY_DISTRICT", length = 120)
     @Size(max = 120)
     private String cityDistrict;
+
+    /**
+     * Улица с типом
+     */
+    @Column(name = "STREET_WITH_TYPE", length = 130)
+    @Size(max = 130)
+    private String streetWithType;
 
     /**
      * Тип улицы (сокращенный).
@@ -273,8 +328,8 @@ public class Address extends AuditedObject {
      *   HOUSEINT.HOUSEGUID, если дом найден в ФИАС как часть интервала;
      *   ADDROBJ.AOGUID в противном случае.
      */
-    @Column(name = "FIAS_ID", length = 36)
-    @Size(max = 36)
+    @Column(name = "FIAS_ID", length = FIAS_ID_LEN)
+    @Size(max = FIAS_ID_LEN)
     private String fiasId;
 
     /**
@@ -295,8 +350,8 @@ public class Address extends AuditedObject {
     /**
      * Код КЛАДР.
      */
-    @Column(name = "KLADR_ID", length = 19)
-    @Size(max = 19)
+    @Column(name = "KLADR_ID", length = KLADR_ID_LEN)
+    @Size(max = KLADR_ID_LEN)
     private String kladrId;
 
     /**

@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.server.common.AddressAccessService;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.references.CategoryService;
-import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.HelpContent;
 
 import javax.inject.Inject;
@@ -42,7 +42,7 @@ public class SalePointRestService {
     @Inject
     private SalePointRepository repository;
     @Inject
-    private SupplementService supplementService;
+    private AddressAccessService addressAccessService;
     @Inject
     private MotorBrandRepository brandRepository;
 
@@ -153,7 +153,7 @@ public class SalePointRestService {
     }
 
     private void checkRegions(final List<String> region) {
-        final Collection<String> allRegions = supplementService.loadRegions();
+        final Collection<String> allRegions = addressAccessService.loadRegions();
         for (final String reg : region) {
             if (!allRegions.contains(reg))
                 throw new IllegalArgumentException(MessageFormat.format("Неверное наименование региона: ''{0}''", reg));

@@ -30,23 +30,30 @@ public class AddressJsonDeserializer extends JsonDeserializer<Address> {
 
                 .country(asText(data, "country"))
 
+                .regionFiasId(asText(data, "region_fias_id"))
+                .regionKladrId(asText(data, "region_kladr_id"))
+                .regionWithType(asText(data, "region_with_type"))
                 .regionTypeFull(asText(data, "region_type_full"))
                 .regionType(asText(data, "region_type"))
                 .region(asText(data, "region"))
 
+                .areaWithType(asText(data, "area_with_type"))
                 .areaTypeFull(asText(data, "area_type_full"))
                 .areaType(asText(data, "area_type"))
                 .area(asText(data, "area"))
 
+                .cityWithType(asText(data, "city_with_type"))
                 .cityTypeFull(asText(data, "city_type_full"))
                 .cityType(asText(data, "city_type"))
                 .city(asText(data, "city"))
                 .cityDistrict(asText(data, "city_district"))
 
+                .settlementWithType(asText(data, "settlement_with_type"))
                 .settlementTypeFull(asText(data, "settlement_type_full"))
                 .settlementType(asText(data, "settlement_type"))
                 .settlement(asText(data, "settlement"))
 
+                .streetWithType(asText(data, "street_with_type"))
                 .streetTypeFull(asText(data, "street_type_full"))
                 .streetType(asText(data, "street_type"))
                 .street(asText(data, "street"))
@@ -81,11 +88,11 @@ public class AddressJsonDeserializer extends JsonDeserializer<Address> {
                 .build();
         return address;
     }
-    
+
     private String asText(JsonNode data, String name) {
-        if(data.get(name).isNull()) {
+        if (data.get(name).isNull()) {
             return null;
         }
         return data.get(name).asText();
-    }  
+    }
 }

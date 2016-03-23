@@ -7,7 +7,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import ru.extas.model.contacts.AddressInfo;
-import ru.extas.server.references.SupplementService;
+import ru.extas.server.common.AddressAccessService;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.NotificationUtil;
@@ -100,7 +100,7 @@ public class AddressInfoField extends ExtaCustomField<AddressInfo> {
             regionField.setDescription("Укажите регион проживания");
             regionField.addValueChangeListener(event -> {
                 final String newRegion = (String) event.getProperty().getValue();
-                final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+                final String city = lookup(AddressAccessService.class).findCityByRegion(newRegion);
                 if (city != null)
                     cityField.setValue(city);
             });
@@ -112,7 +112,7 @@ public class AddressInfoField extends ExtaCustomField<AddressInfo> {
                 cityField.addItem(addressInfo.getCity());
             cityField.addValueChangeListener(event -> {
                 final String newCity = (String) event.getProperty().getValue();
-                final String region = lookup(SupplementService.class).findRegionByCity(newCity);
+                final String region = lookup(AddressAccessService.class).findRegionByCity(newCity);
                 if (region != null)
                     regionField.setValue(region);
             });

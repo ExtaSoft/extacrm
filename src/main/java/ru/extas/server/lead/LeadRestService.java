@@ -15,10 +15,10 @@ import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.security.CuratorsGroup;
+import ru.extas.server.common.AddressAccessService;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.motor.MotorBrandRepository;
 import ru.extas.server.motor.MotorTypeRepository;
-import ru.extas.server.references.SupplementService;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.HelpContent;
 
@@ -60,7 +60,7 @@ public class LeadRestService {
     @Inject
     private UserManagementService userService;
     @Inject
-    private SupplementService supplementService;
+    private AddressAccessService addressAccessService;
     @Inject
     private MotorBrandRepository motorBrandRepository;
     @Inject
@@ -266,7 +266,7 @@ public class LeadRestService {
         // Регион проживания.
         final String dirtyClientRegion = lead.getClientRegion();
         if (!isNullOrEmpty(dirtyClientRegion)) {
-            final String clearClientRegion = supplementService.clarifyRegion(dirtyClientRegion);
+            final String clearClientRegion = addressAccessService.clarifyRegion(dirtyClientRegion);
             if (isNullOrEmpty(clearClientRegion))
                 dirtyData.append("Регион проживания: ").append(dirtyClientRegion).append(lineSeparator());
             else
@@ -320,7 +320,7 @@ public class LeadRestService {
         // Регион покупки.
         final String dirtyDealRegion = lead.getDelerRegion();
         if (!isNullOrEmpty(dirtyDealRegion)) {
-            final String clearDealRegion = supplementService.clarifyRegion(dirtyDealRegion);
+            final String clearDealRegion = addressAccessService.clarifyRegion(dirtyDealRegion);
             if (isNullOrEmpty(clearDealRegion))
                 dirtyData.append("Регион покупки: ").append(dirtyDealRegion).append(lineSeparator());
             else

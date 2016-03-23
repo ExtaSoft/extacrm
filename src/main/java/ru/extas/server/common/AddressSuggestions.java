@@ -1,4 +1,4 @@
-package ru.extas.web.commons.component.address;
+package ru.extas.server.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

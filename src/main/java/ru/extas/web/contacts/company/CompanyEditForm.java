@@ -4,15 +4,21 @@
 package ru.extas.web.contacts.company;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.ui.*;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.Company;
+import ru.extas.server.common.AddressAccessService;
 import ru.extas.server.contacts.CompanyRepository;
-import ru.extas.server.references.SupplementService;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.commons.component.*;
+import ru.extas.web.commons.component.ConfirmTabSheet;
+import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.ExtaFormLayout;
+import ru.extas.web.commons.component.WebSiteLinkField;
 import ru.extas.web.contacts.employee.EmployeeFieldMulty;
 import ru.extas.web.contacts.legalentity.LegalEntitiesField;
 import ru.extas.web.contacts.salepoint.SalePointsField;
@@ -178,7 +184,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         regionField.setDescription("Укажите регион регистрации");
         regionField.addValueChangeListener(event -> {
             final String newRegion = (String) event.getProperty().getValue();
-            final String city = lookup(SupplementService.class).findCityByRegion(newRegion);
+            final String city = lookup(AddressAccessService.class).findCityByRegion(newRegion);
             if (city != null)
                 cityField.setValue(city);
         });
@@ -189,7 +195,7 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         if (getEntity().getCity() != null) cityField.addItem(getEntity().getCity());
         cityField.addValueChangeListener(event -> {
             final String newCity = (String) event.getProperty().getValue();
-            final String region = lookup(SupplementService.class).findRegionByCity(newCity);
+            final String region = lookup(AddressAccessService.class).findRegionByCity(newCity);
             if (region != null)
                 regionField.setValue(region);
         });
