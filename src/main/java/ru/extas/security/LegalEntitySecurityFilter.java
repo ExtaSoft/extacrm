@@ -1,6 +1,6 @@
 package ru.extas.security;
 
-import ru.extas.model.contacts.AddressInfo_;
+import ru.extas.model.common.Address_;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.LegalEntity_;
 import ru.extas.model.security.ExtaDomain;
@@ -20,8 +20,8 @@ public class LegalEntitySecurityFilter extends SecurityFilter<LegalEntity> {
         protected Predicate createAreaPredicate(final CriteriaBuilder cb, final Root objectRoot, Predicate predicate, final Set permitRegions, final Set permitBrands) {
             if (!permitRegions.isEmpty()) {
                 final Predicate regPredicate =
-                        objectRoot.get(LegalEntity_.regAddress)
-                                .get(AddressInfo_.region)
+                        objectRoot.get(LegalEntity_.legalAddress)
+                                .get(Address_.regionWithType)
                                 .in(permitRegions);
                 predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
             }

@@ -148,13 +148,11 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         client.setName(lead.getContactName());
         client.setPhone(lead.getContactPhone());
         client.setEmail(lead.getContactEmail());
-        client.setRegAddress(new AddressInfo(lead.getRegion(), null, null, null));
     }
 
     private SalePoint createSalePointFromLead(final Lead lead) {
         final SalePoint salePoint = new SalePoint();
         salePoint.setName(lead.getPointOfSale());
-        salePoint.setRegAddress(new AddressInfo(lead.getRegion(), null, null, null));
         return salePoint;
     }
 
@@ -395,7 +393,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         if (!Strings.isNullOrEmpty(name))
             filters.add(new Like("name", MessageFormat.format("%{0}%", name), false));
         if (!Strings.isNullOrEmpty(region)) {
-            filters.add(new Like("regAddress.region", MessageFormat.format("%{0}%", region), false));
+            filters.add(new Like("posAddress.region", MessageFormat.format("%{0}%", region), false));
         }
         if (!filters.isEmpty())
             vendorsContainer.addContainerFilter(new Or(filters.toArray(new Container.Filter[filters.size()])));
@@ -419,7 +417,6 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         // Запрос данных
         clientsContainer = new ExtaDbContainer<>(Client.class);
-//        clientsContainer.addNestedContainerProperty("regAddress.region");
 
         final MenuBar menuBar = new MenuBar();
         menuBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);

@@ -12,7 +12,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
-import ru.extas.web.contacts.AddressInfoField;
+import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
 import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.legalentity.LegalEntityField;
 import ru.extas.web.contacts.salepoint.SalePointField;
@@ -74,8 +74,8 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
     private EditField passIssuedByNumField;
 
     // Адрес регистрации
-    @PropertyId("regAddress")
-    private AddressInfoField regAddressField;
+    @PropertyId("address")
+    private AddressSuggestingComboBox regAddressField;
 
     // Файлы
     @PropertyId("files")
@@ -90,8 +90,6 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
 
     @Override
     protected void initEntity(final Employee employee) {
-        if (employee.getRegAddress() == null)
-            employee.setRegAddress(new AddressInfo());
         if (companySupplier != null)
             employee.setCompany(companySupplier.get());
         if (salePointSupplier != null)
@@ -204,7 +202,7 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Адрес регистрации"));
-        regAddressField = new AddressInfoField();
+        regAddressField = new AddressSuggestingComboBox();
         formLayout.addComponent(regAddressField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

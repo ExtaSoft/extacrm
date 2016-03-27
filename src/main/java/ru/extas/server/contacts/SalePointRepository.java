@@ -81,7 +81,7 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      *@param brands срисок брендов  @return число торговых точек
      */
     @Query("select count(distinct s) from SalePoint s  join s.legalEntities e join e.motorBrands b " +
-            "where (:category member of s.company.categories and s.archived = false and s.apiExpose = true) and s.regAddress.region in :regions and b in :brands")
+            "where (:category member of s.company.categories and s.archived = false and s.apiExpose = true) and s.posAddress.regionWithType in :regions and b in :brands")
     long countActualByRegionAndBrand(@Param("category") String category, @Param("regions") List<String> regions,
                                      @Param("brands") List<String> brands);
 
@@ -92,7 +92,7 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      * @param companyCatDealer
      * @return a long.
      */
-    @Query("select count(s) from SalePoint s where (:category member of s.company.categories and s.archived = false and s.apiExpose = true) and s.regAddress.region in :regions")
+    @Query("select count(s) from SalePoint s where (:category member of s.company.categories and s.archived = false and s.apiExpose = true) and s.posAddress.regionWithType in :regions")
     long countActualByRegion(@Param("category") String category, @Param("regions") List<String> regions);
 
     /**
@@ -101,7 +101,7 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      * @param region a {@link java.lang.String} object.
      * @return a {@link java.util.List} object.
      */
-    @Query("select s from SalePoint s where s.regAddress.region = :region")
+    @Query("select s from SalePoint s where s.posAddress.regionWithType = :region")
     List<SalePoint> findByRegion(@Param("region") String region);
 
     /**
@@ -124,7 +124,7 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      * @return
      */
     @Query("select s from SalePoint s " +
-            "where (:category member of s.company.categories and s.archived = false and s.apiExpose = true) and s.regAddress.region in :regions " +
+            "where (:category member of s.company.categories and s.archived = false and s.apiExpose = true) and s.posAddress.regionWithType in :regions " +
             "order by s.name asc")
     List<SalePoint> findActualByRegion(@Param("category") String category, @Param("regions") List<String> region, Pageable pageable);
 
@@ -152,7 +152,7 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      */
     @Query("select distinct s from SalePoint s  join s.legalEntities e join e.motorBrands b " +
             "where (:category member of s.company.categories and s.archived = false and s.apiExpose = true) " +
-            "and s.regAddress.region in :regions and b in :brands " +
+            "and s.posAddress.regionWithType in :regions and b in :brands " +
             "order by s.name asc")
     List<SalePoint> findActualByRegionAndBrand(@Param("category") String category,
                                                @Param("regions") List<String> regions,

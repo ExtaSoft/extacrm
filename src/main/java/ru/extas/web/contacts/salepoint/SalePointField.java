@@ -299,8 +299,8 @@ public class SalePointField extends ExtaCustomField<SalePoint> {
 
             final BeanItem<SalePoint> beanItem = new BeanItem<>(Optional.ofNullable(salePoint).orElse(new SalePoint()));
             beanItem.addNestedProperty("company.name");
-            beanItem.addNestedProperty("regAddress.city");
-            beanItem.addNestedProperty("regAddress.streetBld");
+            beanItem.addNestedProperty("posAddress.cityWithType");
+            beanItem.addNestedProperty("posAddress.value");
             if (viewBtn != null)
                 viewBtn.setEnabled(salePoint != null);
             // Компания
@@ -308,9 +308,9 @@ public class SalePointField extends ExtaCustomField<SalePoint> {
             // Телефон
             if (phoneField != null) phoneField.setPropertyDataSource(beanItem.getItemProperty("phone"));
             // Адрес
-            if (cityField != null) cityField.setPropertyDataSource(beanItem.getItemProperty("regAddress.city"));
+            if (cityField != null) cityField.setPropertyDataSource(beanItem.getItemProperty("posAddress.cityWithType"));
             if (addressField != null)
-                addressField.setPropertyDataSource(beanItem.getItemProperty("regAddress.streetBld"));
+                addressField.setPropertyDataSource(beanItem.getItemProperty("posAddress.value"));
         }
     }
 

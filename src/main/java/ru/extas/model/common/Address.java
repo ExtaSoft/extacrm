@@ -269,7 +269,7 @@ public class Address extends AuditedObject {
     /**
      * Корпус/строение.
      */
-    @Column(name = "CELL_PHONE", length = 50)
+    @Column(name = "BLOCK", length = 50)
     @Size(max = 50)
     private String block;
 
@@ -299,7 +299,7 @@ public class Address extends AuditedObject {
      */
     @Column(name = "FLAT_AREA", length = 50)
     @Size(max = 50)
-    private String flat_area;
+    private String flatArea;
 
     /**
      * Рыночная стоимость м2.

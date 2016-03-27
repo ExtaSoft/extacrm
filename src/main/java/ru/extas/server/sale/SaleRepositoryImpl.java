@@ -265,9 +265,9 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         final Set<String> regions = newHashSet();
         // Область видимости в регионе дилера
         if (sale.getDealer() != null
-                && sale.getDealer().getRegAddress() != null
-                && !isNullOrEmpty(sale.getDealer().getRegAddress().getRegion()))
-            regions.add(sale.getDealer().getRegAddress().getRegion());
+                && sale.getDealer().getPosAddress() != null
+                && !isNullOrEmpty(sale.getDealer().getPosAddress().getRegionWithType()))
+            regions.add(sale.getDealer().getPosAddress().getRegionWithType());
         return regions;
     }
 

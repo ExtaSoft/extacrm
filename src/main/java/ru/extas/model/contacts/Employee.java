@@ -1,6 +1,7 @@
 package ru.extas.model.contacts;
 
 import org.joda.time.LocalDate;
+import ru.extas.model.common.Address;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.security.UserProfile;
 
@@ -90,6 +91,17 @@ public class Employee extends Contact {
     @OrderBy("name ASC")
     private List<EmployeeFile> files = newArrayList();
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "ADDRESS_ID")
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public List<EmployeeFile> getFiles() {
         return files;

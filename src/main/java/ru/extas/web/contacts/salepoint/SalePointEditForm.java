@@ -5,7 +5,6 @@ import com.vaadin.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.layouts.MVerticalLayout;
-import ru.extas.model.contacts.AddressInfo;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.contacts.SalePointComment;
@@ -20,7 +19,6 @@ import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
-import ru.extas.web.contacts.AddressInfoField;
 import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.employee.EmployeeFieldMulty;
 import ru.extas.web.contacts.legalentity.LegalEntitiesSelectField;
@@ -60,8 +58,6 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
     private EmailField emailField;
     @PropertyId("www")
     private WebSiteLinkField wwwField;
-    @PropertyId("regAddress")
-    private AddressInfoField regAddressField;
 
     @PropertyId("posAddress")
     private AddressSuggestingComboBox posAddressComboBox;

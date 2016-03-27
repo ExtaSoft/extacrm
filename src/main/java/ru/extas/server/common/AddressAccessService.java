@@ -55,4 +55,11 @@ public interface AddressAccessService {
      * @return "чистое" имя региона или null если регион не удалось квалифицировать.
      */
     String clarifyRegion(String dirtyRegion);
+
+    /**
+     * Получить список всех регионов (объектов)
+     *
+     * @return список регионов
+     */
+    List<Region> findAllRegions();
 }
