@@ -297,7 +297,7 @@ public class JpaLazyItemList<TEntityType extends IdentifiedObject> extends Abstr
         final Query nativeQuery = em.createNativeQuery(
                 MessageFormat.format(
                         "SELECT q.rownum AS indx " +
-                                "FROM (SELECT s.{2} AS id, @rownum:=@rownum + 1 AS rownum " +
+                                "FROM (SELECT s.{2} AS id, (@rownum:=@rownum + 1) - 1 AS rownum " +
                                 "           FROM (SELECT @rownum:=0) i, ({0}) s) q " +
                                 "WHERE q.id = ''{1}''", querySql, itemId, IdentifiedObject_.id.getName()));
 //            nativeQuery.unwrap(JpaQuery.class).getDatabaseQuery().setTranslationRow(translationRow);

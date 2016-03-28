@@ -19,7 +19,6 @@ import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
 import ru.extas.web.commons.converters.StringToPercentConverter;
 import ru.extas.web.reference.CitySelect;
-import ru.extas.web.reference.RegionSelect;
 import ru.extas.web.util.ComponentUtil;
 
 import java.util.HashSet;
@@ -60,32 +59,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     private PhoneField homePhoneField;
     @PropertyId("email")
     private EmailField emailField;
-
-    @PropertyId("regAddress.region")
-    private RegionSelect regRegionField;
-    @PropertyId("regAddress.city")
-    private CitySelect regCityField;
-    @PropertyId("regAddress.postIndex")
-    private EditField regPostIndexField;
-    @PropertyId("regAddress.streetBld")
-    private TextArea regStreetBldField;
-    @PropertyId("regAddress.realtyKind")
-    private ComboBox regRealtyKindField;
-    @PropertyId("regAddress.periodOfResidence")
-    private ComboBox regPeriodOfResidenceField;
-
-    @PropertyId("actualAddress.region")
-    private RegionSelect actRegionField;
-    @PropertyId("actualAddress.city")
-    private CitySelect actCityField;
-    @PropertyId("actualAddress.postIndex")
-    private EditField actPostIndexField;
-    @PropertyId("actualAddress.streetBld")
-    private TextArea actStreetBldField;
-    @PropertyId("actualAddress.realtyKind")
-    private ComboBox actRealtyKindField;
-    @PropertyId("actualAddress.periodOfResidence")
-    private ComboBox actPeriodOfResidenceField;
 
     // Паспортнве данные
     @PropertyId("passNum")
@@ -266,8 +239,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     @Override
     protected BeanItem<Person> createBeanItem(final Person bean) {
         final BeanItem<Person> beanItem = new BeanItem<>(bean);
-        beanItem.expandProperty("regAddress");
-        beanItem.expandProperty("actualAddress");
 
         return beanItem;
     }
@@ -277,10 +248,6 @@ public class PersonEditForm extends ExtaEditForm<Person> {
      */
     @Override
     protected void initEntity(final Person person) {
-        if (person.getRegAddress() == null)
-            person.setRegAddress(new AddressInfo());
-        if (person.getActualAddress() == null)
-            person.setActualAddress(new AddressInfo());
         if (person.isNew()) {
             // Инициализируем новый объект
             // TODO: Инициализировать клиента в соответствии с локацией текущего
@@ -373,13 +340,13 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         registerAddressComboBox = new AddressSuggestingComboBox("Адрес");
         formLayout.addComponent(registerAddressComboBox);
 
-        regRealtyKindField = new ComboBox("Отношение к недвижимости");
-        regRealtyKindField.setWidth(15, Unit.EM);
-        regRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
-        regRealtyKindField.setNullSelectionAllowed(false);
-        regRealtyKindField.setNewItemsAllowed(false);
-        ComponentUtil.fillSelectByEnum(regRealtyKindField, RealtyKind.class);
-        formLayout.addComponent(regRealtyKindField);
+//        regRealtyKindField = new ComboBox("Отношение к недвижимости");
+//        regRealtyKindField.setWidth(15, Unit.EM);
+//        regRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
+//        regRealtyKindField.setNullSelectionAllowed(false);
+//        regRealtyKindField.setNewItemsAllowed(false);
+//        ComponentUtil.fillSelectByEnum(regRealtyKindField, RealtyKind.class);
+//        formLayout.addComponent(regRealtyKindField);
 
 /*        regRegionField = new RegionSelect();
         regRegionField.setDescription("Укажите регион проживания");
@@ -416,13 +383,13 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         regStreetBldField.setNullRepresentation("");
         formLayout.addComponent(regStreetBldField);*/
 
-        regPeriodOfResidenceField = new ComboBox("Срок проживания");
-        regPeriodOfResidenceField.setWidth(15, Unit.EM);
-        regPeriodOfResidenceField.setDescription("Укажите срок проживания по данному адресу");
-        regPeriodOfResidenceField.setNullSelectionAllowed(false);
-        regPeriodOfResidenceField.setNewItemsAllowed(false);
-        ComponentUtil.fillSelectByEnum(regPeriodOfResidenceField, PeriodOfResidence.class);
-        formLayout.addComponent(regPeriodOfResidenceField);
+//        regPeriodOfResidenceField = new ComboBox("Срок проживания");
+//        regPeriodOfResidenceField.setWidth(15, Unit.EM);
+//        regPeriodOfResidenceField.setDescription("Укажите срок проживания по данному адресу");
+//        regPeriodOfResidenceField.setNullSelectionAllowed(false);
+//        regPeriodOfResidenceField.setNewItemsAllowed(false);
+//        ComponentUtil.fillSelectByEnum(regPeriodOfResidenceField, PeriodOfResidence.class);
+//        formLayout.addComponent(regPeriodOfResidenceField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Адрес фактического проживания"));
@@ -438,13 +405,13 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         factAddressComboBox = new AddressSuggestingComboBox("Адрес");
         formLayout.addComponent(factAddressComboBox);
 
-        actRealtyKindField = new ComboBox("Отношение к недвижимости");
-        actRealtyKindField.setWidth(15, Unit.EM);
-        actRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
-        actRealtyKindField.setNullSelectionAllowed(false);
-        actRealtyKindField.setNewItemsAllowed(false);
-        ComponentUtil.fillSelectByEnum(actRealtyKindField, RealtyKind.class);
-        formLayout.addComponent(actRealtyKindField);
+//        actRealtyKindField = new ComboBox("Отношение к недвижимости");
+//        actRealtyKindField.setWidth(15, Unit.EM);
+//        actRealtyKindField.setDescription("Укажите отношение к объекту недвижимости по данному адресу");
+//        actRealtyKindField.setNullSelectionAllowed(false);
+//        actRealtyKindField.setNewItemsAllowed(false);
+//        ComponentUtil.fillSelectByEnum(actRealtyKindField, RealtyKind.class);
+//        formLayout.addComponent(actRealtyKindField);
 
 /*        actRegionField = new RegionSelect();
         actRegionField.setDescription("Укажите регион проживания");
@@ -481,14 +448,14 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         actStreetBldField.setNullRepresentation("");
         formLayout.addComponent(actStreetBldField);*/
 
-        actPeriodOfResidenceField = new ComboBox("Срок проживания");
-        actPeriodOfResidenceField.setWidth(15, Unit.EM);
-        actPeriodOfResidenceField.setDescription("Укажите срок проживания по данному адресу");
-        actPeriodOfResidenceField.setNullSelectionAllowed(false);
-        actPeriodOfResidenceField.setNewItemsAllowed(false);
-        ComponentUtil.fillSelectByEnum(actPeriodOfResidenceField, PeriodOfResidence.class);
-        formLayout.addComponent(actPeriodOfResidenceField);
-        //setActualAdressStatus(getEntity().isRegNactIsSame());
+//        actPeriodOfResidenceField = new ComboBox("Срок проживания");
+//        actPeriodOfResidenceField.setWidth(15, Unit.EM);
+//        actPeriodOfResidenceField.setDescription("Укажите срок проживания по данному адресу");
+//        actPeriodOfResidenceField.setNullSelectionAllowed(false);
+//        actPeriodOfResidenceField.setNewItemsAllowed(false);
+//        ComponentUtil.fillSelectByEnum(actPeriodOfResidenceField, PeriodOfResidence.class);
+//        formLayout.addComponent(actPeriodOfResidenceField);
+//        //setActualAdressStatus(getEntity().isRegNactIsSame());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Водительское удостоверение"));
@@ -910,12 +877,12 @@ public class PersonEditForm extends ExtaEditForm<Person> {
     }
 
     private void setActualAdressStatus(final Boolean isRegIsAct) {
-        actRegionField.setVisible(!isRegIsAct);
-        actCityField.setVisible(!isRegIsAct);
-        actPostIndexField.setVisible(!isRegIsAct);
-        actStreetBldField.setVisible(!isRegIsAct);
-        actRealtyKindField.setVisible(!isRegIsAct);
-        actPeriodOfResidenceField.setVisible(!isRegIsAct);
+//        actRegionField.setVisible(!isRegIsAct);
+//        actCityField.setVisible(!isRegIsAct);
+//        actPostIndexField.setVisible(!isRegIsAct);
+//        actStreetBldField.setVisible(!isRegIsAct);
+//        actRealtyKindField.setVisible(!isRegIsAct);
+//        actPeriodOfResidenceField.setVisible(!isRegIsAct);
     }
 
     private FormLayout createSalesForm() {

@@ -87,8 +87,8 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
      */
     @Override
     protected Collection<String> getObjectRegions(final SalePoint salePoint) {
-        if (salePoint.getRegAddress() != null && !isNullOrEmpty(salePoint.getRegAddress().getRegion()))
-            return newHashSet(salePoint.getRegAddress().getRegion());
+        if (salePoint.getPosAddress() != null && !isNullOrEmpty(salePoint.getPosAddress().getRegionWithType()))
+            return newHashSet(salePoint.getPosAddress().getRegionWithType());
         return null;
     }
 

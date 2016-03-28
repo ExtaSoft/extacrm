@@ -4,7 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import ru.extas.model.contacts.AddressInfo;
+import ru.extas.model.common.Address;
 import ru.extas.model.contacts.Person;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
@@ -62,9 +62,9 @@ public class PersonRepositoryImpl extends AbstractSecuredRepository<Person> {
     /** {@inheritDoc} */
     @Override
     protected Collection<String> getObjectRegions(final Person person) {
-        final AddressInfo regAddress = person.getRegAddress();
-        if(regAddress != null && !isNullOrEmpty(regAddress.getRegion()))
-            return newHashSet(regAddress.getRegion());
+        final Address address = person.getRegisterAddress();
+        if(address != null && !isNullOrEmpty(address.getRegionWithType()))
+            return newHashSet(address.getRegionWithType());
         return null;
     }
 }

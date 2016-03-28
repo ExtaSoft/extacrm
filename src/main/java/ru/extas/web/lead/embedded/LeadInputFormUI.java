@@ -193,7 +193,7 @@ public class LeadInputFormUI extends UI {
                 final Object value = property.getValue();
                 if (value != null) {
                     pointOfSaleField.setValue(((SalePoint) vendorField.getConvertedValue()).getName());
-                    regionField.setValue(((SalePoint) vendorField.getConvertedValue()).getRegAddress().getRegion());
+                    regionField.setValue(((SalePoint) vendorField.getConvertedValue()).getPosAddress().getRegionWithType());
                 }
             }
         });

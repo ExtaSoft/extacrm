@@ -1,6 +1,10 @@
 package ru.extas.security;
 
-import ru.extas.model.contacts.*;
+import ru.extas.model.common.Address_;
+import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.LegalEntity_;
+import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.SalePoint_;
 import ru.extas.model.security.ExtaDomain;
 
 import javax.persistence.criteria.*;
@@ -15,8 +19,8 @@ public class SalePointSecurityFilter extends SecurityFilter<SalePoint> {
     protected Predicate createAreaPredicate(final CriteriaBuilder cb, final Root<SalePoint> objectRoot, Predicate predicate, final Set<String> permitRegions, final Set<String> permitBrands) {
         if (!permitRegions.isEmpty()) {
             final Predicate regPredicate =
-                    objectRoot.get(SalePoint_.regAddress)
-                            .get(AddressInfo_.region)
+                    objectRoot.get(SalePoint_.posAddress)
+                            .get(Address_.regionWithType)
                             .in(permitRegions);
             predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
         }

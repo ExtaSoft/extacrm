@@ -336,8 +336,8 @@ public class LeadRestService {
             else {
                 newLead.setVendor(salePoint);
                 newLead.setPointOfSale(salePoint.getName());
-                if (salePoint.getRegAddress() != null)
-                    newLead.setRegion(salePoint.getRegAddress().getRegion());
+                if (salePoint.getPosAddress() != null)
+                    newLead.setRegion(salePoint.getPosAddress().getRegionWithType());
                 // Ответственные по умолчанию
                 final CuratorsGroup curatorsGroup = salePoint.getCuratorsGroup();
                 if (curatorsGroup != null && !curatorsGroup.getCurators().isEmpty()) {

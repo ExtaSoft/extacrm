@@ -80,6 +80,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.7.1" />
       <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.7.5" />
       <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.7.6" />
+      <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.8.0" />
       <excludeFolder url="file://$MODULE_DIR$/target/extra" />
       <excludeFolder url="file://$MODULE_DIR$/target/gwt-deploy" />
       <excludeFolder url="file://$MODULE_DIR$/target/gwt-unitCache" />

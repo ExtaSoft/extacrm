@@ -257,4 +257,14 @@ public class AddressAccessServiceImpl implements AddressAccessService {
         return tryFind(regions, input -> containsIgnoreCase(input, finalDirtyClientRegion)).orNull();
     }
 
+    /**
+     * Получить список всех регионов (объектов)
+     *
+     * @return список регионов
+     */
+    @Override
+    public List<Region> findAllRegions() {
+        return getRegionCapitals();
+    }
+
 }

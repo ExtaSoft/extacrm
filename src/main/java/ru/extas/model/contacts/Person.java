@@ -6,7 +6,6 @@ import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.FileContainer;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
@@ -71,18 +70,6 @@ public class Person extends Client implements ArchivedObject {
 
     @Column(name = "REG_N_ACT_IS_SAME")
     private boolean regNactIsSame;
-
-    @Embedded()
-    @AttributeOverrides({
-            @AttributeOverride(name = "region", column = @Column(name = "ACT_REGION")),
-            @AttributeOverride(name = "city", column = @Column(name = "ACT_CITY")),
-            @AttributeOverride(name = "postIndex", column = @Column(name = "ACT_POST_INDEX")),
-            @AttributeOverride(name = "streetBld", column = @Column(name = "ACT_STREET_BLD")),
-            @AttributeOverride(name = "realtyKind", column = @Column(name = "ACT_REALTY_KIND")),
-            @AttributeOverride(name = "periodOfResidence", column = @Column(name = "ACT_PERIOD_OF_RESIDENCE"))
-    })
-    @Valid
-    private AddressInfo actualAddress = new AddressInfo();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_REG")
@@ -222,10 +209,6 @@ public class Person extends Client implements ArchivedObject {
     @Size(max = 30)
     private String officePosition;
 
-    @Column(name = "EMPLOYER_ADRESS")
-    @Size(max = 255)
-    private String employerAdress;
-
     @Column(name = "EMPLOYER_WWW")
     @Size(max = 255)
     private String employerWww;
@@ -268,9 +251,6 @@ public class Person extends Client implements ArchivedObject {
     @Column(name = "BUSINESS_PHONE", length = PHONE_LINGHT)
     @Size(max = PHONE_LINGHT)
     private String businessPhone;
-
-    @Column(name = "BUSINESS_ADRESS")
-    private String businessAdress;
 
     @Column(name = "BUSINESS_PART", precision = 32, scale = 4)
     private BigDecimal businessPart;
@@ -503,14 +483,6 @@ public class Person extends Client implements ArchivedObject {
         this.businessPhone = businessPhone;
     }
 
-    public String getBusinessAdress() {
-        return businessAdress;
-    }
-
-    public void setBusinessAdress(final String businessAdress) {
-        this.businessAdress = businessAdress;
-    }
-
     public BigDecimal getBusinessPart() {
         return businessPart;
     }
@@ -605,14 +577,6 @@ public class Person extends Client implements ArchivedObject {
 
     public void setEmployerPhone(final String employerPhone) {
         this.employerPhone = employerPhone;
-    }
-
-    public String getEmployerAdress() {
-        return employerAdress;
-    }
-
-    public void setEmployerAdress(final String employerAdress) {
-        this.employerAdress = employerAdress;
     }
 
     public String getEmployerWww() {
@@ -915,14 +879,6 @@ public class Person extends Client implements ArchivedObject {
 
     public void setChangeNameDate(final LocalDate changeNameDate) {
         this.changeNameDate = changeNameDate;
-    }
-
-    public AddressInfo getActualAddress() {
-        return actualAddress;
-    }
-
-    public void setActualAddress(final AddressInfo actualAddress) {
-        this.actualAddress = actualAddress;
     }
 
     public boolean isRegNactIsSame() {

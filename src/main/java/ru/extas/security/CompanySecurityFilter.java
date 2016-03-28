@@ -1,5 +1,6 @@
 package ru.extas.security;
 
+import ru.extas.model.common.Address_;
 import ru.extas.model.contacts.*;
 import ru.extas.model.security.ExtaDomain;
 
@@ -16,8 +17,8 @@ public class CompanySecurityFilter extends SecurityFilter<Company> {
             if (!permitRegions.isEmpty()) {
                 final SetJoin<Company, SalePoint> spJoin = objectRoot.join(Company_.salePoints, JoinType.LEFT);
                 final Predicate regPredicate =
-                        spJoin.get(SalePoint_.regAddress)
-                                .get(AddressInfo_.region)
+                        spJoin.get(SalePoint_.posAddress)
+                                .get(Address_.regionWithType)
                                 .in(permitRegions);
                 predicate = predicate == null ? regPredicate : cb.and(predicate, regPredicate);
             }

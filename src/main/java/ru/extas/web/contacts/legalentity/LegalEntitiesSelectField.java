@@ -56,7 +56,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
                     }
                 }
                 itemContainer.addNestedContainerProperty("company.name");
-                itemContainer.addNestedContainerProperty("legalAddress.region");
+                itemContainer.addNestedContainerProperty("legalAddress.regionWithType");
                 itemContainer.addNestedContainerProperty("legalAddress.city");
                 return itemContainer;
             }

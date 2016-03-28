@@ -4,10 +4,15 @@
 package ru.extas.web.contacts.legalentity;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.ui.*;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.FormLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.contacts.*;
+import ru.extas.model.contacts.Company;
+import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.LegalEntityFile;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
@@ -16,7 +21,6 @@ import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.PredictConfirmedAction;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
-import ru.extas.web.contacts.AddressInfoField;
 import ru.extas.web.contacts.company.CompanyField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.motor.BrandsField;
@@ -55,8 +59,6 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     private EmailField emailField;
     @PropertyId("www")
     private WebSiteLinkField wwwField;
-    @PropertyId("regAddress")
-    private AddressInfoField regAddressField;
     @PropertyId("legalAddress")
     private AddressSuggestingComboBox legalAddressComboBox;
     @PropertyId("director")
@@ -76,7 +78,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     @PropertyId("regNpstIsSame")
     private CheckBox regNpstIsSameField;
     @PropertyId("postAddress")
-    private AddressInfoField postAddressField;
+    private AddressSuggestingComboBox postAddressField;
 
     @PropertyId("settlementAccount")
     private EditField settlementAccountField;
@@ -122,10 +124,6 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
             if (companySupplier != null)
                 legalEntity.setCompany(companySupplier.get());
         }
-        if (legalEntity.getRegAddress() == null)
-            legalEntity.setRegAddress(new AddressInfo());
-        if (legalEntity.getPostAddress() == null)
-            legalEntity.setPostAddress(new AddressInfo());
     }
 
 
@@ -237,7 +235,7 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         });
         formLayout.addComponent(regNpstIsSameField);
 
-        postAddressField = new AddressInfoField();
+        postAddressField = new AddressSuggestingComboBox();
         formLayout.addComponent(postAddressField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
