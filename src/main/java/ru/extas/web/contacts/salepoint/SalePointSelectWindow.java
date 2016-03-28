@@ -60,7 +60,7 @@ public class SalePointSelectWindow extends CloseOnlyWindow {
         @Override
         protected Container createContainer() {
             final ExtaDbContainer<SalePoint> container = new ExtaDbContainer<>(SalePoint.class);
-            container.addNestedContainerProperty("posAddress.region");
+            container.addNestedContainerProperty("posAddress.regionWithType");
             container.addNestedContainerProperty("posAddress.city");
             container.addNestedContainerProperty("posAddress.value");
             container.addNestedContainerProperty("company.name");

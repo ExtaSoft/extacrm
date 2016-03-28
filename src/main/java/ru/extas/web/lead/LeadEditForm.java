@@ -309,7 +309,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         table.setRequired(true);
         // Запрос данных
         vendorsContainer = new ExtaDbContainer<>(SalePoint.class);
-        vendorsContainer.addNestedContainerProperty("posAddress.region");
+        vendorsContainer.addNestedContainerProperty("posAddress.regionWithType");
         setVendorsFilter(lead.getPointOfSale(), lead.getRegion());
 
         final Label info = new Label(Fontello.INFO_CIRCLED.getHtml() +

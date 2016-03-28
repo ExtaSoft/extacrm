@@ -30,7 +30,7 @@ public class PersonDataDecl extends GridDataDecl {
 		addMapping("phone", "Мобильный телефон", PhoneConverter.class);
 		addMapping("secondPhone", "Доп. мобильный телефон", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), PhoneConverter.class);
 		addMapping("email", "E-Mail", new EmailLinkColumnGen());
-		addMapping("registerAddress.region", "Регион");
+		addMapping("registerAddress.regionWithType", "Регион");
 		addMapping("registerAddress.city", "Город");
 		super.addDefaultMappings();
 	}

@@ -94,8 +94,6 @@ public class V1_8_0__ConvertOldAddresses implements SpringJdbcMigration {
                         "DROP COLUMN `POST_INDEX`,\n" +
                         "DROP COLUMN `PERIOD_OF_RESIDENCE`,\n" +
                         "DROP COLUMN `CITY`\n");
-        // удалить cell_phone из адреса
-        template.execute("ALTER TABLE `ADDRESS` CHANGE COLUMN `CELL_PHONE` `BLOCK` VARCHAR(50) NULL DEFAULT NULL");
     }
 
     protected void convertOldAddress(String table, String addrIdColumn, String region, String city, String street_bld) {
@@ -139,6 +137,7 @@ public class V1_8_0__ConvertOldAddresses implements SpringJdbcMigration {
                         "`AREA`,\n" +
                         "`AREA_TYPE`,\n" +
                         "`AREA_TYPE_FULL`,\n" +
+                        "`BLOCK`," +
                         "`BLOCK_TYPE`,\n" +
                         "`BLOCK_TYPE_FULL`,\n" +
                         "`CAPITAL_MARKER`,\n" +
@@ -203,6 +202,7 @@ public class V1_8_0__ConvertOldAddresses implements SpringJdbcMigration {
                         ":area,\n" +
                         ":areaType,\n" +
                         ":areaTypeFull,\n" +
+                        ":block,\n" +
                         ":blockType,\n" +
                         ":blockTypeFull,\n" +
                         ":capitalMarker,\n" +

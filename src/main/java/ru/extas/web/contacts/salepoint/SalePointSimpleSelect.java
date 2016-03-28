@@ -75,7 +75,7 @@ public class SalePointSimpleSelect extends com.vaadin.ui.ComboBox {
         if (company != null)
             container.addContainerFilter(new Compare.Equal("company", company));
         if (region != null)
-            container.addContainerFilter(new Compare.Equal("posAddress.region", region));//FIXME: С этим надо что-то делать!!!
+            container.addContainerFilter(new Compare.Equal("posAddress.regionWithType", region));
         refreshContainer();
     }
 
