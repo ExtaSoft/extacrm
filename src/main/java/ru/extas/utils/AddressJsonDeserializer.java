@@ -9,6 +9,8 @@ import ru.extas.model.common.Address;
 
 import java.io.IOException;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 /**
  * Десирализатор для dadata адресов.
  *
@@ -86,6 +88,17 @@ public class AddressJsonDeserializer extends JsonDeserializer<Address> {
                 .qc(asText(data, "qc"))
 
                 .build();
+
+        // Если заполнен населенный пункт, но нет данных о городе
+        if (!isNullOrEmpty(address.getSettlementWithType()) &&
+                isNullOrEmpty(address.getCityWithType())) {
+            // Приравниваем населенный пункт к городу
+            address.setCity(address.getSettlement());
+            address.setCityType(address.getSettlementType());
+            address.setCityTypeFull(address.getSettlementTypeFull());
+            address.setCityWithType(address.getSettlementWithType());
+        }
+
         return address;
     }
 

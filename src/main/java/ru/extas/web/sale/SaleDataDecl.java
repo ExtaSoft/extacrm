@@ -29,6 +29,7 @@ import static com.google.common.collect.Iterables.getLast;
 class SaleDataDecl extends GridDataDecl {
     /**
      * <p>Constructor for SaleDataDecl.</p>
+     *
      * @param domain
      */
     public SaleDataDecl(ExtaDomain domain) {
@@ -64,8 +65,7 @@ class SaleDataDecl extends GridDataDecl {
         addClientNameMapping();
         addMotorMappings();
         addDealerMappings();
-        // TODO: Регион
-        // TODO: Город
+        addRegionCityMappings();
         addLastModifiedByMapping(false, "Кто закрыл");
         addCreatedByMapping(true);
         addManagersMapping();
@@ -78,8 +78,7 @@ class SaleDataDecl extends GridDataDecl {
         addClientNameMapping();
         addMotorMappings();
         addDealerMappings();
-        // TODO: Регион
-        // TODO: Город
+        addRegionCityMappings();
         addMapping(Sale_.cancelReason.getName(), "Причина отмены", getPresentFlags(true));
         addLastModifiedByMapping(false, "Кто отменил");
         addCreatedByMapping(true);
@@ -92,8 +91,7 @@ class SaleDataDecl extends GridDataDecl {
         addClientNameMapping();
         addMapping("client.phone", "Телефон", PhoneConverter.class);
         addMotorMappings();
-        // TODO: Регион
-        // TODO: Город
+        addRegionCityMappings();
         addDealerMappings();
         addCreatedByMapping(false);
         addMapping("comments", "Коментарии", new ComponentColumnGenerator() {
@@ -140,6 +138,11 @@ class SaleDataDecl extends GridDataDecl {
     private void addDealerMappings() {
         addMapping("dealer.name", "Мотосалон", getPresentFlags(true));
         addMapping("pointOfSale", "Регион | Мотосалон", new SalePointColumnGenerator("dealer", null, "region"), null);
+    }
+
+    private void addRegionCityMappings() {
+        addMapping("dealer.posAddress.regionWithType", "Регион");
+        addMapping("dealer.posAddress.cityWithType", "Город");
     }
 
     private void addMotorMappings() {

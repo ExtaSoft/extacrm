@@ -116,6 +116,8 @@ public class SalesGrid extends ExtaGrid<Sale> {
         container.addNestedContainerProperty("responsible.name");
         container.addNestedContainerProperty("responsibleAssist.name");
         container.addNestedContainerProperty("dealerManager.name");
+        container.addNestedContainerProperty("dealer.posAddress.regionWithType");
+        container.addNestedContainerProperty("dealer.posAddress.cityWithType");
         container.addContainerFilter(new Compare.Equal("status",
                 domain == ExtaDomain.SALES_CANCELED ? Sale.Status.CANCELED :
                         domain == ExtaDomain.SALES_OPENED ? Sale.Status.NEW : Sale.Status.FINISHED));
