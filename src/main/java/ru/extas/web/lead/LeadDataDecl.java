@@ -40,8 +40,8 @@ class LeadDataDecl extends GridDataDecl {
         addMapping("contactPhone", "Телефон", PhoneConverter.class);
         addMapping("pointOfSale", "Регион | Мотосалон", new SalePointColumnGenerator("vendor", "pointOfSale", "region"), null);
         addMapping("region", "Регион", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("responsible.name", "Ответственный", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
-        addMapping("responsibleAssist.name", "Заместитель", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
+        addMapping("responsible.name", "Ответственный", getPresentFlags(true), Name2ShortNameConverter.class);
+        addMapping("responsibleAssist.name", "Заместитель", getPresentFlags(true), Name2ShortNameConverter.class);
         addMapping("status", "Статус", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         super.addDefaultMappings();
         if (grid.getStatus() == Lead.Status.NEW && lookup(UserManagementService.class).isItOurUser()) {

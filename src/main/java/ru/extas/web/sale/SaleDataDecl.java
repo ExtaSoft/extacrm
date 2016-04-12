@@ -8,6 +8,7 @@ import com.vaadin.ui.Panel;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.model.sale.Sale_;
+import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
 import ru.extas.web.commons.window.CloseOnlyWindow;
@@ -15,7 +16,6 @@ import ru.extas.web.contacts.Name2ShortNameConverter;
 import ru.extas.web.lead.SalePointColumnGenerator;
 import ru.extas.web.motor.MotorColumnGenerator;
 
-import java.util.EnumSet;
 import java.util.List;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -29,8 +29,23 @@ import static com.google.common.collect.Iterables.getLast;
 class SaleDataDecl extends GridDataDecl {
     /**
      * <p>Constructor for SaleDataDecl.</p>
+     * @param domain
      */
-    public SaleDataDecl() {
+    public SaleDataDecl(ExtaDomain domain) {
+        switch (domain) {
+            case SALES_OPENED:
+                addOpenedMappings();
+                break;
+            case SALES_SUCCESSFUL:
+                addClosedMappings();
+                break;
+            case SALES_CANCELED:
+                addCanceledMappings();
+                break;
+        }
+    }
+
+    private void addNumMapping() {
         addMapping("num", "№", new NumColumnGenerator() {
             @Override
             public void fireClick(final Item item) {
@@ -40,20 +55,47 @@ class SaleDataDecl extends GridDataDecl {
                 FormUtils.showModalWin(editWin);
             }
         }, null);
-        addMapping("client.name", "Клиент");
+    }
+
+    private void addClosedMappings() {
+        addNumMapping();
+        addCreatedDateMapping(false);
+        addLastModifiedDateMapping(false, "Дата завершения");
+        addClientNameMapping();
+        addMotorMappings();
+        addDealerMappings();
+        // TODO: Регион
+        // TODO: Город
+        addLastModifiedByMapping(false, "Кто закрыл");
+        addCreatedByMapping(true);
+        addManagersMapping();
+    }
+
+    private void addCanceledMappings() {
+        addNumMapping();
+        addCreatedDateMapping(false);
+        addLastModifiedDateMapping(false, "Дата отмены");
+        addClientNameMapping();
+        addMotorMappings();
+        addDealerMappings();
+        // TODO: Регион
+        // TODO: Город
+        addMapping(Sale_.cancelReason.getName(), "Причина отмены", getPresentFlags(true));
+        addLastModifiedByMapping(false, "Кто отменил");
+        addCreatedByMapping(true);
+        addManagersMapping();
+    }
+
+    private void addOpenedMappings() {
+        addNumMapping();
+        addLastModifiedDateMapping(false);
+        addClientNameMapping();
         addMapping("client.phone", "Телефон", PhoneConverter.class);
-        addMapping("motor_all", "Техника", new MotorColumnGenerator(), null);
-        addMapping("motorType", "Тип техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("motorBrand", "Марка техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("motorModel", "Модель техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("motorPrice", "Стоимость техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("dealer.name", "Мотосалон", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("pointOfSale", "Регион | Мотосалон", new SalePointColumnGenerator("dealer", null, "region"), null);
-        addMapping("region", "Регион", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping(Sale_.cancelReason.getName(), "Причина отмены", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("responsible.name", "Ответственный", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
-        addMapping("responsibleAssist.name", "Заместитель", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
-        addMapping("dealerManager.name", "Представитель дилера", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), Name2ShortNameConverter.class);
+        addMotorMappings();
+        // TODO: Регион
+        // TODO: Город
+        addDealerMappings();
+        addCreatedByMapping(false);
         addMapping("comments", "Коментарии", new ComponentColumnGenerator() {
             final int COMMENT_SIZE = 27;
 
@@ -84,6 +126,31 @@ class SaleDataDecl extends GridDataDecl {
                 return link;
             }
         }, null);
-        super.addDefaultMappings();
+        addCreatedDateMapping(true);
+        addLastModifiedByMapping(true);
+        addManagersMapping();
+    }
+
+    private void addManagersMapping() {
+        addMapping("responsible.name", "Ответственный", getPresentFlags(true), Name2ShortNameConverter.class);
+        addMapping("responsibleAssist.name", "Заместитель", getPresentFlags(true), Name2ShortNameConverter.class);
+        addMapping("dealerManager.name", "Представитель дилера", getPresentFlags(true), Name2ShortNameConverter.class);
+    }
+
+    private void addDealerMappings() {
+        addMapping("dealer.name", "Мотосалон", getPresentFlags(true));
+        addMapping("pointOfSale", "Регион | Мотосалон", new SalePointColumnGenerator("dealer", null, "region"), null);
+    }
+
+    private void addMotorMappings() {
+        addMapping("motor_all", "Техника", new MotorColumnGenerator(), null);
+        addMapping("motorType", "Тип техники", getPresentFlags(true));
+        addMapping("motorBrand", "Марка техники", getPresentFlags(true));
+        addMapping("motorModel", "Модель техники", getPresentFlags(true));
+        addMapping("motorPrice", "Стоимость техники", getPresentFlags(true));
+    }
+
+    private void addClientNameMapping() {
+        addMapping("client.name", "Клиент");
     }
 }

@@ -3,12 +3,9 @@
  */
 package ru.extas.web.contacts.person;
 
-import ru.extas.web.commons.DataDeclMapping;
 import ru.extas.web.commons.EmailLinkColumnGen;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.converters.PhoneConverter;
-
-import java.util.EnumSet;
 
 /**
  * Опции отображения контактов в списке
@@ -28,7 +25,7 @@ public class PersonDataDecl extends GridDataDecl {
 		addMapping("birthday", "Дата рождения"/* , StringToJodaLDConverter.class */);
 		addMapping("sex", "Пол");
 		addMapping("phone", "Мобильный телефон", PhoneConverter.class);
-		addMapping("secondPhone", "Доп. мобильный телефон", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), PhoneConverter.class);
+		addMapping("secondPhone", "Доп. мобильный телефон", getPresentFlags(true), PhoneConverter.class);
 		addMapping("email", "E-Mail", new EmailLinkColumnGen());
 		addMapping("registerAddress.regionWithType", "Регион");
 		addMapping("registerAddress.city", "Город");

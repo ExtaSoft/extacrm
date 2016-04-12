@@ -63,7 +63,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
      */
     @Override
     protected GridDataDecl createDataDecl() {
-        return new SaleDataDecl();
+        return new SaleDataDecl(domain);
     }
 
     @Override

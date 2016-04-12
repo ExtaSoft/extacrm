@@ -35,7 +35,7 @@ public class GridDataDecl implements Serializable {
 
     public void setColumnCollapsed(final String column, final boolean collapsed) {
         final Optional<DataDeclMapping> mapping = getMappings().stream().filter(m -> m.getPropName().equals(column)).findFirst();
-        if(mapping.isPresent())
+        if (mapping.isPresent())
             mapping.get().setCollapsed(collapsed);
     }
 
@@ -66,7 +66,7 @@ public class GridDataDecl implements Serializable {
      */
     protected GridDataDecl() {
         super();
-        addMapping("id", "Идентификатор", EnumSet.of(PresentFlag.COLLAPSED));
+        addMapping("id", "Идентификатор", getPresentFlags(true));
     }
 
     /**
@@ -83,9 +83,9 @@ public class GridDataDecl implements Serializable {
     /**
      * <p>addMapping.</p>
      *
-     * @param propName a {@link java.lang.String} object.
-     * @param caption a {@link java.lang.String} object.
-     * @param generator a {@link ru.extas.web.commons.GridDataDecl.GridColumnGenerator} object.
+     * @param propName     a {@link java.lang.String} object.
+     * @param caption      a {@link java.lang.String} object.
+     * @param generator    a {@link ru.extas.web.commons.GridDataDecl.GridColumnGenerator} object.
      * @param presentFlags a {@link java.util.EnumSet} object.
      */
     protected void addMapping(final String propName, final String caption, final GridColumnGenerator generator, final EnumSet<PresentFlag> presentFlags) {
@@ -133,20 +133,48 @@ public class GridDataDecl implements Serializable {
      * Добавляет маркеры создания/модификации записи
      */
     protected void addDefaultMappings() {
-	    addMapping(AuditedObject_.lastModifiedBy.getName(), "Кто изменил", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
-	    addMapping(AuditedObject_.lastModifiedDate.getName(), "Дата изменения", EnumSet.of(PresentFlag.COLLAPSED)/*
-                                                                                     * ,
-																					 * StringToJodaDTConverter
-																					 * .
-																					 * class
-																					 */);
-	    addMapping(AuditedObject_.createdBy.getName(), "Кто создал", EnumSet.of(PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
-	    addMapping(AuditedObject_.createdDate.getName(), "Дата создания", EnumSet.of(PresentFlag.COLLAPSED)/*
+        addLastModifiedByMapping(true);
+        addLastModifiedDateMapping(true);
+        addCreatedByMapping(true);
+        addCreatedDateMapping(true);
+    }
+
+    protected void addCreatedDateMapping(boolean isCollapsed) {
+        addMapping(AuditedObject_.createdDate.getName(), "Дата создания", getPresentFlags(isCollapsed)/*
                                                                                  * ,
 																				 * StringToJodaDTConverter
 																				 * .
 																				 * class
 																				 */);
+    }
+
+    protected void addCreatedByMapping(boolean isCollapsed) {
+        addMapping(AuditedObject_.createdBy.getName(), "Кто создал", getPresentFlags(isCollapsed), LoginToUserNameConverter.class);
+    }
+
+    protected void addLastModifiedDateMapping(boolean isCollapsed) {
+        addLastModifiedDateMapping(isCollapsed, "Дата изменения");
+    }
+
+    protected void addLastModifiedDateMapping(boolean isCollapsed, String caption) {
+        addMapping(AuditedObject_.lastModifiedDate.getName(), caption, getPresentFlags(isCollapsed)/*
+                                                                                     * ,
+																					 * StringToJodaDTConverter
+																					 * .
+																					 * class
+																					 */);
+    }
+
+    protected void addLastModifiedByMapping(boolean isCollapsed) {
+        addLastModifiedByMapping(isCollapsed, "Кто изменил");
+    }
+
+    protected void addLastModifiedByMapping(boolean isCollapsed, String caption) {
+        addMapping(AuditedObject_.lastModifiedBy.getName(), caption, getPresentFlags(isCollapsed), LoginToUserNameConverter.class);
+    }
+
+    protected EnumSet<PresentFlag> getPresentFlags(boolean isCollapsed) {
+        return isCollapsed ? EnumSet.of(PresentFlag.COLLAPSED) : null;
     }
 
     /**

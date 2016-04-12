@@ -49,7 +49,7 @@ public class SalePointsDataDecl extends GridDataDecl {
 				return String.class;
 			}
 		}, EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-		addMapping("phone", "Телефон", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), PhoneConverter.class);
+		addMapping("phone", "Телефон", getPresentFlags(true), PhoneConverter.class);
 		addMapping("email", "E-Mail", new EmailLinkColumnGen(), EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 		addMapping("www", "WWW", new UrlLinkColumnGen(), EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
 		addMapping("posAddress.regionWithType", "Регион");

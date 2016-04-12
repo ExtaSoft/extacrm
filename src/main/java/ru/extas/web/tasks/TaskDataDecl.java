@@ -29,7 +29,7 @@ class TaskDataDecl extends GridDataDecl {
         addMapping("priority", "Приоритет", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("dueDate", "Дата завершения");
         addMapping("createTime", "Дата создания", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-	    addMapping("owner", "Владелец", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED), LoginToUserNameConverter.class);
+	    addMapping("owner", "Владелец", getPresentFlags(true), LoginToUserNameConverter.class);
 	    addMapping("assignee", "Ответственный", LoginToUserNameConverter.class);
         addMapping("clientName", "Клиент", new ComponentColumnGenerator() {
             @Override
