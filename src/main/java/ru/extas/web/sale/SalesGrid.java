@@ -48,7 +48,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
     /**
      * <p>Constructor for SalesGrid.</p>
      *
-     * @param domain a {@link ExtaDomain} object.
+     * @param domain   a {@link ExtaDomain} object.
      * @param isMyOnly
      */
     public SalesGrid(final ExtaDomain domain, final boolean isMyOnly) {
@@ -79,8 +79,6 @@ public class SalesGrid extends ExtaGrid<Sale> {
     @Override
     protected void initTable(final Mode mode) {
         super.initTable(mode);
-        if (domain == ExtaDomain.SALES_CANCELED)
-            table.setColumnCollapsed(Sale_.cancelReason.getName(), false);
 
         // Раскрашиваем "протухшие" продажи
         if (domain == ExtaDomain.SALES_OPENED) {

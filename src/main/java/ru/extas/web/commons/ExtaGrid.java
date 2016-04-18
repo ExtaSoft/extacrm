@@ -65,7 +65,7 @@ import static ru.extas.web.commons.TableUtils.fullInitTable;
  * @version $Id: $Id
  * @since 0.3
  */
-public abstract class ExtaGrid<TEntity> extends CustomComponent {
+public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaGridFilterPanel.IFilterGrid {
     private static final long serialVersionUID = 2299363623807745654L;
     private final static Logger logger = LoggerFactory.getLogger(ExtaGrid.class);
 
@@ -87,6 +87,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
     private final List<MenuBar.MenuItem> disallowInReadOnlyMenu = newArrayList();
     private MenuBar.MenuItem tableModeBtn;
     private MenuBar.MenuItem detailModeBtn;
+    private Panel filterPanel;
+    private GridLayout rootPanel;
 
     public void selectObject(final Object objectId) {
         if (table != null && objectId != null && table.containsId(objectId))
@@ -153,8 +155,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 
     protected void refreshContainerEntity(final TEntity entity) {
         Object itemId = entity;
-        if(container instanceof ExtaDbContainer)
-            itemId = ((ExtaDbContainer)container).getEntityItemId((IdentifiedObject) entity);
+        if (container instanceof ExtaDbContainer)
+            itemId = ((ExtaDbContainer) container).getEntityItemId((IdentifiedObject) entity);
         refreshContainerItem(itemId);
     }
 
@@ -289,26 +291,30 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
         currentMode = mode;
         setSizeFull();
 
-        final GridLayout panel = new GridLayout(2, 2);
-        panel.setSizeFull();
+        rootPanel = new GridLayout(2, 3);
+        rootPanel.setHideEmptyRowsAndColumns(true);
+        rootPanel.setSizeFull();
 
-        panel.setRowExpandRatio(0, 0);
-        panel.setRowExpandRatio(1, 1);
-        panel.setColumnExpandRatio(0, 1);
-        panel.setColumnExpandRatio(1, 0);
-        panel.setMargin(true);
+        rootPanel.setRowExpandRatio(0, 0);
+        rootPanel.setRowExpandRatio(1, 0);
+        rootPanel.setRowExpandRatio(2, 1);
+        rootPanel.setColumnExpandRatio(0, 1);
+        rootPanel.setColumnExpandRatio(1, 0);
+        rootPanel.setMargin(true);
 
         if (toolbarVisible) {
-            panel.setSpacing(true);
+            rootPanel.setSpacing(true);
             // Формируем тулбар
             final MenuBar commandBar = createGridToolbar(mode);
-            panel.addComponent(commandBar, 0, 0);
-            panel.setComponentAlignment(commandBar, Alignment.TOP_LEFT);
+            rootPanel.addComponent(commandBar, 0, 0);
+            rootPanel.setComponentAlignment(commandBar, Alignment.TOP_LEFT);
 
             // Переключение режима таблицы
             final MenuBar modeSwitchBar = new MenuBar();
             modeSwitchBar.addStyleName(ExtaTheme.MENUBAR_BORDERLESS);
-            final MenuBar.MenuItem tableFilterBtn = modeSwitchBar.addItem("", Fontello.FILTER, selectedItem -> table.setFilterBarVisible(selectedItem.isChecked()));
+            final MenuBar.MenuItem tableFilterBtn = modeSwitchBar.addItem("", Fontello.FILTER, selectedItem -> {
+                showTableFilter(selectedItem.isChecked());
+            });
             tableFilterBtn.setDescription("Показать строку фильтра таблицы");
             tableFilterBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             tableFilterBtn.setCheckable(true);
@@ -439,15 +445,50 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
 //                detailModeBtn.setChecked(true);
 //                tableModeBtn.setChecked(false);
 //            }
-            panel.addComponent(modeSwitchBar, 1, 0);
-            panel.setComponentAlignment(modeSwitchBar, Alignment.TOP_RIGHT);
+            rootPanel.addComponent(modeSwitchBar, 1, 0);
+            rootPanel.setComponentAlignment(modeSwitchBar, Alignment.TOP_RIGHT);
         }
 
         // Таблица
         initTable(mode);
-        panel.addComponent(table, 0, 1, 1, 1);
+        rootPanel.addComponent(table, 0, 2, 1, 2);
 
-        setCompositionRoot(panel);
+        setCompositionRoot(rootPanel);
+    }
+
+    private void showTableFilter(boolean filterVisible) {
+        if(filterPanel == null)
+            createFilterPanel();
+        filterPanel.setVisible(filterVisible);
+    }
+
+    private void createFilterPanel() {
+        // Панель фильтра
+        if(filterPanel == null) {
+            filterPanel = new ExtaGridFilterPanel(this);
+            filterPanel.setVisible(false);
+            rootPanel.addComponent(filterPanel, 0, 1, 1, 1);
+        }
+    }
+
+    @Override
+    public Object[] getColumns() {
+        return table.getVisibleColumns();
+    }
+
+    @Override
+    public boolean isFilteredColumn(Object columnId) {
+        return table.getColumnIdToFilterMap().containsKey(columnId);
+    }
+
+    @Override
+    public Component getColumnComponent(Object columnId) {
+        return table.getColumnIdToFilterMap().get(columnId);
+    }
+
+    @Override
+    public String getColumnHeader(Object columnId) {
+        return table.getColumnHeader(columnId);
     }
 
     private boolean isArchiveEnabled() {
@@ -891,7 +932,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent {
                     else
                         return new Between(propertyId,
                                 interval.getStart().withTimeAtStartOfDay(),
-                                interval.getEnd().withTime(23,59,59,999));
+                                interval.getEnd().withTime(23, 59, 59, 999));
                 }
             }
             return null;

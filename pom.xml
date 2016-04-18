@@ -22,7 +22,7 @@
 
         <vaadin.version>7.6.4</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <vaadin.charts.version>3.0.0-rc1</vaadin.charts.version>
+        <vaadin.charts.version>3.0.0</vaadin.charts.version>
         <vaadin.jpacontainer.version>3.2.0</vaadin.jpacontainer.version>
         <vaadin.filteringtable.version>0.9.15.v7</vaadin.filteringtable.version>
         <vaadin.filtertablestate.version>1.0.6</vaadin.filtertablestate.version>
@@ -34,7 +34,8 @@
         <vaadin.sizereporter.version>0.1.4</vaadin.sizereporter.version>
         <vaadin.animator.version>2.0.0</vaadin.animator.version>
         <vaadin.dom.version>0.1.0</vaadin.dom.version>
-        <vaadin.viritin.version>1.47</vaadin.viritin.version>
+        <vaadin.viritin.version>1.49</vaadin.viritin.version>
+        <vaadin.messagebox.version>3.0.15</vaadin.messagebox.version>
 
         <servlet-api.version>2.5</servlet-api.version>
         <activiti-version>5.19.0</activiti-version>
@@ -52,6 +53,9 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <hibernate-validator.version>4.3.2.Final</hibernate-validator.version>
         <lombok.version>1.16.8</lombok.version>
+        <libphonenumber.version>7.3.0</libphonenumber.version>
+        <tika-core.version>1.5</tika-core.version>
+        <textile-core.version>1.4</textile-core.version>
     </properties>
 
     <profiles>
@@ -162,19 +166,19 @@
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
-            <version>1.5</version>
+            <version>${tika-core.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.googlecode.libphonenumber</groupId>
             <artifactId>libphonenumber</artifactId>
-            <version>6.0</version>
+            <version>${libphonenumber.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.fusesource.wikitext</groupId>
             <artifactId>textile-core</artifactId>
-            <version>1.4</version>
+            <version>${textile-core.version}</version>
         </dependency>
 
         <dependency>
@@ -291,11 +295,6 @@
             <artifactId>vaadin-client-compiled</artifactId>
             <version>${vaadin.version}</version>
         </dependency>
-<!--        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-client-compiler</artifactId>
-            <version>${vaadin.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client</artifactId>
@@ -341,6 +340,11 @@
             <groupId>org.vaadin.addons</groupId>
             <artifactId>tokenfield</artifactId>
             <version>${vaadin.tokenfield.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.steinwedel.vaadin.addon</groupId>
+            <artifactId>messagebox</artifactId>
+            <version>${vaadin.messagebox.version}</version>
         </dependency>
         <dependency>
             <groupId>com.wcs.wcslib</groupId>
@@ -449,11 +453,6 @@
             <version>1</version>
         </dependency>
 
-<!--        <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <version>1.4.01</version>
-        </dependency>-->
     </dependencies>
 
     <build>
