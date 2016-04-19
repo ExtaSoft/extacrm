@@ -74,8 +74,8 @@ public class SalePointRepositoryImpl extends AbstractSecuredRepository<SalePoint
     @Override
     protected Collection<String> getObjectBrands(final SalePoint salePoint) {
         if (salePoint != null) {
-            Set<String> brands = newHashSet();
-            for (LegalEntity le : salePoint.getLegalEntities())
+            final Set<String> brands = newHashSet();
+            for (final LegalEntity le : salePoint.getLegalEntities())
                 brands.addAll(le.getMotorBrands());
             return brands;
         } else

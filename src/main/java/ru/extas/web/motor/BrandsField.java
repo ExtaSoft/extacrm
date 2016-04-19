@@ -42,7 +42,7 @@ public class BrandsField extends CustomField<Set> {
 		twin.setLeftColumnCaption("Доступные бренды");
 		twin.setRightColumnCaption("Бренды юр.лица");
 		twin.addValueChangeListener(event -> {
-            Set selected = (Set) twin.getValue();
+            final Set selected = (Set) twin.getValue();
             setValue(selected);
         });
 

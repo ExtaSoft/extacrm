@@ -1005,7 +1005,7 @@ public class Person extends Client implements ArchivedObject {
         return registerAddress;
     }
 
-    public void setRegisterAddress(Address registerAddress) {
+    public void setRegisterAddress(final Address registerAddress) {
         this.registerAddress = registerAddress;
     }
 
@@ -1013,7 +1013,7 @@ public class Person extends Client implements ArchivedObject {
         return factAddress;
     }
 
-    public void setFactAddress(Address factAddress) {
+    public void setFactAddress(final Address factAddress) {
         this.factAddress = factAddress;
     }
 
@@ -1021,7 +1021,7 @@ public class Person extends Client implements ArchivedObject {
         return workAddress;
     }
 
-    public void setWorkAddress(Address workAddress) {
+    public void setWorkAddress(final Address workAddress) {
         this.workAddress = workAddress;
     }
 
@@ -1029,7 +1029,7 @@ public class Person extends Client implements ArchivedObject {
         return businessAddress;
     }
 
-    public void setBusinessAddress(Address businessAddress) {
+    public void setBusinessAddress(final Address businessAddress) {
         this.businessAddress = businessAddress;
     }
 }

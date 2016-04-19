@@ -24,7 +24,7 @@ public class ExtaServlet extends VaadinServlet {
         // Системные сообщения
         getService().setSystemMessagesProvider(
                 systemMessagesInfo -> {
-                    CustomizedSystemMessages messages = new CustomizedSystemMessages();
+                    final CustomizedSystemMessages messages = new CustomizedSystemMessages();
                     messages.setSessionExpiredNotificationEnabled(true);
                     messages.setSessionExpiredCaption("Время сессии истекло");
                     messages.setSessionExpiredMessage("Пожалуйста запишите все несохраненные данные и " +

@@ -499,7 +499,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         maritalStatusField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(maritalStatusField, MaritalStatus.class);
         maritalStatusField.addValueChangeListener(event -> {
-            MaritalStatus maritalStatus = (MaritalStatus) event.getProperty().getValue();
+            final MaritalStatus maritalStatus = (MaritalStatus) event.getProperty().getValue();
             setMaritalStatusUI(maritalStatus);
         });
         formLayout.addComponent(maritalStatusField);
@@ -570,7 +570,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         typeOfEmploymentField.setNewItemsAllowed(false);
         ComponentUtil.fillSelectByEnum(typeOfEmploymentField, TypeOfEmployment.class);
         typeOfEmploymentField.addValueChangeListener(event -> {
-            TypeOfEmployment type = (TypeOfEmployment) event.getProperty().getValue();
+            final TypeOfEmployment type = (TypeOfEmployment) event.getProperty().getValue();
             setWorkInfoStatus(type);
         });
         formLayout.addComponent(typeOfEmploymentField);
@@ -632,7 +632,7 @@ public class PersonEditForm extends ExtaEditForm<Person> {
         // Владелец бизнеса
         businessOwnerField = new YesNoSelect("Владелец бизнеса");
         businessOwnerField.addValueChangeListener(e -> {
-            Boolean isOwner = (Boolean) e.getProperty().getValue();
+            final Boolean isOwner = (Boolean) e.getProperty().getValue();
             setBusinessInfoStatus(isOwner);
         });
         formLayout.addComponent(businessOwnerField);

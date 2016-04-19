@@ -251,7 +251,7 @@ public class SalePoint extends Contact implements ArchivedObject {
         return posAddress;
     }
 
-    public void setPosAddress(Address posAddress) {
+    public void setPosAddress(final Address posAddress) {
         this.posAddress = posAddress;
     }
 }

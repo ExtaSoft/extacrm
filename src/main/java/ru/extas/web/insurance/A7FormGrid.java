@@ -93,7 +93,7 @@ public class A7FormGrid extends ExtaGrid<A7Form> {
     }
 
     private void changeStatus(final Set itemIds, final A7Form.Status status) {
-        final Set<A7Form> a7Forms = getEntities(itemIds);
+        final Set<A7Form> a7Forms = getRefreshedEntities(itemIds);
 
         final A7FormRepository formService = lookup(A7FormRepository.class);
         formService.changeStatus(a7Forms, status);

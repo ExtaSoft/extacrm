@@ -109,9 +109,9 @@ public class LeadsGrid extends ExtaGrid<Lead> {
             actions.add(new ItemAction("Квалифицировать", "Квалифицировать лид", Fontello.CHECK_2) {
                 @Override
                 public void fire(final Set itemIds) {
-                    itemIds.stream()
-                            .findFirst()
-                            .ifPresent(itemId -> doQualifyLead(itemId));
+                    final Object itemId = getFirstItemId(itemIds);
+                    refreshContainerItem(itemId);
+                    doQualifyLead(itemId);
                 }
             });
 
@@ -122,7 +122,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
                     group.add(new ItemAction("Отказ клиента", "Клиент по каким-то причинам отказался от предоставления услуги", FontAwesome.USER) {
                         @Override
                         public void fire(final Set itemIds) {
-                            final Set<Lead> leads = getEntities(itemIds);
+                            final Set<Lead> leads = getRefreshedEntities(itemIds);
                             ConfirmDialog.show(UI.getCurrent(),
                                     "Подтвердите действие...",
                                     MessageFormat.format("Вы уверены, что необходимо закрыть лид № {0} по причине отказа клиента?",
@@ -138,7 +138,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
                     group.add(new ItemAction("Отменить дубль", "Отменить ошибочно введенную дублирующую заявку", FontAwesome.COPY) {
                         @Override
                         public void fire(final Set itemIds) {
-                            final Set<Lead> leads = getEntities(itemIds);
+                            final Set<Lead> leads = getRefreshedEntities(itemIds);
                             ConfirmDialog.show(UI.getCurrent(),
                                     "Подтвердите действие...",
                                     MessageFormat.format("Вы уверены, что необходимо закрыть лид № {0} как дублирующий?",

@@ -137,7 +137,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
             dealerManagerField.changeSalePoint();
             dealerLEField.changeSalePoint();
             if (responsibleField.getValue() == null) {
-                SalePoint sp = dealerField.getValue();
+                final SalePoint sp = dealerField.getValue();
                 final CuratorsGroup curatorsGroup = sp.getCuratorsGroup();
                 if (curatorsGroup != null && !curatorsGroup.getCurators().isEmpty()) {
                     final Iterator<Employee> employeeIterator = curatorsGroup.getCurators().iterator();
@@ -155,14 +155,14 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
             if(value != null && value instanceof LegalEntity) {
                 final LegalEntity legalEntity = (LegalEntity) value;
                 // Проваерить что юрик работает с этим брендом
-                String brand = (String) motorBrandField.getValue();
+                final String brand = (String) motorBrandField.getValue();
                 if(!legalEntity.getMotorBrands().contains(brand))
                     throw new Validator.InvalidValueException("Выбранное Юридическое лицо не работает с данным брендом техники");
                 // Проверить что юрик аккредитован для данного продукта
-                List<ProductInSale> productInSaleList = productInSaleField.getValue();
+                final List<ProductInSale> productInSaleList = productInSaleField.getValue();
                 if(productInSaleList != null) {
-                    for (ProductInSale prodInSale : productInSaleList) {
-                        Product prod = prodInSale.getProduct();
+                    for (final ProductInSale prodInSale : productInSaleList) {
+                        final Product prod = prodInSale.getProduct();
                         if(prod instanceof ProdCredit) {
                             if( !legalEntity.getCredProducts().contains(prod))
                                 throw new Validator.InvalidValueException(

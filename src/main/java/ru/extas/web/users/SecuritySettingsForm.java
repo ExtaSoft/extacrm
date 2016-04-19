@@ -160,6 +160,7 @@ public class SecuritySettingsForm extends ExtaEditForm<SecuredObject> {
                 actions.add(new ItemAction("Удалить", "Удалить доступ пользователю", Fontello.TRASH) {
                     @Override
                     public void fire(final Set itemIds) {
+                        refreshContainerItems(itemIds);
                         itemIds.forEach(id -> container.removeItem(id));
                         updateAccess((RefreshBeanContainer<UserObjectAccess>) container);
                     }

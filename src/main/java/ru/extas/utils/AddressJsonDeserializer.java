@@ -20,10 +20,10 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  */
 public class AddressJsonDeserializer extends JsonDeserializer<Address> {
     @Override
-    public Address deserialize(JsonParser jp, DeserializationContext ctx) throws IOException, JsonProcessingException {
-        JsonNode node = jp.getCodec().readTree(jp);
-        JsonNode data = node.get("data");
-        Address address = Address.builder()
+    public Address deserialize(final JsonParser jp, final DeserializationContext ctx) throws IOException, JsonProcessingException {
+        final JsonNode node = jp.getCodec().readTree(jp);
+        final JsonNode data = node.get("data");
+        final Address address = Address.builder()
                 .value(node.get("value").asText())
                 .unrestrictedValue(node.get("unrestricted_value").asText())
 
@@ -102,7 +102,7 @@ public class AddressJsonDeserializer extends JsonDeserializer<Address> {
         return address;
     }
 
-    private String asText(JsonNode data, String name) {
+    private String asText(final JsonNode data, final String name) {
         if (data.get(name).isNull()) {
             return null;
         }

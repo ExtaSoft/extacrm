@@ -122,21 +122,21 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
                 group.add(new ItemAction("Печать", "Создать печатное представление полиса страхования", Fontello.PRINT_2) {
                     @Override
                     public void fire(final Set itemIds) {
-                        printPolicy(getFirstEntity(itemIds), true);
+                        printPolicy(getFirstRefreshedEntity(itemIds), true);
                     }
                 });
 
                 group.add(new ItemAction("Печать без подложки", "Создать печатное представление полиса страхования без подложки", Fontello.PRINT_2) {
                     @Override
                     public void fire(final Set itemIds) {
-                        printPolicy(getFirstEntity(itemIds), false);
+                        printPolicy(getFirstRefreshedEntity(itemIds), false);
                     }
                 });
 
                 group.add(new ItemAction("Печать счета", "Создать печатную форму счета на оплату страховки", Fontello.PRINT_2) {
                     @Override
                     public void fire(final Set itemIds) {
-                        printInvoice(getFirstEntity(itemIds));
+                        printInvoice(getFirstRefreshedEntity(itemIds));
                     }
                 });
                 return group;

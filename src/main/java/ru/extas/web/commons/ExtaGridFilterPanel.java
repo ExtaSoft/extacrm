@@ -12,8 +12,6 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 
 /**
  * Класс, реализующий универсальную панель фильтра грида
@@ -25,24 +23,22 @@ import static com.google.common.collect.Lists.newArrayList;
 @SuppressWarnings("unchecked")
 class ExtaGridFilterPanel extends Panel {
 
-    private static final int DEF_FIELDS_COUNT = 4;
     private final IFilterGrid grid;
     private final MenuBar.MenuItem addDropDownBtn;
     private final MenuBar menuBar;
-
     /**
      * Интерфейс получения данных от грида
      */
     interface IFilterGrid {
+
+        static final int DEF_FIELDS_COUNT = 4;
 
         /**
          * Возвращает идентификаторы колонок по которым строится начальный фильтр
          *
          * @return список колонок
          */
-        default List getDefaultFilterFields() {
-            return null;
-        }
+        List getDefaultFilterFields();
 
         /**
          * Возвращает идентификаторы столбцов таблици
@@ -76,7 +72,7 @@ class ExtaGridFilterPanel extends Panel {
         String getColumnHeader(Object columnId);
     }
 
-    ExtaGridFilterPanel(IFilterGrid grid) {
+    ExtaGridFilterPanel(final IFilterGrid grid) {
         super("Фильтр записей");
         this.grid = grid;
 
@@ -88,22 +84,11 @@ class ExtaGridFilterPanel extends Panel {
 
 
         // Получить список полей фильтра по умолчанию
-        List defFields = grid.getDefaultFilterFields();
-        // Если список не задан, надо сформировать самостоятельно (три первых колонки)
-        if (defFields == null || defFields.isEmpty()) {
-            defFields = newArrayList();
-            for (Object columnId : grid.getColumns()) {
-                if (!"id".equals(columnId) && grid.isFilteredColumn(columnId)) {
-                    defFields.add(columnId);
-                    if (defFields.size() == DEF_FIELDS_COUNT)
-                        break;
-                }
-            }
-        }
+        final List defFields = grid.getDefaultFilterFields();
 
         // Формируем поля фильтра
         final MHorizontalLayout fields = new MHorizontalLayout().withStyleName(ExtaTheme.LAYOUT_HORIZONTAL_WRAPPING);
-        for (Object columnId : defFields) {
+        for (final Object columnId : defFields) {
             addFilterField(fields, columnId);
         }
         // Последним добавляем кнопку "добавить"
@@ -122,7 +107,7 @@ class ExtaGridFilterPanel extends Panel {
         filterContent.with(fields);
     }
 
-    private void addMenuItem(MHorizontalLayout fields, Object columnId) {
+    private void addMenuItem(final MHorizontalLayout fields, final Object columnId) {
         addDropDownBtn.addItem(grid.getColumnHeader(columnId),
                 item -> {
                     // Добавить поле в конец
@@ -132,9 +117,9 @@ class ExtaGridFilterPanel extends Panel {
                 });
     }
 
-    private void addFilterField(MHorizontalLayout fields, Object columnId) {
+    private void addFilterField(final MHorizontalLayout fields, final Object columnId) {
         final MHorizontalLayout fieldWrapp = new MHorizontalLayout().withSpacing(false).withMargin(false);
-        Component field = grid.getColumnComponent(columnId);
+        final Component field = grid.getColumnComponent(columnId);
         if (field != null) {
             field.setCaption(grid.getColumnHeader(columnId));
             field.addStyleName(ExtaTheme.TEXTFIELD_TINY);

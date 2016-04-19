@@ -186,7 +186,7 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
         loginField.addValidator(new UserNameUniqueValidator(userProfile));
         loginField.addValueChangeListener(e -> {
             if(loginField.isValid()) {
-                String newLogin = (String) e.getProperty().getValue();
+                final String newLogin = (String) e.getProperty().getValue();
                 passField.setValue(null);
                 passConfField.setValue(null);
                 changePasswordField.setValue(true);

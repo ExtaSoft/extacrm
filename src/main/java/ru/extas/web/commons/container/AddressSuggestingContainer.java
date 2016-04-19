@@ -19,7 +19,7 @@ public class AddressSuggestingContainer extends BeanItemContainer<Address> {
 
   private AddressAccessService service;
 
-  public AddressSuggestingContainer(AddressAccessService service) throws IllegalArgumentException {
+  public AddressSuggestingContainer(final AddressAccessService service) throws IllegalArgumentException {
     super(Address.class);
     this.service = service;
   }
@@ -38,18 +38,18 @@ public class AddressSuggestingContainer extends BeanItemContainer<Address> {
    * country objects.
    */
   @Override
-  protected void addFilter(Filter filter) throws UnsupportedFilterException {
-    SuggestionFilter suggestionFilter = (SuggestionFilter) filter;
+  protected void addFilter(final Filter filter) throws UnsupportedFilterException {
+    final SuggestionFilter suggestionFilter = (SuggestionFilter) filter;
     filterItems(suggestionFilter.getFilterString());
   }
 
-  private void filterItems(String filterString) {
+  private void filterItems(final String filterString) {
     if ("".equals(filterString)) {
       return;
     }
 
     removeAllItems();
-    List<Address> countries = service.filterAddresses(filterString);
+    final List<Address> countries = service.filterAddresses(filterString);
     addAll(countries);
   }
 
@@ -58,7 +58,7 @@ public class AddressSuggestingContainer extends BeanItemContainer<Address> {
    * this is explicitly opened with the arrow icon. If such a method is omitted, the dropdown list will contain the
    * most recently suggested items.
    */
-  public void setSelectedAddress(Address country) {
+  public void setSelectedAddress(final Address country) {
     removeAllItems();
     addBean(country);
   }
@@ -74,7 +74,7 @@ public class AddressSuggestingContainer extends BeanItemContainer<Address> {
 
     private String filterString;
 
-    public SuggestionFilter(String filterString) {
+    public SuggestionFilter(final String filterString) {
       this.filterString = filterString;
     }
 
@@ -83,13 +83,13 @@ public class AddressSuggestingContainer extends BeanItemContainer<Address> {
     }
 
     @Override
-    public boolean passesFilter(Object itemId, Item item) throws UnsupportedOperationException {
+    public boolean passesFilter(final Object itemId, final Item item) throws UnsupportedOperationException {
       // will never be used and can hence always return false
       return false;
     }
 
     @Override
-    public boolean appliesToProperty(Object propertyId) {
+    public boolean appliesToProperty(final Object propertyId) {
       // will never be used and can hence always return false
       return false;
     }

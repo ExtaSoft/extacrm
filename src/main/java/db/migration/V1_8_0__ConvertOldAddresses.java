@@ -37,7 +37,7 @@ public class V1_8_0__ConvertOldAddresses implements SpringJdbcMigration {
      * @throws Exception when the migration failed.
      */
     @Override
-    public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
+    public void migrate(final JdbcTemplate jdbcTemplate) throws Exception {
         this.template = jdbcTemplate;
         this.namedTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
 
@@ -96,8 +96,8 @@ public class V1_8_0__ConvertOldAddresses implements SpringJdbcMigration {
                         "DROP COLUMN `CITY`\n");
     }
 
-    protected void convertOldAddress(String table, String addrIdColumn, String region, String city, String street_bld) {
-        List<Map<String, Object>> postList = template.queryForList(
+    protected void convertOldAddress(final String table, final String addrIdColumn, final String region, final String city, final String street_bld) {
+        final List<Map<String, Object>> postList = template.queryForList(
                 "SELECT " +
                         "    ID," +
                         "    CONCAT(" + region + "," +
@@ -111,10 +111,10 @@ public class V1_8_0__ConvertOldAddresses implements SpringJdbcMigration {
                         "    " + region + " IS NOT NULL" +
                         "        OR " + city + " IS NOT NULL" +
                         "        OR " + street_bld + " IS NOT NULL");
-        List<Address> newAddrList = new ArrayList(128);
-        List<Map<String, Object>> idAddrList = new ArrayList(128);
-        for (Map<String, Object> map : postList) {
-            Address address = getFirst(addressService.filterAddresses((String) map.get("addr")), null);
+        final List<Address> newAddrList = new ArrayList(128);
+        final List<Map<String, Object>> idAddrList = new ArrayList(128);
+        for (final Map<String, Object> map : postList) {
+            final Address address = getFirst(addressService.filterAddresses((String) map.get("addr")), null);
             if (address != null) {
                 final String leId = (String) map.get("ID");
                 final String addrId = UUID.randomUUID().toString();
@@ -129,7 +129,7 @@ public class V1_8_0__ConvertOldAddresses implements SpringJdbcMigration {
                 SqlParameterSourceUtils.createBatch(idAddrList.toArray(new Map[idAddrList.size()])));
     }
 
-    private void insertNewAddresses(List<Address> addrList) {
+    private void insertNewAddresses(final List<Address> addrList) {
         namedTemplate.batchUpdate(
                 "INSERT INTO ADDRESS" +
                         "(`ID`,\n" +
@@ -264,17 +264,17 @@ public class V1_8_0__ConvertOldAddresses implements SpringJdbcMigration {
                 SqlParameterSourceUtils.createBatch(addrList.toArray()));
     }
 
-    protected void updateRegions(String table, String column) {
+    protected void updateRegions(final String table, final String column) {
         namedTemplate.batchUpdate(
                 MessageFormat.format("UPDATE {0} SET {1} = :nameWithType WHERE {1} = :oldName", table, column),
                 SqlParameterSourceUtils.createBatch(addressService.findAllRegions().toArray()));
     }
 
     private void updateAddressesWithComplexData() {
-        List<Address> updAddrList = new ArrayList(3500);
-        List<Map<String, Object>> adrList = template.queryForList("SELECT ID, VALUE FROM ADDRESS");
-        for (Map<String, Object> map : adrList) {
-            Address address = getFirst(addressService.filterAddresses((String) map.get("VALUE")), null);
+        final List<Address> updAddrList = new ArrayList(3500);
+        final List<Map<String, Object>> adrList = template.queryForList("SELECT ID, VALUE FROM ADDRESS");
+        for (final Map<String, Object> map : adrList) {
+            final Address address = getFirst(addressService.filterAddresses((String) map.get("VALUE")), null);
             if (address != null) {
                 address.setId((String) map.get("ID"));
                 updAddrList.add(address);

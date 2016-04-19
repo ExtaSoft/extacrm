@@ -322,12 +322,12 @@ public abstract class LoanInSmthEditForm<T> extends ExtaEditForm<T> {
      */
     private void initValidators() {
         downpaymentField.addValidator(value -> {
-            ProdCredit prod = productField.getValue();
+            final ProdCredit prod = productField.getValue();
             final BigDecimal price = priceSupplier.get();
             if (prod != null && price != null) {
-                BigDecimal newDownpayment = (BigDecimal) value;
-                BigDecimal minDownpayment = prod.getMinDownpayment().multiply(price, MathContext.DECIMAL128);
-                BigDecimal maxDownpayment = prod.getMaxDownpayment().multiply(price, MathContext.DECIMAL128);
+                final BigDecimal newDownpayment = (BigDecimal) value;
+                final BigDecimal minDownpayment = prod.getMinDownpayment().multiply(price, MathContext.DECIMAL128);
+                final BigDecimal maxDownpayment = prod.getMaxDownpayment().multiply(price, MathContext.DECIMAL128);
                 if (newDownpayment.compareTo(minDownpayment) < 0 ||
                         newDownpayment.compareTo(maxDownpayment) > 0) {
                     throw new Validator.InvalidValueException(
@@ -340,11 +340,11 @@ public abstract class LoanInSmthEditForm<T> extends ExtaEditForm<T> {
             }
         });
         summField.addValidator(value -> {
-            ProdCredit prod = productField.getValue();
+            final ProdCredit prod = productField.getValue();
             if (prod != null) {
-                BigDecimal newSumm = (BigDecimal) value;
-                BigDecimal minSumm = prod.getMinSum();
-                BigDecimal maxSumm = prod.getMaxSum();
+                final BigDecimal newSumm = (BigDecimal) value;
+                final BigDecimal minSumm = prod.getMinSum();
+                final BigDecimal maxSumm = prod.getMaxSum();
                 if (newSumm.compareTo(minSumm) < 0 ||
                         newSumm.compareTo(maxSumm) > 0) {
                     throw new Validator.InvalidValueException(

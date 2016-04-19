@@ -56,12 +56,12 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         commentsContainer.setReadOnly(isReadOnly());
         commentsContainer.setItemGenerator(new ItemGenerator() {
             @Override
-            public Component generateItem(AbstractItemLayout pSource, Object pItemId) {
+            public Component generateItem(final AbstractItemLayout pSource, final Object pItemId) {
                 return new ItemComponent(pSource, pItemId);
             }
 
             @Override
-            public boolean canBeGenerated(AbstractItemLayout pSource, Object pItemId, Object pPropertyChanged) {
+            public boolean canBeGenerated(final AbstractItemLayout pSource, final Object pItemId, final Object pPropertyChanged) {
                 return true;
             }
         });
@@ -185,6 +185,8 @@ public class CommentsField<TComment extends Comment> extends CustomField<List> {
         private void switchEditMode(final boolean isEdit) {
             text.setVisible(!isEdit);
             textArea.setVisible(isEdit);
+            if (isEdit)
+                textArea.focus();
             toolbar.setVisible(isEdit);
         }
 

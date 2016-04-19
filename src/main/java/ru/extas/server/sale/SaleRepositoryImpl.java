@@ -90,8 +90,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale.setResponsibleAssist(lead.getResponsibleAssist());
 
         final List<ProductInSale> productInSales = newArrayList();
-        for (ProductInLead productInLead : lead.getProductInLeads()) {
-            ProductInSale productInSale = new ProductInSale();
+        for (final ProductInLead productInLead : lead.getProductInLeads()) {
+            final ProductInSale productInSale = new ProductInSale();
             productInSale.setArchived(productInLead.isArchived());
             productInSale.setCreatedBy(productInLead.getCreatedBy());
             productInSale.setCreatedDate(productInLead.getCreatedDate());
@@ -110,7 +110,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
 
         final List<SaleComment> saleComments = newArrayList();
         for (final LeadComment leadComment : lead.getComments()) {
-            SaleComment saleComment = new SaleComment(leadComment);
+            final SaleComment saleComment = new SaleComment(leadComment);
             saleComment.setOwnerId(sale.getId());
             saleComments.add(saleComment);
         }

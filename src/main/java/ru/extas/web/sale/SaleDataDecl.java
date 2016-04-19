@@ -32,7 +32,7 @@ class SaleDataDecl extends GridDataDecl {
      *
      * @param domain
      */
-    public SaleDataDecl(ExtaDomain domain) {
+    public SaleDataDecl(final ExtaDomain domain) {
         switch (domain) {
             case SALES_OPENED:
                 addOpenedMappings();

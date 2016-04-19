@@ -75,8 +75,8 @@ public class A7NumListEdit extends ExtaCustomField<List> {
                 final GetValueWindowLongRange win = new GetValueWindowLongRange("Введите диапазон номеров квитанций");
                 win.addCloseFormListener(event1 -> {
                     if (win.isSaved()) {
-                        Range<Long> range = Range.closed(win.getStartValue(), win.getEndValue());
-                        for (Long num : ContiguousSet.create(range, DiscreteDomain.longs())) {
+                        final Range<Long> range = Range.closed(win.getStartValue(), win.getEndValue());
+                        for (final Long num : ContiguousSet.create(range, DiscreteDomain.longs())) {
                             addNumber(num.toString());
                         }
                     }

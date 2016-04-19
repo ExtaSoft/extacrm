@@ -19,7 +19,7 @@ public class SaleComment extends Comment {
     public SaleComment() {
     }
 
-    public SaleComment(Comment comment) {
+    public SaleComment(final Comment comment) {
         this.setArchived(comment.isArchived());
         this.setCreatedBy(comment.getCreatedBy());
         this.setCreatedDate(comment.getCreatedDate());

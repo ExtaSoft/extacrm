@@ -64,12 +64,12 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         filesContainer.setContainerDataSource(container);
         filesContainer.setItemGenerator(new ItemGenerator() {
             @Override
-            public Component generateItem(AbstractItemLayout pSource, Object pItemId) {
+            public Component generateItem(final AbstractItemLayout pSource, final Object pItemId) {
                 return getItemComponent(pSource, (TFileContainer) pItemId);
             }
 
             @Override
-            public boolean canBeGenerated(AbstractItemLayout pSource, Object pItemId, Object pPropertyChanged) {
+            public boolean canBeGenerated(final AbstractItemLayout pSource, final Object pItemId, final Object pPropertyChanged) {
                 return true;
             }
         });

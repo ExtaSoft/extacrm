@@ -99,7 +99,7 @@ public class Employee extends Contact {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(final Address address) {
         this.address = address;
     }
 

@@ -323,7 +323,7 @@ public class LegalEntity extends Client implements ArchivedObject {
         return legalAddress;
     }
 
-    public void setLegalAddress(Address legalAddress) {
+    public void setLegalAddress(final Address legalAddress) {
         this.legalAddress = legalAddress;
     }
 }

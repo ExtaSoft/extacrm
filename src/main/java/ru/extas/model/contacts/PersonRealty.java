@@ -126,7 +126,7 @@ public class PersonRealty extends IdentifiedObject {
         return reaityAdress;
     }
 
-    public void setReaityAdress(Address reaityAdress) {
+    public void setReaityAdress(final Address reaityAdress) {
         this.reaityAdress = reaityAdress;
     }
 }

@@ -268,11 +268,11 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
      */
     private void initValidators() {
         downpaymentField.addValidator(value -> {
-            ProdInstallments prod = productField.getValue();
+            final ProdInstallments prod = productField.getValue();
             if (prod != null) {
-                BigDecimal newDownpayment = (BigDecimal) value;
-                BigDecimal minDownpayment = prod.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
-                BigDecimal maxDownpayment = BigDecimal.valueOf(.99).multiply(priceSupplier.get(), MathContext.DECIMAL128);
+                final BigDecimal newDownpayment = (BigDecimal) value;
+                final BigDecimal minDownpayment = prod.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
+                final BigDecimal maxDownpayment = BigDecimal.valueOf(.99).multiply(priceSupplier.get(), MathContext.DECIMAL128);
                 if (newDownpayment.compareTo(minDownpayment) < 0 ||
                         newDownpayment.compareTo(maxDownpayment) > 0) {
                     throw new Validator.InvalidValueException(

@@ -10,7 +10,7 @@ import ru.extas.web.commons.container.AddressSuggestingContainer;
 
 public class AddressSuggestingComboBox extends ComboBox {
 
-  public AddressSuggestingComboBox(String caption) {
+  public AddressSuggestingComboBox(final String caption) {
     super(caption);
 
     final AddressAccessService databaseAccessService = new AddressAccessServiceImpl();
@@ -21,7 +21,7 @@ public class AddressSuggestingComboBox extends ComboBox {
     setImmediate(true);
     addValueChangeListener(new Property.ValueChangeListener() {
       @Override
-      public void valueChange(Property.ValueChangeEvent event) {
+      public void valueChange(final Property.ValueChangeEvent event) {
         container.setSelectedAddress((Address) event.getProperty().getValue());
       }
     });
@@ -39,7 +39,7 @@ public class AddressSuggestingComboBox extends ComboBox {
    * filterString on to the {@link AddressSuggestingContainer}.
    */
   @Override
-  protected Filter buildFilter(String filterString, FilteringMode filteringMode) {
+  protected Filter buildFilter(final String filterString, final FilteringMode filteringMode) {
     return new AddressSuggestingContainer.SuggestionFilter(filterString);
   }
 

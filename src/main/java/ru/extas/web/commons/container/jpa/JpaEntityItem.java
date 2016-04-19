@@ -16,7 +16,7 @@ import static com.google.common.base.Throwables.propagate;
  *         Time: 12:58
  */
 public class JpaEntityItem<TEntityType extends IdentifiedObject> implements Item {
-    private final boolean cached;
+    private boolean cached;
     private TEntityType bean;
     private List nestedProps;
     private final Map<Object, EntityItemProperty> propertyIdToProperty = new HashMap<Object, EntityItemProperty>();
@@ -92,6 +92,7 @@ public class JpaEntityItem<TEntityType extends IdentifiedObject> implements Item
     }
 
     public void refreshBean(final TEntityType freshEntity) {
+        this.cached = false;
         this.bean = freshEntity;
         this.nestedProps = Collections.emptyList();
         for (final EntityItemProperty property : propertyIdToProperty.values()) {

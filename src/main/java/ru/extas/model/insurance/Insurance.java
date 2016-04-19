@@ -1,6 +1,7 @@
 package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
+import ru.extas.model.common.Comment;
 import ru.extas.model.common.FileContainer;
 import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Contact;
@@ -125,6 +126,12 @@ public class Insurance extends SecuredObject {
 
     @Column(name = "IS_DOC_COMPLETE")
     private boolean docComplete;
+
+    // Комментарии к договору страхования
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = Comment.OWNER_ID_COLUMN)
+    @OrderBy("createdDate")
+    private List<InsuranceComment> comments = newArrayList();
 
     public boolean isCredit() {
         return !isNullOrEmpty(getBeneficiary()) && !getBeneficiary().equals(getClient().getName());
@@ -522,5 +529,13 @@ public class Insurance extends SecuredObject {
      */
     public void setDocComplete(final boolean docComplete) {
         this.docComplete = docComplete;
+    }
+
+    public List<InsuranceComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(final List<InsuranceComment> comments) {
+        this.comments = comments;
     }
 }

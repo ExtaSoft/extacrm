@@ -11,12 +11,14 @@ import org.joda.time.LocalDate;
 import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.insurance.Insurance;
+import ru.extas.model.insurance.InsuranceComment;
 import ru.extas.model.insurance.InsuranceFileContainer;
 import ru.extas.model.insurance.Policy;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.server.insurance.InsuranceRepository;
 import ru.extas.server.insurance.PolicyRepository;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.web.commons.CommentsField;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
@@ -88,6 +90,9 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
     private FilesManageField docFilesEditor;
     @PropertyId("docComplete")
     private CheckBox docCompleteField;
+    @PropertyId("comments")
+    private CommentsField<InsuranceComment> commentsField;
+
 
     private Label tarifField;
     private ObjectProperty<BigDecimal> tarifDataSource;
@@ -280,6 +285,12 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         docCompleteField = new CheckBox("Полный комплект документов");
         docCompleteField.setDescription("Укажите когда все документы загружены");
         form.addComponent(docCompleteField);
+
+        ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Коментарии"));
+        commentsField = new CommentsField<>(InsuranceComment.class);
+        commentsField.addValueChangeListener(forceModified);
+        form.addComponent(commentsField);
 
         return form;
     }

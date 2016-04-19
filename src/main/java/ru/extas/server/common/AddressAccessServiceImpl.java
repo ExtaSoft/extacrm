@@ -36,23 +36,23 @@ public class AddressAccessServiceImpl implements AddressAccessService {
     }
 
     @Override
-    public List<Address> filterAddresses(String filterPrefix) {
+    public List<Address> filterAddresses(final String filterPrefix) {
         if ("".equals(filterPrefix) || filterPrefix == null) {
             return Collections.emptyList();
         }
-        List<Address> result = new ArrayList<>();
+        final List<Address> result = new ArrayList<>();
 
-        RestTemplate restTemplate = new RestTemplate();
+        final RestTemplate restTemplate = new RestTemplate();
 
-        AddressReq req = new AddressReq(filterPrefix, 10);
-        HttpHeaders headers = new HttpHeaders();
+        final AddressReq req = new AddressReq(filterPrefix, 10);
+        final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.set("Authorization", DADATA_TOKEN);
 
-        HttpEntity<AddressReq> request = new HttpEntity<>(req, headers);
+        final HttpEntity<AddressReq> request = new HttpEntity<>(req, headers);
 
-        AddressSuggestions suggestions = restTemplate.postForObject(DADATA_API_SUGGEST_ADDRESS,
+        final AddressSuggestions suggestions = restTemplate.postForObject(DADATA_API_SUGGEST_ADDRESS,
                 request, AddressSuggestions.class);
 
         return suggestions.getSuggestions();
@@ -93,12 +93,12 @@ public class AddressAccessServiceImpl implements AddressAccessService {
         private Valued fromBound;
         private Valued toBound;
 
-        public AddressReq(String query, Integer count) {
+        public AddressReq(final String query, final Integer count) {
             this.query = query;
             this.count = count;
         }
 
-        public AddressReq(String query, Integer count, String fromBound, String toBound) {
+        public AddressReq(final String query, final Integer count, final String fromBound, final String toBound) {
             this(query, count);
             this.fromBound = new Valued(fromBound);
             this.toBound = new Valued(toBound);

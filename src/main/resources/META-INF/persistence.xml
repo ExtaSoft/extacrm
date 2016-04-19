@@ -45,6 +45,7 @@
         <class>ru.extas.model.insurance.A7Form</class>
         <class>ru.extas.model.insurance.FormTransfer</class>
         <class>ru.extas.model.insurance.Insurance</class>
+        <class>ru.extas.model.insurance.InsuranceComment</class>
         <class>ru.extas.model.insurance.InsuranceFileContainer</class>
         <class>ru.extas.model.insurance.Policy</class>
         <class>ru.extas.model.lead.Lead</class>

@@ -510,7 +510,7 @@ public class Lead extends SecuredObject {
         return marketingChannel;
     }
 
-    public void setMarketingChannel(String marketingChannel) {
+    public void setMarketingChannel(final String marketingChannel) {
         this.marketingChannel = marketingChannel;
     }
 
@@ -518,7 +518,7 @@ public class Lead extends SecuredObject {
         return comments;
     }
 
-    public void setComments(List<LeadComment> comments) {
+    public void setComments(final List<LeadComment> comments) {
         this.comments = comments;
     }
 
@@ -526,7 +526,7 @@ public class Lead extends SecuredObject {
         return productInLeads;
     }
 
-    public void setProductInLeads(List<ProductInLead> productInSales) {
+    public void setProductInLeads(final List<ProductInLead> productInSales) {
         this.productInLeads = productInSales;
     }
 }

@@ -84,7 +84,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
                 actions.add(new DefaultAction("Изменить", "Редактирование контактных данных", Fontello.EDIT_3) {
                     @Override
                     public void fire(final Set itemIds) {
-                        final LegalEntity bean = getFirstEntity(itemIds);
+                        final LegalEntity bean = getFirstRefreshedEntity(itemIds);
                         final LegalEntityEditForm editWin = new LegalEntityEditForm(bean);
                         editWin.addCloseFormListener(e -> {
                             if(editWin.isSaved()) {
@@ -98,6 +98,7 @@ public class LegalEntitiesSelectField extends CustomField<Set> {
                 actions.add(new ItemAction("Удалить", "Удалить юр.лицо из компании", Fontello.TRASH) {
                     @Override
                     public void fire(final Set itemIds) {
+                        refreshContainerItems(itemIds);
                         itemIds.forEach(id -> container.removeItem(id));
                         setValue(newHashSet(((ExtaBeanContainer<LegalEntity>) container).getItemIds()));
                     }

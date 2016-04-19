@@ -185,8 +185,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         directorField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
         directorField.setLegalEntitySupplier(super::getEntity);
         directorField.addValueChangeListener(e -> {
-            Employee emp = directorField.getValue();
-            Company cmp = companyField.getValue();
+            final Employee emp = directorField.getValue();
+            final Company cmp = companyField.getValue();
             if (cmp == null)
                 companyField.setValue(emp.getCompany());
         });
@@ -198,8 +198,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         accountantField.setCompanySupplier(Optional.ofNullable(companySupplier).orElse(() -> companyField.getValue()));
         accountantField.setLegalEntitySupplier(super::getEntity);
         accountantField.addValueChangeListener(e -> {
-            Employee emp = accountantField.getValue();
-            Company cmp = companyField.getValue();
+            final Employee emp = accountantField.getValue();
+            final Company cmp = companyField.getValue();
             if (cmp == null)
                 companyField.setValue(emp.getCompany());
         });

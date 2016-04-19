@@ -280,7 +280,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         vendorField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();
             if(responsibleField.getValue() == null) {
-                SalePoint sp = vendorField.getValue();
+                final SalePoint sp = vendorField.getValue();
                 final CuratorsGroup curatorsGroup = sp.getCuratorsGroup();
                 if(curatorsGroup != null && !curatorsGroup.getCurators().isEmpty()) {
                     final Iterator<Employee> employeeIterator = curatorsGroup.getCurators().iterator();

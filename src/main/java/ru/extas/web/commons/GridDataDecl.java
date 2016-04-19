@@ -139,7 +139,7 @@ public class GridDataDecl implements Serializable {
         addCreatedDateMapping(true);
     }
 
-    protected void addCreatedDateMapping(boolean isCollapsed) {
+    protected void addCreatedDateMapping(final boolean isCollapsed) {
         addMapping(AuditedObject_.createdDate.getName(), "Дата создания", getPresentFlags(isCollapsed)/*
                                                                                  * ,
 																				 * StringToJodaDTConverter
@@ -148,15 +148,15 @@ public class GridDataDecl implements Serializable {
 																				 */);
     }
 
-    protected void addCreatedByMapping(boolean isCollapsed) {
+    protected void addCreatedByMapping(final boolean isCollapsed) {
         addMapping(AuditedObject_.createdBy.getName(), "Кто создал", getPresentFlags(isCollapsed), LoginToUserNameConverter.class);
     }
 
-    protected void addLastModifiedDateMapping(boolean isCollapsed) {
+    protected void addLastModifiedDateMapping(final boolean isCollapsed) {
         addLastModifiedDateMapping(isCollapsed, "Дата изменения");
     }
 
-    protected void addLastModifiedDateMapping(boolean isCollapsed, String caption) {
+    protected void addLastModifiedDateMapping(final boolean isCollapsed, final String caption) {
         addMapping(AuditedObject_.lastModifiedDate.getName(), caption, getPresentFlags(isCollapsed)/*
                                                                                      * ,
 																					 * StringToJodaDTConverter
@@ -165,15 +165,15 @@ public class GridDataDecl implements Serializable {
 																					 */);
     }
 
-    protected void addLastModifiedByMapping(boolean isCollapsed) {
+    protected void addLastModifiedByMapping(final boolean isCollapsed) {
         addLastModifiedByMapping(isCollapsed, "Кто изменил");
     }
 
-    protected void addLastModifiedByMapping(boolean isCollapsed, String caption) {
+    protected void addLastModifiedByMapping(final boolean isCollapsed, final String caption) {
         addMapping(AuditedObject_.lastModifiedBy.getName(), caption, getPresentFlags(isCollapsed), LoginToUserNameConverter.class);
     }
 
-    protected EnumSet<PresentFlag> getPresentFlags(boolean isCollapsed) {
+    protected EnumSet<PresentFlag> getPresentFlags(final boolean isCollapsed) {
         return isCollapsed ? EnumSet.of(PresentFlag.COLLAPSED) : null;
     }
 

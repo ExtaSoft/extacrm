@@ -91,8 +91,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
     private GridLayout rootPanel;
 
     public void selectObject(final Object objectId) {
-        if (table != null && objectId != null && table.containsId(objectId))
+        if (table != null && objectId != null && table.containsId(objectId)) {
+            table.unselect(objectId);
             table.select(objectId);
+        }
     }
 
     public String getGridId() {
@@ -197,6 +199,11 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         return getEntities(itemIds);
     }
 
+    public Set<TEntity> getRefreshedEntities(final Set itemIds) {
+        refreshContainerItems(itemIds);
+        return getEntities(itemIds);
+    }
+
     public Set<TEntity> getEntities(final Set itemIds) {
         final Set<TEntity> entities = newHashSetWithExpectedSize(itemIds.size());
         itemIds.forEach(id -> entities.add(getEntity(id)));
@@ -218,6 +225,13 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
 
     public TEntity getFirstEntity(final Set itemIds) {
         return (TEntity) itemIds.stream().findFirst().map(id -> getEntity(id)).orElse(null);
+    }
+
+    public TEntity getFirstRefreshedEntity(final Set itemIds) {
+        return (TEntity) itemIds.stream().findFirst().map(id -> {
+            refreshContainerItem(id);
+            return getEntity(id);
+        }).orElse(null);
     }
 
     public Set getSelectedItemIds() {
@@ -329,8 +343,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
                     final MenuBar.MenuItem accessBtn = modeSwitchBar.addItem("", Fontello.LOCK, s -> {
                         final Set itemIds = getSelectedItemIds();
                         refreshContainerItems(itemIds);
-                        SecuredObject securedObject = (SecuredObject) getFirstSelectedEntity();
-                        SecuritySettingsForm form = new SecuritySettingsForm("Настройки доступа объекта...", securedObject);
+                        final SecuredObject securedObject = (SecuredObject) getFirstSelectedEntity();
+                        final SecuritySettingsForm form = new SecuritySettingsForm("Настройки доступа объекта...", securedObject);
                         FormUtils.showModalWin(form);
                     });
                     accessBtn.setDescription("Показать настройки доступа для выделенного объекта");
@@ -456,15 +470,15 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         setCompositionRoot(rootPanel);
     }
 
-    private void showTableFilter(boolean filterVisible) {
-        if(filterPanel == null)
+    private void showTableFilter(final boolean filterVisible) {
+        if (filterPanel == null)
             createFilterPanel();
         filterPanel.setVisible(filterVisible);
     }
 
     private void createFilterPanel() {
         // Панель фильтра
-        if(filterPanel == null) {
+        if (filterPanel == null) {
             filterPanel = new ExtaGridFilterPanel(this);
             filterPanel.setVisible(false);
             rootPanel.addComponent(filterPanel, 0, 1, 1, 1);
@@ -477,18 +491,32 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
     }
 
     @Override
-    public boolean isFilteredColumn(Object columnId) {
+    public boolean isFilteredColumn(final Object columnId) {
         return table.getColumnIdToFilterMap().containsKey(columnId);
     }
 
     @Override
-    public Component getColumnComponent(Object columnId) {
+    public Component getColumnComponent(final Object columnId) {
         return table.getColumnIdToFilterMap().get(columnId);
     }
 
     @Override
-    public String getColumnHeader(Object columnId) {
+    public String getColumnHeader(final Object columnId) {
         return table.getColumnHeader(columnId);
+    }
+
+    @Override
+    public List getDefaultFilterFields() {
+        // Если список не задан, надо сформировать самостоятельно (три первых колонки)
+        final List<Object> defFields = newArrayList();
+        for (final Object columnId : getColumns()) {
+            if (!"id".equals(columnId) && !table.isColumnCollapsed(columnId) && isFilteredColumn(columnId)) {
+                defFields.add(columnId);
+                if (defFields.size() == DEF_FIELDS_COUNT)
+                    break;
+            }
+        }
+        return defFields;
     }
 
     private boolean isArchiveEnabled() {
@@ -613,7 +641,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
                 @Override
                 public void handleAction(final Action action, final Object sender, final Object target) {
                     final UIAction firedAction = Iterables.find(actions, input -> input.getName().equals(action.getCaption()));
-                    firedAction.fire(getSelectedItemIds());
+                    final Set selectedIds = getSelectedItemIds();
+                    refreshContainerItems(selectedIds);
+                    firedAction.fire(selectedIds);
                 }
             });
         }
@@ -627,8 +657,11 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
             fullInitTable(table, dataDecl);
             if (defAction != null) {
                 table.addItemClickListener(event -> {
-                    if (event.isDoubleClick())
-                        defAction.fire(newHashSet(event.getItemId()));
+                    if (event.isDoubleClick()) {
+                        final Object itemId = event.getItemId();
+                        refreshContainerItem(itemId);
+                        defAction.fire(newHashSet(itemId));
+                    }
                 });
             }
             for (final MenuBar.MenuItem btn : needCurrentMenu)
@@ -746,7 +779,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
             if (a instanceof ItemAction && !(a instanceof DefaultAction)) {
                 final Component command = a.createButton();
                 if (command instanceof Button) {
-                    ((Button) command).addClickListener(event -> a.fire(newHashSet(itemId)));
+                    ((Button) command).addClickListener(event -> {
+                        refreshContainerItem(itemId);
+                        a.fire(newHashSet(itemId));
+                    });
                 }
                 actionToolbar.addComponent(command);
             }
@@ -843,7 +879,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
                 titleLink.setCaption(item.getItemProperty(titleMap.getPropName()).getValue().toString());
                 titleLink.setDescription(defAction.getDescription());
                 titleLink.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-                titleLink.addClickListener(event -> defAction.fire(newHashSet(itemId)));
+                titleLink.addClickListener(event -> {
+                    refreshContainerItem(itemId);
+                    defAction.fire(newHashSet(itemId));
+                });
                 titleComp = titleLink;
             }
             titleComp.setImmediate(true);
@@ -873,8 +912,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
             // in the table
             panel.addLayoutClickListener(event -> {
                 source.select(itemId);
-                if (event.isDoubleClick())
+                if (event.isDoubleClick()) {
+                    refreshContainerItem(itemId);
                     defAction.fire(newHashSet(itemId));
+                }
             });
             panel.setImmediate(true);
 
@@ -908,9 +949,15 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
 
         @Override
         public void fire(final Set itemIds) {
-            final TEntity entity = getFirstEntity(itemIds);
+            final Object itemId = getFirstItemId(itemIds);
+            refreshContainerItem(itemId);
+            final TEntity entity = getEntity(itemId);
             doEditObject(entity);
         }
+    }
+
+    protected Object getFirstItemId(final Set itemIds) {
+        return itemIds.stream().findFirst().orElse(null);
     }
 
     protected class CommonFilterGenerator implements FilterGenerator {

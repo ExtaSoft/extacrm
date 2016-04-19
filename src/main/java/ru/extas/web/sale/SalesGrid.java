@@ -146,7 +146,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
             actions.add(new ItemAction("Возобновить", "Вернуть продажу в открытые, чтобы продолжить работу по ней", FontAwesome.UNDO) {
                 @Override
                 public void fire(final Set itemIds) {
-                    final Set<Sale> sales = getEntities(itemIds);
+                    final Set<Sale> sales = getRefreshedEntities(itemIds);
                     final String numList = getSalesNumList(sales);
                     ConfirmDialog.show(UI.getCurrent(),
                             "Подтвердите действие...",
