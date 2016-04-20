@@ -3,7 +3,7 @@
  */
 package ru.extas.web.commons.component;
 
-import com.vaadin.ui.TextField;
+import org.vaadin.viritin.fields.MTextField;
 
 /**
  * Преднастроенный компонент ввода текста
@@ -12,7 +12,7 @@ import com.vaadin.ui.TextField;
  * @version $Id: $Id
  * @since 0.3
  */
-public class EditField extends TextField {
+public class EditField extends MTextField {
 
     private static final long serialVersionUID = -7195209978050069287L;
 
@@ -29,7 +29,6 @@ public class EditField extends TextField {
         setDescription(description);
         setInputPrompt(description);
         setRequiredError(String.format("Поле '%s' необходимо заполнить", caption));
-        setNullRepresentation("");
     }
 
     /**

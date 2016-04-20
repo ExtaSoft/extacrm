@@ -1,5 +1,6 @@
 package ru.extas.web.commons;
 
+import com.vaadin.data.Property;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -128,6 +129,9 @@ class ExtaGridFilterPanel extends Panel {
                             .withStyleName(ExtaTheme.BUTTON_TINY, ExtaTheme.BUTTON_BORDERLESS_COLORED)
                             .withDescription("Нажмите чтобы удалить поле из фильтра")
                             .withListener(event -> {
+                                // Очищаем фильр по удаляемому полю
+                                if(field instanceof Property)
+                                    ((Property)field).setValue(null);
                                 // Удаляем компонент
                                 fields.removeComponent(fieldWrapp);
                                 // Добавляем поле в меню

@@ -54,7 +54,7 @@ public class PersonSelectWindow extends CloseOnlyWindow {
         protected Container createContainer() {
             final ExtaDbContainer<Person> container = new ExtaDbContainer<>(Person.class);
             container.addNestedContainerProperty("registerAddress.regionWithType");
-            container.addNestedContainerProperty("registerAddress.city");
+            container.addNestedContainerProperty("registerAddress.cityWithType");
             return container;
         }
 

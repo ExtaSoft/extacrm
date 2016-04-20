@@ -28,7 +28,7 @@ public class PersonDataDecl extends GridDataDecl {
 		addMapping("secondPhone", "Доп. мобильный телефон", getPresentFlags(true), PhoneConverter.class);
 		addMapping("email", "E-Mail", new EmailLinkColumnGen());
 		addMapping("registerAddress.regionWithType", "Регион");
-		addMapping("registerAddress.city", "Город");
+		addMapping("registerAddress.cityWithType", "Город");
 		super.addDefaultMappings();
 	}
 

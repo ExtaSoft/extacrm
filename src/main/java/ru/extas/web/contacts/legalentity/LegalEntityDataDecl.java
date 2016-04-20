@@ -3,13 +3,10 @@
  */
 package ru.extas.web.contacts.legalentity;
 
-import ru.extas.web.commons.DataDeclMapping;
 import ru.extas.web.commons.EmailLinkColumnGen;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.UrlLinkColumnGen;
 import ru.extas.web.commons.converters.PhoneConverter;
-
-import java.util.EnumSet;
 
 /**
  * Опции отображения контактов в списке
@@ -29,10 +26,10 @@ public class LegalEntityDataDecl extends GridDataDecl {
         addMapping("inn", "ИНН");
         addMapping("company.name", "Компания");
 		addMapping("phone", "Телефон", PhoneConverter.class);
-		addMapping("email", "E-Mail", new EmailLinkColumnGen(), EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-		addMapping("www", "WWW", new UrlLinkColumnGen(), EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
+		addMapping("email", "E-Mail", new EmailLinkColumnGen(), getPresentFlags(true));
+		addMapping("www", "WWW", new UrlLinkColumnGen(), getPresentFlags(true));
 		addMapping("legalAddress.regionWithType", "Регион");
-		addMapping("legalAddress.city", "Город");
+		addMapping("legalAddress.cityWithType", "Город");
 		super.addDefaultMappings();
 	}
 

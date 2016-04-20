@@ -50,7 +50,7 @@ public class PersonsGrid extends ExtaGrid<Person> {
     protected Container createContainer() {
         final ExtaDbContainer<Person> container = SecuredDataContainer.create(Person.class, ExtaDomain.PERSON);
         container.addNestedContainerProperty("registerAddress.regionWithType");
-        container.addNestedContainerProperty("registerAddress.city");
+        container.addNestedContainerProperty("registerAddress.cityWithType");
         return container;
     }
 

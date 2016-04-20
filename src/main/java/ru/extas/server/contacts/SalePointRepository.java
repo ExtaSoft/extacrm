@@ -49,7 +49,7 @@ public interface SalePointRepository extends JpaRepository<SalePoint, String>, S
      * @param salePoint торговая точка для которой ищутся брэнды
      * @return список найденных брэндов
      */
-    @Query("select b from SalePoint s join s.legalEntities e join e.motorBrands b where s = :salePoint")
+    @Query("select distinct(b) from SalePoint s join s.legalEntities e join e.motorBrands b where s = :salePoint")
     List<String> findSalePointBrands(@Param("salePoint") SalePoint salePoint);
 
     /**

@@ -22,45 +22,49 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class BrandsField extends CustomField<Set> {
 
-	/**
-	 * <p>Constructor for BrandsField.</p>
-	 */
-	public BrandsField() {
-		setRequiredError("Необходимо указать хотябы один бренд!");
-		setBuffered(true);
-	}
+    /**
+     * <p>Constructor for BrandsField.</p>
+     */
+    public BrandsField() {
+        setRequiredError("Необходимо указать хотябы один бренд!");
+        setBuffered(true);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	protected Component initContent() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Component initContent() {
 
-		final TwinColSelect twin = new TwinColSelect();
-		twin.setRows(10);
-		twin.setNullSelectionAllowed(true);
-		twin.setMultiSelect(true);
-		twin.setImmediate(true);
-		twin.setLeftColumnCaption("Доступные бренды");
-		twin.setRightColumnCaption("Бренды юр.лица");
-		twin.addValueChangeListener(event -> {
+        final TwinColSelect twin = new TwinColSelect();
+        twin.setRows(10);
+        twin.setNullSelectionAllowed(true);
+        twin.setMultiSelect(true);
+        twin.setImmediate(true);
+        twin.setLeftColumnCaption("Доступные бренды");
+        twin.setRightColumnCaption("Бренды юр.лица");
+        twin.addValueChangeListener(event -> {
             final Set selected = (Set) twin.getValue();
             setValue(selected);
         });
 
-		final Property dataSource = getPropertyDataSource();
-		final Set<String> set = (Set<String>) dataSource.getValue();
-		if (set != null) {
-			twin.setValue(newHashSet(set));
-		}
-		for (final String item : lookup(MotorBrandRepository.class).loadAllNames()) {
-			twin.addItem(item);
-		}
+        final Property dataSource = getPropertyDataSource();
+        final Set<String> set = dataSource != null ? (Set<String>) dataSource.getValue() : null;
+        if (set != null) {
+            twin.setValue(newHashSet(set));
+        }
+        for (final String item : lookup(MotorBrandRepository.class).loadAllNames()) {
+            twin.addItem(item);
+        }
 
-		return twin;
-	}
+        return twin;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public Class<? extends Set> getType() {
-		return Set.class;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends Set> getType() {
+        return Set.class;
+    }
 }

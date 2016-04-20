@@ -16,8 +16,10 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaGrid;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
+import ru.extas.web.motor.MotorBrandSelect;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -75,7 +77,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
         // Запрос данных
         final ExtaDbContainer<SalePoint> container = new SecuredDataContainer<SalePoint>(new SalePointSecurityFilter());
         container.addNestedContainerProperty("posAddress.regionWithType");
-        container.addNestedContainerProperty("posAddress.city");
+        container.addNestedContainerProperty("posAddress.cityWithType");
         container.addNestedContainerProperty("posAddress.value");
         container.addNestedContainerProperty("company.name");
         if (companySupplier != null)
@@ -88,17 +90,24 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
         return new CommonFilterGenerator() {
             @Override
             public Container.Filter generateFilter(final Object propertyId, final Object value) {
-                if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS)) {
+                if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS_COLUMN)) {
                     return new Like("legalEntities.motorBrands", MessageFormat.format("%{0}%", value), false);
+                } else if (propertyId.equals(SalePointsDataDecl.SALEPOINT_LE_COLUMN)) {
+                    return new Like("legalEntities.name", MessageFormat.format("%{0}%", value), false);
+                } else if (propertyId.equals(SalePointsDataDecl.SALEPOINT_INN_COLUMN)) {
+                    return new Like("legalEntities.inn", MessageFormat.format("%{0}%", value), false);
                 } else
                     return super.generateFilter(propertyId, value);
             }
 
             @Override
             public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
-//                if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS))
-//                    return new EditField();
-//                else
+                if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS_COLUMN))
+                    return new MotorBrandSelect();
+                else if (propertyId.equals(SalePointsDataDecl.SALEPOINT_LE_COLUMN) ||
+                        propertyId.equals(SalePointsDataDecl.SALEPOINT_INN_COLUMN))
+                    return new EditField();
+                else
                     return super.getCustomFilterComponent(propertyId);
             }
         };
