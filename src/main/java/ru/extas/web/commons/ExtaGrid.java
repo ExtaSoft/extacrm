@@ -89,6 +89,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
     private MenuBar.MenuItem detailModeBtn;
     private Panel filterPanel;
     private GridLayout rootPanel;
+    private boolean filterVisible = false;
 
     public void selectObject(final Object objectId) {
         if (table != null && objectId != null && table.containsId(objectId)) {
@@ -104,6 +105,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
     public Container getContainer() {
         return container;
     }
+
+    public void setFilterVisible(boolean filterVisible) {
+        this.filterVisible = filterVisible;
+        showTableFilter(filterVisible);
+    }
+
 
     public enum Mode {
         TABLE,
@@ -315,9 +322,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         rootPanel.setColumnExpandRatio(0, 1);
         rootPanel.setColumnExpandRatio(1, 0);
         rootPanel.setMargin(true);
+        rootPanel.setSpacing(true);
 
         if (toolbarVisible) {
-            rootPanel.setSpacing(true);
             // Формируем тулбар
             final MenuBar commandBar = createGridToolbar(mode);
             rootPanel.addComponent(commandBar, 0, 0);
@@ -332,6 +339,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
             tableFilterBtn.setDescription("Показать строку фильтра таблицы");
             tableFilterBtn.setStyleName(ExtaTheme.BUTTON_ICON_ONLY);
             tableFilterBtn.setCheckable(true);
+            tableFilterBtn.setChecked(filterVisible);
 
             final MenuBar.MenuItem refreshBtn = modeSwitchBar.addItem("", FontAwesome.REFRESH, s -> refreshContainer());
             refreshBtn.setDescription("Обновить данные в таблице");
@@ -468,12 +476,15 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         rootPanel.addComponent(table, 0, 2, 1, 2);
 
         setCompositionRoot(rootPanel);
+        setFilterVisible(filterVisible);
     }
 
     private void showTableFilter(final boolean filterVisible) {
-        if (filterPanel == null)
-            createFilterPanel();
-        filterPanel.setVisible(filterVisible);
+        if (table != null) {
+            if (filterPanel == null)
+                createFilterPanel();
+            filterPanel.setVisible(filterVisible);
+        }
     }
 
     private void createFilterPanel() {

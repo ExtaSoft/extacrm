@@ -91,9 +91,9 @@ public class SalesGrid extends ExtaGrid<Sale> {
                     final Sale sale = getEntity(itemId);
                     final DateTime curDate = DateTime.now(DateTimeZone.UTC);
                     final DateTime modifiedDate = sale.getLastModifiedDate();
-                    if (modifiedDate.plus(Days.days(10)).isBeforeNow())
+                    if (modifiedDate.plus(Days.days(2)).isBeforeNow())
                         style = "highlight-red"; // Красненькие
-                    else if (modifiedDate.plus(Days.days(5)).isBeforeNow())
+                    else if (modifiedDate.plus(Days.days(1)).isBeforeNow())
                         style = "highlight-yellow"; // Желтенькие
                 }
                 return style;

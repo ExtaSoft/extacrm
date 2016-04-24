@@ -27,7 +27,6 @@ import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.converters.PhoneConverter;
 import ru.extas.web.contacts.ClientField;
-import ru.extas.web.contacts.ContactDataDecl;
 import ru.extas.web.contacts.employee.DealerEmployeeField;
 import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
@@ -35,7 +34,7 @@ import ru.extas.web.contacts.legalentity.LegalEntityEditForm;
 import ru.extas.web.contacts.person.ClientDataDecl;
 import ru.extas.web.contacts.person.PersonEditForm;
 import ru.extas.web.contacts.salepoint.DealerSalePointField;
-import ru.extas.web.contacts.salepoint.SalePointEditForm;
+import ru.extas.web.contacts.salepoint.SalePointsGrid;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
@@ -43,6 +42,7 @@ import ru.extas.web.sale.SaleEditForm;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -52,6 +52,7 @@ import static ru.extas.model.common.ModelUtils.evictCache;
 import static ru.extas.server.ServiceLocator.lookup;
 import static ru.extas.web.commons.GridItem.extractBean;
 import static ru.extas.web.commons.TableUtils.initTableColumns;
+import static ru.extas.web.contacts.salepoint.SalePointsDataDecl.*;
 
 /**
  * Форма ввода/редактирования лида
@@ -117,7 +118,6 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     private FilesManageField docFilesEditor;
 
     private final boolean qualifyForm;
-    private ExtaDbContainer<SalePoint> vendorsContainer;
     private ExtaDbContainer<Client> clientsContainer;
 
     public LeadEditForm(final Lead lead, final boolean qualifyForm) {
@@ -203,20 +203,6 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         createVendorSelectField(form);
 
         ////////////////////////////////////////////////////////////////////////////
-        form.addComponent(new FormGroupHeader("Продукты"));
-        productInLeadField = new ProductInLeadField("Продукты в продаже", getEntity(),
-                () -> (BigDecimal) mototPriceField.getConvertedValue(),
-                () -> (String) motorBrandField.getValue(),
-                () -> vendorField.getValue());
-        productInLeadField.addValueChangeListener(forceModified);
-        form.addComponent(productInLeadField);
-
-        commentField = new TextArea("Примечание");
-        commentField.setRows(3);
-        commentField.setNullRepresentation("");
-        form.addComponent(commentField);
-
-        ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Техника"));
         motorTypeField = new MotorTypeSelect();
         form.addComponent(motorTypeField);
@@ -252,6 +238,20 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         }
 
         ////////////////////////////////////////////////////////////////////////////
+        form.addComponent(new FormGroupHeader("Продукты"));
+        productInLeadField = new ProductInLeadField("Продукты в продаже", getEntity(),
+                () -> (BigDecimal) mototPriceField.getConvertedValue(),
+                () -> (String) motorBrandField.getValue(),
+                () -> vendorField.getValue());
+        productInLeadField.addValueChangeListener(forceModified);
+        form.addComponent(productInLeadField);
+
+        commentField = new TextArea("Примечание");
+        commentField.setRows(3);
+        commentField.setNullRepresentation("");
+        form.addComponent(commentField);
+
+        ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Ответственные"));
         responsibleField = new EAEmployeeField("Ответственный", "Выберите или введите ответственного менеджера");
         responsibleField.setRequired(getEntity().getStatus() != Lead.Status.NEW || qualifyForm);
@@ -279,13 +279,14 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         ///vendorField.setRequired(true);
         vendorField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();
-            if(responsibleField.getValue() == null) {
+            productInLeadField.refreshSalePoint();
+            if (responsibleField.getValue() == null) {
                 final SalePoint sp = vendorField.getValue();
                 final CuratorsGroup curatorsGroup = sp.getCuratorsGroup();
-                if(curatorsGroup != null && !curatorsGroup.getCurators().isEmpty()) {
+                if (curatorsGroup != null && !curatorsGroup.getCurators().isEmpty()) {
                     final Iterator<Employee> employeeIterator = curatorsGroup.getCurators().iterator();
                     responsibleField.setValue(employeeIterator.next());
-                    if(employeeIterator.hasNext())
+                    if (employeeIterator.hasNext())
                         responsibleAssistField.setValue(employeeIterator.next());
                 }
             }
@@ -305,13 +306,6 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         layout.setMargin(true);
         layout.setSpacing(true);
 
-        final Table table = new Table();
-        table.setRequired(true);
-        // Запрос данных
-        vendorsContainer = new ExtaDbContainer<>(SalePoint.class);
-        vendorsContainer.addNestedContainerProperty("posAddress.regionWithType");
-        setVendorsFilter(lead.getPointOfSale(), lead.getRegion());
-
         final Label info = new Label(Fontello.INFO_CIRCLED.getHtml() +
                 " Выберите подходящую точку продаж из списка или введите новую.<br/>Для поиска существующей торговой точки используйте поля фильтра.");
         info.setContentMode(ContentMode.HTML);
@@ -319,84 +313,61 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         info.addStyleName(ExtaTheme.LABEL_LIGHT);
         layout.addComponent(info);
 
-        final Button newBtn = new Button("Новая точка продаж");
-        newBtn.setIcon(Fontello.DOC_NEW);
-        newBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-        newBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
-        newBtn.addClickListener(event -> {
-            final SalePoint newObj = createSalePointFromLead(lead);
+        final SalePointsGrid grid = new SalePointsGrid() {
+            @Override
+            protected List<UIAction> createActions() {
+                return Collections.emptyList();
+            }
 
-            final SalePointEditForm editWin = new SalePointEditForm(newObj);
-            editWin.setModified(true);
+            @Override
+            protected GridDataDecl createDataDecl() {
+                final GridDataDecl dataDecl = super.createDataDecl();
+                dataDecl.setColumnCollapsed("company.name", true);
+                dataDecl.setColumnCollapsed("posAddress.regionWithType", true);
+                dataDecl.setColumnCollapsed("posAddress.cityWithType", true);
+                dataDecl.setColumnCollapsed("phone", true);
+                dataDecl.setColumnCollapsed("www", true);
+                dataDecl.setColumnCollapsed(SALEPOINT_LE_COLUMN, true);
+                dataDecl.setColumnCollapsed(SALEPOINT_INN_COLUMN, true);
+                return dataDecl;
+            }
 
-            editWin.addCloseFormListener(event1 -> {
-                if (editWin.isSaved()) {
-                    vendorsContainer.refresh();
-                    table.setValue(vendorsContainer.getEntityItemId(editWin.getEntity()));
-                }
-            });
-            FormUtils.showModalWin(editWin);
-        });
-        layout.addComponent(newBtn);
+            @Override
+            public List getDefaultFilterFields() {
+                return newArrayList("name", SALEPOINT_BRANDS_COLUMN,
+                        "posAddress.regionWithType", "posAddress.cityWithType");
+            }
 
-        final EditField name = new EditField("Название");
-        name.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
-        name.setIcon(Fontello.FILTER);
-        name.setValue(lead.getPointOfSale());
+            @Override
+            protected void initTable(Mode mode) {
+                super.initTable(mode);
+                // Обрабатываем выбор контакта
+                table.addValueChangeListener(event -> {
+                    final SalePoint curObj = getFirstSelectedEntity();
+                    lead.setVendor(curObj);
+                    vendorField.setValue(curObj);
+                    setModified(true);
+                });
+                // Задаем значения фильтра из данных лида
+                // Название
+                table.setFilterFieldValue("name", lead.getPointOfSale());
+                // Бренд
+                table.setFilterFieldValue(SALEPOINT_BRANDS_COLUMN, lead.getMotorBrand());
+                // Регион
+                table.setFilterFieldValue("posAddress.regionWithType", lead.getRegion());
 
-        final EditField region = new EditField("Регион");
-        region.addStyleName(ExtaTheme.TEXTFIELD_SMALL);
-        region.setIcon(Fontello.FILTER);
-        region.setValue(lead.getRegion());
-
-        name.addTextChangeListener(e -> setVendorsFilter(e.getText(), region.getValue()));
-        region.addTextChangeListener(e -> setVendorsFilter(name.getValue(), e.getText()));
-
-        final HorizontalLayout searchLay = new HorizontalLayout(name, region);
-        searchLay.setSpacing(true);
-        layout.addComponent(searchLay);
-
-        // Общие настройки таблицы
-        table.setContainerDataSource(vendorsContainer);
-        table.setSelectable(true);
-        table.setImmediate(true);
-        table.setColumnCollapsingAllowed(true);
-        table.setColumnReorderingAllowed(true);
-        table.setNullSelectionAllowed(false);
-        table.setHeight(10, Unit.EM);
-        table.setWidth(100, Unit.PERCENTAGE);
-        table.addStyleName(ExtaTheme.TABLE_SMALL);
-        // Настройка столбцов таблицы
-        table.setColumnHeaderMode(Table.ColumnHeaderMode.EXPLICIT);
-        final GridDataDecl dataDecl = new ContactDataDecl();
-        initTableColumns(table, dataDecl);
-        table.setColumnCollapsed("phone", true);
-        table.setColumnCollapsed("email", true);
-        // Обрабатываем выбор контакта
-        table.addValueChangeListener(event -> {
-            final SalePoint curObj = extractBean(table.getItem(table.getValue()));
-            lead.setVendor(curObj);
-            vendorField.setValue(curObj);
-            setModified(true);
-        });
-        layout.addComponent(table);
+                table.setHeight(15, Unit.EM);
+                table.addStyleName(ExtaTheme.TABLE_SMALL);
+            }
+        };
+        grid.setToolbarVisible(false);
+        grid.setFilterVisible(true);
+        layout.addComponent(grid);
 
         final Panel panel = new Panel("Квалификация точки продаж", layout);
         final VerticalLayout components = new VerticalLayout(panel);
         components.setMargin(new MarginInfo(true, false, true, false));
         return components;
-    }
-
-    private void setVendorsFilter(final String name, final String region) {
-        vendorsContainer.removeAllContainerFilters();
-        final List<Container.Filter> filters = newArrayListWithCapacity(2);
-        if (!Strings.isNullOrEmpty(name))
-            filters.add(new Like("name", MessageFormat.format("%{0}%", name), false));
-        if (!Strings.isNullOrEmpty(region)) {
-            filters.add(new Like("posAddress.region", MessageFormat.format("%{0}%", region), false));
-        }
-        if (!filters.isEmpty())
-            vendorsContainer.addContainerFilter(new Or(filters.toArray(new Container.Filter[filters.size()])));
     }
 
     private Component createClientPanel(final Lead lead) {
@@ -556,13 +527,13 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                         lead.setPointOfSale(salePoint.getName());
                         // * Ответственный - сотрудник ЕА который курирует данную торговую точку дилера.
                         final CuratorsGroup curatorsGroup = salePoint.getCuratorsGroup();
-                        if(curatorsGroup != null && !curatorsGroup.getCurators().isEmpty())
+                        if (curatorsGroup != null && !curatorsGroup.getCurators().isEmpty())
                             lead.setResponsible(curatorsGroup.getCurators().iterator().next());
                     }
                     // * Заместитель - пусто.
                     // * Менеджер(дилер) - сотрудник который вводит лид.
                     lead.setDealerManager(user);
-                } else if(employeeRepository.isCallcenterEmployee(user)) {
+                } else if (employeeRepository.isCallcenterEmployee(user)) {
                     // Для сотрудника колл-центра:
                     // * Ответственный - сотрудник ЕА который курирует торговую точку дилера (если определена).
                     // * Заместитель - пусто.
