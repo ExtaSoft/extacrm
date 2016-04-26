@@ -8,6 +8,8 @@ import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.filter.Between;
+import com.vaadin.data.util.filter.Compare;
+import com.vaadin.data.util.filter.Or;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
@@ -20,12 +22,15 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tepi.filtertable.FilterDecorator;
 import org.tepi.filtertable.FilterGenerator;
 import org.tepi.filtertable.FilterTable;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.common.ArchivedObject;
+import ru.extas.model.common.AuditedObject_;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.security.SecuredObject;
+import ru.extas.model.security.UserProfile;
 import ru.extas.model.security.UserRole;
 import ru.extas.model.settings.UserGridState;
 import ru.extas.server.common.ArchiveService;
@@ -36,6 +41,7 @@ import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.RefreshBeanContainer;
 import ru.extas.web.commons.window.DownloadFileWindow;
 import ru.extas.web.users.SecuritySettingsForm;
+import ru.extas.web.users.UserProfileSelect;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -623,6 +629,8 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         table = new FilterTable();
         // Поддержка фильтрации
         table.setFilterGenerator(createFilterGenerator());
+        // Поддержка отображения описаний перечислений
+        table.setFilterDecorator(createFilterDecorator());
 
         // Общие настройки таблицы
         table.setContainerDataSource(container);
@@ -702,6 +710,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
 
         // Сохранение состояния таблицы
         new FilterTableState().extend(table, createFilterTableStateHandler());
+    }
+
+    protected FilterDecorator createFilterDecorator() {
+        return new CommonFilterDecorator();
     }
 
     protected FilterGenerator createFilterGenerator() {
@@ -992,6 +1004,17 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
                                 interval.getStart().withTimeAtStartOfDay(),
                                 interval.getEnd().withTime(23, 59, 59, 999));
                 }
+            } else if (originatingField instanceof UserProfileSelect) {
+                final UserProfile userProfile = (UserProfile) ((UserProfileSelect) originatingField).getConvertedValue();
+                if (userProfile != null) {
+                    final Set<String> aliases = userProfile.getAliases();
+                    Container.Filter[] filters = new Container.Filter[aliases.size()];
+                    int i = 0;
+                    for (String alias : aliases) {
+                        filters[i++] = new Compare.Equal(propertyId, alias);
+                    }
+                    return filters.length > 1 ? new Or(filters) : filters[0];
+                }
             }
             return null;
         }
@@ -1001,6 +1024,10 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
             final Class<?> type = container.getType(propertyId);
             if (type == DateTime.class || type == LocalDate.class)
                 return new PastDateIntervalField("", "Нажмите для изменения временного интервала фильтра");
+            else if (AuditedObject_.createdBy.getName().equals(propertyId) ||
+                    AuditedObject_.lastModifiedBy.getName().equals(propertyId)) {
+                return new UserProfileSelect("");
+            }
             return null;
         }
 
