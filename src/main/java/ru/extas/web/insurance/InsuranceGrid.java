@@ -9,10 +9,12 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tepi.filtertable.FilterGenerator;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.component.PhoneFilterGenerator;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
 import ru.extas.web.commons.window.DownloadFileWindow;
@@ -212,4 +214,8 @@ public class InsuranceGrid extends ExtaGrid<Insurance> {
         }
     }
 
+    @Override
+    protected FilterGenerator createFilterGenerator() {
+        return new PhoneFilterGenerator("client.phone");
+    }
 }

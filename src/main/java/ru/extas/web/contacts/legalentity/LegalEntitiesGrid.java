@@ -5,14 +5,14 @@ package ru.extas.web.contacts.legalentity;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
+import org.tepi.filtertable.FilterGenerator;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
+import ru.extas.model.contacts.LegalEntity_;
 import ru.extas.security.LegalEntitySecurityFilter;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.ExtaGrid;
-import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
+import ru.extas.web.commons.component.PhoneFilterGenerator;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
 
@@ -102,4 +102,10 @@ public class LegalEntitiesGrid extends ExtaGrid<LegalEntity> {
         this.companySupplier = companySupplier;
     }
 
+    @Override
+    protected FilterGenerator createFilterGenerator() {
+        return new CompositeFilterGenerator()
+                .with(new PhoneFilterGenerator(LegalEntity_.phone.getName()))
+                .with(new PhoneFilterGenerator(LegalEntity_.secondPhone.getName()));
+    }
 }

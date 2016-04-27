@@ -8,8 +8,6 @@ import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.filter.Between;
-import com.vaadin.data.util.filter.Compare;
-import com.vaadin.data.util.filter.Or;
 import com.vaadin.event.Action;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
@@ -30,7 +28,6 @@ import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.AuditedObject_;
 import ru.extas.model.common.IdentifiedObject;
 import ru.extas.model.security.SecuredObject;
-import ru.extas.model.security.UserProfile;
 import ru.extas.model.security.UserRole;
 import ru.extas.model.settings.UserGridState;
 import ru.extas.server.common.ArchiveService;
@@ -41,7 +38,7 @@ import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.RefreshBeanContainer;
 import ru.extas.web.commons.window.DownloadFileWindow;
 import ru.extas.web.users.SecuritySettingsForm;
-import ru.extas.web.users.UserProfileSelect;
+import ru.extas.web.users.UserProfileFilterGenerator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -628,7 +625,12 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         // Создаем таблицу
         table = new FilterTable();
         // Поддержка фильтрации
-        table.setFilterGenerator(createFilterGenerator());
+        final CompositeFilterGenerator generator = new CompositeFilterGenerator();
+        addDefaultFiltergenerators(generator);
+        final FilterGenerator customGenerator = createFilterGenerator();
+        if (customGenerator != null)
+            generator.add(customGenerator);
+        table.setFilterGenerator(generator);
         // Поддержка отображения описаний перечислений
         table.setFilterDecorator(createFilterDecorator());
 
@@ -712,12 +714,46 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         new FilterTableState().extend(table, createFilterTableStateHandler());
     }
 
+    private void addDefaultFiltergenerators(CompositeFilterGenerator generator) {
+        generator
+                .with(new AbstractFilterGenerator() {
+                    @Override
+                    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+                        if (originatingField instanceof PastDateIntervalField) {
+                            final Interval interval = (Interval) originatingField.getValue();
+                            if (interval != null) {
+                                final Class<?> type = container.getType(propertyId);
+                                if (type == LocalDate.class)
+                                    return new Between(propertyId,
+                                            interval.getStart().toLocalDate(),
+                                            interval.getEnd().toLocalDate());
+                                else
+                                    return new Between(propertyId,
+                                            interval.getStart().withTimeAtStartOfDay(),
+                                            interval.getEnd().withTime(23, 59, 59, 999));
+                            }
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+                        final Class<?> type = container.getType(propertyId);
+                        if (type == DateTime.class || type == LocalDate.class)
+                            return new PastDateIntervalField("", "Нажмите для изменения временного интервала фильтра");
+                        return null;
+                    }
+                })
+                .with(new UserProfileFilterGenerator(AuditedObject_.createdBy.getName()))
+                .with(new UserProfileFilterGenerator(AuditedObject_.lastModifiedBy.getName()));
+    }
+
     protected FilterDecorator createFilterDecorator() {
         return new CommonFilterDecorator();
     }
 
     protected FilterGenerator createFilterGenerator() {
-        return new CommonFilterGenerator();
+        return null;
     }
 
     private FilterTableStateHandler createFilterTableStateHandler() {
@@ -983,67 +1019,4 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         return itemIds.stream().findFirst().orElse(null);
     }
 
-    protected class CommonFilterGenerator implements FilterGenerator {
-        @Override
-        public Container.Filter generateFilter(final Object propertyId, final Object value) {
-            return null;
-        }
-
-        @Override
-        public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
-            if (originatingField instanceof PastDateIntervalField) {
-                final Interval interval = (Interval) originatingField.getValue();
-                if (interval != null) {
-                    final Class<?> type = container.getType(propertyId);
-                    if (type == LocalDate.class)
-                        return new Between(propertyId,
-                                interval.getStart().toLocalDate(),
-                                interval.getEnd().toLocalDate());
-                    else
-                        return new Between(propertyId,
-                                interval.getStart().withTimeAtStartOfDay(),
-                                interval.getEnd().withTime(23, 59, 59, 999));
-                }
-            } else if (originatingField instanceof UserProfileSelect) {
-                final UserProfile userProfile = (UserProfile) ((UserProfileSelect) originatingField).getConvertedValue();
-                if (userProfile != null) {
-                    final Set<String> aliases = userProfile.getAliases();
-                    Container.Filter[] filters = new Container.Filter[aliases.size()];
-                    int i = 0;
-                    for (String alias : aliases) {
-                        filters[i++] = new Compare.Equal(propertyId, alias);
-                    }
-                    return filters.length > 1 ? new Or(filters) : filters[0];
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
-            final Class<?> type = container.getType(propertyId);
-            if (type == DateTime.class || type == LocalDate.class)
-                return new PastDateIntervalField("", "Нажмите для изменения временного интервала фильтра");
-            else if (AuditedObject_.createdBy.getName().equals(propertyId) ||
-                    AuditedObject_.lastModifiedBy.getName().equals(propertyId)) {
-                return new UserProfileSelect("");
-            }
-            return null;
-        }
-
-        @Override
-        public void filterRemoved(final Object propertyId) {
-
-        }
-
-        @Override
-        public void filterAdded(final Object propertyId, final Class<? extends Container.Filter> filterType, final Object value) {
-
-        }
-
-        @Override
-        public Container.Filter filterGeneratorFailed(final Exception reason, final Object propertyId, final Object value) {
-            return null;
-        }
-    }
 }

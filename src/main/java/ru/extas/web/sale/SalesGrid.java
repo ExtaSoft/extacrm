@@ -12,6 +12,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tepi.filtertable.FilterGenerator;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.sale.Sale;
@@ -20,6 +21,7 @@ import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.component.PhoneFilterGenerator;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
 
@@ -226,6 +228,11 @@ public class SalesGrid extends ExtaGrid<Sale> {
 
     private String getSalesNumList(final Set<Sale> sales) {
         return Joiner.on(", ").join(sales.stream().map(s -> s.getNum()).toArray());
+    }
+
+    @Override
+    protected FilterGenerator createFilterGenerator() {
+        return new PhoneFilterGenerator("client.phone");
     }
 
 }

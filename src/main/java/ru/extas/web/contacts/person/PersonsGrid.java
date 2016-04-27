@@ -4,9 +4,12 @@
 package ru.extas.web.contacts.person;
 
 import com.vaadin.data.Container;
+import org.tepi.filtertable.FilterGenerator;
 import ru.extas.model.contacts.Person;
+import ru.extas.model.contacts.Person_;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.component.PhoneFilterGenerator;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
 
@@ -67,4 +70,16 @@ public class PersonsGrid extends ExtaGrid<Person> {
         return actions;
     }
 
+    @Override
+    protected FilterGenerator createFilterGenerator() {
+        return new CompositeFilterGenerator()
+                .with(new PhoneFilterGenerator(Person_.phone.getName()))
+                .with(new PhoneFilterGenerator(Person_.secondPhone.getName()))
+                .with(new PhoneFilterGenerator(Person_.businessPhone.getName()))
+                .with(new PhoneFilterGenerator(Person_.closeRelativeHomePhone.getName()))
+                .with(new PhoneFilterGenerator(Person_.closeRelativeMobPhone.getName()))
+                .with(new PhoneFilterGenerator(Person_.employerPhone.getName()))
+                .with(new PhoneFilterGenerator(Person_.homePhone.getName()))
+                .with(new PhoneFilterGenerator(Person_.workPhone.getName()));
+    }
 }
