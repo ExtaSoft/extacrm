@@ -27,6 +27,7 @@ import ru.extas.web.contacts.employee.EAEmployeeField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.legalentity.SPLegalEntityField;
 import ru.extas.web.contacts.salepoint.DealerSalePointField;
+import ru.extas.web.lead.LeadSourceSelect;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorModelSelect;
 import ru.extas.web.motor.MotorTypeSelect;
@@ -84,6 +85,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private CommentsField<SaleComment> commentsField;
     @PropertyId("files")
     private FilesManageField docFilesEditor;
+    // источник лида
+    @PropertyId("source")
+    private LeadSourceSelect sourceField;
 
     public SaleEditForm(final Sale sale) {
         super(sale.isNew() ? "Ввод новой продажи в систему" :
@@ -105,6 +109,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         clientField.setRequired(true);
         clientField.setRequiredError("Имя контакта не может быть пустым.");
         form.addComponent(clientField);
+
+        sourceField = new LeadSourceSelect();
+        form.addComponent(sourceField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Техника"));
@@ -241,6 +248,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
                     sale.setResponsible(user);
                     // * Заместитель - пусто.
                     // * Менеджер(дилер) - пусто.
+                    // * Источник лида
+                    sale.setSource(LeadSourceSelect.EA_MANAGER);
                 } else if (employeeRepository.isDealerEmployee(user)) {
                     // Для сотрудника дилера:
                     final SalePoint salePoint = user.getWorkPlace();
@@ -255,11 +264,15 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
                     // * Заместитель - пусто.
                     // * Менеджер(дилер) - сотрудник который вводит лид.
                     sale.setDealerManager(user);
+                    // * Источник лида
+                    sale.setSource(LeadSourceSelect.DEALER_MANAGER);
                 } else if (employeeRepository.isCallcenterEmployee(user)) {
                     // Для сотрудника колл-центра:
                     // * Ответственный - сотрудник ЕА который курирует торговую точку дилера (если определена).
                     // * Заместитель - пусто.
                     // * Менеджер(дилер) - пусто.
+                    // * Источник лида
+                    sale.setSource(LeadSourceSelect.CLIENT_CALL);
                 }
             }
         }

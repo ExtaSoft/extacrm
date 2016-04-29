@@ -5,7 +5,9 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.CustomTable;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.UI;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -24,6 +26,7 @@ import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.PhoneFilterGenerator;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
+import ru.extas.web.lead.LeadSourceSelect;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -232,7 +235,21 @@ public class SalesGrid extends ExtaGrid<Sale> {
 
     @Override
     protected FilterGenerator createFilterGenerator() {
-        return new PhoneFilterGenerator("client.phone");
+        return new CompositeFilterGenerator(
+                new PhoneFilterGenerator("client.phone"),
+                new AbstractFilterGenerator() {
+                    @Override
+                    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+                        return null;
+                    }
+
+                    @Override
+                    public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+                        if (propertyId.equals("source"))
+                            return new LeadSourceSelect();
+                        return null;
+                    }
+                });
     }
 
 }
