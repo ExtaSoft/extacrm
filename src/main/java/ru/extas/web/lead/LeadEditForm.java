@@ -73,9 +73,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     // Эл. почта
     @PropertyId("contactEmail")
     private EmailField contactEmailField;
-    // Маркетинговый источник
-    @PropertyId("marketingChannel")
-    private ComboBox marketingChannelField;
+    // источник лида
+    @PropertyId("source")
+    private LeadSourceSelect sourceField;
     // Регион покупки техники
     @PropertyId("region")
     private RegionSelect regionField;
@@ -184,13 +184,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                 contactEmailField = new EmailField("E-Mail");
                 form.addComponent(contactEmailField);
 
-                marketingChannelField = new ComboBox("Маркетинговый источник",
-                        newArrayList("Сайт «Экспресс-рассрочка»", "СМИ", "Автосалон", "Партнеры КА", "Печатная продукция", "Наружная реклама", "Повторное обращение"));
-                marketingChannelField.setDescription("Укажите источник из которого клиент узнал о Экстрим Ассистанс");
-                marketingChannelField.setWidth(15, Unit.EM);
-                marketingChannelField.setNullSelectionAllowed(false);
-                marketingChannelField.setNewItemsAllowed(true);
-                form.addComponent(marketingChannelField);
+                sourceField = new LeadSourceSelect();
+                form.addComponent(sourceField);
             }
         } else {
             clientField = new ClientField("Клиент");
@@ -518,6 +513,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                     lead.setResponsible(user);
                     // * Заместитель - пусто.
                     // * Менеджер(дилер) - пусто.
+                    // * Источник лида
+                    lead.setSource(LeadSourceSelect.EA_MANAGER);
                 } else if (employeeRepository.isDealerEmployee(user)) {
                     // Для сотрудника дилера:
                     final SalePoint salePoint = user.getWorkPlace();
@@ -533,11 +530,15 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                     // * Заместитель - пусто.
                     // * Менеджер(дилер) - сотрудник который вводит лид.
                     lead.setDealerManager(user);
+                    // * Источник лида
+                    lead.setSource(LeadSourceSelect.DEALER_MANAGER);
                 } else if (employeeRepository.isCallcenterEmployee(user)) {
                     // Для сотрудника колл-центра:
                     // * Ответственный - сотрудник ЕА который курирует торговую точку дилера (если определена).
                     // * Заместитель - пусто.
                     // * Менеджер(дилер) - пусто.
+                    // * Источник лида
+                    lead.setSource(LeadSourceSelect.CLIENT_CALL);
                 }
             }
         }

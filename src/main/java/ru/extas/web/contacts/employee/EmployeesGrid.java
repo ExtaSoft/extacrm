@@ -2,8 +2,10 @@ package ru.extas.web.contacts.employee;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
+import org.tepi.filtertable.FilterGenerator;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
+import ru.extas.model.contacts.Employee_;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.utils.SupplierSer;
@@ -11,6 +13,7 @@ import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaGrid;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.component.PhoneFilterGenerator;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
 
@@ -92,5 +95,10 @@ public class EmployeesGrid extends ExtaGrid<Employee> {
 
     public SupplierSer<SalePoint> getSalePointSupplier() {
         return salePointSupplier;
+    }
+
+    @Override
+    protected FilterGenerator createFilterGenerator() {
+        return new PhoneFilterGenerator(Employee_.phone.getName());
     }
 }

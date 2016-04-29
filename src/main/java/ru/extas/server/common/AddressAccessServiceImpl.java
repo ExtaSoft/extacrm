@@ -29,7 +29,7 @@ import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 @Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class AddressAccessServiceImpl implements AddressAccessService {
 
-    public static final String DADATA_TOKEN = "Token cabb4f9a54337d80edb2b61bc375c3c8d3ff1c5f";
+    public static final String DADATA_TOKEN = "Token 38a7ba4f15ce8b9157d7700b88eb7eb61ba23126";
     public static final String DADATA_API_SUGGEST_ADDRESS = "https://dadata.ru/api/v2/suggest/address";
 
     public AddressAccessServiceImpl() {

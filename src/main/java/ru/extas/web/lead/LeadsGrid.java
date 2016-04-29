@@ -8,13 +8,16 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tepi.filtertable.FilterGenerator;
 import org.vaadin.dialogs.ConfirmDialog;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.Lead_;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.server.lead.LeadRepository;
 import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.*;
+import ru.extas.web.commons.component.PhoneFilterGenerator;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
 
@@ -195,4 +198,8 @@ public class LeadsGrid extends ExtaGrid<Lead> {
         FormUtils.showModalWin(editWin);
     }
 
+    @Override
+    protected FilterGenerator createFilterGenerator() {
+        return new PhoneFilterGenerator(Lead_.contactPhone.getName());
+    }
 }
