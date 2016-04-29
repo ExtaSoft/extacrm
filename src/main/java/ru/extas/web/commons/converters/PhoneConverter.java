@@ -43,7 +43,7 @@ public class PhoneConverter implements Converter<String, String> {
     /** {@inheritDoc} */
     @Override
     public String convertToPresentation(final String value, final Class<? extends String> targetType, final Locale locale) throws ConversionException {
-        if (value == null)
+        if (isNullOrEmpty(value))
             return null;
 
         final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();

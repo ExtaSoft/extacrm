@@ -107,6 +107,9 @@ public class LeadRestService {
         // Примечание.
         private String comment;
 
+        // Источник лида
+        private String source;
+
         public RestLead() {
         }
 
@@ -204,6 +207,14 @@ public class LeadRestService {
 
         public void setComment(final String comment) {
             this.comment = comment;
+        }
+
+        public String getSource() {
+            return source;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
         }
     }
 
@@ -354,6 +365,11 @@ public class LeadRestService {
         if (!isNullOrEmpty(lead.getComment()))
             dirtyData.append(lead.getComment());
         newLead.setComment(dirtyData.toString());
+
+        // Источник лида.
+        final String leadSource = lead.getSource();
+        if (!isNullOrEmpty(leadSource))
+            newLead.setSource(leadSource);
 
         newLead = leadRepository.secureSave(newLead);
         evictCache(entityManager, newLead);

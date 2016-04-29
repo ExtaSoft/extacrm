@@ -62,7 +62,7 @@ class SaleDataDecl extends GridDataDecl {
         addNumMapping();
         addCreatedDateMapping(false);
         addLastModifiedDateMapping(false, "Дата завершения");
-        addClientNameMapping();
+        addClientNameMapping(true);
         addMotorMappings();
         addDealerMappings();
         addRegionCityMappings();
@@ -75,7 +75,7 @@ class SaleDataDecl extends GridDataDecl {
         addNumMapping();
         addCreatedDateMapping(false);
         addLastModifiedDateMapping(false, "Дата отмены");
-        addClientNameMapping();
+        addClientNameMapping(true);
         addMotorMappings();
         addDealerMappings();
         addRegionCityMappings();
@@ -88,8 +88,7 @@ class SaleDataDecl extends GridDataDecl {
     private void addOpenedMappings() {
         addNumMapping();
         addLastModifiedDateMapping(false);
-        addClientNameMapping();
-        addMapping("client.phone", "Телефон", PhoneConverter.class);
+        addClientNameMapping(false);
         addMotorMappings();
         addRegionCityMappings();
         addDealerMappings();
@@ -153,7 +152,8 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("motorPrice", "Стоимость техники", getPresentFlags(true));
     }
 
-    private void addClientNameMapping() {
+    private void addClientNameMapping(boolean isCollapsed) {
         addMapping("client.name", "Клиент");
+        addMapping("client.phone", "Телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
     }
 }

@@ -7,16 +7,16 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.data.util.filter.Like;
 import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Field;
 import org.tepi.filtertable.FilterGenerator;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.SalePoint;
+import ru.extas.model.contacts.SalePoint_;
 import ru.extas.security.SalePointSecurityFilter;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.ExtaGrid;
-import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.UIAction;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.EditField;
+import ru.extas.web.commons.component.PhoneFilterGenerator;
 import ru.extas.web.commons.container.ExtaDbContainer;
 import ru.extas.web.commons.container.SecuredDataContainer;
 import ru.extas.web.motor.MotorBrandSelect;
@@ -87,30 +87,37 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
 
     @Override
     protected FilterGenerator createFilterGenerator() {
-        return new CommonFilterGenerator() {
-            @Override
-            public Container.Filter generateFilter(final Object propertyId, final Object value) {
-                if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS_COLUMN)) {
-                    return new Like("legalEntities.motorBrands", MessageFormat.format("%{0}%", value), false);
-                } else if (propertyId.equals(SalePointsDataDecl.SALEPOINT_LE_COLUMN)) {
-                    return new Like("legalEntities.name", MessageFormat.format("%{0}%", value), false);
-                } else if (propertyId.equals(SalePointsDataDecl.SALEPOINT_INN_COLUMN)) {
-                    return new Like("legalEntities.inn", MessageFormat.format("%{0}%", value), false);
-                } else
-                    return super.generateFilter(propertyId, value);
-            }
+        return new CompositeFilterGenerator()
+                .with(new AbstractFilterGenerator() {
+                    @Override
+                    public Container.Filter generateFilter(final Object propertyId, final Object value) {
+                        if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS_COLUMN)) {
+                            return new Like("legalEntities.motorBrands", MessageFormat.format("%{0}%", value), false);
+                        } else if (propertyId.equals(SalePointsDataDecl.SALEPOINT_LE_COLUMN)) {
+                            return new Like("legalEntities.name", MessageFormat.format("%{0}%", value), false);
+                        } else if (propertyId.equals(SalePointsDataDecl.SALEPOINT_INN_COLUMN)) {
+                            return new Like("legalEntities.inn", MessageFormat.format("%{0}%", value), false);
+                        } else
+                            return super.generateFilter(propertyId, value);
+                    }
 
-            @Override
-            public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
-                if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS_COLUMN))
-                    return new MotorBrandSelect();
-                else if (propertyId.equals(SalePointsDataDecl.SALEPOINT_LE_COLUMN) ||
-                        propertyId.equals(SalePointsDataDecl.SALEPOINT_INN_COLUMN))
-                    return new EditField();
-                else
-                    return super.getCustomFilterComponent(propertyId);
-            }
-        };
+                    @Override
+                    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+                        return null;
+                    }
+
+                    @Override
+                    public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
+                        if (propertyId.equals(SalePointsDataDecl.SALEPOINT_BRANDS_COLUMN))
+                            return new MotorBrandSelect();
+                        else if (propertyId.equals(SalePointsDataDecl.SALEPOINT_LE_COLUMN) ||
+                                propertyId.equals(SalePointsDataDecl.SALEPOINT_INN_COLUMN))
+                            return new EditField();
+                        else
+                            return null;
+                    }
+                })
+                .with(new PhoneFilterGenerator(SalePoint_.phone.getName()));
     }
 
     /**

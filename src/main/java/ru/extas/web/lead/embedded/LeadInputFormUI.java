@@ -38,6 +38,7 @@ import ru.extas.web.commons.component.EmailField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.PhoneField;
 import ru.extas.web.contacts.salepoint.SalePointSimpleSelect;
+import ru.extas.web.lead.LeadSourceSelect;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
@@ -370,6 +371,13 @@ public class LeadInputFormUI extends UI {
         final String comment = getParamValue("comment", params);
         if (!isNullOrEmpty(comment))
             lead.setComment(comment);
+
+        // Источник лида
+        final String source = getParamValue("source", params);
+        if (!isNullOrEmpty(source))
+            lead.setSource(source);
+        else
+            lead.setSource(LeadSourceSelect.DEALER_SITE);
 
         return false;
     }

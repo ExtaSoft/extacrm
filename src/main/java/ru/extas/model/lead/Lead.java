@@ -123,10 +123,10 @@ public class Lead extends SecuredObject {
     @Column(name = "CONTACT_REGION", length = Address.REGION_WITH_TYPE_LEN)
     @Size(max = Address.REGION_WITH_TYPE_LEN)
     private String contactRegion;
-    // Маркетинговый источник
-    @Column(name = "MARKETING_CHANNEL", length = 50)
+    // источник
+    @Column(name = "SOURCE", length = 50)
     @Size(max = 50)
-    private String marketingChannel;
+    private String source;
 
 
     // Квалифицированные данные
@@ -506,12 +506,12 @@ public class Lead extends SecuredObject {
         this.contactRegion = contactRegion;
     }
 
-    public String getMarketingChannel() {
-        return marketingChannel;
+    public String getSource() {
+        return source;
     }
 
-    public void setMarketingChannel(final String marketingChannel) {
-        this.marketingChannel = marketingChannel;
+    public void setSource(final String source) {
+        this.source = source;
     }
 
     public List<LeadComment> getComments() {
