@@ -62,6 +62,7 @@ class SaleDataDecl extends GridDataDecl {
         addNumMapping();
         addCreatedDateMapping(false);
         addLastModifiedDateMapping(false, "Дата завершения");
+        addSourceMapping(true);
         addClientNameMapping(true);
         addMotorMappings();
         addDealerMappings();
@@ -75,6 +76,7 @@ class SaleDataDecl extends GridDataDecl {
         addNumMapping();
         addCreatedDateMapping(false);
         addLastModifiedDateMapping(false, "Дата отмены");
+        addSourceMapping(true);
         addClientNameMapping(true);
         addMotorMappings();
         addDealerMappings();
@@ -85,9 +87,14 @@ class SaleDataDecl extends GridDataDecl {
         addManagersMapping();
     }
 
+    private void addSourceMapping(boolean isCollapsed) {
+        addMapping("source", "Источник лида", getPresentFlags(isCollapsed));
+    }
+
     private void addOpenedMappings() {
         addNumMapping();
         addLastModifiedDateMapping(false);
+        addSourceMapping(false);
         addClientNameMapping(false);
         addMotorMappings();
         addRegionCityMappings();

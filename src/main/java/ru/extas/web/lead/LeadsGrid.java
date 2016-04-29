@@ -5,6 +5,8 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.data.util.filter.Or;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +48,7 @@ public class LeadsGrid extends ExtaGrid<Lead> {
     /**
      * <p>Constructor for LeadsGrid.</p>
      *
-     * @param status a {@link Lead.Status} object.
+     * @param status   a {@link Lead.Status} object.
      * @param isMyOnly
      */
     public LeadsGrid(final Lead.Status status, final boolean isMyOnly) {
@@ -200,6 +202,20 @@ public class LeadsGrid extends ExtaGrid<Lead> {
 
     @Override
     protected FilterGenerator createFilterGenerator() {
-        return new PhoneFilterGenerator(Lead_.contactPhone.getName());
+        return new CompositeFilterGenerator(
+                new PhoneFilterGenerator(Lead_.contactPhone.getName()),
+                new AbstractFilterGenerator() {
+                    @Override
+                    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+                        return null;
+                    }
+
+                    @Override
+                    public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+                        if (propertyId.equals("source"))
+                            return new LeadSourceSelect();
+                        return null;
+                    }
+                });
     }
 }

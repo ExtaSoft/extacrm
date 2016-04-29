@@ -1,6 +1,8 @@
 package ru.extas.web.commons;
 
 import com.vaadin.data.Container;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Field;
 import org.tepi.filtertable.FilterGenerator;
 
 /**
@@ -26,4 +28,10 @@ public abstract class AbstractFilterGenerator implements FilterGenerator {
     public Container.Filter filterGeneratorFailed(final Exception reason, final Object propertyId, final Object value) {
         return null;
     }
+
+    @Override
+    public abstract Container.Filter generateFilter(Object propertyId, Field<?> originatingField);
+
+    @Override
+    public abstract AbstractField<?> getCustomFilterComponent(Object propertyId);
 }

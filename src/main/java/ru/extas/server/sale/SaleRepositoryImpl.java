@@ -88,6 +88,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale.setLead(lead);
         sale.setResponsible(lead.getResponsible());
         sale.setResponsibleAssist(lead.getResponsibleAssist());
+        sale.setSource(lead.getSource());
 
         final List<ProductInSale> productInSales = newArrayList();
         for (final ProductInLead productInLead : lead.getProductInLeads()) {
