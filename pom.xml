@@ -7,7 +7,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>1.9.2</version>
+    <version>1.9.3</version>
 
     <properties>
         <maven.tomcat.port>8282</maven.tomcat.port>
