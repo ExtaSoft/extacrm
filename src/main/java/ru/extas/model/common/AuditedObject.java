@@ -53,7 +53,8 @@ public abstract class AuditedObject extends IdentifiedObject implements Auditabl
 
     @Override
     public void setCreatedBy(final String createdBy) {
-        this.createdBy = createdBy;
+        if (this.createdBy == null)
+            this.createdBy = createdBy;
     }
 
     @Override
@@ -63,7 +64,8 @@ public abstract class AuditedObject extends IdentifiedObject implements Auditabl
 
     @Override
     public void setCreatedDate(final DateTime creationDate) {
-        this.createdDate = creationDate;
+        if (this.createdDate == null)
+            this.createdDate = creationDate;
     }
 
     @Override
