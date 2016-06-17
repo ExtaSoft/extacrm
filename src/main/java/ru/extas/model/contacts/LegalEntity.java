@@ -296,9 +296,6 @@ public class LegalEntity extends Client implements ArchivedObject {
             setDirector(null);
         if(getAccountant() != null && !getAccountant().getCompany().equals(company))
             setAccountant(null);
-        if (company != null)
-            company.getLegalEntities().add(this);
-
     }
 
     /**

@@ -243,8 +243,6 @@ public class SalePoint extends Contact implements ArchivedObject {
      */
     public void setCompany(final Company company) {
         this.company = company;
-        if (company != null)
-            company.getSalePoints().add(this);
     }
 
     public Address getPosAddress() {

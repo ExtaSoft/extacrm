@@ -15,7 +15,7 @@ BZIP2=`which bzip2`;
 SED=`which sed`;
 WC=`which wc`;
 #---------------------------
-OPTS="--quote-names --opt --compress --single-transaction"
+OPTS="--quote-names --opt --compress --single-transaction --quick"
 DATE=`date +%Y-%m-%d_%Hh%Mm`
 SECONDS=`date +%s`
 
@@ -39,9 +39,9 @@ function db_dump () {
     ${MDUMP} --user=${DBUSER} --password=${DBPASSWORD} --host=${HOST} ${OPTS} --database ${db_name} 2>${TMP} > ${file_name}
     last_eroror=$?
     if [ $last_eroror -eq 0 ]
-    then 
+    then
        $BZIP2 ${file_name};
-    else 
+    else
        rm -rf ${file_name};
     fi
     return $last_eroror;
@@ -54,9 +54,9 @@ function dumpall () {
     ${MDUMP} --user=${DBUSER} --password=${DBPASSWORD} --host=${HOST} ${OPTS} --all-databases 2>${TMP} > ${file_name}
     last_eroror=$?;
     if [ $last_eroror -eq 0 ]
-    then 
+    then
 	   $BZIP2 ${file_name};
-    else 
+    else
 	   rm -rf ${file_name};
     fi
     return $last_eroror;
@@ -69,9 +69,9 @@ function db_dump_tables () {
     ${MDUMP} --user=${DBUSER} --password=${DBPASSWORD} --host=${HOST} ${OPTS} ${db_name} $tables 2>${TMP}  > ${file_name}
     last_eroror=$?
     if [ $last_eroror -eq 0 ]
-    then 
+    then
 	   $BZIP2 ${file_name}
-    else 
+    else
 	   rm -rf ${file_name}
     fi
     return $last_eroror
@@ -93,6 +93,17 @@ function usage() {
 }
 
 
+function do_cleaning() {
+#    log "Restarting MySql server..."
+#    sudo ${MYSQL} stop 2>${TMP}
+#    sudo ${MYSQL} start 2>${TMP}
+#    log "Server restarted!"
+
+    log "Cleaning backup directory..."
+    find ${BACKUPDIR} -type f -mtime +3 -delete
+    log "Cleaning done!"
+}
+
 function do_action(){
     [ -z "$DBUSER" ] && {
             log "Empty DBUSER. Exiting..." ;
@@ -105,38 +116,38 @@ function do_action(){
     }
 
     [ -z "$DATABASE" ] && {
-            # --all-databases            
+            # --all-databases
             log "Empty DATABASE. Exiting..." ;
-            exit; 
+            exit;
     }
-    create_directories;    
+    create_directories;
 
     [ $? -eq 0 ] && {
         log "Exit. To often.."
         exit
     }
-    DATABASE=`echo $DATABASE| $SED 's/\,/ /g'`; 
+    DATABASE=`echo $DATABASE| $SED 's/\,/ /g'`;
     DBCOUNT=`echo $DATABASE | $WC -w`;
-    TABLES=`echo $TABLES | $SED 's/\,/ /g'`; 
+    TABLES=`echo $TABLES | $SED 's/\,/ /g'`;
     TABLESCOUNT=`echo $TABLES | $WC -w`;
     log "user: $DBUSER ; password: $DBPASSWORD ; databases: $DATABASE ; DB count: $DBCOUNT ; tables: $TABLES; TABLES count: $TABLESCOUNT";
     if [ "$DBCOUNT" -eq 1 ]
-    then    
+    then
         db_dump_tables "$DATABASE" "$TABLES" "${BACKUPDIR}/${DATABASE}-${DATE}.sql"
-        if [ $? -eq 0 ]; 
-        then 
+        if [ $? -eq 0 ];
+        then
             log "Done! DB: ${DATABASE}-${DATE}.sql.bz2. DATE: ${DATE}";
         else
             log "ERROR making backup. DB: ${DATABASE}. DATE: ${DATE}. `cat $TMP`";
-            rm -rf ${TMP};            
+            rm -rf ${TMP};
         fi
     elif [ "$DBCOUNT" -gt 1 ]
     then
         for db in $DATABASE
         do
             db_dump "$db" "${BACKUPDIR}/${db}-${DATE}.sql"
-            if [ $? -eq 0 ]; 
-            then 
+            if [ $? -eq 0 ];
+            then
                 log "Done! DB: ${db}-${DATE}.sql.bz2 DATE: ${DATE}";
             else
                 log "ERROR making backup. DB: ${db}. DATE: ${DATE}. `cat ${TMP}`";
@@ -147,6 +158,8 @@ function do_action(){
 #      echo "Don't know what to do... :("
     fi
     echo "$SECONDS" > $TIMEMARKFILE
+
+    do_cleaning
 }
 
 while [ "$1" != "" ]; do
