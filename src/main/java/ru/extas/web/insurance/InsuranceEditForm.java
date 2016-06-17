@@ -305,6 +305,9 @@ public class InsuranceEditForm extends ExtaEditForm<Insurance> {
         beneficiaryField.addItem("ООО \"Финпрайд\"");
         beneficiaryField.addItem("ООО КБ \"АйМаниБанк\"");
         beneficiaryField.addItem("ООО \"МОТОРАССРОЧКА\"");
+        beneficiaryField.addItem("ООО \"Аренда Авто\"");
+        beneficiaryField.addItem("ООО \"Аренда Транспорта\"");
+        beneficiaryField.addItem("ООО \"Маурислизинг\"");
     }
 
     private void updateTarifField() {
