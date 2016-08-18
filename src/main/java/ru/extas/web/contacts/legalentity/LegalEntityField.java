@@ -194,7 +194,7 @@ public class LegalEntityField extends ExtaCustomField<LegalEntity> {
 
             if (!field.isReadOnly()) {
                 selectField = new LESelectField("Название", "Введите или выберите название юридического лица", companySupplier);
-                selectField.setValue(field.getValue());
+                selectField.setPropertyDataSource(field.getPropertyDataSource());
                 selectField.setNewItemsAllowed(true);
                 selectField.setNewItemHandler(newItemCaption -> {
                     final LegalEntity newObj = new LegalEntity();

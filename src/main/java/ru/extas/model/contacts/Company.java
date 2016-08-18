@@ -201,8 +201,8 @@ public class Company extends SecuredObject {
     public void setSalePoints(final Set<SalePoint> salePointList) {
         // Устанавливаем новую связь
         this.salePoints = salePointList;
-        if (this.salePoints != null)
-            this.salePoints.forEach(e -> e.setCompany(this));
+//        if (this.salePoints != null)
+//            this.salePoints.forEach(e -> e.setCompany(this));
     }
 
     /**
@@ -222,8 +222,8 @@ public class Company extends SecuredObject {
     public void setEmployees(final Set<Employee> employeeList) {
         this.employees = employeeList;
         // Устанавливаем новую связь
-        if (this.employees != null)
-            this.employees.forEach(e -> e.setCompany(this));
+//        if (this.employees != null)
+//            this.employees.forEach(e -> e.setCompany(this));
     }
 
     /**
@@ -243,8 +243,8 @@ public class Company extends SecuredObject {
     public void setLegalEntities(final Set<LegalEntity> legalEntities) {
         // Устанавливаем новую связь
         this.legalEntities = legalEntities;
-        if (this.legalEntities != null)
-            this.legalEntities.forEach(e -> e.setCompany(this));
+//        if (this.legalEntities != null)
+//            this.legalEntities.forEach(e -> e.setCompany(this));
     }
 
     public String getName() {
