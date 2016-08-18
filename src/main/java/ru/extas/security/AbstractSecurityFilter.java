@@ -85,23 +85,25 @@ public abstract class AbstractSecurityFilter<TEntityType extends IdentifiedObjec
     public boolean isItemPermitAction(final String itemId, final SecureAction action) {
         final UserManagementService securityService = lookup(UserManagementService.class);
 
-        // Прежде всего надо проверить разрешено ли действие для всех объектов
-        if (securityService.isPermitted(domain, SecureTarget.ALL, action))
-            return true;
+        boolean isPermit = false;
 
-        // Проверить, входит ли элемент в "собственные объекты"
-        if (isItemFromTarget(itemId, SecureTarget.OWNONLY))
-            return isPermitted4OwnedObj(itemId, action);
+        // Прежде всего надо проверить разрешено ли действие для всех объектов
+        if (!isPermit && securityService.isPermitted(domain, SecureTarget.ALL, action))
+            isPermit = true;
 
         // Проверить, входит ли элемент в "объекты торговой точки"
-        if (isItemFromTarget(itemId, SecureTarget.SALE_POINT))
-            return securityService.isPermitted(domain, SecureTarget.SALE_POINT, action);
+        if (!isPermit && isItemFromTarget(itemId, SecureTarget.SALE_POINT))
+            isPermit = securityService.isPermitted(domain, SecureTarget.SALE_POINT, action);
 
         // Проверить, входит ли элемент в "Конпоративные объекты"
-        if (isItemFromTarget(itemId, SecureTarget.CORPORATE))
-            return securityService.isPermitted(domain, SecureTarget.CORPORATE, action);
+        if (!isPermit && isItemFromTarget(itemId, SecureTarget.CORPORATE))
+            isPermit = securityService.isPermitted(domain, SecureTarget.CORPORATE, action);
 
-        return false;
+        // Проверить, входит ли элемент в "собственные объекты"
+        if (!isPermit && isItemFromTarget(itemId, SecureTarget.OWNONLY))
+            isPermit = isPermitted4OwnedObj(itemId, action);
+
+        return isPermit;
     }
 
     public boolean isPermitted4OwnedObj(final String itemId, final SecureAction action) {
