@@ -6,8 +6,10 @@
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
-    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.5">
-      <schema id="1" name="extacrm"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+      <schema id="1" name="extacrm">
+        <visible>1</visible>
+      </schema>
       <table id="2" parent="1" name="A7_FORM"/>
       <table id="3" parent="1" name="ACCESS_PERMISSION"/>
       <table id="4" parent="1" name="ACCESS_PERMISSION_ACTION"/>
@@ -105,35 +107,35 @@
       <table id="96" parent="1" name="schema_version"/>
       <column id="97" parent="2" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="98" parent="2" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="99" parent="2" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="100" parent="2" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="101" parent="2" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="102" parent="2" name="REG_NUM">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="103" parent="2" name="STATUS">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="104" parent="2" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="105" parent="2" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="106" parent="2" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="107" parent="2" name="FK_A7_FORM_OWNER_ID">
@@ -162,37 +164,37 @@ REG_NUM</columns>
       </foreign-key>
       <column id="112" parent="3" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="113" parent="3" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="114" parent="3" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="115" parent="3" name="DOMAIN">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="116" parent="3" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="117" parent="3" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="118" parent="3" name="TARGET">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="119" parent="3" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="120" parent="3" name="GROUP_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="121" parent="3" name="USER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="122" parent="3" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="123" parent="3" name="IX_ACCESS_PERMISSION_FK_ACCESS_PERMISSION_GROUP_ID">
@@ -220,10 +222,10 @@ REG_NUM</columns>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="128" parent="4" name="ExtaPermission_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="129" parent="4" name="ACTIONS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="130" parent="4" name="CCSSPRMSSNCTIONFKCCSSPRMSSONACTIONExtaPermissionID">
         <columns>ExtaPermission_ID</columns>
@@ -237,43 +239,43 @@ REG_NUM</columns>
       </foreign-key>
       <column id="132" parent="5" name="LOG_NR_">
         <mandatory>1</mandatory>
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
         <sequence-identity>1</sequence-identity>
       </column>
       <column id="133" parent="5" name="TYPE_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="134" parent="5" name="PROC_DEF_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="135" parent="5" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="136" parent="5" name="EXECUTION_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="137" parent="5" name="TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="138" parent="5" name="TIME_STAMP_">
         <mandatory>1</mandatory>
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
         <default-expression>&apos;CURRENT_TIMESTAMP(3)&apos;</default-expression>
       </column>
       <column id="139" parent="5" name="USER_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="140" parent="5" name="DATA_">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <column id="141" parent="5" name="LOCK_OWNER_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="142" parent="5" name="LOCK_TIME_">
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
       </column>
       <column id="143" parent="5" name="IS_PROCESSED_">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <key id="144" parent="5" name="PRIMARY">
@@ -282,23 +284,23 @@ REG_NUM</columns>
       </key>
       <column id="145" parent="6" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="146" parent="6" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="147" parent="6" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="148" parent="6" name="DEPLOYMENT_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="149" parent="6" name="BYTES_">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <column id="150" parent="6" name="GENERATED_">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <index id="151" parent="6" name="ACT_FK_BYTEARR_DEPL">
         <columns>DEPLOYMENT_ID_</columns>
@@ -316,14 +318,14 @@ REG_NUM</columns>
       </foreign-key>
       <column id="154" parent="7" name="NAME_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="155" parent="7" name="VALUE_">
-        <data-type>varchar(300)</data-type>
+        <data-type>varchar(300)|0</data-type>
       </column>
       <column id="156" parent="7" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <key id="157" parent="7" name="PRIMARY">
         <columns>NAME_</columns>
@@ -331,52 +333,52 @@ REG_NUM</columns>
       </key>
       <column id="158" parent="8" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="159" parent="8" name="PROC_DEF_ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="160" parent="8" name="PROC_INST_ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="161" parent="8" name="EXECUTION_ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="162" parent="8" name="ACT_ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="163" parent="8" name="TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="164" parent="8" name="CALL_PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="165" parent="8" name="ACT_NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="166" parent="8" name="ACT_TYPE_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="167" parent="8" name="ASSIGNEE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="168" parent="8" name="START_TIME_">
         <mandatory>1</mandatory>
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="169" parent="8" name="END_TIME_">
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="170" parent="8" name="DURATION_">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="171" parent="8" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <index id="172" parent="8" name="ACT_IDX_HI_ACT_INST_END">
@@ -403,37 +405,37 @@ ACT_ID_</columns>
       </key>
       <column id="177" parent="9" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="178" parent="9" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="179" parent="9" name="USER_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="180" parent="9" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="181" parent="9" name="DESCRIPTION_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="182" parent="9" name="TYPE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="183" parent="9" name="TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="184" parent="9" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="185" parent="9" name="URL_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="186" parent="9" name="CONTENT_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="187" parent="9" name="TIME_">
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <key id="188" parent="9" name="PRIMARY">
         <columns>ID_</columns>
@@ -441,32 +443,32 @@ ACT_ID_</columns>
       </key>
       <column id="189" parent="10" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="190" parent="10" name="TYPE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="191" parent="10" name="TIME_">
         <mandatory>1</mandatory>
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="192" parent="10" name="USER_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="193" parent="10" name="TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="194" parent="10" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="195" parent="10" name="ACTION_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="196" parent="10" name="MESSAGE_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="197" parent="10" name="FULL_MSG_">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <key id="198" parent="10" name="PRIMARY">
         <columns>ID_</columns>
@@ -474,52 +476,52 @@ ACT_ID_</columns>
       </key>
       <column id="199" parent="11" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="200" parent="11" name="TYPE_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="201" parent="11" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="202" parent="11" name="EXECUTION_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="203" parent="11" name="TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="204" parent="11" name="ACT_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="205" parent="11" name="NAME_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="206" parent="11" name="VAR_TYPE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="207" parent="11" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="208" parent="11" name="TIME_">
         <mandatory>1</mandatory>
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="209" parent="11" name="BYTEARRAY_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="210" parent="11" name="DOUBLE_">
-        <data-type>double</data-type>
+        <data-type>double|0</data-type>
       </column>
       <column id="211" parent="11" name="LONG_">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="212" parent="11" name="TEXT_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="213" parent="11" name="TEXT2_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <index id="214" parent="11" name="ACT_IDX_HI_DETAIL_ACT_INST">
         <columns>ACT_INST_ID_</columns>
@@ -547,23 +549,23 @@ ACT_ID_</columns>
       </key>
       <column id="220" parent="12" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="221" parent="12" name="GROUP_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="222" parent="12" name="TYPE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="223" parent="12" name="USER_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="224" parent="12" name="TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="225" parent="12" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <index id="226" parent="12" name="ACT_IDX_HI_IDENT_LNK_PROCINST">
         <columns>PROC_INST_ID_</columns>
@@ -583,50 +585,50 @@ ACT_ID_</columns>
       </key>
       <column id="230" parent="13" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="231" parent="13" name="PROC_INST_ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="232" parent="13" name="BUSINESS_KEY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="233" parent="13" name="PROC_DEF_ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="234" parent="13" name="START_TIME_">
         <mandatory>1</mandatory>
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="235" parent="13" name="END_TIME_">
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="236" parent="13" name="DURATION_">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="237" parent="13" name="START_USER_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="238" parent="13" name="START_ACT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="239" parent="13" name="END_ACT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="240" parent="13" name="SUPER_PROCESS_INSTANCE_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="241" parent="13" name="DELETE_REASON_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="242" parent="13" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="243" parent="13" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="244" parent="13" name="ACT_IDX_HI_PRO_INST_END">
         <columns>END_TIME_</columns>
@@ -651,65 +653,65 @@ ACT_ID_</columns>
       </key>
       <column id="249" parent="14" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="250" parent="14" name="PROC_DEF_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="251" parent="14" name="TASK_DEF_KEY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="252" parent="14" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="253" parent="14" name="EXECUTION_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="254" parent="14" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="255" parent="14" name="PARENT_TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="256" parent="14" name="DESCRIPTION_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="257" parent="14" name="OWNER_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="258" parent="14" name="ASSIGNEE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="259" parent="14" name="START_TIME_">
         <mandatory>1</mandatory>
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="260" parent="14" name="CLAIM_TIME_">
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="261" parent="14" name="END_TIME_">
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="262" parent="14" name="DURATION_">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="263" parent="14" name="DELETE_REASON_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="264" parent="14" name="PRIORITY_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="265" parent="14" name="DUE_DATE_">
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="266" parent="14" name="FORM_KEY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="267" parent="14" name="CATEGORY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="268" parent="14" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <index id="269" parent="14" name="ACT_IDX_HI_TASK_INST_PROCINST">
@@ -722,47 +724,47 @@ ACT_ID_</columns>
       </key>
       <column id="271" parent="15" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="272" parent="15" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="273" parent="15" name="EXECUTION_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="274" parent="15" name="TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="275" parent="15" name="NAME_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="276" parent="15" name="VAR_TYPE_">
-        <data-type>varchar(100)</data-type>
+        <data-type>varchar(100)|0</data-type>
       </column>
       <column id="277" parent="15" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="278" parent="15" name="BYTEARRAY_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="279" parent="15" name="DOUBLE_">
-        <data-type>double</data-type>
+        <data-type>double|0</data-type>
       </column>
       <column id="280" parent="15" name="LONG_">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="281" parent="15" name="TEXT_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="282" parent="15" name="TEXT2_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="283" parent="15" name="CREATE_TIME_">
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="284" parent="15" name="LAST_UPDATED_TIME_">
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <index id="285" parent="15" name="ACT_IDX_HI_PROCVAR_NAME_TYPE">
         <columns>NAME_
@@ -783,17 +785,17 @@ VAR_TYPE_</columns>
       </key>
       <column id="289" parent="16" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="290" parent="16" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="291" parent="16" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="292" parent="16" name="TYPE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <key id="293" parent="16" name="PRIMARY">
         <columns>ID_</columns>
@@ -801,29 +803,29 @@ VAR_TYPE_</columns>
       </key>
       <column id="294" parent="17" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="295" parent="17" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="296" parent="17" name="USER_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="297" parent="17" name="TYPE_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="298" parent="17" name="KEY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="299" parent="17" name="VALUE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="300" parent="17" name="PASSWORD_">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <column id="301" parent="17" name="PARENT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <key id="302" parent="17" name="PRIMARY">
         <columns>ID_</columns>
@@ -831,12 +833,12 @@ VAR_TYPE_</columns>
       </key>
       <column id="303" parent="18" name="USER_ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="304" parent="18" name="GROUP_ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <index id="305" parent="18" name="ACT_FK_MEMB_GROUP">
@@ -862,26 +864,26 @@ GROUP_ID_</columns>
       </foreign-key>
       <column id="309" parent="19" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="310" parent="19" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="311" parent="19" name="FIRST_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="312" parent="19" name="LAST_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="313" parent="19" name="EMAIL_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="314" parent="19" name="PWD_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="315" parent="19" name="PICTURE_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <key id="316" parent="19" name="PRIMARY">
         <columns>ID_</columns>
@@ -889,17 +891,17 @@ GROUP_ID_</columns>
       </key>
       <column id="317" parent="20" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="318" parent="20" name="PROC_DEF_ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="319" parent="20" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="320" parent="20" name="INFO_JSON_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <index id="321" parent="20" name="ACT_FK_INFO_JSON_BA">
         <columns>INFO_JSON_ID_</columns>
@@ -936,22 +938,22 @@ GROUP_ID_</columns>
       </foreign-key>
       <column id="328" parent="21" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="329" parent="21" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="330" parent="21" name="CATEGORY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="331" parent="21" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="332" parent="21" name="DEPLOY_TIME_">
         <mandatory>1</mandatory>
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
         <default-expression>&apos;CURRENT_TIMESTAMP(3)&apos;</default-expression>
       </column>
       <key id="333" parent="21" name="PRIMARY">
@@ -960,43 +962,43 @@ GROUP_ID_</columns>
       </key>
       <column id="334" parent="22" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="335" parent="22" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="336" parent="22" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="337" parent="22" name="KEY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="338" parent="22" name="CATEGORY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="339" parent="22" name="CREATE_TIME_">
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
       </column>
       <column id="340" parent="22" name="LAST_UPDATE_TIME_">
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
       </column>
       <column id="341" parent="22" name="VERSION_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="342" parent="22" name="META_INFO_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="343" parent="22" name="DEPLOYMENT_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="344" parent="22" name="EDITOR_SOURCE_VALUE_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="345" parent="22" name="EDITOR_SOURCE_EXTRA_VALUE_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="346" parent="22" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <index id="347" parent="22" name="ACT_FK_MODEL_DEPLOYMENT">
@@ -1035,49 +1037,49 @@ GROUP_ID_</columns>
       </foreign-key>
       <column id="354" parent="23" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="355" parent="23" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="356" parent="23" name="CATEGORY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="357" parent="23" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="358" parent="23" name="KEY_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="359" parent="23" name="VERSION_">
         <mandatory>1</mandatory>
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="360" parent="23" name="DEPLOYMENT_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="361" parent="23" name="RESOURCE_NAME_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="362" parent="23" name="DGRM_RESOURCE_NAME_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="363" parent="23" name="DESCRIPTION_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="364" parent="23" name="HAS_START_FORM_KEY_">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="365" parent="23" name="SUSPENSION_STATE_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="366" parent="23" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="367" parent="23" name="HAS_GRAPHICAL_NOTATION_">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <index id="368" parent="23" name="ACT_UNIQ_PROCDEF">
         <columns>KEY_
@@ -1098,40 +1100,40 @@ TENANT_ID_</columns>
       </key>
       <column id="371" parent="24" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="372" parent="24" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="373" parent="24" name="EVENT_TYPE_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="374" parent="24" name="EVENT_NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="375" parent="24" name="EXECUTION_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="376" parent="24" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="377" parent="24" name="ACTIVITY_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="378" parent="24" name="CONFIGURATION_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="379" parent="24" name="CREATED_">
         <mandatory>1</mandatory>
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
         <default-expression>&apos;CURRENT_TIMESTAMP(3)&apos;</default-expression>
       </column>
       <column id="380" parent="24" name="PROC_DEF_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="381" parent="24" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <index id="382" parent="24" name="ACT_FK_EVENT_EXEC">
@@ -1154,57 +1156,57 @@ TENANT_ID_</columns>
       </foreign-key>
       <column id="386" parent="25" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="387" parent="25" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="388" parent="25" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="389" parent="25" name="BUSINESS_KEY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="390" parent="25" name="PARENT_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="391" parent="25" name="PROC_DEF_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="392" parent="25" name="SUPER_EXEC_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="393" parent="25" name="ACT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="394" parent="25" name="IS_ACTIVE_">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="395" parent="25" name="IS_CONCURRENT_">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="396" parent="25" name="IS_SCOPE_">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="397" parent="25" name="IS_EVENT_SCOPE_">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="398" parent="25" name="SUSPENSION_STATE_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="399" parent="25" name="CACHED_ENT_STATE_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="400" parent="25" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="401" parent="25" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="402" parent="25" name="LOCK_TIME_">
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
       </column>
       <index id="403" parent="25" name="ACT_FK_EXE_PARENT">
         <columns>PARENT_ID_</columns>
@@ -1232,7 +1234,7 @@ TENANT_ID_</columns>
       </key>
       <foreign-key id="409" parent="25" name="ACT_FK_EXE_PARENT">
         <columns>PARENT_ID_</columns>
-        <ref-key>PRIMARY</ref-key>
+        <ref-key>~.A7_FORM.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
@@ -1244,41 +1246,41 @@ TENANT_ID_</columns>
       </foreign-key>
       <foreign-key id="411" parent="25" name="ACT_FK_EXE_PROCINST">
         <columns>PROC_INST_ID_</columns>
-        <ref-key>PRIMARY</ref-key>
+        <ref-key>~.A7_FORM.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <foreign-key id="412" parent="25" name="ACT_FK_EXE_SUPER">
         <columns>SUPER_EXEC_</columns>
-        <ref-key>PRIMARY</ref-key>
+        <ref-key>~.A7_FORM.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="413" parent="26" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="414" parent="26" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="415" parent="26" name="GROUP_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="416" parent="26" name="TYPE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="417" parent="26" name="USER_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="418" parent="26" name="TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="419" parent="26" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="420" parent="26" name="PROC_DEF_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <index id="421" parent="26" name="ACT_FK_IDL_PROCINST">
         <columns>PROC_INST_ID_</columns>
@@ -1324,56 +1326,56 @@ TENANT_ID_</columns>
       </foreign-key>
       <column id="430" parent="27" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="431" parent="27" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="432" parent="27" name="TYPE_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="433" parent="27" name="LOCK_EXP_TIME_">
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
       </column>
       <column id="434" parent="27" name="LOCK_OWNER_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="435" parent="27" name="EXCLUSIVE_">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
       </column>
       <column id="436" parent="27" name="EXECUTION_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="437" parent="27" name="PROCESS_INSTANCE_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="438" parent="27" name="PROC_DEF_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="439" parent="27" name="RETRIES_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="440" parent="27" name="EXCEPTION_STACK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="441" parent="27" name="EXCEPTION_MSG_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="442" parent="27" name="DUEDATE_">
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
       </column>
       <column id="443" parent="27" name="REPEAT_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="444" parent="27" name="HANDLER_TYPE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="445" parent="27" name="HANDLER_CFG_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="446" parent="27" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <index id="447" parent="27" name="ACT_FK_JOB_EXCEPTION">
@@ -1392,65 +1394,65 @@ TENANT_ID_</columns>
       </foreign-key>
       <column id="450" parent="28" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="451" parent="28" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="452" parent="28" name="EXECUTION_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="453" parent="28" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="454" parent="28" name="PROC_DEF_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="455" parent="28" name="NAME_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="456" parent="28" name="PARENT_TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="457" parent="28" name="DESCRIPTION_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="458" parent="28" name="TASK_DEF_KEY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="459" parent="28" name="OWNER_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="460" parent="28" name="ASSIGNEE_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="461" parent="28" name="DELEGATION_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="462" parent="28" name="PRIORITY_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="463" parent="28" name="CREATE_TIME_">
         <mandatory>1</mandatory>
-        <data-type>timestamp(3)</data-type>
+        <data-type>timestamp(3)|0</data-type>
         <default-expression>&apos;CURRENT_TIMESTAMP(3)&apos;</default-expression>
       </column>
       <column id="464" parent="28" name="DUE_DATE_">
-        <data-type>datetime(3)</data-type>
+        <data-type>datetime(3)|0</data-type>
       </column>
       <column id="465" parent="28" name="CATEGORY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="466" parent="28" name="SUSPENSION_STATE_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="467" parent="28" name="TENANT_ID_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="468" parent="28" name="FORM_KEY_">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="469" parent="28" name="ACT_FK_TASK_EXE">
         <columns>EXECUTION_ID_</columns>
@@ -1492,42 +1494,42 @@ TENANT_ID_</columns>
       </foreign-key>
       <column id="477" parent="29" name="ID_">
         <mandatory>1</mandatory>
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="478" parent="29" name="REV_">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="479" parent="29" name="TYPE_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="480" parent="29" name="NAME_">
         <mandatory>1</mandatory>
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="481" parent="29" name="EXECUTION_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="482" parent="29" name="PROC_INST_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="483" parent="29" name="TASK_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="484" parent="29" name="BYTEARRAY_ID_">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="485" parent="29" name="DOUBLE_">
-        <data-type>double</data-type>
+        <data-type>double|0</data-type>
       </column>
       <column id="486" parent="29" name="LONG_">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="487" parent="29" name="TEXT_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <column id="488" parent="29" name="TEXT2_">
-        <data-type>varchar(4000)</data-type>
+        <data-type>varchar(4000)|0</data-type>
       </column>
       <index id="489" parent="29" name="ACT_FK_VAR_BYTEARRAY">
         <columns>BYTEARRAY_ID_</columns>
@@ -1569,197 +1571,197 @@ TENANT_ID_</columns>
       </foreign-key>
       <column id="497" parent="30" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="498" parent="30" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="499" parent="30" name="AREA">
-        <data-type>varchar(120)</data-type>
+        <data-type>varchar(120)|0</data-type>
       </column>
       <column id="500" parent="30" name="AREA_TYPE">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="501" parent="30" name="AREA_TYPE_FULL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="502" parent="30" name="BLOCK">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="503" parent="30" name="BLOCK_TYPE">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="504" parent="30" name="BLOCK_TYPE_FULL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="505" parent="30" name="CAPITAL_MARKER">
-        <data-type>varchar(1)</data-type>
+        <data-type>varchar(1)|0</data-type>
       </column>
       <column id="506" parent="30" name="CITY">
-        <data-type>varchar(120)</data-type>
+        <data-type>varchar(120)|0</data-type>
       </column>
       <column id="507" parent="30" name="CITY_DISTRICT">
-        <data-type>varchar(120)</data-type>
+        <data-type>varchar(120)|0</data-type>
       </column>
       <column id="508" parent="30" name="CITY_TYPE">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="509" parent="30" name="CITY_TYPE_FULL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="510" parent="30" name="COUNTRY">
-        <data-type>varchar(120)</data-type>
+        <data-type>varchar(120)|0</data-type>
       </column>
       <column id="511" parent="30" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="512" parent="30" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="513" parent="30" name="FIAS_ID">
-        <data-type>varchar(36)</data-type>
+        <data-type>varchar(36)|0</data-type>
       </column>
       <column id="514" parent="30" name="FIAS_LEVEL">
-        <data-type>varchar(2)</data-type>
+        <data-type>varchar(2)|0</data-type>
       </column>
       <column id="515" parent="30" name="FLAT">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="516" parent="30" name="FLAT_PRICE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="517" parent="30" name="FLAT_TYPE">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="518" parent="30" name="FLAT_TYPE_FULL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="519" parent="30" name="FLAT_AREA">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="520" parent="30" name="GEO_LAT">
-        <data-type>varchar(12)</data-type>
+        <data-type>varchar(12)|0</data-type>
       </column>
       <column id="521" parent="30" name="GEO_LON">
-        <data-type>varchar(12)</data-type>
+        <data-type>varchar(12)|0</data-type>
       </column>
       <column id="522" parent="30" name="HOUSE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="523" parent="30" name="HOUSE_TYPE">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="524" parent="30" name="HOUSE_TYPE_FULL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="525" parent="30" name="KLADR_ID">
-        <data-type>varchar(19)</data-type>
+        <data-type>varchar(19)|0</data-type>
       </column>
       <column id="526" parent="30" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="527" parent="30" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="528" parent="30" name="OKATO">
-        <data-type>varchar(11)</data-type>
+        <data-type>varchar(11)|0</data-type>
       </column>
       <column id="529" parent="30" name="OKTMO">
-        <data-type>varchar(11)</data-type>
+        <data-type>varchar(11)|0</data-type>
       </column>
       <column id="530" parent="30" name="PLAIN">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="531" parent="30" name="POSTAL_BOX">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="532" parent="30" name="POSTAL_CODE">
-        <data-type>varchar(6)</data-type>
+        <data-type>varchar(6)|0</data-type>
       </column>
       <column id="533" parent="30" name="QC">
-        <data-type>varchar(5)</data-type>
+        <data-type>varchar(5)|0</data-type>
       </column>
       <column id="534" parent="30" name="QC_COMPLETE">
-        <data-type>varchar(5)</data-type>
+        <data-type>varchar(5)|0</data-type>
       </column>
       <column id="535" parent="30" name="QC_GEO">
-        <data-type>varchar(5)</data-type>
+        <data-type>varchar(5)|0</data-type>
       </column>
       <column id="536" parent="30" name="QC_HOUSE">
-        <data-type>varchar(5)</data-type>
+        <data-type>varchar(5)|0</data-type>
       </column>
       <column id="537" parent="30" name="REGION">
-        <data-type>varchar(120)</data-type>
+        <data-type>varchar(120)|0</data-type>
       </column>
       <column id="538" parent="30" name="REGION_TYPE">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="539" parent="30" name="REGION_TYPE_FULL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="540" parent="30" name="SETTLEMENT">
-        <data-type>varchar(120)</data-type>
+        <data-type>varchar(120)|0</data-type>
       </column>
       <column id="541" parent="30" name="SETTLEMENT_TYPE">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="542" parent="30" name="SETTLEMENT_TYPE_FULL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="543" parent="30" name="SQUARE_METER_PRICE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="544" parent="30" name="STREET">
-        <data-type>varchar(120)</data-type>
+        <data-type>varchar(120)|0</data-type>
       </column>
       <column id="545" parent="30" name="STREET_TYPE">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="546" parent="30" name="STREET_TYPE_FULL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="547" parent="30" name="TAX_OFFICE">
-        <data-type>varchar(4)</data-type>
+        <data-type>varchar(4)|0</data-type>
       </column>
       <column id="548" parent="30" name="TAX_OFFICE_LEGAL">
-        <data-type>varchar(4)</data-type>
+        <data-type>varchar(4)|0</data-type>
       </column>
       <column id="549" parent="30" name="TIMEZONE">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="550" parent="30" name="UNPARSED_PARTS">
-        <data-type>varchar(250)</data-type>
+        <data-type>varchar(250)|0</data-type>
       </column>
       <column id="551" parent="30" name="UNRESTRICTED_VALUE">
-        <data-type>varchar(500)</data-type>
+        <data-type>varchar(500)|0</data-type>
       </column>
       <column id="552" parent="30" name="VALUE">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="553" parent="30" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="554" parent="30" name="AREA_WITH_TYPE">
-        <data-type>varchar(130)</data-type>
+        <data-type>varchar(130)|0</data-type>
       </column>
       <column id="555" parent="30" name="CITY_WITH_TYPE">
-        <data-type>varchar(130)</data-type>
+        <data-type>varchar(130)|0</data-type>
       </column>
       <column id="556" parent="30" name="REGION_FIAS_ID">
-        <data-type>varchar(36)</data-type>
+        <data-type>varchar(36)|0</data-type>
       </column>
       <column id="557" parent="30" name="REGION_KLADR_ID">
-        <data-type>varchar(19)</data-type>
+        <data-type>varchar(19)|0</data-type>
       </column>
       <column id="558" parent="30" name="REGION_WITH_TYPE">
-        <data-type>varchar(131)</data-type>
+        <data-type>varchar(131)|0</data-type>
       </column>
       <column id="559" parent="30" name="SETTLEMENT_WITH_TYPE">
-        <data-type>varchar(130)</data-type>
+        <data-type>varchar(130)|0</data-type>
       </column>
       <column id="560" parent="30" name="STREET_WITH_TYPE">
-        <data-type>varchar(130)</data-type>
+        <data-type>varchar(130)|0</data-type>
       </column>
       <key id="561" parent="30" name="PRIMARY">
         <columns>ID</columns>
@@ -1767,11 +1769,11 @@ TENANT_ID_</columns>
       </key>
       <column id="562" parent="31" name="TYPE_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="563" parent="31" name="BRAND_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="564" parent="31" name="IX_BRAND_TYPE_FK_BRAND_TYPE_BRAND_ID">
         <columns>BRAND_ID</columns>
@@ -1800,47 +1802,47 @@ BRAND_ID</columns>
       </foreign-key>
       <column id="569" parent="32" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="570" parent="32" name="TYPE">
-        <data-type>varchar(31)</data-type>
+        <data-type>varchar(31)|0</data-type>
       </column>
       <column id="571" parent="32" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="572" parent="32" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="573" parent="32" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="574" parent="32" name="EMAIL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="575" parent="32" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="576" parent="32" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="577" parent="32" name="NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="578" parent="32" name="CELL_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="579" parent="32" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="580" parent="32" name="WWW">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="581" parent="32" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="582" parent="32" name="SECOND_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <index id="583" parent="32" name="INDEX_CLIENT_NAME">
         <columns>NAME</columns>
@@ -1862,60 +1864,60 @@ BRAND_ID</columns>
       </foreign-key>
       <column id="587" parent="33" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="588" parent="33" name="CITY">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="589" parent="33" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="590" parent="33" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="591" parent="33" name="EMAIL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="592" parent="33" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="593" parent="33" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="594" parent="33" name="NAME">
-        <data-type>varchar(100)</data-type>
+        <data-type>varchar(100)|0</data-type>
       </column>
       <column id="595" parent="33" name="CELL_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="596" parent="33" name="REGION">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="597" parent="33" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="598" parent="33" name="WWW">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="599" parent="33" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="600" parent="33" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="601" parent="33" name="BK">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="602" parent="33" name="FACEBOOK">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="603" parent="33" name="INSTAGRAM">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="604" parent="33" name="YOUTUBE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="605" parent="33" name="FK_COMPANY_SECURITY_RULE_ID">
         <columns>SECURITY_RULE_ID</columns>
@@ -1932,10 +1934,10 @@ BRAND_ID</columns>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="608" parent="34" name="COMPANY_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="609" parent="34" name="CATEGORY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="610" parent="34" name="IX_COMPANY_CATEGORY_FK_COMPANY_CATEGORY_COMPANY_ID">
         <columns>COMPANY_ID</columns>
@@ -1949,11 +1951,11 @@ BRAND_ID</columns>
       </foreign-key>
       <column id="612" parent="35" name="COMPANY_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="613" parent="35" name="OWNER_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="614" parent="35" name="IX_COMPANY_OWNER_FK_COMPANY_OWNER_COMPANY_ID">
         <columns>COMPANY_ID</columns>
@@ -1980,35 +1982,35 @@ OWNER_ID</columns>
       </foreign-key>
       <column id="619" parent="36" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="620" parent="36" name="CODE">
-        <data-type>varchar(35)</data-type>
+        <data-type>varchar(35)|0</data-type>
       </column>
       <column id="621" parent="36" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="622" parent="36" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="623" parent="36" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="624" parent="36" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="625" parent="36" name="TYPE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="626" parent="36" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="627" parent="36" name="CONTACT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="628" parent="36" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="629" parent="36" name="FK_CONTACT_CODE_CONTACT_ID">
@@ -2042,32 +2044,32 @@ CODE</columns>
       </foreign-key>
       <column id="635" parent="37" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="636" parent="37" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="637" parent="37" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="638" parent="37" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="639" parent="37" name="DESCRIPTION">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="640" parent="37" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="641" parent="37" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="642" parent="37" name="NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="643" parent="37" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <index id="644" parent="37" name="INDEX_CURATORS_GROUP_name">
         <columns>NAME</columns>
@@ -2079,11 +2081,11 @@ CODE</columns>
       </key>
       <column id="646" parent="38" name="CURATOR_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="647" parent="38" name="GROUP_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="648" parent="38" name="CURATORSGROUPLINKFK_CURATORS_GROUP_LINK_CURATOR_ID">
         <columns>CURATOR_ID</columns>
@@ -2112,83 +2114,83 @@ GROUP_ID</columns>
       </foreign-key>
       <column id="653" parent="39" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="654" parent="39" name="BIRTH_PLACE">
-        <data-type>varchar(60)</data-type>
+        <data-type>varchar(60)|0</data-type>
       </column>
       <column id="655" parent="39" name="BIRTHDAY">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="656" parent="39" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="657" parent="39" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="658" parent="39" name="EMAIL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="659" parent="39" name="HOME_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="660" parent="39" name="JOB_DEPARTMENT">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="661" parent="39" name="JOB_POSITION">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="662" parent="39" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="663" parent="39" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="664" parent="39" name="NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="665" parent="39" name="PASS_ISSUE_DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="666" parent="39" name="PASS_ISSUED_BY">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="667" parent="39" name="PASS_ISSUED_BY_NUM">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="668" parent="39" name="PASS_NUM">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="669" parent="39" name="CELL_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="670" parent="39" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="671" parent="39" name="WORK_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="672" parent="39" name="WWW">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="673" parent="39" name="COMPANY_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="674" parent="39" name="LEGAL_ENTITY_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="675" parent="39" name="SALE_POINT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="676" parent="39" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="677" parent="39" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="678" parent="39" name="ADDRESS_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="679" parent="39" name="INDEX_EMPLOYEE_NAME">
         <columns>NAME</columns>
@@ -2240,43 +2242,43 @@ GROUP_ID</columns>
       </foreign-key>
       <column id="689" parent="40" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="690" parent="40" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="691" parent="40" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="692" parent="40" name="DESCRIPTION">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="693" parent="40" name="FILEDATA">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <column id="694" parent="40" name="FILESIZE">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="695" parent="40" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="696" parent="40" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="697" parent="40" name="MIMETYPE">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="698" parent="40" name="NAME">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="699" parent="40" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="700" parent="40" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="701" parent="40" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="702" parent="40" name="IX_EMPLOYEE_FILE_FK_EMPLOYEE_FILE_OWNER_ID">
@@ -2295,35 +2297,35 @@ GROUP_ID</columns>
       </foreign-key>
       <column id="705" parent="41" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="706" parent="41" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="707" parent="41" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="708" parent="41" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="709" parent="41" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="710" parent="41" name="TRANSFERDATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="711" parent="41" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="712" parent="41" name="FROMCONTACT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="713" parent="41" name="TOCONTACT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="714" parent="41" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="715" parent="41" name="FK_FORM_TRANSFER_FROMCONTACT_ID">
@@ -2353,10 +2355,10 @@ GROUP_ID</columns>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="721" parent="42" name="FORMNUMS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="722" parent="42" name="FORM_TRANSFER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="723" parent="42" name="FORMTRANSFERNUMSFKFORMTRANSFERNUMSFORM_TRANSFER_ID">
         <columns>FORM_TRANSFER_ID</columns>
@@ -2375,91 +2377,91 @@ FORMNUMS</columns>
       </foreign-key>
       <column id="726" parent="43" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="727" parent="43" name="A7_NUM">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="728" parent="43" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="729" parent="43" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="730" parent="43" name="DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="731" parent="43" name="END_DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="732" parent="43" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="733" parent="43" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="734" parent="43" name="MOTOR_BRAND">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="735" parent="43" name="MOTOR_MODEL">
-        <data-type>varchar(100)</data-type>
+        <data-type>varchar(100)|0</data-type>
       </column>
       <column id="736" parent="43" name="MOTOR_TYPE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="737" parent="43" name="PAYMENT_DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="738" parent="43" name="PREMIUM">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="739" parent="43" name="REG_NUM">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="740" parent="43" name="RISK_SUM">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="741" parent="43" name="START_DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="742" parent="43" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="743" parent="43" name="DEALER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="744" parent="43" name="COVER_TIME">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="745" parent="43" name="SALE_DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="746" parent="43" name="SALE_NUM">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="747" parent="43" name="IS_USED_MOTOR">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="748" parent="43" name="MOTOR_VIN">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="749" parent="43" name="BENEFICIARY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="750" parent="43" name="IS_DOC_COMPLETE">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="751" parent="43" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="752" parent="43" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="753" parent="43" name="CLIENT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="754" parent="43" name="FK_INSURANCE_DEALER_ID">
         <columns>DEALER_ID</columns>
@@ -2493,32 +2495,32 @@ FORMNUMS</columns>
       </foreign-key>
       <column id="761" parent="44" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="762" parent="44" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="763" parent="44" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="764" parent="44" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="765" parent="44" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="766" parent="44" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="767" parent="44" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="768" parent="44" name="TEXT">
-        <data-type>longtext</data-type>
+        <data-type>longtext|0</data-type>
       </column>
       <column id="769" parent="44" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <index id="770" parent="44" name="IX_INSURANCE_COMMENT_FK_INSURANCE_COMMENT_OWNER_ID">
         <columns>OWNER_ID</columns>
@@ -2536,43 +2538,43 @@ FORMNUMS</columns>
       </foreign-key>
       <column id="773" parent="45" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="774" parent="45" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="775" parent="45" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="776" parent="45" name="DESCRIPTION">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="777" parent="45" name="FILEDATA">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <column id="778" parent="45" name="FILESIZE">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="779" parent="45" name="MIMETYPE">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="780" parent="45" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="781" parent="45" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="782" parent="45" name="NAME">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="783" parent="45" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="784" parent="45" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="785" parent="45" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="786" parent="45" name="IX_INSURANCE_FILE_FK_INSURANCE_FILE_OWNER_ID">
@@ -2591,97 +2593,97 @@ FORMNUMS</columns>
       </foreign-key>
       <column id="789" parent="46" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="790" parent="46" name="COMMENT">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="791" parent="46" name="CONTACT_EMAIL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="792" parent="46" name="CONTACT_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="793" parent="46" name="CONTACT_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="794" parent="46" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="795" parent="46" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="796" parent="46" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="797" parent="46" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="798" parent="46" name="MOTOR_BRAND">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="799" parent="46" name="MOTOR_MODEL">
-        <data-type>varchar(100)</data-type>
+        <data-type>varchar(100)|0</data-type>
       </column>
       <column id="800" parent="46" name="MOTOR_PRICE">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="801" parent="46" name="MOTOR_TYPE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="802" parent="46" name="POINT_OF_SALE">
-        <data-type>varchar(200)</data-type>
+        <data-type>varchar(200)|0</data-type>
       </column>
       <column id="803" parent="46" name="PROCESS_ID">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="804" parent="46" name="REGION">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="805" parent="46" name="RESULT">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="806" parent="46" name="STATUS">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="807" parent="46" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="808" parent="46" name="VENDOR_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="809" parent="46" name="CONTACT_REGION">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="810" parent="46" name="NUM">
         <mandatory>1</mandatory>
-        <data-type>bigint(20) unsigned</data-type>
+        <data-type>bigint(20) unsigned|0</data-type>
         <sequence-identity>1</sequence-identity>
       </column>
       <column id="811" parent="46" name="RESPONSIBLE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="812" parent="46" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="813" parent="46" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="814" parent="46" name="CLIENT">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="815" parent="46" name="DEALER_MANAGER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="816" parent="46" name="RESPONSIBLE_ASSIST_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="817" parent="46" name="MARKETING_CHANNEL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="818" parent="46" name="SOURCE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="819" parent="46" name="IX_LEAD_FK_LEAD_VENDOR_ID">
         <columns>VENDOR_ID</columns>
@@ -2712,32 +2714,32 @@ FORMNUMS</columns>
       </foreign-key>
       <column id="825" parent="47" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="826" parent="47" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="827" parent="47" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="828" parent="47" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="829" parent="47" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="830" parent="47" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="831" parent="47" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="832" parent="47" name="TEXT">
-        <data-type>longtext</data-type>
+        <data-type>longtext|0</data-type>
       </column>
       <column id="833" parent="47" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <index id="834" parent="47" name="IX_LEAD_COMMENT_FK_LEAD_COMMENT_OWNER_ID">
         <columns>OWNER_ID</columns>
@@ -2755,44 +2757,44 @@ FORMNUMS</columns>
       </foreign-key>
       <column id="837" parent="48" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="838" parent="48" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="839" parent="48" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="840" parent="48" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="841" parent="48" name="DESCRIPTION">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="842" parent="48" name="FILEDATA">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <column id="843" parent="48" name="FILESIZE">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="844" parent="48" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="845" parent="48" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="846" parent="48" name="MIMETYPE">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="847" parent="48" name="NAME">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="848" parent="48" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="849" parent="48" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <index id="850" parent="48" name="IX_LEAD_FILE_FK_LEAD_FILE_OWNER_ID">
         <columns>OWNER_ID</columns>
@@ -2810,47 +2812,47 @@ FORMNUMS</columns>
       </foreign-key>
       <column id="853" parent="49" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="854" parent="49" name="INN">
-        <data-type>varchar(15)</data-type>
+        <data-type>varchar(15)|0</data-type>
       </column>
       <column id="855" parent="49" name="OGRN_OGRIP">
-        <data-type>varchar(15)</data-type>
+        <data-type>varchar(15)|0</data-type>
       </column>
       <column id="856" parent="49" name="COMPANY_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="857" parent="49" name="DIRECTOR_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="858" parent="49" name="BANK_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="859" parent="49" name="BIC">
-        <data-type>varchar(15)</data-type>
+        <data-type>varchar(15)|0</data-type>
       </column>
       <column id="860" parent="49" name="KPP">
-        <data-type>varchar(15)</data-type>
+        <data-type>varchar(15)|0</data-type>
       </column>
       <column id="861" parent="49" name="LORO_ACCOUNT">
-        <data-type>varchar(150)</data-type>
+        <data-type>varchar(150)|0</data-type>
       </column>
       <column id="862" parent="49" name="REG_N_PST_IS_SAME">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="863" parent="49" name="SETTLEMENT_ACCOUNT">
-        <data-type>varchar(25)</data-type>
+        <data-type>varchar(25)|0</data-type>
       </column>
       <column id="864" parent="49" name="ACCOUNTANT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="865" parent="49" name="ADDRESS_LEGAL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="866" parent="49" name="POST_ADDRESS">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="867" parent="49" name="COMPANY_ID">
         <columns>COMPANY_ID</columns>
@@ -2896,43 +2898,43 @@ FORMNUMS</columns>
       </foreign-key>
       <column id="876" parent="50" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="877" parent="50" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="878" parent="50" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="879" parent="50" name="DESCRIPTION">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="880" parent="50" name="FILEDATA">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <column id="881" parent="50" name="FILESIZE">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="882" parent="50" name="MIMETYPE">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="883" parent="50" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="884" parent="50" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="885" parent="50" name="NAME">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="886" parent="50" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="887" parent="50" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="888" parent="50" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="889" parent="50" name="IX_LEGAL_ENTITY_FILE_FK_LEGAL_ENTITY_FILE_OWNER_ID">
@@ -2950,10 +2952,10 @@ FORMNUMS</columns>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="892" parent="51" name="LegalEntity_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="893" parent="51" name="MOTORBRANDS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="894" parent="51" name="LegalEntity_ID">
         <columns>LegalEntity_ID</columns>
@@ -2971,11 +2973,11 @@ FORMNUMS</columns>
       </foreign-key>
       <column id="897" parent="52" name="LEGAL_ENTITY_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="898" parent="52" name="PROD_CREDIT_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="899" parent="52" name="LGLNTITYPRODCREDITFKLGLNTITYPRODCREDITPRODCREDITID">
         <columns>PROD_CREDIT_ID</columns>
@@ -3008,28 +3010,28 @@ PROD_CREDIT_ID</columns>
       </foreign-key>
       <column id="905" parent="53" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="906" parent="53" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="907" parent="53" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="908" parent="53" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="909" parent="53" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="910" parent="53" name="NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="911" parent="53" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="912" parent="53" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <key id="913" parent="53" name="PRIMARY">
@@ -3038,37 +3040,37 @@ PROD_CREDIT_ID</columns>
       </key>
       <column id="914" parent="54" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="915" parent="54" name="BRAND">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="916" parent="54" name="CODE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="917" parent="54" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="918" parent="54" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="919" parent="54" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="920" parent="54" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="921" parent="54" name="NAME">
-        <data-type>varchar(100)</data-type>
+        <data-type>varchar(100)|0</data-type>
       </column>
       <column id="922" parent="54" name="TYPE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="923" parent="54" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="924" parent="54" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <key id="925" parent="54" name="PRIMARY">
@@ -3077,28 +3079,28 @@ PROD_CREDIT_ID</columns>
       </key>
       <column id="926" parent="55" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="927" parent="55" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="928" parent="55" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="929" parent="55" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="930" parent="55" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="931" parent="55" name="NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="932" parent="55" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="933" parent="55" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <key id="934" parent="55" name="PRIMARY">
@@ -3107,26 +3109,26 @@ PROD_CREDIT_ID</columns>
       </key>
       <column id="935" parent="56" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="936" parent="56" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="937" parent="56" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="938" parent="56" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="939" parent="56" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="940" parent="56" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="941" parent="56" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <key id="942" parent="56" name="PRIMARY">
         <columns>ID</columns>
@@ -3134,41 +3136,41 @@ PROD_CREDIT_ID</columns>
       </key>
       <column id="943" parent="57" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="944" parent="57" name="BANK_CODE">
-        <data-type>varchar(35)</data-type>
+        <data-type>varchar(35)|0</data-type>
       </column>
       <column id="945" parent="57" name="BANK_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="946" parent="57" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="947" parent="57" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="948" parent="57" name="LORO_ACCOUNT">
-        <data-type>varchar(35)</data-type>
+        <data-type>varchar(35)|0</data-type>
       </column>
       <column id="949" parent="57" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="950" parent="57" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="951" parent="57" name="SETTLEMENT_ACCOUNT">
-        <data-type>varchar(35)</data-type>
+        <data-type>varchar(35)|0</data-type>
       </column>
       <column id="952" parent="57" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="953" parent="57" name="CONTACT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="954" parent="57" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="955" parent="57" name="FK_PAY_ACCOUNT_CONTACT_ID">
@@ -3191,236 +3193,236 @@ PROD_CREDIT_ID</columns>
       </foreign-key>
       <column id="959" parent="58" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="960" parent="58" name="BIRTHDAY">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="961" parent="58" name="PASS_ISSUE_DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="962" parent="58" name="PASS_ISSUED_BY">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="963" parent="58" name="PASS_ISSUED_BY_NUM">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="964" parent="58" name="PASS_NUM">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="965" parent="58" name="SEX">
-        <data-type>varchar(6)</data-type>
+        <data-type>varchar(6)|0</data-type>
       </column>
       <column id="966" parent="58" name="HOME_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="967" parent="58" name="WORK_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="968" parent="58" name="ACCOUNTING_4_PSYCHIATRIST">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="969" parent="58" name="HAS_ANOTHER_CREDIT">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="970" parent="58" name="ANOTHER_CREDIT_BANK">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="971" parent="58" name="BIRTH_PLACE">
-        <data-type>varchar(60)</data-type>
+        <data-type>varchar(60)|0</data-type>
       </column>
       <column id="972" parent="58" name="BUSINESS_ADRESS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="973" parent="58" name="BUSINESS_BALANCE">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="974" parent="58" name="BUSINESS_INN">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="975" parent="58" name="BUSINESS_MEMB_EMP">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="976" parent="58" name="BUSINESS_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="977" parent="58" name="IS_BUSINESS_OWNER">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="978" parent="58" name="BUSINESS_PART">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="979" parent="58" name="BUSINESS_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="980" parent="58" name="BUSINESS_SCOPE">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="981" parent="58" name="BUSINESS_YEARLY_SALES">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="982" parent="58" name="IS_CHANGE_NAME">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="983" parent="58" name="CHANGE_NAME_DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="984" parent="58" name="CITIZENSHIP">
-        <data-type>varchar(60)</data-type>
+        <data-type>varchar(60)|0</data-type>
       </column>
       <column id="985" parent="58" name="CLOSE_RELATIVE_FILIATION">
-        <data-type>varchar(15)</data-type>
+        <data-type>varchar(15)|0</data-type>
       </column>
       <column id="986" parent="58" name="CLOSE_RELATIVE_HOME_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="987" parent="58" name="CLOSE_RELATIVE_MOB_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="988" parent="58" name="CLOSE_RELATIVE_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="989" parent="58" name="HAS_COLLATERAL_PROPERTY">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="990" parent="58" name="HAS_CRIMINAL_LIABILITY">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="991" parent="58" name="DEPENDANTS">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="992" parent="58" name="DL_ISSUE_DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="993" parent="58" name="DL_ISSUED_BY">
-        <data-type>varchar(55)</data-type>
+        <data-type>varchar(55)|0</data-type>
       </column>
       <column id="994" parent="58" name="DL_NUM">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="995" parent="58" name="DRIVING_CATEGORIES">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="996" parent="58" name="EDU_FINISH">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="997" parent="58" name="EDU_INST_INN">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="998" parent="58" name="EDU_INST_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="999" parent="58" name="EDU_KIND">
-        <data-type>varchar(18)</data-type>
+        <data-type>varchar(18)|0</data-type>
       </column>
       <column id="1000" parent="58" name="EMPLOYER_ACCOUNTANT_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1001" parent="58" name="EMPLOYER_ADRESS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1002" parent="58" name="EMPLOYER_DIRECTOR_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1003" parent="58" name="EMPLOYER_INN">
-        <data-type>varchar(10)</data-type>
+        <data-type>varchar(10)|0</data-type>
       </column>
       <column id="1004" parent="58" name="EMPLOYER_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1005" parent="58" name="EMPLOYER_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="1006" parent="58" name="EMPLOYER_SCOPE">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="1007" parent="58" name="EMPLOYER_WWW">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1008" parent="58" name="EX_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1009" parent="58" name="GEN_EXPERIENCE">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1010" parent="58" name="JOBS_FOR_3YEARS">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1011" parent="58" name="LAST_EXPERIENCE">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1012" parent="58" name="LIVING_TOGETHER">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1013" parent="58" name="MARITAL_STATUS">
-        <data-type>varchar(15)</data-type>
+        <data-type>varchar(15)|0</data-type>
       </column>
       <column id="1014" parent="58" name="MARKETING_CHANNAL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1015" parent="58" name="HAS_MARRIAGE_СONTRACT">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1016" parent="58" name="OFFICE_POSITION">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="1017" parent="58" name="PERIOD_OF_DRIVING">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1018" parent="58" name="PRACTICE_TYPE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1019" parent="58" name="RECEIVERSHIP">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1020" parent="58" name="REG_N_ACT_IS_SAME">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1021" parent="58" name="SALARY">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1022" parent="58" name="SPECIALITY">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="1023" parent="58" name="SPOUSE_BIRTH_PLACE">
-        <data-type>varchar(60)</data-type>
+        <data-type>varchar(60)|0</data-type>
       </column>
       <column id="1024" parent="58" name="SPOUSE_BIRTHDAY">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="1025" parent="58" name="SPOUSECITIZENSHIP">
-        <data-type>varchar(60)</data-type>
+        <data-type>varchar(60)|0</data-type>
       </column>
       <column id="1026" parent="58" name="SPOUSE_NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1027" parent="58" name="TEMP_JOB_PERIOD">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1028" parent="58" name="TYPE_OF_EMPLOYMENT">
-        <data-type>varchar(12)</data-type>
+        <data-type>varchar(12)|0</data-type>
       </column>
       <column id="1029" parent="58" name="ADDRESS_BUSINESS">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1030" parent="58" name="ADDRESS_FACT">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1031" parent="58" name="ADDRESS_REG">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1032" parent="58" name="ADDRESS_WORK">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1033" parent="58" name="FK_PERSON_ADDRESS_REG">
         <columns>ADDRESS_REG</columns>
@@ -3454,34 +3456,34 @@ PROD_CREDIT_ID</columns>
       </foreign-key>
       <column id="1039" parent="59" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1040" parent="59" name="BRAND_MODEL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1041" parent="59" name="PRICE">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1042" parent="59" name="PURCHASE_DATE">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="1043" parent="59" name="REG_NUM">
-        <data-type>varchar(12)</data-type>
+        <data-type>varchar(12)|0</data-type>
       </column>
       <column id="1044" parent="59" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1045" parent="59" name="WAY_2_PURCHASE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1046" parent="59" name="YEAR_OF_MANUFACTURE">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1047" parent="59" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1048" parent="59" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1049" parent="59" name="IX_PERSON_AUTO_FK_PERSON_AUTO_OWNER_ID">
@@ -3500,22 +3502,22 @@ PROD_CREDIT_ID</columns>
       </foreign-key>
       <column id="1052" parent="60" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1053" parent="60" name="BIRTHDAY">
-        <data-type>date</data-type>
+        <data-type>date|0</data-type>
       </column>
       <column id="1054" parent="60" name="NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1055" parent="60" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1056" parent="60" name="PARENT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1057" parent="60" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1058" parent="60" name="IX_PERSON_CHILD_FK_PERSON_CHILD_PARENT_ID">
@@ -3534,22 +3536,22 @@ PROD_CREDIT_ID</columns>
       </foreign-key>
       <column id="1061" parent="61" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1062" parent="61" name="EXPENSE">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1063" parent="61" name="TYPE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1064" parent="61" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1065" parent="61" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1066" parent="61" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1067" parent="61" name="IX_PERSON_EXPENSE_FK_PERSON_EXPENSE_OWNER_ID">
@@ -3568,43 +3570,43 @@ PROD_CREDIT_ID</columns>
       </foreign-key>
       <column id="1070" parent="62" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1071" parent="62" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1072" parent="62" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1073" parent="62" name="DESCRIPTION">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1074" parent="62" name="FILEDATA">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <column id="1075" parent="62" name="FILESIZE">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="1076" parent="62" name="MIMETYPE">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1077" parent="62" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1078" parent="62" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1079" parent="62" name="NAME">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1080" parent="62" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1081" parent="62" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1082" parent="62" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1083" parent="62" name="IX_PERSON_FILE_FK_PERSON_FILE_OWNER_ID">
@@ -3623,25 +3625,25 @@ PROD_CREDIT_ID</columns>
       </foreign-key>
       <column id="1086" parent="63" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1087" parent="63" name="INCOME">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1088" parent="63" name="SPOUSE_INCOME">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1089" parent="63" name="TYPE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1090" parent="63" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1091" parent="63" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1092" parent="63" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1093" parent="63" name="IX_PERSON_INCOME_FK_PERSON_INCOME_OWNER_ID">
@@ -3660,41 +3662,41 @@ PROD_CREDIT_ID</columns>
       </foreign-key>
       <column id="1096" parent="64" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1097" parent="64" name="ADRESS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1098" parent="64" name="AREA_OF_HOUSE">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1099" parent="64" name="AREA_OF_LAND">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1100" parent="64" name="OWNING_PERIOD">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1101" parent="64" name="PART">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1102" parent="64" name="TYPE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1103" parent="64" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1104" parent="64" name="WAY_2_PURCHASE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1105" parent="64" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1106" parent="64" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1107" parent="64" name="ADDRESS_REALTY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1108" parent="64" name="IX_PERSON_REALTY_FK_PERSON_REALTY_OWNER_ID">
         <columns>OWNER_ID</columns>
@@ -3712,35 +3714,35 @@ PROD_CREDIT_ID</columns>
       </foreign-key>
       <column id="1111" parent="65" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="1112" parent="65" name="BOOK_TIME">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1113" parent="65" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1114" parent="65" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1115" parent="65" name="ISSUE_DATE">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1116" parent="65" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1117" parent="65" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1118" parent="65" name="REG_NUM">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1119" parent="65" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1120" parent="65" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1121" parent="65" name="INDEX_POLICY_ISSUE_DATE_BOOK_TIME_REG_NUM">
@@ -3755,40 +3757,40 @@ REG_NUM</columns>
       </key>
       <column id="1123" parent="66" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1124" parent="66" name="TYPE">
-        <data-type>varchar(31)</data-type>
+        <data-type>varchar(31)|0</data-type>
       </column>
       <column id="1125" parent="66" name="IS_ACTIVE">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="1126" parent="66" name="COMMENT">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1127" parent="66" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1128" parent="66" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1129" parent="66" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1130" parent="66" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1131" parent="66" name="NAME">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1132" parent="66" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1133" parent="66" name="VENDOR_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1134" parent="66" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1135" parent="66" name="IX_PRODUCT_FK_PRODUCT_VENDOR_ID">
@@ -3811,47 +3813,47 @@ REG_NUM</columns>
       </foreign-key>
       <column id="1139" parent="67" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1140" parent="67" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1141" parent="67" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1142" parent="67" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1143" parent="67" name="DOWNPAYMENT">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1144" parent="67" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1145" parent="67" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1146" parent="67" name="PERIOD">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1147" parent="67" name="STATE">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1148" parent="67" name="SUMM">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1149" parent="67" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1150" parent="67" name="LEAD_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1151" parent="67" name="PRODUCT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1152" parent="67" name="RESPONSIBLE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1153" parent="67" name="IX_PRODUCT_IN_LEAD_FK_PRODUCT_IN_LEAD_LEAD_ID">
         <columns>LEAD_ID</columns>
@@ -3889,47 +3891,47 @@ REG_NUM</columns>
       </foreign-key>
       <column id="1160" parent="68" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1161" parent="68" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1162" parent="68" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1163" parent="68" name="DOWNPAYMENT">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1164" parent="68" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1165" parent="68" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1166" parent="68" name="PERIOD">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1167" parent="68" name="SUMM">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1168" parent="68" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1169" parent="68" name="SALE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1170" parent="68" name="PRODUCT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1171" parent="68" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1172" parent="68" name="RESPONSIBLE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1173" parent="68" name="STATE">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <index id="1174" parent="68" name="IX_PRODUCT_IN_SALE_FK_PRODUCT_IN_SALE_PRODUCT_ID">
         <columns>PRODUCT_ID</columns>
@@ -3965,34 +3967,34 @@ REG_NUM</columns>
       </foreign-key>
       <column id="1181" parent="69" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1182" parent="69" name="DEALER_SUBSIDY">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1183" parent="69" name="MAX_DOWNPAYMENT">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1184" parent="69" name="MAX_PERIOD">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1185" parent="69" name="MAX_SUM">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1186" parent="69" name="MIN_DOWNPAYMENT">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1187" parent="69" name="MIN_PERIOD">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1188" parent="69" name="MIN_SUM">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1189" parent="69" name="PROGRAM_TYPE">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1190" parent="69" name="STEP">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <key id="1191" parent="69" name="PRIMARY">
         <columns>ID</columns>
@@ -4006,34 +4008,34 @@ REG_NUM</columns>
       </foreign-key>
       <column id="1193" parent="70" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1194" parent="70" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1195" parent="70" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1196" parent="70" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1197" parent="70" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1198" parent="70" name="NAME">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1199" parent="70" name="IS_REQUIRED">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="1200" parent="70" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1201" parent="70" name="PRODUCT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1202" parent="70" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1203" parent="70" name="IX_PROD_CREDIT_DOC_FK_PROD_CREDIT_DOC_PRODUCT_ID">
@@ -4056,37 +4058,37 @@ REG_NUM</columns>
       </foreign-key>
       <column id="1207" parent="71" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1208" parent="71" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1209" parent="71" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1210" parent="71" name="DOWNPAYMENT">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1211" parent="71" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1212" parent="71" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1213" parent="71" name="PERCENT">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1214" parent="71" name="PERIOD">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1215" parent="71" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1216" parent="71" name="PRODUCT_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1217" parent="71" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1218" parent="71" name="PRODCREDITPERCENTFK_PROD_CREDIT_PERCENT_PRODUCT_ID">
@@ -4109,16 +4111,16 @@ REG_NUM</columns>
       </foreign-key>
       <column id="1222" parent="72" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1223" parent="72" name="MAX_PERIOD">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1224" parent="72" name="MAX_SUM">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1225" parent="72" name="MIN_DOWNPAYMENT">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <key id="1226" parent="72" name="PRIMARY">
         <columns>ID</columns>
@@ -4132,10 +4134,10 @@ REG_NUM</columns>
       </foreign-key>
       <column id="1228" parent="73" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1229" parent="73" name="PERCENT">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <key id="1230" parent="73" name="PRIMARY">
         <columns>ID</columns>
@@ -4149,88 +4151,88 @@ REG_NUM</columns>
       </foreign-key>
       <column id="1232" parent="74" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1233" parent="74" name="COMMENT">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1234" parent="74" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1235" parent="74" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1236" parent="74" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1237" parent="74" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1238" parent="74" name="MOTOR_BRAND">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1239" parent="74" name="MOTOR_MODEL">
-        <data-type>varchar(100)</data-type>
+        <data-type>varchar(100)|0</data-type>
       </column>
       <column id="1240" parent="74" name="MOTOR_PRICE">
-        <data-type>decimal(32,4)</data-type>
+        <data-type>decimal(32,4)|0</data-type>
       </column>
       <column id="1241" parent="74" name="MOTOR_TYPE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1242" parent="74" name="PROCESS_ID">
-        <data-type>varchar(64)</data-type>
+        <data-type>varchar(64)|0</data-type>
       </column>
       <column id="1243" parent="74" name="REGION">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1244" parent="74" name="STATUS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1245" parent="74" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1246" parent="74" name="DEALER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1247" parent="74" name="NUM">
         <mandatory>1</mandatory>
-        <data-type>bigint(20) unsigned</data-type>
+        <data-type>bigint(20) unsigned|0</data-type>
         <sequence-identity>1</sequence-identity>
       </column>
       <column id="1248" parent="74" name="LEAD_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1249" parent="74" name="RESPONSIBLE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1250" parent="74" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1251" parent="74" name="BANK_MANAGER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1252" parent="74" name="DEALER_MANAGER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1253" parent="74" name="RESPONSIBLE_ASSIST_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1254" parent="74" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1255" parent="74" name="CLIENT">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1256" parent="74" name="CANCEL_REASON">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="1257" parent="74" name="DEALERLE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1258" parent="74" name="SOURCE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1259" parent="74" name="DEALER_ID">
         <columns>DEALER_ID</columns>
@@ -4281,11 +4283,11 @@ REG_NUM</columns>
       </foreign-key>
       <column id="1269" parent="75" name="SALEPOINT_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1270" parent="75" name="LEGALENTITY_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1271" parent="75" name="LEGALENTITY_ID">
         <columns>LEGALENTITY_ID</columns>
@@ -4318,31 +4320,31 @@ LEGALENTITY_ID</columns>
       </foreign-key>
       <column id="1277" parent="76" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1278" parent="76" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1279" parent="76" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1280" parent="76" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1281" parent="76" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1282" parent="76" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1283" parent="76" name="TEXT">
-        <data-type>longtext</data-type>
+        <data-type>longtext|0</data-type>
       </column>
       <column id="1284" parent="76" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1285" parent="76" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1286" parent="76" name="IX_SALE_COMMENT_FK_SALE_COMMENT_OWNER_ID">
@@ -4361,43 +4363,43 @@ LEGALENTITY_ID</columns>
       </foreign-key>
       <column id="1289" parent="77" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1290" parent="77" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1291" parent="77" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1292" parent="77" name="DESCRIPTION">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1293" parent="77" name="FILEDATA">
-        <data-type>longblob</data-type>
+        <data-type>longblob|0</data-type>
       </column>
       <column id="1294" parent="77" name="FILESIZE">
-        <data-type>bigint(20)</data-type>
+        <data-type>bigint(20)|0</data-type>
       </column>
       <column id="1295" parent="77" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1296" parent="77" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1297" parent="77" name="MIMETYPE">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1298" parent="77" name="NAME">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1299" parent="77" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1300" parent="77" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1301" parent="77" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1302" parent="77" name="IX_SALE_FILE_FK_SALE_FILE_OWNER_ID">
@@ -4416,87 +4418,87 @@ LEGALENTITY_ID</columns>
       </foreign-key>
       <column id="1305" parent="78" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1306" parent="78" name="ALPHA_CODE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1307" parent="78" name="EXTA_CODE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1308" parent="78" name="HOME_CODE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1309" parent="78" name="SETELEM_CODE">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1310" parent="78" name="COMPANY_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1311" parent="78" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1312" parent="78" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1313" parent="78" name="EMAIL">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1314" parent="78" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1315" parent="78" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1316" parent="78" name="NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1317" parent="78" name="CELL_PHONE">
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="1318" parent="78" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1319" parent="78" name="WWW">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1320" parent="78" name="CITY">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="1321" parent="78" name="PERIOD_OF_RESIDENCE">
-        <data-type>varchar(7)</data-type>
+        <data-type>varchar(7)|0</data-type>
       </column>
       <column id="1322" parent="78" name="POST_INDEX">
-        <data-type>varchar(6)</data-type>
+        <data-type>varchar(6)|0</data-type>
       </column>
       <column id="1323" parent="78" name="REALTY_KIND">
-        <data-type>varchar(14)</data-type>
+        <data-type>varchar(14)|0</data-type>
       </column>
       <column id="1324" parent="78" name="REGION">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1325" parent="78" name="STREET_BLD">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1326" parent="78" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1327" parent="78" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1328" parent="78" name="CURATOR_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1329" parent="78" name="CURATORS_GROUP_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1330" parent="78" name="IS_API_EXPOSE">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1331" parent="78" name="ADDRESS_POS">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1332" parent="78" name="COMPANY_ID">
         <columns>COMPANY_ID</columns>
@@ -4538,32 +4540,32 @@ LEGALENTITY_ID</columns>
       </foreign-key>
       <column id="1340" parent="79" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1341" parent="79" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1342" parent="79" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1343" parent="79" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1344" parent="79" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1345" parent="79" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1346" parent="79" name="OWNER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1347" parent="79" name="TEXT">
-        <data-type>longtext</data-type>
+        <data-type>longtext|0</data-type>
       </column>
       <column id="1348" parent="79" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <index id="1349" parent="79" name="SALE_POINT_COMMENT_FK_SALE_POINT_COMMENT_OWNER_ID">
         <columns>OWNER_ID</columns>
@@ -4581,25 +4583,25 @@ LEGALENTITY_ID</columns>
       </foreign-key>
       <column id="1352" parent="80" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1353" parent="80" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1354" parent="80" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1355" parent="80" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1356" parent="80" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1357" parent="80" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1358" parent="80" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <key id="1359" parent="80" name="PRIMARY">
@@ -4607,10 +4609,10 @@ LEGALENTITY_ID</columns>
         <primary>1</primary>
       </key>
       <column id="1360" parent="81" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1361" parent="81" name="BRANDS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="1362" parent="81" name="INDEX_SECURITY_RULE_BRAND_SECURITY_RULE_ID_BRANDS">
         <columns>SECURITY_RULE_ID
@@ -4629,11 +4631,11 @@ BRANDS</columns>
       </foreign-key>
       <column id="1365" parent="82" name="SECURITY_RULE_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1366" parent="82" name="COMPANY_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1367" parent="82" name="SCRTYRULECOMPANYFKSCURITYRULECOMPANYSECURITYRULEID">
         <columns>SECURITY_RULE_ID</columns>
@@ -4661,10 +4663,10 @@ COMPANY_ID</columns>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="1372" parent="83" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1373" parent="83" name="REGIONS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="1374" parent="83" name="INDEX_SECURITY_RULE_REGION_SECURITY_RULE_ID_REGIONS">
         <columns>SECURITY_RULE_ID
@@ -4683,11 +4685,11 @@ REGIONS</columns>
       </foreign-key>
       <column id="1377" parent="84" name="SECURITY_RULE_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1378" parent="84" name="SALE_POINT_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1379" parent="84" name="SCRTYRLSALEPOINTFKSCRTYRULESALEPOINTSECURITYRULEID">
         <columns>SECURITY_RULE_ID</columns>
@@ -4716,34 +4718,34 @@ SALE_POINT_ID</columns>
       </foreign-key>
       <column id="1384" parent="85" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1385" parent="85" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1386" parent="85" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1387" parent="85" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1388" parent="85" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1389" parent="85" name="ROLE">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1390" parent="85" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1391" parent="85" name="SECURITY_RULE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1392" parent="85" name="USER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1393" parent="85" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1394" parent="85" name="SECURITYRULEUSERFKSECURITYRULEUSERSECURITY_RULE_ID">
@@ -4766,30 +4768,30 @@ SALE_POINT_ID</columns>
       </foreign-key>
       <column id="1398" parent="86" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1399" parent="86" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1400" parent="86" name="IS_DEFAULT">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <column id="1401" parent="86" name="NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1402" parent="86" name="STATE">
-        <data-type>longtext</data-type>
+        <data-type>longtext|0</data-type>
       </column>
       <column id="1403" parent="86" name="TABLE_ID">
-        <data-type>varchar(256)</data-type>
+        <data-type>varchar(256)|0</data-type>
       </column>
       <column id="1404" parent="86" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1405" parent="86" name="USER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1406" parent="86" name="IX_USER_GRID_STATE_FK_USER_GRID_STATE_USER_ID">
         <columns>USER_ID</columns>
@@ -4807,31 +4809,31 @@ SALE_POINT_ID</columns>
       </foreign-key>
       <column id="1409" parent="87" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1410" parent="87" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1411" parent="87" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1412" parent="87" name="DESCRIPTION">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1413" parent="87" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1414" parent="87" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1415" parent="87" name="NAME">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1416" parent="87" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1417" parent="87" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <key id="1418" parent="87" name="PRIMARY">
@@ -4839,10 +4841,10 @@ SALE_POINT_ID</columns>
         <primary>1</primary>
       </key>
       <column id="1419" parent="88" name="USER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1420" parent="88" name="PERMITBRANDS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="1421" parent="88" name="IX_USER_GROUP_BRAND_FK_USER_GROUP_BRAND_USER_ID">
         <columns>USER_ID</columns>
@@ -4856,11 +4858,11 @@ SALE_POINT_ID</columns>
       </foreign-key>
       <column id="1423" parent="89" name="GROUP_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1424" parent="89" name="USER_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1425" parent="89" name="IX_USER_GROUP_LINK_FK_USER_GROUP_LINK_GROUP_ID">
         <columns>GROUP_ID</columns>
@@ -4888,10 +4890,10 @@ USER_ID</columns>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="1430" parent="90" name="USER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1431" parent="90" name="PERMITREGIONS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="1432" parent="90" name="IX_USER_GROUP_REGION_FK_USER_GROUP_REGION_USER_ID">
         <columns>USER_ID</columns>
@@ -4904,10 +4906,10 @@ USER_ID</columns>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="1434" parent="91" name="USER_PROFILE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1435" parent="91" name="ALIAS">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1436" parent="91" name="INDEX_USER_LOGIN_ALIAS_ALIAS">
         <columns>ALIAS</columns>
@@ -4941,47 +4943,47 @@ ALIAS</columns>
       </foreign-key>
       <column id="1442" parent="92" name="ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
         <default-expression>&apos;&apos;</default-expression>
       </column>
       <column id="1443" parent="92" name="BLOCKED">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="1444" parent="92" name="CHANGE_PASSWORD">
-        <data-type>tinyint(4)</data-type>
+        <data-type>tinyint(4)|0</data-type>
       </column>
       <column id="1445" parent="92" name="CREATED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1446" parent="92" name="CREATED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1447" parent="92" name="LOGIN">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1448" parent="92" name="MODIFIED_AT">
-        <data-type>datetime</data-type>
+        <data-type>datetime|0</data-type>
       </column>
       <column id="1449" parent="92" name="MODIFIED_BY">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1450" parent="92" name="PASSWORD">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1451" parent="92" name="PASSWORD_SALT">
-        <data-type>varchar(30)</data-type>
+        <data-type>varchar(30)|0</data-type>
       </column>
       <column id="1452" parent="92" name="ROLE">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <column id="1453" parent="92" name="VERSION">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1454" parent="92" name="EMPLOYEE_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1455" parent="92" name="IS_ARCHIVED">
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
         <default-expression>&apos;0&apos;</default-expression>
       </column>
       <index id="1456" parent="92" name="FK_USER_PROFILE_EMPLOYEE_ID">
@@ -4999,10 +5001,10 @@ ALIAS</columns>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="1459" parent="93" name="USER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1460" parent="93" name="PERMITBRANDS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="1461" parent="93" name="USER_PROFILE_BRAND_FK_USER_PROFILE_BRAND_USER_ID">
         <columns>USER_ID</columns>
@@ -5015,10 +5017,10 @@ ALIAS</columns>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
       <column id="1463" parent="94" name="USER_ID">
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1464" parent="94" name="PERMITREGIONS">
-        <data-type>varchar(255)</data-type>
+        <data-type>varchar(255)|0</data-type>
       </column>
       <index id="1465" parent="94" name="USER_PROFILE_REGION_FK_USER_PROFILE_REGION_USER_ID">
         <columns>USER_ID</columns>
@@ -5032,11 +5034,11 @@ ALIAS</columns>
       </foreign-key>
       <column id="1467" parent="95" name="USER_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1468" parent="95" name="SALE_POINT_ID">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <index id="1469" parent="95" name="IX_USER_SALE_POINT_FK_USER_SALE_POINT_USER_ID">
         <columns>USER_ID</columns>
@@ -5065,47 +5067,47 @@ SALE_POINT_ID</columns>
       </foreign-key>
       <column id="1474" parent="96" name="version_rank">
         <mandatory>1</mandatory>
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1475" parent="96" name="installed_rank">
         <mandatory>1</mandatory>
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1476" parent="96" name="version">
         <mandatory>1</mandatory>
-        <data-type>varchar(50)</data-type>
+        <data-type>varchar(50)|0</data-type>
       </column>
       <column id="1477" parent="96" name="description">
         <mandatory>1</mandatory>
-        <data-type>varchar(200)</data-type>
+        <data-type>varchar(200)|0</data-type>
       </column>
       <column id="1478" parent="96" name="type">
         <mandatory>1</mandatory>
-        <data-type>varchar(20)</data-type>
+        <data-type>varchar(20)|0</data-type>
       </column>
       <column id="1479" parent="96" name="script">
         <mandatory>1</mandatory>
-        <data-type>varchar(1000)</data-type>
+        <data-type>varchar(1000)|0</data-type>
       </column>
       <column id="1480" parent="96" name="checksum">
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1481" parent="96" name="installed_by">
         <mandatory>1</mandatory>
-        <data-type>varchar(100)</data-type>
+        <data-type>varchar(100)|0</data-type>
       </column>
       <column id="1482" parent="96" name="installed_on">
         <mandatory>1</mandatory>
-        <data-type>timestamp</data-type>
+        <data-type>timestamp|0</data-type>
         <default-expression>&apos;CURRENT_TIMESTAMP&apos;</default-expression>
       </column>
       <column id="1483" parent="96" name="execution_time">
         <mandatory>1</mandatory>
-        <data-type>int(11)</data-type>
+        <data-type>int(11)|0</data-type>
       </column>
       <column id="1484" parent="96" name="success">
         <mandatory>1</mandatory>
-        <data-type>tinyint(1)</data-type>
+        <data-type>tinyint(1)|0</data-type>
       </column>
       <index id="1485" parent="96" name="schema_version_ir_idx">
         <columns>installed_rank</columns>
