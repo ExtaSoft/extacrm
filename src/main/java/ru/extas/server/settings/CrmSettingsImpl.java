@@ -41,4 +41,9 @@ public class CrmSettingsImpl implements CrmSettings {
         else
             return "Экстрим Асистанс CRM";
     }
+
+    @Override
+    public boolean isShowSalePointIds() {
+        return false;
+    }
 }

@@ -27,4 +27,11 @@ public interface CrmSettings {
      * @return название приложения
      */
     String getAppTitle();
+
+    /**
+     * Показывать ли раздел "Идентификация" в карточке торговой точки
+     *
+     * @return true - если нужно показывать
+     */
+    boolean isShowSalePointIds();
 }
