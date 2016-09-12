@@ -2,7 +2,7 @@ package ru.extas.web.commons;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import com.google.gwt.thirdparty.guava.common.io.Closeables;
+import com.google.common.io.Closeables;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
 import org.eclipse.mylyn.wikitext.textile.core.TextileLanguage;

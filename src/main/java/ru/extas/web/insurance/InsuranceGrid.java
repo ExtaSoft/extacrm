@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.gwt.thirdparty.guava.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Maps.newHashMap;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**
