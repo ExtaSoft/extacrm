@@ -58,6 +58,13 @@ public class ProductView extends SubdomainView {
 				return new ProdInstallmentsGrid();
 			}
 		});
+		ret.add(new SubdomainInfoImpl("Аренда с выкупом", ExtaDomain.PROD_HIRE_PURCHASE) {
+
+			@Override
+			public ExtaGrid createGrid() {
+				return new ProdHirePurchaseGrid();
+			}
+		});
 		return ret;
 	}
 }
