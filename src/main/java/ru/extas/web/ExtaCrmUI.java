@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
+import ru.extas.server.settings.CrmSettings;
 import ru.extas.web.analytics.AnalyticsView;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
@@ -92,11 +93,13 @@ public class ExtaCrmUI extends UI {
         else
             buildLoginView(false);
 
+        getPage().setTitle(lookup(CrmSettings.class).getAppTitle());
+
     }
 
     private void buildLoginView(final boolean exit) {
 
-        final Panel loginPanel = new Panel("Экстрим Ассистанс CRM");
+        final Panel loginPanel = new Panel(lookup(CrmSettings.class).getAppTitle());
         loginPanel.setSizeUndefined();
 
         final TextField username = new TextField("Пользователь");

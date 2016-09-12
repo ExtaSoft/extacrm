@@ -1,9 +1,11 @@
 package ru.extas.web;
 
-import com.vaadin.server.CustomizedSystemMessages;
-import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.*;
+import ru.extas.server.settings.CrmSettings;
 
 import javax.servlet.ServletException;
+
+import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * <p>ExtaServlet class.</p>
@@ -14,7 +16,7 @@ import javax.servlet.ServletException;
  * @version $Id: $Id
  * @since 0.5.0
  */
-public class ExtaServlet extends VaadinServlet {
+public class ExtaServlet extends VaadinServlet implements SessionInitListener {
 
     /** {@inheritDoc} */
     @Override
@@ -60,5 +62,38 @@ public class ExtaServlet extends VaadinServlet {
                             "<u>кликните здесь</u> или нажмите клавишу ESC чтобы попробовать снова.");
                     return messages;
                 });
+
+        getService().addSessionInitListener(this);
+    }
+
+
+    @Override
+    public void sessionInit(SessionInitEvent event) throws ServiceException {
+        event.getSession().addBootstrapListener(MyBootstrapListener.INSTANCE);
+
+    }
+
+    private static class MyBootstrapListener implements BootstrapListener {
+        private static final long serialVersionUID = 1L;
+        private static final MyBootstrapListener INSTANCE = new MyBootstrapListener();
+
+        @Override
+        public void modifyBootstrapPage(BootstrapPageResponse response) {
+            final String iconPath = lookup(CrmSettings.class).getFaviconPath();
+            response.getDocument().head()
+                    .getElementsByAttributeValue("rel", "shortcut icon")
+                    .attr("href", iconPath);
+            response.getDocument().head()
+                    .getElementsByAttributeValue("rel", "icon")
+                    .attr("href", iconPath);
+        }
+
+        @Override
+        public void modifyBootstrapFragment(BootstrapFragmentResponse response) {
+        }
+
+        private Object readResolve() {
+            return INSTANCE;
+        }
     }
 }
