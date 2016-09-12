@@ -11,11 +11,12 @@ import java.util.Collection;
  */
 public interface CategoryService {
 
-    public static final String COMPANY_CAT_DEALER = "Дилер";
-    public static final String COMPANY_CAT_DISTRIBUTOR = "Дистрибьютор";
-    public static final String COMPANY_CAT_BANK = "Банк";
-    public static final String COMPANY_CAT_ASSURANCE = "Страховая компания";
-    public static final String COMPANY_CAT_CALLCENTER = "Колл-центр";
+    String COMPANY_CAT_DEALER = "Дилер";
+    String COMPANY_CAT_DISTRIBUTOR = "Дистрибьютор";
+    String COMPANY_CAT_BANK = "Банк";
+    String COMPANY_CAT_ASSURANCE = "Страховая компания";
+    String COMPANY_CAT_CALLCENTER = "Колл-центр";
+    String COMPANY_CAT_CLIENT = "Клиент";
 
 
     /**

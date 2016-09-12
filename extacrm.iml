@@ -168,8 +168,8 @@
     <orderEntry type="library" name="Maven: com.vaadin.addon:jpacontainer:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:animator:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:dom:0.1.0" level="project" />
-    <orderEntry type="library" name="Maven: com.vaadin.addon:vaadin-charts:3.1.0" level="project" />
-    <orderEntry type="library" name="Maven: com.vaadin.addon:vaadin-charts-model:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin.addon:vaadin-charts:3.2.0" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin.addon:vaadin-charts-model:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:1.4" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:filteringtable:0.9.15.v7" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:popupbutton:2.5.0" level="project" />
@@ -184,7 +184,7 @@
     <orderEntry type="library" name="Maven: org.vaadin.addon:itemlayout:2.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addon:confirmdialog:2.1.3" level="project" />
     <orderEntry type="library" name="Maven: org.vaadin.addons:sizereporter:0.1.4" level="project" />
-    <orderEntry type="library" name="Maven: org.vaadin:viritin:1.56" level="project" />
+    <orderEntry type="library" name="Maven: org.vaadin:viritin:1.57" level="project" />
     <orderEntry type="library" name="Maven: org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.1" level="project" />
     <orderEntry type="library" name="Maven: javax.el:javax.el-api:2.2.4" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:4.3.2.Final" level="project" />
