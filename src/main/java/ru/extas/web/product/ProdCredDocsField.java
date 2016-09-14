@@ -65,7 +65,7 @@ public class ProdCredDocsField extends ExtaCustomField<List> {
                 final BeanItem<ProdCreditDoc> newObj = container.addBean(new ProdCreditDoc(product));
                 docTable.select(newObj.getBean());
             });
-			addProdBtn.setDescription("Добавить процентную стаквку в продукт");
+			addProdBtn.setDescription("Добавить документ в комплект продукта");
 			addProdBtn.setIcon(Fontello.DOC_NEW);
 
 
@@ -74,7 +74,7 @@ public class ProdCredDocsField extends ExtaCustomField<List> {
                     docTable.removeItem(docTable.getValue());
                 }
             });
-			delProdBtn.setDescription("Удалить процентную ставку из продукта");
+			delProdBtn.setDescription("Удалить документ из комплекта продукта");
 			delProdBtn.setIcon(Fontello.TRASH);
 
 			panel.addComponent(commandBar);

@@ -5,6 +5,7 @@ import ru.extas.model.contacts.Employee;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Связь продукта с продажей (продажа продукта)
@@ -71,6 +72,11 @@ public class ProductInSale extends AuditedObject {
 
     @Enumerated
     private State state = State.NEW;
+
+	// Дополнительные расходы по породукту
+	@OneToMany(mappedBy = "productInstance", targetEntity = ProductExpenditure.class, orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	private List<ProductExpenditure> expenditureList;
+
 
 	/**
 	 * <p>Constructor for ProductInSale.</p>
@@ -193,4 +199,11 @@ public class ProductInSale extends AuditedObject {
 		this.period = period;
 	}
 
+    public List<ProductExpenditure> getExpenditureList() {
+        return expenditureList;
+    }
+
+    public void setExpenditureList(List<ProductExpenditure> expenditureList) {
+        this.expenditureList = expenditureList;
+    }
 }

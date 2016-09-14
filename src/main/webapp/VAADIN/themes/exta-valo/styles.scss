@@ -200,6 +200,15 @@
     height: 0;
     visibility: collapse;
   }
+
+  // Подсвечиваем статус продуктов в продаже
+  .v-grid-cell.product-agreed-highlight {
+    background: forestgreen;
+  }
+  .v-grid-cell.product-rejected-highlight {
+    background: #FF6347;
+  }
+
 }
 
 

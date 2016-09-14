@@ -41,6 +41,11 @@ import static ru.extas.server.ServiceLocator.lookup;
  */
 public class ProductInSaleField extends ExtaCustomField<List> {
 
+    static final String PROD_CREDIT_CAPTION = "Кредит";
+    static final String PROD_INSTALL_CAPTION = "Рассрочка";
+    static final String PROD_INSUR_CAPTION = "Страховка";
+    static final String PROD_HIRE_CAPTION = "Аренда с выкупом";
+
     private final SupplierSer<BigDecimal> priceSupplier;
     private final SupplierSer<String> brandSupplier;
     private final SupplierSer<SalePoint> salePointSupplier;
@@ -137,6 +142,8 @@ public class ProductInSaleField extends ExtaCustomField<List> {
                     return FontAwesome.UMBRELLA.getHtml();
                 else if (product instanceof ProdInstallments)
                     return FontAwesome.MONEY.getHtml();
+                else if (product instanceof ProdHirePurchase)
+                    return FontAwesome.AUTOMOBILE.getHtml();
                 else
                     return "";
             }
@@ -200,6 +207,18 @@ public class ProductInSaleField extends ExtaCustomField<List> {
 //        grid.getColumn(DELETE_BTN).setRenderer(new ButtonRenderer(e -> deleteProduct((ProductInSale) e.getItemId())));
 //        grid.getColumn(DELETE_BTN).setHeaderCaption("");
         gridContainer.addItemSetChangeListener(e -> grid.setHeightByRows(container.size() == 0 ? 1 : container.size()));
+        grid.setCellStyleGenerator(cellRef -> {
+            if("state".equals(cellRef.getPropertyId())){
+                ProductInSale.State state = (ProductInSale.State) cellRef.getProperty().getValue();
+                switch (state) {
+                    case AGREED:
+                        return "product-agreed-highlight";
+                    case REJECTED:
+                        return "product-rejected-highlight";
+                }
+            }
+            return null;
+        });
         root.addComponent(grid);
 
         addReadOnlyStatusChangeListener(e -> {
@@ -228,7 +247,7 @@ public class ProductInSaleField extends ExtaCustomField<List> {
             final Map<Product.Type, List<Product>> availableProducts = lookup(ProductRepository.class).findAvailableProducts(salePoint);
             final List<Product> credProducts = availableProducts.get(Product.Type.CREDIT);
             if (!credProducts.isEmpty()) {
-                final MenuBar.MenuItem creditMn = addProductBtn.addItem("Кредит", FontAwesome.CREDIT_CARD, null);
+                final MenuBar.MenuItem creditMn = addProductBtn.addItem(PROD_CREDIT_CAPTION, FontAwesome.CREDIT_CARD, null);
                 // TODO: Реализовать вызов формы калькулятора
     //        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
     //            new LoanCalculatorForm().showModal();
@@ -240,16 +259,23 @@ public class ProductInSaleField extends ExtaCustomField<List> {
 
             final List<Product> installProducts = availableProducts.get(Product.Type.PAYMENT_BY_INSTALLMENTS);
             if (!installProducts.isEmpty()) {
-                final MenuBar.MenuItem instMn = addProductBtn.addItem("Рассрочка", FontAwesome.MONEY, null);
+                final MenuBar.MenuItem instMn = addProductBtn.addItem(PROD_INSTALL_CAPTION, FontAwesome.MONEY, null);
                 for (final Product prod : installProducts)
                     instMn.addItem(prod.getName(), e -> addProduct(prod));
             }
 
             final List<Product> insProducts = availableProducts.get(Product.Type.INSURANCE);
             if (!insProducts.isEmpty()) {
-                final MenuBar.MenuItem insurMn = addProductBtn.addItem("Страховка", FontAwesome.UMBRELLA, null);
+                final MenuBar.MenuItem insurMn = addProductBtn.addItem(PROD_INSUR_CAPTION, FontAwesome.UMBRELLA, null);
                 for (final Product prod : insProducts)
                     insurMn.addItem(prod.getName(), e -> addProduct(prod));
+            }
+
+            final List<Product> hireProducts = availableProducts.get(Product.Type.HIRE_PURCHASE);
+            if (!hireProducts.isEmpty()) {
+                final MenuBar.MenuItem hireMn = addProductBtn.addItem(PROD_HIRE_CAPTION, FontAwesome.AUTOMOBILE, null);
+                for (final Product prod : hireProducts)
+                    hireMn.addItem(prod.getName(), e -> addProduct(prod));
             }
         }
     }
@@ -282,7 +308,9 @@ public class ProductInSaleField extends ExtaCustomField<List> {
         } else if (product instanceof ProdInsurance) {
             form = new InsuranceInSaleEditForm("Страховой продукт", productInSale, priceSupplier, brandSupplier);
         } else if (product instanceof ProdInstallments) {
-            form = new InstallmentInSaleEditForm("Рассрочка", productInSale, priceSupplier, brandSupplier);
+            form = new InstallmentInSaleEditForm(PROD_INSTALL_CAPTION, productInSale, priceSupplier, brandSupplier);
+        } else if (product instanceof ProdHirePurchase) {
+            form = new HirePurchaseInSaleEditForm(PROD_HIRE_CAPTION, productInSale, priceSupplier, brandSupplier);
         } else
             form = null;
         return form;
