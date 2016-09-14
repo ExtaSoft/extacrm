@@ -8,7 +8,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Label;
 import ru.extas.model.insurance.Insurance;
-import ru.extas.model.sale.ProdInsurance;
+import ru.extas.model.product.ProdInsurance;
 import ru.extas.server.insurance.InsuranceCalculator;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.component.ExtaFormLayout;
@@ -47,7 +47,6 @@ public abstract class InsuranceInSmthEditForm<T> extends ExtaEditForm<T> {
     /**
      * <p>Constructor for AbstractEditForm.</p>
      *  @param caption       a {@link String} object.
-     * @param productInSale
      * @param priceSupplier
      * @param brandSupplier
      */
@@ -62,7 +61,6 @@ public abstract class InsuranceInSmthEditForm<T> extends ExtaEditForm<T> {
     /**
      * <p>initEntity.</p>
      *
-     * @param productInSale a TEditObject object.
      */
     @Override
     protected void initEntity(final T targetObject) {
@@ -72,7 +70,6 @@ public abstract class InsuranceInSmthEditForm<T> extends ExtaEditForm<T> {
     /**
      * <p>saveEntity.</p>
      *
-     * @param productInSale a TEditObject object.
      */
     @Override
     protected T saveEntity(final T targetObject) {

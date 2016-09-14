@@ -1,4 +1,4 @@
-package ru.extas.model.sale;
+package ru.extas.model.product;
 
 import ru.extas.model.common.AuditedObject;
 
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Table(name = "PROD_HIRE_PURCHASE_EXPENDITURE")
 public class ProductExpenditure extends AuditedObject {
 
-    public ProductExpenditure(ProductInSale productInst) {
+    public ProductExpenditure(ProductInstance productInst) {
         this.productInstance = productInst;
     }
 
@@ -57,7 +57,7 @@ public class ProductExpenditure extends AuditedObject {
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private ProductInSale productInstance;
+    private ProductInstance productInstance;
 
     public Type getType() {
         return type;
@@ -83,11 +83,11 @@ public class ProductExpenditure extends AuditedObject {
         this.comment = comment;
     }
 
-    public ProductInSale getProductInstance() {
+    public ProductInstance getProductInstance() {
         return productInstance;
     }
 
-    public void setProductInstance(ProductInSale productInstance) {
+    public void setProductInstance(ProductInstance productInstance) {
         this.productInstance = productInstance;
     }
 }

@@ -7,8 +7,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Table;
-import ru.extas.model.sale.ProdCredit;
-import ru.extas.model.sale.ProdCreditPercent;
+import ru.extas.model.product.ProdCredit;
+import ru.extas.model.product.ProdCreditPercent;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
@@ -42,7 +42,7 @@ public class ProdCredPercentField extends ExtaCustomField<List> {
      *
      * @param caption     a {@link java.lang.String} object.
      * @param description a {@link java.lang.String} object.
-     * @param product     a {@link ru.extas.model.sale.ProdCredit} object.
+     * @param product     a {@link ProdCredit} object.
      */
     public ProdCredPercentField(final String caption, final String description, final ProdCredit product) {
         super(caption, description);

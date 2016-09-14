@@ -1,4 +1,4 @@
-package ru.extas.model.sale;
+package ru.extas.model.product;
 
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Company;

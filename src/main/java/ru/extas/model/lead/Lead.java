@@ -11,6 +11,7 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.model.motor.MotorModel;
 import ru.extas.model.motor.MotorType;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.*;
@@ -175,8 +176,8 @@ public class Lead extends SecuredObject {
     @OrderBy("createdDate")
     private List<LeadComment> comments = newArrayList();
 
-    @OneToMany(mappedBy = "lead", targetEntity = ProductInLead.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<ProductInLead> productInLeads = newArrayList();
+    @OneToMany(mappedBy = "lead", targetEntity = ProductInstance.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<ProductInstance> productInstances = newArrayList();
 
     public List<LeadFileContainer> getFiles() {
         return files;
@@ -522,11 +523,11 @@ public class Lead extends SecuredObject {
         this.comments = comments;
     }
 
-    public List<ProductInLead> getProductInLeads() {
-        return productInLeads;
+    public List<ProductInstance> getProductInstances() {
+        return productInstances;
     }
 
-    public void setProductInLeads(final List<ProductInLead> productInSales) {
-        this.productInLeads = productInSales;
+    public void setProductInstances(final List<ProductInstance> productInSales) {
+        this.productInstances = productInSales;
     }
 }

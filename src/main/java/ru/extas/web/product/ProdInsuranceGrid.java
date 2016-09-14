@@ -1,7 +1,7 @@
 package ru.extas.web.product;
 
 import com.vaadin.data.Container;
-import ru.extas.model.sale.ProdInsurance;
+import ru.extas.model.product.ProdInsurance;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.ExtaGrid;
 import ru.extas.web.commons.GridDataDecl;

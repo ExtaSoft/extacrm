@@ -3,8 +3,8 @@ package ru.extas.server.financial;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
-import ru.extas.model.sale.ProdCredit;
-import ru.extas.model.sale.ProdCreditPercent;
+import ru.extas.model.product.ProdCredit;
+import ru.extas.model.product.ProdCreditPercent;
 import ru.extas.server.product.ProdCreditRepository;
 
 import javax.inject.Inject;

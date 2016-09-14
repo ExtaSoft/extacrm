@@ -1,6 +1,6 @@
 package ru.extas.server.financial;
 
-import ru.extas.model.sale.ProdCredit;
+import ru.extas.model.product.ProdCredit;
 
 import java.math.BigDecimal;
 

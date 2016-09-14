@@ -1,7 +1,6 @@
 package ru.extas.web.product;
 
-import ru.extas.model.sale.ProdCredit;
-import ru.extas.model.sale.Product;
+import ru.extas.model.product.ProdCredit;
 
 /**
  * Селектор кредитных продуктов

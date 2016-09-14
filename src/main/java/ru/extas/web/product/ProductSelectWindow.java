@@ -1,6 +1,6 @@
 package ru.extas.web.product;
 
-import ru.extas.model.sale.Product;
+import ru.extas.model.product.Product;
 import ru.extas.web.commons.DefaultAction;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.UIAction;
@@ -69,7 +69,7 @@ public class ProductSelectWindow extends CloseOnlyWindow {
 	/**
 	 * <p>Getter for the field <code>selected</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.sale.Product} object.
+	 * @return a {@link Product} object.
 	 */
 	public Set<Product> getSelected() {
 		return selected;

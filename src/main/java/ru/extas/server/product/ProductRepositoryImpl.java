@@ -1,7 +1,7 @@
 package ru.extas.server.product;
 
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.sale.*;
+import ru.extas.model.product.*;
 
 import javax.inject.Inject;
 import java.util.List;

@@ -1,6 +1,6 @@
 package ru.extas.web.product;
 
-import ru.extas.model.sale.ProdHirePurchase;
+import ru.extas.model.product.ProdHirePurchase;
 
 /**
  * Селектор продуктов Аренда с выкупом

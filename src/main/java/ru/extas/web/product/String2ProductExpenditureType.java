@@ -2,7 +2,7 @@ package ru.extas.web.product;
 
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
-import ru.extas.model.sale.ProductExpenditure;
+import ru.extas.model.product.ProductExpenditure;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**

@@ -1,7 +1,9 @@
-package ru.extas.model.sale;
+package ru.extas.model.product;
 
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Employee;
+import ru.extas.model.lead.Lead;
+import ru.extas.model.sale.Sale;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -18,7 +20,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "PRODUCT_IN_SALE")
-public class ProductInSale extends AuditedObject {
+public class ProductInstance extends AuditedObject {
 
 	/**
 	 * Статусы заявок на кредиты
@@ -50,6 +52,10 @@ public class ProductInSale extends AuditedObject {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
 	private Sale sale;
 
+	// Лид
+	@ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+	private Lead lead;
+
 	// Продукт
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	private Product product;
@@ -79,18 +85,16 @@ public class ProductInSale extends AuditedObject {
 
 
 	/**
-	 * <p>Constructor for ProductInSale.</p>
 	 */
-	public ProductInSale() {
+	public ProductInstance() {
 	}
 
 	/**
-	 * <p>Constructor for ProductInSale.</p>
 	 *
-	 * @param sale a {@link ru.extas.model.sale.Sale} object.
 	 */
-	public ProductInSale(final Sale sale) {
+	public ProductInstance(final Lead lead, final Sale sale) {
 		this.sale = sale;
+        this.lead = lead;
 	}
 
     public State getState() {
@@ -148,7 +152,7 @@ public class ProductInSale extends AuditedObject {
 	/**
 	 * <p>Getter for the field <code>product</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.sale.Product} object.
+	 * @return a {@link Product} object.
 	 */
 	public Product getProduct() {
 		return product;
@@ -157,7 +161,7 @@ public class ProductInSale extends AuditedObject {
 	/**
 	 * <p>Setter for the field <code>product</code>.</p>
 	 *
-	 * @param product a {@link ru.extas.model.sale.Product} object.
+	 * @param product a {@link Product} object.
 	 */
 	public void setProduct(final Product product) {
 		this.product = product;
@@ -205,5 +209,13 @@ public class ProductInSale extends AuditedObject {
 
     public void setExpenditureList(List<ProductExpenditure> expenditureList) {
         this.expenditureList = expenditureList;
+    }
+
+    public Lead getLead() {
+        return lead;
+    }
+
+    public void setLead(Lead lead) {
+        this.lead = lead;
     }
 }

@@ -10,9 +10,9 @@ import ru.extas.model.insurance.A7Form;
 import ru.extas.model.insurance.Insurance;
 import ru.extas.model.insurance.Policy;
 import ru.extas.model.lead.Lead;
-import ru.extas.model.sale.ProdCredit;
-import ru.extas.model.sale.ProductExpenditure;
-import ru.extas.model.sale.ProductInSale;
+import ru.extas.model.product.ProdCredit;
+import ru.extas.model.product.ProductExpenditure;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.*;
 import ru.extas.web.commons.converters.*;
@@ -151,7 +151,7 @@ public class ExtaConverterFactory extends DefaultConverterFactory {
 			return (Converter<PRESENTATION, MODEL>) lookup(StringToTypeOfEmployment.class);
 
 		// Конвертер статуса продукта в продаже
-		if (presentationType == String.class && modelType == ProductInSale.State.class)
+		if (presentationType == String.class && modelType == ProductInstance.State.class)
 			return (Converter<PRESENTATION, MODEL>) lookup(String2ProdInSaleState.class);
 
 		// Конвертер дополнительной статьи расхода по продукту

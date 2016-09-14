@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.extas.model.sale.ProdCredit;
+import ru.extas.model.product.ProdCredit;
 
 import java.math.BigDecimal;
 import java.util.List;

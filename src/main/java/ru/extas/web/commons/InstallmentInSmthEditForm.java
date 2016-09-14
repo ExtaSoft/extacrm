@@ -7,15 +7,15 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Label;
-import ru.extas.model.sale.ProdInstallments;
+import ru.extas.model.product.ProdInstallments;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.PercentOfField;
 import ru.extas.web.contacts.employee.EmployeeField;
-import ru.extas.web.product.ProdInSaleStateSelect;
 import ru.extas.web.product.ProdInstallmentsField;
+import ru.extas.web.product.ProdInstanceStateSelect;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -44,7 +44,7 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
     @PropertyId("responsible")
     private EmployeeField responsibleField;
     @PropertyId("state")
-    private ProdInSaleStateSelect stateField;
+    private ProdInstanceStateSelect stateField;
 
     private Label vendorLabel;
     private Label downpaymentLabel;
@@ -54,7 +54,6 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
     /**
      * <p>Constructor for AbstractEditForm.</p>
      *  @param caption       a {@link String} object.
-     * @param productInSale
      * @param priceSupplier
      * @param brandSupplier
      */
@@ -69,7 +68,6 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
     /**
      * <p>initEntity.</p>
      *
-     * @param productInSale a TEditObject object.
      */
     @Override
     protected void initEntity(final T targetObject) {
@@ -79,7 +77,6 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
     /**
      * <p>saveEntity.</p>
      *
-     * @param productInSale a TEditObject object.
      */
     @Override
     protected T saveEntity(final T targetObject) {
@@ -101,7 +98,7 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
         productField.addValueChangeListener(e -> refreshProductFields());
         form.addComponent(productField);
 
-        stateField = new ProdInSaleStateSelect("Статус рассмотрения", "Укажите статус рассмотрения заявки на продукт");
+        stateField = new ProdInstanceStateSelect("Статус рассмотрения", "Укажите статус рассмотрения заявки на продукт");
         form.addComponent(stateField);
 
         form.addComponent(new FormGroupHeader("Характеристики продукта"));

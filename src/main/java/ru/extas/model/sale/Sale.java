@@ -12,6 +12,7 @@ import ru.extas.model.lead.Lead;
 import ru.extas.model.motor.MotorBrand;
 import ru.extas.model.motor.MotorModel;
 import ru.extas.model.motor.MotorType;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.*;
@@ -87,8 +88,8 @@ public class Sale extends SecuredObject {
     @Column(name = "CANCEL_REASON", length = ModelUtils.ENUM_STRING_LENGTH)
     private CancelReason cancelReason;
 
-    @OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<ProductInSale> productInSales = newArrayList();
+    @OneToMany(mappedBy = "sale", targetEntity = ProductInstance.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<ProductInstance> productInstances = newArrayList();
 
     // Ответственный с нашей стороны
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -374,21 +375,19 @@ public class Sale extends SecuredObject {
     }
 
     /**
-     * <p>Getter for the field <code>productInSales</code>.</p>
      *
      * @return a {@link java.util.List} object.
      */
-    public List<ProductInSale> getProductInSales() {
-        return productInSales;
+    public List<ProductInstance> getProductInstances() {
+        return productInstances;
     }
 
     /**
-     * <p>Setter for the field <code>productInSales</code>.</p>
      *
-     * @param productInSales a {@link java.util.List} object.
+     * @param productInstances a {@link java.util.List} object.
      */
-    public void setProductInSales(final List<ProductInSale> productInSales) {
-        this.productInSales = productInSales;
+    public void setProductInstances(final List<ProductInstance> productInstances) {
+        this.productInstances = productInstances;
     }
 
     public String getSource() {

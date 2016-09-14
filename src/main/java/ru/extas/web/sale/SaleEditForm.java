@@ -8,7 +8,12 @@ import com.vaadin.ui.TextArea;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.sale.*;
+import ru.extas.model.product.ProdCredit;
+import ru.extas.model.product.Product;
+import ru.extas.model.product.ProductInstance;
+import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.SaleComment;
+import ru.extas.model.sale.SaleFileContainer;
 import ru.extas.model.security.CuratorsGroup;
 import ru.extas.server.contacts.EmployeeRepository;
 import ru.extas.server.contacts.SalePointRepository;
@@ -73,8 +78,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private SPLegalEntityField dealerLEField;
     @PropertyId("comment")
     private TextArea commentField;
-    @PropertyId("productInSales")
-    private ProductInSaleField productInSaleField;
+    @PropertyId("productInstances")
+    private ProductInstancesField productInstancesField;
     @PropertyId("responsible")
     private EmployeeField responsibleField;
     @PropertyId("responsibleAssist")
@@ -140,7 +145,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         dealerField = new DealerSalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
         dealerField.addValueChangeListener(e -> {
-            productInSaleField.refreshSalePoint();
+            productInstancesField.refreshSalePoint();
             dealerManagerField.changeSalePoint();
             dealerLEField.changeSalePoint();
             if (responsibleField.getValue() == null) {
@@ -166,9 +171,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
                 if(!legalEntity.getMotorBrands().contains(brand))
                     throw new Validator.InvalidValueException("Выбранное Юридическое лицо не работает с данным брендом техники");
                 // Проверить что юрик аккредитован для данного продукта
-                final List<ProductInSale> productInSaleList = productInSaleField.getValue();
-                if(productInSaleList != null) {
-                    for (final ProductInSale prodInSale : productInSaleList) {
+                final List<ProductInstance> productInstanceList = productInstancesField.getValue();
+                if(productInstanceList != null) {
+                    for (final ProductInstance prodInSale : productInstanceList) {
                         final Product prod = prodInSale.getProduct();
                         if(prod instanceof ProdCredit) {
                             if( !legalEntity.getCredProducts().contains(prod))
@@ -203,12 +208,12 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-        productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity(),
+        productInstancesField = new ProductInstancesField("Продукты в продаже", null, getEntity(),
                 () -> (BigDecimal) mototPriceField.getConvertedValue(),
                 () -> (String) motorBrandField.getValue(),
                 () -> dealerField.getValue());
-        productInSaleField.addValueChangeListener(forceModified);
-        form.addComponent(productInSaleField);
+        productInstancesField.addValueChangeListener(forceModified);
+        form.addComponent(productInstancesField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Коментарии"));
@@ -221,7 +226,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         docFilesEditor = new FilesManageField(SaleFileContainer.class);
         form.addComponent(docFilesEditor);
 
-        mototPriceField.addValueChangeListener(e -> productInSaleField.markAsDirtyRecursive());
+        mototPriceField.addValueChangeListener(e -> productInstancesField.markAsDirtyRecursive());
 
         return form;
     }

@@ -7,8 +7,8 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Label;
-import ru.extas.model.sale.ProdHirePurchase;
-import ru.extas.model.sale.ProductInSale;
+import ru.extas.model.product.ProdHirePurchase;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
@@ -16,7 +16,7 @@ import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.PercentOfField;
 import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.product.ProdHirePurchaseField;
-import ru.extas.web.product.ProdInSaleStateSelect;
+import ru.extas.web.product.ProdInstanceStateSelect;
 import ru.extas.web.product.ProductExpendituresField;
 
 import java.math.BigDecimal;
@@ -46,7 +46,7 @@ public abstract class HirePurchaseInSmthEditForm<T> extends ExtaEditForm<T> {
     @PropertyId("responsible")
     private EmployeeField responsibleField;
     @PropertyId("state")
-    private ProdInSaleStateSelect stateField;
+    private ProdInstanceStateSelect stateField;
     @PropertyId("expenditureList")
     private ProductExpendituresField expendituresField;
 
@@ -102,12 +102,12 @@ public abstract class HirePurchaseInSmthEditForm<T> extends ExtaEditForm<T> {
         productField.addValueChangeListener(e -> refreshProductFields());
         form.addComponent(productField);
 
-        stateField = new ProdInSaleStateSelect("Статус рассмотрения", "Укажите статус рассмотрения заявки на продукт");
+        stateField = new ProdInstanceStateSelect("Статус рассмотрения", "Укажите статус рассмотрения заявки на продукт");
         form.addComponent(stateField);
 
         form.addComponent(new FormGroupHeader("Сопутствующие расходы"));
         expendituresField = new ProductExpendituresField("Статьи расходов",
-                "Список дополнительных расходов сопровождающих продукт", (ProductInSale) getEntity());
+                "Список дополнительных расходов сопровождающих продукт", (ProductInstance) getEntity());
         form.addComponent(expendituresField);
 
         form.addComponent(new FormGroupHeader("Характеристики продукта"));

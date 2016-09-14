@@ -15,8 +15,8 @@ import ru.extas.model.contacts.Person;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.lead.LeadComment;
 import ru.extas.model.lead.LeadFileContainer;
-import ru.extas.model.lead.ProductInLead;
-import ru.extas.model.sale.ProductInSale;
+import ru.extas.model.product.ProductExpenditure;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.model.sale.SaleFileContainer;
@@ -90,24 +90,33 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale.setResponsibleAssist(lead.getResponsibleAssist());
         sale.setSource(lead.getSource());
 
-        final List<ProductInSale> productInSales = newArrayList();
-        for (final ProductInLead productInLead : lead.getProductInLeads()) {
-            final ProductInSale productInSale = new ProductInSale();
-            productInSale.setArchived(productInLead.isArchived());
-            productInSale.setCreatedBy(productInLead.getCreatedBy());
-            productInSale.setCreatedDate(productInLead.getCreatedDate());
-            productInSale.setLastModifiedBy(productInLead.getLastModifiedBy());
-            productInSale.setLastModifiedDate(productInLead.getLastModifiedDate());
-            productInSale.setSale(sale);
-            productInSale.setProduct(productInLead.getProduct());
-            productInSale.setSumm(productInLead.getSumm());
-            productInSale.setPeriod(productInLead.getPeriod());
-            productInSale.setDownpayment(productInLead.getDownpayment());
-            productInSale.setResponsible(productInLead.getResponsible());
-            productInSale.setState(productInLead.getState());
-            productInSales.add(productInSale);
+        final List<ProductInstance> saleProductInstances = newArrayList();
+        for (final ProductInstance instance : lead.getProductInstances()) {
+            final ProductInstance productInstance = new ProductInstance();
+            productInstance.setArchived(instance.isArchived());
+            productInstance.setCreatedBy(instance.getCreatedBy());
+            productInstance.setCreatedDate(instance.getCreatedDate());
+            productInstance.setLastModifiedBy(instance.getLastModifiedBy());
+            productInstance.setLastModifiedDate(instance.getLastModifiedDate());
+            productInstance.setSale(sale);
+            productInstance.setProduct(instance.getProduct());
+            productInstance.setSumm(instance.getSumm());
+            productInstance.setPeriod(instance.getPeriod());
+            productInstance.setDownpayment(instance.getDownpayment());
+            productInstance.setResponsible(instance.getResponsible());
+            productInstance.setState(instance.getState());
+            List<ProductExpenditure> expenditures = newArrayList();
+            for (ProductExpenditure expenditure : instance.getExpenditureList()) {
+                final ProductExpenditure exp = new ProductExpenditure();
+                exp.setType(expenditure.getType());
+                exp.setCost(expenditure.getCost());
+                exp.setComment(expenditure.getComment());
+                expenditures.add(exp);
+            }
+            productInstance.setExpenditureList(expenditures);
+            saleProductInstances.add(productInstance);
         }
-        sale.setProductInSales(productInSales);
+        sale.setProductInstances(saleProductInstances);
 
         final List<SaleComment> saleComments = newArrayList();
         for (final LeadComment leadComment : lead.getComments()) {
@@ -132,9 +141,9 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         Lead.Result leadResult = Lead.Result.SUCCESSFUL;
 
         sale.setStatus(Sale.Status.FINISHED);
-        sale.getProductInSales().stream()
-                .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
-                .forEach(p -> p.setState(ProductInSale.State.AGREED));
+        sale.getProductInstances().stream()
+                .filter(p -> p.getState() == ProductInstance.State.IN_PROGRESS)
+                .forEach(p -> p.setState(ProductInstance.State.AGREED));
         leadResult = Lead.Result.SUCCESSFUL;
         logger.info("Save sale during Finishing");
         sale = secureSave(sale);
@@ -174,9 +183,9 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         logger.info("BEGIN Cancel sale");
         sale.setStatus(Sale.Status.CANCELED);
         sale.setCancelReason(reason);
-        sale.getProductInSales().stream()
-                .filter(p -> p.getState() == ProductInSale.State.IN_PROGRESS)
-                .forEach(p -> p.setState(ProductInSale.State.REJECTED));
+        sale.getProductInstances().stream()
+                .filter(p -> p.getState() == ProductInstance.State.IN_PROGRESS)
+                .forEach(p -> p.setState(ProductInstance.State.REJECTED));
         logger.info("Save sale during Canceling");
         sale = secureSave(sale);
         final Lead lead = sale.getLead();
@@ -215,8 +224,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         if (sale.getDealerManager() != null)
             users.add(new ImmutablePair<>(sale.getDealerManager().getId(), AccessRole.READER));
         // Ответственные по продуктам
-        for (final ProductInSale productInSale : sale.getProductInSales()) {
-            final Employee prodResponsible = productInSale.getResponsible();
+        for (final ProductInstance productInstance : sale.getProductInstances()) {
+            final Employee prodResponsible = productInstance.getResponsible();
             if (prodResponsible != null) {
                 users.add(new ImmutablePair<>(prodResponsible.getId(), AccessRole.READER));
             }

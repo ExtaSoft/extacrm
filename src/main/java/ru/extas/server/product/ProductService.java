@@ -1,7 +1,7 @@
 package ru.extas.server.product;
 
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.sale.Product;
+import ru.extas.model.product.Product;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package ru.extas.model.sale;
+package ru.extas.model.product;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -74,7 +74,7 @@ public class ProdCredit extends Product {
 	/**
 	 * <p>Getter for the field <code>programType</code>.</p>
 	 *
-	 * @return a {@link ru.extas.model.sale.ProdCredit.ProgramType} object.
+	 * @return a {@link ProdCredit.ProgramType} object.
 	 */
 	public ProgramType getProgramType() {
 		return programType;
@@ -83,7 +83,7 @@ public class ProdCredit extends Product {
 	/**
 	 * <p>Setter for the field <code>programType</code>.</p>
 	 *
-	 * @param programType a {@link ru.extas.model.sale.ProdCredit.ProgramType} object.
+	 * @param programType a {@link ProdCredit.ProgramType} object.
 	 */
 	public void setProgramType(final ProgramType programType) {
 		this.programType = programType;

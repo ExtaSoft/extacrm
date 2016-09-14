@@ -38,6 +38,7 @@ import ru.extas.web.contacts.salepoint.SalePointsGrid;
 import ru.extas.web.motor.MotorBrandSelect;
 import ru.extas.web.motor.MotorTypeSelect;
 import ru.extas.web.reference.RegionSelect;
+import ru.extas.web.sale.ProductInstancesField;
 import ru.extas.web.sale.SaleEditForm;
 
 import java.math.BigDecimal;
@@ -99,8 +100,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("vendor")
     private DealerSalePointField vendorField;
 
-    @PropertyId("productInLeads")
-    private ProductInLeadField productInLeadField;
+    @PropertyId("productInstances")
+    private ProductInstancesField productInstancesField;
     @PropertyId("comment")
     private TextArea commentField;
 
@@ -234,12 +235,12 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-        productInLeadField = new ProductInLeadField("Продукты в продаже", getEntity(),
+        productInstancesField = new ProductInstancesField("Продукты в продаже", getEntity(), null,
                 () -> (BigDecimal) mototPriceField.getConvertedValue(),
                 () -> (String) motorBrandField.getValue(),
                 () -> vendorField.getValue());
-        productInLeadField.addValueChangeListener(forceModified);
-        form.addComponent(productInLeadField);
+        productInstancesField.addValueChangeListener(forceModified);
+        form.addComponent(productInstancesField);
 
         commentField = new TextArea("Примечание");
         commentField.setRows(3);
@@ -274,7 +275,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         ///vendorField.setRequired(true);
         vendorField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();
-            productInLeadField.refreshSalePoint();
+            productInstancesField.refreshSalePoint();
             if (responsibleField.getValue() == null) {
                 final SalePoint sp = vendorField.getValue();
                 final CuratorsGroup curatorsGroup = sp.getCuratorsGroup();

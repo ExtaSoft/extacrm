@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.sale.Product;
+import ru.extas.model.product.Product;
 
 import java.util.List;
 

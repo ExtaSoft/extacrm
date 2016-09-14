@@ -6,8 +6,8 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.vaadin.viritin.fields.EnumSelect;
 import org.vaadin.viritin.fields.MTextArea;
-import ru.extas.model.sale.ProductExpenditure;
-import ru.extas.model.sale.ProductInSale;
+import ru.extas.model.product.ProductExpenditure;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.EditField;
@@ -31,7 +31,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class ProductExpendituresField extends ExtaCustomField<List> {
 
-    private final ProductInSale productInst;
+    private final ProductInstance productInst;
     private Table costTable;
     private ExtaBeanContainer<ProductExpenditure> container;
 
@@ -41,7 +41,7 @@ public class ProductExpendituresField extends ExtaCustomField<List> {
      * @param caption     a {@link String} object.
      * @param description a {@link String} object.
      */
-    public ProductExpendituresField(final String caption, final String description, final ProductInSale productInst) {
+    public ProductExpendituresField(final String caption, final String description, final ProductInstance productInst) {
         super(caption, description);
         this.productInst = productInst;
         setWidth(100, Unit.PERCENTAGE);
