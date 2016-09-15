@@ -14,6 +14,7 @@ import ru.extas.web.commons.converters.PhoneConverter;
 import ru.extas.web.commons.window.CloseOnlyWindow;
 import ru.extas.web.contacts.ClientColumnGenerator;
 import ru.extas.web.contacts.Name2ShortNameConverter;
+import ru.extas.web.contacts.employee.EmployeeColumnGenerator;
 import ru.extas.web.lead.SalePointColumnGenerator;
 import ru.extas.web.motor.MotorColumnGenerator;
 
@@ -162,11 +163,8 @@ class SaleDataDecl extends GridDataDecl {
 
     private void addClientNameMapping(final boolean isCollapsed) {
         addMapping("client.name", "Клиент", new ClientColumnGenerator());
-
         addMapping("client.phone", "Телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
-
-        addMapping("clientContact.name", "Контактное лицо", getPresentFlags(isCollapsed));
-
+        addMapping("clientContact.name", "Контактное лицо", new EmployeeColumnGenerator("clientContact"), getPresentFlags(isCollapsed));
         addMapping("clientContact.phone", "Контактный телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
     }
 
