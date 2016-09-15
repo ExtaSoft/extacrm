@@ -24,19 +24,19 @@ import org.springframework.stereotype.Component;
 import ru.extas.model.security.ExtaDomain;
 import ru.extas.model.security.UserProfile;
 import ru.extas.server.security.UserManagementService;
-import ru.extas.server.settings.CrmSettings;
+import ru.extas.server.settings.UserSettingsService;
 import ru.extas.web.analytics.AnalyticsView;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.FormUtils;
 import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.config.ConfigView;
 import ru.extas.web.contacts.ContactsView;
 import ru.extas.web.dashboard.HomeView;
 import ru.extas.web.insurance.InsuranceView;
 import ru.extas.web.motor.MotorView;
 import ru.extas.web.product.ProductView;
 import ru.extas.web.sale.SalesView;
+import ru.extas.web.settings.SettingsView;
 import ru.extas.web.tasks.TasksView;
 import ru.extas.web.users.ChangePasswordForm;
 import ru.extas.web.users.LoginToUserNameConverter;
@@ -93,13 +93,13 @@ public class ExtaCrmUI extends UI {
         else
             buildLoginView(false);
 
-        getPage().setTitle(lookup(CrmSettings.class).getAppTitle());
+        getPage().setTitle(lookup(UserSettingsService.class).getAppTitle());
 
     }
 
     private void buildLoginView(final boolean exit) {
 
-        final Panel loginPanel = new Panel(lookup(CrmSettings.class).getAppTitle());
+        final Panel loginPanel = new Panel(lookup(UserSettingsService.class).getAppTitle());
         loginPanel.setSizeUndefined();
 
         final TextField username = new TextField("Пользователь");
@@ -210,7 +210,9 @@ public class ExtaCrmUI extends UI {
             {
                 final String appVersion = lookup("application.version", String.class);
                 final String appBuildTm = lookup("application.build.timestamp", String.class);
-                final String brandText = MessageFormat.format("<strong>Экстрим Ассистанс CRM</strong><br/><i>Версия {0}</i>", appVersion);
+                final String brandText = MessageFormat.format("<strong>{1}</strong><br/><i>Версия {0}</i>",
+                        appVersion,
+                        lookup(UserSettingsService.class).getAppTitle());
                 final Label logo = new Label(brandText, ContentMode.HTML);
                 final String logoDesc = MessageFormat.format("Версия {0}, собрано {1}", appVersion, appBuildTm);
                 logo.setDescription(logoDesc);
@@ -273,7 +275,7 @@ public class ExtaCrmUI extends UI {
         mainMenu.addChapter("Пользователи", "Управление ползователями и правами доступа", Fontello.USERS_3,
                 UsersView.class, EnumSet.of(ExtaDomain.USERS, ExtaDomain.USER_GROUPS, ExtaDomain.CURATORS_GROUPS));
         mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", Fontello.COG_ALT,
-                ConfigView.class, ExtaDomain.SETTINGS);
+                SettingsView.class, ExtaDomain.SETTINGS);
 
         mainMenu.processURI(null, true);
 

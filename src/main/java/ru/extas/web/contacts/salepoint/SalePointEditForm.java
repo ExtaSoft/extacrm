@@ -12,7 +12,7 @@ import ru.extas.model.security.CuratorsGroup;
 import ru.extas.model.security.UserRole;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.security.UserManagementService;
-import ru.extas.server.settings.CrmSettings;
+import ru.extas.server.settings.UserSettingsService;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.CommentsField;
 import ru.extas.web.commons.ExtaEditForm;
@@ -165,7 +165,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
         final Component identityForm = createIdentityForm();
         final TabSheet.Tab idTab = tabsheet.addTab(identityForm);
         idTab.setCaption("Идентификация");
-        idTab.setVisible(lookup(CrmSettings.class).isShowSalePointIds());
+        idTab.setVisible(lookup(UserSettingsService.class).isShowSalePointIds());
 
         // Вкладка - "Комментарии"
         if (isCommentAvailable()) {

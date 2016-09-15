@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.security.*;
 import ru.extas.server.contacts.CompanyRepository;
-import ru.extas.server.settings.CrmSettings;
+import ru.extas.server.settings.UserSettingsService;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -78,7 +78,7 @@ public class UserManagementServiceImpl implements UserManagementService {
         final Employee contact = getSuperuserContact();
         user.setEmployee(contact);
         user.setLogin(SUPERUSER_LOGIN);
-        final boolean is_dev_env = lookup(CrmSettings.class).isDevServer();
+        final boolean is_dev_env = lookup(UserSettingsService.class).isDevServer();
         if (is_dev_env) {
             user.setPassword("y+ajXewM2qsaZBocksvfYKIlMzQBPW9SXORl4npgLWc=");
             user.setPasswordSalt("YM8hMeHtHyPOa3eY+JmSVg==");

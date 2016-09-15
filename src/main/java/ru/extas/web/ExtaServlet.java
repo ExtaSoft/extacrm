@@ -1,7 +1,7 @@
 package ru.extas.web;
 
 import com.vaadin.server.*;
-import ru.extas.server.settings.CrmSettings;
+import ru.extas.server.settings.UserSettingsService;
 
 import javax.servlet.ServletException;
 
@@ -79,7 +79,7 @@ public class ExtaServlet extends VaadinServlet implements SessionInitListener {
 
         @Override
         public void modifyBootstrapPage(final BootstrapPageResponse response) {
-            final String iconPath = lookup(CrmSettings.class).getFaviconPath();
+            final String iconPath = lookup(UserSettingsService.class).getFaviconPath();
             response.getDocument().head()
                     .getElementsByAttributeValue("rel", "shortcut icon")
                     .attr("href", iconPath);
