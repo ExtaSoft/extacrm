@@ -19,7 +19,7 @@ public class CompositeFilterGenerator extends AbstractFilterGenerator {
 
     private final List<FilterGenerator> generators = newArrayList();
 
-    public CompositeFilterGenerator(FilterGenerator... generators) {
+    public CompositeFilterGenerator(final FilterGenerator... generators) {
         this.generators.addAll(Arrays.asList(generators));
     }
 
@@ -37,9 +37,9 @@ public class CompositeFilterGenerator extends AbstractFilterGenerator {
      * FilterTable to generate the default Filter for this property.
      */
     @Override
-    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+    public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
         Container.Filter filter = null;
-        for (FilterGenerator generator : generators) {
+        for (final FilterGenerator generator : generators) {
             filter = generator.generateFilter(propertyId, originatingField);
             if (filter != null)
                 return filter;
@@ -48,9 +48,9 @@ public class CompositeFilterGenerator extends AbstractFilterGenerator {
     }
 
     @Override
-    public Container.Filter generateFilter(Object propertyId, Object value) {
+    public Container.Filter generateFilter(final Object propertyId, final Object value) {
         Container.Filter filter = null;
-        for (FilterGenerator generator : generators) {
+        for (final FilterGenerator generator : generators) {
             filter = generator.generateFilter(propertyId, value);
             if (filter != null)
                 return filter;
@@ -67,9 +67,9 @@ public class CompositeFilterGenerator extends AbstractFilterGenerator {
      * default field.
      */
     @Override
-    public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+    public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
         AbstractField<?> field = null;
-        for (FilterGenerator generator : generators) {
+        for (final FilterGenerator generator : generators) {
             field = generator.getCustomFilterComponent(propertyId);
             if(field != null)
                 return field;
@@ -77,16 +77,16 @@ public class CompositeFilterGenerator extends AbstractFilterGenerator {
         return field;
     }
 
-    public void add(FilterGenerator generator) {
+    public void add(final FilterGenerator generator) {
         generators.add(generator);
     }
 
-    public CompositeFilterGenerator with(FilterGenerator generator) {
+    public CompositeFilterGenerator with(final FilterGenerator generator) {
         generators.add(generator);
         return this;
     }
 
-    public void remove(FilterGenerator generator) {
+    public void remove(final FilterGenerator generator) {
         generators.remove(generator);
     }
 

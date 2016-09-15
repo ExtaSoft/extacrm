@@ -68,7 +68,7 @@ public class ExtaServlet extends VaadinServlet implements SessionInitListener {
 
 
     @Override
-    public void sessionInit(SessionInitEvent event) throws ServiceException {
+    public void sessionInit(final SessionInitEvent event) throws ServiceException {
         event.getSession().addBootstrapListener(MyBootstrapListener.INSTANCE);
 
     }
@@ -78,7 +78,7 @@ public class ExtaServlet extends VaadinServlet implements SessionInitListener {
         private static final MyBootstrapListener INSTANCE = new MyBootstrapListener();
 
         @Override
-        public void modifyBootstrapPage(BootstrapPageResponse response) {
+        public void modifyBootstrapPage(final BootstrapPageResponse response) {
             final String iconPath = lookup(CrmSettings.class).getFaviconPath();
             response.getDocument().head()
                     .getElementsByAttributeValue("rel", "shortcut icon")
@@ -89,7 +89,7 @@ public class ExtaServlet extends VaadinServlet implements SessionInitListener {
         }
 
         @Override
-        public void modifyBootstrapFragment(BootstrapFragmentResponse response) {
+        public void modifyBootstrapFragment(final BootstrapFragmentResponse response) {
         }
 
         private Object readResolve() {

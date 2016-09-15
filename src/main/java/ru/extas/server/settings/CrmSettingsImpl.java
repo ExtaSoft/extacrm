@@ -14,7 +14,7 @@ public class CrmSettingsImpl implements CrmSettings {
     @Override
     public String getFaviconPath() {
         final boolean isAAEnv = isAAEnv();
-        String iconName;
+        final String iconName;
         if (isAAEnv)
             iconName = "favicon-aa-64.ico";
         else

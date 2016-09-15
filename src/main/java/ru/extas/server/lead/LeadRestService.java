@@ -213,7 +213,7 @@ public class LeadRestService {
             return source;
         }
 
-        public void setSource(String source) {
+        public void setSource(final String source) {
             this.source = source;
         }
     }

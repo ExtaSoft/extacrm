@@ -30,7 +30,7 @@ public class CommonFilterDecorator implements FilterDecorator {
      * @return UI Display name for the enum value.
      */
     @Override
-    public String getEnumFilterDisplayName(Object propertyId, Object value) {
+    public String getEnumFilterDisplayName(final Object propertyId, final Object value) {
         final Class<?> type = value.getClass();
         Converter converter = converterCache.get(type);
         if (converter == null) {
@@ -53,7 +53,7 @@ public class CommonFilterDecorator implements FilterDecorator {
      * @return Resource for the icon of the enum value.
      */
     @Override
-    public Resource getEnumFilterIcon(Object propertyId, Object value) {
+    public Resource getEnumFilterIcon(final Object propertyId, final Object value) {
         return null;
     }
 
@@ -66,7 +66,7 @@ public class CommonFilterDecorator implements FilterDecorator {
      * @return UI Display name for the given boolean value.
      */
     @Override
-    public String getBooleanFilterDisplayName(Object propertyId, boolean value) {
+    public String getBooleanFilterDisplayName(final Object propertyId, final boolean value) {
         return value ? "Да" : "Нет";
     }
 
@@ -79,7 +79,7 @@ public class CommonFilterDecorator implements FilterDecorator {
      * @return Resource for the icon of the given boolean value.
      */
     @Override
-    public Resource getBooleanFilterIcon(Object propertyId, boolean value) {
+    public Resource getBooleanFilterIcon(final Object propertyId, final boolean value) {
         return null;
     }
 
@@ -91,7 +91,7 @@ public class CommonFilterDecorator implements FilterDecorator {
      * @return true if the text field should use a TextChangeListener.
      */
     @Override
-    public boolean isTextFilterImmediate(Object propertyId) {
+    public boolean isTextFilterImmediate(final Object propertyId) {
         return false;
     }
 
@@ -104,7 +104,7 @@ public class CommonFilterDecorator implements FilterDecorator {
      * @return the timeout in milliseconds
      */
     @Override
-    public int getTextChangeTimeout(Object propertyId) {
+    public int getTextChangeTimeout(final Object propertyId) {
         return 0;
     }
 
@@ -157,7 +157,7 @@ public class CommonFilterDecorator implements FilterDecorator {
      * @return A resolution defined in {@link DateField}
      */
     @Override
-    public Resolution getDateFieldResolution(Object propertyId) {
+    public Resolution getDateFieldResolution(final Object propertyId) {
         return null;
     }
 
@@ -173,7 +173,7 @@ public class CommonFilterDecorator implements FilterDecorator {
      * @return A date format pattern or null to use the default formatting
      */
     @Override
-    public String getDateFormatPattern(Object propertyId) {
+    public String getDateFormatPattern(final Object propertyId) {
         return null;
     }
 
@@ -220,7 +220,7 @@ public class CommonFilterDecorator implements FilterDecorator {
      * @return true to use popup-style, false to use a TextField
      */
     @Override
-    public boolean usePopupForNumericProperty(Object propertyId) {
+    public boolean usePopupForNumericProperty(final Object propertyId) {
         return false;
     }
 }

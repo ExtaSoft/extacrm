@@ -102,7 +102,7 @@ public class SalePointsGrid extends ExtaGrid<SalePoint> {
                     }
 
                     @Override
-                    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+                    public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
                         return null;
                     }
 

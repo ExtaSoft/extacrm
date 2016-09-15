@@ -206,12 +206,12 @@ public class LeadsGrid extends ExtaGrid<Lead> {
                 new PhoneFilterGenerator(Lead_.contactPhone.getName()),
                 new AbstractFilterGenerator() {
                     @Override
-                    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+                    public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
                         return null;
                     }
 
                     @Override
-                    public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+                    public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
                         if (propertyId.equals("source"))
                             return new LeadSourceSelect();
                         return null;

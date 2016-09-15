@@ -207,7 +207,7 @@ public class ProductInstance extends AuditedObject {
         return expenditureList;
     }
 
-    public void setExpenditureList(List<ProductExpenditure> expenditureList) {
+    public void setExpenditureList(final List<ProductExpenditure> expenditureList) {
         this.expenditureList = expenditureList;
     }
 
@@ -215,7 +215,7 @@ public class ProductInstance extends AuditedObject {
         return lead;
     }
 
-    public void setLead(Lead lead) {
+    public void setLead(final Lead lead) {
         this.lead = lead;
     }
 }

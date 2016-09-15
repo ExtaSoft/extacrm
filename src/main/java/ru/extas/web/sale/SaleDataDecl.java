@@ -87,7 +87,7 @@ class SaleDataDecl extends GridDataDecl {
         addManagersMapping();
     }
 
-    private void addSourceMapping(boolean isCollapsed) {
+    private void addSourceMapping(final boolean isCollapsed) {
         addMapping("source", "Источник лида", getPresentFlags(isCollapsed));
     }
 
@@ -159,7 +159,7 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("motorPrice", "Стоимость техники", getPresentFlags(true));
     }
 
-    private void addClientNameMapping(boolean isCollapsed) {
+    private void addClientNameMapping(final boolean isCollapsed) {
         addMapping("client.name", "Клиент");
         addMapping("client.phone", "Телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
     }

@@ -203,7 +203,7 @@ public class ProductInstancesField extends ExtaCustomField<List> {
         gridContainer.addItemSetChangeListener(e -> grid.setHeightByRows(container.size() == 0 ? 1 : container.size()));
         grid.setCellStyleGenerator(cellRef -> {
             if("state".equals(cellRef.getPropertyId())){
-                ProductInstance.State state = (ProductInstance.State) cellRef.getProperty().getValue();
+                final ProductInstance.State state = (ProductInstance.State) cellRef.getProperty().getValue();
                 switch (state) {
                     case AGREED:
                         return "product-agreed-highlight";

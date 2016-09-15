@@ -32,7 +32,7 @@ public class ProdHirePurchase extends Product {
         return maxPeriod;
     }
 
-    public void setMaxPeriod(int maxPeriod) {
+    public void setMaxPeriod(final int maxPeriod) {
         this.maxPeriod = maxPeriod;
     }
 
@@ -40,7 +40,7 @@ public class ProdHirePurchase extends Product {
         return minDownpayment;
     }
 
-    public void setMinDownpayment(BigDecimal minDownpayment) {
+    public void setMinDownpayment(final BigDecimal minDownpayment) {
         this.minDownpayment = minDownpayment;
     }
 
@@ -48,7 +48,7 @@ public class ProdHirePurchase extends Product {
         return maxSum;
     }
 
-    public void setMaxSum(BigDecimal maxSum) {
+    public void setMaxSum(final BigDecimal maxSum) {
         this.maxSum = maxSum;
     }
 }

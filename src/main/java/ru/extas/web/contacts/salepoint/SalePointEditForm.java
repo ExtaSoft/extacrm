@@ -163,7 +163,7 @@ public class SalePointEditForm extends ExtaEditForm<SalePoint> {
 
         // Вкладка - "Идентификация"
         final Component identityForm = createIdentityForm();
-        TabSheet.Tab idTab = tabsheet.addTab(identityForm);
+        final TabSheet.Tab idTab = tabsheet.addTab(identityForm);
         idTab.setCaption("Идентификация");
         idTab.setVisible(lookup(CrmSettings.class).isShowSalePointIds());
 

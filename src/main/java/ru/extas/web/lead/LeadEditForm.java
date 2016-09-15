@@ -335,7 +335,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             }
 
             @Override
-            protected void initTable(Mode mode) {
+            protected void initTable(final Mode mode) {
                 super.initTable(mode);
                 // Обрабатываем выбор контакта
                 table.addValueChangeListener(event -> {

@@ -105,8 +105,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
             productInstance.setDownpayment(instance.getDownpayment());
             productInstance.setResponsible(instance.getResponsible());
             productInstance.setState(instance.getState());
-            List<ProductExpenditure> expenditures = newArrayList();
-            for (ProductExpenditure expenditure : instance.getExpenditureList()) {
+            final List<ProductExpenditure> expenditures = newArrayList();
+            for (final ProductExpenditure expenditure : instance.getExpenditureList()) {
                 final ProductExpenditure exp = new ProductExpenditure();
                 exp.setType(expenditure.getType());
                 exp.setCost(expenditure.getCost());

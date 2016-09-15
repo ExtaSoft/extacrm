@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Table(name = "PROD_HIRE_PURCHASE_EXPENDITURE")
 public class ProductExpenditure extends AuditedObject {
 
-    public ProductExpenditure(ProductInstance productInst) {
+    public ProductExpenditure(final ProductInstance productInst) {
         this.productInstance = productInst;
     }
 
@@ -63,7 +63,7 @@ public class ProductExpenditure extends AuditedObject {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(final Type type) {
         this.type = type;
     }
 
@@ -71,7 +71,7 @@ public class ProductExpenditure extends AuditedObject {
         return cost;
     }
 
-    public void setCost(BigDecimal cost) {
+    public void setCost(final BigDecimal cost) {
         this.cost = cost;
     }
 
@@ -79,7 +79,7 @@ public class ProductExpenditure extends AuditedObject {
         return comment;
     }
 
-    public void setComment(String comment) {
+    public void setComment(final String comment) {
         this.comment = comment;
     }
 
@@ -87,7 +87,7 @@ public class ProductExpenditure extends AuditedObject {
         return productInstance;
     }
 
-    public void setProductInstance(ProductInstance productInstance) {
+    public void setProductInstance(final ProductInstance productInstance) {
         this.productInstance = productInstance;
     }
 }
