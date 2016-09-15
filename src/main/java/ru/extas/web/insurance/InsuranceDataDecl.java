@@ -1,16 +1,9 @@
 package ru.extas.web.insurance;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Label;
-import org.joda.time.LocalDate;
-import ru.extas.model.contacts.Person;
-import ru.extas.model.insurance.Insurance;
 import ru.extas.web.commons.DataDeclMapping.PresentFlag;
 import ru.extas.web.commons.GridDataDecl;
-import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.converters.PhoneConverter;
+import ru.extas.web.contacts.ClientColumnGenerator;
 
 import java.util.EnumSet;
 
@@ -29,7 +22,7 @@ class InsuranceDataDecl extends GridDataDecl {
         addMapping("regNum", "Номер полиса");
         addMapping("a7Num", "Квитанция А-7", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("date", "Дата договора");
-        addMapping("client.name", "Клиент");
+        addMapping("client.name", "Клиент", new ClientColumnGenerator());
         addMapping("client.phone", "Телефон", PhoneConverter.class);
         addMapping("beneficiary", "Выгодопреобретатель", EnumSet.of(PresentFlag.COLLAPSED));
         addMapping("usedMotor", "Б/у", EnumSet.of(PresentFlag.COLLAPSED));
