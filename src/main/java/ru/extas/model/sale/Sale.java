@@ -43,6 +43,11 @@ public class Sale extends SecuredObject {
     @JoinColumn(name = "CLIENT", referencedColumnName = "ID")
     private Client client;
 
+    // Контактное лицо Клиента (для юриков)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "CLIENT_EMPLOYEE", referencedColumnName = "ID")
+    private Employee clientContact;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -396,6 +401,14 @@ public class Sale extends SecuredObject {
 
     public void setSource(final String source) {
         this.source = source;
+    }
+
+    public Employee getClientContact() {
+        return clientContact;
+    }
+
+    public void setClientContact(Employee clientContact) {
+        this.clientContact = clientContact;
     }
 
     /**

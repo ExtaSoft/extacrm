@@ -1,10 +1,13 @@
 package ru.extas.web.sale;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
+import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
@@ -59,6 +62,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     // Имя клиента
     @PropertyId("client")
     private ClientField clientField;
+    @PropertyId("clientContact")
+    private EmployeeField clientContactField;
     // Тип техники
     @PropertyId("motorType")
     private MotorTypeSelect motorTypeField;
@@ -113,7 +118,29 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         clientField = new ClientField("Клиент", "Введите имя клиента");
         clientField.setRequired(true);
         clientField.setRequiredError("Имя контакта не может быть пустым.");
+        clientField.addValueChangeListener(e -> {
+            final Client client = (Client) e.getProperty().getValue();
+            if(client instanceof LegalEntity) {
+                final Container.Filter filter = new Compare.Equal("legalWorkPlace", client);
+                clientContactField.setFilter(filter);
+                clientContactField.changeLegalEntity();
+                clientContactField.setVisible(true);
+            } else
+                clientContactField.setVisible(false);
+
+        });
         form.addComponent(clientField);
+
+        clientContactField = new EmployeeField("Контактное лицо", "Укажите контактное лицо клиента");
+        clientContactField.setVisible(false);
+        clientContactField.setLegalEntitySupplier(() -> {
+            final Client client = clientField.getValue();
+            if(client instanceof LegalEntity)
+                return (LegalEntity)client;
+            else
+                return null;
+        });
+        form.addComponent(clientContactField);
 
         sourceField = new LeadSourceSelect();
         form.addComponent(sourceField);
