@@ -4,7 +4,10 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
+import ru.extas.model.contacts.Client;
+import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.model.sale.Sale_;
@@ -166,6 +169,16 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("client.phone", "Телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
         addMapping("clientContact.name", "Контактное лицо", new EmployeeColumnGenerator("clientContact"), getPresentFlags(isCollapsed));
         addMapping("clientContact.phone", "Контактный телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
+        addMapping("client_company", "Компания клиента", new ComponentColumnGenerator() {
+
+            @Override
+            public Object generateCell(Object columnId, Item item, Object itemId) {
+                final Client client = (Client) item.getItemProperty(Sale_.client.getName()).getValue();
+                if (client != null && client instanceof LegalEntity)
+                    return new Label(((LegalEntity) client).getCompany().getName());
+                return null;
+            }
+        });
     }
 
 }

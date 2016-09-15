@@ -191,7 +191,7 @@
     font-style: italic;
   }
 
-  // Стиль вспомогательного компанента для подгонки комбобокса по размеру текста
+  // Стиль вспомогательного компонента для подгонки комбобокса по размеру текста
   .ea-widthfittin-label {
     padding-left: ceil($v-unit-size/6) + ceil($v-textfield-border-radius/3);
     padding-right: round($v-unit-size * 1.2);
@@ -209,6 +209,10 @@
     background: #FF6347;
   }
 
+  .v-contextmenu.w-filtertablestate-layout.v-layout.v-vertical {
+    max-height: 400px;
+    overflow-y: scroll;
+  }
 }
 
 
