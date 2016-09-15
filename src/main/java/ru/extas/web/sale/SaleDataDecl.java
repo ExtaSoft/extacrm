@@ -162,5 +162,7 @@ class SaleDataDecl extends GridDataDecl {
     private void addClientNameMapping(final boolean isCollapsed) {
         addMapping("client.name", "Клиент");
         addMapping("client.phone", "Телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
+        addMapping("clientContact.name", "Контактное лицо", getPresentFlags(isCollapsed));
+        addMapping("clientContact.phone", "Контактный телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
     }
 }

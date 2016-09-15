@@ -115,6 +115,8 @@ public class SalesGrid extends ExtaGrid<Sale> {
         final ExtaDbContainer<Sale> container = SecuredDataContainer.create(Sale.class, domain);
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
+        container.addNestedContainerProperty("clientContact.name");
+        container.addNestedContainerProperty("clientContact.phone");
         container.addNestedContainerProperty("dealer.name");
         container.addNestedContainerProperty("responsible.name");
         container.addNestedContainerProperty("responsibleAssist.name");
