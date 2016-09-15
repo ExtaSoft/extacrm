@@ -1,5 +1,6 @@
 package ru.extas.server.contacts;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -13,6 +14,7 @@ import ru.extas.server.references.CategoryService;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.Collections;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
@@ -40,7 +42,9 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> im
     @Inject
     private SalePointRepository salePointRepository;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpaRepository<Company, ?> getEntityRepository() {
         return companyRepository;
@@ -61,21 +65,27 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> im
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Collection<String> getObjectBrands(final Company company) {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Collection<String> getObjectRegions(final Company company) {
-        if(!isNullOrEmpty(company.getRegion()))
+        if (!isNullOrEmpty(company.getRegion()))
             return newHashSet(company.getRegion());
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public Company permitAndSave(Company company,
@@ -120,6 +130,7 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> im
     @Override
     public boolean isBank(final Company company) {
         return company != null && !company.isNew()
+                && !CollectionUtils.isEmpty(company.getCategories())
                 && company.getCategories().contains(CategoryService.COMPANY_CAT_BANK);
     }
 
@@ -132,7 +143,23 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> im
     @Override
     public boolean isDealer(final Company company) {
         return company != null && !company.isNew()
+                && !CollectionUtils.isEmpty(company.getCategories())
                 && company.getCategories().contains(CategoryService.COMPANY_CAT_DEALER);
+    }
+
+    @Override
+    public boolean isDistributor(Company company) {
+        return company != null && !company.isNew()
+                && !CollectionUtils.isEmpty(company.getCategories())
+                && company.getCategories().contains(CategoryService.COMPANY_CAT_DISTRIBUTOR);
+    }
+
+    @Override
+    public boolean isDealerOrDistributor(Company company) {
+        return company != null && !company.isNew()
+                && !CollectionUtils.isEmpty(company.getCategories())
+                && !Collections.disjoint(company.getCategories(),
+                newArrayList(CategoryService.COMPANY_CAT_DEALER, CategoryService.COMPANY_CAT_DISTRIBUTOR));
     }
 
     /**
@@ -144,6 +171,7 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> im
     @Override
     public boolean isCallcenter(final Company company) {
         return company != null && !company.isNew()
+                && !CollectionUtils.isEmpty(company.getCategories())
                 && company.getCategories().contains(CategoryService.COMPANY_CAT_CALLCENTER);
     }
 }
