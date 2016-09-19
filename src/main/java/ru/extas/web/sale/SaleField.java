@@ -22,7 +22,7 @@ import ru.extas.web.commons.component.ExtaCustomField;
 public class SaleField extends ExtaCustomField<Sale> {
 
     private BeanItem<Sale> saleItem;
-    private ProductInSaleField productInSaleField;
+    private ProductInstancesField productInstancesField;
 
     /**
      * <p>Constructor for SaleField.</p>
@@ -57,24 +57,24 @@ public class SaleField extends ExtaCustomField<Sale> {
             final SaleEditForm form = new SaleEditForm(sale);
             form.addCloseFormListener(event1 -> {
                 if (form.isSaved())
-                    ((VerticalLayout) getContent()).replaceComponent(productInSaleField, productInSaleField = createProdInSale(sale));
+                    ((VerticalLayout) getContent()).replaceComponent(productInstancesField, productInstancesField = createProdInSale(sale));
             });
             FormUtils.showModalWin(form);
         });
         openBtn.addStyleName(ExtaTheme.BUTTON_LINK);
                 container.addComponent(openBtn);
         // Список продуктов в продаже
-        productInSaleField = createProdInSale(sale);
-        container.addComponent(productInSaleField);
+        productInstancesField = createProdInSale(sale);
+        container.addComponent(productInstancesField);
 
         return container;
     }
 
-    private ProductInSaleField createProdInSale(final Sale sale) {
-        final ProductInSaleField productInSale = new ProductInSaleField("Продукты в продаже", getValue(), null, null, null);
-        productInSale.setReadOnly(true);
-        productInSale.setPropertyDataSource(saleItem.getItemProperty("productInSales"));
-        return productInSale;
+    private ProductInstancesField createProdInSale(final Sale sale) {
+        final ProductInstancesField instancesField = new ProductInstancesField("Продукты в продаже", null, getValue(), null, null, null);
+        instancesField.setReadOnly(true);
+        instancesField.setPropertyDataSource(saleItem.getItemProperty("productInstances"));
+        return instancesField;
     }
 
     /**

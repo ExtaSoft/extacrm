@@ -40,6 +40,22 @@ public interface CompanyService extends SecuredRepository<Company> {
     boolean isDealer(Company company);
 
     /**
+     * Определяет является ли переданная компания дистрибьютором
+     *
+     * @param company проверяемая компания
+     * @return true если компания является дистрибьютором
+     */
+    boolean isDistributor(Company company);
+
+    /**
+     * Определяет является ли переданная компания дистрибьютором или дилером
+     *
+     * @param company проверяемая компания
+     * @return true если компания является дистрибьютором или дилером
+     */
+    boolean isDealerOrDistributor(Company company);
+
+    /**
      * Определяет является ли переданная компания колл-центром
      *
      * @param company проверяемая компания

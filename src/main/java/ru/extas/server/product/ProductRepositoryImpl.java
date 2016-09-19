@@ -1,10 +1,7 @@
 package ru.extas.server.product;
 
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.sale.ProdCredit;
-import ru.extas.model.sale.ProdInstallments;
-import ru.extas.model.sale.ProdInsurance;
-import ru.extas.model.sale.Product;
+import ru.extas.model.product.*;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -35,6 +32,7 @@ public class ProductRepositoryImpl implements ProductService {
         final List<Product> creditList = newArrayList();
         final List<Product> installList = newArrayList();
         final List<Product> insurList = newArrayList();
+        final List<Product> hireList = newArrayList();
         for (final Product product : prodList) {
             if(product instanceof ProdCredit)
                 creditList.add(product);
@@ -42,10 +40,13 @@ public class ProductRepositoryImpl implements ProductService {
                 installList.add(product);
             else if(product instanceof ProdInsurance)
                 creditList.add(product);
+            else if(product instanceof ProdHirePurchase)
+                hireList.add(product);
         }
         prodMap.put(Product.Type.CREDIT, creditList);
         prodMap.put(Product.Type.PAYMENT_BY_INSTALLMENTS, installList);
         prodMap.put(Product.Type.INSURANCE, insurList);
+        prodMap.put(Product.Type.HIRE_PURCHASE, hireList);
 
         return prodMap;
     }

@@ -1,4 +1,4 @@
-package ru.extas.model.sale;
+package ru.extas.model.product;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;

@@ -3,7 +3,7 @@ package ru.extas.web.product;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
-import ru.extas.model.sale.ProdCreditPercent;
+import ru.extas.model.product.ProdCreditPercent;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
 import ru.extas.web.commons.component.EditField;

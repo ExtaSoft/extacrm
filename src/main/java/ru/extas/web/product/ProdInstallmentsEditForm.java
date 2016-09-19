@@ -5,7 +5,7 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
-import ru.extas.model.sale.ProdInstallments;
+import ru.extas.model.product.ProdInstallments;
 import ru.extas.server.product.ProdInstallmentsRepository;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;

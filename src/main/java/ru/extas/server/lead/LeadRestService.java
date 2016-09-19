@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.LeadMotor;
+import ru.extas.model.motor.MotorInstance;
 import ru.extas.model.security.CuratorsGroup;
 import ru.extas.server.common.AddressAccessService;
 import ru.extas.server.contacts.SalePointRepository;
@@ -213,7 +215,7 @@ public class LeadRestService {
             return source;
         }
 
-        public void setSource(String source) {
+        public void setSource(final String source) {
             this.source = source;
         }
     }
@@ -243,6 +245,8 @@ public class LeadRestService {
     public void newLead(@RequestBody final RestLead lead) {
         Lead newLead = new Lead();
         newLead.setStatus(Lead.Status.NEW);
+        MotorInstance motorInstance = new LeadMotor(newLead);
+        newLead.getMotorInstances().add(motorInstance);
 
         final StringBuilder dirtyData = new StringBuilder();
 
@@ -291,7 +295,7 @@ public class LeadRestService {
             if (isNullOrEmpty(clearMotorType))
                 dirtyData.append("Тип техники: ").append(dirtyMotorType).append(lineSeparator());
             else
-                newLead.setMotorType(clearMotorType);
+                motorInstance.setType(clearMotorType);
         }
 
         // Марка техники.
@@ -301,11 +305,11 @@ public class LeadRestService {
             if (isNullOrEmpty(clearBrand))
                 dirtyData.append("Марка техники: ").append(dirtyMotorType).append(lineSeparator());
             else
-                newLead.setMotorBrand(clearBrand);
+                motorInstance.setBrand(clearBrand);
         }
 
         // Модель техники.
-        newLead.setMotorModel(lead.getMotorModel());
+        motorInstance.setModel(lead.getMotorModel());
 
         // Цена техники.
         if (!isNullOrEmpty(lead.getPrice())) {
@@ -325,7 +329,7 @@ public class LeadRestService {
             if (clearPrice == null)
                 dirtyData.append("Цена техники: ").append(dirtyPrice).append(lineSeparator());
             else
-                newLead.setMotorPrice(clearPrice);
+                motorInstance.setPrice(clearPrice);
         }
 
         // Регион покупки.

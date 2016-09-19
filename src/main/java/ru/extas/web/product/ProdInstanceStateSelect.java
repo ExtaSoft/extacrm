@@ -1,7 +1,7 @@
 package ru.extas.web.product;
 
 import com.vaadin.ui.ComboBox;
-import ru.extas.model.sale.ProductInSale;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.web.util.ComponentUtil;
 
 /**
@@ -11,9 +11,9 @@ import ru.extas.web.util.ComponentUtil;
  *         Date: 17.03.2015
  *         Time: 14:44
  */
-public class ProdInSaleStateSelect extends ComboBox {
+public class ProdInstanceStateSelect extends ComboBox {
 
-    public ProdInSaleStateSelect(final String caption, final String description) {
+    public ProdInstanceStateSelect(final String caption, final String description) {
         super(caption);
 
         setDescription(description);
@@ -23,6 +23,6 @@ public class ProdInSaleStateSelect extends ComboBox {
 
         setNullSelectionAllowed(false);
         setNewItemsAllowed(false);
-        ComponentUtil.fillSelectByEnum(this, ProductInSale.State.class);
+        ComponentUtil.fillSelectByEnum(this, ProductInstance.State.class);
     }
 }

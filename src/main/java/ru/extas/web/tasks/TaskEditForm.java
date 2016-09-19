@@ -14,7 +14,6 @@ import org.activiti.engine.form.FormType;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.task.Task;
 import ru.extas.model.contacts.Client;
-import ru.extas.model.contacts.Person;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.UserProfile;
@@ -36,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.gwt.thirdparty.guava.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Maps.newHashMap;
 import static ru.extas.server.ServiceLocator.lookup;
 
 /**

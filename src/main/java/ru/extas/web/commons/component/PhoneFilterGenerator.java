@@ -12,19 +12,19 @@ public class PhoneFilterGenerator extends AbstractFilterGenerator {
 
         private final String phonePropId;
 
-        public PhoneFilterGenerator(String phonePropId) {
+        public PhoneFilterGenerator(final String phonePropId) {
             this.phonePropId = phonePropId;
         }
 
         @Override
-        public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+        public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
             if(propertyId.equals(phonePropId))
                 return new PhoneField("");
             return null;
         }
 
         @Override
-        public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+        public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
             if (originatingField instanceof PhoneField) {
                 final String convertedValue = ((PhoneField) originatingField).getConvertedValue();
                 return isNullOrEmpty(convertedValue) ? null : new Like(propertyId, convertedValue, false);

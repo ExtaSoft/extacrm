@@ -4,8 +4,8 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import ru.extas.model.sale.ProdCredit;
-import ru.extas.model.sale.ProdCreditDoc;
+import ru.extas.model.product.ProdCredit;
+import ru.extas.model.product.ProdCreditDoc;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.Fontello;
 import ru.extas.web.commons.component.ExtaCustomField;
@@ -36,7 +36,7 @@ public class ProdCredDocsField extends ExtaCustomField<List> {
 	 *
 	 * @param caption a {@link java.lang.String} object.
 	 * @param description a {@link java.lang.String} object.
-	 * @param product a {@link ru.extas.model.sale.ProdCredit} object.
+	 * @param product a {@link ProdCredit} object.
 	 */
 	public ProdCredDocsField(final String caption, final String description, final ProdCredit product) {
 		super(caption, description);
@@ -65,7 +65,7 @@ public class ProdCredDocsField extends ExtaCustomField<List> {
                 final BeanItem<ProdCreditDoc> newObj = container.addBean(new ProdCreditDoc(product));
                 docTable.select(newObj.getBean());
             });
-			addProdBtn.setDescription("Добавить процентную стаквку в продукт");
+			addProdBtn.setDescription("Добавить документ в комплект продукта");
 			addProdBtn.setIcon(Fontello.DOC_NEW);
 
 
@@ -74,7 +74,7 @@ public class ProdCredDocsField extends ExtaCustomField<List> {
                     docTable.removeItem(docTable.getValue());
                 }
             });
-			delProdBtn.setDescription("Удалить процентную ставку из продукта");
+			delProdBtn.setDescription("Удалить документ из комплекта продукта");
 			delProdBtn.setIcon(Fontello.TRASH);
 
 			panel.addComponent(commandBar);

@@ -3,7 +3,7 @@ package ru.extas.model.contacts;
 import ru.extas.model.common.Address;
 import ru.extas.model.common.ArchivedObject;
 import ru.extas.model.common.FileContainer;
-import ru.extas.model.sale.Product;
+import ru.extas.model.product.Product;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

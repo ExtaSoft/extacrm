@@ -71,6 +71,18 @@ public class EmployeeField extends ExtaCustomField<Employee> {
         }
     }
 
+    public void changeLegalEntity() {
+        if (legalEntitySupplier != null) {
+            final Employee employee = getValue();
+            if (employee != null) {
+                if (!Objects.equals(this.legalEntitySupplier.get(), employee.getLegalWorkPlace())) {
+                    entityContent.refreshFields(null);
+                    markAsDirtyRecursive();
+                }
+            }
+        }
+    }
+
     public void changeSalePoint() {
         if (salePointSupplier != null) {
             final Employee employee = getValue();

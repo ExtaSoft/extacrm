@@ -1,6 +1,6 @@
 package db.migration;
 
-import com.google.gwt.thirdparty.guava.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap;
 import org.flywaydb.core.api.migration.spring.SpringJdbcMigration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

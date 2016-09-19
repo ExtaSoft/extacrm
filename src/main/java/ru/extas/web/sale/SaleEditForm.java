@@ -1,14 +1,23 @@
 package ru.extas.web.sale;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
+import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
-import ru.extas.model.sale.*;
+import ru.extas.model.product.ProdCredit;
+import ru.extas.model.product.Product;
+import ru.extas.model.product.ProductInstance;
+import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.SaleComment;
+import ru.extas.model.sale.SaleFileContainer;
+import ru.extas.model.sale.SaleMotor;
 import ru.extas.model.security.CuratorsGroup;
 import ru.extas.server.contacts.EmployeeRepository;
 import ru.extas.server.contacts.SalePointRepository;
@@ -18,7 +27,6 @@ import ru.extas.web.commons.CommentsField;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.contacts.ClientField;
@@ -28,11 +36,8 @@ import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.legalentity.SPLegalEntityField;
 import ru.extas.web.contacts.salepoint.DealerSalePointField;
 import ru.extas.web.lead.LeadSourceSelect;
-import ru.extas.web.motor.MotorBrandSelect;
-import ru.extas.web.motor.MotorModelSelect;
-import ru.extas.web.motor.MotorTypeSelect;
+import ru.extas.web.motor.MotorInstancesField;
 
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
@@ -54,18 +59,11 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     // Имя клиента
     @PropertyId("client")
     private ClientField clientField;
-    // Тип техники
-    @PropertyId("motorType")
-    private MotorTypeSelect motorTypeField;
-    // Марка техники
-    @PropertyId("motorBrand")
-    private MotorBrandSelect motorBrandField;
-    // Модель техники
-    @PropertyId("motorModel")
-    private MotorModelSelect motorModelField;
-    // Стоимость техники
-    @PropertyId("motorPrice")
-    private EditField mototPriceField;
+    @PropertyId("clientContact")
+    private EmployeeField clientContactField;
+    // Техника
+    @PropertyId("motorInstances")
+    private MotorInstancesField motorInstancesField;
     // Мотосалон
     @PropertyId("dealer")
     private DealerSalePointField dealerField;
@@ -73,8 +71,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private SPLegalEntityField dealerLEField;
     @PropertyId("comment")
     private TextArea commentField;
-    @PropertyId("productInSales")
-    private ProductInSaleField productInSaleField;
+    @PropertyId("productInstances")
+    private ProductInstancesField productInstancesField;
     @PropertyId("responsible")
     private EmployeeField responsibleField;
     @PropertyId("responsibleAssist")
@@ -108,39 +106,63 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         clientField = new ClientField("Клиент", "Введите имя клиента");
         clientField.setRequired(true);
         clientField.setRequiredError("Имя контакта не может быть пустым.");
+        clientField.addValueChangeListener(e -> {
+            final Client client = (Client) e.getProperty().getValue();
+            if(client instanceof LegalEntity) {
+                final Container.Filter filter = new Compare.Equal("legalWorkPlace", client);
+                clientContactField.setFilter(filter);
+                clientContactField.changeLegalEntity();
+                clientContactField.setVisible(true);
+            } else
+                clientContactField.setVisible(false);
+
+        });
         form.addComponent(clientField);
+
+        clientContactField = new EmployeeField("Контактное лицо", "Укажите контактное лицо клиента");
+        clientContactField.setVisible(false);
+        clientContactField.setLegalEntitySupplier(() -> {
+            final Client client = clientField.getValue();
+            if(client instanceof LegalEntity)
+                return (LegalEntity)client;
+            else
+                return null;
+        });
+        form.addComponent(clientContactField);
 
         sourceField = new LeadSourceSelect();
         form.addComponent(sourceField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Техника"));
-        motorTypeField = new MotorTypeSelect();
-        motorTypeField.setRequired(true);
-        form.addComponent(motorTypeField);
-
-        motorBrandField = new MotorBrandSelect();
-        motorBrandField.setRequired(true);
-        motorBrandField.linkToType(motorTypeField);
-        form.addComponent(motorBrandField);
-
-        motorModelField = new MotorModelSelect("Модель техники");
-        motorModelField.setRequired(true);
-        motorModelField.linkToTypeAndBrand(motorTypeField, motorBrandField);
-        if(getEntity().getMotorModel() != null)
-            motorModelField.addItem(getEntity().getMotorModel());
-        form.addComponent(motorModelField);
-
-        mototPriceField = new EditField("Цена техники");
-        mototPriceField.setRequired(true);
-        form.addComponent(mototPriceField);
+        motorInstancesField = new MotorInstancesField("Техника", () -> new SaleMotor(getEntity()));
+        form.addComponent(motorInstancesField);
+//        motorTypeField = new MotorTypeSelect();
+//        motorTypeField.setRequired(true);
+//        form.addComponent(motorTypeField);
+//
+//        motorBrandField = new MotorBrandSelect();
+//        motorBrandField.setRequired(true);
+//        motorBrandField.linkToType(motorTypeField);
+//        form.addComponent(motorBrandField);
+//
+//        motorModelField = new MotorModelSelect("Модель техники");
+//        motorModelField.setRequired(true);
+//        motorModelField.linkToTypeAndBrand(motorTypeField, motorBrandField);
+////        if(getEntity().getMotorModel() != null)
+////            motorModelField.addItem(getEntity().getMotorModel());
+//        form.addComponent(motorModelField);
+//
+//        mototPriceField = new EditField("Цена техники");
+//        mototPriceField.setRequired(true);
+//        form.addComponent(mototPriceField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
         dealerField = new DealerSalePointField("Мотосалон", "Введите точку продаж");
         dealerField.setRequired(true);
         dealerField.addValueChangeListener(e -> {
-            productInSaleField.refreshSalePoint();
+            productInstancesField.refreshSalePoint();
             dealerManagerField.changeSalePoint();
             dealerLEField.changeSalePoint();
             if (responsibleField.getValue() == null) {
@@ -161,14 +183,14 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         dealerLEField.addValidator(value -> {
             if(value != null && value instanceof LegalEntity) {
                 final LegalEntity legalEntity = (LegalEntity) value;
-                // Проваерить что юрик работает с этим брендом
-                final String brand = (String) motorBrandField.getValue();
-                if(!legalEntity.getMotorBrands().contains(brand))
+                // Проверить что юрик работает с этим брендом
+                final List<String> brands = motorInstancesField.getBrands();
+                if(!legalEntity.getMotorBrands().containsAll(brands))
                     throw new Validator.InvalidValueException("Выбранное Юридическое лицо не работает с данным брендом техники");
                 // Проверить что юрик аккредитован для данного продукта
-                final List<ProductInSale> productInSaleList = productInSaleField.getValue();
-                if(productInSaleList != null) {
-                    for (final ProductInSale prodInSale : productInSaleList) {
+                final List<ProductInstance> productInstanceList = productInstancesField.getValue();
+                if(productInstanceList != null) {
+                    for (final ProductInstance prodInSale : productInstanceList) {
                         final Product prod = prodInSale.getProduct();
                         if(prod instanceof ProdCredit) {
                             if( !legalEntity.getCredProducts().contains(prod))
@@ -203,12 +225,12 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-        productInSaleField = new ProductInSaleField("Продукты в продаже", getEntity(),
-                () -> (BigDecimal) mototPriceField.getConvertedValue(),
-                () -> (String) motorBrandField.getValue(),
+        productInstancesField = new ProductInstancesField("Продукты в продаже", null, getEntity(),
+                () -> motorInstancesField.getTotalPrice(),
+                () -> motorInstancesField.getBrands(),
                 () -> dealerField.getValue());
-        productInSaleField.addValueChangeListener(forceModified);
-        form.addComponent(productInSaleField);
+        productInstancesField.addValueChangeListener(forceModified);
+        form.addComponent(productInstancesField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Коментарии"));
@@ -221,7 +243,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         docFilesEditor = new FilesManageField(SaleFileContainer.class);
         form.addComponent(docFilesEditor);
 
-        mototPriceField.addValueChangeListener(e -> productInSaleField.markAsDirtyRecursive());
+        motorInstancesField.addValueChangeListener(e -> productInstancesField.markAsDirtyRecursive());
 
         return form;
     }

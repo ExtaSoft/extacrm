@@ -4,7 +4,10 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
+import ru.extas.model.contacts.Client;
+import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.model.sale.Sale_;
@@ -12,7 +15,9 @@ import ru.extas.model.security.ExtaDomain;
 import ru.extas.web.commons.*;
 import ru.extas.web.commons.converters.PhoneConverter;
 import ru.extas.web.commons.window.CloseOnlyWindow;
+import ru.extas.web.contacts.ClientColumnGenerator;
 import ru.extas.web.contacts.Name2ShortNameConverter;
+import ru.extas.web.contacts.employee.EmployeeColumnGenerator;
 import ru.extas.web.lead.SalePointColumnGenerator;
 import ru.extas.web.motor.MotorColumnGenerator;
 
@@ -87,7 +92,7 @@ class SaleDataDecl extends GridDataDecl {
         addManagersMapping();
     }
 
-    private void addSourceMapping(boolean isCollapsed) {
+    private void addSourceMapping(final boolean isCollapsed) {
         addMapping("source", "Источник лида", getPresentFlags(isCollapsed));
     }
 
@@ -152,15 +157,24 @@ class SaleDataDecl extends GridDataDecl {
     }
 
     private void addMotorMappings() {
-        addMapping("motor_all", "Техника", new MotorColumnGenerator(), null);
-        addMapping("motorType", "Тип техники", getPresentFlags(true));
-        addMapping("motorBrand", "Марка техники", getPresentFlags(true));
-        addMapping("motorModel", "Модель техники", getPresentFlags(true));
-        addMapping("motorPrice", "Стоимость техники", getPresentFlags(true));
+        addMapping("motorInstances", "Техника", new MotorColumnGenerator(), null);
     }
 
-    private void addClientNameMapping(boolean isCollapsed) {
-        addMapping("client.name", "Клиент");
+    private void addClientNameMapping(final boolean isCollapsed) {
+        addMapping("client.name", "Клиент", new ClientColumnGenerator());
         addMapping("client.phone", "Телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
+        addMapping("clientContact.name", "Контактное лицо", new EmployeeColumnGenerator("clientContact"), getPresentFlags(isCollapsed));
+        addMapping("clientContact.phone", "Контактный телефон", getPresentFlags(isCollapsed), PhoneConverter.class);
+        addMapping("client_company", "Компания клиента", new ComponentColumnGenerator() {
+
+            @Override
+            public Object generateCell(Object columnId, Item item, Object itemId) {
+                final Client client = (Client) item.getItemProperty(Sale_.client.getName()).getValue();
+                if (client != null && client instanceof LegalEntity)
+                    return new Label(((LegalEntity) client).getCompany().getName());
+                return null;
+            }
+        });
     }
+
 }

@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.extas.model.sale.ProdInsurance;
+import ru.extas.model.product.ProdInsurance;
 
 import java.util.List;
 

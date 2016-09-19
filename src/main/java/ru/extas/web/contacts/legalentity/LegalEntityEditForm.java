@@ -13,6 +13,7 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.LegalEntityFile;
+import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.contacts.LegalEntityRepository;
 import ru.extas.utils.SupplierSer;
 import ru.extas.web.commons.ExtaEditForm;
@@ -264,16 +265,22 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         bicField = new EditField("БИК банка", "Введите БИК банка юридического лица");
         formLayout.addComponent(bicField);
 
+        final boolean isDealerOrDistrib = lookup(CompanyRepository.class)
+                .isDealerOrDistributor(getEntity().getCompany());
         ////////////////////////////////////////////////////////////////////////////////////////////
         // "Продукты"
-        formLayout.addComponent(new FormGroupHeader("Продукты"));
+        if (isDealerOrDistrib)
+            formLayout.addComponent(new FormGroupHeader("Продукты"));
         productsField = new LegalProductsField();
+        productsField.setVisible(isDealerOrDistrib);
         formLayout.addComponent(productsField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Вкладка - "Бренды"
-        formLayout.addComponent(new FormGroupHeader("Бренды"));
+        if (isDealerOrDistrib)
+            formLayout.addComponent(new FormGroupHeader("Бренды"));
         brandsField = new BrandsField();
+        brandsField.setVisible(isDealerOrDistrib);
         formLayout.addComponent(brandsField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

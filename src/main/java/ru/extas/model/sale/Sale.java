@@ -9,14 +9,12 @@ import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
-import ru.extas.model.motor.MotorBrand;
-import ru.extas.model.motor.MotorModel;
-import ru.extas.model.motor.MotorType;
+import ru.extas.model.motor.MotorInstance;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -42,6 +40,11 @@ public class Sale extends SecuredObject {
     @JoinColumn(name = "CLIENT", referencedColumnName = "ID")
     private Client client;
 
+    // Контактное лицо Клиента (для юриков)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "CLIENT_EMPLOYEE", referencedColumnName = "ID")
+    private Employee clientContact;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -50,24 +53,8 @@ public class Sale extends SecuredObject {
     @Size(max = Address.REGION_WITH_TYPE_LEN)
     private String region;
 
-    // Тип техники
-    @Column(name = "MOTOR_TYPE", length = MotorType.NAME_LENGTH)
-    @Size(max = MotorType.NAME_LENGTH)
-    private String motorType;
-
-    // Марка техники
-    @Column(name = "MOTOR_BRAND", length = MotorBrand.NAME_LENGTH)
-    @Size(max = MotorBrand.NAME_LENGTH)
-    private String motorBrand;
-
-    // Модель техники
-    @Column(name = "MOTOR_MODEL", length = MotorModel.NAME_LENGTH)
-    @Size(max = MotorModel.NAME_LENGTH)
-    private String motorModel;
-
-    // Стоимость техники
-    @Column(name = "MOTOR_PRICE", precision = 32, scale = 4)
-    private BigDecimal motorPrice;
+    @OneToMany(mappedBy = "sale", targetEntity = SaleMotor.class, orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    private List<MotorInstance> motorInstances = newArrayList();
 
     // Мотосалон
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -87,8 +74,8 @@ public class Sale extends SecuredObject {
     @Column(name = "CANCEL_REASON", length = ModelUtils.ENUM_STRING_LENGTH)
     private CancelReason cancelReason;
 
-    @OneToMany(mappedBy = "sale", targetEntity = ProductInSale.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private List<ProductInSale> productInSales = newArrayList();
+    @OneToMany(mappedBy = "sale", targetEntity = ProductInstance.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<ProductInstance> productInstances = newArrayList();
 
     // Ответственный с нашей стороны
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
@@ -120,6 +107,14 @@ public class Sale extends SecuredObject {
     @Column(name = "SOURCE", length = 50)
     @Size(max = 50)
     private String source;
+
+    public List<MotorInstance> getMotorInstances() {
+        return motorInstances;
+    }
+
+    public void setMotorInstances(List<MotorInstance> motorInstances) {
+        this.motorInstances = motorInstances;
+    }
 
     public CancelReason getCancelReason() {
         return cancelReason;
@@ -288,72 +283,6 @@ public class Sale extends SecuredObject {
      *
      * @return a {@link java.lang.String} object.
      */
-    public String getMotorType() {
-        return motorType;
-    }
-
-    /**
-     * <p>Setter for the field <code>motorType</code>.</p>
-     *
-     * @param motorType a {@link java.lang.String} object.
-     */
-    public void setMotorType(final String motorType) {
-        this.motorType = motorType;
-    }
-
-    /**
-     * <p>Getter for the field <code>motorBrand</code>.</p>
-     *
-     * @return a {@link java.lang.String} object.
-     */
-    public String getMotorBrand() {
-        return motorBrand;
-    }
-
-    /**
-     * <p>Setter for the field <code>motorBrand</code>.</p>
-     *
-     * @param motorBrand a {@link java.lang.String} object.
-     */
-    public void setMotorBrand(final String motorBrand) {
-        this.motorBrand = motorBrand;
-    }
-
-    /**
-     * <p>Getter for the field <code>motorModel</code>.</p>
-     *
-     * @return a {@link java.lang.String} object.
-     */
-    public String getMotorModel() {
-        return motorModel;
-    }
-
-    /**
-     * <p>Setter for the field <code>motorModel</code>.</p>
-     *
-     * @param motorModel a {@link java.lang.String} object.
-     */
-    public void setMotorModel(final String motorModel) {
-        this.motorModel = motorModel;
-    }
-
-    /**
-     * <p>Getter for the field <code>motorPrice</code>.</p>
-     *
-     * @return a {@link java.math.BigDecimal} object.
-     */
-    public BigDecimal getMotorPrice() {
-        return motorPrice;
-    }
-
-    /**
-     * <p>Setter for the field <code>motorPrice</code>.</p>
-     *
-     * @param motorPrice a {@link java.math.BigDecimal} object.
-     */
-    public void setMotorPrice(final BigDecimal motorPrice) {
-        this.motorPrice = motorPrice;
-    }
 
     /**
      * <p>Getter for the field <code>comment</code>.</p>
@@ -374,29 +303,35 @@ public class Sale extends SecuredObject {
     }
 
     /**
-     * <p>Getter for the field <code>productInSales</code>.</p>
      *
      * @return a {@link java.util.List} object.
      */
-    public List<ProductInSale> getProductInSales() {
-        return productInSales;
+    public List<ProductInstance> getProductInstances() {
+        return productInstances;
     }
 
     /**
-     * <p>Setter for the field <code>productInSales</code>.</p>
      *
-     * @param productInSales a {@link java.util.List} object.
+     * @param productInstances a {@link java.util.List} object.
      */
-    public void setProductInSales(final List<ProductInSale> productInSales) {
-        this.productInSales = productInSales;
+    public void setProductInstances(final List<ProductInstance> productInstances) {
+        this.productInstances = productInstances;
     }
 
     public String getSource() {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(final String source) {
         this.source = source;
+    }
+
+    public Employee getClientContact() {
+        return clientContact;
+    }
+
+    public void setClientContact(Employee clientContact) {
+        this.clientContact = clientContact;
     }
 
     /**

@@ -2,7 +2,9 @@ package ru.extas.web.analytics;
 
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
-import ru.extas.model.sale.*;
+import ru.extas.model.product.*;
+import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.Sale_;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
@@ -49,15 +51,15 @@ public class SalesChartByProduct extends AbstractSalesChart {
 
         final Root<Sale> root = cq.from(Sale.class);
         final Path<Sale.Status> statusPath = root.get(Sale_.status);
-        final ListJoin<Sale, ProductInSale> productInSaleJoin = root.join(Sale_.productInSales);
-        final Path<ProductInSale.State> productInSaleState = productInSaleJoin.get(ProductInSale_.state);
-        final Join<ProductInSale, Product> saleProductJoin = productInSaleJoin.join(ProductInSale_.product);
+        final ListJoin<Sale, ProductInstance> productInstanceJoin = root.join(Sale_.productInstances);
+        final Path<ProductInstance.State> productInstanceState = productInstanceJoin.get(ProductInstance_.state);
+        final Join<ProductInstance, Product> saleProductJoin = productInstanceJoin.join(ProductInstance_.product);
         final Expression<Long> saleCount = cb.count(statusPath);
 
         final Expression<Class<? extends Product>> proTypeExpr = saleProductJoin.type();
         cq.multiselect(proTypeExpr, saleCount);
         cq.where(cb.and(cb.equal(statusPath, Sale.Status.FINISHED),
-                cb.equal(productInSaleState, ProductInSale.State.AGREED),
+                cb.equal(productInstanceState, ProductInstance.State.AGREED),
                 cb.notEqual(proTypeExpr, ProdInsurance.class)));
         cq.groupBy(proTypeExpr);
 

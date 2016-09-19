@@ -1,4 +1,4 @@
-package ru.extas.model.sale;
+package ru.extas.model.product;
 
 import ru.extas.model.common.AuditedObject;
 import ru.extas.model.contacts.Company;
@@ -34,7 +34,8 @@ public abstract class Product extends AuditedObject {
 	public enum Type {
 		CREDIT,
 		INSURANCE,
-		PAYMENT_BY_INSTALLMENTS
+		PAYMENT_BY_INSTALLMENTS,
+        HIRE_PURCHASE
 	}
 
 

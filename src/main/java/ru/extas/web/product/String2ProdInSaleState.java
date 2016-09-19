@@ -2,7 +2,7 @@ package ru.extas.web.product;
 
 import com.google.common.collect.HashBiMap;
 import org.springframework.stereotype.Component;
-import ru.extas.model.sale.ProductInSale;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.web.commons.converters.String2EnumConverter;
 
 /**
@@ -16,7 +16,7 @@ import ru.extas.web.commons.converters.String2EnumConverter;
 public class String2ProdInSaleState extends String2EnumConverter {
 
     protected String2ProdInSaleState() {
-        super(ProductInSale.State.class);
+        super(ProductInstance.State.class);
     }
 
     /**
@@ -26,12 +26,12 @@ public class String2ProdInSaleState extends String2EnumConverter {
      */
     @Override
     protected HashBiMap createEnum2StringMap() {
-        final HashBiMap<ProductInSale.State, String> map = HashBiMap.create();
-        map.put(ProductInSale.State.IN_PROGRESS, "На рассмотрении");
-        map.put(ProductInSale.State.AGREED, "Одобрен");
-        map.put(ProductInSale.State.REJECTED, "Отклонен");
-        map.put(ProductInSale.State.SOLD_OUT, "Сделка оформлена");
-        map.put(ProductInSale.State.NEW, "Новая заявка");
+        final HashBiMap<ProductInstance.State, String> map = HashBiMap.create();
+        map.put(ProductInstance.State.IN_PROGRESS, "На рассмотрении");
+        map.put(ProductInstance.State.AGREED, "Одобрен");
+        map.put(ProductInstance.State.REJECTED, "Отклонен");
+        map.put(ProductInstance.State.SOLD_OUT, "Сделка оформлена");
+        map.put(ProductInstance.State.NEW, "Новая заявка");
         return map;
     }
 

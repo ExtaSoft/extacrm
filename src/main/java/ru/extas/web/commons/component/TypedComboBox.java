@@ -15,7 +15,7 @@ public class TypedComboBox<T> extends TypedSelect<T> {
      *
      * @param type the type of options in the list
      */
-    public TypedComboBox(Class<T> type) {
+    public TypedComboBox(final Class<T> type) {
         super(type);
         initialize();
     }
@@ -29,17 +29,17 @@ public class TypedComboBox<T> extends TypedSelect<T> {
      *
      * @param options options to select from
      */
-    public TypedComboBox(T... options) {
+    public TypedComboBox(final T... options) {
         super(options);
         initialize();
     }
 
-    public TypedComboBox(String caption) {
+    public TypedComboBox(final String caption) {
         super(caption);
         initialize();
     }
 
-    public TypedComboBox<T> setNewItemsAllowed(boolean newItemsAllowed) {
+    public TypedComboBox<T> setNewItemsAllowed(final boolean newItemsAllowed) {
         getSelect().setNewItemsAllowed(newItemsAllowed);
         return this;
     }

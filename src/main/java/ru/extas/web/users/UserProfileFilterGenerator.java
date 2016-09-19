@@ -19,7 +19,7 @@ import java.util.Set;
 public class UserProfileFilterGenerator extends AbstractFilterGenerator {
     private final String propId;
 
-    public UserProfileFilterGenerator(String propId) {
+    public UserProfileFilterGenerator(final String propId) {
         this.propId = propId;
     }
 
@@ -34,14 +34,14 @@ public class UserProfileFilterGenerator extends AbstractFilterGenerator {
      * FilterTable to generate the default Filter for this property.
      */
     @Override
-    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+    public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
         if (originatingField instanceof UserProfileSelect) {
             final UserProfile userProfile = (UserProfile) ((UserProfileSelect) originatingField).getConvertedValue();
             if (userProfile != null) {
                 final Set<String> aliases = userProfile.getAliases();
-                Container.Filter[] filters = new Container.Filter[aliases.size()];
+                final Container.Filter[] filters = new Container.Filter[aliases.size()];
                 int i = 0;
-                for (String alias : aliases) {
+                for (final String alias : aliases) {
                     filters[i++] = new Compare.Equal(propertyId, alias);
                 }
                 return filters.length > 1 ? new Or(filters) : filters[0];
@@ -59,7 +59,7 @@ public class UserProfileFilterGenerator extends AbstractFilterGenerator {
      * default field.
      */
     @Override
-    public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+    public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
         if (propId.equals(propertyId))
             return new UserProfileSelect("");
         return null;

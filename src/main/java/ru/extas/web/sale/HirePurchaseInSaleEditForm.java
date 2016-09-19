@@ -1,4 +1,4 @@
-package ru.extas.web.commons;
+package ru.extas.web.sale;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
@@ -7,31 +7,33 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Label;
-import ru.extas.model.sale.ProdInstallments;
+import ru.extas.model.product.ProdHirePurchase;
+import ru.extas.model.product.ProductInstance;
 import ru.extas.utils.SupplierSer;
+import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.commons.component.PercentOfField;
 import ru.extas.web.contacts.employee.EmployeeField;
-import ru.extas.web.product.ProdInSaleStateSelect;
-import ru.extas.web.product.ProdInstallmentsField;
+import ru.extas.web.product.ProdHirePurchaseField;
+import ru.extas.web.product.ProdInstanceStateSelect;
+import ru.extas.web.product.ProductExpendituresField;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Optional;
 
 /**
+ * @author Valery Orlov
  * @author sandarkin
- * @version 2.0
  */
-public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
+public class HirePurchaseInSaleEditForm extends ExtaEditForm<ProductInstance> {
 
     private final SupplierSer<BigDecimal> priceSupplier;
-    private final SupplierSer<String> brandSupplier;
-//    private final Sale sale;
-
+    private final SupplierSer<List<String>> brandSupplier;
     // Компоненты редактирования
     @PropertyId("summ")
     private EditField summField;
@@ -40,28 +42,22 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
     @PropertyId("period")
     private ComboBox periodField;
     @PropertyId("product")
-    private ProdInstallmentsField productField;
+    private ProdHirePurchaseField productField;
     @PropertyId("responsible")
     private EmployeeField responsibleField;
     @PropertyId("state")
-    private ProdInSaleStateSelect stateField;
-
+    private ProdInstanceStateSelect stateField;
+    @PropertyId("expenditureList")
+    private ProductExpendituresField expendituresField;
     private Label vendorLabel;
     private Label downpaymentLabel;
     private Label periodLabel;
-    private Label monthlyPayLabel;
 
-    /**
-     * <p>Constructor for AbstractEditForm.</p>
-     *  @param caption       a {@link String} object.
-     * @param productInSale
-     * @param priceSupplier
-     * @param brandSupplier
-     */
-    public InstallmentInSmthEditForm(final String caption, final T targetObject,
-                                     final SupplierSer<BigDecimal> priceSupplier,
-                                     final SupplierSer<String> brandSupplier) {
+    public HirePurchaseInSaleEditForm(final String caption, final ProductInstance targetObject,
+                                      final SupplierSer<BigDecimal> priceSupplier,
+                                      final SupplierSer<List<String>> brandSupplier) {
         super(caption, targetObject);
+        setWinWidth(750, Unit.PIXELS);
         this.priceSupplier = priceSupplier;
         this.brandSupplier = brandSupplier;
     }
@@ -69,40 +65,43 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
     /**
      * <p>initEntity.</p>
      *
-     * @param productInSale a TEditObject object.
      */
     @Override
-    protected void initEntity(final T targetObject) {
+    protected void initEntity(final ProductInstance targetObject) {
 
     }
 
     /**
      * <p>saveEntity.</p>
      *
-     * @param productInSale a TEditObject object.
      */
     @Override
-    protected T saveEntity(final T targetObject) {
+    protected ProductInstance saveEntity(final ProductInstance targetObject) {
         return targetObject;
     }
 
     /**
      * <p>createEditFields.</p>
      *
-     * @return a {@link com.vaadin.ui.ComponentContainer} object.
+     * @return a {@link ComponentContainer} object.
      */
     @Override
     protected ComponentContainer createEditFields() {
         final ExtaFormLayout form = new ExtaFormLayout();
 
         form.addComponent(new FormGroupHeader("Продукт"));
-        productField = new ProdInstallmentsField("Продукт", "Введите название продукта");
+        productField = new ProdHirePurchaseField("Продукт", "Введите название продукта");
         productField.setRequired(true);
         productField.addValueChangeListener(e -> refreshProductFields());
         form.addComponent(productField);
 
-        stateField = new ProdInSaleStateSelect("Статус рассмотрения", "Укажите статус рассмотрения заявки на продукт");
+        stateField = new ProdInstanceStateSelect("Статус рассмотрения", "Укажите статус рассмотрения заявки на продукт");
         form.addComponent(stateField);
+
+        form.addComponent(new FormGroupHeader("Сопутствующие расходы"));
+        expendituresField = new ProductExpendituresField("Статьи расходов",
+                "Список дополнительных расходов сопровождающих продукт", (ProductInstance) getEntity());
+        form.addComponent(expendituresField);
 
         form.addComponent(new FormGroupHeader("Характеристики продукта"));
         vendorLabel = new Label();
@@ -136,15 +135,10 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
         summField.setRequired(true);
         form.addComponent(summField);
 
-        // Размер ежемесячного платежа
-        monthlyPayLabel = new Label();
-        monthlyPayLabel.setCaption("Ежемесячный платеж");
-        form.addComponent(monthlyPayLabel);
-
         // Ответственный со стороны банка
         responsibleField = new EmployeeField("Ответственный сотрудник", "Укажите ответственного со стороны эммитента рассрочки");
         responsibleField.setCompanySupplier(() -> {
-            final ProdInstallments product = productField.getValue();
+            final ProdHirePurchase product = productField.getValue();
             if (product != null) {
                 return product.getVendor();
             } else
@@ -170,17 +164,17 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
         // Обновляем характеристики продукта.
         refreshProductFields();
         // Обновляем параметы продукта
-        final ProdInstallments installments = productField.getValue();
-        if (installments != null) {
+        final ProdHirePurchase prod = productField.getValue();
+        if (prod != null) {
             // Наполняем возможными сроками кредита
             fillPeriodFieldItems();
 
             // Задаем начальные значения параметров (если они не заданы)
             if (downpaymentField.getValue() == null)
                 downpaymentField.setValue(
-                        installments.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128));
+                        prod.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128));
             if (periodField.getValue() == null)
-                periodField.setValue((installments.getMaxPeriod()));
+                periodField.setValue((prod.getMaxPeriod()));
             responsibleField.changeCompany();
         }
         // Обновляем(Пересчитываем) стоимость кредита
@@ -194,10 +188,10 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
         // Обновляем характеристики
         refreshProductFields();
         // Обновляем сумму кредита
-        final ProdInstallments installments = productField.getValue();
+        final ProdHirePurchase prod = productField.getValue();
         final BigDecimal price = priceSupplier.get();
         final BigDecimal downPayment = downpaymentField.getValue();
-        final boolean canCalculate = installments != null && price != null && downPayment != null;
+        final boolean canCalculate = prod != null && price != null && downPayment != null;
         if (canCalculate) {
             final BigDecimal instSum = price.subtract(downPayment);
             summField.setConvertedValue(instSum);
@@ -221,10 +215,10 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
      */
     private void creditSummChangeListener(final Property.ValueChangeEvent valueChangeEvent) {
         // Обновляем первоначальный взнос чтобы получить цену техники с учетом новой суммы
-        final ProdInstallments inst = productField.getValue();
+        final ProdHirePurchase prod = productField.getValue();
         final BigDecimal price = priceSupplier.get();
         final BigDecimal instSum = (BigDecimal) summField.getConvertedValue();
-        if (inst != null && price != null && instSum != null) {
+        if (prod != null && price != null && instSum != null) {
             final BigDecimal downPayment = price.subtract(instSum);
             downpaymentField.setValue(downPayment);
         }
@@ -249,18 +243,10 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
      */
     private void refreshInstCosts() {
 
-        final ProdInstallments installments = productField.getValue();
+        final ProdHirePurchase prod = productField.getValue();
         final BigDecimal price = priceSupplier.get();
         final BigDecimal downPayment = downpaymentField.getValue();
         final Number period = (Number) periodField.getValue();
-        final boolean canCalculate = installments != null && price != null && downPayment != null && period != null;
-        if (canCalculate) {
-            monthlyPayLabel.setValue(MessageFormat.format("{0, number, currency}",
-                    price.subtract(downPayment).
-                            divide(BigDecimal.valueOf(period.intValue()), MathContext.DECIMAL128)));
-        }
-        // Гасим поля, если нечего в них показывать
-        monthlyPayLabel.setVisible(canCalculate);
     }
 
     /**
@@ -268,7 +254,7 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
      */
     private void initValidators() {
         downpaymentField.addValidator(value -> {
-            final ProdInstallments prod = productField.getValue();
+            final ProdHirePurchase prod = productField.getValue();
             if (prod != null) {
                 final BigDecimal newDownpayment = (BigDecimal) value;
                 final BigDecimal minDownpayment = prod.getMinDownpayment().multiply(priceSupplier.get(), MathContext.DECIMAL128);
@@ -288,10 +274,10 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
 
     private void fillPeriodFieldItems() {
         // Наполняем возможными сроками кредита
-        final ProdInstallments installments = productField.getValue();
-        if (installments != null) {
+        final ProdHirePurchase prod = productField.getValue();
+        if (prod != null) {
             final int start = 1;
-            final int end = installments.getMaxPeriod();
+            final int end = prod.getMaxPeriod();
             final int step = 1;
             final Object curValue = periodField.getValue();
             periodField.removeAllItems();
@@ -307,10 +293,10 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
      * Обновляем характеристики продукта.
      */
     public void refreshProductFields() {
-        final ProdInstallments installments = productField.getValue();
+        final ProdHirePurchase installments = productField.getValue();
         final boolean canShowDetails = installments != null;
         if (canShowDetails) {
-            final BeanItem<ProdInstallments> beanItem = new BeanItem<>(Optional.ofNullable(installments).orElse(new ProdInstallments()));
+            final BeanItem<ProdHirePurchase> beanItem = new BeanItem<>(Optional.ofNullable(installments).orElse(new ProdHirePurchase()));
             beanItem.addNestedProperty("vendor.name");
 
             vendorLabel.setPropertyDataSource(beanItem.getItemProperty("vendor.name"));
@@ -325,5 +311,4 @@ public abstract class InstallmentInSmthEditForm<T> extends ExtaEditForm<T> {
         downpaymentLabel.setVisible(canShowDetails);
         periodLabel.setVisible(canShowDetails);
     }
-
 }

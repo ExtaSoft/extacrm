@@ -6,7 +6,9 @@ import com.vaadin.addon.charts.model.*;
 import org.vaadin.viritin.fields.CaptionGenerator;
 import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Company_;
-import ru.extas.model.sale.*;
+import ru.extas.model.product.*;
+import ru.extas.model.sale.Sale;
+import ru.extas.model.sale.Sale_;
 import ru.extas.web.util.ComponentUtil;
 
 import javax.persistence.EntityManager;
@@ -128,27 +130,27 @@ public class AgreedRejectedSalesChart extends AbstractSalesChart {
         final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
 
         final Root<Sale> root = cq.from(Sale.class);
-        final ListJoin<Sale, ProductInSale> productInSaleJoin = root.join(Sale_.productInSales);
-        final Path<ProductInSale.State> productInSaleState = productInSaleJoin.get(ProductInSale_.state);
-        final Join<ProductInSale, Product> saleProductJoin = productInSaleJoin.join(ProductInSale_.product);
+        final ListJoin<Sale, ProductInstance> productInstanceListJoin = root.join(Sale_.productInstances);
+        final Path<ProductInstance.State> productInstanceState = productInstanceListJoin.get(ProductInstance_.state);
+        final Join<ProductInstance, Product> saleProductJoin = productInstanceListJoin.join(ProductInstance_.product);
         final Join<Product, Company> bank = saleProductJoin.join(Product_.vendor);
         final Path<String> bankName = bank.get(Company_.name);
         final Expression<Long> bankCount = cb.count(bank);
 
-        cq.multiselect(bankName, bankCount, productInSaleState);
+        cq.multiselect(bankName, bankCount, productInstanceState);
         cq.where(
                 cb.and(
                         cb.notEqual(saleProductJoin.type(), ProdInsurance.class),
-                        cb.notEqual(productInSaleState, ProductInSale.State.NEW)));
-        cq.groupBy(bank.get(Company_.id), productInSaleState);
+                        cb.notEqual(productInstanceState, ProductInstance.State.NEW)));
+        cq.groupBy(bank.get(Company_.id), productInstanceState);
 
         applyFilters(cb, cq, root);
         final TypedQuery<Tuple> tq = em.createQuery(cq);
 
-        final HashBasedTable<ProductInSale.State, String, Long> dataTable = HashBasedTable.create();
+        final HashBasedTable<ProductInstance.State, String, Long> dataTable = HashBasedTable.create();
         for (final Tuple t : tq.getResultList()) {
             final String name = t.get(bankName);
-            final ProductInSale.State stat = t.get(productInSaleState);
+            final ProductInstance.State stat = t.get(productInstanceState);
             final Long count = t.get(bankCount);
             dataTable.put(stat, name, count);
         }
@@ -167,10 +169,10 @@ public class AgreedRejectedSalesChart extends AbstractSalesChart {
         final ListSeries rejectedSeries = new ListSeries("Отклонен");
         final ListSeries soldOutSeries = new ListSeries("Сделка оформлена");
         for (final String bankItem : bankSet) {
-            inProgressSeries.addData(dataTable.get(ProductInSale.State.IN_PROGRESS, bankItem));
-            agreedSeries.addData(dataTable.get(ProductInSale.State.AGREED, bankItem));
-            rejectedSeries.addData(dataTable.get(ProductInSale.State.REJECTED, bankItem));
-            soldOutSeries.addData(dataTable.get(ProductInSale.State.REJECTED, bankItem));
+            inProgressSeries.addData(dataTable.get(ProductInstance.State.IN_PROGRESS, bankItem));
+            agreedSeries.addData(dataTable.get(ProductInstance.State.AGREED, bankItem));
+            rejectedSeries.addData(dataTable.get(ProductInstance.State.REJECTED, bankItem));
+            soldOutSeries.addData(dataTable.get(ProductInstance.State.REJECTED, bankItem));
         }
         conf.addSeries(inProgressSeries);
         conf.addSeries(agreedSeries);
@@ -208,7 +210,7 @@ public class AgreedRejectedSalesChart extends AbstractSalesChart {
         final CriteriaQuery<Tuple> cq = cb.createTupleQuery();
 
         final Root<Sale> root = cq.from(Sale.class);
-        final Join<ProductInSale, Product> saleProductJoin = root.join(Sale_.productInSales).join(ProductInSale_.product);
+        final Join<ProductInstance, Product> saleProductJoin = root.join(Sale_.productInstances).join(ProductInstance_.product);
         final Join<Product, Company> bank = saleProductJoin.join(Product_.vendor);
         final Path<String> bankName = bank.get(Company_.name);
         final Expression<Long> bankCount = cb.count(bank);

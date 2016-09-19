@@ -109,7 +109,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         return container;
     }
 
-    public void setFilterVisible(boolean filterVisible) {
+    public void setFilterVisible(final boolean filterVisible) {
         this.filterVisible = filterVisible;
         showTableFilter(filterVisible);
     }
@@ -714,11 +714,11 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
         new FilterTableState().extend(table, createFilterTableStateHandler());
     }
 
-    private void addDefaultFiltergenerators(CompositeFilterGenerator generator) {
+    private void addDefaultFiltergenerators(final CompositeFilterGenerator generator) {
         generator
                 .with(new AbstractFilterGenerator() {
                     @Override
-                    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+                    public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
                         if (originatingField instanceof PastDateIntervalField) {
                             final Interval interval = (Interval) originatingField.getValue();
                             if (interval != null) {
@@ -737,7 +737,7 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
                     }
 
                     @Override
-                    public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+                    public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
                         final Class<?> type = container.getType(propertyId);
                         if (type == DateTime.class || type == LocalDate.class)
                             return new PastDateIntervalField("", "Нажмите для изменения временного интервала фильтра");

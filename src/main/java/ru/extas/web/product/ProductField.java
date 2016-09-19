@@ -10,7 +10,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import ru.extas.model.sale.Product;
+import ru.extas.model.product.Product;
 import ru.extas.web.commons.ExtaTheme;
 import ru.extas.web.commons.component.ExtaCustomField;
 import ru.extas.web.commons.container.ExtaDbContainer;

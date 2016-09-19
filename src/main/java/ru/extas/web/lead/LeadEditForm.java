@@ -15,6 +15,7 @@ import ru.extas.model.contacts.*;
 import ru.extas.model.lead.Lead;
 import ru.extas.model.lead.LeadComment;
 import ru.extas.model.lead.LeadFileContainer;
+import ru.extas.model.lead.LeadMotor;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.security.CuratorsGroup;
 import ru.extas.server.contacts.EmployeeRepository;
@@ -35,12 +36,11 @@ import ru.extas.web.contacts.person.ClientDataDecl;
 import ru.extas.web.contacts.person.PersonEditForm;
 import ru.extas.web.contacts.salepoint.DealerSalePointField;
 import ru.extas.web.contacts.salepoint.SalePointsGrid;
-import ru.extas.web.motor.MotorBrandSelect;
-import ru.extas.web.motor.MotorTypeSelect;
+import ru.extas.web.motor.MotorInstancesField;
 import ru.extas.web.reference.RegionSelect;
+import ru.extas.web.sale.ProductInstancesField;
 import ru.extas.web.sale.SaleEditForm;
 
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Iterator;
@@ -79,18 +79,9 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     // Регион покупки техники
     @PropertyId("region")
     private RegionSelect regionField;
-    // Тип техники
-    @PropertyId("motorType")
-    private ComboBox motorTypeField;
-    // Марка техники
-    @PropertyId("motorBrand")
-    private MotorBrandSelect motorBrandField;
-    // Модель техники
-    @PropertyId("motorModel")
-    private EditField motorModelField;
-    // Стоимость техники
-    @PropertyId("motorPrice")
-    private EditField mototPriceField;
+    // Техника
+    @PropertyId("motorInstances")
+    private MotorInstancesField motorInstancesField;
     // Мотосалон
     @PropertyId("pointOfSale")
     private EditField pointOfSaleField;
@@ -99,8 +90,8 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
     @PropertyId("vendor")
     private DealerSalePointField vendorField;
 
-    @PropertyId("productInLeads")
-    private ProductInLeadField productInLeadField;
+    @PropertyId("productInstances")
+    private ProductInstancesField productInstancesField;
     @PropertyId("comment")
     private TextArea commentField;
 
@@ -193,22 +184,12 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             form.addComponent(clientField);
         }
 
-        mototPriceField = new EditField("Цена техники");
-        motorBrandField = new MotorBrandSelect();
         createVendorSelectField(form);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Техника"));
-        motorTypeField = new MotorTypeSelect();
-        form.addComponent(motorTypeField);
-
-        form.addComponent(motorBrandField);
-
-        motorModelField = new EditField("Модель техники", "Введите модель техники");
-        motorModelField.setColumns(15);
-        form.addComponent(motorModelField);
-
-        form.addComponent(mototPriceField);
+        motorInstancesField = new MotorInstancesField("Техника", () -> new LeadMotor(getEntity()));
+        form.addComponent(motorInstancesField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
@@ -234,12 +215,12 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
-        productInLeadField = new ProductInLeadField("Продукты в продаже", getEntity(),
-                () -> (BigDecimal) mototPriceField.getConvertedValue(),
-                () -> (String) motorBrandField.getValue(),
+        productInstancesField = new ProductInstancesField("Продукты в продаже", getEntity(), null,
+                () -> motorInstancesField.getTotalPrice(),
+                () -> motorInstancesField.getBrands(),
                 () -> vendorField.getValue());
-        productInLeadField.addValueChangeListener(forceModified);
-        form.addComponent(productInLeadField);
+        productInstancesField.addValueChangeListener(forceModified);
+        form.addComponent(productInstancesField);
 
         commentField = new TextArea("Примечание");
         commentField.setRows(3);
@@ -274,7 +255,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
         ///vendorField.setRequired(true);
         vendorField.addValueChangeListener(e -> {
             dealerManagerField.changeSalePoint();
-            productInLeadField.refreshSalePoint();
+            productInstancesField.refreshSalePoint();
             if (responsibleField.getValue() == null) {
                 final SalePoint sp = vendorField.getValue();
                 final CuratorsGroup curatorsGroup = sp.getCuratorsGroup();
@@ -334,7 +315,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
             }
 
             @Override
-            protected void initTable(Mode mode) {
+            protected void initTable(final Mode mode) {
                 super.initTable(mode);
                 // Обрабатываем выбор контакта
                 table.addValueChangeListener(event -> {
@@ -347,7 +328,7 @@ public class LeadEditForm extends ExtaEditForm<Lead> {
                 // Название
                 table.setFilterFieldValue("name", lead.getPointOfSale());
                 // Бренд
-                table.setFilterFieldValue(SALEPOINT_BRANDS_COLUMN, lead.getMotorBrand());
+//                table.setFilterFieldValue(SALEPOINT_BRANDS_COLUMN, lead.getMotorBrand());
                 // Регион
                 table.setFilterFieldValue("posAddress.regionWithType", lead.getRegion());
 

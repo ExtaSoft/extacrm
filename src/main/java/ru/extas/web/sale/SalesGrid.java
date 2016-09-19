@@ -115,6 +115,8 @@ public class SalesGrid extends ExtaGrid<Sale> {
         final ExtaDbContainer<Sale> container = SecuredDataContainer.create(Sale.class, domain);
         container.addNestedContainerProperty("client.name");
         container.addNestedContainerProperty("client.phone");
+        container.addNestedContainerProperty("clientContact.name");
+        container.addNestedContainerProperty("clientContact.phone");
         container.addNestedContainerProperty("dealer.name");
         container.addNestedContainerProperty("responsible.name");
         container.addNestedContainerProperty("responsibleAssist.name");
@@ -239,12 +241,12 @@ public class SalesGrid extends ExtaGrid<Sale> {
                 new PhoneFilterGenerator("client.phone"),
                 new AbstractFilterGenerator() {
                     @Override
-                    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+                    public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
                         return null;
                     }
 
                     @Override
-                    public AbstractField<?> getCustomFilterComponent(Object propertyId) {
+                    public AbstractField<?> getCustomFilterComponent(final Object propertyId) {
                         if (propertyId.equals("source"))
                             return new LeadSourceSelect();
                         return null;

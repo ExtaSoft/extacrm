@@ -94,6 +94,10 @@ public enum ExtaDomain {
 	 */
 	PROD_INSTALL("products/installment"),
 	/**
+	 * Аренда с выкупом
+	 */
+	PROD_HIRE_PURCHASE("products/hire-purchase"),
+	/**
 	 * Пользователи
 	 */
 	USERS("security/users"),
