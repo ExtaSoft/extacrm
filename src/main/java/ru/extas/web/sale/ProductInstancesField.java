@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.*;
 
+import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -49,7 +50,7 @@ public class ProductInstancesField extends ExtaCustomField<List> {
     static final String PROD_HIRE_CAPTION = "Аренда с выкупом";
 
     private final SupplierSer<BigDecimal> priceSupplier;
-    private final SupplierSer<String> brandSupplier;
+    private final SupplierSer<List<String>> brandSupplier;
     private final SupplierSer<SalePoint> salePointSupplier;
     private final Sale sale;
     private final Lead lead;
@@ -60,18 +61,17 @@ public class ProductInstancesField extends ExtaCustomField<List> {
 
     /**
      */
-    public ProductInstancesField(final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, final SupplierSer<SalePoint> salePointSupplier) {
+    public ProductInstancesField(final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<List<String>> brandSupplier, final SupplierSer<SalePoint> salePointSupplier) {
         this("Продукты в продаже", null, sale, priceSupplier, brandSupplier, salePointSupplier);
     }
 
     /**
-     *
      * @param caption           a {@link String} object.
      * @param sale
      * @param brandSupplier
      * @param salePointSupplier
      */
-    public ProductInstancesField(final String caption, final Lead lead, final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier, final SupplierSer<SalePoint> salePointSupplier) {
+    public ProductInstancesField(final String caption, final Lead lead, final Sale sale, final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<List<String>> brandSupplier, final SupplierSer<SalePoint> salePointSupplier) {
         super(caption, "");
         this.priceSupplier = priceSupplier;
         this.sale = sale;
@@ -202,7 +202,7 @@ public class ProductInstancesField extends ExtaCustomField<List> {
 //        grid.getColumn(DELETE_BTN).setHeaderCaption("");
         gridContainer.addItemSetChangeListener(e -> grid.setHeightByRows(container.size() == 0 ? 1 : container.size()));
         grid.setCellStyleGenerator(cellRef -> {
-            if("state".equals(cellRef.getPropertyId())){
+            if ("state".equals(cellRef.getPropertyId())) {
                 final ProductInstance.State state = (ProductInstance.State) cellRef.getProperty().getValue();
                 switch (state) {
                     case AGREED:
@@ -243,10 +243,10 @@ public class ProductInstancesField extends ExtaCustomField<List> {
             if (!credProducts.isEmpty()) {
                 final MenuBar.MenuItem creditMn = addProductBtn.addItem(PROD_CREDIT_CAPTION, FontAwesome.CREDIT_CARD, null);
                 // TODO: Реализовать вызов формы калькулятора
-    //        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
-    //            new LoanCalculatorForm().showModal();
-    //        });
-    //        creditMn.addSeparator();
+                //        creditMn.addItem("Подобрать (Кредииный калькулятор)", e -> {
+                //            new LoanCalculatorForm().showModal();
+                //        });
+                //        creditMn.addSeparator();
                 for (final Product prod : credProducts)
                     creditMn.addItem(prod.getName(), e -> addProduct(prod));
             }
@@ -300,9 +300,9 @@ public class ProductInstancesField extends ExtaCustomField<List> {
         if (product instanceof ProdCredit) {
             form = new LoanInSaleEditForm("Кредитный продукт", productInstance, priceSupplier, brandSupplier);
         } else if (product instanceof ProdInsurance) {
-            form = new InsuranceInSaleEditForm("Страховой продукт", productInstance, priceSupplier, brandSupplier);
+            form = new InsuranceInSaleEditForm("Страховой продукт", productInstance, priceSupplier, () -> getFirst(brandSupplier.get(), null));
         } else if (product instanceof ProdInstallments) {
-            form = new InstallmentInSaleEditForm(PROD_INSTALL_CAPTION, productInstance, priceSupplier, brandSupplier);
+            form = new InstallmentInSaleEditForm(PROD_INSTALL_CAPTION, productInstance, priceSupplier, () -> getFirst(brandSupplier.get(), null));
         } else if (product instanceof ProdHirePurchase) {
             form = new HirePurchaseInSaleEditForm(PROD_HIRE_CAPTION, productInstance, priceSupplier, brandSupplier);
         } else

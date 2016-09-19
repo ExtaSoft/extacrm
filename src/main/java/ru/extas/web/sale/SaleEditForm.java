@@ -17,6 +17,7 @@ import ru.extas.model.product.ProductInstance;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.model.sale.SaleFileContainer;
+import ru.extas.model.sale.SaleMotor;
 import ru.extas.model.security.CuratorsGroup;
 import ru.extas.server.contacts.EmployeeRepository;
 import ru.extas.server.contacts.SalePointRepository;
@@ -26,7 +27,6 @@ import ru.extas.web.commons.CommentsField;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.FilesManageField;
 import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.commons.component.EditField;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.contacts.ClientField;
@@ -36,11 +36,8 @@ import ru.extas.web.contacts.employee.EmployeeField;
 import ru.extas.web.contacts.legalentity.SPLegalEntityField;
 import ru.extas.web.contacts.salepoint.DealerSalePointField;
 import ru.extas.web.lead.LeadSourceSelect;
-import ru.extas.web.motor.MotorBrandSelect;
-import ru.extas.web.motor.MotorModelSelect;
-import ru.extas.web.motor.MotorTypeSelect;
+import ru.extas.web.motor.MotorInstancesField;
 
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
@@ -64,18 +61,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private ClientField clientField;
     @PropertyId("clientContact")
     private EmployeeField clientContactField;
-    // Тип техники
-    @PropertyId("motorType")
-    private MotorTypeSelect motorTypeField;
-    // Марка техники
-    @PropertyId("motorBrand")
-    private MotorBrandSelect motorBrandField;
-    // Модель техники
-    @PropertyId("motorModel")
-    private MotorModelSelect motorModelField;
-    // Стоимость техники
-    @PropertyId("motorPrice")
-    private EditField mototPriceField;
+    // Техника
+    @PropertyId("motorInstances")
+    private MotorInstancesField motorInstancesField;
     // Мотосалон
     @PropertyId("dealer")
     private DealerSalePointField dealerField;
@@ -147,25 +135,27 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Техника"));
-        motorTypeField = new MotorTypeSelect();
-        motorTypeField.setRequired(true);
-        form.addComponent(motorTypeField);
-
-        motorBrandField = new MotorBrandSelect();
-        motorBrandField.setRequired(true);
-        motorBrandField.linkToType(motorTypeField);
-        form.addComponent(motorBrandField);
-
-        motorModelField = new MotorModelSelect("Модель техники");
-        motorModelField.setRequired(true);
-        motorModelField.linkToTypeAndBrand(motorTypeField, motorBrandField);
-        if(getEntity().getMotorModel() != null)
-            motorModelField.addItem(getEntity().getMotorModel());
-        form.addComponent(motorModelField);
-
-        mototPriceField = new EditField("Цена техники");
-        mototPriceField.setRequired(true);
-        form.addComponent(mototPriceField);
+        motorInstancesField = new MotorInstancesField("Техника", () -> new SaleMotor(getEntity()));
+        form.addComponent(motorInstancesField);
+//        motorTypeField = new MotorTypeSelect();
+//        motorTypeField.setRequired(true);
+//        form.addComponent(motorTypeField);
+//
+//        motorBrandField = new MotorBrandSelect();
+//        motorBrandField.setRequired(true);
+//        motorBrandField.linkToType(motorTypeField);
+//        form.addComponent(motorBrandField);
+//
+//        motorModelField = new MotorModelSelect("Модель техники");
+//        motorModelField.setRequired(true);
+//        motorModelField.linkToTypeAndBrand(motorTypeField, motorBrandField);
+////        if(getEntity().getMotorModel() != null)
+////            motorModelField.addItem(getEntity().getMotorModel());
+//        form.addComponent(motorModelField);
+//
+//        mototPriceField = new EditField("Цена техники");
+//        mototPriceField.setRequired(true);
+//        form.addComponent(mototPriceField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));
@@ -193,9 +183,9 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         dealerLEField.addValidator(value -> {
             if(value != null && value instanceof LegalEntity) {
                 final LegalEntity legalEntity = (LegalEntity) value;
-                // Проваерить что юрик работает с этим брендом
-                final String brand = (String) motorBrandField.getValue();
-                if(!legalEntity.getMotorBrands().contains(brand))
+                // Проверить что юрик работает с этим брендом
+                final List<String> brands = motorInstancesField.getBrands();
+                if(!legalEntity.getMotorBrands().containsAll(brands))
                     throw new Validator.InvalidValueException("Выбранное Юридическое лицо не работает с данным брендом техники");
                 // Проверить что юрик аккредитован для данного продукта
                 final List<ProductInstance> productInstanceList = productInstancesField.getValue();
@@ -236,8 +226,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Продукты"));
         productInstancesField = new ProductInstancesField("Продукты в продаже", null, getEntity(),
-                () -> (BigDecimal) mototPriceField.getConvertedValue(),
-                () -> (String) motorBrandField.getValue(),
+                () -> motorInstancesField.getTotalPrice(),
+                () -> motorInstancesField.getBrands(),
                 () -> dealerField.getValue());
         productInstancesField.addValueChangeListener(forceModified);
         form.addComponent(productInstancesField);
@@ -253,7 +243,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         docFilesEditor = new FilesManageField(SaleFileContainer.class);
         form.addComponent(docFilesEditor);
 
-        mototPriceField.addValueChangeListener(e -> productInstancesField.markAsDirtyRecursive());
+        motorInstancesField.addValueChangeListener(e -> productInstancesField.markAsDirtyRecursive());
 
         return form;
     }

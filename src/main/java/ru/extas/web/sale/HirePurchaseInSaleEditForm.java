@@ -23,6 +23,7 @@ import ru.extas.web.product.ProductExpendituresField;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,7 +33,7 @@ import java.util.Optional;
 public class HirePurchaseInSaleEditForm extends ExtaEditForm<ProductInstance> {
 
     private final SupplierSer<BigDecimal> priceSupplier;
-    private final SupplierSer<String> brandSupplier;
+    private final SupplierSer<List<String>> brandSupplier;
     // Компоненты редактирования
     @PropertyId("summ")
     private EditField summField;
@@ -54,7 +55,7 @@ public class HirePurchaseInSaleEditForm extends ExtaEditForm<ProductInstance> {
 
     public HirePurchaseInSaleEditForm(final String caption, final ProductInstance targetObject,
                                       final SupplierSer<BigDecimal> priceSupplier,
-                                      final SupplierSer<String> brandSupplier) {
+                                      final SupplierSer<List<String>> brandSupplier) {
         super(caption, targetObject);
         setWinWidth(750, Unit.PIXELS);
         this.priceSupplier = priceSupplier;

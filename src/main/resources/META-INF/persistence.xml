@@ -48,8 +48,10 @@
         <class>ru.extas.model.insurance.InsuranceFileContainer</class>
         <class>ru.extas.model.insurance.Policy</class>
         <class>ru.extas.model.lead.Lead</class>
+        <class>ru.extas.model.lead.LeadMotor</class>
         <class>ru.extas.model.lead.LeadFileContainer</class>
         <class>ru.extas.model.sale.Sale</class>
+        <class>ru.extas.model.sale.SaleMotor</class>
         <class>ru.extas.model.sale.SaleComment</class>
         <class>ru.extas.model.sale.SaleFileContainer</class>
         <class>ru.extas.model.product.Product</class>
@@ -64,6 +66,7 @@
         <class>ru.extas.model.motor.MotorType</class>
         <class>ru.extas.model.motor.MotorBrand</class>
         <class>ru.extas.model.motor.MotorModel</class>
+        <class>ru.extas.model.motor.MotorInstance</class>
         <class>ru.extas.model.settings.UserGridState</class>
         <class>ru.extas.model.settings.UserSettings</class>
         <class>ru.extas.model.security.CuratorsGroup</class>

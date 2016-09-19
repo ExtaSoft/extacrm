@@ -2,6 +2,7 @@ package ru.extas.web.analytics;
 
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
+import ru.extas.model.motor.MotorInstance_;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.Sale_;
 
@@ -65,7 +66,7 @@ public class SalesChartByMotor extends AbstractSalesChart {
 
         final Root<Sale> root = cq.from(Sale.class);
         final Path<Sale.Status> saleStatus = root.get(Sale_.status);
-        final Path<String> mTypePath = root.get(Sale_.motorType);
+        final Path<String> mTypePath = root.join(Sale_.motorInstances).get(MotorInstance_.type);
         final Expression<Long> mTypeCountEx = cb.count(mTypePath);
 
         cq.multiselect(mTypePath, mTypeCountEx);
@@ -114,7 +115,7 @@ public class SalesChartByMotor extends AbstractSalesChart {
 
         final Root<Sale> root = cq.from(Sale.class);
         final Path<Sale.Status> saleStatus = root.get(Sale_.status);
-        final Path<String> mBrandPath = root.get(Sale_.motorBrand);
+        final Path<String> mBrandPath = root.join(Sale_.motorInstances).get(MotorInstance_.brand);
         final Expression<Long> mBrandCountEx = cb.count(mBrandPath);
 
         cq.multiselect(mBrandPath, mBrandCountEx);

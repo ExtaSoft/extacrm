@@ -157,11 +157,7 @@ class SaleDataDecl extends GridDataDecl {
     }
 
     private void addMotorMappings() {
-        addMapping("motor_all", "Техника", new MotorColumnGenerator(), null);
-        addMapping("motorType", "Тип техники", getPresentFlags(true));
-        addMapping("motorBrand", "Марка техники", getPresentFlags(true));
-        addMapping("motorModel", "Модель техники", getPresentFlags(true));
-        addMapping("motorPrice", "Стоимость техники", getPresentFlags(true));
+        addMapping("motorInstances", "Техника", new MotorColumnGenerator(), null);
     }
 
     private void addClientNameMapping(final boolean isCollapsed) {

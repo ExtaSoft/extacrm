@@ -22,6 +22,8 @@ import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.Employee;
 import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.lead.Lead;
+import ru.extas.model.lead.LeadMotor;
+import ru.extas.model.motor.MotorInstance;
 import ru.extas.model.security.AccessRole;
 import ru.extas.server.common.AddressAccessService;
 import ru.extas.server.contacts.CompanyRepository;
@@ -320,6 +322,8 @@ public class LeadInputFormUI extends UI {
             final Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalContactRegion));
             lead.setContactRegion(trueRegion.orNull());
         }
+        MotorInstance motorInstance = new LeadMotor(lead);
+        lead.getMotorInstances().add(motorInstance);
         // Тип техники
         String motorType = getParamValue("motorType", params);
         if (!isNullOrEmpty(motorType)) {
@@ -328,7 +332,7 @@ public class LeadInputFormUI extends UI {
             final List<String> types = repository.loadAllNames();
             final String finalMotorType = motorType;
             final Optional<String> trueType = Iterables.tryFind(types, input -> StringUtils.containsIgnoreCase(input, finalMotorType));
-            lead.setMotorType(trueType.orNull());
+            motorInstance.setType(trueType.orNull());
         }
         // Марка техники
         String motorBrand = getParamValue("motorBrand", params);
@@ -338,12 +342,12 @@ public class LeadInputFormUI extends UI {
             final List<String> brands = repository.loadAllNames();
             final String finalMotorBrand = motorBrand;
             final Optional<String> trueMotorBrand = Iterables.tryFind(brands, input -> StringUtils.containsIgnoreCase(input, finalMotorBrand));
-            lead.setMotorBrand(trueMotorBrand.orNull());
+            motorInstance.setBrand(trueMotorBrand.orNull());
         }
         // Модель техники
         final String motorModel = getParamValue("motorModel", params);
         if (!isNullOrEmpty(motorModel))
-            lead.setMotorModel(motorModel);
+            motorInstance.setModel(motorModel);
         // Стоимость техники
         final String motorPrice = getParamValue("motorPrice", params);
         if (!isNullOrEmpty(motorPrice)) {
@@ -355,7 +359,7 @@ public class LeadInputFormUI extends UI {
                         "Неверно задана сумма в параметре 'motorPrice'.");
                 return true;
             }
-            lead.setMotorPrice(price);
+            motorInstance.setPrice(price);
         }
         // Регион покупки техники
         String region = getParamValue("region", params);

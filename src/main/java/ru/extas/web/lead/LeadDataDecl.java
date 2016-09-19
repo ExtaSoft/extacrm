@@ -33,10 +33,6 @@ class LeadDataDecl extends GridDataDecl {
         }, null);
         addMapping("contactName", "Клиент");
         addMapping("motor_all", "Техника", new MotorColumnGenerator(), null);
-        addMapping("motorType", "Тип техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("motorBrand", "Марка техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("motorModel", "Модель техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
-        addMapping("motorPrice", "Стоимость техники", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));
         addMapping("contactPhone", "Телефон", PhoneConverter.class);
         addMapping("pointOfSale_Sur", "Регион | Мотосалон", new SalePointColumnGenerator("vendor", "pointOfSale", "region"), null);
         addMapping("region", "Регион", EnumSet.of(DataDeclMapping.PresentFlag.COLLAPSED));

@@ -9,6 +9,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 /**
  * Связь продукта с продажей (продажа продукта)
  *
@@ -81,7 +83,7 @@ public class ProductInstance extends AuditedObject {
 
 	// Дополнительные расходы по породукту
 	@OneToMany(mappedBy = "productInstance", targetEntity = ProductExpenditure.class, orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	private List<ProductExpenditure> expenditureList;
+	private List<ProductExpenditure> expenditureList = newArrayList();
 
 
 	/**

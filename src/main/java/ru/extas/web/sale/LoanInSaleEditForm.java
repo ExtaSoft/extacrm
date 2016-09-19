@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -40,7 +41,7 @@ import static ru.extas.server.ServiceLocator.lookup;
 public class LoanInSaleEditForm extends ExtaEditForm<ProductInstance> {
 
     private final SupplierSer<BigDecimal> priceSupplier;
-    private final SupplierSer<String> brandSupplier;
+    private final SupplierSer<List<String>> brandSupplier;
     // Компоненты редактирования
     @PropertyId("summ")
     private EditField summField;
@@ -67,7 +68,7 @@ public class LoanInSaleEditForm extends ExtaEditForm<ProductInstance> {
     private Label monthlyRiseLabel;
 
     public LoanInSaleEditForm(final String caption, final ProductInstance targetObject,
-                              final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<String> brandSupplier) {
+                              final SupplierSer<BigDecimal> priceSupplier, final SupplierSer<List<String>> brandSupplier) {
         super(caption, targetObject);
         this.priceSupplier = priceSupplier;
         this.brandSupplier = brandSupplier;

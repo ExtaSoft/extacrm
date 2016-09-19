@@ -32,6 +32,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 /**
  * JPA имплементация службы управления лидами
@@ -171,8 +172,8 @@ public class LeadRepositoryImpl extends AbstractSecuredRepository<Lead> implemen
      */
     @Override
     protected Collection<String> getObjectBrands(final Lead lead) {
-        if (!isNullOrEmpty(lead.getMotorBrand()))
-            return newHashSet(lead.getMotorBrand());
+        if (!isEmpty(lead.getMotorInstances()))
+            return newHashSet(lead.getMotorInstances().stream().map(i -> i.getBrand()).iterator());
 
         return null;
     }

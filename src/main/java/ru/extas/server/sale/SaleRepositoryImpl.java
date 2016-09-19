@@ -20,6 +20,7 @@ import ru.extas.model.product.ProductInstance;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
 import ru.extas.model.sale.SaleFileContainer;
+import ru.extas.model.sale.SaleMotor;
 import ru.extas.model.security.AccessRole;
 import ru.extas.security.AbstractSecuredRepository;
 import ru.extas.server.contacts.CompanyRepository;
@@ -37,6 +38,7 @@ import java.util.Set;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 /**
  * <p>SaleServiceImpl class.</p>
@@ -77,10 +79,12 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale.setClient(lead.getClient());
         sale.setStatus(Sale.Status.NEW);
         sale.setRegion(lead.getRegion());
-        sale.setMotorType(lead.getMotorType());
-        sale.setMotorBrand(lead.getMotorBrand());
-        sale.setMotorModel(lead.getMotorModel());
-        sale.setMotorPrice(lead.getMotorPrice());
+        if (isEmpty(lead.getMotorInstances()))
+            sale.setMotorInstances(
+                    newArrayList(
+                            lead.getMotorInstances().stream()
+                                    .map(i -> new SaleMotor(sale, i))
+                                    .iterator()));
         sale.setDealer(lead.getVendor());
         sale.setDealerManager(lead.getDealerManager());
         sale.setComment(lead.getComment());
@@ -261,8 +265,8 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
     @Override
     protected Collection<String> getObjectBrands(final Sale sale) {
         // Бренд техники
-        if (!isNullOrEmpty(sale.getMotorBrand()))
-            return newHashSet(sale.getMotorBrand());
+        if (!isEmpty(sale.getMotorInstances()))
+            return newHashSet(sale.getMotorInstances().stream().map(i -> i.getBrand()).iterator());
 
         return null;
     }
