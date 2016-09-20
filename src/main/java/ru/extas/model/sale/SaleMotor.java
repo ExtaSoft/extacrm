@@ -16,7 +16,7 @@ public class SaleMotor extends MotorInstance {
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Sale sale;
 
-    public SaleMotor(Sale sale, MotorInstance instance) {
+    public SaleMotor(final Sale sale, final MotorInstance instance) {
         super(instance);
         this.sale = sale;
     }
@@ -24,7 +24,7 @@ public class SaleMotor extends MotorInstance {
     public SaleMotor() {
     }
 
-    public SaleMotor(Sale sale) {
+    public SaleMotor(final Sale sale) {
         this.sale = sale;
     }
 
@@ -33,7 +33,7 @@ public class SaleMotor extends MotorInstance {
         return sale;
     }
 
-    public void setSale(Sale sale) {
+    public void setSale(final Sale sale) {
         this.sale = sale;
     }
 }

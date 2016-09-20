@@ -79,7 +79,7 @@ public class SaleRepositoryImpl extends AbstractSecuredRepository<Sale> implemen
         sale.setClient(lead.getClient());
         sale.setStatus(Sale.Status.NEW);
         sale.setRegion(lead.getRegion());
-        if (isEmpty(lead.getMotorInstances()))
+        if (!isEmpty(lead.getMotorInstances()))
             sale.setMotorInstances(
                     newArrayList(
                             lead.getMotorInstances().stream()

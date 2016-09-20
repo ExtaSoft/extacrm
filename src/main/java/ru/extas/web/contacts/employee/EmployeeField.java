@@ -68,6 +68,8 @@ public class EmployeeField extends ExtaCustomField<Employee> {
                     markAsDirtyRecursive();
                 }
             }
+            if (entityContent != null)
+                entityContent.refreshEmployeeContainer();
         }
     }
 
@@ -238,7 +240,7 @@ public class EmployeeField extends ExtaCustomField<Employee> {
             selectField.addValueChangeListener(event -> refreshFields((Employee) selectField.getConvertedValue()));
             formLayout.addComponent(selectField);
 
-            if(isReadOnly()){
+            if (isReadOnly()) {
                 selectField.setReadOnly(true);
                 selectField.setWidthUndefined();
             }
@@ -323,6 +325,11 @@ public class EmployeeField extends ExtaCustomField<Employee> {
             if (emailField != null) emailField.setPropertyDataSource(beanItem.getItemProperty("email"));
             // ИНН
             if (positionField != null) positionField.setPropertyDataSource(beanItem.getItemProperty("jobPosition"));
+        }
+
+        public void refreshEmployeeContainer() {
+            if (selectField != null)
+                selectField.refreshContainer();
         }
     }
 

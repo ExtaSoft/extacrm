@@ -22,7 +22,7 @@ public class SettingsInstance {
     public SettingsInstance() {
     }
 
-    public SettingsInstance(String appTitle, String iconPath, boolean isShowSalePointIds, boolean isDevServer) {
+    public SettingsInstance(final String appTitle, final String iconPath, final boolean isShowSalePointIds, final boolean isDevServer) {
         this.appTitle = appTitle;
         this.iconPath = iconPath;
         this.showSalePointIds = isShowSalePointIds;
@@ -33,7 +33,7 @@ public class SettingsInstance {
         return appTitle;
     }
 
-    public void setAppTitle(String appTitle) {
+    public void setAppTitle(final String appTitle) {
         this.appTitle = appTitle;
     }
 
@@ -41,7 +41,7 @@ public class SettingsInstance {
         return iconPath;
     }
 
-    public void setIconPath(String iconPath) {
+    public void setIconPath(final String iconPath) {
         this.iconPath = iconPath;
     }
 
@@ -49,7 +49,7 @@ public class SettingsInstance {
         return showSalePointIds;
     }
 
-    public void setShowSalePointIds(boolean showSalePointIds) {
+    public void setShowSalePointIds(final boolean showSalePointIds) {
         this.showSalePointIds = showSalePointIds;
     }
 
@@ -57,7 +57,7 @@ public class SettingsInstance {
         return devServer;
     }
 
-    public void setDevServer(boolean devServer) {
+    public void setDevServer(final boolean devServer) {
         this.devServer = devServer;
     }
 }

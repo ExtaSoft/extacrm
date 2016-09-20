@@ -1,9 +1,7 @@
 package ru.extas.web.sale;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
@@ -109,9 +107,7 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         clientField.addValueChangeListener(e -> {
             final Client client = (Client) e.getProperty().getValue();
             if(client instanceof LegalEntity) {
-                final Container.Filter filter = new Compare.Equal("legalWorkPlace", client);
-                clientContactField.setFilter(filter);
-                clientContactField.changeLegalEntity();
+                clientContactField.changeCompany();
                 clientContactField.setVisible(true);
             } else
                 clientContactField.setVisible(false);
@@ -121,10 +117,10 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
 
         clientContactField = new EmployeeField("Контактное лицо", "Укажите контактное лицо клиента");
         clientContactField.setVisible(false);
-        clientContactField.setLegalEntitySupplier(() -> {
+        clientContactField.setCompanySupplier(() -> {
             final Client client = clientField.getValue();
             if(client instanceof LegalEntity)
-                return (LegalEntity)client;
+                return ((LegalEntity)client).getCompany();
             else
                 return null;
         });
@@ -137,25 +133,6 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         form.addComponent(new FormGroupHeader("Техника"));
         motorInstancesField = new MotorInstancesField("Техника", () -> new SaleMotor(getEntity()));
         form.addComponent(motorInstancesField);
-//        motorTypeField = new MotorTypeSelect();
-//        motorTypeField.setRequired(true);
-//        form.addComponent(motorTypeField);
-//
-//        motorBrandField = new MotorBrandSelect();
-//        motorBrandField.setRequired(true);
-//        motorBrandField.linkToType(motorTypeField);
-//        form.addComponent(motorBrandField);
-//
-//        motorModelField = new MotorModelSelect("Модель техники");
-//        motorModelField.setRequired(true);
-//        motorModelField.linkToTypeAndBrand(motorTypeField, motorBrandField);
-////        if(getEntity().getMotorModel() != null)
-////            motorModelField.addItem(getEntity().getMotorModel());
-//        form.addComponent(motorModelField);
-//
-//        mototPriceField = new EditField("Цена техники");
-//        mototPriceField.setRequired(true);
-//        form.addComponent(mototPriceField);
 
         ////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Дилер"));

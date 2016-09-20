@@ -16,7 +16,7 @@ public class LeadMotor extends MotorInstance {
     public LeadMotor() {
     }
 
-    public LeadMotor(Lead lead) {
+    public LeadMotor(final Lead lead) {
         this.lead = lead;
     }
 
@@ -27,7 +27,7 @@ public class LeadMotor extends MotorInstance {
         return lead;
     }
 
-    public void setLead(Lead lead) {
+    public void setLead(final Lead lead) {
         this.lead = lead;
     }
 }

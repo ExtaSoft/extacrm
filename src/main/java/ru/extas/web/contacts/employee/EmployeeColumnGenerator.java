@@ -16,13 +16,13 @@ public class EmployeeColumnGenerator extends GridDataDecl.ComponentColumnGenerat
 
     private final String employeePropId;
 
-    public EmployeeColumnGenerator(String employeePropId) {
+    public EmployeeColumnGenerator(final String employeePropId) {
         super();
         this.employeePropId = employeePropId;
     }
 
     @Override
-    public Object generateCell(Object columnId, Item item, Object itemId) {
+    public Object generateCell(final Object columnId, final Item item, final Object itemId) {
         final Employee employee = (Employee) item.getItemProperty(employeePropId).getValue();
         final Button link = new Button();
         link.addStyleName(ExtaTheme.BUTTON_LINK);

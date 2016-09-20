@@ -17,7 +17,7 @@ import ru.extas.web.contacts.person.PersonEditForm;
 public class ClientColumnGenerator extends GridDataDecl.ComponentColumnGenerator {
     private final String clientPropId;
 
-    public ClientColumnGenerator(String clientPropId) {
+    public ClientColumnGenerator(final String clientPropId) {
         this.clientPropId = clientPropId;
     }
 
@@ -26,7 +26,7 @@ public class ClientColumnGenerator extends GridDataDecl.ComponentColumnGenerator
     }
 
     @Override
-    public Object generateCell(Object columnId, Item item, Object itemId) {
+    public Object generateCell(final Object columnId, final Item item, final Object itemId) {
         final Client client = (Client) item.getItemProperty(clientPropId).getValue();
         final Button link = new Button();
         link.addStyleName(ExtaTheme.BUTTON_LINK);

@@ -12,6 +12,7 @@ import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.GridItem;
 import ru.extas.web.commons.UrlLinkColumnGen;
 import ru.extas.web.commons.converters.PhoneConverter;
+import ru.extas.web.contacts.company.CompanyColumnGenerator;
 
 import static ru.extas.server.ServiceLocator.lookup;
 
@@ -33,7 +34,7 @@ public class SalePointsDataDecl extends GridDataDecl {
      */
     public SalePointsDataDecl() {
         super();
-        addMapping("company.name", "Компания");
+        addMapping("company.name", "Компания", new CompanyColumnGenerator());
         addMapping("name", "Имя торговой точки");
         addMapping("posAddress.regionWithType", "Регион");
         addMapping("posAddress.cityWithType", "Город");

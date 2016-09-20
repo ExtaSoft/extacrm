@@ -23,7 +23,7 @@ public class MotorColumnGenerator extends GridDataDecl.ComponentColumnGenerator 
         final StringBuilder content = new StringBuilder();
         final List<MotorInstance> motorInstances = (List<MotorInstance>) item.getItemProperty("motorInstances").getValue();
         if (!isEmpty(motorInstances)) {
-            MotorInstance first = motorInstances.get(0);
+            final MotorInstance first = motorInstances.get(0);
             if (first.getType() != null)
                 content.append("<strong>").append(first.getType()).append("</strong>");
             if (first.getBrand() != null) {
