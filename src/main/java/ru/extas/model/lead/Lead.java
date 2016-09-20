@@ -164,7 +164,7 @@ public class Lead extends SecuredObject {
         return motorInstances;
     }
 
-    public void setMotorInstances(List<MotorInstance> motorInstances) {
+    public void setMotorInstances(final List<MotorInstance> motorInstances) {
         this.motorInstances = motorInstances;
     }
 

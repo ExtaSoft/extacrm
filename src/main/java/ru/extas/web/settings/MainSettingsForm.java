@@ -41,7 +41,7 @@ public class MainSettingsForm extends ExtaEditForm<SettingsInstance> {
     }
 
     @Override
-    protected void initEntity(SettingsInstance settingsInstance) {
+    protected void initEntity(final SettingsInstance settingsInstance) {
 
     }
 
@@ -60,7 +60,7 @@ public class MainSettingsForm extends ExtaEditForm<SettingsInstance> {
         form.addComponent(appTitleField);
 
         iconPathField = new ComboBox("Иконка приложения");
-        for (String icon : lookup(UserSettingsService.class).getFaviconPathList()) {
+        for (final String icon : lookup(UserSettingsService.class).getFaviconPathList()) {
             iconPathField.addItem(icon);
             iconPathField.setItemIcon(icon, new ThemeResource(getLast(Splitter.on('/').split(icon))));
         }

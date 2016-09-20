@@ -7,6 +7,7 @@ import ru.extas.web.commons.EmailLinkColumnGen;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.UrlLinkColumnGen;
 import ru.extas.web.commons.converters.PhoneConverter;
+import ru.extas.web.contacts.company.CompanyColumnGenerator;
 
 /**
  * Опции отображения контактов в списке
@@ -24,7 +25,7 @@ public class LegalEntityDataDecl extends GridDataDecl {
 		super();
 		addMapping("name", "Имя");
         addMapping("inn", "ИНН");
-        addMapping("company.name", "Компания");
+        addMapping("company.name", "Компания", new CompanyColumnGenerator());
 		addMapping("phone", "Телефон", PhoneConverter.class);
 		addMapping("email", "E-Mail", new EmailLinkColumnGen(), getPresentFlags(true));
 		addMapping("www", "WWW", new UrlLinkColumnGen(), getPresentFlags(true));

@@ -112,7 +112,7 @@ public class Sale extends SecuredObject {
         return motorInstances;
     }
 
-    public void setMotorInstances(List<MotorInstance> motorInstances) {
+    public void setMotorInstances(final List<MotorInstance> motorInstances) {
         this.motorInstances = motorInstances;
     }
 
@@ -330,7 +330,7 @@ public class Sale extends SecuredObject {
         return clientContact;
     }
 
-    public void setClientContact(Employee clientContact) {
+    public void setClientContact(final Employee clientContact) {
         this.clientContact = clientContact;
     }
 

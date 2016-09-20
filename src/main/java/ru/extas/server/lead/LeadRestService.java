@@ -245,7 +245,7 @@ public class LeadRestService {
     public void newLead(@RequestBody final RestLead lead) {
         Lead newLead = new Lead();
         newLead.setStatus(Lead.Status.NEW);
-        MotorInstance motorInstance = new LeadMotor(newLead);
+        final MotorInstance motorInstance = new LeadMotor(newLead);
         newLead.getMotorInstances().add(motorInstance);
 
         final StringBuilder dirtyData = new StringBuilder();

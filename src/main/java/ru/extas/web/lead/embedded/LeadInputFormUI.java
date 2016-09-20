@@ -322,7 +322,7 @@ public class LeadInputFormUI extends UI {
             final Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalContactRegion));
             lead.setContactRegion(trueRegion.orNull());
         }
-        MotorInstance motorInstance = new LeadMotor(lead);
+        final MotorInstance motorInstance = new LeadMotor(lead);
         lead.getMotorInstances().add(motorInstance);
         // Тип техники
         String motorType = getParamValue("motorType", params);

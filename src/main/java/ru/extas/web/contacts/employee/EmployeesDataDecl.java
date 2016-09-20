@@ -1,11 +1,9 @@
 package ru.extas.web.contacts.employee;
 
-import ru.extas.web.commons.DataDeclMapping;
 import ru.extas.web.commons.EmailLinkColumnGen;
 import ru.extas.web.commons.GridDataDecl;
 import ru.extas.web.commons.converters.PhoneConverter;
-
-import java.util.EnumSet;
+import ru.extas.web.contacts.company.CompanyColumnGenerator;
 
 /**
  * Определение колонок в гриде сотрудников
@@ -18,7 +16,7 @@ public class EmployeesDataDecl extends GridDataDecl {
 
     public EmployeesDataDecl() {
         addMapping("name", "Имя");
-        addMapping("company.name", "Компания");
+        addMapping("company.name", "Компания", new CompanyColumnGenerator());
         addMapping("jobPosition", "Должность");
         addMapping("phone", "Телефон", PhoneConverter.class);
         addMapping("email", "E-Mail", new EmailLinkColumnGen());

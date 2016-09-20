@@ -38,7 +38,7 @@ public class MotorInstancesField extends ExtaCustomField<List> {
     private ExtaBeanContainer<MotorInstance> container;
     private Grid grid;
 
-    public MotorInstancesField(String caption, SupplierSer<MotorInstance> newMotorSupplier) {
+    public MotorInstancesField(final String caption, final SupplierSer<MotorInstance> newMotorSupplier) {
         super(caption, "");
 
         this.newMotorSupplier = newMotorSupplier;
@@ -100,27 +100,27 @@ public class MotorInstancesField extends ExtaCustomField<List> {
 
         final Grid.Column typeColumn = grid.getColumn(MotorInstance_.type.getName());
         typeColumn.setHeaderCaption("Тип");
-        MotorTypeSelect motorTypeField = new MotorTypeSelect();
+        final MotorTypeSelect motorTypeField = new MotorTypeSelect();
         motorTypeField.setRequired(true);
         typeColumn.setEditorField(motorTypeField);
 
         final Grid.Column brandColumn = grid.getColumn(MotorInstance_.brand.getName());
         brandColumn.setHeaderCaption("Бренд");
-        MotorBrandSelect motorBrandField = new MotorBrandSelect();
+        final MotorBrandSelect motorBrandField = new MotorBrandSelect();
         motorBrandField.setRequired(true);
         motorBrandField.linkToType(motorTypeField);
         brandColumn.setEditorField(motorBrandField);
 
         final Grid.Column modelColumn = grid.getColumn(MotorInstance_.model.getName());
         modelColumn.setHeaderCaption("Модель");
-        MotorModelSelect motorModelField = new MotorModelSelect("Модель техники");
+        final MotorModelSelect motorModelField = new MotorModelSelect("Модель техники");
         motorModelField.setRequired(true);
         motorModelField.linkToTypeAndBrand(motorTypeField, motorBrandField);
         modelColumn.setEditorField(motorModelField);
 
         final Grid.Column priceColumn = grid.getColumn(MotorInstance_.price.getName());
         priceColumn.setHeaderCaption("Стоимость");
-        EditField motorPriceField = new EditField("Цена техники");
+        final EditField motorPriceField = new EditField("Цена техники");
         motorPriceField.setRequired(true);
         priceColumn.setEditorField(motorPriceField);
 
@@ -132,12 +132,12 @@ public class MotorInstancesField extends ExtaCustomField<List> {
 
         grid.getEditorFieldGroup().addCommitHandler(new FieldGroup.CommitHandler() {
             @Override
-            public void preCommit(FieldGroup.CommitEvent commitEvent) throws FieldGroup.CommitException {
+            public void preCommit(final FieldGroup.CommitEvent commitEvent) throws FieldGroup.CommitException {
 
             }
 
             @Override
-            public void postCommit(FieldGroup.CommitEvent commitEvent) throws FieldGroup.CommitException {
+            public void postCommit(final FieldGroup.CommitEvent commitEvent) throws FieldGroup.CommitException {
                 setValue(newArrayList(container.getItemIds()));
             }
         });
@@ -170,7 +170,7 @@ public class MotorInstancesField extends ExtaCustomField<List> {
         return root;
     }
 
-    private void updatePriceFooter(Grid.FooterCell footerPrice) {
+    private void updatePriceFooter(final Grid.FooterCell footerPrice) {
         footerPrice.setText(lookup(StringToMoneyConverter.class).convertToPresentation(getTotalPrice(), null));
     }
 
