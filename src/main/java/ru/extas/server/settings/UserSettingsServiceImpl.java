@@ -62,7 +62,7 @@ public class UserSettingsServiceImpl implements UserSettingsService {
             final ObjectMapper mapper = new ObjectMapper();
             try {
                 settings = mapper.readValue(data.getSettings(), SettingsInstance.class);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 Throwables.propagate(e);
             }
         } else
@@ -77,7 +77,7 @@ public class UserSettingsServiceImpl implements UserSettingsService {
 
     @CacheEvict(MAIN_SETTINGS)
     @Override
-    public SettingsInstance saveMainSettings(SettingsInstance settings) {
+    public SettingsInstance saveMainSettings(final SettingsInstance settings) {
         UserSettings data = settingsRegistry.findByUserIsNullAndName(MAIN_SETTINGS);
         if (data == null) {
             data = new UserSettings();

@@ -147,29 +147,6 @@ public class ProductInstancesField extends ExtaCustomField<List> {
                 return String.class;
             }
         });
-//        gridContainer.addGeneratedProperty(DELETE_BTN, new PropertyValueGenerator<String>() {
-//            @Override
-//            public String getValue(Item item, Object itemId, Object propertyId) {
-//                return "Удалить";
-//            }
-//
-//            @Override
-//            public Class<String> getType() {
-//                return String.class;
-//            }
-//        });
-//        gridContainer.addGeneratedProperty(EDIT_BTN, new PropertyValueGenerator<String>() {
-//            @Override
-//            public String getValue(Item item, Object itemId, Object propertyId) {
-//                return "Редактировать";
-//            }
-//
-//            @Override
-//            public Class<String> getType() {
-//                return String.class;
-//            }
-//        });
-
 
         gridContainer.getContainerPropertyIds().stream()
                 .filter(p -> !ArrayUtils.contains(visibleProps, p))
@@ -196,10 +173,6 @@ public class ProductInstancesField extends ExtaCustomField<List> {
             edMenuItem.setEnabled(true);
             delMenuItem.setEnabled(true);
         });
-//        grid.getColumn(EDIT_BTN).setRenderer(new ButtonRenderer(e -> editProduct((ProductInSale) e.getItemId())));
-//        grid.getColumn(EDIT_BTN).setHeaderCaption("");
-//        grid.getColumn(DELETE_BTN).setRenderer(new ButtonRenderer(e -> deleteProduct((ProductInSale) e.getItemId())));
-//        grid.getColumn(DELETE_BTN).setHeaderCaption("");
         gridContainer.addItemSetChangeListener(e -> grid.setHeightByRows(container.size() == 0 ? 1 : container.size()));
         grid.setCellStyleGenerator(cellRef -> {
             if ("state".equals(cellRef.getPropertyId())) {

@@ -37,7 +37,7 @@ public abstract class MotorInstance extends IdentifiedObject {
     @Column(name = "PRICE", precision = 32, scale = 4)
     private BigDecimal price;
 
-    public MotorInstance(MotorInstance instance) {
+    public MotorInstance(final MotorInstance instance) {
         this.type = instance.getType();
         this.brand = instance.getBrand();
         this.model = instance.getModel();
@@ -51,7 +51,7 @@ public abstract class MotorInstance extends IdentifiedObject {
         return type;
     }
 
-    public void setType(String motorType) {
+    public void setType(final String motorType) {
         this.type = motorType;
     }
 
@@ -59,7 +59,7 @@ public abstract class MotorInstance extends IdentifiedObject {
         return brand;
     }
 
-    public void setBrand(String motorBrand) {
+    public void setBrand(final String motorBrand) {
         this.brand = motorBrand;
     }
 
@@ -67,7 +67,7 @@ public abstract class MotorInstance extends IdentifiedObject {
         return model;
     }
 
-    public void setModel(String motorModel) {
+    public void setModel(final String motorModel) {
         this.model = motorModel;
     }
 
@@ -75,7 +75,7 @@ public abstract class MotorInstance extends IdentifiedObject {
         return price;
     }
 
-    public void setPrice(BigDecimal motorPrice) {
+    public void setPrice(final BigDecimal motorPrice) {
         this.price = motorPrice;
     }
 }

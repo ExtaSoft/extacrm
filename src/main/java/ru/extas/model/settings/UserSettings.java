@@ -32,7 +32,7 @@ public class UserSettings extends IdentifiedObject {
         return user;
     }
 
-    public void setUser(UserProfile user) {
+    public void setUser(final UserProfile user) {
         this.user = user;
     }
 
@@ -40,7 +40,7 @@ public class UserSettings extends IdentifiedObject {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -48,7 +48,7 @@ public class UserSettings extends IdentifiedObject {
         return settings;
     }
 
-    public void setSettings(String settings) {
+    public void setSettings(final String settings) {
         this.settings = settings;
     }
 }

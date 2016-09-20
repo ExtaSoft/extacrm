@@ -4,9 +4,9 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import ru.extas.model.contacts.Client;
+import ru.extas.model.contacts.Company;
 import ru.extas.model.contacts.LegalEntity;
 import ru.extas.model.sale.Sale;
 import ru.extas.model.sale.SaleComment;
@@ -17,6 +17,7 @@ import ru.extas.web.commons.converters.PhoneConverter;
 import ru.extas.web.commons.window.CloseOnlyWindow;
 import ru.extas.web.contacts.ClientColumnGenerator;
 import ru.extas.web.contacts.Name2ShortNameConverter;
+import ru.extas.web.contacts.company.CompanyEditForm;
 import ru.extas.web.contacts.employee.EmployeeColumnGenerator;
 import ru.extas.web.lead.SalePointColumnGenerator;
 import ru.extas.web.motor.MotorColumnGenerator;
@@ -168,10 +169,21 @@ class SaleDataDecl extends GridDataDecl {
         addMapping("client_company", "Компания клиента", new ComponentColumnGenerator() {
 
             @Override
-            public Object generateCell(Object columnId, Item item, Object itemId) {
+            public Object generateCell(final Object columnId, final Item item, final Object itemId) {
                 final Client client = (Client) item.getItemProperty(Sale_.client.getName()).getValue();
-                if (client != null && client instanceof LegalEntity)
-                    return new Label(((LegalEntity) client).getCompany().getName());
+                if (client != null && client instanceof LegalEntity) {
+                    final Button link = new Button();
+                    link.addStyleName(ExtaTheme.BUTTON_LINK);
+                    final Company company = ((LegalEntity) client).getCompany();
+                    if (company != null) {
+                        link.setCaption(company.getName());
+                        link.addClickListener(event -> {
+                            final CompanyEditForm editWin = new CompanyEditForm(company);
+                            FormUtils.showModalWin(editWin);
+                        });
+                        return link;
+                    }
+                }
                 return null;
             }
         });

@@ -148,14 +148,14 @@ public class CompanyRepositoryImpl extends AbstractSecuredRepository<Company> im
     }
 
     @Override
-    public boolean isDistributor(Company company) {
+    public boolean isDistributor(final Company company) {
         return company != null && !company.isNew()
                 && !CollectionUtils.isEmpty(company.getCategories())
                 && company.getCategories().contains(CategoryService.COMPANY_CAT_DISTRIBUTOR);
     }
 
     @Override
-    public boolean isDealerOrDistributor(Company company) {
+    public boolean isDealerOrDistributor(final Company company) {
         return company != null && !company.isNew()
                 && !CollectionUtils.isEmpty(company.getCategories())
                 && !Collections.disjoint(company.getCategories(),
