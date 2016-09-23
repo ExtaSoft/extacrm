@@ -21,4 +21,10 @@ public interface SupplementService {
 	 */
 	Collection<String> loadDocumentTypes();
 
+	/**
+	 * Запрашивает формы налогооблажения юридического лица
+	 *
+	 * @return список форм налогооблажения
+	 */
+    Collection<String> loadTaxTypes();
 }

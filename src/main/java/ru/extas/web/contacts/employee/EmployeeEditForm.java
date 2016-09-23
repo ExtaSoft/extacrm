@@ -173,22 +173,27 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         formLayout.addComponent(jobPositionField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        formLayout.addComponent(new FormGroupHeader("Паспортные данные"));
+        final FormGroupHeaderExpand passDataExpand = new FormGroupHeaderExpand("Паспортные данные");
+        formLayout.addComponent(passDataExpand);
         birthdayField = new LocalDateField("Дата рождения", "Введите дату рождения сотрудника");
         birthdayField.setImmediate(true);
         birthdayField.setInputPrompt("31.12.1978");
         birthdayField.setDateFormat("dd.MM.yyyy");
         birthdayField.setConversionError("{0} не является допустимой датой. Формат даты: ДД.ММ.ГГГГ");
         formLayout.addComponent(birthdayField);
+        passDataExpand.addControlled(birthdayField);
 
         birthPlaceField = new EditField("Место рождения");
         formLayout.addComponent(birthPlaceField);
+        passDataExpand.addControlled(birthPlaceField);
 
         passNumField = new EditField("Серия/номер");
         formLayout.addComponent(passNumField);
+        passDataExpand.addControlled(passNumField);
 
         passIssueDateField = new LocalDateField("Дата выдачи", "Дата выдачи документа");
         formLayout.addComponent(passIssueDateField);
+        passDataExpand.addControlled(passIssueDateField);
 
         passIssuedByField = new TextArea("Кем выдан");
         passIssuedByField.setDescription("Наименование органа выдавшего документ");
@@ -196,14 +201,15 @@ public class EmployeeEditForm extends ExtaEditForm<Employee> {
         passIssuedByField.setNullRepresentation("");
         passIssuedByField.setRows(2);
         formLayout.addComponent(passIssuedByField);
+        passDataExpand.addControlled(passIssuedByField);
 
         passIssuedByNumField = new EditField("Код подразделения");
         formLayout.addComponent(passIssuedByNumField);
+        passDataExpand.addControlled(passIssuedByNumField);
 
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        formLayout.addComponent(new FormGroupHeader("Адрес регистрации"));
-        regAddressField = new AddressSuggestingComboBox();
+        regAddressField = new AddressSuggestingComboBox("Адрес регистрации");
         formLayout.addComponent(regAddressField);
+        passDataExpand.addControlled(regAddressField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Файлы"));
