@@ -34,12 +34,25 @@ public class SupplementServiceImpl implements SupplementService {
             Collections.sort(INSTANCE);
         }
     }
+    static private class TaxTypesFactory {
+        static final List<String> INSTANCE;
+
+        static {
+            INSTANCE = newArrayList("ОСН (с НДС)", "УСН (без НДС)");
+            Collections.sort(INSTANCE);
+        }
+    }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<String> loadDocumentTypes() {
         return DocumentTypesFactory.INSTANCE;
+    }
+
+    @Override
+    public Collection<String> loadTaxTypes() {
+        return TaxTypesFactory.INSTANCE;
     }
 
 }

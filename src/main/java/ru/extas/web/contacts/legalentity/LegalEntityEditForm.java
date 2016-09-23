@@ -50,6 +50,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     private CompanyField companyField;
     @PropertyId("name")
     private EditField nameField;
+    @PropertyId("taxType")
+    private TaxTypeSelect taxTypeField;
     @PropertyId("ogrnOgrip")
     private EditField ogrnOgripField;
     @PropertyId("inn")
@@ -73,8 +75,8 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     @PropertyId("files")
     private FilesManageField docFilesEditor;
 
-    @PropertyId("kpp")
-    private EditField kppField;
+//    @PropertyId("kpp")
+//    private EditField kppField;
 
     @PropertyId("regNpstIsSame")
     private CheckBox regNpstIsSameField;
@@ -179,6 +181,9 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         });
         formLayout.addComponent(companyField);
 
+        taxTypeField = new TaxTypeSelect();
+        formLayout.addComponent(taxTypeField);
+
         ////////////////////////////////////////////////////////////////////////////////////////////
         formLayout.addComponent(new FormGroupHeader("Ответственные лица"));
         directorField = new EmployeeField("Генеральный директор",
@@ -247,23 +252,28 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         innField = new EditField("ИНН", "Введите ИНН юридического лица");
         formLayout.addComponent(innField);
 
-        kppField = new EditField("КПП", "Введите КПП юридического лица");
-        formLayout.addComponent(kppField);
+//        kppField = new EditField("КПП", "Введите КПП юридического лица");
+//        formLayout.addComponent(kppField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        formLayout.addComponent(new FormGroupHeader("Банковские реквизиты"));
+        final FormGroupHeaderExpand bankRefExpand = new FormGroupHeaderExpand("Банковские реквизиты");
+        formLayout.addComponent(bankRefExpand);
         // Расчетный счет в рублях
         settlementAccountField = new EditField("Расчетный счет", "Введите Расчетный счет юридического лицав рублях");
         formLayout.addComponent(settlementAccountField);
+        bankRefExpand.addControlled(settlementAccountField);
         // Корреспондентский счет
         loroAccountField = new EditField("Корреспондентский счет", "Введите Корреспондентский счет юридического лица");
         formLayout.addComponent(loroAccountField);
+        bankRefExpand.addControlled(loroAccountField);
         // Полное наименование банка
         bankNameField = new EditField("Наименование банка", "Введите наименование банка юридического лица");
         formLayout.addComponent(bankNameField);
+        bankRefExpand.addControlled(bankNameField);
         // БИК банка
         bicField = new EditField("БИК банка", "Введите БИК банка юридического лица");
         formLayout.addComponent(bicField);
+        bankRefExpand.addControlled(bicField);
 
         final boolean isDealerOrDistrib = lookup(CompanyRepository.class)
                 .isDealerOrDistributor(getEntity().getCompany());

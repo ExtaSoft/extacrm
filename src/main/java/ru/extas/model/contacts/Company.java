@@ -1,12 +1,9 @@
 package ru.extas.model.contacts;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.URL;
 import ru.extas.model.common.Address;
-import ru.extas.model.security.SecuredObject;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
@@ -21,35 +18,11 @@ import static com.google.common.collect.Sets.newHashSet;
  */
 @Entity
 @Table(name = "COMPANY")
-public class Company extends SecuredObject {
+public class Company extends Contact {
 
     private static final long serialVersionUID = -5681940552175752858L;
 
     private static final int CATEGORY_LENGTH = 50;
-    private static final int NAME_LENGTH = 100;
-
-    // Имя контакта
-    @Column(length = NAME_LENGTH)
-    @Size(max = NAME_LENGTH)
-    @NotNull
-    private String name;
-
-    // Телефон
-    @Column(name = "CELL_PHONE", length = Contact.PHONE_LINGHT)
-    @Size(max = Contact.PHONE_LINGHT)
-    private String phone;
-
-    // Эл. почта
-    @Column(length = Contact.EMAIL_LENGTH)
-    @Size(max = Contact.EMAIL_LENGTH)
-    @Email
-    private String email;
-
-    // Сайт
-    @Column(length = Contact.WWW_LENGTH)
-    @Size(max = Contact.WWW_LENGTH)
-    @URL
-    private String www;
 
     // Сайт
     @Column(length = Contact.WWW_LENGTH)
@@ -245,38 +218,6 @@ public class Company extends SecuredObject {
         this.legalEntities = legalEntities;
 //        if (this.legalEntities != null)
 //            this.legalEntities.forEach(e -> e.setCompany(this));
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(final String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(final String email) {
-        this.email = email;
-    }
-
-    public String getWww() {
-        return www;
-    }
-
-    public void setWww(final String www) {
-        this.www = www;
     }
 
     public String getRegion() {

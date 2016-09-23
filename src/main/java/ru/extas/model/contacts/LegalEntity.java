@@ -30,6 +30,11 @@ public class LegalEntity extends Client implements ArchivedObject {
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Company company;
 
+    // Форма налогообложения
+    @Column(name = "TAX_TYPE", length = 25)
+    @Size(max = 15)
+    private String taxType;
+
     // ОГРН/ОГРИП
     @Column(name = "OGRN_OGRIP", length = 15)
     @Size(max = 15)
@@ -322,5 +327,13 @@ public class LegalEntity extends Client implements ArchivedObject {
 
     public void setLegalAddress(final Address legalAddress) {
         this.legalAddress = legalAddress;
+    }
+
+    public String getTaxType() {
+        return taxType;
+    }
+
+    public void setTaxType(String taxType) {
+        this.taxType = taxType;
     }
 }

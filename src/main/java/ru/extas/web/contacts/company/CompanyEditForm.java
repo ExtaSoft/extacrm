@@ -15,10 +15,7 @@ import ru.extas.server.common.AddressAccessService;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.commons.component.ConfirmTabSheet;
-import ru.extas.web.commons.component.EditField;
-import ru.extas.web.commons.component.ExtaFormLayout;
-import ru.extas.web.commons.component.WebSiteLinkField;
+import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.employee.EmployeeFieldMulty;
 import ru.extas.web.contacts.legalentity.LegalEntitiesField;
 import ru.extas.web.contacts.salepoint.SalePointsField;
@@ -47,6 +44,10 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     private EditField nameField;
     @PropertyId("categories")
     private CompanyCategoriesField categoriesField;
+    @PropertyId("phone")
+    private PhoneField phoneField;
+    @PropertyId("email")
+    private EmailField emailField;
     @PropertyId("www")
     private WebSiteLinkField wwwField;
     @PropertyId("facebook")
@@ -200,6 +201,12 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
                 regionField.setValue(region);
         });
         formLayout.addComponent(cityField);
+
+        phoneField = new PhoneField("Телефон");
+        formLayout.addComponent(phoneField);
+
+        emailField = new EmailField("E-Mail");
+        formLayout.addComponent(emailField);
 
         wwwField = new WebSiteLinkField("WWW", "Введите адрес сайта компании");
         formLayout.addComponent(wwwField);
