@@ -87,7 +87,6 @@ public class LegalProductsField extends CustomField<List> {
 
         table = new Table();
         table.setSizeFull();
-        table.setRequired(true);
         table.setSelectable(true);
         table.setColumnCollapsingAllowed(true);
         final Property dataSource = getPropertyDataSource();

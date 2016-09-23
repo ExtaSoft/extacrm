@@ -7,7 +7,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.2</version>
 
     <properties>
         <maven.tomcat.port>8282</maven.tomcat.port>
@@ -35,7 +35,7 @@
         <vaadin.animator.version>2.0.0</vaadin.animator.version>
         <vaadin.dom.version>0.1.0</vaadin.dom.version>
         <vaadin.viritin.version>1.57</vaadin.viritin.version>
-        <vaadin.messagebox.version>3.0.18</vaadin.messagebox.version>
+        <vaadin.messagebox.version>3.0.19</vaadin.messagebox.version>
 
         <servlet-api.version>2.5</servlet-api.version>
         <activiti-version>5.19.0</activiti-version>
