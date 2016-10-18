@@ -101,7 +101,8 @@ public abstract class AbstractSecurityFilter<TEntityType extends IdentifiedObjec
 
         // Проверить, входит ли элемент в "собственные объекты"
         if (!isPermit && isItemFromTarget(itemId, SecureTarget.OWNONLY))
-            isPermit = isPermitted4OwnedObj(itemId, action);
+            isPermit = securityService.isPermitted(domain, SecureTarget.OWNONLY, action) ||
+                    isPermitted4OwnedObj(itemId, action);
 
         return isPermit;
     }

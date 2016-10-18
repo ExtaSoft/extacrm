@@ -59,6 +59,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target/antrun" />
       <excludeFolder url="file://$MODULE_DIR$/target/apache-tomcat-maven-plugin" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.10.2" />
       <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.9.2" />
       <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.9.3" />
       <excludeFolder url="file://$MODULE_DIR$/target/extacrm-1.9.5" />
