@@ -9,17 +9,12 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.extas.model.contacts.Company;
-import ru.extas.model.contacts.Employee;
-import ru.extas.model.contacts.LegalEntity;
-import ru.extas.model.contacts.LegalEntityFile;
+import ru.extas.model.contacts.*;
 import ru.extas.server.contacts.CompanyRepository;
 import ru.extas.server.contacts.LegalEntityRepository;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.utils.SupplierSer;
-import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.FilesManageField;
-import ru.extas.web.commons.NotificationUtil;
-import ru.extas.web.commons.PredictConfirmedAction;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.commons.component.address.AddressSuggestingComboBox;
 import ru.extas.web.contacts.company.CompanyField;
@@ -74,6 +69,9 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
     private BrandsField brandsField;
     @PropertyId("files")
     private FilesManageField docFilesEditor;
+
+    @PropertyId("privateComments")
+    private PrivateCommentsField<LegalEntityPrivateComment> privateCommentsField;
 
 //    @PropertyId("kpp")
 //    private EditField kppField;
@@ -297,6 +295,13 @@ public class LegalEntityEditForm extends ExtaEditForm<LegalEntity> {
         formLayout.addComponent(new FormGroupHeader("Документы"));
         docFilesEditor = new FilesManageField(LegalEntityFile.class);
         formLayout.addComponent(docFilesEditor);
+
+        ////////////////////////////////////////////////////////////////////////////
+        if (lookup(UserManagementService.class).isPermitPrivateComments())
+            formLayout.addComponent(new FormGroupHeader("Закрытые коментарии"));
+        privateCommentsField = new PrivateCommentsField<>(LegalEntityPrivateComment.class);
+        privateCommentsField.addValueChangeListener(forceModified);
+        formLayout.addComponent(privateCommentsField);
 
         return formLayout;
     }

@@ -32,6 +32,7 @@
         <class>ru.extas.model.contacts.EmployeeFile</class>
         <class>ru.extas.model.contacts.SalePoint</class>
         <class>ru.extas.model.contacts.LegalEntity</class>
+        <class>ru.extas.model.contacts.LegalEntityPrivateComment</class>
         <class>ru.extas.model.contacts.LegalEntityFile</class>
         <class>ru.extas.model.contacts.ContactCode</class>
         <class>ru.extas.model.contacts.PayAccount</class>
