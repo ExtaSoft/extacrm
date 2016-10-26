@@ -66,10 +66,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     @PropertyId("city")
     private ComboBox cityField;
 
-    // Вкладка - "Владельцы"
-    @PropertyId("owners")
-    private CompanyOwnersField ownersField;
-
     // Вкладка - "Юр. лица"
     @PropertyId("legalEntities")
     private LegalEntitiesField legalsField;
@@ -136,8 +132,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         tabsheet.addConfirmTab(createEmployeesForm(), "Сотрудники");
         // Вкладка - "Юр. лица"
         tabsheet.addConfirmTab(createLegalsForm(), "Юридические лица");
-        // Вкладка - "Владельцы"
-        tabsheet.addConfirmTab(createOwnerForm(), "Владельцы");
         // Вкладка - "Закрытые коментарии"
         if (lookup(UserManagementService.class).isPermitPrivateComments())
             tabsheet.addConfirmTab(createcommentForm(), "Закрытые коментарии");
@@ -169,13 +163,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         salePointsField.setCompanySupplier(super::getEntity);
         salePointsField.setSizeFull();
         return salePointsField;
-    }
-
-    private Component createOwnerForm() {
-        ownersField = new CompanyOwnersField();
-        ownersField.setCompanySupplier(super::getEntity);
-        ownersField.setSizeFull();
-        return ownersField;
     }
 
     private FormLayout createMainForm() {
