@@ -100,6 +100,11 @@ public class Sale extends SecuredObject {
     private List<SaleComment> comments = newArrayList();
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = Comment.OWNER_ID_COLUMN)
+    @OrderBy("createdDate")
+    private List<SalePrivateComment> privateComments = newArrayList();
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = OwnedFileContainer.OWNER_ID_COLUMN)
     private List<SaleFileContainer> files = newArrayList();
 
@@ -107,6 +112,14 @@ public class Sale extends SecuredObject {
     @Column(name = "SOURCE", length = 50)
     @Size(max = 50)
     private String source;
+
+    public List<SalePrivateComment> getPrivateComments() {
+        return privateComments;
+    }
+
+    public void setPrivateComments(List<SalePrivateComment> privateComments) {
+        this.privateComments = privateComments;
+    }
 
     public List<MotorInstance> getMotorInstances() {
         return motorInstances;

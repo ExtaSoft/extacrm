@@ -1,6 +1,7 @@
 package ru.extas.web.users;
 
 import com.vaadin.data.fieldgroup.PropertyId;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
@@ -32,6 +33,9 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
 
     @PropertyId("description")
     private TextArea descriptionField;
+
+    @PropertyId("showPrivateComments")
+    private CheckBox showPrivateCommentsField;
 
     @PropertyId("permitRegions")
     private RegionMultiselect regionsField;
@@ -89,6 +93,10 @@ public class UserGroupEditForm extends ExtaEditForm<UserGroup> {
         descriptionField.setNullRepresentation("");
         descriptionField.setRows(2);
         form.addComponent(descriptionField);
+
+        showPrivateCommentsField = new CheckBox("Доступ к закрытым коментариям");
+        showPrivateCommentsField.setDescription("Установите, чтобы разрешить доступ к закрытым коментариям.");
+        form.addComponent(showPrivateCommentsField);
 
         brandsField = new MotorBrandMultiselect("Доступные бренды");
         form.addComponent(brandsField);

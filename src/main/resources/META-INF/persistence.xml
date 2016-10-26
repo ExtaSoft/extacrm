@@ -54,6 +54,7 @@
         <class>ru.extas.model.sale.Sale</class>
         <class>ru.extas.model.sale.SaleMotor</class>
         <class>ru.extas.model.sale.SaleComment</class>
+        <class>ru.extas.model.sale.SalePrivateComment</class>
         <class>ru.extas.model.sale.SaleFileContainer</class>
         <class>ru.extas.model.product.Product</class>
         <class>ru.extas.model.product.ProdCredit</class>
