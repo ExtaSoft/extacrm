@@ -1,6 +1,6 @@
 package ru.extas.model.contacts;
 
-import ru.extas.model.common.FileContainer;
+import ru.extas.model.common.OwnedFileContainer;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -16,5 +16,5 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "LEGAL_ENTITY_FILE")
-public class LegalEntityFile extends FileContainer {
+public class LegalEntityFile extends OwnedFileContainer {
 }

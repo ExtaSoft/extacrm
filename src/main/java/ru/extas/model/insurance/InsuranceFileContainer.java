@@ -1,6 +1,6 @@
 package ru.extas.model.insurance;
 
-import ru.extas.model.common.FileContainer;
+import ru.extas.model.common.OwnedFileContainer;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -16,6 +16,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "INSURANCE_FILE")
-public class InsuranceFileContainer extends FileContainer {
+public class InsuranceFileContainer extends OwnedFileContainer {
 
 }

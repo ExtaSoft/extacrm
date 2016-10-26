@@ -2,7 +2,7 @@ package ru.extas.model.insurance;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.Comment;
-import ru.extas.model.common.FileContainer;
+import ru.extas.model.common.OwnedFileContainer;
 import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.SalePoint;
@@ -121,7 +121,7 @@ public class Insurance extends SecuredObject {
     private SalePoint dealer;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    @JoinColumn(name = OwnedFileContainer.OWNER_ID_COLUMN)
     private List<InsuranceFileContainer> files = newArrayList();
 
     @Column(name = "IS_DOC_COMPLETE")

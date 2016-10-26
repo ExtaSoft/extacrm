@@ -2,8 +2,8 @@ package ru.extas.model.lead;
 
 import ru.extas.model.common.Address;
 import ru.extas.model.common.Comment;
-import ru.extas.model.common.FileContainer;
 import ru.extas.model.common.ModelUtils;
+import ru.extas.model.common.OwnedFileContainer;
 import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Contact;
 import ru.extas.model.contacts.Employee;
@@ -149,7 +149,7 @@ public class Lead extends SecuredObject {
     private Result result;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    @JoinColumn(name = OwnedFileContainer.OWNER_ID_COLUMN)
     private List<LeadFileContainer> files = newArrayList();
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

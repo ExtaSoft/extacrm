@@ -5,17 +5,15 @@ import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
-import com.vaadin.server.Resource;
 import com.vaadin.server.StreamVariable;
 import com.vaadin.ui.*;
 import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler;
 import org.vaadin.addon.itemlayout.grid.ItemGrid;
 import org.vaadin.addon.itemlayout.layout.AbstractItemLayout;
 import org.vaadin.addon.itemlayout.layout.model.ItemGenerator;
-import ru.extas.model.common.FileContainer;
+import ru.extas.model.common.OwnedFileContainer;
 import ru.extas.web.commons.component.FileUploader;
 import ru.extas.web.commons.container.ExtaBeanContainer;
-import ru.extas.web.commons.window.DownloadFileWindow;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,7 +21,6 @@ import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.List;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
@@ -31,7 +28,7 @@ import static com.google.common.collect.Lists.newArrayList;
  *         Date: 15.09.2014
  *         Time: 23:51
  */
-public class FilesManageField<TFileContainer extends FileContainer> extends CustomField<List> {
+public class FilesManageField<TFileContainer extends OwnedFileContainer> extends CustomField<List> {
 
     private final Class<TFileContainer> containerClass;
     private ExtaBeanContainer<TFileContainer> container;
@@ -126,12 +123,7 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
             root = layout;
         }
 
-        final Button dwnBtn = new Button(item.getName());
-        dwnBtn.setIcon(getFileIcon(item.getMimeType()));
-        dwnBtn.addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
-        dwnBtn.addStyleName(ExtaTheme.BUTTON_SMALL);
-        dwnBtn.setData(item);
-        dwnBtn.addClickListener(this::downloadClickListener);
+        final Button dwnBtn = new FileDownloadButton(item);
         root.addComponent(dwnBtn);
 
         final Button delBtn = new Button("Удалить", Fontello.TRASH_4);
@@ -170,34 +162,6 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
         }
     }
 
-    private Resource getFileIcon(final String mimeType) {
-        // TODO: Move to map
-        if (!isNullOrEmpty(mimeType)) {
-            if (mimeType.startsWith("image/"))
-                return Fontello.FILE_IMAGE;
-            else if (mimeType.equals("application/pdf"))
-                return Fontello.FILE_PDF;
-            else if (mimeType.equals("application/vnd.ms-excel")
-                    || mimeType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-                return Fontello.FILE_EXCEL;
-            else if (mimeType.equals("application/msword")
-                    || mimeType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
-                return Fontello.FILE_WORD;
-            else if (mimeType.equals("application/vnd.ms-powerpoint")
-                    || mimeType.equals("application/vnd.openxmlformats-officedocument.presentationml.presentation"))
-                return Fontello.FILE_POWERPOINT;
-            else if (mimeType.equals("application/zip")
-                    || mimeType.equals("application/x-rar-compressed")
-                    || mimeType.equals("application/x-gzip"))
-                return Fontello.FILE_ARCHIVE;
-            else if (mimeType.startsWith("audio/"))
-                return Fontello.FILE_AUDIO;
-            else if (mimeType.startsWith("video/"))
-                return Fontello.FILE_VIDEO;
-        }
-        return Fontello.FILE_CODE;
-    }
-
     public void addUploadedFile(final byte[] inputStream, final String filename, final String mimeType, final long length) {
         TFileContainer fileContainer = null;
         try {
@@ -219,11 +183,6 @@ public class FilesManageField<TFileContainer extends FileContainer> extends Cust
     private void deleteClickListener(final Button.ClickEvent clickEvent) {
         container.removeItem(clickEvent.getButton().getData());
         setValue(newArrayList(container.getItemIds()));
-    }
-
-    private void downloadClickListener(final Button.ClickEvent clickEvent) {
-        final TFileContainer fileContainer = (TFileContainer) clickEvent.getButton().getData();
-        new DownloadFileWindow(fileContainer.getFileData(), fileContainer.getName()).showModal();
     }
 
     @Override

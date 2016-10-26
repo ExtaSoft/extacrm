@@ -1,6 +1,6 @@
 package ru.extas.model.contacts;
 
-import ru.extas.model.common.FileContainer;
+import ru.extas.model.common.OwnedFileContainer;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -14,5 +14,5 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "EMPLOYEE_FILE")
-public class EmployeeFile extends FileContainer {
+public class EmployeeFile extends OwnedFileContainer {
 }

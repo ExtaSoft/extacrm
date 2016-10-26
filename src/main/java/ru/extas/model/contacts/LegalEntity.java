@@ -2,7 +2,7 @@ package ru.extas.model.contacts;
 
 import ru.extas.model.common.Address;
 import ru.extas.model.common.ArchivedObject;
-import ru.extas.model.common.FileContainer;
+import ru.extas.model.common.OwnedFileContainer;
 import ru.extas.model.product.Product;
 
 import javax.persistence.*;
@@ -116,7 +116,7 @@ public class LegalEntity extends Client implements ArchivedObject {
     private Set<String> motorBrands;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    @JoinColumn(name = OwnedFileContainer.OWNER_ID_COLUMN)
     @OrderBy("name ASC")
     private List<LegalEntityFile> files = newArrayList();
 

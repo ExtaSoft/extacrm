@@ -14,6 +14,7 @@
         <class>ru.extas.model.common.LocalDateConverter</class>
         <class>ru.extas.model.common.ExtaDomainConverter</class>
         <class>ru.extas.model.common.FileContainer</class>
+        <class>ru.extas.model.common.OwnedFileContainer</class>
         <class>ru.extas.model.common.Comment</class>
         <class>ru.extas.model.security.SecuredObject</class>
         <class>ru.extas.model.security.ObjectSecurityRule</class>
@@ -74,6 +75,7 @@
         <class>ru.extas.model.lead.LeadComment</class>
         <class>ru.extas.model.notification.Notice</class>
         <class>ru.extas.model.common.Address</class>
+        <class>ru.extas.model.info.InfoFile</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

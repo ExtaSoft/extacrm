@@ -22,7 +22,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  *         Date: 04.11.2014
  *         Time: 14:18
  */
-public class CompanyCategoriesField extends ExtaCustomField<Set> {
+    public class CompanyCategoriesField extends ExtaCustomField<Set> {
 
     private final ExtaTokenField tokenField = new ExtaTokenField();
 
