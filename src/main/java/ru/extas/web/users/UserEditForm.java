@@ -55,6 +55,8 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
     private RegionMultiselect regionsField;
     @PropertyId("permitBrands")
     private MotorBrandMultiselect brandsField;
+    @PropertyId("showPrivateComments")
+    private CheckBox showPrivateCommentsField;
 
     @PropertyId("groupList")
     private UserGroupField groupField;
@@ -151,6 +153,10 @@ public class UserEditForm extends ExtaEditForm<UserProfile> {
 
         regionsField = new RegionMultiselect("Доступные регионы");
         form.addComponent(regionsField);
+
+        showPrivateCommentsField = new CheckBox("Доступ к закрытым коментариям");
+        showPrivateCommentsField.setDescription("Установите, чтобы разрешить доступ к закрытым коментариям.");
+        form.addComponent(showPrivateCommentsField);
 
         permissionsField = new ExtaPermissionField(userProfile);
         permissionsField.setWidth(100, Unit.PERCENTAGE);

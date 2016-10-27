@@ -1,0 +1,32 @@
+package ru.extas.model.contacts;
+
+import ru.extas.model.common.Comment;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+/**
+ * Комментарии в ЮЛ
+ *
+ * @author Valery Orlov
+ *         Date: 25.09.2014
+ *         Time: 18:14
+ */
+@Entity
+@Table(name = "LEGAL_ENTITY_PRIVATE_COMMENT")
+public class LegalEntityPrivateComment extends Comment {
+
+    public LegalEntityPrivateComment() {
+    }
+
+    public LegalEntityPrivateComment(final Comment comment) {
+        this.setArchived(comment.isArchived());
+        this.setCreatedBy(comment.getCreatedBy());
+        this.setCreatedDate(comment.getCreatedDate());
+        this.setLastModifiedBy(comment.getLastModifiedBy());
+        this.setLastModifiedDate(comment.getLastModifiedDate());
+        this.setOwnerId(comment.getOwnerId());
+        this.setText(comment.getText());
+    }
+
+}

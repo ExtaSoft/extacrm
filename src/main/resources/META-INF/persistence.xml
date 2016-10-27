@@ -14,6 +14,7 @@
         <class>ru.extas.model.common.LocalDateConverter</class>
         <class>ru.extas.model.common.ExtaDomainConverter</class>
         <class>ru.extas.model.common.FileContainer</class>
+        <class>ru.extas.model.common.OwnedFileContainer</class>
         <class>ru.extas.model.common.Comment</class>
         <class>ru.extas.model.security.SecuredObject</class>
         <class>ru.extas.model.security.ObjectSecurityRule</class>
@@ -27,10 +28,12 @@
         <class>ru.extas.model.contacts.Contact</class>
         <class>ru.extas.model.contacts.Client</class>
         <class>ru.extas.model.contacts.Company</class>
+        <class>ru.extas.model.contacts.CompanyPrivateComment</class>
         <class>ru.extas.model.contacts.Employee</class>
         <class>ru.extas.model.contacts.EmployeeFile</class>
         <class>ru.extas.model.contacts.SalePoint</class>
         <class>ru.extas.model.contacts.LegalEntity</class>
+        <class>ru.extas.model.contacts.LegalEntityPrivateComment</class>
         <class>ru.extas.model.contacts.LegalEntityFile</class>
         <class>ru.extas.model.contacts.ContactCode</class>
         <class>ru.extas.model.contacts.PayAccount</class>
@@ -53,6 +56,7 @@
         <class>ru.extas.model.sale.Sale</class>
         <class>ru.extas.model.sale.SaleMotor</class>
         <class>ru.extas.model.sale.SaleComment</class>
+        <class>ru.extas.model.sale.SalePrivateComment</class>
         <class>ru.extas.model.sale.SaleFileContainer</class>
         <class>ru.extas.model.product.Product</class>
         <class>ru.extas.model.product.ProdCredit</class>
@@ -74,6 +78,7 @@
         <class>ru.extas.model.lead.LeadComment</class>
         <class>ru.extas.model.notification.Notice</class>
         <class>ru.extas.model.common.Address</class>
+        <class>ru.extas.model.info.InfoFile</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

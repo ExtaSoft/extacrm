@@ -11,10 +11,13 @@ import com.vaadin.ui.FormLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.extas.model.contacts.Company;
+import ru.extas.model.sale.SalePrivateComment;
 import ru.extas.server.common.AddressAccessService;
 import ru.extas.server.contacts.CompanyRepository;
+import ru.extas.server.security.UserManagementService;
 import ru.extas.web.commons.ExtaEditForm;
 import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.PrivateCommentsField;
 import ru.extas.web.commons.component.*;
 import ru.extas.web.contacts.employee.EmployeeFieldMulty;
 import ru.extas.web.contacts.legalentity.LegalEntitiesField;
@@ -63,10 +66,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     @PropertyId("city")
     private ComboBox cityField;
 
-    // Вкладка - "Владельцы"
-    @PropertyId("owners")
-    private CompanyOwnersField ownersField;
-
     // Вкладка - "Юр. лица"
     @PropertyId("legalEntities")
     private LegalEntitiesField legalsField;
@@ -78,6 +77,9 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
     // Вкладка - "Сотрудники"
     @PropertyId("employees")
     private EmployeeFieldMulty employeeField;
+
+    @PropertyId("privateComments")
+    private PrivateCommentsField<SalePrivateComment> privateCommentsField;
 
 
     public CompanyEditForm(final Company company) {
@@ -130,9 +132,16 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         tabsheet.addConfirmTab(createEmployeesForm(), "Сотрудники");
         // Вкладка - "Юр. лица"
         tabsheet.addConfirmTab(createLegalsForm(), "Юридические лица");
-        // Вкладка - "Владельцы"
-        tabsheet.addConfirmTab(createOwnerForm(), "Владельцы");
+        // Вкладка - "Закрытые коментарии"
+        if (lookup(UserManagementService.class).isPermitPrivateComments())
+            tabsheet.addConfirmTab(createcommentForm(), "Закрытые коментарии");
         return tabsheet;
+    }
+
+    private Component createcommentForm() {
+        privateCommentsField = new PrivateCommentsField<>(SalePrivateComment.class);
+        privateCommentsField.addValueChangeListener(forceModified);
+        return privateCommentsField;
     }
 
     private Component createLegalsForm() {
@@ -154,13 +163,6 @@ public class CompanyEditForm extends ExtaEditForm<Company> {
         salePointsField.setCompanySupplier(super::getEntity);
         salePointsField.setSizeFull();
         return salePointsField;
-    }
-
-    private Component createOwnerForm() {
-        ownersField = new CompanyOwnersField();
-        ownersField.setCompanySupplier(super::getEntity);
-        ownersField.setSizeFull();
-        return ownersField;
     }
 
     private FormLayout createMainForm() {

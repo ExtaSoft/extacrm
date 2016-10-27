@@ -51,6 +51,18 @@ public class UserGroup extends AuditedObject {
     @ManyToMany(mappedBy = "groupList", fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Set<UserProfile> users = newHashSet();
 
+    @Column(name = "SHOW_PRIVATE_COMMENTS")
+    private boolean showPrivateComments;
+
+    public boolean isShowPrivateComments() {
+        return showPrivateComments;
+    }
+
+    public void setShowPrivateComments(final boolean showPrivateComments) {
+        this.showPrivateComments = showPrivateComments;
+    }
+
+
     public UserGroup createCopy() {
         final UserGroup clone = new UserGroup();
 

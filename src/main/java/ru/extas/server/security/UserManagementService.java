@@ -127,4 +127,10 @@ public interface UserManagementService {
      * Определяет является ли текущий пользователь "нашим" (сотрудником ЕА)
      */
     boolean isItOurUser();
+
+    /**
+     * Определяет разрешен ли доступ к закрытым коментариям
+     * @return
+     */
+    boolean isPermitPrivateComments();
 }

@@ -1,6 +1,6 @@
 package ru.extas.model.lead;
 
-import ru.extas.model.common.FileContainer;
+import ru.extas.model.common.OwnedFileContainer;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -12,5 +12,5 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "LEAD_FILE")
-public class LeadFileContainer extends FileContainer {
+public class LeadFileContainer extends OwnedFileContainer {
 }

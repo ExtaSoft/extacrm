@@ -2,7 +2,7 @@ package ru.extas.model.contacts;
 
 import org.joda.time.LocalDate;
 import ru.extas.model.common.Address;
-import ru.extas.model.common.FileContainer;
+import ru.extas.model.common.OwnedFileContainer;
 import ru.extas.model.security.UserProfile;
 
 import javax.persistence.*;
@@ -87,7 +87,7 @@ public class Employee extends Contact {
     private String passIssuedByNum;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    @JoinColumn(name = OwnedFileContainer.OWNER_ID_COLUMN)
     @OrderBy("name ASC")
     private List<EmployeeFile> files = newArrayList();
 

@@ -2,10 +2,7 @@ package ru.extas.web.commons;
 
 import com.vaadin.data.Property;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.*;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MMarginInfo;
@@ -27,6 +24,7 @@ class ExtaGridFilterPanel extends Panel {
     private final IFilterGrid grid;
     private final MenuBar.MenuItem addDropDownBtn;
     private final MenuBar menuBar;
+
     /**
      * Интерфейс получения данных от грида
      */
@@ -88,7 +86,19 @@ class ExtaGridFilterPanel extends Panel {
         final List defFields = grid.getDefaultFilterFields();
 
         // Формируем поля фильтра
-        final MHorizontalLayout fields = new MHorizontalLayout().withStyleName(ExtaTheme.LAYOUT_HORIZONTAL_WRAPPING);
+        final MHorizontalLayout fields = new MHorizontalLayout() {
+            @Override
+            public void detach() {
+                iterator().forEachRemaining(cw -> {
+                    if (cw instanceof MHorizontalLayout) {
+                        final Component c = ((MHorizontalLayout) cw).getComponent(0);
+                        if (c.getParent() == null)
+                            c.setParent((HasComponents) cw);
+                    }
+                });
+                super.detach();
+            }
+        }.withStyleName(ExtaTheme.LAYOUT_HORIZONTAL_WRAPPING);
         for (final Object columnId : defFields) {
             addFilterField(fields, columnId);
         }
@@ -124,19 +134,20 @@ class ExtaGridFilterPanel extends Panel {
         if (field != null) {
             field.setCaption(grid.getColumnHeader(columnId));
             field.addStyleName(ExtaTheme.TEXTFIELD_TINY);
+            field.setParent(null);
             fieldWrapp.with(field);
             fieldWrapp.add(new MButton(FontAwesome.TRASH_O)
-                            .withStyleName(ExtaTheme.BUTTON_TINY, ExtaTheme.BUTTON_BORDERLESS_COLORED)
-                            .withDescription("Нажмите чтобы удалить поле из фильтра")
-                            .withListener(event -> {
-                                // Очищаем фильр по удаляемому полю
-                                if(field instanceof Property)
-                                    ((Property)field).setValue(null);
-                                // Удаляем компонент
-                                fields.removeComponent(fieldWrapp);
-                                // Добавляем поле в меню
-                                addMenuItem(fields, columnId);
-                            }), Alignment.BOTTOM_LEFT);
+                    .withStyleName(ExtaTheme.BUTTON_TINY, ExtaTheme.BUTTON_BORDERLESS_COLORED)
+                    .withDescription("Нажмите чтобы удалить поле из фильтра")
+                    .withListener(event -> {
+                        // Очищаем фильр по удаляемому полю
+                        if (field instanceof Property)
+                            ((Property) field).setValue(null);
+                        // Удаляем компонент
+                        fields.removeComponent(fieldWrapp);
+                        // Добавляем поле в меню
+                        addMenuItem(fields, columnId);
+                    }), Alignment.BOTTOM_LEFT);
             if (fields.getComponentIndex(menuBar) == -1)
                 fields.addComponent(fieldWrapp);
             else

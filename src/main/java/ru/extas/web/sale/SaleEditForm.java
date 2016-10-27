@@ -12,19 +12,13 @@ import ru.extas.model.contacts.SalePoint;
 import ru.extas.model.product.ProdCredit;
 import ru.extas.model.product.Product;
 import ru.extas.model.product.ProductInstance;
-import ru.extas.model.sale.Sale;
-import ru.extas.model.sale.SaleComment;
-import ru.extas.model.sale.SaleFileContainer;
-import ru.extas.model.sale.SaleMotor;
+import ru.extas.model.sale.*;
 import ru.extas.model.security.CuratorsGroup;
 import ru.extas.server.contacts.EmployeeRepository;
 import ru.extas.server.contacts.SalePointRepository;
 import ru.extas.server.sale.SaleRepository;
 import ru.extas.server.security.UserManagementService;
-import ru.extas.web.commons.CommentsField;
-import ru.extas.web.commons.ExtaEditForm;
-import ru.extas.web.commons.FilesManageField;
-import ru.extas.web.commons.NotificationUtil;
+import ru.extas.web.commons.*;
 import ru.extas.web.commons.component.ExtaFormLayout;
 import ru.extas.web.commons.component.FormGroupHeader;
 import ru.extas.web.contacts.ClientField;
@@ -79,6 +73,8 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
     private EmployeeField dealerManagerField;
     @PropertyId("comments")
     private CommentsField<SaleComment> commentsField;
+    @PropertyId("privateComments")
+    private PrivateCommentsField<SalePrivateComment> privateCommentsField;
     @PropertyId("files")
     private FilesManageField docFilesEditor;
     // источник лида
@@ -214,6 +210,13 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         commentsField = new CommentsField<>(SaleComment.class);
         commentsField.addValueChangeListener(forceModified);
         form.addComponent(commentsField);
+
+        ////////////////////////////////////////////////////////////////////////////
+        if(lookup(UserManagementService.class).isPermitPrivateComments())
+            form.addComponent(new FormGroupHeader("Закрытые коментарии"));
+        privateCommentsField = new PrivateCommentsField<>(SalePrivateComment.class);
+        privateCommentsField.addValueChangeListener(forceModified);
+        form.addComponent(privateCommentsField);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Документы"));

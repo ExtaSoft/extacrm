@@ -3,7 +3,7 @@ package ru.extas.model.contacts;
 import org.joda.time.LocalDate;
 import ru.extas.model.common.Address;
 import ru.extas.model.common.ArchivedObject;
-import ru.extas.model.common.FileContainer;
+import ru.extas.model.common.OwnedFileContainer;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -108,7 +108,7 @@ public class Person extends Client implements ArchivedObject {
     private String passIssuedByNum;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = FileContainer.OWNER_ID_COLUMN)
+    @JoinColumn(name = OwnedFileContainer.OWNER_ID_COLUMN)
     private List<PersonFileContainer> files = newArrayList();
 
     @Column(name = "DL_NUM", length = 30)

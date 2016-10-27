@@ -2,11 +2,14 @@ package ru.extas.model.contacts;
 
 import org.hibernate.validator.constraints.URL;
 import ru.extas.model.common.Address;
+import ru.extas.model.common.Comment;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -93,10 +96,24 @@ public class Company extends Contact {
     @OrderBy("CATEGORY ASC")
     private Set<String> categories = newHashSet();
 
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = Comment.OWNER_ID_COLUMN)
+    @OrderBy("createdDate")
+    private List<CompanyPrivateComment> privateComments = newArrayList();
+
+
     /**
      * <p>Constructor for Company.</p>
      */
     public Company() {
+    }
+
+    public List<CompanyPrivateComment> getPrivateComments() {
+        return privateComments;
+    }
+
+    public void setPrivateComments(final List<CompanyPrivateComment> privateComments) {
+        this.privateComments = privateComments;
     }
 
     public String getFacebook() {

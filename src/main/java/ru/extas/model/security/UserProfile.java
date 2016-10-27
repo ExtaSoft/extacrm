@@ -92,6 +92,17 @@ public class UserProfile extends AuditedObject {
     @OrderBy("name ASC")
     private Set<SalePoint> salePoints = newLinkedHashSet();
 
+    @Column(name = "SHOW_PRIVATE_COMMENTS")
+    private boolean showPrivateComments;
+
+    public boolean isShowPrivateComments() {
+        return showPrivateComments;
+    }
+
+    public void setShowPrivateComments(final boolean showPrivateComments) {
+        this.showPrivateComments = showPrivateComments;
+    }
+
     public Set<String> getAliases() {
         return aliases;
     }

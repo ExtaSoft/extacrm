@@ -129,7 +129,12 @@ public enum ExtaDomain {
     /**
      * Аналитика
      */
-    ANALYTICS("analytics");
+    ANALYTICS("analytics"),
+
+	/**
+	 * Информационные материалы
+	 */
+	INFORMATION("info");
 
 	/**
 	 * <p>Constructor for ExtaDomain.</p>

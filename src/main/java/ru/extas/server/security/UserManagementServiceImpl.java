@@ -219,4 +219,12 @@ public class UserManagementServiceImpl implements UserManagementService {
         return getCurrentUserEmployee().getCompany().equals(lookup(CompanyRepository.class).findEACompany());
     }
 
+    @Override
+    public boolean isPermitPrivateComments() {
+        final UserProfile user = getCurrentUser();
+        return isCurUserHasRole(UserRole.ADMIN) ||
+                user.isShowPrivateComments() ||
+                user.getGroupList().stream().anyMatch(g -> g.isShowPrivateComments());
+    }
+
 }
