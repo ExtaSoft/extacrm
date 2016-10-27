@@ -41,7 +41,7 @@ public class InfoFilesGrid extends ExtaGrid<InfoFile> {
     }
 
     @Override
-    public ExtaEditForm<InfoFile> createEditForm(InfoFile infoFile, boolean isInsert) {
+    public ExtaEditForm<InfoFile> createEditForm(final InfoFile infoFile, final boolean isInsert) {
         final InfoFileEditForm form = new InfoFileEditForm(infoFile);
         return form;
     }
@@ -54,7 +54,7 @@ public class InfoFilesGrid extends ExtaGrid<InfoFile> {
     @Override
     protected Container createContainer() {
         final ExtaDbContainer<InfoFile> dbContainer = new ExtaDbContainer<>(InfoFile.class);
-        UserProfile user = lookup(UserManagementService.class).getCurrentUser();
+        final UserProfile user = lookup(UserManagementService.class).getCurrentUser();
         if (user.getRole() != UserRole.ADMIN) {
             final Set<String> permitBrands = newHashSet(user.getPermitBrands());
             final Set<UserGroup> groups = user.getGroupList();
@@ -64,9 +64,9 @@ public class InfoFilesGrid extends ExtaGrid<InfoFile> {
                 }
             }
             if (!permitBrands.isEmpty()) {
-                Container.Filter[] bFilters = new Container.Filter[permitBrands.size()];
+                final Container.Filter[] bFilters = new Container.Filter[permitBrands.size()];
                 int i = 0;
-                for (String brand : permitBrands) {
+                for (final String brand : permitBrands) {
                     bFilters[i] = new Compare.Equal(InfoFile_.permitBrands.getName(), brand);
                     i++;
                 }
@@ -81,7 +81,7 @@ public class InfoFilesGrid extends ExtaGrid<InfoFile> {
         return new CompositeFilterGenerator()
                 .with(new AbstractFilterGenerator() {
                     @Override
-                    public Container.Filter generateFilter(Object propertyId, Field<?> originatingField) {
+                    public Container.Filter generateFilter(final Object propertyId, final Field<?> originatingField) {
                         return null;
                     }
 
@@ -112,7 +112,7 @@ public class InfoFilesGrid extends ExtaGrid<InfoFile> {
         if (userManagementService.isPermitted(ExtaDomain.INFORMATION, SecureTarget.ALL, SecureAction.DELETE))
             actions.add(new ItemAction("Удалить", "Удалить запись об информационном файле", Fontello.TRASH) {
                 @Override
-                public void fire(Set itemIds) {
+                public void fire(final Set itemIds) {
                     ConfirmDialog.show(UI.getCurrent(), "Удаление файлов...",
                             "Вы уверены что необходимо удалить выделенные файлы? Эту операцию нельзя отменить.",
                             "Удалить", "Оставить", dialog -> {

@@ -16,7 +16,7 @@ public class InfoFileDataDecl extends GridDataDecl {
     public InfoFileDataDecl() {
         addMapping(InfoFile_.name.getName(), "Файл", new ComponentColumnGenerator() {
             @Override
-            public Object generateCell(Object columnId, Item item, Object itemId) {
+            public Object generateCell(final Object columnId, final Item item, final Object itemId) {
                 final FileContainer file = GridItem.extractBean(item);
                 return new FileDownloadButton(file);
             }

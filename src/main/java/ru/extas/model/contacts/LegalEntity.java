@@ -130,7 +130,7 @@ public class LegalEntity extends Client implements ArchivedObject {
         return privateComments;
     }
 
-    public void setPrivateComments(List<LegalEntityPrivateComment> privateComments) {
+    public void setPrivateComments(final List<LegalEntityPrivateComment> privateComments) {
         this.privateComments = privateComments;
     }
 
@@ -347,7 +347,7 @@ public class LegalEntity extends Client implements ArchivedObject {
         return taxType;
     }
 
-    public void setTaxType(String taxType) {
+    public void setTaxType(final String taxType) {
         this.taxType = taxType;
     }
 }

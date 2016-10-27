@@ -695,9 +695,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
             });
 
         }
-        table.setWrapFilters(true);
-        table.setFilterBarVisible(true);
-        table.addAttachListener(e -> table.setFilterBarVisible(false));
+//        table.setWrapFilters(true);
+//        table.setFilterBarVisible(false);
+//        table.addAttachListener(e -> table.setFilterBarVisible(false));
 
         // Задаем стиль для архивных записей
         if (isArchiveEnabled()) {

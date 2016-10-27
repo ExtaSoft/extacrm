@@ -117,7 +117,7 @@ public class Sale extends SecuredObject {
         return privateComments;
     }
 
-    public void setPrivateComments(List<SalePrivateComment> privateComments) {
+    public void setPrivateComments(final List<SalePrivateComment> privateComments) {
         this.privateComments = privateComments;
     }
 

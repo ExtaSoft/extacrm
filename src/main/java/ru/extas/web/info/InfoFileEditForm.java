@@ -43,12 +43,12 @@ public class InfoFileEditForm extends ExtaEditForm<InfoFile> {
     @PropertyId("permitBrands")
     private MotorBrandMultiselect brandsField;
 
-    public InfoFileEditForm(InfoFile infoFile) {
+    public InfoFileEditForm(final InfoFile infoFile) {
         super("Информационный материал", infoFile);
     }
 
     @Override
-    protected void initEntity(InfoFile infoFile) {
+    protected void initEntity(final InfoFile infoFile) {
 
     }
 

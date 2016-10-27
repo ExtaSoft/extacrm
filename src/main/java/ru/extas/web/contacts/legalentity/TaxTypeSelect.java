@@ -15,7 +15,7 @@ public class TaxTypeSelect extends ComboBox {
         this("Форма налогообложения");
     }
 
-    public TaxTypeSelect(String caption) {
+    public TaxTypeSelect(final String caption) {
         super(caption);
         setDescription("Выберите форму налогооблажения ЮЛ");
         setInputPrompt("Выберите...");

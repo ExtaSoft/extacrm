@@ -58,7 +58,7 @@ public class UserGroup extends AuditedObject {
         return showPrivateComments;
     }
 
-    public void setShowPrivateComments(boolean showPrivateComments) {
+    public void setShowPrivateComments(final boolean showPrivateComments) {
         this.showPrivateComments = showPrivateComments;
     }
 

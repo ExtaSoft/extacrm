@@ -112,7 +112,7 @@ public class Company extends Contact {
         return privateComments;
     }
 
-    public void setPrivateComments(List<CompanyPrivateComment> privateComments) {
+    public void setPrivateComments(final List<CompanyPrivateComment> privateComments) {
         this.privateComments = privateComments;
     }
 

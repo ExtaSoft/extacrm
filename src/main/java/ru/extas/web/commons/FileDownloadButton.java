@@ -13,14 +13,14 @@ public class FileDownloadButton extends MButton {
 
     private FileContainer file;
 
-    public FileDownloadButton(FileContainer file) {
+    public FileDownloadButton(final FileContainer file) {
         updateFileData(file);
         addStyleName(ExtaTheme.BUTTON_BORDERLESS_COLORED);
         addStyleName(ExtaTheme.BUTTON_SMALL);
         addClickListener(e -> new DownloadFileWindow(file.getFileData(), file.getName()).showModal());
     }
 
-    public void updateFileData(FileContainer file) {
+    public void updateFileData(final FileContainer file) {
         this.file = file;
         if(file != null) {
             setIcon(FileUtil.getFileIconByMime(file.getMimeType()));
@@ -32,7 +32,7 @@ public class FileDownloadButton extends MButton {
         return file;
     }
 
-    public void setFile(FileContainer file) {
+    public void setFile(final FileContainer file) {
         this.file = file;
     }
 }

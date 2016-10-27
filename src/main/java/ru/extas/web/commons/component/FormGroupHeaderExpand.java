@@ -22,7 +22,7 @@ public class FormGroupHeaderExpand extends Button {
     private final List<Component> controlled = newArrayList();
     private boolean expanded;
 
-    public FormGroupHeaderExpand(String caption, boolean expanded) {
+    public FormGroupHeaderExpand(final String caption, final boolean expanded) {
         super(caption);
         this.expanded = expanded;
     }
@@ -46,7 +46,7 @@ public class FormGroupHeaderExpand extends Button {
         addAttachListener(e -> updateState());
     }
 
-    public FormGroupHeaderExpand addControlled(Component component) {
+    public FormGroupHeaderExpand addControlled(final Component component) {
         if (component != null)
             controlled.add(component);
         return this;
@@ -71,7 +71,7 @@ public class FormGroupHeaderExpand extends Button {
         return expanded;
     }
 
-    public void setExpanded(boolean expanded) {
+    public void setExpanded(final boolean expanded) {
         this.expanded = expanded;
     }
 

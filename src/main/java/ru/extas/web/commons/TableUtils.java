@@ -243,7 +243,7 @@ public class TableUtils {
         final ColumnInfo columnInfo = new ColumnInfo();
         columnInfo.setPropertyId((String) propertyId);
         columnInfo.setCollapsed(filterTable.isColumnCollapsed(propertyId));
-        columnInfo.setFilter(filterTable.getFilterFieldValue(propertyId));
+//        columnInfo.setFilter(filterTable.getFilterFieldValue(propertyId));
         columnInfo.setWidth(filterTable.getColumnWidth(propertyId));
         columnInfo.setWidthRatio(filterTable.getColumnExpandRatio(propertyId));
         columnInfo.setIndex(getColumnIndex(filterTable, propertyId));

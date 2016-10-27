@@ -25,7 +25,7 @@ public class InfoFile extends FileContainer {
         return permitBrands;
     }
 
-    public void setPermitBrands(Set<String> permitBrands) {
+    public void setPermitBrands(final Set<String> permitBrands) {
         this.permitBrands = permitBrands;
     }
 }

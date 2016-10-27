@@ -12,12 +12,12 @@ import java.util.Locale;
  */
 public class Mime2IconConverter implements Converter<String, String> {
     @Override
-    public String convertToModel(String string, Class<? extends String> aClass, Locale locale) throws ConversionException {
+    public String convertToModel(final String string, final Class<? extends String> aClass, final Locale locale) throws ConversionException {
         return "not implemented";
     }
 
     @Override
-    public String convertToPresentation(String string, Class<? extends String> aClass, Locale locale) throws ConversionException {
+    public String convertToPresentation(final String string, final Class<? extends String> aClass, final Locale locale) throws ConversionException {
         return FileUtil.getFileIconByMime(string).getHtml();
     }
 

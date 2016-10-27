@@ -9,7 +9,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  */
 public class FileUtil {
 
-    public static FontIcon getFileIconByMime(String mimeType) {
+    public static FontIcon getFileIconByMime(final String mimeType) {
         // TODO: Move to map
         if (!isNullOrEmpty(mimeType)) {
             if (mimeType.startsWith("image/"))

@@ -9,7 +9,7 @@ import static ru.extas.server.ServiceLocator.lookup;
  * Created by valery on 26.10.16.
  */
 public class PrivateCommentsField<TComment extends Comment> extends CommentsField<TComment> {
-    public PrivateCommentsField(Class<TComment> tCommentClass) {
+    public PrivateCommentsField(final Class<TComment> tCommentClass) {
         super(tCommentClass);
         setVisible(lookup(UserManagementService.class).isPermitPrivateComments());
     }
