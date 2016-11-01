@@ -4,6 +4,7 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import ru.extas.model.contacts.Client;
 import ru.extas.model.contacts.Employee;
@@ -92,6 +93,21 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
      */
     @Override
     protected ComponentContainer createEditFields() {
+
+        final TabSheet tab = new TabSheet();
+        tab.addTab(createMainForm(), "Данные продажи");
+
+        ////////////////////////////////////////////////////////////////////////////
+        if (lookup(UserManagementService.class).isPermitPrivateComments()) {
+            privateCommentsField = new PrivateCommentsField<>(SalePrivateComment.class);
+            privateCommentsField.addValueChangeListener(forceModified);
+            tab.addTab(privateCommentsField, "Закрытые комментарии");
+        }
+
+        return tab;
+    }
+
+    private FormLayout createMainForm() {
         final FormLayout form = new ExtaFormLayout();
 //        form.setSizeFull();
 
@@ -211,20 +227,12 @@ public class SaleEditForm extends ExtaEditForm<Sale> {
         commentsField.addValueChangeListener(forceModified);
         form.addComponent(commentsField);
 
-        ////////////////////////////////////////////////////////////////////////////
-        if(lookup(UserManagementService.class).isPermitPrivateComments())
-            form.addComponent(new FormGroupHeader("Закрытые коментарии"));
-        privateCommentsField = new PrivateCommentsField<>(SalePrivateComment.class);
-        privateCommentsField.addValueChangeListener(forceModified);
-        form.addComponent(privateCommentsField);
-
         ////////////////////////////////////////////////////////////////////////////////////////////
         form.addComponent(new FormGroupHeader("Документы"));
         docFilesEditor = new FilesManageField(SaleFileContainer.class);
         form.addComponent(docFilesEditor);
 
         motorInstancesField.addValueChangeListener(e -> productInstancesField.markAsDirtyRecursive());
-
         return form;
     }
 
