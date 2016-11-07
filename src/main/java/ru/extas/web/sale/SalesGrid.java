@@ -57,7 +57,7 @@ public class SalesGrid extends ExtaGrid<Sale> {
      * @param isMyOnly
      */
     public SalesGrid(final ExtaDomain domain, final boolean isMyOnly) {
-        super(Sale.class);
+        super(Sale.class, domain.name());
         this.domain = domain;
         this.isMyOnly = isMyOnly;
         setReadOnly(domain != ExtaDomain.SALES_OPENED);
