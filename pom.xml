@@ -7,7 +7,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>1.11.3</version>
+    <version>1.11.4</version>
 
     <properties>
         <maven.tomcat.port>8282</maven.tomcat.port>
@@ -415,12 +415,6 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.connector.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
@@ -657,7 +651,19 @@
                     <additionalClasspathDirs>
                         <additionalClasspathDir/>
                     </additionalClasspathDirs>
+
+                    <contextFile>${basedir}/src/test/resources/maven-tomcat-plugin/context.xml</contextFile>
+
                 </configuration>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.connector.version}</version>
+                    </dependency>
+                </dependencies>
+
             </plugin>
 
             <plugin>
