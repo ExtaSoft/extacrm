@@ -1,6 +1,7 @@
 package ru.extas.web.commons;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import com.vaadin.addon.tableexport.CustomTableHolder;
@@ -93,6 +94,11 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
     private Panel filterPanel;
     private GridLayout rootPanel;
     private boolean filterVisible = false;
+    private final String gridIdSuffix;
+
+    public String getGridIdSuffix() {
+        return gridIdSuffix;
+    }
 
     public void selectObject(final Object objectId) {
         if (table != null && objectId != null && table.containsId(objectId)) {
@@ -102,7 +108,9 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
     }
 
     public String getGridId() {
-        return getClass().getName();
+        return Joiner.on('.')
+                .skipNulls()
+                .join(getClass().getName(), gridIdSuffix);
     }
 
     public Container getContainer() {
@@ -176,7 +184,13 @@ public abstract class ExtaGrid<TEntity> extends CustomComponent implements ExtaG
      * <p>Constructor for ExtaGrid.</p>
      */
     public ExtaGrid(final Class<TEntity> entityClass) {
+        this(entityClass, null);
+    }
+
+    public ExtaGrid(Class<TEntity> entityClass, String gridIdSuffix) {
         this.entityClass = entityClass;
+        this.gridIdSuffix = gridIdSuffix;
+
         formService = new ModalPopupFormService(this);
         // Must set a dummy root in constructor
         setCompositionRoot(new Label(""));

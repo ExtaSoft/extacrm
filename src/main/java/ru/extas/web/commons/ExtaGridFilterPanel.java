@@ -10,6 +10,8 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 
 /**
  * Класс, реализующий универсальную панель фильтра грида
@@ -119,13 +121,15 @@ class ExtaGridFilterPanel extends Panel {
     }
 
     private void addMenuItem(final MHorizontalLayout fields, final Object columnId) {
-        addDropDownBtn.addItem(grid.getColumnHeader(columnId),
-                item -> {
-                    // Добавить поле в конец
-                    addFilterField(fields, columnId);
-                    // Удалить поле из меню
-                    addDropDownBtn.removeChild(item);
-                });
+        final String columnHeader = grid.getColumnHeader(columnId);
+        if (!isEmpty(columnHeader))
+            addDropDownBtn.addItem(columnHeader,
+                    item -> {
+                        // Добавить поле в конец
+                        addFilterField(fields, columnId);
+                        // Удалить поле из меню
+                        addDropDownBtn.removeChild(item);
+                    });
     }
 
     private void addFilterField(final MHorizontalLayout fields, final Object columnId) {
