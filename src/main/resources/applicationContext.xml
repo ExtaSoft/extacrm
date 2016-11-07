@@ -30,7 +30,8 @@
         <property name="caches">
             <set>
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="userByLogin"/>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="MAIN_SETTINGS"/>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+                      p:name="MAIN_SETTINGS"/>
             </set>
         </property>
     </bean>
@@ -61,18 +62,14 @@
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Data Source -->
-    <context:property-placeholder location="classpath:db.properties" ignore-unresolvable="true"/>
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-    <property name="driverClassName" value="${db.jdbc.driver}"/>
-        <property name="url" value="${db.jdbc.url}"/>
-        <property name="username" value="${db.jdbc.username}"/>
-        <property name="password" value="${db.jdbc.password}"/>
-        <property name="connectionProperties" value="characterEncoding=UTF-8"/>
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/extacrm"/>
     </bean>
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- Проверяет версию БД и выполняет миграцию если необходимо -->
-    <bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="processEngineConfiguration" lazy-init="false">
+    <bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" depends-on="processEngineConfiguration"
+          lazy-init="false">
         <property name="dataSource" ref="dataSource"/>
         <property name="validateOnMigrate" value="false"/>
     </bean>
@@ -99,7 +96,7 @@
         <!--</property>-->
         <property name="jpaProperties">
             <props>
-                <prop key="eclipselink.target-database">${db.name}</prop>
+                <prop key="eclipselink.target-database">MySQL</prop>
                 <prop key="eclipselink.ddl-generation">${jpa.ddl-generation}</prop>
                 <prop key="eclipselink.ddl-generation.output-mode">${jpa.generation.output-mode}</prop>
                 <prop key="eclipselink.logging.level">${jpa.logging.level}</prop>
@@ -109,7 +106,7 @@
     </bean>
 
     <!--<bean class="javax.persistence.PersistenceUnitUtil" factory-bean="entityManagerFactory"-->
-          <!--factory-method="getPersistenceUnitUtil"/>-->
+    <!--factory-method="getPersistenceUnitUtil"/>-->
     <!-- Transaction config-->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
@@ -124,7 +121,7 @@
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- BPMN Process Engine Configuration -->
     <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
-    <property name="dataSource" ref="dataSource"/>
+        <property name="dataSource" ref="dataSource"/>
         <property name="transactionManager" ref="transactionManager"/>
         <property name="databaseSchemaUpdate" value="true"/>
         <property name="jobExecutorActivate" value="false"/>

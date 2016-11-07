@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- The contents of this file will be loaded for each web application -->
+<Context>
+
+    <!-- Default set of monitored resources -->
+    <!--<WatchedResource>WEB-INF/web.xml</WatchedResource>-->
+
+    <!--<ResourceLink name="jdbc/extacrm" global="extacrm_data_source" type="javax.sql.DataSource"/>-->
+
+    <Resource auth="Container"
+              name="jdbc/extacrm"
+              type="javax.sql.DataSource"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/extacrm?characterEncoding=utf8"
+              username="root"
+              password="root"
+              logAbandoned="true"
+              maxActive="75"
+              maxIdle="10"
+              maxWait="10000"
+              removeAbandoned="true"
+              removeAbandonedTimeout="60"
+              scope="Shareable"
+              validationQuery="SELECT 1"
+              testOnBorrow="true"/>
+
+</Context>
