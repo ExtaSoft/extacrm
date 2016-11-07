@@ -460,6 +460,12 @@
             <version>1</version>
         </dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -655,14 +661,6 @@
                     <contextFile>${basedir}/src/test/resources/maven-tomcat-plugin/context.xml</contextFile>
 
                 </configuration>
-
-                <dependencies>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>${mysql.connector.version}</version>
-                    </dependency>
-                </dependencies>
 
             </plugin>
 
