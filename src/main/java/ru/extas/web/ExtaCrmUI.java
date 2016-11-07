@@ -275,7 +275,7 @@ public class ExtaCrmUI extends UI {
                 MotorView.class, EnumSet.of(ExtaDomain.MOTOR_MODEL, ExtaDomain.MOTOR_BRAND, ExtaDomain.MOTOR_TYPE));
         mainMenu.addChapter("Пользователи", "Управление ползователями и правами доступа", Fontello.USERS_3,
                 UsersView.class, EnumSet.of(ExtaDomain.USERS, ExtaDomain.USER_GROUPS, ExtaDomain.CURATORS_GROUPS));
-        mainMenu.addChapter("Информационные материалы", "Информационные материалы регламентирующие работу сотрудников", Fontello.INFO_OUTLINE,
+        mainMenu.addChapter("Информация", "Информационные материалы регламентирующие работу сотрудников", Fontello.INFO_OUTLINE,
                 InfoView.class, ExtaDomain.INFORMATION);
         mainMenu.addChapter("Настройки", "Настройки приложения и пользовательского интерфейса", Fontello.COG_ALT,
                 SettingsView.class, ExtaDomain.SETTINGS);

@@ -21,7 +21,6 @@ import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static ru.extas.server.ServiceLocator.lookup;
 
 /**
  * Имплементация сервиса управления пользователями и правами доступа
@@ -42,6 +41,10 @@ public class UserManagementServiceImpl implements UserManagementService {
     private UserRegistry userRegistry;
     @Inject
     private EntityManager em;
+    @Inject
+    private UserSettingsService userSettings;
+    @Inject
+    private CompanyRepository companyRepository;
 
     /** {@inheritDoc} */
     @Override
@@ -78,7 +81,7 @@ public class UserManagementServiceImpl implements UserManagementService {
         final Employee contact = getSuperuserContact();
         user.setEmployee(contact);
         user.setLogin(SUPERUSER_LOGIN);
-        final boolean is_dev_env = lookup(UserSettingsService.class).isDevServer();
+        final boolean is_dev_env = userSettings.isDevServer();
         if (is_dev_env) {
             user.setPassword("y+ajXewM2qsaZBocksvfYKIlMzQBPW9SXORl4npgLWc=");
             user.setPasswordSalt("YM8hMeHtHyPOa3eY+JmSVg==");
@@ -216,7 +219,7 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     @Override
     public boolean isItOurUser() {
-        return getCurrentUserEmployee().getCompany().equals(lookup(CompanyRepository.class).findEACompany());
+        return getCurrentUserEmployee().getCompany().equals(companyRepository.findEACompany());
     }
 
     @Override
