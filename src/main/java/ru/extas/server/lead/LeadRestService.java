@@ -321,12 +321,12 @@ public class LeadRestService {
                     setDecimalSeparator(dirtyPrice.contains(".") ? '.' : ',');
                 }
             });
-            BigDecimal clearPrice = null;
+            BigDecimal clearPrice = BigDecimal.ZERO;
             try {
                 clearPrice = (BigDecimal) format.parse(dirtyPrice);
             } catch (final ParseException e) {
             }
-            if (clearPrice == null)
+            if (clearPrice.equals(BigDecimal.ZERO))
                 dirtyData.append("Цена техники: ").append(dirtyPrice).append(lineSeparator());
             else
                 motorInstance.setPrice(clearPrice);

@@ -81,7 +81,7 @@
 
     <!--//////////////////////////////////////////////////////////////////////////////////////-->
     <!-- JPA Configuration -->
-    <context:property-placeholder location="classpath:persistence.properties" ignore-unresolvable="true"/>
+    <!--<context:property-placeholder location="classpath:persistence.properties" ignore-unresolvable="true"/>-->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="extacrmJpaUnit"/>
         <property name="dataSource" ref="dataSource"/>
@@ -97,10 +97,8 @@
         <property name="jpaProperties">
             <props>
                 <prop key="eclipselink.target-database">MySQL</prop>
-                <prop key="eclipselink.ddl-generation">${jpa.ddl-generation}</prop>
-                <prop key="eclipselink.ddl-generation.output-mode">${jpa.generation.output-mode}</prop>
-                <prop key="eclipselink.logging.level">${jpa.logging.level}</prop>
-                <prop key="eclipselink.logging.level.sql">${jpa.logging.level}</prop>
+                <prop key="eclipselink.ddl-generation">create-or-extend-tables</prop>
+                <prop key="eclipselink.ddl-generation.output-mode">database</prop>
             </props>
         </property>
     </bean>

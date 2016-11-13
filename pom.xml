@@ -7,7 +7,7 @@
 
     <groupId>ru.extas</groupId>
     <artifactId>extacrm</artifactId>
-    <version>1.11.4</version>
+    <version>1.11.5</version>
 
     <properties>
         <maven.tomcat.port>8282</maven.tomcat.port>
@@ -61,53 +61,25 @@
     <profiles>
         <profile>
             <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
 
             <properties>
                 <vaadin.productionMode>false</vaadin.productionMode>
-                <jelastic.environment>extacrm-dev</jelastic.environment>
                 <extacrm.ssl.pattern>NONE</extacrm.ssl.pattern>
-
-                <extacrm.gae.log.props>WEB-INF/logging-dev.properties</extacrm.gae.log.props>
-                <jpa.logging.level>FINE</jpa.logging.level>
-                <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
-                <!--<jpa.ddl-generation>none</jpa.ddl-generation>-->
-                <!--<jpa.generation.output-mode>both</jpa.generation.output-mode>-->
-                <jpa.generation.output-mode>database</jpa.generation.output-mode>
             </properties>
         </profile>
 
         <profile>
             <id>prod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
 
             <properties>
                 <vaadin.productionMode>true</vaadin.productionMode>
-                <jelastic.environment>extacrm-prod</jelastic.environment>
                 <extacrm.ssl.pattern>CONFIDENTIAL</extacrm.ssl.pattern>
-
-                <extacrm.gae.log.props>WEB-INF/logging.properties</extacrm.gae.log.props>
-                <jpa.logging.level>WARNING</jpa.logging.level>
-                <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
-                <jpa.generation.output-mode>database</jpa.generation.output-mode>
             </properties>
         </profile>
 
-        <profile>
-            <id>uat</id>
-
-            <properties>
-                <vaadin.productionMode>true</vaadin.productionMode>
-                <jelastic.environment>extacrm-uat</jelastic.environment>
-                <extacrm.ssl.pattern>CONFIDENTIAL</extacrm.ssl.pattern>
-
-                <extacrm.gae.log.props>WEB-INF/logging-uat.properties</extacrm.gae.log.props>
-                <jpa.logging.level>FINE</jpa.logging.level>
-                <jpa.ddl-generation>create-or-extend-tables</jpa.ddl-generation>
-                <jpa.generation.output-mode>database</jpa.generation.output-mode>
-            </properties>
-        </profile>
     </profiles>
 
     <scm>
@@ -633,7 +605,7 @@
                     <!-- application path always starts with /-->
                     <path>/</path>
 
-                    <!--<tomcatLoggingFile>${project.basedir}/src/main/webapp/WEB-INF/logging-dev.properties</tomcatLoggingFile>-->
+                    <tomcatLoggingFile>${project.basedir}/src/test/resources/logging-dev.properties</tomcatLoggingFile>
 
                     <charset>UTF-8</charset>
                     <uriEncoding>UTF-8</uriEncoding>
