@@ -1,6 +1,5 @@
 package ru.extas.web.commons.window;
 
-import com.google.common.base.Throwables;
 import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
@@ -12,8 +11,6 @@ import ru.extas.web.commons.OnDemandFileDownloader;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 /**
  * Окошко с информацией о файле и кнопкой "Скачать"
@@ -31,11 +28,6 @@ public class DownloadFileWindow extends Window {
 	 * <p>Constructor for DownloadFileWindow.</p>
 	 *
 	 * @param file an array of byte.
-	 * @param fileName a {@link java.lang.String} object.
-	 * @param fileName a {@link java.lang.String} object.
-	 * @param fileName a {@link java.lang.String} object.
-	 * @param fileName a {@link java.lang.String} object.
-	 * @param fileName a {@link java.lang.String} object.
 	 * @param fileName a {@link java.lang.String} object.
 	 */
 	public DownloadFileWindow(final byte[] file, final String fileName) {
@@ -101,14 +93,15 @@ public class DownloadFileWindow extends Window {
 	}
 
 	private String encodeWebFileName(final String fileName) {
-		try {
-			return URLEncoder.encode(fileName
-					.replaceAll(" ", ".").replaceAll("/", "-")
-					, "UTF-8");
-		} catch (final UnsupportedEncodingException e) {
-			logger.error("Can't convert file name to web URI", e);
-			throw Throwables.propagate(e);
-		}
+//		try {
+//			return URLEncoder.encode(fileName
+//					.replaceAll(" ", ".").replaceAll("/", "-")
+//					, "UTF-8");
+//		} catch (final UnsupportedEncodingException e) {
+//			logger.error("Can't convert file name to web URI", e);
+//			throw Throwables.propagate(e);
+//		}
+		return fileName;
 	}
 
 	/**
