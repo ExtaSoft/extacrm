@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static ru.extas.server.ServiceLocator.lookup;
@@ -188,6 +189,9 @@ public class MotorInstancesField extends ExtaCustomField<List> {
     }
 
     public BigDecimal getTotalPrice() {
-        return getValueList().stream().map(e -> e.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return getValueList().stream()
+                .map(e -> e.getPrice())
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
