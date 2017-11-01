@@ -61,8 +61,8 @@ import static ru.extas.web.UiUtils.showValidationError;
  * Форма ввода лида для внедрения во внешние порталы
  *
  * @author Valery Orlov
- *         Date: 14.04.2014
- *         Time: 16:43
+ * Date: 14.04.2014
+ * Time: 16:43
  * @version $Id: $Id
  * @since 0.4.2
  */
@@ -73,6 +73,112 @@ import static ru.extas.web.UiUtils.showValidationError;
 public class LeadInputFormUI extends UI {
 
     private final static Logger logger = LoggerFactory.getLogger(LeadInputFormUI.class);
+
+    public static class LeadWrapper {
+        private final Lead lead;
+        private final MotorInstance motor;
+
+        public LeadWrapper(Lead lead) {
+            this.lead = lead;
+            this.motor = lead.getMotorInstances().get(0);
+        }
+
+        public String getComment() {
+            return lead.getComment();
+        }
+
+        public void setComment(String comment) {
+            lead.setComment(comment);
+        }
+
+        public String getRegion() {
+            return lead.getRegion();
+        }
+
+        public void setRegion(String region) {
+            lead.setRegion(region);
+        }
+
+        public String getPointOfSale() {
+            return lead.getPointOfSale();
+        }
+
+        public void setPointOfSale(String pointOfSale) {
+            lead.setPointOfSale(pointOfSale);
+        }
+
+        public String getContactName() {
+            return lead.getContactName();
+        }
+
+        public void setContactName(String contactName) {
+            lead.setContactName(contactName);
+        }
+
+        public String getContactPhone() {
+            return lead.getContactPhone();
+        }
+
+        public void setContactPhone(String contactPhone) {
+            lead.setContactPhone(contactPhone);
+        }
+
+        public String getContactEmail() {
+            return lead.getContactEmail();
+        }
+
+        public void setContactEmail(String contactEmail) {
+            lead.setContactEmail(contactEmail);
+        }
+
+        public SalePoint getVendor() {
+            return lead.getVendor();
+        }
+
+        public void setVendor(SalePoint vendor) {
+            lead.setVendor(vendor);
+        }
+
+        public String getContactRegion() {
+            return lead.getContactRegion();
+        }
+
+        public void setContactRegion(String contactRegion) {
+            lead.setContactRegion(contactRegion);
+        }
+
+        public String getMotorType() {
+            return motor.getType();
+        }
+
+        public void setMotorType(String motorType) {
+            motor.setType(motorType);
+        }
+
+        public String getMotorBrand() {
+            return motor.getBrand();
+        }
+
+        public void setMotorBrand(String motorBrand) {
+            motor.setBrand(motorBrand);
+        }
+
+        public String getMotorModel() {
+            return motor.getModel();
+        }
+
+        public void setMotorModel(String motorModel) {
+            motor.setModel(motorModel);
+        }
+
+        public BigDecimal getMotorPrice() {
+            return motor.getPrice();
+        }
+
+        public void setMotorPrice(BigDecimal motorPrice) {
+            motor.setPrice(motorPrice);
+        }
+    }
 
     // Имя контакта
     @PropertyId("contactName")
@@ -86,6 +192,7 @@ public class LeadInputFormUI extends UI {
     // Регион проживания клиента
     @PropertyId("contactRegion")
     private RegionSelect contactRegionField;
+
     // Тип техники
     @PropertyId("motorType")
     private ComboBox motorTypeField;
@@ -97,7 +204,8 @@ public class LeadInputFormUI extends UI {
     private EditField motorModelField;
     // Стоимость техники
     @PropertyId("motorPrice")
-    private EditField mototPriceField;
+    private EditField motorPriceField;
+
     // Регион покупки техники
     @PropertyId("region")
     private RegionSelect regionField;
@@ -112,7 +220,9 @@ public class LeadInputFormUI extends UI {
     private FieldGroup fieldGroup;
     private Company company;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void init(final VaadinRequest request) {
 
@@ -169,9 +279,9 @@ public class LeadInputFormUI extends UI {
         motorModelField.setRequired(true);
         form.addComponent(motorModelField);
 
-        mototPriceField = new EditField("Цена техники");
-        mototPriceField.setRequired(true);
-        form.addComponent(mototPriceField);
+        motorPriceField = new EditField("Цена техники");
+        motorPriceField.setRequired(true);
+        form.addComponent(motorPriceField);
 
         regionField = new RegionSelect("Регион покупки");
         regionField.setDescription("Укажите регион покупки техники");
@@ -214,7 +324,7 @@ public class LeadInputFormUI extends UI {
         form.addComponent(commentField);
 
         // Привязываем поля
-        final BeanItem<Lead> beanItem = new BeanItem<>(lead);
+        final BeanItem<LeadWrapper> beanItem = new BeanItem<>(new LeadWrapper(lead));
         fieldGroup = new FieldGroup(beanItem);
         fieldGroup.setBuffered(true);
         fieldGroup.bindMemberFields(this);
@@ -253,7 +363,7 @@ public class LeadInputFormUI extends UI {
         });
 
         submitBtn.setIcon(Fontello.OK);
-                submitBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
+        submitBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
 
         panel.addComponent(submitBtn);
 
