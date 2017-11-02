@@ -8,6 +8,7 @@
       </database-info>
       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper" />
       <user-name>root</user-name>
+      <introspection-schemas>*:extacrm</introspection-schemas>
     </data-source>
   </component>
 </project>
