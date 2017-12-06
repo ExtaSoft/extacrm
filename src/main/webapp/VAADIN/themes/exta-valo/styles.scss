@@ -246,6 +246,21 @@
     max-height: 400px;
     overflow-y: scroll;
   }
+
+  .v-slot-pd {
+    margin-top: 1em;
+    font-size: 70%;
+  }
+  .v-link-pd {
+    a {
+      color: #ccc;
+      text-decoration: none
+    }
+    a:hover {
+      color: #ccc;
+      text-decoration: none
+    }
+  }
 }
 
 

@@ -111,7 +111,7 @@ public class LeadInputFormUI extends UI {
             return lead.getContactName();
         }
 
-        public void setContactName(String contactName) {
+        public void setContactName(final String contactName) {
             lead.setContactName(contactName);
         }
 
@@ -137,14 +137,6 @@ public class LeadInputFormUI extends UI {
 
         public void setVendor(SalePoint vendor) {
             lead.setVendor(vendor);
-        }
-
-        public String getContactRegion() {
-            return lead.getContactRegion();
-        }
-
-        public void setContactRegion(String contactRegion) {
-            lead.setContactRegion(contactRegion);
         }
 
         public String getMotorType() {
@@ -189,13 +181,10 @@ public class LeadInputFormUI extends UI {
     // Эл. почта
     @PropertyId("contactEmail")
     private EmailField contactEmailField;
-    // Регион проживания клиента
-    @PropertyId("contactRegion")
-    private RegionSelect contactRegionField;
 
     // Тип техники
     @PropertyId("motorType")
-    private ComboBox motorTypeField;
+    private MotorTypeSelect motorTypeField;
     // Марка техники
     @PropertyId("motorBrand")
     private MotorBrandSelect motorBrandField;
@@ -255,38 +244,35 @@ public class LeadInputFormUI extends UI {
         form.addComponent(cellPhoneField);
 
         contactEmailField = new EmailField("E-Mail");
-        contactEmailField.setRequired(true);
         contactEmailField.setImmediate(true);
         form.addComponent(contactEmailField);
 
-        contactRegionField = new RegionSelect("Регион проживания");
-        contactRegionField.setDescription("Укажите регион проживания");
-        contactRegionField.setRequired(true);
-        form.addComponent(contactRegionField);
-
         motorTypeField = new MotorTypeSelect();
         motorTypeField.setInputPrompt("Выберите тип...");
-        motorTypeField.setRequired(true);
         form.addComponent(motorTypeField);
 
         motorBrandField = new MotorBrandSelect();
         motorBrandField.setInputPrompt("Выберите марку...");
-        motorBrandField.setRequired(true);
+        final String brand = lead.getMotorInstances().get(0).getBrand();
+        if (isNullOrEmpty(brand)) {
+            motorBrandField.linkToType(motorTypeField);
+        } else {
+            motorTypeField.linkToBrand(motorBrandField);
+            motorBrandField.setVisible(false);
+//            form.addComponent(new Label(brand));
+        }
         form.addComponent(motorBrandField);
 
         motorModelField = new EditField("Модель техники", "Введите модель техники");
         motorModelField.setColumns(15);
-        motorModelField.setRequired(true);
         form.addComponent(motorModelField);
 
         motorPriceField = new EditField("Цена техники");
-        motorPriceField.setRequired(true);
         form.addComponent(motorPriceField);
 
         regionField = new RegionSelect("Регион покупки");
         regionField.setDescription("Укажите регион покупки техники");
         if (company == null && lead.getVendor() == null) {
-            regionField.setRequired(true);
             form.addComponent(regionField);
         }
 
@@ -294,7 +280,6 @@ public class LeadInputFormUI extends UI {
         pointOfSaleField.setColumns(25);
         pointOfSaleField.setImmediate(true);
         if (company == null && lead.getVendor() == null) {
-            pointOfSaleField.setRequired(true);
             form.addComponent(pointOfSaleField);
         }
 
@@ -311,7 +296,6 @@ public class LeadInputFormUI extends UI {
             }
         });
         if (company != null && lead.getVendor() == null) {
-            vendorField.setRequired(true);
             vendorField.setContainerFilter(company, null);
             form.addComponent(vendorField);
         }
@@ -366,6 +350,12 @@ public class LeadInputFormUI extends UI {
         submitBtn.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL);
 
         panel.addComponent(submitBtn);
+
+        final Link link = new Link("Политика обработки персональных данных",
+                new ExternalResource("http://extremeassist.ru/pd.php"));
+        link.setTargetName("_blank");
+        link.addStyleName("pd");
+        panel.addComponent(link);
 
         setContent(panel);
 
@@ -422,16 +412,6 @@ public class LeadInputFormUI extends UI {
         final String contactEmail = getParamValue("contactEmail", params);
         if (!isNullOrEmpty(contactEmail))
             lead.setContactEmail(contactEmail);
-        // Регион проживания клиента
-        String contactRegion = getParamValue("contactRegion", params);
-        if (!isNullOrEmpty(contactRegion)) {
-            contactRegion = contactRegion.trim();
-            final AddressAccessService service = lookup(AddressAccessService.class);
-            final Collection<String> regions = service.loadRegions();
-            final String finalContactRegion = contactRegion;
-            final Optional<String> trueRegion = Iterables.tryFind(regions, input -> StringUtils.containsIgnoreCase(input, finalContactRegion));
-            lead.setContactRegion(trueRegion.orNull());
-        }
         final MotorInstance motorInstance = new LeadMotor(lead);
         lead.getMotorInstances().add(motorInstance);
         // Тип техники
